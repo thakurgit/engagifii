@@ -2570,7 +2570,7 @@ public function getCalendarClassName(){
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
-                                                    <div class="modal-header align-items-center">
+                                                    <div class="modal-header text-left align-items-center">
                                                         <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -2617,9 +2617,9 @@ public function getCalendarClassName(){
                                         <a class="calendar-class" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="color:black; font-size:smaller;" ><?php echo $test; ?>...</a>                                    
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
-                                                    <div class="modal-header">
+                                                    <div class="modal-header text-left d-flex align-items-center">
                                                     <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -2730,9 +2730,9 @@ public function getCalendarClassName(){
                             <a class="calendar-class" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="color:black; font-size:smaller;" ><?php echo $test; ?>...</a>                                    
                                  <!-- Modal -->
                                     <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header text-left d-flex align-items-center">
                                         <img src="<?php echo $weekfilteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $weekfilteredItems[$fi]['title']; ?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
