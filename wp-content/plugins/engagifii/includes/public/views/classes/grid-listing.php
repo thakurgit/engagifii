@@ -522,7 +522,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   //alert('Hello Slide');
 
-$("#creditFilter2").slider({
+/*$("#creditFilter2").slider({
         range: true,
         min: <?php echo (int)$creditFilter['minRange']; ?>,
         max: <?php echo (int)$creditFilter['maxRange']; ?>,
@@ -552,6 +552,7 @@ $("#creditFilter2").slider({
       }
 
 });
+*/
 });
 
 </script>
