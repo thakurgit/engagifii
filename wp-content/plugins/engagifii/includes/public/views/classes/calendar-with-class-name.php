@@ -123,9 +123,6 @@ height: 605px;
 aside .box {
 	font-size: 13px;
 }
-.view-mode {
-    transform: translateY(35px) translateX(0px);
-}
 }
 @media screen and (max-width: 767px) {
 #monthView {
@@ -372,7 +369,7 @@ h5#exampleModalLabel {
                 });
 				class_html += '</div>';
             } else{ 
-				class_html += '<div class="box border"><div class="col-12 text-center">No classes</div></div>'; 
+				class_html += '<div class="box"><h5 class="col-12 text-center opacity-50">oops! No classes available for selected date.</div></h5>'; 
 			}
             
             $('#event_list').html(class_html);

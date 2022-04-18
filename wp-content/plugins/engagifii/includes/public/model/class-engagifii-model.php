@@ -2305,7 +2305,7 @@ public function getCalendar(){
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar border-top mt-4 mt-lg-5 text-uppercase d-flex text-center">
+            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center">
                 <span class="top-bar__days border-right py-3">Mon</span>
                 <span class="top-bar__days border-right py-3">Tue</span>
                 <span class="top-bar__days border-right py-3">Wed</span>
@@ -2399,7 +2399,7 @@ public function getCalendar(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
+            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
@@ -2516,7 +2516,7 @@ public function getCalendarClassName(){
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
                 <span class="top-bar__days  py-3 border-right">Mon</span>
                 <span class="top-bar__days  py-3 border-right">Tue</span>
                 <span class="top-bar__days  py-3 border-right">Wed</span>
@@ -2691,7 +2691,7 @@ public function getCalendarClassName(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
+            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
@@ -2856,7 +2856,7 @@ public function getEndorsementCalendar(){
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getEndorsementCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEndorsementCalendar('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
                 <span class="top-bar__days  py-3 border-right">Mon</span>
                 <span class="top-bar__days  py-3 border-right">Tue</span>
                 <span class="top-bar__days  py-3 border-right">Wed</span>
@@ -2951,7 +2951,7 @@ public function getEndorsementCalendar(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEndorsementCalendar('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
+            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
@@ -3071,7 +3071,7 @@ public function getEventsCalendar(){
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center ">
                 <span class="top-bar__days  py-3">Mon</span>
                 <span class="top-bar__days  py-3">Tue</span>
                 <span class="top-bar__days  py-3">Wed</span>
@@ -3166,7 +3166,7 @@ public function getEventsCalendar(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
+            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
