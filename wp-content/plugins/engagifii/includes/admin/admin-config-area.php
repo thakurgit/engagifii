@@ -232,8 +232,8 @@ function ebt_tenant_code_render(  ) {
 	{
 		?>
 			<div class="<?php echo $html_class; ?>">
-			<h3 class="m-tlr-20 bg-grey bordered">Training & Accreditation API Settings</h3>
-  				<div class="engagifii-setting">
+			<h3 class="m-tlr-20 bg-grey bordered d-flex justify-content-between accordion-btn">Training & Accreditation API Settings <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+  				<div class="engagifii-setting accordion-content" style="display:none;">
   					<div class="form-group">
       					<label>API URL</label>
   						<?php $this->ebt_api_url_render(); ?>
@@ -243,8 +243,8 @@ function ebt_tenant_code_render(  ) {
   						<?php $this->ebt_tenant_code_render(); ?>
   					</div>
   				</div>
-  				<h3 class="m-tlr-20 bg-grey bordered">Legislation API Settings</h3>
-  				<div class="engagifii-setting">
+  				<h3 class="m-tlr-20 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation API Settings</h3>
+  				<div class="engagifii-setting accordion-content">
   					<div class="form-group">
       					<label>API URL</label>
   						<?php $this->lbt_api_url_render(); ?>
@@ -320,3 +320,9 @@ function ebt_tenant_code_render(  ) {
 }
 
 new ebtAdminConfigSettings();
+?>
+<script>
+jQuery('.accordion-btn').click(function(){
+	jQuery(this).next('.accordion-content').slideToggle();
+});
+</script>

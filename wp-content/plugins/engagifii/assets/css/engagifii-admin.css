@@ -83,4 +83,13 @@
 .show{display: block;}
 .hide{display: none;}
 .engagifi_style_group{margin-top:-10px;}
+.d-flex {
+display:flex;	
+}
+.alien-items-center {
+align-items:center;	
+}
+.justify-content-between {
+justify-content:space-between;	
+}
 
