@@ -320,9 +320,3 @@ function ebt_tenant_code_render(  ) {
 }
 
 new ebtAdminConfigSettings();
-?>
-<script>
-jQuery('.accordion-btn').click(function(){
-	jQuery(this).next('.accordion-content').slideToggle();
-});
-</script>
