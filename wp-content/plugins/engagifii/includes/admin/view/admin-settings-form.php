@@ -298,6 +298,27 @@
             </tr>
 
         </table>
+        <hr>
+        <div>
+        <?php
+		
+		 if(isset($options['dt_responsive'])){
+    $dt_responsive = $options['dt_responsive'];
+   }else{
+   	$dt_responsive = 0;
+   }
+
+    $chkd = '';
+    if($dt_responsive==1)
+    {
+    	 $chkd  = ' checked';
+    }
+	//print_r($dt_responsive);
+	//print_r($chkd);
+	 ?>
+          <span>Enable table responsive</span>
+          <span><input type="checkbox" name="ebt_api_settings[dt_responsive]" id="dt-responsive" value="1" <?php echo $chkd; ?>></span>
+        </div>
         
        
     </div>

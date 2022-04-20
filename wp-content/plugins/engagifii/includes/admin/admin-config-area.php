@@ -58,29 +58,29 @@ class ebtAdminConfigSettings {
 /* List Page */
 
 function ebt_api_shortocde_description(){
-	echo "<h4 class='m-tlr-20 bg-grey bordered'>Endorsement Shortcodes </h4>";
+	echo "<h3 class='mb-0 bg-grey bordered'>Endorsement Shortcodes </h3>";
 	echo "<div class='engagifii-setting'>";
-	echo "<ul class='list'><li>Endorsement List <strong>[endorsement-grid-list]</strong></li> <li>Endorsement Detail <strong>[endorsement-details Id='endorsement-id']</strong></li><li>Endorsement Calendar <strong>[endorsement-calendar]</strong></li><li>Endorsement List & Calendar <strong>[endorsement-list-calendar calendar=true]</strong></li> </ul>";
+	echo "<ul class='list'><li><strong>Endorsement List</strong>: <code>[endorsement-grid-list]</code></li> <li><strong>Endorsement Detail</strong> <code>[endorsement-details Id='endorsement-id']</code></li><li><strong>Endorsement Calendar</strong> <code>[endorsement-calendar]</code></li><li><strong>Endorsement List & Calendar</strong> <code>[endorsement-list-calendar calendar=true]</code></li> </ul>";
 	echo "</div>";
 
-	echo "<h4 class='m-tlr-20 bg-grey bordered'>Event Shortcodes </h4>";
+	echo "<h3 class='mb-0 bg-grey bordered'>Event Shortcodes </h3>";
 	echo "<div class='engagifii-setting'>";
-	echo "<ul class='list'><li>Event List <strong>[event-list]</strong></li> <li>Event Detail <strong>[event-details Id='event-id']</strong></li><li>Event Calendar <strong>[events-calendar]</strong></li><li>Event List & Calendar <strong>[events-list-calendar calendar=true]</strong></li> </ul>";
+	echo "<ul class='list'><li><strong>Event List</strong> <code>[event-list]</code></li> <li><strong>Event Detail</strong> <code>[event-details Id='event-id']</code></li><li><strong>Event Calendar</strong> <code>[events-calendar]</code></li><li><strong>Event List & Calendar</strong> <code>[events-list-calendar calendar=true]</code></li> </ul>";
 	echo "</div>";
 
-	echo "<h4 class='m-tlr-20 bg-grey bordered'>Legislation Shortcodes </h4>";
+	echo "<h3 class='mb-0 bg-grey bordered'>Legislation Shortcodes </h3>";
 	echo "<div class='engagifii-setting'>";
-	echo "<ul class='list'><li>Legislation List <strong>[legislation-list]</strong></li><li>Legislation Details <strong>[legislation-details Id='bill-id']</strong></li><li><strong> Filters Shortcode:</strong> </li><li>Last Action Type <strong>[legislation-lastaction]</strong></li><li>Tracking Levels <strong>[legislation-tracking]</strong></li><li>Staff Members <strong>[legislation-staffmember]</strong></li><li>Bill Tags <strong>[legislation-tags]</strong></li><li>Search By Bill Number <strong>[legislation-search-billnumber]</strong></li><li>Total bills count <strong>[bill-count]</strong></li></ul></div>";
+	echo "<ul class='list'><li><strong>Legislation List</strong> <code>[legislation-list]</code></li><li><strong>Legislation Details</strong> <code>[legislation-details Id='bill-id']</code></li><li><hr><h4> Filters Shortcode:</h4> </li><li><strong>Last Action Type</strong> <code>[legislation-lastaction]</code></li><li><strong>Tracking Levels</strong> <code>[legislation-tracking]</code></li><li><strong>Staff Members</strong> <code>[legislation-staffmember]</code></li><li><strong>Bill Tags</strong> <code>[legislation-tags]</code></li><li><strong>Search By Bill Number</strong> <code>[legislation-search-billnumber]</code></li><li><strong>Total bills count</strong> <code>[bill-count]</code></li></ul></div>";
 
-  echo "<h4 class='m-tlr-20 bg-grey bordered'>Courses Shortcodes </h4>";
+  echo "<h3 class='mb-0 bg-grey bordered'>Courses Shortcodes </h3>";
   echo "<div class='engagifii-setting'>";
-  echo "<ul class='list'><li>Course List <strong>[courses-list]</strong></li><li>Course Details <strong>[course-details Id='course-id']</strong></li></ul></div>";
+  echo "<ul class='list'><li><strong>Course List</strong> <code>[courses-list]</code></li><li><strong>Course Details</strong> <code>[course-details Id='course-id']</code></li></ul></div>";
 
-   echo "<h4 class='m-tlr-20 bg-grey bordered'>Class Shortcodes </h4>";
+   echo "<h3 class='mb-0 bg-grey bordered'>Class Shortcodes </h3>";
   echo "<div class='engagifii-setting'>";
-  echo "<ul class='list'><li>Class List <strong>[classes-list]</strong></li><li>Class Details <strong>[class-details Id='class-id']</strong></li><li>Class Calendar <strong>[class-calendar]</strong></li><li>Class List & Calendar <strong>[classes-list-calendar calendar=true]</strong></li>
-  <li>Class List & Calendar (With Class Name)<strong> [classes-list-calendar-class-name calendarclassname=true]</strong></li> 
-  <li>Class Calendar (With Class Name)<strong> [class-calendar-class-name]</strong></li> 
+  echo "<ul class='list'><li><strong>Class List</strong> <code>[classes-list]</code></li><li><strong>Class Details</strong> <code>[class-details Id='class-id']</code></li><li><strong>Class Calendar</strong> <code>[class-calendar]</code></li><li><strong>Class List & Calendar</strong> <code>[classes-list-calendar calendar=true]</code></li>
+  <li><strong>Class List & Calendar (With Class Name)</strong> <code> [classes-list-calendar-class-name calendarclassname=true]</code></li> 
+  <li> <strong>Class Calendar (With Class Name)</strong> <code> [class-calendar-class-name]</code></li> 
   </ul>";
 
 	echo "<hr>";

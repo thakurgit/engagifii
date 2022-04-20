@@ -883,8 +883,7 @@ function addDivTracking(){
 
 
 <div class="container-fluid engagifii-box engagifii-main-container position-relative px-5">
-  <div class="table-responsive-sm">
-    <table  id="ebtmaintable" class="table table-bordered table-striped  nowrap main-list-here legislation" style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered table-striped  nowrap main-list-here legislation dt-responsive1 nowrap" style="width: 100% !important;">
       <thead> 
              <tr>
                 <?php
@@ -939,7 +938,6 @@ foreach ($collection->columnList as $key => $row)
     <div id="eng-overlay">
       <span class="spinner"></span>
   </div>
-</div>
 </div>
 <style>
 
