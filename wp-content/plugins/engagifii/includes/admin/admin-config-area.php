@@ -5,8 +5,7 @@
 * Author: Engagifii
 */
 
-class ebtAdminConfigSettings 
-{
+class ebtAdminConfigSettings {
 	
 	protected $dbObj;
 
@@ -138,7 +137,7 @@ function engagifii_apply_css_ebt_render($html_class){
 
     $_inputHtml = '<div class="m-tlr-20 bg-grey bordered '.$html_class.'"><input type="checkbox" id="engagii_custom_css" name="ebt_api_settings[engagifii_apply_css_ebt]" value="1" '.$checkedHtml.' >';
     $_inputHtml.= '<span> <strong>Enable Customize CSS</strong></span></div>';
-    echo $_inputHtml;
+    //echo $_inputHtml;
 }
 
 
@@ -185,6 +184,7 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>">Customize CSS</a>
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
+                <a href="?page=engagifii-module-api&tab=customizer" class="nav-tab <?php if($tab==='customizer'):?>nav-tab-active<?php endif; ?>">Customizer</a>
     		</nav>
 
     		<div class="tab-content">
@@ -195,6 +195,10 @@ function ebt_tenant_code_render(  ) {
         		break;
       			case 'shortcode':
         			$this->ebt_api_shortocde_description();
+        		break;
+				case 'customizer':
+        			$this->engagifii_api_settings('hide');
+        			$this->engagifii_apply_css_ebt_render('show');
         		break;
       			default:
       				$this->engagifii_api_settings('hide');
@@ -232,7 +236,7 @@ function ebt_tenant_code_render(  ) {
 	{
 		?>
 			<div class="<?php echo $html_class; ?>">
-			<h3 class="m-tlr-20 bg-grey bordered d-flex justify-content-between accordion-btn">Training & Accreditation API Settings <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+			<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Training & Accreditation API Settings <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
   				<div class="engagifii-setting accordion-content" style="display:none;">
   					<div class="form-group">
       					<label>API URL</label>
@@ -243,8 +247,8 @@ function ebt_tenant_code_render(  ) {
   						<?php $this->ebt_tenant_code_render(); ?>
   					</div>
   				</div>
-  				<h3 class="m-tlr-20 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation API Settings</h3>
-  				<div class="engagifii-setting accordion-content">
+  				<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+  				<div class="engagifii-setting accordion-content" style="display:none;">
   					<div class="form-group">
       					<label>API URL</label>
   						<?php $this->lbt_api_url_render(); ?>
@@ -255,8 +259,8 @@ function ebt_tenant_code_render(  ) {
   					</div>
   				</div>
 
-				  <h3 class="m-tlr-20 bg-grey bordered">Events API Settings</h3>
-  				<div class="engagifii-setting">
+				  <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+  				<div class="engagifii-setting accordion-content" style="display:none;">
   					<div class="form-group">
       					<label>API URL</label>
   						<?php $this->evt_api_url_render(); ?>

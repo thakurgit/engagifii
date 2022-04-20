@@ -20,7 +20,8 @@
            	}
         
             $checkedHtml  = ' style="display:none"';
-            if($engagifii_apply_css_ebt==1 && $tab === null)
+            //if($engagifii_apply_css_ebt==1 && $tab === null)
+			if( $tab === null || $tab === 'customizer')
             {
             	$checkedHtml  = ' style="display:block"';
             }
@@ -31,7 +32,7 @@
 
         ?>
     <div class="wrap tab-content ff">
-    <div class="engagifi_style_group engagifii-setting" <?php echo $checkedHtml ?>>
+    <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
             <tr>
                 <?php
@@ -360,4 +361,9 @@
 
     }
     
+	
+	jQuery('.accordion-btn').click(function(){
+		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
+	
+});
 </script>

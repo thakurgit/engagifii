@@ -1,5 +1,5 @@
-<div class="<?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
-<h2 class="m-tlr-20 bg-grey bordered">Classes Columns Visibility</h2>
+<div class="wrap class-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Columns Visibility<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
     $response = $obj->getClassColumnData();
@@ -14,7 +14,7 @@
 
     if(is_array ($response)){
     
-    	echo '<div class="engagifii-setting">';
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
     	echo '<ul class="ebt-grid-column-list">';
     	$counter=0;
 		foreach ($response as $key => $row) {

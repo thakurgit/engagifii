@@ -1,5 +1,5 @@
-<div class="legislation-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>">
-<h2 class="m-tlr-20 bg-grey bordered">Legislation Columns Visibility</h2>
+<div class="wrap legislation-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>">
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation Columns Visibility<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 
 <?php
 	$obj =  new adminDataColumn();
@@ -14,7 +14,7 @@
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
    
 	if(is_array ($response->columnList)){
-		echo '<div class="engagifii-setting">';
+		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
 		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
 		$counter=0;
