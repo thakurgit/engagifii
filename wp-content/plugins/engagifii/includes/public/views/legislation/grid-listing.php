@@ -113,16 +113,7 @@ $assigntoGroups = $obj->legislationGroupsFilter();
 $assignToTags = $obj->legislationAssignToTagFilter();
 
 ?>
- <style type="text/css">
 
-     #ebtmaintable td span:first-child{
-        background-color: #ffdb99;
-        color: #333;
-        padding: 0px;
-     } 
-
-         
-</style>
 
 <div class="container-fluid pb-4">
 <p class="lead text-center"><span class="bill-count"></span></p>
@@ -887,7 +878,7 @@ $dt_respnsive = '';
 $dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
-    <table  id="ebtmaintable" class="table table-bordered table-striped  nowrap main-list-here legislation <?php if($dt_respnsive==1){ echo 'dt-responsive nowrap'; } ?> " style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered table-striped   main-list-here legislation <?php if($dt_respnsive==1){ echo 'dt-responsive nowrap'; } ?> " style="width: 100% !important;">
       <thead> 
              <tr>
                 <?php
@@ -1181,7 +1172,10 @@ var table = $('#ebtmaintable').DataTable( {
       "bInfo":false,
       "processing": true,
       "searching": true,
-      "columnDefs": [ { "targets": [ 'BillType','fileId','trackingLevel','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false}
+      "columnDefs": [ 
+	  				{ "targets": [ 'BillType','fileId','trackingLevel','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
+            { responsivePriority: 1, targets: 1 },
+			{ responsivePriority: 2, targets: 2 },
       ],
       "order": [[sort_key, 'desc']],
       "language": {
@@ -1237,8 +1231,8 @@ var table = $('#ebtmaintable').DataTable( {
          "columns":<?php echo (json_encode($forDatatable)); ?>, 
          <?php if($dt_respnsive==''){ ?>
 		 "drawCallback": function( settings ) {
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
+            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
+            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
             $('.prv').addClass('disabled');
             $('.nxt').click(function () {
                $('.custom-scroll').animate({

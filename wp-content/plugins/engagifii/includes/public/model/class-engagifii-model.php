@@ -737,34 +737,34 @@ class abstractModelEngagifii extends Engagifii_API
             {
                 if($options['lbt_title_display_setting'] == 'alternate'){
                     if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' ><u>' . $row->alternateTitle . '</u></a>';
+                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->alternateTitle . '</a>';
                     }
                     else
                     {
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' ><u>' . $row->title . '</u></a>';
+                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
                     }
                     
 
                 }elseif($options['lbt_title_display_setting'] == 'alternate-top'){
                     if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' ><u>' . $row->alternateTitle . '</u><br/>'.$row->title.'</a>';
+                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->alternateTitle . '<br/>'.$row->title.'</a>';
                     }
                     else
                     {
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' ><u>' . $row->title . '</u></a>';
+                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->title . '</a>';
                     }
 
                 }elseif($options['lbt_title_display_setting'] == 'title-top'){
-                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' ><u>' . $row->title . '</u><br/>'.$row->alternateTitle.'</a>';
+                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->title . '<br/>'.$row->alternateTitle.'</a>';
 
                 }
                 elseif($options['lbt_title_display_setting'] == 'title'){
-                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' ><u>' . $row->title . '</u></a>';
+                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
                 }
             }
             else
             {
-                $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' ><u>' . $row->title . '</u></a>';
+                $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
             }
             
             $pdf = '<a href=' . $lbt_api_url . '/file/' . $row->fileId . '> <img class="full-text-img" alt="pdf-icon" src="' . ENGAGIFII_ASSETS_URL . '/images/pdf.png' . '"> </a>';

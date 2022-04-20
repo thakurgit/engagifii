@@ -61,9 +61,14 @@
     <?php
       }
 ?>
+<?php 
+//print_r( get_option( 'ebt_api_settings' ));
+$dt_respnsive = '';
+$dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
+?>
 <div class="containerEngagii ff" id="list_div">
-  <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative px-5">
-    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here nowrap classes-page" style="width: 100% !important;">
+  <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
+    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here classes-page <?php if($dt_respnsive==1){ echo 'dt-responsive nowrap'; } ?>" style="width: 100% !important;">
       <thead> 
         <tr>        
           <?php
@@ -228,10 +233,12 @@ $filter_content = removeWhitespace($filter_content);
         "searching": true,
         "ordering":true,
         "columnDefs": [ 
-          { "targets": ['objectType','classDuration', 'classTag', 'classInstructorsCount', 'register'],
+          { "targets": ['objectType','classDuration', 'startdate', 'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
           },
-          { width: 200, targets: 3 }
+          //{ width: 200, targets: 3 },
+		  { "width": "200px", "targets": 3 },
+		   { responsivePriority: 1, targets: 0 }
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -257,9 +264,10 @@ $filter_content = removeWhitespace($filter_content);
              //$(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
+		 <?php if($dt_respnsive==''){ ?>
          "drawCallback": function( settings ) {
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
+            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
+            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
             $('.prv').addClass('disabled');
               var divWidth = parseInt($('.custom-scroll').width());
               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
@@ -309,6 +317,7 @@ $filter_content = removeWhitespace($filter_content);
                }
             });  
          },
+		 <?php } ?>
 		  "initComplete": function(settings, json) {
         
 		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
