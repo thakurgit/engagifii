@@ -161,7 +161,7 @@ wp_enqueue_script(
 			wp_enqueue_style( 'sleect2css-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/select2.min.css', array(), $this->version, 'all' );
 			
 			
-			wp_dequeue_style('font-awesome-5-all');
+			wp_deregister_style('font-awesome-5-all');
 			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css',array(),wp_get_theme()->get('Version')  );
 			wp_register_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css' );
 			wp_enqueue_style('datepicker-css');
