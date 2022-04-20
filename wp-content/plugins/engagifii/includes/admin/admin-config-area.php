@@ -236,9 +236,10 @@ function ebt_tenant_code_render(  ) {
 	{
 		?>
 			<div class="<?php echo $html_class; ?>">
-			<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Training & Accreditation API Settings <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
-  				<div class="engagifii-setting accordion-content" style="display:none;">
-  					<div class="form-group">
+			<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">API URLs <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+            <div class="engagifii-setting api-urls accordion-content" style="display:none;">
+            	<h4>Training & Accreditation API Settings</h4>
+                <div class="form-group">
       					<label>API URL</label>
   						<?php $this->ebt_api_url_render(); ?>
   					</div>
@@ -246,10 +247,9 @@ function ebt_tenant_code_render(  ) {
   						<label>Engagifii URL</label>
   						<?php $this->ebt_tenant_code_render(); ?>
   					</div>
-  				</div>
-  				<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
-  				<div class="engagifii-setting accordion-content" style="display:none;">
-  					<div class="form-group">
+                    <hr>
+                    <h4>Legislation API Settings</h4>
+                    <div class="form-group">
       					<label>API URL</label>
   						<?php $this->lbt_api_url_render(); ?>
   					</div>
@@ -257,11 +257,9 @@ function ebt_tenant_code_render(  ) {
   						<label>Engagifii URL</label>
   						<?php $this->lbt_tenant_code_render(); ?>
   					</div>
-  				</div>
-
-				  <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
-  				<div class="engagifii-setting accordion-content" style="display:none;">
-  					<div class="form-group">
+                    <hr>
+                    <h4>Events API Settings</h4>
+                    <div class="form-group">
       					<label>API URL</label>
   						<?php $this->evt_api_url_render(); ?>
   					</div>
@@ -269,7 +267,8 @@ function ebt_tenant_code_render(  ) {
   						<label>Engagifii URL</label>
   						<?php $this->evt_tenant_code_render(); ?>
   					</div>
-  				</div>
+            </div>
+            
 
   			</div>
 		<?php
