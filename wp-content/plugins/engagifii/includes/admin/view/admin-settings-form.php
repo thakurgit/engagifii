@@ -6,9 +6,7 @@
         do_settings_sections( 'engagifiiPlugin' );
         
         //@do_settings_sections( 'engagifiiPluginTwo');
-
-        do_action('engagifiiGetColumnList');
-        ?>
+		?>
     <?php
         $options = get_option( 'ebt_api_settings' );
        // print_r($options);
@@ -20,7 +18,7 @@
            	}
         
             $checkedHtml  = ' style="display:none"';
-            //if($engagifii_apply_css_ebt==1 && $tab === null)
+           // if($engagifii_apply_css_ebt==1 && $tab === null)
 			if( $tab === null || $tab === 'customizer')
             {
             	$checkedHtml  = ' style="display:block"';
@@ -323,6 +321,11 @@
        
     </div>
     </div>
+        
+        
+<?php
+       do_action('engagifiiGetColumnList');
+        ?>
     <div class="ebt-submit-btn">
         <?php 
             if($tab!= 'shortcode')

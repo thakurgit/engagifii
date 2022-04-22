@@ -12,9 +12,9 @@
     $title_display_setting = $options['lbt_title_display_setting'] ?? 'title';
     $lbt_visib_groups_list  = $options['lbt_visib_groups_list'] ?? array();
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-   
-	if(is_array ($response->columnList)){
+
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
+	if(is_array ($response->columnList)){
 		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
 		$counter=0;

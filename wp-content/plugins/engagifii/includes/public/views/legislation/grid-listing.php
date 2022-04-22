@@ -912,7 +912,7 @@ foreach ($collection->columnList as $key => $row)
                   <th class="<?php echo strtolower($row->name); ?> <?php echo $row->key; ?>" scope="col">
                     <?php if ($row->key == 'trackingLevel')
         {
-            echo "<p>Tracking</p>\n<p>Level</p>";
+            echo "Tracking\nLevel";
         }
         else
         {
@@ -1173,9 +1173,9 @@ var table = $('#ebtmaintable').DataTable( {
       "processing": true,
       "searching": true,
       "columnDefs": [ 
-	  				{ "targets": [ 'BillType','fileId','trackingLevel','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
-            { responsivePriority: 1, targets: 1 },
-			{ responsivePriority: 2, targets: 2 },
+	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
+            { responsivePriority: 1, targets: 'billNumber' },
+			{ responsivePriority: 2, targets: 'title' },
       ],
       "order": [[sort_key, 'desc']],
       "language": {

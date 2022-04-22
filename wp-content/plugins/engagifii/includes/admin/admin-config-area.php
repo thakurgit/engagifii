@@ -19,19 +19,19 @@ class ebtAdminConfigSettings {
 	private function init_hooks() {		
 	add_action('admin_menu',array($this,'ebt_api_add_admin_menu'));			
 	add_action('admin_init',array($this,'ebt_api_settings_init'));
-	add_action('engagifiiGetColumnList', array($this,'show_datatable_column'));		
+		add_action('engagifiiGetColumnList', array($this,'show_datatable_column'));		
  	}
 
  	function show_datatable_column()
  	{
+		
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		include_once( __DIR__.'/view/endorsement/admin-column-list.php' );
-		include_once( __DIR__.'/view/legislation/admin-column-list.php' );
     include_once( __DIR__.'/view/courses/admin-column-list.php' );
     include_once( __DIR__.'/view/classes/admin-column-list.php' );
 
 	include_once( __DIR__.'/view/events/admin-column-list.php' );
-		
+		include_once( __DIR__.'/view/legislation/admin-column-list.php' );
  	}
 
 	function ebt_api_add_admin_menu() {
@@ -316,8 +316,10 @@ function ebt_tenant_code_render(  ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
     		return;
   		}
-
-		include_once( __DIR__.'/view/admin-settings-form.php' );	
+		include_once( __DIR__.'/view/admin-settings-form.php' );
+		//if($tab === 'customizer'){
+		//include_once( __DIR__.'/view/xxx.php' );
+		//}
 	 
 	}
 }
