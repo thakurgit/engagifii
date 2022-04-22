@@ -367,7 +367,6 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 #ebtmaintable span.badge{
 	background: <?php echo $ebt_sponsors_color;?> !important;
 	font-family: <?php echo $font_family;?> !important;
-    font-size: <?php echo $ebt_detail_text_font?>px !important;
 }
 
 

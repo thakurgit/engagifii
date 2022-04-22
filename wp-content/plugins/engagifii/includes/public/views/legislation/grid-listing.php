@@ -873,12 +873,20 @@ function addDivTracking(){
   </script>
 
 <?php 
-//print_r( get_option( 'ebt_api_settings' ));
+$dt_class=' ';
 $dt_respnsive = '';
 $dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
+if($dt_respnsive==1){
+$dt_class = 'dt-responsive nowrap ';	
+}
+$dt_darktheme = '';
+$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
+if($dt_darktheme==1){
+$dt_class .= 'table-dark ';	
+}
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
-    <table  id="ebtmaintable" class="table table-bordered table-striped   main-list-here legislation <?php if($dt_respnsive==1){ echo 'dt-responsive nowrap'; } ?> " style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
       <thead> 
              <tr>
                 <?php
@@ -1176,6 +1184,13 @@ var table = $('#ebtmaintable').DataTable( {
 	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
             { responsivePriority: 1, targets: 'billNumber' },
 			{ responsivePriority: 2, targets: 'title' },
+			{ responsivePriority: 10001, targets: 'lastActionOn' },
+			{ responsivePriority: 10002, targets: 'IntroducedDate' },
+			{ responsivePriority: 10003, targets: 'houseCommittees' },
+			{ responsivePriority: 10004, targets: 'senateCommittees' },
+			//{ 'width': '75', 'targets': 'billNumber' },
+			//{ 'width': '199', 'targets': 'title' },
+			//{ 'width': '45', 'targets': 'BillType' }
       ],
       "order": [[sort_key, 'desc']],
       "language": {

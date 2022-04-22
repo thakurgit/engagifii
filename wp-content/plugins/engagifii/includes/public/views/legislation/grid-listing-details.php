@@ -486,12 +486,12 @@ function sort_associative_array($a, $b) {
                           </div>
                             </div>
                            
-                            <div class="collapse versionsPanel">
+                            <div class="collapse versionsPanel" >
                                 <div class="table-responsive-sm">
                                     <table class="table table-bordered no-table-gapping-detail light-background" id="versiontable">
                                         <thead>
                                             <tr>
-                                                <th>Version</th>
+                                                <th class="versionTh">Version</th>
                                                 <th>Date</th>
                                                 <th class="text-center">Source</th>
                                                 <th class="text-center">Download Text</th>
@@ -688,7 +688,10 @@ function sort_associative_array($a, $b) {
                     searchPlaceholder: "Search here"
                   
                 },
-                "ordering":true,});
+                "columnDefs": [ 
+	  				{ "targets": "versionTh", "orderable": false}
+      ],
+	  });
 
               $('#historytable').DataTable({
                 "pageLength": 10,

@@ -317,6 +317,24 @@
           <span>Enable table responsive</span>
           <span><input type="checkbox" name="ebt_api_settings[dt_responsive]" id="dt-responsive" value="1" <?php echo $chkd; ?>></span>
         </div>
+         <div>
+        <?php
+		
+		 if(isset($options['dt_darktheme'])){
+    $dt_darktheme = $options['dt_darktheme'];
+   }else{
+   	$dt_darktheme = 0;
+   }
+
+    $dark = '';
+    if($dt_darktheme==1)
+    {
+    	 $dark  = ' checked';
+    }
+	 ?>
+          <span>Enable Dark theme</span>
+          <span><input type="checkbox" name="ebt_api_settings[dt_darktheme]" id="dt_darktheme" value="1" <?php echo $dark; ?>></span>
+        </div>
         
        
     </div>
