@@ -58,9 +58,9 @@ li.calendarsearch::before {
   content: "\2022";  
   color: #1a73e8; 
   font-weight: bold; 
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 1em; /* Also needed for space (tweak if needed) */
-  margin-left: -1em; /* Also needed for space (tweak if needed) */
+  display: inline-block; 
+  width: 1em; 
+  margin-left: -1em; 
   font-size: 1.5em;
 }
     span.dayofmonth {
