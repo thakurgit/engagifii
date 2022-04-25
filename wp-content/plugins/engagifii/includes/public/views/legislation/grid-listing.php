@@ -916,14 +916,14 @@ foreach ($collection->columnList as $key => $row)
         }
 
         $forDatatable[$i]['data'] = $row->key;
+		$class=strtolower($row->name);
+		
 ?>                       
-                  <th class="<?php echo strtolower($row->name); ?> <?php echo $row->key; ?>" scope="col">
+                  <th class="<?php echo $class; ?> <?php echo $row->key; ?>" scope="col">
                     <?php if ($row->key == 'trackingLevel')
         {
             echo "Tracking\nLevel";
-        }
-        else
-        {
+		} else {
             echo $row->name;
         } ?>
                   </th>
@@ -1180,6 +1180,7 @@ var table = $('#ebtmaintable').DataTable( {
       "bInfo":false,
       "processing": true,
       "searching": true,
+	  "scrollX": false,
       "columnDefs": [ 
 	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
             { responsivePriority: 1, targets: 'billNumber' },
@@ -1188,11 +1189,13 @@ var table = $('#ebtmaintable').DataTable( {
 			{ responsivePriority: 10002, targets: 'IntroducedDate' },
 			{ responsivePriority: 10003, targets: 'houseCommittees' },
 			{ responsivePriority: 10004, targets: 'senateCommittees' },
+			{ className: "text-center", "targets": ["BillType","status","fileId","state"] },
+			{ className: "title-col", "targets": "title" }
 			//{ 'width': '75', 'targets': 'billNumber' },
 			//{ 'width': '199', 'targets': 'title' },
 			//{ 'width': '45', 'targets': 'BillType' }
       ],
-      "order": [[sort_key, 'desc']],
+      "order": [[$('th.title').index(), 'desc']],
       "language": {
          processing: '<span>&nbsp;</span>',
          "emptyTable": "No bill found!",

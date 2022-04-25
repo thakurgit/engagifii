@@ -1,6 +1,8 @@
 /* Filter Section*/ 
 #ebtmaintable.dt-responsive {
-display: table;	
+}
+table.dataTable td.title-col {
+	white-space: normal;
 }
 th.trackingLevel {
 	min-width:150px
@@ -20,8 +22,8 @@ th.title  {
 th.lastActionOn   {
 	min-width:170px
 }
-table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control, table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control {
-	padding-left: 23px;
+th.sponsors   {
+	max-width:150px
 }
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
@@ -66,7 +68,6 @@ table.light-background tr td.dataTables_empty {
 .engagifii-box p {
 	margin: 0;
 }
-.engagifii-box a,
 .go-back,
 .tag-redirect {
 	text-decoration: none !important;
@@ -146,10 +147,11 @@ div.dataTables_wrapper div.dataTables_length select {
 	overflow: auto ;
 }
 #ebtmaintable span.badge {
-	width: 25px;
+	max-width: 25px;
 	height: 25px;
+	flex:0 0 25px;
 	cursor: pointer;
-	font-size: 12px;
+	font-size: 11px;
 }
 .datepicker td,
 .datepicker th {
@@ -170,7 +172,7 @@ div.dataTables_filter input,
 	background-color: #fff;
 	background-position: center right;
 }
-.sponsors-middle {
+/*.sponsors-middle {
 	display: block;
 	width: 100%;
 	position: relative;
@@ -180,7 +182,7 @@ div.dataTables_filter input,
 	justify-content: flex-start;
 	gap: 5px;
 	align-items: center;
-}
+}*/
 .round-tag {
 	border-radius: 20px;
 	display: inline-block;
@@ -530,9 +532,6 @@ table.dataTable thead .sorting_desc_disabled:before {
 	width: 45px !important;
 	padding: 5px;
 	display: inline-block;
-}
-.sorting_1 {
-	white-space: normal !important;
 }
 .panel-title {
 	cursor: pointer;
@@ -979,12 +978,6 @@ img {
 .mr-10 {
 	margin-right: 10px!important;
 }
-.mr-5 {
-	margin-right: 5px!important;
-}
-.mt-3 {
-	margin-top: 3px !important;
-}
 .mt-10 {
 	margin-top: 10px!important;
 }
@@ -996,9 +989,6 @@ img {
 }
 .mb-10 {
 	margin-bottom: 10px!important;
-}
-.mr-5 {
-	margin-right: 5px!important;
 }
 .progress {
 	height: 20px
@@ -1080,9 +1070,6 @@ img {
 }
 .text-size-extra-large {
 	font-size: 16px;
-}
-.text-uppercase {
-	text-transform: uppercase;
 }
 .inline-block {
 	display: inline-block;
@@ -1208,18 +1195,10 @@ figure {
 	padding: 0 15px;
 	margin: 0 0 20px;
 }
-.text-nowrap {
-	white-space: nowrap;
-}
 .user-image-square {
 	height: 44px;
-	width: 44px;
-	display: inline-block;
-	overflow: hidden;
-	border-radius: 50%;
-	text-align: center;
-	margin-right: 5px;
-	vertical-align: middle;
+	flex: 0 0 44px;
+	max-width: 44px;
 }
 .bill-detail-summary-tab .bill-detail-sponsors .summary-content-para {
 	padding: 10px 10px 8px;
@@ -1245,9 +1224,6 @@ a.btn-primary {
 }
 .no-border {
 	border: none!important;
-}
-th.tags {
-	width: 100px;
 }
 .detail-header-part {
 	display: flex;
@@ -1287,9 +1263,7 @@ div.course-tag {
 	text-align: left;
 	white-space: normal !important;
 }*/
-table.dataTable.nowrap td {
-	white-space: normal;
-}
+
 .instructor-popover {
 	text-align: center;
 	width: fit-content;
@@ -1465,12 +1439,12 @@ div.dataTables_wrapper div.dataTables_filter {
 	margin-bottom: 0;
 	font-weight: 400 !important;
 }
-.sponsors-middle {
+/*.sponsors-middle {
 	width: 200px;
 	padding-right: 37px;
 	white-space: normal;
 	text-align: left;
-}
+}*/
 .bill-detail-summary-tab .bill-detail-sponsors {
 	flex: 0 0 240px;
 	max-width: 240px;

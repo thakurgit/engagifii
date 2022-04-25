@@ -780,16 +780,16 @@ class abstractModelEngagifii extends Engagifii_API
 
                     $personLists = $this->_popOverHtml($row->id, $row->sponsors);
                     $countSponsors = count($row->sponsors) - 1;
-                    $sponsors_string = '<div class="flex-1"> '.$row->sponsors[0]->name . '</div>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  sponsors-click_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $countSponsors . ' </span>' . $personLists;
+                    $sponsors_string = '<span class="col-auto px-0"> '.$row->sponsors[0]->name . '</span>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle  sponsors-click_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $countSponsors . ' </span>' . $personLists;
 
-                    $nestedData["sponsors"] = '<div class="sponsors-middle"><div class="user-image-square flex-1"><img src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </div> ' . $sponsors_string . '</div>';
+                    $nestedData["sponsors"] = '<div class="sponsors-middle position-relative d-inline-flex align-items-center pr-4 mw-100"><span class="user-image-square o-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </span> ' . $sponsors_string . '</div>';
                 } else {
                      if ($row->sponsors[0]->profilePic) {
                         $pichere = $row->sponsors[0]->profilePic;
                     } else {
                         $pichere = ENGAGIFII_ASSETS_URL . '/images/staff-list-grey.png';
                     }
-                    $nestedData["sponsors"] = '<div class="sponsors-middle"><div class="user-image-square"><img src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'"> </div> ' . '<div class="flex-1" style="width:100px;"> '.$row->sponsors[0]->name . '</div>' . '</div>';
+                    $nestedData["sponsors"] = '<div class="sponsors-middle position-relative d-inline-flex align-items-center"><span class="user-image-square o-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'"> </span> ' . '<span class="col-auto px-0"> '.$row->sponsors[0]->name . '</span>' . '</div>';
 
                 }
             } else {
@@ -807,11 +807,11 @@ class abstractModelEngagifii extends Engagifii_API
             $nestedData["lastActionTaken"] = $row->lastActionTaken;
             
 
-            $billHtml1 = '<span style="background-color:'.$row->trackingLevelColorCode.'; width: 13px;height: 13px;border-radius: 50%;display: inline-block;margin-left: 8px; vertical-align: middle;"></span>';
+            $billHtml1 = '<span class="rounded-circle d-inline-block mr-1" style="background-color:'.$row->trackingLevelColorCode.'; width: 13px;height: 13px;"></span>';
 
-            $nestedData["trackingLevel"] = $billHtml1 . '&nbsp;'  .$row->trackingLevel;
+            $nestedData["trackingLevel"] = $billHtml1 .$row->trackingLevel;
 
-            $nestedData["lastActionOn"] = '<p class="text-left" style="white-space:normal;">'.$lastActionOnnew_Date.'<br/>'.$row->lastActionTaken.'</p>';
+            $nestedData["lastActionOn"] = $lastActionOnnew_Date.'<br/>'.$row->lastActionTaken;
 
             if (count($row->houseCommittees) > 0) {
                     if(count($row->houseCommittees) > 1)
@@ -881,7 +881,7 @@ class abstractModelEngagifii extends Engagifii_API
                     $tagCount              = count($row->tags) - 1;
                   
                     $tagList               = $this->_popoverTagsHtml($row->id, $row->tags);
-                    $nestedData['tags'] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;"> <a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span></div>'.$tagList;
+                    $nestedData['tags'] = '<div class="d-inline-flex align-items-center"><span class="col-auto px-0"> <a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span class="ml-2 badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span></div>'.$tagList;
                 }else{
                     
                     $nestedData['tags']       = '<a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
