@@ -332,7 +332,7 @@
     	 $dark  = ' checked';
     }
 	 ?>
-          <span>Enable Dark theme</span>
+          <span>Enable Dark theme datatable</span>
           <span><input type="checkbox" name="ebt_api_settings[dt_darktheme]" id="dt_darktheme" value="1" <?php echo $dark; ?>></span>
         </div>
         
