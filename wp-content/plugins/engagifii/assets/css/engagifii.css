@@ -25,6 +25,12 @@ th.lastActionOn   {
 th.sponsors   {
 	max-width:150px
 }
+th.objectType    {
+	min-width:150px
+}
+table.dataTable th {
+white-space:nowrap;	
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;

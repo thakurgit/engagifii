@@ -62,13 +62,21 @@
       }
 ?>
 <?php 
-//print_r( get_option( 'ebt_api_settings' ));
+$dt_class=' ';
 $dt_respnsive = '';
 $dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
+if($dt_respnsive==1){
+$dt_class = 'dt-responsive nowrap ';	
+}
+$dt_darktheme = '';
+$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
+if($dt_darktheme==1){
+$dt_class .= 'table-dark ';	
+}
 ?>
 <div class="containerEngagii ff" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here classes-page <?php if($dt_respnsive==1){ echo 'dt-responsive nowrap'; } ?>" style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here classes-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
       <thead> 
         <tr>        
           <?php
@@ -245,8 +253,8 @@ $filter_content = removeWhitespace($filter_content);
           },
           //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
-		  { "width": "200px", "targets": 3 },
-		   { responsivePriority: 1, targets: 0 }
+		  { className: "text-center", "targets": ["startdate","instructors","credithours"] },
+		  { responsivePriority: 1, targets: 'sectionname' },
         ],
         "language": {
           processing: '<span>&nbsp;</span>',

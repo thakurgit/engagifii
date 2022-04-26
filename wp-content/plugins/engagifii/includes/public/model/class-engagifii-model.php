@@ -197,7 +197,7 @@ class abstractModelEngagifii extends Engagifii_API
             {
                 $class_schedule = '<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate)).'</small>';
             }
-            $nestedData['sectionname'] = '<div class="d-flex"><div class="col-2 col-sm-2 m-auto p-0"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0"></div><div class="Col-10 col-sm-10 m-auto px-2"><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).'</small></div></div>';
+            $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).'</small></div></div>';
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
 
