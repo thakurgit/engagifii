@@ -201,7 +201,10 @@ $filter_content = removeWhitespace($filter_content);
   var creditFilter ='';
 
   var fv = 0;
-
+  
+  
+ 
+ 
    $('#list').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
@@ -211,6 +214,7 @@ $filter_content = removeWhitespace($filter_content);
             $('#calendar_filter').hide();
             $('#calendarsearch_div').hide();
             $('.calendarsearch-form').hide();
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
@@ -223,6 +227,7 @@ $filter_content = removeWhitespace($filter_content);
 			$('.filter-border').hide();
         $('.filter-area').toggleClass('d-none');
         $('.calendarsearch-form').show();
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
 
   var table = $('#ebtmaintable').DataTable( {
@@ -540,6 +545,10 @@ $(document).ready(function(){
    ?>
 	if($('html').height()<$(window).height()){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
+	}
+	
+	if(localStorage.getItem("view_mode")=='list'){
+		$('#list').trigger("click");
 	}
 });
 
