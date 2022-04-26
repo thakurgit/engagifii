@@ -210,6 +210,7 @@ $filter_content = removeWhitespace($filter_content);
             $('#calendar_div').hide();
             $('#calendar_filter').hide();
             $('#calendarsearch_div').hide();
+            $('.calendarsearch-form').hide();
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
@@ -221,6 +222,7 @@ $filter_content = removeWhitespace($filter_content);
             $('#calendarsearch_div').hide();
 			$('.filter-border').hide();
         $('.filter-area').toggleClass('d-none');
+        $('.calendarsearch-form').show();
         })
 
   var table = $('#ebtmaintable').DataTable( {

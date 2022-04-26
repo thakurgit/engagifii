@@ -169,7 +169,7 @@ h5#exampleModalLabel {
 	<div class="container-fluid pb-4">
     <div class="row">
     <div class="col-md-6 col-12">
-    <form action="calendar-search.php" method="POST">
+    <form action="calendar-search.php" class="calendarsearch-form" method="POST">
 
 <div class="apply-search form-inline">
 	<div class="form-group mr-3">
