@@ -129,7 +129,7 @@ ob_start();
         </span>
       </div>
       <div class="col-6 text-right">
-        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i> </span>
+        <span class="clear-all" id="clear-all"> <i class="fal fa-sync d-none"></i>Clear All </span>
       </div>
       </div>
     </div>
@@ -441,11 +441,25 @@ $('.clear-all').click(function(){
     $(document).on('click', function (e) {
       var container = $(".filter-border");
       // If the target of the click isn't the container
-      if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-        container.hide();
-        $('.filter-area').addClass('d-none'); 
+     // if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
+      if(!container.is(e.target)){
+      //  container.hide();
+       // $('.filter-area').addClass('d-none'); 
       }
       });
+	  
+	  
+	  $(document).on('click', function (e) {
+ $('.filter-area').addClass('d-none');
+});
+$(document).on('click', '.filter-area', function (e) {
+  e.stopPropagation();
+});
+	  
+
+	  
+	  
+	 
 
 
     
