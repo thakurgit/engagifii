@@ -8,6 +8,7 @@
             $('#list_div').hide();
             $('#calendar_filter').hide();
             $("#calendarsearch_div").show();
+            $('#calendar').removeClass('btn-primary').addClass('btn-light');
             var value = search.toLowerCase();
             $(".calendarlist tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
