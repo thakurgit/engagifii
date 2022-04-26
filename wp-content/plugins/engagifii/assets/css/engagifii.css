@@ -16,7 +16,7 @@ th.BillType  {
 th.billNumber   {
 	min-width:100px
 }
-th.title  {
+th.title, th.title-col  {
 	min-width:230px
 }
 th.lastActionOn   {
@@ -94,10 +94,10 @@ table.light-background tr td.dataTables_empty {
 	font-size: 20px;
 	font-weight: 500;
 }
-table.dataTable thead tr th.sectionname,
+/*table.dataTable thead tr th.sectionname,
 table.dataTable thead tr th.name {
 	min-width: 200px !important
-}
+}*/
 .eng-top-serchgroup {
 	position: relative;
 }
@@ -332,7 +332,7 @@ a.next-link {
 .filter-area-cal {
 	position: absolute;
 	background: #fff;
-	width: 300px;
+	width: 450px;
 	z-index: 999;
 	right: 0;
 	top: 7px;
@@ -1556,11 +1556,11 @@ div.dataTables_filter label.has-data .btn.blank {
 .nav-tabs .nav-link {
 	padding: 0.5rem 1rem !important;
 }
-.classes-page tbody>tr>td:first-child {
+/*.classes-page tbody>tr>td:first-child {
 	width: 360px;
 	display: block;
 }
-/*#ebtmaintable thead th.sorting_desc::after,
+#ebtmaintable thead th.sorting_desc::after,
 #ebtmaintable thead th.sorting::after,
 #ebtmaintable thead th.sorting_asc::after,
 .engagifii-box table.table thead th.sorting::after,

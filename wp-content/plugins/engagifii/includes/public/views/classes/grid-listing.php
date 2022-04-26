@@ -239,6 +239,7 @@ $filter_content = removeWhitespace($filter_content);
             "orderable": false
           },
           //{ width: 200, targets: 3 },
+		  { className: "title-col", "targets": "classes" },
 		  { "width": "200px", "targets": 3 },
 		   { responsivePriority: 1, targets: 0 }
         ],
