@@ -1181,20 +1181,7 @@ var table = $('#ebtmaintable').DataTable( {
       "processing": true,
       "searching": true,
 	  "scrollX": false,
-      "columnDefs": [ 
-	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
-            { responsivePriority: 1, targets: 'billNumber' },
-			{ responsivePriority: 2, targets: 'title' },
-			{ responsivePriority: 10001, targets: 'lastActionOn' },
-			{ responsivePriority: 10002, targets: 'IntroducedDate' },
-			{ responsivePriority: 10003, targets: 'houseCommittees' },
-			{ responsivePriority: 10004, targets: 'senateCommittees' },
-			{ className: "text-center", "targets": ["BillType","status","fileId","state"] },
-			{ className: "title-col", "targets": "title" }
-			//{ 'width': '75', 'targets': 'billNumber' },
-			//{ 'width': '199', 'targets': 'title' },
-			//{ 'width': '45', 'targets': 'BillType' }
-      ],
+      
       "order": [[$('th.title').index(), 'desc']],
       "language": {
          processing: '<span>&nbsp;</span>',
@@ -1247,6 +1234,20 @@ var table = $('#ebtmaintable').DataTable( {
             }
          },        
          "columns":<?php echo (json_encode($forDatatable)); ?>, 
+		 "columnDefs": [ 
+	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
+            { responsivePriority: 1, targets: 'billNumber' },
+			{ responsivePriority: 2, targets: 'title' },
+			{ responsivePriority: 10001, targets: 'lastActionOn' },
+			{ responsivePriority: 10002, targets: 'IntroducedDate' },
+			{ responsivePriority: 10003, targets: 'houseCommittees' },
+			{ responsivePriority: 10004, targets: 'senateCommittees' },
+			{ className: "text-center", "targets": ["BillType","status","fileId","state"] },
+			{ className: "title-col", "targets": "title" }
+			//{ 'width': '75', 'targets': 'billNumber' },
+			//{ 'width': '199', 'targets': 'title' },
+			//{ 'width': '45', 'targets': 'BillType' }
+      ],
          <?php if($dt_respnsive==''){ ?>
 		 "drawCallback": function( settings ) {
             $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
