@@ -471,10 +471,10 @@ $(document).on('click', '.filter-area', function (e) {
 $(document).on('click', 'th.prev', function (e) {
   e.stopPropagation();
 });
-$(document).on('click', '.calendar-table thead', function (e) {
+$(document).on('click', 'th.next', function (e) {
   e.stopPropagation();
 });
-$(document).on('click', 'th.next', function (e) {
+$(document).on('click', '.daterangepicker ', function (e) {
   e.stopPropagation();
 });
 	  
