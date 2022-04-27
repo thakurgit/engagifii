@@ -538,9 +538,8 @@ table.dataTable thead .sorting_desc_disabled:before {
 	padding: 10px;
 }
 .img-icon-lg {
-	width: 45px !important;
-	padding: 5px;
-	display: inline-block;
+	max-width: 45px !important;
+	flex:0 0 45px;
 }
 .panel-title {
 	cursor: pointer;
@@ -554,7 +553,7 @@ table.dataTable thead .sorting_desc_disabled:before {
 button.dropdown-toggle:hover,
 button.dropdown-toggle:active,
 button.dropdown-toggle:focus {
-	color: #ff !important;
+	color: #fff !important;
 	background-color: #fff !important;
 	border-color: #fff !important;
 	outline: unset;

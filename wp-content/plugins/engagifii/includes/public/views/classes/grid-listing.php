@@ -73,6 +73,7 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
+print_r($creditFilter);
 ?>
 <div class="containerEngagii ff" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -166,11 +167,11 @@ ob_start();
 <!-- credit Hour filters -->
 
 <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter2"> Credit Hours <i class="far fa-angle-down "></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
 
-              echo '<input id="creditFilter2" name="creditFilter2" type="text" class="span2 form-control form-control-sm " readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
+              echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm " readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
           ?>  
         </ul></div>
       </div>
@@ -237,7 +238,6 @@ $filter_content = removeWhitespace($filter_content);
         $('.calendarsearch-form').show();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
-
   var table = $('#ebtmaintable').DataTable( {
         "pageLength": '<?php echo $default_length; ?>',
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -273,7 +273,6 @@ $filter_content = removeWhitespace($filter_content);
               d.instructors = instructor;  
               d.createdDate = createdDate;   
               d.creditHour = creditFilter;
-     
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -335,7 +334,7 @@ $filter_content = removeWhitespace($filter_content);
          },
 		 <?php } ?>
 		  "initComplete": function(settings, json) {
-        
+
 		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
 		 $('.dataTables_filter input').keyup(function(){
 			if($(this).val()==''){
@@ -351,7 +350,6 @@ $filter_content = removeWhitespace($filter_content);
 		
 		
     });
-
 <?php
   if($title_key > -1){
 ?>
@@ -422,7 +420,7 @@ $('.clear-all').click(function(){
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
 
-            $('input[name="creditFilter2"]').val('');
+            $('input[name="creditFilter"]').val('');
 
             $('#countFilterResult').html(' ');
             fv = 0;
@@ -442,7 +440,7 @@ $('.clear-all').click(function(){
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       createdDate = $('input[name="createdbetween"]').val();
 
-      creditFilter = $.map($('input[name="creditFilter2"]:checked'), function(c){return c.value; });
+      //creditFilter = $.map($('input[name="creditFilter"]:checked'), function(c){return c.value; });
       //alert(creditFilter);
 
       $(".filter-area").toggleClass('d-none');
@@ -513,10 +511,10 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-      //var creditFilter1 = $.map($('input[name="creditFilter2[]"]'), function(c){return c.value; });
-      var creditFilter1 = [4,50];
-      //$.map($('input[name="creditFilter2"]'), function(c){return c.value; });
-     //alert(creditFilter1);
+      //var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
+      var creditFilter = [4,50];
+      //$.map($('input[name="creditFilter"]'), function(c){return c.value; });
+     //alert(creditFilter);
 
       
           $.ajax({
@@ -527,7 +525,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
               courses : courses,
               instructors : instructor,
               createdDate : createdDate,   
-              creditHour : creditFilter1,
+              creditHour : creditFilter,
         
           },
           success: function(response) {       
@@ -569,23 +567,50 @@ $("#slider-range").slider({
 		step: 5,
         
      slide: function(event, ui ) {
-	    $( "#creditFilter2" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] )
+	    $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
       //countFilterData();  
-       $.ajax({
-         url: engagifiiUrl_ajaxurl,
-         type: 'post',
-         data: {action:'classcountdata',min:ui.values[ 0 ],max:ui.values[ 1 ]},
-         success: function(response){
-          table.draw();
-         
-         } 
-       });
+       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
+      var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+      //var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
+       var     createdDate = $('input[name="createdbetween"]').val();
+
+
+
+      
+          $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+		  
+          data:{
+              action:'classcountdata',
+              courses : courses,
+              instructors : instructor,
+              createdDate : createdDate,   
+              creditHour : [50,60],
+			  minRange:50,
+			  maxRange:60
+        
+          },
+          success: function(response) {       
+            var element  = document.getElementById("countFilterResult");
+           
+            if(element)
+            {
+              element.innerHTML = " ("+response.api_response +")";
+            }    
+          }
+        });
 
       }
 
 });
-    $( "#creditFilter2" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
+    $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
        $( "#slider-range" ).slider( "values", 1 ) );
 });
+
+
+
+
+
 
 </script>
