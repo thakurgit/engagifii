@@ -397,7 +397,7 @@ class abstractModelEngagifii extends Engagifii_API
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);
 
             ## row data
-            $nestedData['name'] = '<a href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-responsive img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
+            $nestedData['name'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
             $nestedData['objectType'] = $value->objectType;
             $nestedData['creditHours'] = $value->creditHours;
             $nestedData['instructor'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" alt="instructor-icon" class="img-icon-lg"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->courseInstructorsCount ).'</span></div>'.$instructorPopOver;            
