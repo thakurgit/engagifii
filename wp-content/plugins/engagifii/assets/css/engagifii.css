@@ -31,6 +31,9 @@ th.objectType    {
 table.dataTable th {
 white-space:nowrap;	
 }
+.daterangepicker .calendar-table th, .daterangepicker .calendar-table td {
+padding: 0;	
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;

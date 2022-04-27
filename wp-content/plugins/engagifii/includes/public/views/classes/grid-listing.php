@@ -180,8 +180,8 @@ ob_start();
       <div class="filter-list border-bototm">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="createdbetween">Created Between</label> <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
-          <input type="text" name="createdbetween" id="createdbetween"  class="form-control input-xs small-css" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span class="position-absolute cleardate mt-1 mr-1 text-secondary" style="right:0; top:0; cursor:pointer"><i class="fa fa-times"></i></span>
+          <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
+          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
 
@@ -468,6 +468,15 @@ $('.clear-all').click(function(){
 $(document).on('click', '.filter-area', function (e) {
   e.stopPropagation();
 });
+$(document).on('click', 'th.prev', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', '.calendar-table thead', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.next', function (e) {
+  e.stopPropagation();
+});
 	  
 
 	  
@@ -599,8 +608,3 @@ $(document).ready(function(){
 });
 
 </script>
-<style>
-  .box.active{
-    background-color: #F5F1E4 !important;
-  }
-  </style>
