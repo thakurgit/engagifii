@@ -170,7 +170,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
 
-              echo '<input id="creditFilter2" name="creditFilter2" type="checkbox" class="span2" value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="1" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/>';
+              echo '<input id="creditFilter2" name="creditFilter2" type="text" class="span2 form-control form-control-sm " readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
           ?>  
         </ul></div>
       </div>
@@ -479,19 +479,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
 });
 	  
 
-	  
-	  
-	 
 
-
-    
-
-    // $("#ex18b").slider({
-    //     min: <?php echo (int)$creditFilter['minRange']; ?>,
-    //     max: <?php echo (int)$creditFilter['maxRange']; ?>,
-    //     value: [<?php echo (int)$creditFilter['minRange']; ?>, <?php echo (int)$creditFilter['maxRange']; ?>],
-    //     labelledby: ['ex18-label-2a', 'ex18-label-2b']
-    //   });
 	
 	
 
@@ -572,39 +560,32 @@ $(document).ready(function(){
 </script>
 <script>
 $(document).ready(function(){
-  //alert('Hello Slide');
 
-/*$("#creditFilter2").slider({
+$("#slider-range").slider({
         range: true,
         min: <?php echo (int)$creditFilter['minRange']; ?>,
         max: <?php echo (int)$creditFilter['maxRange']; ?>,
-        value: [<?php echo (int)$creditFilter['minRange']; ?>, <?php echo (int)$creditFilter['maxRange']; ?>],
+        values: [<?php echo (int)$creditFilter['minRange']; ?>, <?php echo (int)$creditFilter['maxRange']; ?>],
+		step: 5,
         
      slide: function(event, ui ) {
-       alert('Hello Slide');
-      //countFilterData();       // Get values
-       var min = ui.values[0];
-       var max = ui.values[1];
-//$('#ex2').text(min+' - ' + max);
-      
-      // AJAX request
-       
+	    $( "#creditFilter2" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] )
+      //countFilterData();  
        $.ajax({
          url: engagifiiUrl_ajaxurl,
          type: 'post',
-         data: {action:'classcountdata',min:range1,max:range2},
+         data: {action:'classcountdata',min:ui.values[ 0 ],max:ui.values[ 1 ]},
          success: function(response){
-           alert("hello");
           table.draw();
          
          } 
        });
-          
 
       }
 
 });
-*/
+    $( "#creditFilter2" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
+       $( "#slider-range" ).slider( "values", 1 ) );
 });
 
 </script>

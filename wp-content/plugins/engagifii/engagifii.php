@@ -130,6 +130,7 @@ wp_enqueue_script(
 			wp_enqueue_script( 'engagifii-datatable-bootstrap', plugin_dir_url( __FILE__ ) . 'assets/js/dataTables.bootstrap4.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
+			wp_enqueue_script( 'range-slider', 'https://code.jquery.com/ui/1.13.1/jquery-ui.js', array('jquery'), $this->version, false );
 			
 			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_ebt', admin_url('admin-ajax.php?action=endorsement') );
 			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_evt', admin_url('admin-ajax.php?action=events') );
