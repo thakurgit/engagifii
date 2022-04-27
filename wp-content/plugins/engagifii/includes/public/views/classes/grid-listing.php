@@ -178,7 +178,7 @@ ob_start();
       
 
       <div class="filter-list border-bototm">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="createdbetween">Created Between</label> <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="">Created Between</label> <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
