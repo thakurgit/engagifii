@@ -35,10 +35,13 @@ white-space:nowrap;
 padding: 0;	
 }
 .td-dropdown {
-	height: 250px;
+	max-height: 250px;
 	/*overflow-y: auto;
 	overflow-x: hidden;*/
 	min-width:250px !important;
+}
+.instructor-popover {
+cursor:pointer;	
 }
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;

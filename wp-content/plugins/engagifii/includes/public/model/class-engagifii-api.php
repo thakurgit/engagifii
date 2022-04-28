@@ -222,6 +222,83 @@ class Engagifii_API{
 
     }
 
+	  public function _popOverInstructorData1($id, $instructorData){
+	  	$options = get_option('ebt_api_settings');
+        $endorsement_api_url = $options['ebt_api_url'];
+        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+
+         	
+
+
+        $rowName = array();
+
+        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Instructors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Instructors.."/></div>';
+        $subItems = "";
+		$li=1;
+        foreach ($instructorData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->fullName;
+            
+            if($rowData->thumbnailUrl)
+            {
+                if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
+                    $instructor_img = $rowData->thumbnailUrl;
+                }
+                else
+                {
+                    $instructor_img = $tenant_url.$rowData->thumbnailUrl;
+                }
+                
+            }
+            else
+            {
+                $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+           	}
+
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
+			$li++;
+        }
+		
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+
+        $vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                  $(document).ready(function(){
+  $('.search-dropdown').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('li').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('li:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+});  
+                </script>";
+
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+
+    }
+
     public function _popOverClass($id, $classData)
     {
     	$rowName = array();
