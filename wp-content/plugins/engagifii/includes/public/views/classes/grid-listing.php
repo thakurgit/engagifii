@@ -273,6 +273,8 @@ $filter_content = removeWhitespace($filter_content);
               d.instructors = instructor;  
               d.createdDate = createdDate;   
               d.creditHour = creditFilter;
+			   d.minRange = 50; 
+            d.maxRange = 60;
             }, 
         },
         createdRow: function (row, data, index) { 

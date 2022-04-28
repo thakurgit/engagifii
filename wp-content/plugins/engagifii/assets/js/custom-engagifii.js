@@ -146,10 +146,10 @@ $(document).ready(function(){
 
     function __addExtraDiv(title)
     {
-      var span_Ext = $(document).find(".select2-search").find("p.engwarpper").length;
+      var span_Ext = $(document).find(".select2-search").find("h6.engwarpper").length;
       if(span_Ext<1)
       {  
-          $(document).find(".select2-search").prepend("<p class=\"engwarpper\"> "+title+" </p>");
+          $(document).find(".select2-search").prepend("<h6 class=\"engwarpper\"> "+title+" </h5>");
       }
     }
 

@@ -190,7 +190,7 @@ class abstractModelEngagifii extends Engagifii_API
                 $instructorPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
 
             if(count($value->classSessions))
-                $classPopover  = $this->_popOverClassData($key, $value->classSessions);
+                $classPopover  = $this->_popOverClassData1($key, $value->classSessions);
             ## row data
             $class_schedule = '';
             if($value->classDuration > 1)
@@ -201,7 +201,7 @@ class abstractModelEngagifii extends Engagifii_API
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
 
-             $nestedData['startdate'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover;
+             $nestedData['startdate'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
 
             $nestedData['classInstructorsCount'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver;  
             $nestedData['credithours'] = $value->parentCourse->creditHours;          
@@ -1452,6 +1452,48 @@ class abstractModelEngagifii extends Engagifii_API
 
         return $popOverHtml . $vars;
     }
+
+
+    private function _popOverClassData1($id, $classData){
+        //print_r($classData);
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
+        $subItems = "";
+        
+        foreach ($classData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->id;
+            $classTime = '';
+            if($rowData->sessionDate)
+                
+                $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
+            
+            $subItems .= '<li class="p-2 border-bottom d-flex align-items-center small"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '</div>';
+        $searchName = json_encode(array_values($rowName));
+
+        $vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                    
+                </script>";
+
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+
 
      private function _popOverTagData($id, $tagData){
         

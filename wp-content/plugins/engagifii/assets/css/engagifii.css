@@ -34,6 +34,12 @@ white-space:nowrap;
 .daterangepicker .calendar-table th, .daterangepicker .calendar-table td {
 padding: 0;	
 }
+.td-dropdown {
+	height: 250px;
+	/*overflow-y: auto;
+	overflow-x: hidden;*/
+	min-width:250px !important;
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;
@@ -114,12 +120,12 @@ table.dataTable thead tr th.name {
 	text-align: center;
 	padding: 10px;
 }
-.select2-search--dropdown .engwarpper {
+/*.select2-search--dropdown .engwarpper {
 	background-color: #f5f8fa;
 	padding: 5px;
 	border: 1px solid #ddd;
 	font-size: 14px;
-}
+}*/
 .select2-results li p {
 	padding: 0 10px;
 	text-align: left;
@@ -649,15 +655,8 @@ button.dropdown-toggle:focus {
 	background: transparent !important;
 	color: #646871 !important
 }
-.page .select2-container--open .select2-dropdown--below {
-	border-radius: 4px;
-	border: 1px solid #bebdbd;
-	width: 200px !important;
-}
-.page .select2-container--open .select2-dropdown--above {
-	border-radius: 4px;
-	border: 1px solid #bebdbd;
-	width: 200px !important;
+.page .select2-container--open .select2-dropdown {
+	width: 250px !important;
 }
 .select2-results__option.select2-results__option--highlighted label {
 	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -674,10 +673,10 @@ button.dropdown-toggle:focus {
 	margin-right: 3px;
 	vertical-align: middle;
 }
-.select2-container--default .select2-search--dropdown .select2-search__field {
+/*.select2-container--default .select2-search--dropdown .select2-search__field {
 	border-radius: 7px !important;
 	margin-top: 10px;
-}
+}*/
 .select2-container--default .select2-search--dropdown .select2-search__field:focus {
 	outline: none !important;
 }
@@ -1271,12 +1270,6 @@ div.course-tag {
 	text-align: left;
 	white-space: normal !important;
 }*/
-
-.instructor-popover {
-	text-align: center;
-	width: fit-content;
-	margin: auto;
-}
 /*table.light-background thead tr th.sectionname,
 table.light-background thead tr th.name {
 	text-align: left;
@@ -1439,9 +1432,7 @@ div.dataTables_wrapper div.dataTables_filter {
 	top: 10px;
 }
 .select2-container--default .select2-search--dropdown .select2-search__field {
-	border-radius: 5px !important;
-	margin-top: 0;
-	border-color: #2196f3 !important;
+	background: #f4f6f9;
 }
 .select2-results li p {
 	margin-bottom: 0;
