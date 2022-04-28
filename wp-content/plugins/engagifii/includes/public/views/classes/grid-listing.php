@@ -73,7 +73,6 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
-print_r($creditFilter);
 ?>
 <div class="containerEngagii ff" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -93,6 +92,10 @@ print_r($creditFilter);
                   if($value->colName == 'sessions')
                   {
                       $value->colName = 'startdate';
+                  }
+				  if($value->displayName == 'Class dates')
+                  {
+                      $value->displayName = 'Class Dates';
                   }
 
                   if($value->colName == 'sectionname'){
@@ -367,8 +370,15 @@ $filter_content = removeWhitespace($filter_content);
                     .search( this.value )
                     .draw();
             }
+			
         } );
     } );
+	
+	$(document).ready(function (){    
+    $('#searchclass').on('click', function(e){
+       e.stopPropagation();    
+    });
+});
   <?php
 }
   ?>

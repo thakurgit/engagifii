@@ -581,12 +581,5 @@ h5#exampleModalLabel {
    
 
     </script>
-   <style>
-  .box.active{
-    background-color: yellow !important;
-  }
-  .tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-  </style>
+ 
   

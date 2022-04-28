@@ -1459,16 +1459,20 @@ class abstractModelEngagifii extends Engagifii_API
         $rowName = array();
         $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
         $subItems = "";
-        
+        $li=1;
         foreach ($classData as $key => $rowData) {
             
             $rowName[$rowData->id] = $rowData->id;
             $classTime = '';
             if($rowData->sessionDate)
                 
-                $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
-            
-            $subItems .= '<li class="p-2 border-bottom d-flex align-items-center small"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+            $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
+			$class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= '<li class="px-2 py-1 border-bottom d-flex align-items-center small '.$class.'"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+			$li++;
         }
 
         $popOverHtml .= $subItems;
@@ -2342,7 +2346,7 @@ public function getCalendar(){
             
         </aside>
 
-        <div class="calendar__days col-md-8 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
+        <div class="calendar__days col-md-8 pt-5 border mb-4 mb-md-0 calendar-background  px-0 cc" id="monthView">
 
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
