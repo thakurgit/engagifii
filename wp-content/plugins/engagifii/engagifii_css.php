@@ -156,10 +156,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 }
 
 .engwarpper{
-	background-color: <?php echo $table_heading_bg?>;
-	font-family: <?php echo $font_family;?> !important;
 	font-size: <?php echo $ebt_detail_text_font?>px;
-	color: <?php echo $ebt_detail_text_color?> !important;
 }
 
 .go-back{
