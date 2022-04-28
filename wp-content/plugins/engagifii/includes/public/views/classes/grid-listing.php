@@ -290,7 +290,7 @@ $filter_content = removeWhitespace($filter_content);
             $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
               var divWidth = parseInt($('.custom-scroll').width());
 			 var tablewidth = parseInt($('#ebtmaintable').width());
-               if(tablewidth==divWidth){
+               if(tablewidth<=divWidth){
 					$('.nxt,.prv').addClass('disabled');   
 					return false;
 			   } else {
