@@ -300,7 +300,7 @@ $filter_content = removeWhitespace($filter_content);
 					  scrollLeft: "+=250px"
 				   }, "slow",function() {
 					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
-					   console.log(tablewidth+','+divWidth+scrollLeft)
+					   //console.log(tablewidth+','+divWidth+scrollLeft)
     					$('.prv').removeClass('disabled'); 
 				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
 						  $('.nxt').addClass('disabled');  

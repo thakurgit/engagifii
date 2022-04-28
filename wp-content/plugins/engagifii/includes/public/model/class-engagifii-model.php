@@ -880,8 +880,8 @@ class abstractModelEngagifii extends Engagifii_API
                 if(count($row->tags) > 1){
                     $tagCount              = count($row->tags) - 1;
                   
-                    $tagList               = $this->_popoverTagsHtml($row->id, $row->tags);
-                    $nestedData['tags'] = '<div class="d-inline-flex align-items-center"><span class="col-auto px-0"> <a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span class="ml-2 badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span></div>'.$tagList;
+                    $tagList               = $this->_popoverTagsHtml1($row->id, $row->tags);
+                    $nestedData['tags'] = '<div class="dropdown pr-4"><span class="d-inline-block pr-2"> <a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span>'.$tagList.'</div>';
                 }else{
                     
                     $nestedData['tags']       = '<a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
@@ -1208,6 +1208,55 @@ class abstractModelEngagifii extends Engagifii_API
                             setTimeout(function(){ __addExtraDiv('Tags')},100);
                         });
                     });
+                </script>";
+
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+
+    private function _popoverTagsHtml1($id, $tags){
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
+        $subItems = "";
+       $li=1;
+        foreach ($tags as $key => $rowData) {            
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+			$subItems .= '<a style="display:block" href="'.site_url().'/bill-tracking/?tag='.$rowData->value.'&'.base64_encode($rowData->text).'" target="_blank" class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->text . '</a>';
+			$li++;
+			}
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        //$searchName = json_encode(array_values($rowName));
+
+        $vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                  $(document).ready(function(){
+  $('.search-dropdown').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('a').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('a:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+});  
                 </script>";
 
         $popOverHtml .= '</ul></span>';
