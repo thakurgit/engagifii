@@ -403,20 +403,9 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 .classNames:hover {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>; }
 /* CSS for Class Names on Calendar view */
 
-    span#CalendarClassName {
-    
-    padding-left: 5px;
-	padding-right:5px;
-}
-.classNames {
-    background-color: <?php echo $ebt_detail_calendar_strip_color; ?>;
-    border-radius: 3px;
-    padding-left: 2px;
-    margin-bottom: 2px;
-}
 
-a.calendar-class {
-    color: white !important;
+.classNames {
+    background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
 
 /* Ends Here */
