@@ -400,11 +400,11 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 .class-background{background-color: <?php echo $ebt_detail_class_list_background_color; ?>}
 .class-text span, .class-text div{color: <?php echo $ebt_detail_class_calendar_text_color; ?>}
 .calendar__day:not(.today):hover, .calendar__day.active{background-color: <?php echo $ebt_detail_calendar_hover_color; ?> !important;}
-.classNames:hover {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>; }
+.classNames > a:hover {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>; }
 /* CSS for Class Names on Calendar view */
 
 
-.classNames {
+.classNames > a {
     background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
 
