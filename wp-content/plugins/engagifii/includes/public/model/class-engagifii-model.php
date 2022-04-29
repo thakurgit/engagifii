@@ -2067,6 +2067,7 @@ class abstractModelEngagifii extends Engagifii_API
 		            }
 
 		            $data['classTag'] = $allTags;
+                    $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
 
 		            if($value->isClassRegistrationAllow)
 		            {
@@ -2075,6 +2076,7 @@ class abstractModelEngagifii extends Engagifii_API
                             if($value->locationType->name=="onlocation")
                             {
                                 $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                                
                             }
                             elseif($value->locationType->name=="online"){
                                 $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
