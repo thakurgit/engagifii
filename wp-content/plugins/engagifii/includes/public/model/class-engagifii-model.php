@@ -242,7 +242,7 @@ class abstractModelEngagifii extends Engagifii_API
                   }
               }
               else{
-              $nestedData['register'] = '<button type="button" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</button>';
+              $nestedData['register'] = '<button type="button" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled >Register</button>';
               }
           }else{
             $nestedData['register'] = '<button type="button" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled >Register</button>';
