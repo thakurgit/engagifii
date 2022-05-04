@@ -270,6 +270,11 @@ h5#exampleModalLabel {
     
         </div>
     <script>
+
+$(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    
         var courses = '';
         var instructor = '';
         var fv = 0;
@@ -578,6 +583,7 @@ h5#exampleModalLabel {
  		});
 
     
+
    
 
     </script>

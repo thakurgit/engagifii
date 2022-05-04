@@ -129,7 +129,7 @@ function _prepareClassData($searchtext){
 $postedData = _prepareClassData($searchtext);
 $dataResponse = $this->submitApiRequest("Public/ClassPagingList",$postedData,"POST",'classes');
 $collection   = json_decode($dataResponse['api_response'])->result;
-
+//print_r($collection);
 ?>
 
 <table class="table calendarlist table table-bordered "> 
@@ -160,7 +160,7 @@ foreach ($collection as $key => $value) {
                                 }
                         }
                         else{
-                             $register = ' ';
+                             $register = '<a href="#" id="onlocation" class="btn btn-secondary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a> ';
                             }
                     } 
                 
