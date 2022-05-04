@@ -160,7 +160,7 @@ foreach ($collection as $key => $value) {
                                 }
                         }
                         else{
-                             $register = '<a href="#" id="onlocation" class="btn btn-secondary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a> ';
+                             $register = '<a href="#" id="onlocation" class="btn btn-primary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled>Register</a> ';
                             }
                     } 
                 

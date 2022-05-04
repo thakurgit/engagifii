@@ -2093,7 +2093,7 @@ class abstractModelEngagifii extends Engagifii_API
 
 		                }
 		                else{
-		                    $data['register'] = '<a href="#" id="onlocation" class="btn btn-primary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a>';
+		                    $data['register'] = '<button type="button" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled >Register</button>';
 		                }
 		                
 		            }
