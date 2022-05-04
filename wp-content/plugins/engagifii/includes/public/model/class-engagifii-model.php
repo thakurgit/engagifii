@@ -2575,25 +2575,25 @@ public function getCalendarClassName(){
 ?>
 
     <main class="calendar-contain row">
-        <div class="title-bar col-12 bg-light p-3 border">
-            <div class="row">
+        <div class="title-bar col-12 bg-light p-3 border rounded">
+            <div class="row align-items-center">
             <div class="title-bar__month col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pr-0">
-                <div class="input-group mb-2 mb-md-0">
+                <div class="input-group input-group-sm mb-2 mb-md-0">
         <div class="input-group-prepend">
-          <div class="input-group-text bg-white rounded-0"><i class="fal fa-calendar-alt"></i></div>
+          <div class="input-group-text bg-white rounded-left"><i class="fal fa-calendar-alt"></i></div>
         </div>
-                <select class="month-dropdown form-control custom-select rounded-0">
+                <select class="month-dropdown custom-select-sm custom-select rounded-0">
                     <?php echo $this->getMonthList($dateMonth); ?>
                 </select>
                 </div>
             </div>
             <div class="title-bar__year col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pl-0">
-                <select class="year-dropdown form-control custom-select rounded-0">
+                <select class="year-dropdown custom-select-sm custom-select rounded-0">
                     <?php echo $this->getYearList($dateYear); ?>
                 </select>
             </div>
             <div class="col-12 col-md-6 col-lg-8 text-center text-md-right text-uppercase">
-                <div class="btn-group calendar-view" role="group" >
+                <div class="btn-group btn-group-sm calendar-view" role="group" >
                   <button type="button" id="month" class="btn bg-white border" aria-pressed="false">Monthly</button>
                   <button type="button" id="week" class="btn bg-white border" aria-pressed="false">Weekly</button>
                   <button type="button" id="day" class="btn bg-white border" aria-pressed="false">Daily</button>
@@ -2662,7 +2662,7 @@ public function getCalendarClassName(){
                                            //echo $test.'...'; 
                                            echo '<div class="classNames">';
                                            ?>
-                                        <a class="calendar-class" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="color:black; font-size:smaller;" ><?php echo $test; ?>...</a>                                    
+                                        <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -2711,7 +2711,7 @@ public function getCalendarClassName(){
                                         //echo $test.'...'; 
                                         echo '<div class="classNames">';
                                         ?>
-                                        <a class="calendar-class" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="color:black; font-size:smaller;" ><?php echo $test; ?>...</a>                                    
+                                        <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">

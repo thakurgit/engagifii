@@ -1,8 +1,4 @@
 <style>
-
-
-
-
 @media screen and (min-width: 55em) {
   .calendar-contain {
     margin: auto;
@@ -172,10 +168,10 @@ h5#exampleModalLabel {
     <form action="calendar-search.php" class="calendarsearch-form" method="POST">
 
 <div class="apply-search form-inline">
-	<div class="form-group mr-3">
+	<div class="form-group mr-2">
     <input type="text" name="search" id="calendar-search" placeholder="Search for Class" class="bg-light" >
 </div>
-    <input type="submit" value="submit"  id="apply-filter-search-cal" />
+    <input type="submit" value="Search"  id="apply-filter-search-cal" />
 </div>
 </form>
 	
@@ -587,12 +583,5 @@ $(document).ready(function() {
    
 
     </script>
-   <style>
-  .box.active{
-    background-color: yellow !important;
-  }
-  .tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-  </style>
+
   
