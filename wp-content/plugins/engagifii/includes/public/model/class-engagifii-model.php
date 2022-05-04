@@ -238,14 +238,14 @@ class abstractModelEngagifii extends Engagifii_API
                       $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register Online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register in person</a>';
                       }
                   else{
-                      $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-secondary disabled px-3 py-1" data-toggle="tooltip" data-placement="right" title="Class Location not defined" >Register</a>';
+                      $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="Class Location not defined" disabled >Register</a>';
                   }
               }
               else{
-              $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-secondary disabled px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a>';
+              $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a>';
               }
           }else{
-            $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-secondary disabled px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a>';
+            $nestedData['register'] = '<a href="#" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled >Register</a>';
             //$data[] = $nestedData;    
           }
           $data[] = $nestedData;
