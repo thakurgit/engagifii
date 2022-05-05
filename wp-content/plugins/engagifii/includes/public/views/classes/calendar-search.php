@@ -3,6 +3,7 @@
     $('#apply-filter-search-cal').click(function(e){
 		    e.preventDefault(); 
             search = $('#calendar-search').val();
+			
 			$("#search-demo").val(search);
             $('#calendar_div').hide();
             $('#list_div').hide();
@@ -13,18 +14,36 @@
             $(".calendarlist tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
-            $(".calendarlist tr td a li").each(function() {
+            $(".calendarlist tr td .row").each(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 				
 			 });
+			 if($(".calendarlist tr:visible").length==0){
+				 $('.no-results').removeClass('d-none');
+			 } else {
+				 $('.no-results').addClass('d-none');
+			 }
 
-            const yoffset = -400;
+           /* const yoffset = -400;
             target_offset = $('.dayofmonth').offset(),
             target_top = target_offset.top + yoffset;
             $('html, body').animate({
                 scrollTop: target_top
-            }, 2000);
+            }, 2000);*/
 });
+
+ $('#calendar-search').keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('.clear-search').click(function(e){
+	 $('#calendar-search').val('');
+	$('#apply-filter-search-cal').trigger('click');
+	$('.clear-search').hide();
+ });
              
 
 
@@ -46,22 +65,13 @@ h5#exampleModalLabel2 {
         justify-content: flex-start;
 }
 
-    ul.calendarsearch {
-  list-style: none; /* Remove default bullets */
-}
-li.calendarsearch:hover{
-        background-color: #f1f2f3;
-        border-radius: 5px;
-        
-    }
 
-li.calendarsearch::before {
+.calendarsearch::before {
   content: "\2022";  
   color: #1a73e8; 
   font-weight: bold; 
   display: inline-block; 
   width: 1em; 
-  margin-left: -1em; 
   font-size: 1.5em;
 }
     span.dayofmonth {
@@ -132,7 +142,7 @@ $collection   = json_decode($dataResponse['api_response'])->result;
 //print_r($collection);
 ?>
 
-<table class="table calendarlist table table-bordered "> 
+<table class="table calendarlist table-hover table-sm table-bordered "> 
 <?php
     $classData = array();
 
@@ -160,7 +170,7 @@ foreach ($collection as $key => $value) {
                                 }
                         }
                         else{
-                             $register = '<a href="#" id="onlocation" class="btn btn-primary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled>Register</a> ';
+                             $register = '<button type="button"  class="btn btn-primary px-3 py-1" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'" disabled>Register</button> ';
                             }
                     } 
                 
@@ -203,28 +213,32 @@ foreach ($result2 as $key => $res) {
         <?php if($classDate==$todayDate){ ?>
             <th scope="row"><span class="dayofmonth" id="digitofday"><?php echo date('j', strtotime($classDate)).' '; ?> </span> <?php echo date("M Y", strtotime($classDate));?></th>
        <?php } else { ?>
-    <th scope="row"><span id="digitofday"><?php echo date('j', strtotime($classDate)).' '; ?> </span> <?php echo date("M Y", strtotime($classDate));?></th>
+    <th class="text-nowrap px-xl-3" scope="row"><span id="digitofday"><?php echo date('j', strtotime($classDate)).' '; ?> </span> <?php echo date("M Y", strtotime($classDate));?></th>
     <?php } ?>
-    <td><ul class="calendarsearch">
+    <td>
 <?php
 
     foreach($res as $keyobj => $data){
         $testing = $data['instructors'];
       // print_r(json_encode($data));
 ?>
-    <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" style="color:black !important; font-size:smaller;" >
-     <li class="calendarsearch"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span>
-    <span class="class-time-li" style="margin-left: 80px";><?php echo $data['titleNoLink'];?>  
-    <ul>
+	<div class="row mb-3 px-xl-4">
+    <div class="col-md-2"><span class="calendarsearch text-nowrap"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span></div>
+	<div class="col-md-8 ">
+    	<div> <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" ><?php echo $data['titleNoLink'];?></a></div>
+    	<div class="small">
     <?php 
     $inc = 1;
     foreach( $testing as $keyval => $instructor){
-        //print_r($instructor->fullName);
-         ?>
-       <?php echo '<li>(Instructors : '.$instructor->fullName.')</li>'; ?>  
-   <?php  }
-?>    </ul>
-</li></a>
+        if($inc==1){
+			echo "<span>Instructors : </span>";
+		}
+         echo '<span class="badge badge-primary mr-1"><small>'.$instructor->fullName.'</small></span>'; 
+		$inc++; 
+	  }
+?>    </div>
+    </div>
+    
     
     <div class="modal fade" id="exampleModal2<?php echo $data['classId'];echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -248,12 +262,13 @@ foreach ($result2 as $key => $res) {
             </div>
         </div>
     </div> 
-
+</div>
 <?php $i++;}
 } ?>
-    <ul></td>
+    </td>
     </tr>
 </table>
+<div class="d-none no-results"><h4 class="text-center text-secondary">Oops! No data found!! Try some other keyword</h4></div>
 
 
 
