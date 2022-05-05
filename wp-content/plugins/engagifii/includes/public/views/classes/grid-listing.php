@@ -250,13 +250,14 @@ $filter_content = removeWhitespace($filter_content);
         "processing": true,
         "searching": true,
         "ordering":true,
+		"search": {regex: true},
         "columnDefs": [ 
           { "targets": ['objectType','classDuration', 'startdate', 'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
           },
           //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
-		  { className: "text-center", "targets": ["startdate","instructors","credithours"] },
+		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
         ],
         "language": {
@@ -345,16 +346,34 @@ $filter_content = removeWhitespace($filter_content);
   $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
         var title = $(this).text();
         $(this).html( '<label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm search-endorsement" value=""/>' );
- 
-        $( 'input', this ).on( 'keyup change', function () {
+
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var value = this.value.split(" ");
+	 value = "'" + value.join("'|'") + "'"
+	 //value = value.join('|');
+	  console.log(value);
+           // if ( table.column(i).search() !== this.value ) {
+				table.column(i).search( value, true, false ).draw();
+           // }
+}, 500));
+     /* $( 'input', this ).on( 'keyup change', function () {
+			
             if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
+				table.column(i).search( this.value ).draw();
             }
 			
-        } );
+			
+        } );*/
     } );
 	
 	$(document).ready(function (){    
