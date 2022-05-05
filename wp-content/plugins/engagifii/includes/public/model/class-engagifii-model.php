@@ -2093,7 +2093,7 @@ class abstractModelEngagifii extends Engagifii_API
 
 		                }
 		                else{
-		                    $data['register'] = '<button type="button" id="onlocation" class="btn btn-primary  px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" disabled >Register</button>';
+		                    $data['register'] = '<a href="#" id="onlocation" class="btn btn-primary px-3 py-1" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'" >Register</a>';
 		                }
 		                
 		            }
@@ -2651,7 +2651,7 @@ public function getCalendarClassName(){
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                     <?php if(count($filteredItems) > 0){
@@ -2663,17 +2663,31 @@ public function getCalendarClassName(){
                                            echo '<div class="classNames">';
                                            ?>
                                         <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                                <?php
+                                        
+                                           if(count($filteredItems) >1) {$test; } 
+                                         if(count($filteredItems) >1) { }
+                                        echo "</div>";
+                                        }
+                                    } ?>
+                                    </span>
+                                </div>
+                                <?php  for($fi=0; $fi<count($filteredItems); $fi++){
+                                       
+                                            $test = $filteredItems[$fi]['titleNoLink'];
+                                            $test = substr($test,0,20);
+                                           ?>
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                     <div class="modal-header text-left align-items-center">
-                                                        <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                                        <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body" style ="color:black;">
+                                                    <div class="modal-body text-left" >
                                                         <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['classTime']; ?></p>
                                                         <p><strong>Duration : </strong><?php echo $filteredItems[$fi]['classDuration']; ?></p>
                                                         <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
@@ -2688,15 +2702,10 @@ public function getCalendarClassName(){
                                                 </div>
                                                 </div> 
                                                 <?php
-                                          // echo '<a class="calendar-class" data-toggle="modal" data-target="#exampleModal" href="" style="color:black; font-size:smaller;" >'.$test.'...'.'</a>';
-                                           if(count($filteredItems) >1) {$test; } 
-                                         if(count($filteredItems) >1) { }
-                                        echo "<br>";
-                                        echo "</div>";
+                                        
+                                           
                                         }
-                                    } ?>
-                                    </span>
-                                </div>
+                                     ?>
                             <?php
                         }elseif(count($filteredItems) > 0){
                             ?>
@@ -2712,17 +2721,28 @@ public function getCalendarClassName(){
                                         echo '<div class="classNames">';
                                         ?>
                                         <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
-                                             <!-- Modal -->
+                                            <?php
+                                        if(count($filteredItems) >1) {$test; } 
+                                        echo "</div>";
+                                        }?>
+                                        </span>
+                                </div>
+                                <?php
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+                                            
+                                            $test = $filteredItems[$fi]['titleNoLink'];
+                                            $test = substr($test,0,20);
+                                        ?>
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                     <div class="modal-header text-left d-flex align-items-center">
-                                                    <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                                    <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body" style ="color:black;">
+                                                    <div class="modal-body text-left">
                                                         <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['classTime']; ?></p>
                                                         <p><strong>Duration : </strong><?php echo $filteredItems[$fi]['classDuration']; ?></p>
                                                         <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
@@ -2737,12 +2757,8 @@ public function getCalendarClassName(){
                                                 </div>
                                                 </div> 
                                             <?php
-                                        if(count($filteredItems) >1) {$test; } 
-                                        echo "<br>";
-                                        echo "</div>";
+                                        
                                         }?>
-                                        </span>
-                                </div>
                                 <?php
                             
                         }else{

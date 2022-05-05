@@ -142,15 +142,8 @@ aside .box {
 #event_list .scroll > div.last ~ div {
 	display: none;
 }
-.modal-body{
-	color: black;
-    text-align: left;
-    font-size: 14px;
-}
-h5#exampleModalLabel {    
-    margin-right: 50px;
-    font-size: larger;
-}
+
+
 .modal-header {
         padding: 1rem .4rem;
         justify-content: flex-start;
@@ -191,73 +184,6 @@ h5#exampleModalLabel {
     </div>
   </div>
   </div>
-<div class="row align-items-center py-4 d-none">
-	<div class="col-md-6">
-<form action="calendar-search.php" method="POST">
-
-<div class="apply-search form-inline">
-	<div class="form-group mr-3">
-    <input type="text" name="search" id="calendar-search" placeholder="Search for Class"  >
-</div>
-    <input type="submit" value="submit"  id="apply-filter-search-cal" />
-</div>
-</form>
-    </div>
-	<div class="col-md-6">
-  <div class="engagifii-box" id="calendar_filter">
-  <div class="col-md-1 col-2 text-right ml-auto pb-2">
-  <div class=" filter-content">
-  <div class="containerEngagii filter-icon-cal d-inline-flex align-items-center justify-content-center rounded-circle position-relative pull-right"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
-  <div class="filter-border-cal">
-  <div class="filter-area filter-area-cal d-none">
-    <div class="Engagiirow filter-top-bg col-sm-12">
-     
-      <div class="col-sm-6 text-left">
-        <span class="filter-title">
-          <i class="fa fa-filter"></i> Filter 
-          <span id="blockedchecked"></span> 
-        </span>
-      </div>
-      <div class="col-sm-6 text-right">
-        <span class="clear-all-cal" id="clear-all-cal"> Clear All </span>
-      </div>
-    </div>
-    <div class="col-sm-12 height-4">
-      <input type="hidden" id="isApplyACtive" value="0">
-      <div class="filter-list-cal border-bottom">
-        <div class="heading-title py-2">Course Name <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none">
-          <ul class="list-group m-0">
-          <?php foreach ($classes as $key => $value) { echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" name="courseClassCal[]" id="coursename_'.$key.'" value="'.addslashes($value['name']).'"><label for="coursename_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} ?>
-          </ul>
-        </div>
-      </div>
-      <div class="filter-list-cal border-bottom">
-        <div class="heading-title py-2"> Instructor <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none"><ul class="list-group m-0">
-          <?php
-
-            foreach ($instructor as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" name="courseInstrutorCal[]" id="instruct_'.$key.'" value="'.$value['id'].'"> <label for="instruct_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-
-      
-    </div>
-    <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button"  id="apply-filter-data-cal">Apply 
-          <span id="countFilterResultCal"></span>
-        </button>
-      </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
-    </div>
-</div>
  <div id="calendar_div" class="position-relative container-fluid">
         
     </div>
@@ -382,30 +308,7 @@ $(document).ready(function() {
 					theme:"minimal-dark",
 		 			scrollbarPosition:"outside"
 		 			});
-//           jQuery('.classNames > a').click(function(e ) { 
-// 		if(jQuery(this).parents('.calendar__day').hasClass('today') || jQuery(this).parents('.calendar__day').hasClass('active')){
-// 		  var id = jQuery(this).parent().index();
-// 		  jQuery('.calendar__sidebar .mCSB_container > .col-12').each(function() {
-// 			  if(jQuery(this).index()==id){
-// 				  jQuery(this).find('.box').addClass('active');
-// 				  jQuery(this).siblings().find('.box').removeClass('active');
-// 				   jQuery("#event_list .scroll").mCustomScrollbar('scrollTo',jQuery('.box.active').parent('.col-12') );
-// 				  setTimeout(function() {
-// 	  //alert();
-// 						   jQuery('.active.box').removeClass('active');
-// 						}, 3000);
-	  
-				 
-// 			  }
-// 		  });
-// 		  e.preventDefault();
-// 		  e.stopPropagation();
-// 		} else {
-// 			e.preventDefault();
-// 			return;
-// 		}
-
-// });         
+                 
 } else {
 	var shown = 4;
 	if(jQuery("#event_list .scroll > div").length>shown){
