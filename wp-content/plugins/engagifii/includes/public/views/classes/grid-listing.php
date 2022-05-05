@@ -358,13 +358,15 @@ function delay(callback, ms) {
   };
 }
   $( 'input', this ).keyup(delay(function (e) {
-	  var value = this.value.split(" ");
-	 value = "'" + value.join("'|'") + "'"
-	 //value = value.join('|');
-	  console.log(value);
-           // if ( table.column(i).search() !== this.value ) {
-				table.column(i).search( value, true, false ).draw();
-           // }
+	  var titlesearch = this.value;
+	 // titlesearch = titlesearch.split(" ");
+	 	//titlesearch = "'" + titlesearch.join("'|'") + "'";
+	//titlesearch = titlesearch.join("|") ;
+	 // console.log(titlesearch);
+	 // console.log(typeof(titlesearch)) ;
+            if ( table.column(i).search() !== titlesearch ) {
+				table.column(i).search(titlesearch).draw();
+            }
 }, 500));
      /* $( 'input', this ).on( 'keyup change', function () {
 			
