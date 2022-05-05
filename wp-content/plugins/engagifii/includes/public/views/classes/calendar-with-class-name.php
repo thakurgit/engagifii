@@ -270,7 +270,10 @@ $(document).ready(function() {
 						    		    tags += '<li class="p-1 border-bottom small">'+tag+'</li>';
 						 	        })
 						          tags += '</ul></span>';
-                    } else { 
+                    } else if(value['classTag'].length == 0) {
+						
+						tags = '<i class="small">NA</i>';
+						} else { 
 						          tags = value['classTag']; 
 					         }
 
