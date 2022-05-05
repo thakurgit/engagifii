@@ -212,10 +212,11 @@ class abstractModelEngagifii extends Engagifii_API
                 
                     if(count($classTag) > 1 && $index == 0)
                     {   
-                        $tagPopover =  $this->_popOverTagData($key, $value->classTag);
+                        $tagPopover =  $this->_popOverTagData1($key, $value->classTag);
 
                            $tagCount   = count($classTag) - 1;
-                    $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$tag->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
+                    
+					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
                     }
                     elseif(count($classTag) == 1)
                         $allTags[] = $tag->tagName;
@@ -1579,6 +1580,60 @@ class abstractModelEngagifii extends Engagifii_API
                             setTimeout(function(){ __addExtraDiv('Associated Tags')},100);
                         });
                     });
+                </script>";
+
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+
+
+     private function _popOverTagData1($id, $tagData){
+        
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
+        $subItems = "";
+		$li=1;
+        foreach ($tagData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->tagName;
+           
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->tagName .  '</li>';
+			$li++;
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+
+        $vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                  $(document).ready(function(){
+  $('.search-dropdown').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('li').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('li:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+});  
                 </script>";
 
         $popOverHtml .= '</ul></span>';
