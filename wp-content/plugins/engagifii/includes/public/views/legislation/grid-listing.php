@@ -942,19 +942,7 @@ foreach ($collection->columnList as $key => $row)
       <span class="spinner"></span>
   </div>
 </div>
-<style>
 
-#eng-overlay{
-    position: absolute;
-    top:0px;
-    left:0px;
-    width: 100%;
-    height: 100%;
-    background: #e3e3e3;
-    opacity: .5;
-}
- 
-</style>
 <script type="text/javascript">
 var lbtDynamicTableClass = new Array();
 
