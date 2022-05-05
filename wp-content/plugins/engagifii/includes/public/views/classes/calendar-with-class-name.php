@@ -264,14 +264,12 @@ $(document).ready(function() {
                 	var tags = '';
                     if(value['classTag'].length > 1)  {
                     	var more = parseInt(value['classTag'].length) - 1;
-                    	tags += '<div class="btn-group">';
-						          tags += '<div class="px-1">'+value['classTag'][0]+'</div><div class="tag text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ..'+more+' more</div>';
-						          tags += '<ul class="dropdown-menu dropdown-menu-right w-100">';
+						          tags += value['classTag'][0]+'<span class="dropup ml-2"><span style="cursor:pointer" class="tag badge badge-dark badge-pill" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> +'+more+'</span>';
+						          tags += '<ul class="dropdown-menu dropdown-menu-left py-0">';
 						  	     value['classTag'].forEach(function(tag, key) {
-						    		    tags += '<li class="dropdown-item text-break" style="white-space:normal;">'+tag+'</li>';
+						    		    tags += '<li class="p-1 border-bottom small">'+tag+'</li>';
 						 	        })
-						          tags += '</ul>';
-						          tags += '</div>';
+						          tags += '</ul></span>';
                     } else { 
 						          tags = value['classTag']; 
 					         }
@@ -292,7 +290,7 @@ $(document).ready(function() {
                       $('#event_list').removeClass('col-md-4');
                       $('#event_list').addClass('col-12');
                    }
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-responsive img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-responsive img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
 
                 });
 				class_html += '</div>';
