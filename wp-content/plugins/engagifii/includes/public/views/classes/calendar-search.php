@@ -179,6 +179,7 @@ foreach ($collection as $key => $value) {
                         $classData[$id]['startTime'] .= $result->startTime;
                         $classData[$id]['endTime'] .= $result->endTime;
                         $classData[$id]['register'] = $register;
+                        $classData[$id]['instructors'] = $value->classInstructors;
                       
    
     }
@@ -190,6 +191,7 @@ $result2 = array();
 
 
 ksort($result2);
+//print_r(json_encode($result2));
 $i=0;
 foreach ($result2 as $key => $res) { 
     
@@ -207,11 +209,22 @@ foreach ($result2 as $key => $res) {
 <?php
 
     foreach($res as $keyobj => $data){
-       // print_r($data);
+        $testing = $data['instructors'];
+      // print_r(json_encode($data));
 ?>
     <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" style="color:black !important; font-size:smaller;" >
      <li class="calendarsearch"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span>
-    <span class="class-time-li" style="margin-left: 80px";><?php echo $data['titleNoLink'];?>  </span></li></a>
+    <span class="class-time-li" style="margin-left: 80px";><?php echo $data['titleNoLink'];?>  
+    <ul>
+    <?php 
+    $inc = 1;
+    foreach( $testing as $keyval => $instructor){
+        //print_r($instructor->fullName);
+         ?>
+       <?php echo '<li>(Instructors : '.$instructor->fullName.')</li>'; ?>  
+   <?php  }
+?>    </ul>
+</li></a>
     
     <div class="modal fade" id="exampleModal2<?php echo $data['classId'];echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
