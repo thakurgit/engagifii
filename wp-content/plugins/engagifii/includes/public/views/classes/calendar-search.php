@@ -202,12 +202,14 @@ $result2 = array();
 
 ksort($result2);
 //print_r(json_encode($result2));
+
 $i=0;
 foreach ($result2 as $key => $res) { 
-    
+
     $classSessionDate = $res['date'];
     $classDate = $key;
     $todayDate = date('Y-m-d');
+	
     ?>
     <tr>        
         <?php if($classDate==$todayDate){ ?>
@@ -218,9 +220,11 @@ foreach ($result2 as $key => $res) {
     <td>
 <?php
 
+usort($res, function($a, $b) {
+    return strtotime($a['startTime']) <=> strtotime($b['startTime']);
+});
     foreach($res as $keyobj => $data){
         $testing = $data['instructors'];
-      // print_r(json_encode($data));
 ?>
 	<div class="row mb-2 px-xl-4">
     <div class="col-md-2"><span class="calendarsearch text-nowrap"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span></div>
@@ -247,12 +251,12 @@ foreach ($result2 as $key => $res) {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header align-items-center">
-                   <img src="<?php echo $data['Icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel2"><?php echo $data['title']; ?></h5>
+                   <img src="<?php echo $data['Icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel2"><?php echo $data['title']; ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" style ="color:black;">
+                <div class="modal-body" >
                     <p><strong>Date :</strong> <?php echo date("j M Y", strtotime($data['date'])).' at '; echo $data['startTime']; echo "  -  ".$data['endTime'];?></p>
                     <p><strong>Duration : </strong><?php echo $data['classDuration']; ?></p>
                     <p><strong>Type :</strong> <?php echo $data['objectType']; ?></p>
