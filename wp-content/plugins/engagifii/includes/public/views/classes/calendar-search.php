@@ -222,18 +222,21 @@ foreach ($result2 as $key => $res) {
         $testing = $data['instructors'];
       // print_r(json_encode($data));
 ?>
-	<div class="row mb-3 px-xl-4">
+	<div class="row mb-2 px-xl-4">
     <div class="col-md-2"><span class="calendarsearch text-nowrap"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span></div>
-	<div class="col-md-8 ">
+	<div class="col-md-6 pt-2">
     	<div> <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" ><?php echo $data['titleNoLink'];?></a></div>
-    	<div class="small">
+    	
+    </div>
+    <div class="col-md-4 pt-2">
+    	<div class="">
     <?php 
     $inc = 1;
     foreach( $testing as $keyval => $instructor){
         if($inc==1){
 			echo "<span>Instructors : </span>";
 		}
-         echo '<span class="badge badge-primary mr-1"><small>'.$instructor->fullName.'</small></span>'; 
+         echo '<span class="badge badge-light mr-1"><small>'.$instructor->fullName.'</small></span>'; 
 		$inc++; 
 	  }
 ?>    </div>
