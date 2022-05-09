@@ -57,7 +57,6 @@ $('.clear-search').click(function(e){
     font-size: 14px;
 }
 h5#exampleModalLabel2 {    
-    margin-right: 50px;
     font-size: medium;
 }
 .modal-header {
@@ -236,7 +235,7 @@ usort($res, function($a, $b) {
     <div class="modal fade" id="exampleModal2<?php echo $data['classId'];echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header align-items-center">
+                <div class="modal-header align-items-center pr-5">
                    <img src="<?php echo $data['Icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel2"><?php echo $data['title']; ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

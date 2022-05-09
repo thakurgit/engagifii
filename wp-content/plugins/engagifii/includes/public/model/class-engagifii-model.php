@@ -2649,9 +2649,9 @@ public function getCalendarClassName(){
             </div>
             <div class="col-12 col-md-6 col-lg-8 text-center text-md-right text-uppercase">
                 <div class="btn-group btn-group-sm calendar-view" role="group" >
-                  <button type="button" id="month" class="btn bg-white border" aria-pressed="false">Monthly</button>
-                  <button type="button" id="week" class="btn bg-white border" aria-pressed="false">Weekly</button>
-                  <button type="button" id="day" class="btn bg-white border" aria-pressed="false">Daily</button>
+                  <button type="button" id="month" class="btn bg-white border shadow-none" aria-pressed="false">Monthly</button>
+                  <button type="button" id="week" class="btn bg-white border shadow-none" aria-pressed="false">Weekly</button>
+                  <button type="button" id="day" class="btn bg-white border shadow-none" aria-pressed="false">Daily</button>
                 </div>
             </div>
         </div>
@@ -2846,7 +2846,7 @@ public function getCalendarClassName(){
                 echo '</div>';
             ?>
         </div>
-          <div id="weekView" class="calendar__days col-12 pb-4 pt-5 px-1 px-lg-2 border">
+          <div id="weekView" class="calendar__days col-12 pt-5 px-0 border">
             <?php
                     list($week_start_date, $week_end_date) = $this->x_week_range($postedDate);
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
@@ -2859,16 +2859,16 @@ public function getCalendarClassName(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Thu</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Fri</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Sat</span>
-                <span class="top-bar__days border   py-2 py-md-4">Sun</span>
+            <div class="calendar__top-bar bg-light border-top mt-4 text-uppercase d-flex text-center">
+                <span class="top-bar__days  py-3 border-right">Mon</span>
+                <span class="top-bar__days  py-3 border-right">Tue</span>
+                <span class="top-bar__days  py-3 border-right">Wed</span>
+                <span class="top-bar__days  py-3 border-right">Thu</span>
+                <span class="top-bar__days  py-3 border-right">Fri</span>
+                <span class="top-bar__days  py-3 border-right">Sat</span>
+                <span class="top-bar__days  py-3 ">Sun</span>
             </div>
-            <div class="calendar__week text-center d-flex justify-content-around border-top pt-3">
+            <div class="calendar__week text-center d-flex justify-content-around border-top">
             <?php 
                 for ($i=0; $i <7 ; $i++) { 
                    
@@ -2882,7 +2882,7 @@ public function getCalendarClassName(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                             <?php if(count($weekfilteredItems) > 0){
@@ -2891,16 +2891,14 @@ public function getCalendarClassName(){
                                 $test = $weekfilteredItems[$fi]['titleNoLink'];
                                 $test = substr($test,0,20);
                             
-                            //echo $test.'...'; 
                             echo '<div class="classNames">';
-                            //echo '<a class="calendar-class" data-toggle="tooltip" data-placement="right" title="'.$weekfilteredItems[$fi]['titleNoLink'].'" href="" style="color:black; font-size:smaller;">'.$test.'...'.'</a>';
                             ?>
-                            <a class="calendar-class" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="color:black; font-size:smaller;" ><?php echo $test; ?>...</a>                                    
+                            <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
                                  <!-- Modal -->
                                     <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                        <div class="modal-header text-left d-flex align-items-center">
+                                        <div class="modal-header text-left d-flex align-items-center pr-5">
                                         <img src="<?php echo $weekfilteredItems[$fi]['icon']; ?>" class="img-responsive img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title" style ="color:blue;" id="exampleModalLabel"><?php echo $weekfilteredItems[$fi]['title']; ?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
