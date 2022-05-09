@@ -57,7 +57,6 @@ $('.clear-search').click(function(e){
     font-size: 14px;
 }
 h5#exampleModalLabel2 {    
-    margin-right: 50px;
     font-size: medium;
 }
 .modal-header {
