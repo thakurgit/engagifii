@@ -104,23 +104,6 @@ span#digitofday {
 <?php 
 $obj      =  new Engagifii_API();
 $searchtext = ""; 
-$searchtext1 = $_POST['dummy']; 
-$searchtext2 = $_GET['calendar-search'];  
-$searchtext3 = $_REQUEST['calendar-demo']; 
-$searchtext4 = $_POST['calendar-demo']; 
-$searchtext5 = $_GET['calendar-demo'];  
-$searchtext6 = $_REQUEST['search-demo']; 
-$searchtext7 = $_POST['search-demo']; 
-$searchtext8 = $_GET['search-demo'];  
-echo $searchtext;
-echo $searchtext1;
-echo $searchtext2;
-echo $searchtext3;
-echo $searchtext4;
-echo $searchtext5;
-echo $searchtext6;
-echo $searchtext7;
-echo $searchtext8;
 
 
 function _prepareClassData($searchtext){    
@@ -238,7 +221,7 @@ usort($res, function($a, $b) {
     $inc = 1;
     foreach( $testing as $keyval => $instructor){
         if($inc==1){
-			echo "<span>Instructors : </span>";
+			echo "<span>Instructor(s) : </span>";
 		}
          echo '<span class="badge badge-light mr-1"><small>'.$instructor->fullName.'</small></span>'; 
 		$inc++; 
