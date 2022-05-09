@@ -271,108 +271,108 @@ class abstractModelEngagifii extends Engagifii_API
     }
 
     /*class calemdar grid search */
-    public function classSearchLoadGridData(){
-        $postedData  = $this->_prepareClassData();
-        $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postedData, "POST", 'classes');
+    // public function classSearchLoadGridData(){
+    //     $postedData  = $this->_prepareClassData();
+    //     $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postedData, "POST", 'classes');
         
-        $collection   = json_decode($dataResponse['api_response'])->result;
-        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
-        $data         = array();
+    //     $collection   = json_decode($dataResponse['api_response'])->result;
+    //     $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+    //     $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+    //     $data         = array();
 
-        $options = get_option('ebt_api_settings');
-        $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+    //     $options = get_option('ebt_api_settings');
+    //     $endorsement_api_url = $options['ebt_api_url'];
+    //     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
         
-         foreach ($collection as $key => $value) {
+    //      foreach ($collection as $key => $value) {
             
-            #nested data
-            $nestedData = array();
-            $instructorPopOver = '';
-            $classPopover      = '';
+    //         #nested data
+    //         $nestedData = array();
+    //         $instructorPopOver = '';
+    //         $classPopover      = '';
 
-            if(count($value->classInstructors))
-               // $instructorPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
+    //         if(count($value->classInstructors))
+    //            // $instructorPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
 
-            if(count($value->classSessions))
-             //   $classPopover  = $this->_popOverClassData($key, $value->classSessions);
-            ## row data
-            $class_schedule = '';
-            if($value->classDuration > 1)
-            {
-                $class_schedule = '<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate)).'</span>';
-            }
-            $nestedData['sectionname'] = '<div class="d-flex"><div class="col-2 col-sm-2 m-auto p-0"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-responsive img-icon-lg p-0"></div><div class="Col-10 col-sm-10 m-auto p-3"><span><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).'</span></div></div>';
-            $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-           // $nestedData['objectType'] = $value->objectType;
+    //         if(count($value->classSessions))
+    //          //   $classPopover  = $this->_popOverClassData($key, $value->classSessions);
+    //         ## row data
+    //         $class_schedule = '';
+    //         if($value->classDuration > 1)
+    //         {
+    //             $class_schedule = '<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate)).'</span>';
+    //         }
+    //         $nestedData['sectionname'] = '<div class="d-flex"><div class="col-2 col-sm-2 m-auto p-0"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-responsive img-icon-lg p-0"></div><div class="Col-10 col-sm-10 m-auto p-3"><span><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).'</span></div></div>';
+    //         $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+    //        // $nestedData['objectType'] = $value->objectType;
 
-            // $nestedData['startdate'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover;
+    //         // $nestedData['startdate'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover;
 
-           // $nestedData['classInstructorsCount'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver;  
-           // $nestedData['credithours'] = $value->parentCourse->creditHours;          
+    //        // $nestedData['classInstructorsCount'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver;  
+    //        // $nestedData['credithours'] = $value->parentCourse->creditHours;          
            
-            $classTag = $value->classTag;
-            $allTags = array();
-            foreach ($classTag as $index => $tag) {
+    //         $classTag = $value->classTag;
+    //         $allTags = array();
+    //         foreach ($classTag as $index => $tag) {
                 
-                    if(count($classTag) > 1 && $index == 0)
-                    {   
-                        $tagPopover =  $this->_popOverTagData($key, $value->classTag);
+    //                 if(count($classTag) > 1 && $index == 0)
+    //                 {   
+    //                     $tagPopover =  $this->_popOverTagData($key, $value->classTag);
 
-                           $tagCount   = count($classTag) - 1;
-                    $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$tag->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
-                    }
-                    elseif(count($classTag) == 1)
-                        $allTags[] = $tag->tagName;
-            }
+    //                        $tagCount   = count($classTag) - 1;
+    //                 $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$tag->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
+    //                 }
+    //                 elseif(count($classTag) == 1)
+    //                     $allTags[] = $tag->tagName;
+    //         }
 
-            $nestedData['classTag'] = implode(" ", $allTags);
-            if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
-            {
-              if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-              {
-                   if($value->locationType->name=="onlocation")
-                      { 
-                      $nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      }
-                      elseif($value->locationType->name=="online"){
-                        //  $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      }
-                      elseif($value->locationType->name=="onlocationandonline"){
-                     // $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register Online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register in person</a>';
-                      }
-                  else{
-                     // $nestedData['register'] = ' ';
-                  }
-              }
-              else{
-             // $nestedData['register'] = ' ';
-              }
-          }else{
-           // $nestedData['register'] = ' ';
-            //$data[] = $nestedData;    
-          }
-          $data[] = $nestedData;
-      }
+    //         $nestedData['classTag'] = implode(" ", $allTags);
+    //         if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
+    //         {
+    //           if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+    //           {
+    //                if($value->locationType->name=="onlocation")
+    //                   { 
+    //                   $nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+    //                   //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+    //                   }
+    //                   elseif($value->locationType->name=="online"){
+    //                     //  $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+    //                   }
+    //                   elseif($value->locationType->name=="onlocationandonline"){
+    //                  // $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register Online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register in person</a>';
+    //                   }
+    //               else{
+    //                  // $nestedData['register'] = ' ';
+    //               }
+    //           }
+    //           else{
+    //          // $nestedData['register'] = ' ';
+    //           }
+    //       }else{
+    //        // $nestedData['register'] = ' ';
+    //         //$data[] = $nestedData;    
+    //       }
+    //       $data[] = $nestedData;
+    //   }
         
        
-        $draw           = $_POST['draw'];
-        $start          = $_POST['start']; //0, 5
-        $length         = $_POST['length']; //5, 10 per page.
+    //     $draw           = $_POST['draw'];
+    //     $start          = $_POST['start']; //0, 5
+    //     $length         = $_POST['length']; //5, 10 per page.
 
-        $json_data = array(
-            "draw" => intval($draw),
-            "recordsTotal" => intval($totalcount),
-            "recordsFiltered" => intval($totalcount),
-            "data" => $data,
-        );
+    //     $json_data = array(
+    //         "draw" => intval($draw),
+    //         "recordsTotal" => intval($totalcount),
+    //         "recordsFiltered" => intval($totalcount),
+    //         "data" => $data,
+    //     );
 
-        echo json_encode($json_data);
-        wp_die();
+    //     echo json_encode($json_data);
+    //     wp_die();
 
 
-    }
+    // }
 
     /* Class calendar search grid end here*/
     public function courseLoadGridData(){
