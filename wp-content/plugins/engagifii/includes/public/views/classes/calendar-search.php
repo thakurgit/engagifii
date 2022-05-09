@@ -1,4 +1,4 @@
-<script type="text/javascript">
+ <script type="text/javascript">
    var search="";
     $('#apply-filter-search-cal').click(function(e){
 		    e.preventDefault(); 
