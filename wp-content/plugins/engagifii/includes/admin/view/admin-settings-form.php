@@ -214,7 +214,8 @@
                         echo $_inputHtml;
                     	 ?></td>
             </tr>
-            <tr>
+            <!--
+            	<tr>
                 <th>Calendar Background Color</th>
                 <td>
                     <?php
@@ -263,9 +264,10 @@
                         echo $_inputHtml;
                     ?>
                 </td>
-            </tr>
+            </tr> 
+            -->
             <tr>
-                <th>Calendar Hover Color</th>
+                <th>Calendar Active Date Background</th>
                 <td>
                     <?php
                         $ebt_detail_calendar_hover_color = $options['ebt_detail_calendar_hover_color'];
@@ -275,7 +277,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Calendar Slot Background Color </th>
+                <th>Calendar Class Name Background </th>
                 <td>
                     <?php
                         $ebt_detail_calendar_strip_color = $options['ebt_detail_calendar_strip_color'];
@@ -285,7 +287,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Calendar Slot Background Hover Color</th>
+                <th>Calendar Class Name Background - Hover</th>
                 <td>
                     <?php
                         $ebt_detail_calendar_strip_hover_color = $options['ebt_detail_calendar_strip_hover_color'];

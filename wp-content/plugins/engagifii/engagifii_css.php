@@ -395,18 +395,19 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
     color: <?php echo $ebt_detail_text_color?> !important;
 }
 
-.calendar-background{background-color: <?php echo $ebt_detail_calendar_background_color; ?>}
+/*.calendar-background{background-color: <?php echo $ebt_detail_calendar_background_color; ?>}
 .calendar-text {color: <?php echo $ebt_detail_calendar_text_color; ?>}
 .class-background{background-color: <?php echo $ebt_detail_class_list_background_color; ?>}
-.class-text span, .class-text div{color: <?php echo $ebt_detail_class_calendar_text_color; ?>}
-.calendar__day:not(.today):hover, .calendar__day.active{background-color: <?php echo $ebt_detail_calendar_hover_color; ?> !important;}
+.class-text span, .class-text div{color: <?php echo $ebt_detail_class_calendar_text_color; ?>}*/
+.calendar__day.active{background-color: <?php echo $ebt_detail_calendar_hover_color; ?> !important;}
+.classNames > a {
+    background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
+}
 .classNames > a:hover {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
 /* CSS for Class Names on Calendar view */
 
 
-.classNames > a {
-    background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
-}
+
 
 /* Ends Here */
 

@@ -46,7 +46,14 @@ padding: 0;
 .instructor-popover {
 cursor:pointer;	
 }
-
+.calendar-class.badge {
+	background-color: rgb(238, 243, 249);
+	color: #2C3038;
+}
+.calendar-class.badge:hover, .calendar-class.badge:focus {
+	color: #fff;
+	background-color: #16181b;
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;

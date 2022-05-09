@@ -239,7 +239,6 @@ $(document).ready(function() {
 
         function getEvents(date, data){
           var collection = data;
-         // console.log(collection);
             $(".calendar__day:not(.today)").removeClass('active bg-primary text-white');
             $("[data-event="+date+"]:not(.today)").addClass('active bg-primary text-white');
             var response = $("[data-event="+date+"]").data('start');
@@ -433,7 +432,7 @@ $(document).ready(function() {
         $(document).on('click', function (e) {
             var container = $(".filter-border-cal");
             // If the target of the click isn't the container
-            console.log(e.target.className);
+            //console.log(e.target.className);
             if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
               container.hide();
               $('.filter-area-cal').addClass('d-none');
