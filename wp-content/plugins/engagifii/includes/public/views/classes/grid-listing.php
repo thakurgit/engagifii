@@ -345,7 +345,7 @@ $filter_content = removeWhitespace($filter_content);
 
   $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
         var title = $(this).text();
-        $(this).html( '<label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm search-endorsement" value=""/>' );
+        $(this).html( '<div class="position-relative"><label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm search-endorsement pr-4" value=""/> <button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
 
 function delay(callback, ms) {
   var timer = 0;
@@ -359,15 +359,28 @@ function delay(callback, ms) {
 }
   $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
-	 // titlesearch = titlesearch.split(" ");
-	 	//titlesearch = "'" + titlesearch.join("'|'") + "'";
-	//titlesearch = titlesearch.join("|") ;
-	 // console.log(titlesearch);
-	 // console.log(typeof(titlesearch)) ;
             if ( table.column(i).search() !== titlesearch ) {
 				table.column(i).search(titlesearch).draw();
             }
 }, 500));
+
+
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('.clear-search').click(function(e){
+	 $('#searchclass').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(i).search('').draw();
+ });
+ 
+ 
+ 
      /* $( 'input', this ).on( 'keyup change', function () {
 			
             if ( table.column(i).search() !== this.value ) {
