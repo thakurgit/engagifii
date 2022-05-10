@@ -403,7 +403,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 .classNames > a {
     background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
-.classNames > a:hover {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
+.classNames > a:hover, .classNames > a:focus {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
 /* CSS for Class Names on Calendar view */
 
 
