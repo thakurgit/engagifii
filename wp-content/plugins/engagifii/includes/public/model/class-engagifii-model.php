@@ -779,18 +779,22 @@ class abstractModelEngagifii extends Engagifii_API
                         $pichere = ENGAGIFII_ASSETS_URL . '/images/staff-list-grey.png';
                     }
 
-                    $personLists = $this->_popOverHtml($row->id, $row->sponsors);
+                    $personLists = $this->_popOverHtml1($row->id, $row->sponsors);
                     $countSponsors = count($row->sponsors) - 1;
-                    $sponsors_string = '<span class="col-auto px-0"> '.$row->sponsors[0]->name . '</span>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle  sponsors-click_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $countSponsors . ' </span>' . $personLists;
+                    $sponsors_string = '<span class="col pl-0 pr-2"> '.$row->sponsors[0]->name . '</span>' . '<span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle   sponsors-click_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $countSponsors . ' </span>' . $personLists;
 
-                    $nestedData["sponsors"] = '<div class="sponsors-middle position-relative d-inline-flex align-items-center pr-4 mw-100"><span class="user-image-square o-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </span> ' . $sponsors_string . '</div>';
+                    $nestedData["sponsors"] = '<div class="dropdown pr-4 text-left d-inline-flex align-items-center"><span class="user-image-square overflow-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </span> ' . $sponsors_string . '</div>';
+					
+					
                 } else {
                      if ($row->sponsors[0]->profilePic) {
                         $pichere = $row->sponsors[0]->profilePic;
                     } else {
                         $pichere = ENGAGIFII_ASSETS_URL . '/images/staff-list-grey.png';
                     }
-                    $nestedData["sponsors"] = '<div class="sponsors-middle position-relative d-inline-flex align-items-center"><span class="user-image-square o-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'"> </span> ' . '<span class="col-auto px-0"> '.$row->sponsors[0]->name . '</span>' . '</div>';
+                    $nestedData["sponsors"] = '<div class="sponsors-middle position-relative d-inline-flex align-items-center"><span class="user-image-square overflow-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'"> </span> ' . '<span class="col pl-0 pr-2"> '.$row->sponsors[0]->name . '</span>' . '</div>';
+					
+					
 
                 }
             } else {
@@ -1445,6 +1449,62 @@ class abstractModelEngagifii extends Engagifii_API
 
                                     });
                                     </script>";
+
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+
+    }
+
+    private function _popOverHtml1($personseGroupId, $persondata) {
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Sponsors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search sponsors.."/></div>';
+        $subItems = "";
+        $li=1;
+        foreach ($persondata as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->name;
+            
+            if($rowData->profilePic)
+                $profilepic = $rowData->profilePic;
+            else
+                $profilepic = ENGAGIFII_ASSETS_URL.'/images/staff-list-grey.png';
+				 $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><img style="width:30px; height:30px" src="' . $profilepic . '" class="mr-2 rounded-circle"/>' . $rowData->name .  '</li>';
+			$li++;
+        }
+
+        $popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+
+        $vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                  $(document).ready(function(){
+  $('.search-dropdown').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('li').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('li:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+});  
+                </script>";
 
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
