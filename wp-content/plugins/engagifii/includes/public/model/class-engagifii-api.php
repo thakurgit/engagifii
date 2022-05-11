@@ -267,7 +267,7 @@ class Engagifii_API{
         $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 
-        $vars = "<script>
+        /*$vars = "<script>
 					$('.td-dropdown').mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',
@@ -286,8 +286,8 @@ class Engagifii_API{
 	  }
   });
 });  
-                </script>";
-
+                </script>";*/
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -526,7 +526,15 @@ class Engagifii_API{
 	  return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 	}
 
-
+	/* public Analysis Api */
+	public function publicAnalysis($billid){
+		$postData = array();
+		$apiUrl = 'legislative/public-bills/'.$billid.'/maco/publicanalysis'; 
+		return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  }
+	  
+	  
+	  
 	/* Staff Analysis Api */
 	public function votesrollCall($billid){
 	  $postData = array();

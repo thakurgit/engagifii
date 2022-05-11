@@ -23,7 +23,7 @@ th.lastActionOn   {
 	min-width:170px
 }
 th.sponsors   {
-	max-width:300px
+	min-width:180px
 }
 th.objectType    {
 	min-width:150px
@@ -54,6 +54,8 @@ cursor:pointer;
 	color: #fff;
 	background-color: #16181b;
 }
+ 
+
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;
@@ -1220,6 +1222,7 @@ figure {
 	height: 44px;
 	flex: 0 0 44px;
 	max-width: 44px;
+	width: 44px;
 }
 .bill-detail-summary-tab .bill-detail-sponsors .summary-content-para {
 	padding: 10px 10px 8px;

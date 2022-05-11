@@ -1236,8 +1236,10 @@ var table = $('#ebtmaintable').DataTable( {
 			//{ 'width': '199', 'targets': 'title' },
 			//{ 'width': '45', 'targets': 'BillType' }
       ],
-         <?php if($dt_respnsive==''){ ?>
+         
 		 "drawCallback": function( settings ) {
+			 dt_dropdown();
+			 <?php if($dt_respnsive==''){ ?>
             $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
             $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
               var divWidth = parseInt($('.custom-scroll').width());
@@ -1271,8 +1273,9 @@ var table = $('#ebtmaintable').DataTable( {
 				   });
 				});  
 			   }
+			   <?php } ?>
          }
-		 <?php } ?>
+		 
       });
    
  

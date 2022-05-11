@@ -16,6 +16,7 @@ if(isset($_REQUEST['billId'])){
 
   $options = get_option( 'ebt_api_settings' );
   $lbt_api_url = $options['lbt_api_url'];
+  $lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
 
   $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings      = $options['lbt_title_display_setting'];
@@ -78,7 +79,12 @@ if(isset($_REQUEST['billId'])){
   
   /* Staff Analysis */
   $analysisResponse = $api->staffAnalysis($billId);
-  $analysisResponses= json_decode($analysisResponse['api_response']);
+  $analysisResponses= json_decode($analysisResponse['api_response']); 
+
+/*Public Analysis */
+$publicanalysisResponse = $api->publicAnalysis($billId);
+$publicanalysisResponses= json_decode($publicanalysisResponse['api_response']);
+
 
 
   /* Rollcall Votes */
@@ -165,22 +171,28 @@ function sort_associative_array($a, $b) {
           <div class="pt-1 text-size-medium">
             <span class="pt-2 text-bold">Session: </span><span><?php echo $billResponses->session; ?></span>
           </div>
-          <?php  if(count($billResponses->clientTags)){ ?>
-          <div class="pt-2 text-size-medium">
-            <span class="pt-2 text-bold">Tag(s): </span><span class="pl-1"><i class="fa fa-tags"></i>&nbsp;&nbsp;<?php if(count($billResponses->clientTags)){ echo count($billResponses->clientTags);}else {echo '<span class="text-muted">No Tags</span>'; } ?></span>
-              <?php
+         <?php
                 if(count($billResponses->clientTags)){
-
-
                   usort($billResponses->clientTags, "sort_associative_array");
+                  $countTag = 0;
+                 ?> <div id="tag-order" class="pt-1 text-size-medium" style="display: flex; flex-flow: row;"> <?php
                   foreach ($billResponses->clientTags as $key => $tag) {
-                     echo '<span class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+                    $tagMatch = $tag->tagId;
+                  if (in_array($tagMatch, $lbt_vsbl_tag_list)){
+                    $countTag = $countTag+1;
+                     echo '<span id="blockC" style="order:3;" class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
                   }
+                
+                    } ?>
+                    
+                    <span id="blockA" style="order:1; margin-top:10px;" class="pt-1 text-bold">Tag(s): </span><span id="blockB" style="order:2; margin-top:15px;" class="pl-1"><i class="fa fa-tags"></i>&nbsp;&nbsp;<?php echo $countTag; ?></span>
+                      </div>
+					  <?php
                 }
               ?>
 
-          </div>
-          <?php } ?>
+          
+         
 
           <?php if(count($billResponses->clientUsers) || count($billResponses->clientUserTags) || count($billResponses->clientGroups)){ 
               $total_assign_to = (int)count($billResponses->clientUsers) + (int)count($billResponses->clientUserTags) + (int)count($billResponses->clientGroups);
@@ -208,13 +220,13 @@ function sort_associative_array($a, $b) {
                      echo '<span class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
                   }
              } ?>
-
+  
           </div>
           <?php } ?>
 
-           
+         
         </div>
-        <div class="col-lg-3 pt-3">
+        <div class="col-12 col-lg-3 pt-3">
             
             <div class="col-sm-12 pb-2 text-right navigation-area">
               <?php
@@ -237,6 +249,17 @@ function sort_associative_array($a, $b) {
               <a class="text-underline pl-3 mt-4 download-detail order-2 " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>">Download Full Text</a>
               <img class="inline-block  mt-4" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/pdf.png';?>" alt="pdf">
             </div>
+ <?php $siteURL= site_url();
+              if ($siteURL == "https://engagifiiweb.com/maco"){ 
+                $siteLink = $quicklinkResponses[0]->url;
+                
+                ?>
+                <div class="col-sm-12 text-right col-sm-12 text-right d-flex align-items-center justify-content-lg-end">
+                <a class="btn btn-success order-3" style="float:right; color:white; margin-top:20px;" href="<?php echo $siteLink ?>">MGA Site </a>
+              </div>
+                <?php
+               
+              } ?>
         </div>
 </div>
 </div>
@@ -253,7 +276,7 @@ function sort_associative_array($a, $b) {
                             if(is_array($tabSequence) && count($tabSequence)){
                               foreach ($tabSequence as $key => $tab) {
                                
-                                if(($tab->name == 'Summary') || ($tab->name == 'Votes') || ($tab->name == 'Versions') || ($tab->name == 'History') || ($tab->name == 'Staff Analysis')){
+                                if(($tab->name == 'Summary') || ($tab->name == 'Votes') || ($tab->name == 'Versions') || ($tab->name == 'History') || ($tab->name == 'Staff Analysis') || ($tab->name == 'MACO Analysis')){
                               
                             ?>
                                 <li class="nav-item"><a class="nav-link lbt-link <?php if ($key == 0) {echo 'active';} ?>" data-toggle="tab" href="javascript:void(0)" id="<?php echo str_replace(" ", "", strtolower($tab->name)) ; ?>"><?php echo $tab->name; ?></a></li>
@@ -265,14 +288,60 @@ function sort_associative_array($a, $b) {
                             <?php 
                             $site = site_url();
                             if($site == 'https://engagifiiweb.com/accg') {?>
-                            <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
-                            <?php
-                              }
+                             <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                             
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                              <?php
+                                }
+                                elseif($site == 'https://engagifiiweb.com/baltimorecountymd') {?>
+                                  <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Baltimore City Analysis</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                  <?php
+                                    }
+                                    elseif($site == 'https://engagifiiweb.com/princegeorgescountymd') {?>
+                                      
+                                      <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Prince Georges County Analysis</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                      <?php
+                                        }
+                                        elseif($site == 'https://engagifiiweb.com/howardcountymd') {?>
+                                          
+                                          <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Howard County Analysis</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                          <?php
+                                            }
+                                            elseif($site == 'https://engagifiiweb.com/mcmd') {?>
+                                              
+                                              <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Montgomery County Analysis</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+
+                                              <?php
+                                                }
+  
                               else
                               {
                             ?>
@@ -283,6 +352,7 @@ function sort_associative_array($a, $b) {
                             <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
                             <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
                             <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                            <!--li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li-->
 
                             <?php
                               }
@@ -398,7 +468,7 @@ function sort_associative_array($a, $b) {
                                   if(!empty($analysisResponses)){
                                     $analysis = $analysisResponses[0];
 
-                                  //foreach($analysisResponses as $analysis){
+                                  foreach($analysisResponses as $analysis){
 
                                     $new_Date = date('m/d/Y',strtotime($analysis->createdDate));
 
@@ -429,7 +499,7 @@ function sort_associative_array($a, $b) {
 
                                   ?>
                               
-                                  <div class="row">
+                                  <div class="row p-2 border-bottom mt-2" style="margin-bottom: 40px;">
                                       <div class="col-sm-10">
                                           <a href="javascript:void(0)">
                                               <img class="img-circle img-xs mx-1 inline-block" src="<?php echo $instructor_img;?>" alt="instructor">
@@ -459,7 +529,7 @@ function sort_associative_array($a, $b) {
                                               {
                                                 ?>
 
-                                                <div class="col-sm-12 panel-title p-2 border-bottom mt-2">
+                                                <div class="col-sm-12 panel-title p-2">
                                                   <p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
                                                 </div>
                                                 
@@ -478,7 +548,7 @@ function sort_associative_array($a, $b) {
                                               }
                                              ?>
                                 </div>
-                                <?php } else {?>  
+                                <?php }} else {?>  
                                     <div class="bill-detail-summary-content no-border"> None</div>
                                 <?php }?>   
 
@@ -486,12 +556,12 @@ function sort_associative_array($a, $b) {
                           </div>
                             </div>
                            
-                            <div class="collapse versionsPanel" >
+                            <div class="collapse versionsPanel">
                                 <div class="table-responsive-sm">
-                                    <table class="table table-bordered no-table-gapping-detail light-background" id="versiontable">
+                                    <table class="table table-bordered no-table-gapping-detail light-background" id="">
                                         <thead>
                                             <tr>
-                                                <th class="versionTh">Version</th>
+                                                <th>Version</th>
                                                 <th>Date</th>
                                                 <th class="text-center">Source</th>
                                                 <th class="text-center">Download Text</th>
@@ -616,7 +686,7 @@ function sort_associative_array($a, $b) {
                                                     <tr class="bg-white">
                                                       <td> <?php echo $links->type;?> </td>
                                                       <td>
-                                                        <a target="_blank" href="<?php echo $links->url;?>"><?php echo $links->stateUrl;?>  </a>
+                                                        <a target="_blank" href="<?php echo $links->url;?>"><?php echo $links->url;?>  </a>
                                                       </td>
                                                     </tr>
                                                 <?php }} ?>
@@ -625,12 +695,113 @@ function sort_associative_array($a, $b) {
                                         </table>
                               </div>
                             </div>
+<!-- public analysis -->
+<div class="collapse macoPanel">
+                          
+
+                          <div class="bill-detail-summary-tab staff-analysis-editor2">
+                              <div class="col-sm-12">
+
+                                  <?php 
+
+                                  if(!empty($publicanalysisResponses)){
+                                    $analysis = $publicanalysisResponses[0];
+
+                                  //foreach($analysisResponses as $analysis){
+
+                                    $new_Date = date('m/d/Y',strtotime($analysis->createdDate));
+
+                                     if($analysis->createdByImage)
+                                  {
+                                      if (filter_var($analysis->createdByImage, FILTER_VALIDATE_URL)) { 
+                                          $instructor_img = $analysis->createdByImage;
+                                      }
+                                      else
+                                      {
+                                          $instructor_img = $tenant_url.$analysis->createdByImage;
+                                      }
+                                      
+                                  }
+                                  else
+                                  {
+                                      $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+                                  }
+                       
+                                  $ip =$_SERVER['REMOTE_ADDR'];  
+                                  $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+                                  $ipInfo = json_decode($ipInfo);
+                                  $timezone = $ipInfo->timezone;
+                                  date_default_timezone_set($timezone);
+                                  $date = strtotime($analysis->createdDate.' UTC');
+                                  //echo $date->format('Y-m-d h:i:s A'); 
+
+                                  ?>
+                              
+                                  <div class="row">
+                                      <div class="col-sm-10">
+                                          <a href="javascript:void(0)">
+                                              <img class="img-circle img-xs mx-1 inline-block" src="<?php echo $instructor_img;?>" alt="instructor">
+                                              <span class="text mx-1"><?php echo $analysis->createdBy;?></span>
+                                          </a>
+                                          <div class="text-muted mx-5 pt-2 pb-2"><?php echo date('m/d/Y', $date); ?> at <?php echo date('h:i A', $date); ?></div>
+                                          
+                                      </div>
+                                      <div class="col-sm-2">
+                                          <div class="p-2 m-2 text-white text-center" style="background-color:<?php echo $analysis->billPositionColor; ?>"><?php echo $analysis->billPosition; ?></div>
+                                      </div>
+                          
+                                  <div class="col-sm-12">
+                                      <div class="lead" >
+                                          <div class="bill-detail-summary-content no-border mx-5" style="height: 100%;">
+                                             <p class="no-margin"><?php echo $analysis->text;?></p>
+                                             
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                              <?php
+
+                                              if(count($analysis->links) || count($analysis->files)){
+
+                                              if(count($analysis->files))
+                                              {
+                                                ?>
+
+                                                <div class="col-sm-12 panel-title p-2 border-bottom mt-2">
+                                                  <p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
+                                                </div>
+                                                
+                                                <?php
+                                                foreach ($analysis->files as  $file) {
+                                                  $file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
+                                                  echo '<div class="col-4 pt-2"><i class="fa fa-file-pdf-o"></i> <a href="'.$file_url.'" target="_blank"> '. $file->displayName.'</a></div>';
+                                                }
+                                                
+                                              }
+                                              if(count($analysis->links)){
+                                                  foreach ($analysis->links as  $attachment) {
+                                                    echo '<div class="col-4 pt-2"><i class="fa fa-link"></i><a href="'.$attachment->url.'" target="_blank">'.$attachment->title.'</a></div>';
+                                                  }
+                                                }
+                                              }
+                                             ?>
+                                </div>
+                                <?php } else {?>  
+                                    <div class="bill-detail-summary-content no-border"> MACo has not provided an analysis yet.</div>
+                                <?php }?>   
+
+                              </div>
+                          </div>
+                            </div>
+<!-- -->
                         </div>
                     </div>
                 </div>
                 </div>
                 </div>
                 
+
                 
             </div>
         </div>
@@ -638,6 +809,7 @@ function sort_associative_array($a, $b) {
           $(document).ready(function() {
             <?php
             if(!isset($_COOKIE['filterids'])){
+              //alert("hello here");
 
             ?>
               var site_url = '<?php echo site_url(); ?>';
@@ -649,6 +821,7 @@ function sort_associative_array($a, $b) {
                 },
                 success: function(response) {       
                   var obj = JSON.parse(response);
+                  //console.log("hello here");
                   var index = obj.indexOf(<?php echo $_GET["billId"] ?>);
                   var totat_count = obj.length;
                   totat_count = totat_count -1;
@@ -688,10 +861,7 @@ function sort_associative_array($a, $b) {
                     searchPlaceholder: "Search here"
                   
                 },
-                "columnDefs": [ 
-	  				{ "targets": "versionTh", "orderable": false}
-      ],
-	  });
+                "ordering":true,});
 
               $('#historytable').DataTable({
                 "pageLength": 10,

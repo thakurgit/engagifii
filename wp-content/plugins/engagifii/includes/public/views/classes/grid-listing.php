@@ -285,8 +285,10 @@ $filter_content = removeWhitespace($filter_content);
              //$(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 <?php if($dt_respnsive==''){ ?>
+		 
          "drawCallback": function( settings ) {
+			 dt_dropdown();
+			 <?php if($dt_respnsive==''){ ?>
             $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center "><i class="far fa-angle-right"></i></span>');
             $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
               var divWidth = parseInt($('.custom-scroll').width());
@@ -320,8 +322,9 @@ $filter_content = removeWhitespace($filter_content);
 				   });
 				});  
 			   }
+			   <?php } ?>
          },
-		 <?php } ?>
+		 
 		  "initComplete": function(settings, json) {
 
 		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');

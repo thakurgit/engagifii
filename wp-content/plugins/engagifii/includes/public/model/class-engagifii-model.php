@@ -699,8 +699,7 @@ class abstractModelEngagifii extends Engagifii_API
 
     // Events Grid End here
 
-    public function legislationLoadGridData()
-    {
+    public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
         $dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
@@ -783,7 +782,7 @@ class abstractModelEngagifii extends Engagifii_API
                     $countSponsors = count($row->sponsors) - 1;
                     $sponsors_string = '<span class="col pl-0 pr-2"> '.$row->sponsors[0]->name . '</span>' . '<span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle   sponsors-click_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $countSponsors . ' </span>' . $personLists;
 
-                    $nestedData["sponsors"] = '<div class="dropdown pr-4 text-left d-inline-flex align-items-center"><span class="user-image-square overflow-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </span> ' . $sponsors_string . '</div>';
+                    $nestedData["sponsors"] = '<div class="dropdown pr-4 text-left d-flex align-items-center"><span class="user-image-square overflow-hidden rounded-circle mr-2"><img class="img-fluid" src = ' . $pichere . ' alt="'.$row->sponsors[0]->name.'" > </span> ' . $sponsors_string . '</div>';
 					
 					
                 } else {
@@ -1243,7 +1242,7 @@ class abstractModelEngagifii extends Engagifii_API
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         //$searchName = json_encode(array_values($rowName));
 
-        $vars = "<script>
+        /*$vars = "<script>
 					$('.td-dropdown').mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',
@@ -1262,8 +1261,8 @@ class abstractModelEngagifii extends Engagifii_API
 	  }
   });
 });  
-                </script>";
-
+                </script>";*/
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -1485,7 +1484,7 @@ class abstractModelEngagifii extends Engagifii_API
         $popOverHtml .= $subItems.'<span class="span_' . $personseGroupId . ' px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
-        $vars = "<script>
+        /*$vars = "<script>
 					$('.td-dropdown').mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',
@@ -1504,8 +1503,8 @@ class abstractModelEngagifii extends Engagifii_API
 	  }
   });
 });  
-                </script>";
-
+                </script>";*/
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -1589,15 +1588,15 @@ class abstractModelEngagifii extends Engagifii_API
         $popOverHtml.= '</div>';
         $searchName = json_encode(array_values($rowName));
 
-        $vars = "<script>
+        /*$vars = "<script>
 					$('.td-dropdown').mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',
 		 			scrollbarPosition:'outside'
 		 			});
                     
-                </script>";
-
+                </script>";*/
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -1675,7 +1674,7 @@ class abstractModelEngagifii extends Engagifii_API
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
-        $vars = "<script>
+        /*$vars = "<script>
 					$('.td-dropdown').mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',
@@ -1694,8 +1693,8 @@ class abstractModelEngagifii extends Engagifii_API
 	  }
   });
 });  
-                </script>";
-
+                </script>";*/
+$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -2613,6 +2612,7 @@ public function getCalendar(){
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
             <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
+
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
                 <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>

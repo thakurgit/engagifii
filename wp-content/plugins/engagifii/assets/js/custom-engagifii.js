@@ -140,8 +140,6 @@ $(document).ready(function(){
             icon.toggleClass("fa-angle-up fa-angle-down");
     })
 
-    
-
 });
 
     function __addExtraDiv(title)
@@ -207,3 +205,26 @@ $(document).ready(function(){
 }
 
    $(function () { $("[data-toggle = 'tooltip']").tooltip(); });
+
+function dt_dropdown() {
+  $('.td-dropdown').each(function() {   
+$(this).mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+});
+});
+  $('.search-dropdown').each(function() { 
+  $(this).on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('li, a').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('li:visible, a:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+  });
+}
