@@ -1160,7 +1160,7 @@ function copyDataforApply()
 
  
 var sort_key = '<?php echo $sort_key ?>';
-var blog_title = '<?php echo _WORKSPACE_; ?>';
+var blog_title = "<?php echo _WORKSPACE_; ?>";
 var table = $('#ebtmaintable').DataTable( {
     
       "pageLength": 10,

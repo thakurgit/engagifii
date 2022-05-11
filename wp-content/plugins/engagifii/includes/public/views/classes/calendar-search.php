@@ -260,7 +260,12 @@ usort($res, function($a, $b) {
     </td>
     </tr>
 </table>
-<div class="d-none no-results"><h4 class="text-center text-secondary">Oops! No data found!! Try some other keyword</h4></div>
+<?php if($result2) {
+$noresults ='Oops! No data found!! Try some other keyword';
+ } else {
+	$noresults ='No session available of any class.'; 
+ }?>
+<div class="d-none no-results"><h4 class="text-center text-secondary"><?php echo $noresults; ?></h4></div>
 
 
 

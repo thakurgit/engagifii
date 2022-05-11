@@ -293,6 +293,7 @@ $(document).ready(function() {
                       $('#event_list').addClass('col-12');
                    }
                     class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-responsive img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+					
 
                 });
 				class_html += '</div>';

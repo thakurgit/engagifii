@@ -2218,6 +2218,7 @@ class abstractModelEngagifii extends Engagifii_API
         	else
         	{
         		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
+				$data['titleNoLink'] = $value->sectionName;
 	            $data['id']    = $value->id;
 	            $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
 	            $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
@@ -2245,7 +2246,7 @@ class abstractModelEngagifii extends Engagifii_API
 	            }
 
 	            $data['classTag'] = $allTags;
-
+				 $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                 if($value->isClassRegistrationAllow)
 	            {
                     //echo $value->registrationState;
@@ -2271,7 +2272,7 @@ class abstractModelEngagifii extends Engagifii_API
 
                     }
                     else{
-                            $data['register'] = ' ';
+                            $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }
 	                
 	            }
@@ -2743,7 +2744,7 @@ public function getCalendarClassName(){
                 $classdata = $this->classCalendar();
                 //echo "Hello Class Data";
 
-                print_r($classata);
+                //print_r($classdata);
 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
@@ -2829,7 +2830,7 @@ public function getCalendarClassName(){
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
-                                            
+                                            //print_r($filteredItems);
                                             $test = $filteredItems[$fi]['titleNoLink'];
                                             $test = substr($test,0,20);
                                         //echo $test.'...'; 
