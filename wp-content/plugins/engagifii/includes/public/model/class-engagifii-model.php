@@ -1463,7 +1463,7 @@ class abstractModelEngagifii extends Engagifii_API
 
     private function _popOverHtml1($personseGroupId, $persondata) {
         $rowName = array();
-        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Sponsors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search sponsors.."/></div>';
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Sponsors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown sd_' . $personseGroupId . '" placeholder="Search sponsors.."/></div>';
         $subItems = "";
         $li=1;
         foreach ($persondata as $key => $rowData) {
@@ -1478,11 +1478,11 @@ class abstractModelEngagifii extends Engagifii_API
             if($li%2==1){
 			$class='bg-light';	
 			}
-            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><img style="width:30px; height:30px" src="' . $profilepic . '" class="mr-2 rounded-circle"/>' . $rowData->name .  '</li>';
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><img style="width:30px; height:30px" src="' . $profilepic . '" class="mr-2 rounded-circle"/><span>' . $rowData->name .  '</span></li>';
 			$li++;
         }
 
-        $popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $popOverHtml .= $subItems.'<span class="span_' . $personseGroupId . ' px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
         $vars = "<script>
@@ -1492,10 +1492,10 @@ class abstractModelEngagifii extends Engagifii_API
 		 			scrollbarPosition:'outside'
 		 			});
                   $(document).ready(function(){
-  $('.search-dropdown').on('keyup', function() {
+  $('.sd_{$personseGroupId}').on('keyup', function() {
     var value = $(this).val().toLowerCase();
     $(this).parent().siblings('li').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      $(this).toggle($(this).find('span').text().toLowerCase().indexOf(value) > -1);
     });
 	  if($(this).parent().siblings('li:visible').length<1){
 		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
