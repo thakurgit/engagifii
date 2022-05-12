@@ -288,8 +288,9 @@ function sort_associative_array($a, $b) {
                             <?php 
                             $site = site_url();
                             if($site == 'https://engagifiiweb.com/accg') {?>
-                             <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                            <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                             <li class="nav-item"><a class="nav-link lbt-link " data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
+                              
                              
                               <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
                               <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
