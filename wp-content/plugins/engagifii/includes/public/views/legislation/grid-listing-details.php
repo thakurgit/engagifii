@@ -557,8 +557,7 @@ function sort_associative_array($a, $b) {
                             </div>
                            
                             <div class="collapse versionsPanel">
-                                <div class="table-responsive-sm">
-                                    <table class="table table-bordered no-table-gapping-detail light-background" id="">
+                                    <table class="table table-bordered table-hover table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th>Version</th>
@@ -573,7 +572,7 @@ function sort_associative_array($a, $b) {
                                                 if(!empty($versionResponses)){
                                                 foreach ($versionResponses as $version => $allVersions) { 
                                             ?>
-                                            <tr class="bg-white">
+                                            <tr>
                                               
 
                                                 <td> <?php echo $allVersions->type;?> </td>
@@ -592,10 +591,8 @@ function sort_associative_array($a, $b) {
                                         </tbody>
                                     </table>
                                 </div>
-                                </div>
                             <div class="collapse votesPanel">
-                                <div class="table-responsive-sm">
-                                    <table class="table table-bordered no-table-gapping-detail light-background nowrap" id="votetable">
+                                    <table class="table table-bordered table-hover table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal">Chamber</th>
@@ -616,7 +613,7 @@ function sort_associative_array($a, $b) {
                                           <?php 
                                           if(!empty($voteResponses)){
                                           foreach($voteResponses as $vote){ ?>
-                                            <tr class="bg-white">
+                                            <tr>
                                                 <td> <?php echo $vote->chamberType;?></td>
                                                 <td> <?php echo $vote->totalVoteCount;?></td>
                                                 <td> <?php echo $vote->dateOfRollCall;?></td>
@@ -636,10 +633,8 @@ function sort_associative_array($a, $b) {
                                         </tbody>
                                     </table>
                                 </div>
-                                </div>
                             <div class="collapse historyPanel">
-                                <div class="table-responsive-sm">
-                                    <table class="table table-bordered no-table-gapping-detail light-background" id="historytable">
+                                    <table class="table table-bordered table-hover table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal" width="120">Date</th>
@@ -656,7 +651,7 @@ function sort_associative_array($a, $b) {
                                              $convert_Date = strtotime($defaulget_Date);
                                              $new_date = date('Y-m-d',$convert_Date);
                                           ?>
-                                            <tr class="bg-white">
+                                            <tr>
                                                 <td> <?php echo $new_date;?></td>
                                                 <td> <?php echo $histories->billChamberType;?> </td>
                                                 <td> <?php echo $histories->actionText;?> </td>
@@ -666,12 +661,10 @@ function sort_associative_array($a, $b) {
                                           </tbody>
                                         </table>
                                 </div>
-                                </div>
                                 
                             <div class="collapse quickPanel">
-                                    <div class="table-responsive-sm">
                                         
-                                        <table class="table table-bordered light-background" id="quicklinktable">
+                                        <table class="table table-bordered table-hover table-striped" id="">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -683,7 +676,7 @@ function sort_associative_array($a, $b) {
                                                   <?php 
                                                   if(!empty($quicklinkResponses)){
                                                   foreach($quicklinkResponses as $links){?>
-                                                    <tr class="bg-white">
+                                                    <tr>
                                                       <td> <?php echo $links->type;?> </td>
                                                       <td>
                                                         <a target="_blank" href="<?php echo $links->url;?>"><?php echo $links->url;?>  </a>
@@ -693,7 +686,6 @@ function sort_associative_array($a, $b) {
 
                                             </tbody>
                                         </table>
-                              </div>
                             </div>
 <!-- public analysis -->
 <div class="collapse macoPanel">
