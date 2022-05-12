@@ -466,7 +466,7 @@ class abstractModelEngagifii extends Engagifii_API
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<img src="'.$row->icon.'" class="img-responsive img-icon-lg" alt="award-icon"><a href=' . site_url() . '/endorsement-detail?endId=' . $default_Id . ' >' . $default_Title . '</a>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->icon.'" class="img-fluid img-icon-lg p-0 mr-3" alt="award-icon"><a href=' . site_url() . '/endorsement-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -495,7 +495,7 @@ class abstractModelEngagifii extends Engagifii_API
                 $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
 
             }
-            $nestedData['createdOn'] = '<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
+            $nestedData['createdOn'] = '<div class="d-flex align-items-center"><img src="'.$instructor_img.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="instructor-img"><div class="text-left">'.$row->createdBy->name.'<small class="d-block">'.$new_Date.'</small></div>';
             
             $nestedData['validity'] = $row->validity;
             
@@ -503,7 +503,7 @@ class abstractModelEngagifii extends Engagifii_API
             if ($default_Courses) {
                 $nestedData['courseCount'] = $default_Courses;
             }else{
-                $nestedData['courseCount'] = '<div class="course-badge"><img src="'.ENGAGIFII_ASSETS_URL.'/images/course-icon.png" class="img-circle" alt="course-icon"></div>';
+                $nestedData['courseCount'] = '<div class="course-badge"><img src="'.ENGAGIFII_ASSETS_URL.'/images/course-icon.png" class="img-circle img-fluid" alt="course-icon"></div>';
             }
             
             $default_Register = $row->register;
