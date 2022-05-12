@@ -287,7 +287,7 @@ function sort_associative_array($a, $b) {
                             ?> -->
                             <?php 
                             $site = site_url();
-                            if($site == 'https://engagifiiweb.com/accg') {?>
+                            if($site == 'https://localhost/engagifiwebstg') {?>
                              <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
                               <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
                              
@@ -479,7 +479,7 @@ function sort_associative_array($a, $b) {
                                       }
                                       else
                                       {
-                                          $instructor_img = $tenant_url.$analysis->createdByImage;
+                                       $instructor_img = $analysis->createdByImage;
                                       }
                                       
                                   }
