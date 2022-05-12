@@ -72,7 +72,7 @@
             <?php
           }
             ?>
-             <a href="<?php echo site_url();?>/endorsement-grid-view/" class="pl-2 mr-2 text-muted"><i class="fa fa-times"></i></a>
+             <!-- <a href="<?php echo site_url();?>/endorsement-grid-view/" class="pl-2 mr-2 text-muted"><i class="fa fa-times"></i></a> -->
           </div>
           <div class="clearfix pt-4 text-right">
             <a class="btn btn-primary p-2" href="<?php echo $tenant_url;  ?>/pages/awards/<?php echo $endId; ?>/signup/overview" target="_blank">Register</a>
