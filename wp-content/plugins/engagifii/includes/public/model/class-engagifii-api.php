@@ -389,6 +389,56 @@ class Engagifii_API{
 
         return $popOverHtml . $vars;
     }
+     public function _popOverClassesDate1($courseid, $classData){
+
+        $rowName = array();
+       
+        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Associated Classes</h6>';
+        $subItems = "";
+        $li=1;
+        foreach ($classData as $key => $rowData) {
+            
+            $rowName[$rowData->sequenceNumber] = $rowData->sequenceNumber;
+            $classTime = '';
+            if($rowData->sessionDay)
+                $classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date('H:i A', strtotime($rowData->sessionStartTime)).' - '.date('H:i A', strtotime($rowData->sessionEndTime));
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+			$subItems .= '<li class="px-2 py-1 border-bottom d-flex align-items-center small '.$class.'"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+			$li++;
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '</div>';
+        //$searchName = json_encode(array_values($rowName));
+
+        /*$vars = "<script>
+                    $(function() {
+                        class_{$courseid} = $('#classbox_{$courseid}').select2({
+                            templateResult: function(item) {
+                                return format(item,  false);
+                            }
+                        });
+
+                        $(document).on('click', '.class_{$courseid}', function () {
+                            class_{$courseid}.select2('open');
+                            setTimeout(function(){ __addExtraDiv('Associated Classes')},100);
+                        });
+                    });
+                </script>";*/
+				
+		$vars = "";
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
 
 
 	/*
