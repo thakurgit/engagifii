@@ -312,7 +312,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 	font-family: <?php echo $font_family;?> !important;
 }
 
-.alpha-teal{
+/*.alpha-teal{
 	background-color: <?php echo $table_heading_bg?>;
 }
 
@@ -322,7 +322,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 	color:<?php echo $table_heading_color?>;
 	font-size: <?php echo $table_heading_fsize?>px;
 	font-family: <?php echo $font_family;?> !important;
-}
+}*/
 
 .no-table-gapping-detail td{
 	font-size: <?php echo $ebt_table_tbody_fontsize?>px;
