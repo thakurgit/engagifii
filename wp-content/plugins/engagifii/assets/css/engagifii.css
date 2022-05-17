@@ -1,4 +1,5 @@
 /* Filter Section*/ 
+
 #ebtmaintable.dt-responsive {
 }
 table.dataTable td.title-col {
@@ -860,10 +861,10 @@ table#ebtmaintable.dataTable th {
 .table-view-desktop a {
 	cursor: pointer;
 }
-.summary-content-para-engagiigii {
+/*.summary-content-para-engagiigii {
 	padding: 15px 20px;
 	display: flex;
-}
+}*/
 .detail-sponsors-here {
 	border-top: 1px solid #e6e6e6;
 }
@@ -1611,6 +1612,11 @@ padding: 0 !important;
 @media only screen and (min-width:1200px) {
 	[data-elementor-type="wp-page"] {
 		min-height: 750px
+	}
+}
+@media only screen and (min-width:1920px) {
+	.bill-detail-page {
+	min-height:94vh	
 	}
 }
 @media only screen and (max-width:767px) {

@@ -76,7 +76,7 @@
              <!-- <a href="<?php echo site_url();?>/endorsement-grid-view/" class="pl-2 mr-2 text-muted"><i class="fa fa-times"></i></a> -->
           </div>
           <div class="clearfix pt-4 text-right">
-            <a class="btn btn-primary p-2" href="<?php echo $tenant_url;  ?>/pages/awards/<?php echo $endId; ?>/signup/overview" target="_blank">Register</a>
+            <a class="btn btn-primary " href="<?php echo $tenant_url;  ?>/pages/awards/<?php echo $endId; ?>/signup/overview" target="_blank">Register</a>
           </div>
           
 
@@ -96,21 +96,25 @@
                             <a class="nav-link ebt-link" data-toggle="tab" role="tab" href="javascript:void(0)" id="document" aria-selected="false">Documents</a>
                         </li> -->
                     </ul>
-                    <div class="tab-content p-3">
+                    <div class="p-3">
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade active show " role="tabpanel" id="summary-tab">
-                            <div class="bill-detail-summary-tab">
-                                
-                                <div class="bill-detail-summary-content">
-                                    <div class="panel-title bg-light p-3 border-bottom">
-                                      <h5 class="heading d-inline">Endorsement Details</h5>
-                                      <span class="pull-right"><i class="fa fa-angle-up"></i></span>
-                                    </div>
-                                    <div class="panel-details">
-                                      <?php
+                        	<div class="accordion" id="accordionExample">
+                            	<div class="card  mb-3 border-bottom">
+                                  <div class="card-header p-0">
+                                        <h2 class="mb-0">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content1" aria-expanded="false" aria-controls="collapseTwo">
+                                            Endorsement Details
+                                            <i class="fal fa-chevron-down"></i>
+                                          </button>
+                                        </h2>
+                                      </div>                                
+                                <div id="tab-content1" class="collapse" data-parent="#accordionExample">
+                                      <div class="card-body p-3">
+                                        <?php
                                         if($endResponses->objectType){
                                       ?>
-                                        <div class="summary-content-para-engagiigii col-sm-12">
+                                        <div class="summary-content-para-engagiigii row">
                                             <div class="col-sm-2 ">Endorsement Type:</div>
                                             <div class="col-sm-10"><?php echo $endResponses->objectType; ?></div>
                                         </div> 
@@ -118,7 +122,7 @@
                                           }
                                            if($endResponses->description){
                                       ?>
-                                        <div class="summary-content-para-engagiigii col-sm-12">
+                                        <div class="summary-content-para-engagiigii row">
                                             <div class="col-sm-2">Description:</div>
                                             <div class="col-sm-10">
                                                 <?php 
@@ -134,7 +138,7 @@
                                       }
                                           if($endResponses->requirement){
                                         ?>
-                                      <div class="summary-content-para-engagiigii col-sm-12">
+                                      <div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Requirements:</div>
                                         <div class="col-sm-10">
                                           <?php 
@@ -147,7 +151,7 @@
                                         }
                                         if($endResponses->validity){
                                       ?>
-                                      <div class="summary-content-para-engagiigii col-sm-12">
+                                      <div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Valid Till:
                                         </div>
                                         <div class="col-sm-10">
@@ -160,7 +164,7 @@
                                           if(count($endResponses->skills)>0)
                                           {
                                       ?>
-                                      <div class="summary-content-para-engagiigii col-sm-12">
+                                      <div class="summary-content-para-engagiigii row">
                                        <div class="col-sm-2 requir">Course Skills:</div>
                                         <div class="col-sm-10">
                                         
@@ -181,16 +185,21 @@
                                            
                                         ?>
                                     </div>
-                                </div>
+                                      </div>
+                                    </div>                 
 
-                                <div class="bill-detail-summary-content mt-20">
-
-                                  <div class="panel-title bg-light p-3 border-bottom">
-                                      <h5 class="heading d-inline">Registration Details & Settings</h5>
-                                      <span class="pull-right"><i class="fa fa-angle-up"></i></span>
-                                    </div>
-                                    <div class="panel-details">
-                                    <div class="summary-content-para-engagiigii col-sm-12">
+                            	<div class="card  mb-3 border-bottom">
+                                  <div class="card-header p-0">
+                                        <h2 class="mb-0">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content2" aria-expanded="false" aria-controls="collapseTwo">
+                                            Registration Details & Settings
+                                            <i class="fal fa-chevron-down"></i>
+                                          </button>
+                                        </h2>
+                                      </div>                                
+                                <div id="tab-content2" class="collapse" data-parent="#accordionExample">
+                                      <div class="card-body p-3">
+<div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Price:
                                         </div>
                                         <div class="col-sm-10">
@@ -200,7 +209,7 @@
                                      <?php
                                                 if($endResponses->preRequisiteCourses || $endResponses->preRequisiteAwards){
                                             ?>
-                                    <div class="summary-content-para-engagiigii col-sm-12">
+                                    <div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Pre-Requisite(s): </div>
                                         <div class="col-sm-10">
                                           <?php
@@ -240,42 +249,23 @@
                                     <?php
                                       }
                                     ?>
-                                    <!-- <div class="summary-content-para-engagiigii col-sm-12">
-                                        <div class="col-sm-2">Registration Steps:</div>
-                                        <div class="col-sm-10">
-                                            <ul id="progressbar">
-                                                <li class="steps text-left text-wrap">Overview</li>
-                                                <li class="steps text-left text-wrap">User Information</li>
-                                                <li class="steps text-left text-wrap">Organization/ People</li>
-                                                <li class="steps text-left text-wrap">Activities & Sessions</li>
-                                                <li class="steps text-left text-wrap">Select Classes</li>
-                                                <li class="steps text-left  text-wrap">Supporting Documents</li>
-                                                <li class="steps text-left text-wrap">Review & Submit</li>
-                                                <li class="steps text-left text-wrap">Status</li>
-                                            </ul>
                                         </div>
-                                    </div>
-                                    <div class="summary-content-para-engagiigii col-sm-12">
-                                        <div class="col-sm-2">Approval Steps:</div>
-                                        <div class="col-sm-10">
-                                            <ul id="progressbar">
-                                                <li class="w-25 number-one text-left text-wrap">Principal</li>
-                                                <li class="w-25 number-two text-left text-wrap">District Coordinator</li>
-                                                <li class="w-25 number-three text-left text-wrap">RESA Approval</li>
-                                            </ul>
-                                        </div>
-                                    </div> -->
-                                  </div>
-                                </div>
-                                <?php
+                                      </div>
+                                    </div>  
+                                 <?php
                                     if(count($endResponses->contactPersons)){
-                                ?>
-                                <div class="bill-detail-summary-content mt-20">
-                                    <div class="panel-title bg-light p-3 border-bottom">
-                                      <h5 class="heading d-inline">Contact Person</h5>
-                                      <span class="pull-right"><i class="fa fa-angle-up"></i></span>
-                                    </div>
-                                    <div class="panel-details">
+                                ?>                  
+                            	<div class="card  mb-3 border-bottom">
+                                  <div class="card-header p-0">
+                                        <h2 class="mb-0">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content3" aria-expanded="false" aria-controls="collapseTwo">
+                                            Contact Person
+                                            <i class="fal fa-chevron-down"></i>
+                                          </button>
+                                        </h2>
+                                      </div>                                
+                                <div id="tab-content3" class="collapse" data-parent="#accordionExample">
+                                <div class="card-body p-3">
                                     <div class="row">
                                         <?php 
                                           foreach ($endResponses->contactPersons as $cntctkey => $cntctvalue) {
@@ -318,13 +308,15 @@
                                         }
                                        ?>
                                     </div>
-                                  </div>
                                 </div>
-                                <?php
+                                      </div>
+                                    </div> 
+                                     <?php
                                     }
-                                ?>
+                                ?>                
+                                    </div>
                             </div>
-                        </div>
+                           
                            
                         <div class="tab-pane fade " role="tabpanel" id="version-tab">
                                 <table class="table table-striped table-bordered  nowrap" id="course_table">

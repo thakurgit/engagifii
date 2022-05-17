@@ -100,6 +100,7 @@ $siteURL= site_url();
 <style type="text/css">
   .badge-warning{color: #fff;}
 </style>
+<div class="bill-detail-page">
 <div class="col-sm-12">
 <a href="<?php echo site_url();?>/bill-tracking/" class="go-back"> Go Back </a>
 </div>
@@ -814,6 +815,7 @@ $siteURL= site_url();
 <!-- -->
                         </div>
                     </div>
+                </div>
                 </div>
                 </div>
                 </div>
