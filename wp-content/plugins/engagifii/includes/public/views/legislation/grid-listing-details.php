@@ -633,11 +633,15 @@ $siteURL= site_url();
 
                                           <?php 
                                           if(!empty($voteResponses)){
-                                          foreach($voteResponses as $vote){ ?>
+                                          foreach($voteResponses as $vote){ 
+                                            $defaulget_Date = $vote->dateOfRollCall;
+                                            $convert_Date = strtotime($defaulget_Date);
+                                            $new_Date = date('M d, Y', $convert_Date);
+                                            ?>
                                             <tr>
                                                 <td> <?php echo $vote->chamberType;?></td>
                                                 <td> <?php echo $vote->totalVoteCount;?></td>
-                                                <td> <?php echo $vote->dateOfRollCall;?></td>
+                                                <td> <?php echo $new_Date;?></td>
                                                 <td> <?php echo $vote->votesCountInFavor;?></td>
                                                 <td> <?php echo $vote->votesCountAgainst;?></td>
                                                 <td> <?php echo $vote->countOfNoVotes;?></td>
