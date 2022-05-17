@@ -375,7 +375,7 @@ function delay(callback, ms) {
 				$('.clear-search').hide();
 			} 
  });
-$('.clear-search').click(function(e){
+$('th .clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();

@@ -39,9 +39,9 @@
 				$('.clear-search').hide();
 			} 
  });
-$('.clear-search').click(function(e){
+$('.apply-search .clear-search').click(function(e){
 	 $('#calendar-search').val('');
-	 if(!$('#calendarsearch_div ').is(':visible')){
+	 if($('#calendarsearch_div ').is(':visible')){
 	  $('#apply-filter-search-cal').trigger('click');
 	 }
 	$('.clear-search').hide();
