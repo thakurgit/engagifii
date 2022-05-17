@@ -136,7 +136,7 @@
 								
 		                        	if(trim($response->description)){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii flex-wrap">
+		                        <div class="summary-content-para-engagiigii row flex-wrap">
 		                            <div class="col-md-4 col-12 p-0 mb-3 mb-md-0">Description:</div>
 		                            <div class="col-md-8 col-12"><?php echo trim($response->description); ?></div>
 		                        </div>
@@ -144,7 +144,7 @@
 		                        	}
 		                        	if($response->objectType){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                            <div class="col-sm-4 p-0">Class Type:</div>
 		                            <div class="col-sm-8"><?php echo $response->objectType; ?></div>
 		                        </div>
@@ -152,7 +152,7 @@
 		                        	}
 		                        	if($response->parentCourse->creditHours){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                        	<div class="col-sm-4 p-0">Credit Hours:</div>
 		                        	<div class="col-sm-8"><?php echo $response->parentCourse->creditHours; ?></div>
 		                        </div>
@@ -181,15 +181,15 @@
 									  				if(!empty($response->location) && isset($response->location->address))
 									  				{
 									  			?>
-									  				<div class="summary-content-para-engagiigii">
+									  				<div class="summary-content-para-engagiigii row">
 									  					<div class="col-sm-4 p-0">Room Name:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
 					                            	</div>
-					                            	<div class="summary-content-para-engagiigii">
+					                            	<div class="summary-content-para-engagiigii row">
 					                            		<div class="col-sm-4 p-0">Address:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
 					                            	</div> 
-					                            	<div class="summary-content-para-engagiigii">
+					                            	<div class="summary-content-para-engagiigii row">
 					                            		<iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1.' '.$response->location->address->city.' '.$response->location->address->state.' '.$response->location->address->zipCode); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
 
 					                            	</div>
@@ -197,7 +197,7 @@
 									  				}
 									  				else{
 									  				?>
-									  						<div class="summary-content-para-engagiigii">No class room is selected now</div>
+									  						<div class="summary-content-para-engagiigii col-12">No class room is selected now</div>
 									  				<?php	
 									  				}
 									  			?>
@@ -205,11 +205,11 @@
 					                        
 									  	</div>
 									  	<div class="tab-pane fade show <?php if($response->classLocationType->name == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
-									  		<div class="summary-content-para-engagiigii">
+									  		<div class="summary-content-para-engagiigii row">
 			                            		<div class="col-sm-4 p-0">Online Class Location:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
 			                        		</div> 
-			                        		<div class="summary-content-para-engagiigii">
+			                        		<div class="summary-content-para-engagiigii row">
 			                            		<div class="col-sm-4 p-0">Login Steps:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
 			                        		</div> 

@@ -122,7 +122,7 @@
 		                        <?php
 		                        	if(trim($response->description)){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                            <div class="col-sm-4 p-0">Description:</div>
 		                            <div class="col-sm-8"><?php echo trim($response->description); ?></div>
 		                        </div>
@@ -130,7 +130,7 @@
 		                        	}
 		                        	if($response->eventType){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                            <div class="col-sm-4 p-0">Event Type:</div>
 		                            <div class="col-sm-8"><?php echo $response->eventType; ?></div>
 		                        </div>
@@ -138,7 +138,7 @@
 		                        	}
 		                        	if($response->creditHours){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                        	<div class="col-sm-4 p-0">Credit Hours</div>
 		                        	<div class="col-sm-8"><?php echo $response->creditHours; ?></div>
 		                        </div>
@@ -146,7 +146,7 @@
 		                        	}
 		                        	if($response->secondaryUnits[0]->value){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii">
+		                        <div class="summary-content-para-engagiigii row">
 		                            <div class="col-sm-4 p-0">PLU:</div>
 		                            <div class="col-sm-8"><?php echo $response->secondaryUnits[0]->value; ?></div>
 		                        </div>
@@ -154,7 +154,7 @@
 		                        	}
 		                        	if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
-		                         <div class="summary-content-para-engagiigii">
+		                         <div class="summary-content-para-engagiigii row">
 		                            <div class="col-sm-4 p-0">Skills:</div>
 		                            <div class="col-sm-8"><?php foreach ($response->skills as $key => $value) {
 		                            ?>
@@ -187,15 +187,15 @@
 									  				if(!empty($response->location) && isset($response->location->address))
 									  				{
 									  			?>
-									  				<div class="summary-content-para-engagiigii">
+									  				<div class="summary-content-para-engagiigii row">
 									  					<div class="col-sm-4 p-0">Room Name:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
 					                            	</div>
-					                            	<div class="summary-content-para-engagiigii">
+					                            	<div class="summary-content-para-engagiigii row">
 					                            		<div class="col-sm-4 p-0">Address:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
 					                            	</div> 
-					                            	<div class="summary-content-para-engagiigii">
+					                            	<div class="summary-content-para-engagiigii col-12">
 					                            		<iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
 
 					                            	</div>
@@ -203,7 +203,7 @@
 									  				}
 									  				else{
 									  				?>
-									  						<div class="summary-content-para-engagiigii">No class room is selected now</div>
+									  						<div class="summary-content-para-engagiigii col-12">No class room is selected now</div>
 									  				<?php	
 									  				}
 									  			?>
@@ -211,11 +211,11 @@
 					                        
 									  	</div>
 									  	<div class="tab-pane fade show <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
-									  		<div class="summary-content-para-engagiigii">
+									  		<div class="summary-content-para-engagiigii row">
 			                            		<div class="col-sm-4 p-0">Online Class Location:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
 			                        		</div> 
-			                        		<div class="summary-content-para-engagiigii">
+			                        		<div class="summary-content-para-engagiigii row">
 			                            		<div class="col-sm-4 p-0">Login Steps:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
 			                        		</div> 

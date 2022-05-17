@@ -411,7 +411,7 @@ $siteURL= site_url();
                                   <div class="col-md-8 col-sm-8 col-xs-12 p-0 border">
                                        <div class="panel-title bg-light p-2 border-bottom">
                                       <h5 class="heading d-inline mb-0"> <?php echo $billResponses->title;?> </h5></div>
-                                      <p class="summary-content-para-engagiigii"> <?php echo $billResponses->summary;?> </p>
+                                      <p class="summary-content-para-engagiigii "> <?php echo $billResponses->summary;?> </p>
 
 
                                       <?php $countSponsors =  count($billResponses->sponsors); ?>
