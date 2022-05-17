@@ -52,11 +52,11 @@ if(isset($_REQUEST['billId'])){
 
   $last = $billResponses->lastActionOn;
   $last_k = strtotime($last);
-  $lastAction_new_date = date('M-d-Y',$last_k);
+  $lastAction_new_date = date('M d, Y',$last_k);
 
   $introduced = $billResponses->introducedDate;
   $last_intro = strtotime($introduced);
-  $intro_new_date = date('M-d-Y',$last_intro);
+  $intro_new_date = date('M d, Y',$last_intro); 
 
   /* get tabs with sequence */
   $tabSequence = $api->legislationBillTabSequence();
@@ -95,7 +95,7 @@ function sort_associative_array($a, $b) {
     return strcmp(ucfirst(trim($a->text)), ucfirst(trim($b->text)));
 }
  
-
+$siteURL= site_url();
 ?>
 <style type="text/css">
   .badge-warning{color: #fff;}
@@ -161,9 +161,24 @@ function sort_associative_array($a, $b) {
           <?php
               }
             }
-          ?>
+            if ($siteURL == "https://engagifiiweb.com/capitolreports-nc"){ 
+              ?>
+         
           <div class="pt-1 text-size-medium">
-            <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span><span class="pt-2 pl-2 text-bold">Last Action: </span><span><?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span>
+            <span class="pt-2 text-bold"><strong>Introduced Date: </strong></span><span><?php echo $intro_new_date;?> </span>
+          </div>
+          <div class="pt-1 text-size-medium">
+          <span class="pt-2 text-bold"><strong>Status:</strong> </span><span><?php echo $billResponses->status; ?></span>
+          </div>
+          <div class="pt-1 text-size-medium">
+            <!-- <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span> -->
+            <span class="pt-2 text-bold"><strong>Last Action: </strong></span><span><?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span>
+          </div>
+          <?php }
+                else{ ?>
+            <div class="pt-1 text-size-medium">
+            <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span>
+            <span class="pt-2 pl-2 text-bold">Last Action: </span><span><?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span>
           </div>
           <div class="pt-1 text-size-medium">
             <span class="pt-2 text-bold">Introduced Date: </span><span><?php echo $intro_new_date;?> </span><span class="pt-2 pl-2 text-bold">Status: </span><span><?php echo $billResponses->status; ?></span>
@@ -171,7 +186,9 @@ function sort_associative_array($a, $b) {
           <div class="pt-1 text-size-medium">
             <span class="pt-2 text-bold">Session: </span><span><?php echo $billResponses->session; ?></span>
           </div>
-         <?php
+          <?php
+          }
+         
                 if(count($billResponses->clientTags)){
                   usort($billResponses->clientTags, "sort_associative_array");
                   $countTag = 0;
@@ -242,14 +259,14 @@ function sort_associative_array($a, $b) {
               ?>
             </div>
             <div class="col-sm-12 pb-2 text-lg-right">
-              <span class="btn btn-danger " style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
+              <span class="btn btn-danger tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
             </div>
             <div class="col-sm-12 text-right col-sm-12 text-right d-flex align-items-center justify-content-lg-end">
               
               <a class="text-underline pl-3 mt-4 download-detail order-2 " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>">Download Full Text</a>
               <img class="inline-block  mt-4" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/pdf.png';?>" alt="pdf">
             </div>
- <?php $siteURL= site_url();
+ <?php 
               if ($siteURL == "https://engagifiiweb.com/maco"){ 
                 $siteLink = $quicklinkResponses[0]->url;
                 
@@ -288,9 +305,8 @@ function sort_associative_array($a, $b) {
                             <?php 
                             $site = site_url();
                             if($site == 'https://engagifiiweb.com/accg') {?>
-                            <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                             <li class="nav-item"><a class="nav-link lbt-link " data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
-                              
+                             <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
+                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
                              
                               <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
                               <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
@@ -480,7 +496,7 @@ function sort_associative_array($a, $b) {
                                       }
                                       else
                                       {
-                                       $instructor_img = $analysis->createdByImage;
+                                          $instructor_img = $analysis->createdByImage;
                                       }
                                       
                                   }
@@ -572,12 +588,16 @@ function sort_associative_array($a, $b) {
                                             <?php 
                                                 if(!empty($versionResponses)){
                                                 foreach ($versionResponses as $version => $allVersions) { 
+                                                  //$convert_Date = $allVersions->billDraftDateTime;
+                                                  $defaulget_Date = $allVersions->billDraftDateTime;
+                                                  $convert_Date = strtotime($defaulget_Date);
+                                                  $new_Date = date('M d, Y', $convert_Date);
                                             ?>
                                             <tr>
                                               
 
                                                 <td> <?php echo $allVersions->type;?> </td>
-                                                <td> <?php echo $allVersions->billDraftDateTime;?> </td>
+                                                <td> <?php echo $new_Date;?> </td>
                                                 <td class="text-center">
                                                   <a  class="text-underline ng-star-inserted" target="_blank" href="<?php echo $allVersions->url;?>"><?php echo $allVersions->url;?></a>
                                                 </td>
@@ -650,7 +670,7 @@ function sort_associative_array($a, $b) {
                                            foreach ($historyResponses as $history => $histories) {
                                              $defaulget_Date = $histories->actionDate;
                                              $convert_Date = strtotime($defaulget_Date);
-                                             $new_date = date('Y-m-d',$convert_Date);
+                                             $new_date = date('M d, Y',$convert_Date); //$new_Date = date('M d, Y', $convert_Date);
                                           ?>
                                             <tr>
                                                 <td> <?php echo $new_date;?></td>
