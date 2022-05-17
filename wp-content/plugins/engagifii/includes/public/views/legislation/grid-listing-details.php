@@ -658,7 +658,7 @@ $siteURL= site_url();
                                     <table class="table table-bordered table-hover table-striped" id="">
                                         <thead>
                                             <tr>
-                                                <th class="alpha-teal" width="120">Date</th>
+                                                <th class="alpha-teal" width="150">Date</th>
                                                 <th class="alpha-teal" width="45%">Chamber</th>
                                                 <th class="alpha-teal">Action</th>
                                             </tr>
