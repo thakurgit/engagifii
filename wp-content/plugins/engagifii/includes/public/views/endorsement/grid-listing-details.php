@@ -40,7 +40,8 @@
 <div class="col-sm-12">
     <a href="<?php echo site_url();?>/endorsements/" class="go-back"> Go Back </a>
 </div>
-<div class="engagifii-box border border-bottom-0">
+<div class="border row">
+<div class="engagifii-box col-12 py-3">
     <div class="col-sm-12 d-md-flex p-2 align-items-center">
         <div class="col-xl-1 col-md-2 pt-3">
             <img class="img-circle" src="<?php echo $endResponses->icon;?>" style="max-width:78px;">
@@ -82,22 +83,22 @@
         </div>
     </div>      
 </div>
-        <div class="engagifii-box border p-4 bg-light">             
-            <div class="border bg-white class-detail-main-nav">
-                <div class="tabbable  box-shadow">            
-                    <ul class="nav nav-tabs detail-nav-engagiifii pl-2" role="tablist">
+        <div class="engagifii-box bg-light py-3 col-12 border-top">             
+            <div class="bg-white border class-detail-main-nav">
+                    <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link ebt-link active" data-toggle="tab" role="tab" href="javascript:void(0)" id="summary" aria-selected="true">General</a>
+                            <a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" role="tab" href="#summary-tab" id="" aria-selected="true">General</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ebt-link" data-toggle="tab" role="tab" href="javascript:void(0)" id="version" aria-selected="false">Course Curriculum</a>
+                            <a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" role="tab" href="#version-tab" id="" aria-selected="false">Course Curriculum</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link ebt-link" data-toggle="tab" role="tab" href="javascript:void(0)" id="document" aria-selected="false">Documents</a>
                         </li> -->
                     </ul>
-                    <div class="tab-content p-4">
-                        <div class="active collapse summaryPanel" role="tabpanel">
+                    <div class="tab-content p-3">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade active show " role="tabpanel" id="summary-tab">
                             <div class="bill-detail-summary-tab">
                                 
                                 <div class="bill-detail-summary-content">
@@ -325,7 +326,7 @@
                             </div>
                         </div>
                            
-                        <div class="collapse versionPanel" role="tabpanel">
+                        <div class="tab-pane fade " role="tabpanel" id="version-tab">
                                 <table class="table table-striped table-bordered  nowrap" id="course_table">
                                     <thead>
                                         <tr>
@@ -369,29 +370,13 @@
                                         </tbody>
                                     </table>
                             </div>
-                            <!-- <div class="collapse documentPanel" role="tabpanel">
-                                <div class="table-responsive-sm">
-                                    <table class="table table-bordered light-background nowrap" id="documentTable">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">Document</th>
-                                                <th class="text-center">File Size</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="bg-white">
-                                                <td class="text-center">Test Document</td>
-                                                <td class="text-center">50KB</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div> -->
+                           
                             
                         </div>
-                    </div>
+                        </div>
                 </div>
-            </div>              
+            </div>  
+            </div>            
         <?php } ?>
 
         <script type="text/javascript">

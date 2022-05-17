@@ -55,7 +55,16 @@ cursor:pointer;
 	background-color: #16181b;
 }
  
-
+.engagifii-tabs .nav-link {
+	border-bottom: 3px solid transparent;
+}
+.engagifii-tabs .nav-item .nav-link.active, .engagifii-tabs .nav-item.show > .nav-link {
+	background: none !important;
+	border-color:var(--blue);
+}
+.engagifii-tabs-content button:not(.collapsed) i {
+	transform:rotate(180deg)
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;
@@ -91,10 +100,7 @@ table.light-background tr td.dataTables_empty {
 .engagifii-box button {
 	font-size: 16px;
 }
-.engagifii-box.border {
-	margin: auto !important;
-	background: #fff;
-}
+
 /*.engagifii-box div{font-size: 16px;}*/
 .engagifii-box p {
 	margin: 0;
@@ -974,9 +980,7 @@ img {
 .nav.nav-tabs {
 	margin: 0;
 }
-.nav-link {
-	border-bottom: none !important;
-}
+
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {

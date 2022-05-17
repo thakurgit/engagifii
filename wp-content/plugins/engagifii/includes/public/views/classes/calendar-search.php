@@ -41,7 +41,9 @@
  });
 $('.clear-search').click(function(e){
 	 $('#calendar-search').val('');
-	$('#apply-filter-search-cal').trigger('click');
+	 if(!$('#calendarsearch_div ').is(':visible')){
+	  $('#apply-filter-search-cal').trigger('click');
+	 }
 	$('.clear-search').hide();
  });
              
