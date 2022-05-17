@@ -299,8 +299,7 @@ class Engagifii_API{
 
     }
 
-    public function _popOverClass($id, $classData)
-    {
+    public function _popOverClass($id, $classData){
     	$rowName = array();
        
         $popOverHtml = '<span id="span_' . $id . '"  style="opacity:0;display:block;height:0;"> <select class="form-control" id="classbox_' . $id . '">';
@@ -335,6 +334,55 @@ class Engagifii_API{
                     });
                 </script>";
 
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+    public function _popOverClass1($id, $classData){
+    	$rowName = array();
+       
+        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Classes</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Classes.."/></div>';
+        $subItems = "";
+        $li=1;
+        foreach ($classData as $key => $rowData) {
+            
+            $rowName[$rowData->name] = $rowData->sectionName;
+            $classTime = '';
+            if($rowData->sectionName)
+                $classTime = $rowData->sectionName;
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->sectionName . '</li>';
+			$li++;
+            
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        //$searchName = json_encode(array_values($rowName));
+
+       /* $vars = "<script>
+                    $(function() {
+                        class_{$id} = $('#classbox_{$id}').select2({
+                            templateResult: function(item) {
+                                return format(item,  false);
+                            }
+                        });
+
+                        $(document).on('click', '.class_{$id}', function () {
+                            class_{$id}.select2('open');
+                            setTimeout(function(){ __addExtraDiv('Classes')},100);
+                        });
+                    });
+                </script>";*/
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 

@@ -326,39 +326,40 @@
                         </div>
                            
                         <div class="collapse versionPanel" role="tabpanel">
-                            <div class="table-responsive-sm pt-4">
-                                <table class="table table-hover table-bordered light-background no-table-gapping-detail nowrap" id="course_table">
+                                <table class="table table-striped table-bordered  nowrap" id="course_table">
                                     <thead>
                                         <tr>
                                             <th class="">Course Name</th>
-                                            <th class="">Course Type</th>
-                                            <th class="" >Credit Hours</th>
-                                            <th class="">Instructors</th>
-                                            <th class="">Classes</th>
+                                            <th class="text-center">Course Type</th>
+                                            <th class="text-center" >Credit Hours</th>
+                                            <th class="text-center">Instructors</th>
+                                            <th class="text-center">Classes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
                                             if(is_array($curriculamResponses) && count($curriculamResponses) >0 ){
                                                 foreach ($curriculamResponses as $curriculam => $allcurriculams) { 
-                                                    $instructorPopOver = $api->_popOverInstructorData($curriculam, $allcurriculams->certifiedInstructors);
-                                                     $classPopover   = $api->_popOverClass($curriculam, $allcurriculams->courseClasses);
+                                                    $instructorPopOver = $api->_popOverInstructorData1($curriculam, $allcurriculams->certifiedInstructors);
+                                                     $classPopover   = $api->_popOverClass1($curriculam, $allcurriculams->courseClasses);
                                                 ?>
-                                                <tr class="bg-white">
-                                                    <td><img class="img-icon-lg" style="display:inline-block" src="<?php echo $allcurriculams->courseIcon;?>">
-                                                      <span><?php $cname = preg_replace('/\s+/', ' ', $allcurriculams->courseName);?><?php echo $cname; ?></span>
+                                                <tr>
+                                                    <td>
+                                                    	<div class="d-flex align-items-center">
+                                                    <img class="img-icon-lg img-fluid mr-2" style="display:inline-block" src="<?php echo $allcurriculams->courseIcon;?>">
+                                                      <?php $cname = preg_replace('/\s+/', ' ', $allcurriculams->courseName);?><?php echo $cname; ?></div>
                                                     </td>
-                                                    <td class="">
+                                                    <td class="text-center">
                                                         <?php if ($allcurriculams->objectTypeId == 0) { echo "General"; } else{ echo "N/A"; } ?>
                                                     </td>
-                                                    <td class=""> 
+                                                    <td class="text-center"> 
                                                         <?php echo $allcurriculams->creditHours;?> 
                                                     </td>
-                                                    <td><div class="instructor-popover instructor_<?php echo $curriculam; ?> " data-placement="left" data-containerid="<?php echo $curriculam; ?>" id=" <?php echo $curriculam; ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo count($allcurriculams->certifiedInstructors); ?></span></div><?php echo $instructorPopOver; ?></td>
+                                                    <td class="text-center"><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $curriculam; ?> " data-placement="left" data-containerid="<?php echo $curriculam; ?>" id=" <?php echo $curriculam; ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($allcurriculams->certifiedInstructors); ?></span></div><?php echo $instructorPopOver; ?></div></td>
 
-                                                    <td class="">
-                                                        <div class="instructor-popover class_<?php echo $curriculam; ?> " data-placement="left" data-containerid="<?php echo $curriculam; ?>" id="<?php echo $curriculam; ?>">
-                      <img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/cal-1.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo count($allcurriculams->courseClasses); ?></span></div><?php echo $classPopover; ?>
+                                                    <td class="text-center">
+                                                        <div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_<?php echo $curriculam; ?> " data-placement="left" data-containerid="<?php echo $curriculam; ?>" id="<?php echo $curriculam; ?>">
+                      <img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/cal-1.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($allcurriculams->courseClasses); ?></span></div><?php echo $classPopover; ?></div>
                                                        
                                                     </td>
                                                 </tr>
@@ -367,7 +368,6 @@
                                                 } ?>         
                                         </tbody>
                                     </table>
-                                </div>
                             </div>
                             <!-- <div class="collapse documentPanel" role="tabpanel">
                                 <div class="table-responsive-sm">
@@ -401,13 +401,16 @@
                 "dom": '<"row"<"col-sm-12 "f">>ti<"row"<"col-sm-5 p-4"l><"col-sm-7"p>>',
                 "bInfo":false,
                 "processing": true,
-                "searching": true,
+                "searching": false,
                 "language": {
                     processing: '<span>&nbsp;</span>',
                     search:'',
                     searchPlaceholder: "Search..."
                    },
-                "ordering":true});
+				   "drawCallback": function( settings ) {
+			 dt_dropdown();
+				   },
+                "ordering":false});
               
 
               // $('table#documentTable').DataTable({
@@ -426,10 +429,5 @@
 
           } );
 
-          $(document).ready(function () {
-  
-  $('.dropdown-toggle').click(function () {
-      $('.dropdown-menu').toggle();
-    })
-  })
-        </script><d
+
+        </script>
