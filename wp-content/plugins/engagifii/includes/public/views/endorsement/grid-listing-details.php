@@ -40,8 +40,8 @@
 <div class="col-sm-12">
     <a href="<?php echo site_url();?>/endorsements/" class="go-back"> Go Back </a>
 </div>
-<div class="border row">
-<div class="engagifii-box col-12 py-3">
+<div class="border">
+<div class="engagifii-box py-3">
     <div class="col-sm-12 d-md-flex p-2 align-items-center">
         <div class="col-xl-1 col-md-2 pt-3">
             <img class="img-circle" src="<?php echo $endResponses->icon;?>" style="max-width:78px;">
@@ -83,7 +83,7 @@
         </div>
     </div>      
 </div>
-        <div class="engagifii-box bg-light py-3 col-12 border-top">             
+        <div class="engagifii-box bg-light p-3 border-top">             
             <div class="bg-white border class-detail-main-nav">
                     <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
                         <li class="nav-item">
