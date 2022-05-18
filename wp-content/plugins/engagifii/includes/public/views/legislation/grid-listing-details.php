@@ -97,12 +97,9 @@ function sort_associative_array($a, $b) {
  
 $siteURL= site_url();
 ?>
-<style type="text/css">
-  .badge-warning{color: #fff;}
-</style>
 <div class="bill-detail-page">
-<div class="col-sm-12">
-<a href="<?php echo site_url();?>/bill-tracking/" class="go-back"> Go Back </a>
+<div class="mb-2">
+<a href="<?php echo site_url();?>/bill-tracking/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 </div>
 
 <div class="engagifii-box border border-bottom-0" style="border-left:7px solid <?php echo $billResponses->trackingLevelColorCode;?> !important;">
@@ -287,8 +284,7 @@ $siteURL= site_url();
                       
                 <div class="engagifii-box border p-2 p-lg-4 bg-light">             
                   <div class="border bg-white class-detail-main-nav">
-                  <div class="tabbable  box-shadow">            
-                    <ul class="nav nav-tabs detail-nav-engagiifii pl-2" role="tablist">
+                    <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
                             <!-- <?php
                             array_multisort(array_column($tabSequence, 'sequence'), SORT_ASC, $tabSequence);
                             if(is_array($tabSequence) && count($tabSequence)){
@@ -363,13 +359,13 @@ $siteURL= site_url();
                               else
                               {
                             ?>
-                            <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">Summary</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Staff Analysis</a></li>
+                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" >Staff Analysis</a></li>
                             
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                            <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" >Versions</a></li>
+                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" >Votes</a></li>
+                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" >History</a></li>
+                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" >Quick Links</a></li>
                             <!--li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li-->
 
                             <?php
@@ -377,48 +373,55 @@ $siteURL= site_url();
                             ?>
                            
                         </ul>
-                        <div class="tab-content p-4">
-                          <div class="collapse summaryPanel"  role="tabpanel">
+                        <div class="p-3">
+                        <div class="tab-content" id="pills-tabContent">
+                          <div class="tab-pane fade active show"  role="tabpanel" id="summary">
                               <div class="row">
-                                  <div class="col-md-4 col-sm-4 col-xs-12 p-0 order-2 border">
-                                    <div class="panel-title bg-light p-2 border-bottom">
-                                      <h5 class="heading d-inline mb-0">House Committees</h5></div>
-                                      
-                                      <div class="col-sm-12">
+                                  <div class="col-md-4 order-2">
+                                  <div class="border rounded shadow-sm h-100">
+                                    <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                      <h6 class="mb-0 font-weight-normal">House Committees</h6>
+                                    </div>
+                                      <div class="p-3">
                                         <?php if(!empty($billResponses->houseCommittees)){
 
                                           ?>
                                         <?php foreach($billResponses->houseCommittees as $houseComittee){?>
-                                          <p class="summary-content-para particular-font p-2"> <?php echo $houseComittee;?> </p>
+                                          <p class="summary-content-para particular-font mb-2"> <?php echo $houseComittee;?> </p>
                                         <?php } } else { ?>
-                                          <p class="summary-content-para no-border text-capitalize p-2" style="border-bottom:1px solid #e6e6e6 !important;"> None </p>
+                                          <p class="summary-content-para no-border text-capitalize"> None </p>
                                         <?php }?> 
 
+                                  </div>
+
+                                       <div class="panel-title bg-light px-2 py-1 border-bottom border-top">
+                                      <h6 class="mb-0 font-weight-normal">Senate Committees</h6>
                                       </div>
-
-
-                                      <div class="panel-title bg-light p-2 border-bottom">
-                                      <h5 class="heading d-inline mb-0">Senate Committees</h5></div>
-                                      <div class="col-sm-12">
+                                      <div class="p-3">
                                       <?php if(!empty($billResponses->senateCommittees)){?>
                                       <?php foreach($billResponses->senateCommittees as $senateCommittee){?>
-                                      <p class="summary-content-para no-border p-2"> <?php echo $senateCommittee;?>  </p>
+                                      <p class="summary-content-para no-border mb-2"> <?php echo $senateCommittee;?>  </p>
                                       <?php } } else {?>
-                                        <p class="summary-content-para no-border text-capitalize p-2"> None </p>
+                                        <p class="summary-content-para text-capitalize"> None </p>
                                         <?php }?>
                                       </div>
                                   </div>
-                                  <div class="col-md-8 col-sm-8 col-xs-12 p-0 border">
-                                       <div class="panel-title bg-light p-2 border-bottom">
-                                      <h5 class="heading d-inline mb-0"> <?php echo $billResponses->title;?> </h5></div>
+                                  </div>
+                                  <div class="col-md-8">
+                                  <div class="border rounded shadow-sm h-100">
+                                       <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                      <h6 class="mb-0 font-weight-normal"> <?php echo $billResponses->title;?> </h6>
+                                      </div>
+                                      <div class="p-3">
                                       <p class="summary-content-para-engagiigii "> <?php echo $billResponses->summary;?> </p>
-
+                                         </div>
 
                                       <?php $countSponsors =  count($billResponses->sponsors); ?>
-                                       <div class="panel-title bg-light px-3 py-2 border-bottom">
-                                      <h5 class="heading d-inline mb-0">Sponsors (<?php echo $countSponsors;?>) </h5></div>
-
-                                      <div class="row sponsor-list-wrapper mt-2 mb-2">
+                                       <div class="panel-title bg-light px-2 py-1 border-bottom border-top">
+                                      <h6 class="mb-0 font-weight-normal">Sponsors (<?php echo $countSponsors;?>) </h6>
+                                      </div>
+										<div class="p-3">
+                                      <div class="row sponsor-list-wrapper">
 
 
 
@@ -426,14 +429,11 @@ $siteURL= site_url();
                                          foreach($billResponses->sponsors as $sponser) { 
 
                                           ?>
-                                          <div class="col-lg-4 col-md-6">
-                                              
-                                               <div class="p-2 d-flex">
-                                                 <div class="col-xl-3 col-3 pr-0">
+                                          <div class="col-lg-4 col-md-6 d-flex align-items-center mb-3">
                                                   <?php
                                                     if($sponser->profilePic){
                                                   ?>
-                                                 <span class="rounded-circle overflow-hidden d-block" style="width:44px; height:44px">
+                                                 <span class="rounded-circle overflow-hidden mr-2" style="max-width:44px; flex:0 0 44px; height:44px">
                                                  <img src="<?php echo $sponser->profilePic;?>" class="img-fluid" alt="sponsors">
                                                  </span>
 												                            <?php
@@ -441,29 +441,25 @@ $siteURL= site_url();
                                                       else
                                                       {
                                                     ?>
-                                                         <span class="rounded-circle overflow-hidden d-block" style="width:44px; height:44px">
+                                                         <span class="rounded-circle overflow-hidden mr-2" style="max-width:44px; flex:0 0 44px; height:44px">
                                                  <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/user-default.png" class="img-fluid" alt="user">
                                                  </span>
                                                     <?php
                                                       }
                                                     ?>
-                                                 </div>
-                                                   <div class="col-xl-9 col-9">
+                                                   <div>
                                                     <p class="title"><?php echo $sponser->name;?></p>
                                                     <?php
                                                           
                                                           if($sponser->involvedAs == 'Primary Sponsor'){
                                                     ?>
-                                                    <p class="badge badge-pill badge-warning py-1 px-2 "><small>Primary</small></p>
+                                                    <p class="badge badge-pill badge-warning "><small>Primary</small></p>
                                                     <?php
                                                         }
                                                       
                                                     ?>
                                                       
                                                     </div>
-                                                 </div> 
-                                                  
-                                              
                                           </div>
 
                                         <?php } ?>
@@ -471,11 +467,13 @@ $siteURL= site_url();
                                           
                                         
                                       </div>
+                                     </div>
+                                  </div>
                                   </div>
                               </div>
                           
                           </div>
-                          <div class="active collapse staffanalysisPanel">
+                          <div class="tab-pane fade " id="staffanalysis">
                           
 
                           <div class="bill-detail-summary-tab staff-analysis-editor">
@@ -574,8 +572,8 @@ $siteURL= site_url();
                           </div>
                             </div>
                            
-                            <div class="collapse versionsPanel">
-                                    <table class="table table-bordered table-hover table-striped" id="">
+                            <div class="tab-pane fade " id="versions">
+                                    <table class="table table-bordered table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th>Version</th>
@@ -613,8 +611,8 @@ $siteURL= site_url();
                                         </tbody>
                                     </table>
                                 </div>
-                            <div class="collapse votesPanel">
-                                    <table class="table table-bordered table-hover table-striped" id="">
+                            <div class="tab-pane fade" id="votes">
+                                    <table class="table table-bordered  table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal">Chamber</th>
@@ -659,8 +657,8 @@ $siteURL= site_url();
                                         </tbody>
                                     </table>
                                 </div>
-                            <div class="collapse historyPanel">
-                                    <table class="table table-bordered table-hover table-striped" id="">
+                            <div class="tab-pane fade" id="history">
+                                    <table class="table table-bordered table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal" width="150">Date</th>
@@ -688,9 +686,9 @@ $siteURL= site_url();
                                         </table>
                                 </div>
                                 
-                            <div class="collapse quickPanel">
+                            <div class="tab-pane fade" id="quick">
                                         
-                                        <table class="table table-bordered table-hover table-striped" id="">
+                                        <table class="table table-bordered table-striped" id="">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -814,7 +812,7 @@ $siteURL= site_url();
                             </div>
 <!-- -->
                         </div>
-                    </div>
+                        </div>
                 </div>
                 </div>
                 </div>
