@@ -302,56 +302,56 @@ $siteURL= site_url();
                             <?php 
                             $site = site_url();
                             if($site == 'https://engagifiiweb.com/accg') {?>
-                             <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">ACCG Analysis</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
+                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                              
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
                               <?php
                                 }
                                 elseif($site == 'https://engagifiiweb.com/baltimorecountymd') {?>
-                                  <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Baltimore City Analysis</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
-                                  <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Baltimore City Analysis</a></li>
+                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                                 <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                   <?php
                                     }
                                     elseif($site == 'https://engagifiiweb.com/princegeorgescountymd') {?>
                                       
-                                      <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Prince Georges County Analysis</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
-                                      <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                       <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Prince Georges County Analysis</a></li>
+                                     <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                       <?php
                                         }
                                         elseif($site == 'https://engagifiiweb.com/howardcountymd') {?>
                                           
-                                          <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Howard County Analysis</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
-                                          <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                                         <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Howard County Analysis</a></li>
+                                        <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                                           <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                           <?php
                                             }
                                             elseif($site == 'https://engagifiiweb.com/mcmd') {?>
                                               
-                                              <li class="nav-item"><a class="nav-link lbt-link active" data-toggle="tab" href="javascript:void(0)" id="summary">State Summary</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="staffanalysis">Montgomery County Analysis</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="versions">Versions</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="votes">Votes</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="history">History</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="quick">Quick Links</a></li>
-                                              <li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li>
+                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Montgomery County Analysis</a></li>
+                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
 
                                               <?php
                                                 }
@@ -362,8 +362,8 @@ $siteURL= site_url();
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" >Staff Analysis</a></li>
                             
-                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" >Versions</a></li>
-                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" >Votes</a></li>
+                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" >History</a></li>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" >Quick Links</a></li>
                             <!--li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li-->
