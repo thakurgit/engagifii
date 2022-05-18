@@ -66,7 +66,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 
 <style>
 <?php if(isset($activate_css)){?>
-@import url(https://fonts.googleapis.com/css?family=Arvo);
+/*@import url(https://fonts.googleapis.com/css?family=Arvo);
 @import url(https://fonts.googleapis.com/css?family=Heebo);
 @import url(https://fonts.googleapis.com/css?family=Cabin);
 @import url(https://fonts.googleapis.com/css?family=Courier+Prime);
@@ -89,7 +89,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px');
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);
-
+*/
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   font-family: <?php echo $font_family;?> !important;
   font-size: <?php echo $ebt_detail_text_font?>px !important;

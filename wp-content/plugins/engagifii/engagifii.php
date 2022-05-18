@@ -136,7 +136,7 @@ wp_enqueue_script(
 			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_evt', admin_url('admin-ajax.php?action=events') );
 			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_lbt', admin_url('admin-ajax.php?action=legislation') );
 			wp_localize_script( 'engagifii-jquerydatatable', 'engagifiiUrl_ajaxurl', admin_url('admin-ajax.php') );
-			wp_enqueue_script( 'custom-engagifii-js-ebt', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('popper'), '1.0.01', true );
+			wp_enqueue_script( 'custom-engagifii-js-ebt', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('jquery'), '1.0.01', true );
 			
 
 			wp_register_script( 'moment-js', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js' ); 
@@ -157,7 +157,7 @@ wp_enqueue_script(
 		if(!is_admin()){
 			 wp_enqueue_style( 'mcustomsrollbar', 'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css', array(  ), wp_get_theme()->get('Version')    );
 
-			wp_enqueue_style( 'engagifiidatatablecss-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/dataTables.bootstrap4.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'dt-bs', plugin_dir_url( __FILE__ ) . 'assets/css/dataTables.bootstrap4.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array('engagifiidatatablecss-ebt'), $this->version, 'all' );
 			wp_enqueue_style( 'sleect2css-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/select2.min.css', array(), $this->version, 'all' );
 			
