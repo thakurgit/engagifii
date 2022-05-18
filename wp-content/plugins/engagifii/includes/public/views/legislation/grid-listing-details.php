@@ -190,17 +190,20 @@ $siteURL= site_url();
                 if(count($billResponses->clientTags)){
                   usort($billResponses->clientTags, "sort_associative_array");
                   $countTag = 0;
-                 ?> <div id="tag-order" class="pt-1 text-size-medium" style="display: flex; flex-flow: row;"> <?php
+                 ?> 
+                 <div id="tag-order" class="pt-1 d-flex align-items-center"> 
+				 <?php
                   foreach ($billResponses->clientTags as $key => $tag) {
                     $tagMatch = $tag->tagId;
                   if (in_array($tagMatch, $lbt_vsbl_tag_list)){
                     $countTag = $countTag+1;
-                     echo '<span id="blockC" style="order:3;" class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+                     echo '<span id="blockC"  class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal order-3 ml-2"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
                   }
                 
                     } ?>
                     
-                    <span id="blockA" style="order:1; margin-top:10px;" class="pt-1 text-bold">Tag(s): </span><span id="blockB" style="order:2; margin-top:15px;" class="pl-1"><i class="fa fa-tags"></i>&nbsp;&nbsp;<?php echo $countTag; ?></span>
+                    <span id="blockA" class="order-1">Tag(s): </span><span id="blockB" class="order-2"><i class="fas fa-tags"></i>&nbsp;&nbsp;<?php echo $countTag; ?></span>
+                    
                       </div>
 					  <?php
                 }
@@ -218,21 +221,21 @@ $siteURL= site_url();
                 if(count($billResponses->clientUsers)){
                   foreach ($billResponses->clientUsers as $key => $assignto) {
                    
-                     echo '<span class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
                   }
                 }
               ?>
               <?php if(count($billResponses->clientUserTags)){ 
                   foreach ($billResponses->clientUserTags as $key => $assignto) {
                   
-                     echo '<span class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
                   }
              } ?>
 
               <?php if(count($billResponses->clientGroups)){ 
                   foreach ($billResponses->clientGroups as $key => $assignto) {
                     
-                     echo '<span class="border round-tag p-2 m-1 text-capitalize"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
                   }
              } ?>
   
