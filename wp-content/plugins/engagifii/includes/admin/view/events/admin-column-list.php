@@ -4,19 +4,22 @@
     $obj =  new adminDataColumn();
     $response = $obj->getEventsColumnData();
     $options = get_option( 'ebt_api_settings' );
+	$required_column_array = ['name', 'eventWithClass', 'tags', 'register', 'eventStatus', 'eventType', 'eventDates'];
 	//print_r($response);
     $events_visible_column_list = array();
     if(isset($options['events_visible_column_list']))
 	{
 	$events_visible_column_list = $options['events_visible_column_list'];   
 	}
+	
 		if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
     	echo '<ul class="ebt-grid-column-list">';
     	$counter=0;
 		foreach ($response as $key => $row) {
-			//print_r($events_visible_column_list[$counter]);
+			if(in_array($row->colName, $required_column_array)){
+			//print_r($row->colName)."<br>";
 
 			$checked = "";
 			if(in_array($row->colName, $events_visible_column_list))
@@ -32,8 +35,11 @@
 				echo '</ul>';
 				echo '<ul class="ebt-grid-column-list">'; 			 
 			}			 
+		
 			echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[events_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
-	    	$counter++;	  
+				
+				$counter++;
+		}
     	}
     	echo '</ul></div>';				
     }
