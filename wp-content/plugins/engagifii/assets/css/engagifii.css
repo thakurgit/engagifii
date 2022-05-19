@@ -50,6 +50,9 @@ cursor:pointer;
 .calendar-class.badge {
 	background-color: rgb(238, 243, 249);
 	color: #2C3038;
+	width: 95%;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .calendar-class.badge:hover, .calendar-class.badge:focus {
 	color: #fff;
