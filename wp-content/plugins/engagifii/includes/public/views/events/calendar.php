@@ -243,7 +243,7 @@ aside .box {
                 success:function(html){
                     $('#'+target_div).html(html);
                     $('.calendar__days').hide();
-                    $('#'+calendar_view).addClass('bg-secondary');
+                    $('#'+calendar_view).addClass('bg-primary text-white ');
                     var date = year+'-'+month+'-'+day;
                     if(calendar_view == 'day'){ $('#event_list').hide();}
                     getEvents(date);
@@ -392,7 +392,7 @@ aside .box {
                     $('#calendar_div').html(html);
                     
                     getEvents(today);
-           			$('button#month').addClass('bg-secondary');
+           			$('button#month').addClass('bg-primary text-white ');
            			$('#dayView').hide();
                 $('#weekView').hide();
 

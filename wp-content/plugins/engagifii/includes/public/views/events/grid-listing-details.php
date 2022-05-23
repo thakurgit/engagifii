@@ -32,11 +32,11 @@
    
 
 ?>
-<div class="col-sm-12">
-    <a href="<?php echo site_url();?>/events-2/" class="go-back"> Go Back </a>
+<div class="mb-2">
+    <a href="<?php echo site_url();?>/events/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 </div>
 
-<div class="engagifii-box border border-bottom-0">
+<div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
     <div class="col-sm-12 d-md-flex p-1">
         <div class="col-xl-1 col-md-2 pt-2 text-center">
             <img class="img-circle img-icon-lg p-0 m-auto" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
@@ -96,18 +96,17 @@
         
     </div>      
 </div>
-<div class="engagifii-box border p-4 bg-light">             
+<div class="engagifii-box bg-light p-3 border">             
     <div class="border bg-white class-detail-main-nav">
-        <div class="tabbable  box-shadow">
-        	<ul class="nav nav-tabs w-100" id="myTab" role="tablist">
+        	<ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
 			  	<li class="nav-item">
-				    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
+				    <a class="nav-link rounded-0 px-0 mx-3 text-dark active" id="home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
 			  	</li>
 			  	<li class="nav-item">
-			    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Classes</a>
+			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Classes</a>
 			  	</li>
 			  	<li class="nav-item">
-			    	<a class="nav-link" id="session-tab" data-toggle="tab" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
+			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="session-tab" data-toggle="pill" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
 			  	</li>
 				  <!-- <li class="nav-item">
 			    	<a class="nav-link" id="material-tab" data-toggle="tab" href="#material" role="tab" aria-controls="material" aria-selected="false">Event Material</a>
@@ -116,14 +115,14 @@
 			    	<a class="nav-link" id="speaker-tab" data-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">Speakers</a>
 			  	</li> -->
 			</ul>
-			<div class="tab-content" id="myTabContent">
+            <div class="p-3">
+               <div class="tab-content" id="pills-tabContent">
 			  	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-			  		<div class="row m-2">
-			  			<div class="col-sm-12 d-md-flex p-0">
-					  		<div class="col-sm-8 p-0 ">
-					  			<div class="m-1 border rounded box-shadow h-100">
-					  			<div class="panel-title p-3 bg-light border-bottom">
-		                          <h5 class="heading d-inline">Event Details</h5>
+			  		<div class="row">
+					  		<div class="col-sm-7 mb-3 ">
+					  			<div class="border rounded shadow-sm h-100">
+					  			<div class="panel-title bg-light px-2 py-1 border-bottom">
+                                    <h6 class="mb-0 font-weight-normal">Event Details</h6>
 		                        </div>
 		                        <?php
 		                        	if(trim($response->description)){
@@ -173,10 +172,10 @@
 		                        ?>
 		                    </div>
 					  		</div>
-					  		<div class="col-sm-4 p-0">
-					  			<div class="m-1 border rounded box-shadow h-100"> 
-						  			<div class="panel-title bg-light p-3 border-bottom">
-			                          <h5 class="heading d-inline">Event Location</h5>
+					  		<div class="col-sm-7 mb-3">
+					  			<div class="border rounded shadow-sm h-100"> 
+						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
+                                    <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
 			                        </div>
 			                        <ul class="nav nav-tabs" id="myTab" role="tablist">
 									  	<li class="nav-item">
@@ -229,15 +228,15 @@
 			                       	</div>
 		                    	</div>
 					  		</div>
-					  	</div>
 			  		</div>
-			  		<div class="row m-2">
-			  			<div class="col-sm-12 p-0">
-			  				<div class="m-1 border rounded box-shadow">
-			  					<div class="panel-title bg-light p-3 border-bottom">
-		                        	<h5 class="heading d-inline">Contacts</h5>
-		                    	</div>
-		                    	<div class="card-box">
+			  		<div class="row">
+			  			<div class="col-12">
+			  				<div class="border rounded shadow-sm">
+			  					<div class="panel-title bg-light px-2 py-1 border-bottom">
+                                      <h6 class="mb-0 font-weight-normal">Contacts</h6>
+                                  </div>
+		                    	 <div class="p-3">
+                                  	<div class="row">
 		                    		
 
 
@@ -249,9 +248,9 @@
 		                    				$department = $value->$department;
 
 		                    		?>
-		                    		<div class="p-3">
+                                    <div class="col-md-4">
 		                    			<div class="card">
-		                    				<div class="card-body row align-items-start instructor-detail">
+		                    				<div class="card-body d-flex py-3 px-2 py-lg-4 align-items-start instructor-detail">
 		                    					<div class="col-3">
 		                    					<?php if (filter_var($value->imageUrl, FILTER_VALIDATE_URL)) { ?>
 		                    						<img src="<?php echo $value->imageUrl;?>" class="img-fluid mr-2">
@@ -329,20 +328,20 @@
                                              </div>
                                             
 		                    			</div>
-		                    		</div>
+                                        </div>
 		                    		<?php
 		                    			}
 		                    		}
 		                    		?>
+		                    	</div>
 		                    	</div>
 		                	</div>
 			  			</div>
 			  		</div>
 			  	</div>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-			  		<div class="col-sm-12 pt-4">
-			  		<div class="table-responsive">
-			  		<table class="table table-hover table-bordered light-background nowrap" id="class_table" width="100%">
+			  		<div class="p-3">
+			  		<table class="table table-bordered table-striped" id="class_table" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th>Class</th>
@@ -393,12 +392,10 @@
 			  			</tbody>
 			  		</table>
 			  	</div>
-			  </div>
 			  	</div>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
-			  		<div class="col-sm-12">
-			  			<div class="table-responsive">
-			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
+			  			<div class="p-3">
+			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -413,12 +410,10 @@
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  		</div>
 			  	</div>
 				  <div class="tab-pane fade" id="material" role="tabpanel" aria-labelledby="material-tab">
-			  		<div class="col-sm-12">
-			  			<div class="table-responsive">
-			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
+			  			<div class="p-3">
+			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -433,13 +428,11 @@
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  		</div>
 			  	</div>
 
 				  <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
-			  		<div class="col-sm-12">
-			  			<div class="table-responsive">
-			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
+			  			<div class="p-3">
+			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -454,11 +447,10 @@
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  		</div>
 			  	</div>
 
 			</div>
-        </div>
+            </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -476,7 +468,7 @@
 		   	},
 			"ordering":true});
 
-		$('.dropdown-toggle').dropdown();
+		//$('.dropdown-toggle').dropdown();
 
 		// $('table#doc_table').DataTable({
 		// 	"pageLength": 10,
