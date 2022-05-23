@@ -600,7 +600,7 @@ class abstractModelEngagifii extends Engagifii_API
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<img src="'.$row->imageUrl.'" class="img-responsive img-icon-lg" alt="award-icon"><a href=' . site_url() . '/event-detail?endId=' . $default_Id . ' >' . $default_Title . '</a>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . site_url() . '/event-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{

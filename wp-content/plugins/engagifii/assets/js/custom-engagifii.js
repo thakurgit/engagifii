@@ -204,8 +204,7 @@ $(document).ready(function(){
     }
 }
 
-   $(function () { $("[data-toggle = 'tooltip']").tooltip(); });
-
+$("[data-toggle = 'tooltip']").tooltip(); 
 function dt_dropdown() {
   $('.td-dropdown').each(function() {   
 $(this).mCustomScrollbar({
@@ -227,4 +226,5 @@ $(this).mCustomScrollbar({
 	  }
   });
   });
+   
 }

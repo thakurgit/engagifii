@@ -91,10 +91,6 @@
 	top: 0;
 }
 
-.view-mode {
-	transform: translateY(35px) translateX(50px);
-	z-index: 2;
-}
 .mCustomScrollBox {
 	width: 100%;
 }
@@ -122,9 +118,7 @@
 aside .box {
 	font-size: 13px;
 }
-.view-mode {
-    transform: translateY(35px) translateX(0px);
-}
+
 }
 @media screen and (max-width: 767px) {
 #monthView {
@@ -165,7 +159,7 @@ aside .box {
 
 
 
-  <div class="row engagifii-box" id="calendar_filter">
+  <div class="row engagifii-box d-none" id="calendar_filter">
   <div class="col-md-1 col-2 text-right ml-auto pb-2">
   <div class=" filter-content">
   <div class="containerEngagii filter-icon-cal d-inline-flex align-items-center justify-content-center rounded-circle position-relative pull-right"><i class="fas fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
