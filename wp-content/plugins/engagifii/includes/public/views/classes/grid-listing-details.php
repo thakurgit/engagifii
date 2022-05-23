@@ -93,7 +93,7 @@
 						   <span id="locationButon" style="display:grid;">
 						 <!-- <a class="btn btn-primary px-3 py-1"  id="hybridLocation" style="color:white;">Register <i class='fa-greater-than'></i></a> -->
 						 <a class="btn btn-primary"  style="margin-top: 5px; margin-bottom: 5px;" id="onlineclass" target="_blank" href="<?php echo $response->registrationUrlOnLine?>">Register Online</a> 
-						 <a class="btn btn-primary px-3 py-1"  id="onlocation" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register In Person</a> 
+						 <a class="btn btn-primary "  id="onlocation" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register In Person</a> 
 					   </span>
 					 <?php
 					   }

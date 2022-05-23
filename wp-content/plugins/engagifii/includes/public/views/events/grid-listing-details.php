@@ -38,8 +38,8 @@
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
 	<div class="row">
-        <div class="col-md-11 d-flex align-items-center">
-            <img class="img-circle img-icon-lg img-fluid" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
+        <div class="col-md-10 d-flex align-items-center">
+            <img class="img-circle img-icon-lg img-fluid mr-3" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
         <div>
             <h3 class="mb-0 pb-1"><?php echo $response->name;?> </h3>
 			<div class="mb-2">
@@ -49,8 +49,8 @@
             <?php if(is_array($response->tags) && count($response->tags)>0) {
             ?>
             <div class="">
-                <span>Tag(s): </span>
-                <span class="pl-1 pr-1"><i class="fas fa-tags"></i> <?php echo count($response->tags);  ?></span>
+                <span><i class="fas fa-tags mr-1"></i>Tag(s):</span>
+                <span class="pl-1"> <?php echo count($response->tags);  ?></span>
                 <?php
                 	foreach ($response->tags as $key => $value) {
                 		?>
@@ -66,17 +66,16 @@
 
         </div>
         
-       <div class="col-md-1 text-md-right">
-       	<div class="col-md-2 col-xl-2 text-md-right pr-0" >
-          <div class="clearfix">
+       <div class="col-md-2 text-md-right">
+           <div class="d-flex align-items-center mb-2">
         	<?php
                 if($prev){
               ?>
-              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $prev; ?>"><i class="fa fa-arrow-left"></i> </a>
+              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="text-muted" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $next; ?>"> <i class="fa fa-arrow-right"></i></a>
+              <a class="text-muted" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
@@ -85,16 +84,15 @@
 		
           <?php 
 		 if($response->isRegistrationAllowed){ ?>
-					<div class="clearfix pt-4 pt-md-0 mt-auto">
+					<div class="mt-auto">
 				
-					  <a class="btn btn-primary px-3 py-1" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register</a>
+					  <a class="btn btn-primary " target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register</a>
 					 		
 					
 					 
 					  <!-- <a class="btn btn-primary px-3 py-1" target="_blank" href="<?php echo $tenant_url;  ?>/pages/classes/<?php echo $id; ?>/signup/online/overview">Register</a> -->
 					</div>
 				<?php } ?>
-    </div>
        </div>
        </div>
        
@@ -182,14 +180,15 @@
 						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
 			                        </div>
-			                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="myTab" role="tablist">
 									  	<li class="nav-item">
-										    <a class="nav-link <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline-tab" data-toggle="tab" href="#offline" role="tab" aria-controls="offline" aria-selected="true">In Person Class</a>
+										    <a class="nav-link rounded-0 px-0 mx-3 text-dark <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline-tab" data-toggle="tab" href="#offline" role="tab" aria-controls="offline" aria-selected="true">In Person Class</a>
 									  	</li>
 									  	<li class="nav-item">
-									    	<a class="nav-link  <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online-tab" data-toggle="tab" href="#online" role="tab" aria-controls="online" aria-selected="false">Online Class</a>
+									    	<a class="nav-link rounded-0 px-0 mx-3 text-dark  <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online-tab" data-toggle="tab" href="#online" role="tab" aria-controls="online" aria-selected="false">Online Class</a>
 									  	</li>
 									 </ul>
+                                     <div class="p-3">
 									 <div class="tab-content">
 									  	<div class="tab-pane fade show  <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
 									  		
@@ -197,12 +196,12 @@
 									  				if(!empty($response->location) && isset($response->location->address))
 									  				{
 									  			?>
-									  				<div class="summary-content-para-engagiigii row">
-									  					<div class="col-sm-4 p-0">Room Name:</div>
+									  				<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+									  					<div class="col-sm-4">Room Name:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
 					                            	</div>
-					                            	<div class="summary-content-para-engagiigii row">
-					                            		<div class="col-sm-4 p-0">Address:</div>
+					                            	<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+					                            		<div class="col-sm-4">Address:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
 					                            	</div> 
 					                            	<div class="summary-content-para-engagiigii col-12">
@@ -213,7 +212,7 @@
 									  				}
 									  				else{
 									  				?>
-									  						<div class="summary-content-para-engagiigii col-12">No class room is selected now</div>
+									  						<div class="summary-content-para-engagiigii">No class room is selected now</div>
 									  				<?php	
 									  				}
 									  			?>
@@ -221,16 +220,17 @@
 					                        
 									  	</div>
 									  	<div class="tab-pane fade show <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
-									  		<div class="summary-content-para-engagiigii row">
-			                            		<div class="col-sm-4 p-0">Online Class Location:</div>
+									  		<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+			                            		<div class="col-sm-4 ">Online Class Location:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
 			                        		</div> 
-			                        		<div class="summary-content-para-engagiigii row">
-			                            		<div class="col-sm-4 p-0">Login Steps:</div>
+			                        		<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+			                            		<div class="col-sm-4 ">Login Steps:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
 			                        		</div> 
 									  	</div>
 			                       	</div>
+                                    </div>
 		                    	</div>
 					  		</div>
 			  		</div>
