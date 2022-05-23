@@ -108,7 +108,7 @@ ob_start();
       
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Between <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative">
+        <div class="content-area d-none position-relative pb-2">
           <input type="text" name="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
@@ -122,7 +122,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> '.addslashes($value->name).'<label class="" for="instruct_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
+              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="instruct_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -135,11 +135,11 @@ ob_start();
       if(array_search('eventType', $ebt_visib_datacol_list)){
       ?>
        <div class="filter-list border-bottom">
-        <div class="heading-title"> Event Types <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area d-none"><ul class="list-group height-100">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($eventTypes as $key => $value) {
-              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="eventsType[]" id="instruct_'.$key.'" value="'.$value['value'].'"> '.addslashes($value['text']).'</li>';
+              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="instruct_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="instruct_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -150,13 +150,13 @@ ob_start();
 
         //if(array_search('location', $ebt_visib_datacol_list)){
           ?>
-          <div class="filter-list">
-            <div class="heading-title"> Location <i class="fa fa-angle-down pull-right"></i></div>
-            <div class="content-area d-none"><ul class="list-group height-100">
+          <div class="filter-list border-bottom">
+            <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
+            <div class="content-area d-none"><ul class="list-group m-0">
               <?php
                 foreach ($eventLocations as $key => $value) {
                   //print_r($value);
-                  echo '<li class=""><label class="d-none" for="location_'.$key.'">Inst</label><input type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['city']).'</li>';
+           echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
                 }
               ?>  
             </ul></div>
@@ -269,6 +269,7 @@ $dt_class .= 'table-dark ';
 			$('.flt-btn').fadeIn(300);
             $('#calendar_div').hide();
             $('#calendar_filter').hide();
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
@@ -277,6 +278,7 @@ $dt_class .= 'table-dark ';
             $('#calendar_filter').show();
             $('#list_div').hide();
 			$('.flt-btn').fadeOut(100);
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         
 var table = $('#ebtmaintable').DataTable( {
@@ -521,10 +523,25 @@ $( '.cleardate' ).click(function() {
       var container = $(".filter-border");
       // If the target of the click isn't the container
       if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-        container.hide();
-        $('.filter-area').addClass('d-none');
+       // container.hide();
+       // $('.filter-area').addClass('d-none');
       }
       });
+	  $(document).on('click', function (e) {
+ $('.filter-area').addClass('d-none');
+});
+$(document).on('click', '.filter-area', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.prev', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.next', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', '.daterangepicker ', function (e) {
+  e.stopPropagation();
+});
 
       $('.filter-list input[type=checkbox]').change(function(){
           countFilterData();
@@ -583,6 +600,9 @@ var tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){alert
    ?>
 	if($('html').height()<$(window).height()){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
+	}
+	if(localStorage.getItem("view_mode")=='list'){
+		$('#list').trigger("click");
 	}
 });
 </script>      

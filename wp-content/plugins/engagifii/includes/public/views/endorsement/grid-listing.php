@@ -253,6 +253,7 @@ $dt_class .= 'table-dark ';
 			$('.flt-btn').fadeIn(300);
             $('#calendar_div').hide();
             $('#calendar_filter').hide();
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
@@ -261,6 +262,7 @@ $dt_class .= 'table-dark ';
             $('#calendar_filter').show();
             $('#list_div').hide();
 			$('.flt-btn').fadeOut(100);
+ localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         
 var table = $('#ebtmaintable').DataTable( {
@@ -575,6 +577,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
    ?>
 	if($('html').height()<$(window).height()){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
+	}
+if(localStorage.getItem("view_mode")=='list'){
+		$('#list').trigger("click");
 	}
 });
 </script>      
