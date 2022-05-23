@@ -4,7 +4,7 @@
     $obj =  new adminDataColumn();
     $response = $obj->getEventsColumnData();
     $options = get_option( 'ebt_api_settings' );
-	$required_column_array = ['name', 'eventWithClass', 'tags', 'register', 'eventStatus', 'eventType', 'eventDates'];
+	$required_column_array = ['name', 'city', 'tags', 'register', 'eventStatus', 'eventType', 'eventDates'];
 	//print_r($response);
     $events_visible_column_list = array();
     if(isset($options['events_visible_column_list']))

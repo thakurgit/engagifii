@@ -1,13 +1,12 @@
 <?php
 	
 	$id 		= $_REQUEST['endId'] ?? null;
-	print_r($id);
 	$obj 			=  new Engagifii_API();
 	$response       =  $obj->getEventDetailsByID($id);
 	//print_r(json_encode($response));
-	print_r(count($response->eventClasses));
-	$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
-	print_r(json_encode($classesData));
+	//print_r(count($response->eventClasses));
+	//$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
+	//print_r(json_encode($classesData));
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];

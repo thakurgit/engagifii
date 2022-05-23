@@ -34,6 +34,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'courses-detail' => 'courses_detail',
 			'course-details' => 'course_details_id',
 			'classes-list' => 'classes_grid_view',
+			'classes-list2' => 'classes_grid_view2', // For new Class List view
 			'classes-list-calendar' => 'classes_list_calender_grid_view',
 			'classes-list-calendar-class-name' => 'classes_list_calender_grid_view_classname',
 			'classes-detail' => 'classes_detail',
@@ -97,8 +98,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/endorsement/grid-listing.php';
 		return ob_get_clean();
 	}
-
-
+	
 	public function events_list_calender_grid_view($attr)
 	{
 		ob_start();
@@ -163,6 +163,14 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	{
 		ob_start();
 		include $this->basePath.'includes/public/views/classes/grid-listing.php';
+		return ob_get_clean();
+	}
+
+	// For new class list view
+	public function classes_grid_view2()
+	{
+		ob_start();
+		include $this->basePath.'includes/public/views/classes/grid-listing-new.php';
 		return ob_get_clean();
 	}
 
@@ -317,6 +325,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/events/grid-listing.php';
 		return ob_get_clean();
 	}
+
+	public function events_grid_details(){
+		ob_start();
+		include $this->basePath.'includes/public/views/events/grid-listing-details.php';
+		return ob_get_clean();
+	} 
 
 	public function events_details($attr){
 		ob_start();

@@ -39,7 +39,9 @@ if(isset($attr['calendar'])){
     $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
     $tags = $obj->eventsAllTags($date);
-    //print_r($tags);
+    $eventTypes = $obj->eventTypes($date);
+    $eventLocations = $obj->eventLocation();
+    //print_r($eventLocations);
     $dateRange  = $obj->awardDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -70,46 +72,7 @@ if(isset($attr['calendar'])){
 <?php
   }
 ?>
-<!--div class="containerEngagii" id="list_div">
-  <div class="container-fluid engagifii-box engagifii-main-cotainer">
-    <table  id="ebtmaintable" class="table table-bordered light-background main-list-here nowrap classes-page" style="width: 100% !important;">
-      <thead> 
-        <tr>        
-          <?php
-            // if(is_array($collection) && count($collection)>0){
-            //   $i = 0;
-            //   foreach ($collection as $key => $value) {
-            //      if(in_array($value->colName, $class_visible_column_list)){
-                
-            //       if($value->displayName == 'Class Type')
-            //       {
-            //          $value->displayName = "Type";
-            //       }
-            //       if($value->colName == 'sessions')
-            //       {
-            //           $value->colName = 'startdate';
-            //       }
 
-            //       if($value->colName == 'sectionname'){
-            //         $title_key = $i;
-            //       }
-            //       $forDatatable[]['data'] = $value->colName;
-                ?>
-              <!--th class="//<?php //echo strtolower($value->displayName); ?> <?php //echo $value->colName; ?>"-->
-            <?php  //echo $value->displayName; ?>
-             </th>
-               <?php
-                 //$i++;
-                // }
-              // }
-            // } 
-          ?>    
-
-        <!-- </tr> 
-      </thead> 
-    </table>
-    <div id="eng-overlay"><span class="spinner"></span></div>
-</div-->  
 
 </div>
 <?php
@@ -154,14 +117,50 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group height-100">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="endorsementTags[]" id="instruct_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['name']).'</li>';
+              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="eventsTags[]" id="instruct_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['name']).'</li>';
             }
           ?>  
         </ul></div>
       </div>
+      
       <?php
         }
+       
+      
+      if(array_search('eventType', $ebt_visib_datacol_list)){
       ?>
+      <div class="filter-list">
+        <div class="heading-title"> Event Types <i class="fa fa-angle-down pull-right"></i></div>
+        <div class="content-area d-none"><ul class="list-group height-100">
+          <?php
+            foreach ($eventTypes as $key => $value) {
+              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="eventsType[]" id="instruct_'.$key.'" value="'.$value['value'].'"> '.addslashes($value['text']).'</li>';
+            }
+          ?>  
+        </ul></div>
+      </div>
+      
+      <?php
+        }
+
+        //if(array_search('location', $ebt_visib_datacol_list)){
+          ?>
+          <div class="filter-list">
+            <div class="heading-title"> Location <i class="fa fa-angle-down pull-right"></i></div>
+            <div class="content-area d-none"><ul class="list-group height-100">
+              <?php
+                foreach ($eventLocations as $key => $value) {
+                  //print_r($value);
+                  echo '<li class=""><label class="d-none" for="location_'.$key.'">Inst</label><input type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['city']).'</li>';
+                }
+              ?>  
+            </ul></div>
+          </div>
+          
+          <?php
+          // }
+      ?>
+      
       <div class="apply-filter">
         <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
           <span id="countFilterResult"></span>
@@ -211,6 +210,9 @@ $title_key = -1;
               }
               if($value->colName =='startDateTime'){
                 $value->displayName = "Event Date";
+              }
+              if($value->colName =='city'){
+                $value->displayName = "Location";
               }
 
           ?>    

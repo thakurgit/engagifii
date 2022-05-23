@@ -673,6 +673,25 @@ class Engagifii_API{
 		return $responseArray;
 	}
 
+	public function eventTypes($date){
+
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/event-type';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+
+	public function eventLocation(){
+
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/venues';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
 	public function courseAllClasses($date) :array{
 		$postData=array();
 		$responseArray = array();
