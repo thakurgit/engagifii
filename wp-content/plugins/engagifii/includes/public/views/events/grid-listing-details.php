@@ -12,7 +12,8 @@
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
 	
 
-	$certifiedInsturctor = $obj->getCertifiedInstructor($id);
+	$contactPersons = $response->contacts;
+	//print_r($contactPersons);
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
   $class_key = array_search ($_GET['courseId'], $class_array);
   $class_count = count($class_array)-1;
@@ -105,25 +106,31 @@
 			  	<li class="nav-item">
 			    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Classes</a>
 			  	</li>
-			  	<!-- <li class="nav-item">
-			    	<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Document</a>
+			  	<li class="nav-item">
+			    	<a class="nav-link" id="session-tab" data-toggle="tab" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
+			  	</li>
+				  <!-- <li class="nav-item">
+			    	<a class="nav-link" id="material-tab" data-toggle="tab" href="#material" role="tab" aria-controls="material" aria-selected="false">Event Material</a>
+			  	</li>
+				  <li class="nav-item">
+			    	<a class="nav-link" id="speaker-tab" data-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">Speakers</a>
 			  	</li> -->
 			</ul>
 			<div class="tab-content" id="myTabContent">
 			  	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 			  		<div class="row m-2">
 			  			<div class="col-sm-12 d-md-flex p-0">
-					  		<div class="col-sm-6 p-0 ">
+					  		<div class="col-sm-8 p-0 ">
 					  			<div class="m-1 border rounded box-shadow h-100">
 					  			<div class="panel-title p-3 bg-light border-bottom">
-		                          <h5 class="heading d-inline">Event Schedule</h5>
+		                          <h5 class="heading d-inline">Event Details</h5>
 		                        </div>
 		                        <?php
 		                        	if(trim($response->description)){
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Description:</div>
-		                            <div class="col-sm-8"><?php echo trim($response->description); ?></div>
+		                            <!-- <div class="col-sm-4 p-0">Description:</div> -->
+		                            <div class="col-sm-12"><?php echo trim($response->description); ?></div>
 		                        </div>
 		                        <?php
 		                        	}
@@ -135,19 +142,19 @@
 		                        </div>
 		                        <?php
 		                        	}
-		                        	if($response->creditHours){
+		                        	if($response->startDateTime){
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row">
-		                        	<div class="col-sm-4 p-0">Credit Hours</div>
-		                        	<div class="col-sm-8"><?php echo $response->creditHours; ?></div>
+		                        	<div class="col-sm-4 p-0">Event Start Date</div>
+		                        	<div class="col-sm-8"><?php echo $response->startDateTime; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
-		                        	if($response->secondaryUnits[0]->value){
+		                        	if($response->endDateTime){
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">PLU:</div>
-		                            <div class="col-sm-8"><?php echo $response->secondaryUnits[0]->value; ?></div>
+		                            <div class="col-sm-4 p-0">Event End Date</div>
+		                            <div class="col-sm-8"><?php echo $response->endDateTime; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
@@ -166,7 +173,7 @@
 		                        ?>
 		                    </div>
 					  		</div>
-					  		<div class="col-sm-6 p-0">
+					  		<div class="col-sm-4 p-0">
 					  			<div class="m-1 border rounded box-shadow h-100"> 
 						  			<div class="panel-title bg-light p-3 border-bottom">
 			                          <h5 class="heading d-inline">Event Location</h5>
@@ -228,32 +235,32 @@
 			  			<div class="col-sm-12 p-0">
 			  				<div class="m-1 border rounded box-shadow">
 			  					<div class="panel-title bg-light p-3 border-bottom">
-		                        	<h5 class="heading d-inline">Instructor</h5>
+		                        	<h5 class="heading d-inline">Contacts</h5>
 		                    	</div>
 		                    	<div class="card-box">
 		                    		
 
 
 		                    		<?php
-		                    		if(count($certifiedInsturctor)){
+		                    		if(count($contactPersons)){
 		                    			
-		                    			foreach ($certifiedInsturctor as $key => $value) {
-		                    				$courses  = $value->coursesTaught;
-		                    				$skills = $value->coursesSkilledToTeach;
+		                    			foreach ($contactPersons as $key => $value) {
+		                    				$position  = $value->position;
+		                    				$department = $value->$department;
 
 		                    		?>
 		                    		<div class="p-3">
 		                    			<div class="card">
 		                    				<div class="card-body row align-items-start instructor-detail">
 		                    					<div class="col-3">
-		                    					<?php if (filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) { ?>
-		                    						<img src="<?php echo $value->imageThumbUrl;?>" class="img-fluid mr-2">
+		                    					<?php if (filter_var($value->imageUrl, FILTER_VALIDATE_URL)) { ?>
+		                    						<img src="<?php echo $value->imageUrl;?>" class="img-fluid mr-2">
 		                    					<?php
 		                    						}
-		                    						else if($value->imageThumbUrl)
+		                    						else if($value->imageUrl)
 		                    						{
 		                    					?>
-		                    							<img src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class=" img-fluid mr-2">
+		                    							<img src="<?php echo $tenant_url.$value->imageUrl;?>" class=" img-fluid mr-2">
 		                    					<?php		
 		                    						}else{
 		                    					?>
@@ -263,13 +270,11 @@
 		                    					?>
 		                    					</div>
 		                    					<div class="col-6">
-                                                <p class="card-title mb-2"><?php echo $value->fullName;?><small class="d-block">Since <?php echo date('m/d/Y', strtotime($value->createdDate)); ?></small></p>
+                                                <p class="card-title mb-2"><?php echo $value->fisrtName;?></p>
                                                 <ul class="list-unstyled mb-0 ml-0 d-flex flex-wrap">
                                                 <li class="position-relative inst-ac ml-0">
                                                 	<div class="dropdown">
-														  <button class="btn shadow-none no-border dropdown-toggle" type="button" id="course_<?php echo $key; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-														  	style="background:url('<?php echo ENGAGIFII_ASSETS_URL; ?>/images/trophy.png');background-size:contain;background-repeat:no-repeat;width:35px;height:35px">
-														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($courses); ?></span>
+														    <!-- <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($courses); ?></span> -->
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="course_<?php echo $key; ?>">
 														  	<?php
@@ -285,7 +290,7 @@
 														</div>
                                                         </li>
                                                 	
-                                                    <li class="position-relative inst-ac ml-0">
+                                                    <!-- <li class="position-relative inst-ac ml-0">
 
                                                 	<div class="dropdown">
 														  <button class="btn shadow-none no-border dropdown-toggle" type="button" id="skills_<?php echo $key; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
@@ -306,7 +311,7 @@
 														</div>
                                                     	
                                                         
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                                 </div>
                                                  <div class="ml-auto text-right col-3 px-0"> 
@@ -390,7 +395,7 @@
 			  	</div>
 			  </div>
 			  	</div>
-			  	<!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
 			  		<div class="col-sm-12">
 			  			<div class="table-responsive">
 			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
@@ -409,7 +414,49 @@
 			  				</table>
 			  			</div>
 			  		</div>
-			  	</div> -->
+			  	</div>
+				  <div class="tab-pane fade" id="material" role="tabpanel" aria-labelledby="material-tab">
+			  		<div class="col-sm-12">
+			  			<div class="table-responsive">
+			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
+			  					<thead>
+			  						<tr>
+			  							<td>File</td>
+			  							<td>Size</td>
+			  						</tr>
+			  					</thead>
+			  					<tbody>
+			  						<tr class="bg-white">
+			  							<td>Document1</td>
+			  							<td>50KB</td>
+			  						</tr>
+			  					</tbody>
+			  				</table>
+			  			</div>
+			  		</div>
+			  	</div>
+
+				  <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
+			  		<div class="col-sm-12">
+			  			<div class="table-responsive">
+			  				<table class="table table-hover table-bordered light-background nowrap" id="doc_table" width="100%">
+			  					<thead>
+			  						<tr>
+			  							<td>File</td>
+			  							<td>Size</td>
+			  						</tr>
+			  					</thead>
+			  					<tbody>
+			  						<tr class="bg-white">
+			  							<td>Document1</td>
+			  							<td>50KB</td>
+			  						</tr>
+			  					</tbody>
+			  				</table>
+			  			</div>
+			  		</div>
+			  	</div>
+
 			</div>
         </div>
     </div>
