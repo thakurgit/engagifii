@@ -37,25 +37,24 @@
 </div>
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
-    <div class="col-sm-12 d-md-flex p-1">
-        <div class="col-xl-1 col-md-2 pt-2 text-center">
-            <img class="img-circle img-icon-lg p-0 m-auto" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
-        </div>
-        <div class="col-md-8 col-xl-9 pl-xl-0 pt-2">
-            <h3 class="no-border m-auto"><?php echo $response->name;?> </h3>
-			<div class="pt-2">
+	<div class="row">
+        <div class="col-md-11 d-flex align-items-center">
+            <img class="img-circle img-icon-lg img-fluid" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
+        <div>
+            <h3 class="mb-0 pb-1"><?php echo $response->name;?> </h3>
+			<div class="mb-2">
                 <span>Event type: </span>
                 <span class="pl-1 pr-1"> <?php echo $response->eventType;  ?></span>
 </div>
             <?php if(is_array($response->tags) && count($response->tags)>0) {
             ?>
-            <div class="pt-2">
+            <div class="">
                 <span>Tag(s): </span>
-                <span class="pl-1 pr-1"><i class="fa fa-tags"></i> <?php echo count($response->tags);  ?></span>
+                <span class="pl-1 pr-1"><i class="fas fa-tags"></i> <?php echo count($response->tags);  ?></span>
                 <?php
                 	foreach ($response->tags as $key => $value) {
                 		?>
-                			<span class="border round-tag py-2 px-4	 text-capitalize"><?php echo $value->tags; ?></span>
+                			<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><?php echo $value->tags; ?></span>
                 		<?php
                 	}
                  ?>
@@ -64,7 +63,11 @@
             		}
             ?>
         </div>
-        	<div class="col-md-2 col-xl-2 text-md-right pr-0" >
+
+        </div>
+        
+       <div class="col-md-1 text-md-right">
+       	<div class="col-md-2 col-xl-2 text-md-right pr-0" >
           <div class="clearfix">
         	<?php
                 if($prev){
@@ -77,7 +80,7 @@
               <?php
                 }
               ?>
-            <a href="<?php echo site_url();?>/courses/" class="p-2 mr-2 text-muted"><i class="fa fa-times"></i></a>
+            <a href="<?php echo site_url();?>/courses/" class="p-2 mr-2 text-muted d-none"><i class="fa fa-times"></i></a>
         </div>
 		
           <?php 
@@ -92,9 +95,9 @@
 					</div>
 				<?php } ?>
     </div>
-            
-        
-    </div>      
+       </div>
+       </div>
+       
 </div>
 <div class="engagifii-box bg-light p-3 border">             
     <div class="border bg-white class-detail-main-nav">
@@ -124,6 +127,7 @@
 					  			<div class="panel-title bg-light px-2 py-1 border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Details</h6>
 		                        </div>
+                                <div class="p-3">
 		                        <?php
 		                        	if(trim($response->description)){
 		                        ?>
@@ -170,6 +174,7 @@
 		                        <?php
 		                        	}
 		                        ?>
+		                    </div>
 		                    </div>
 					  		</div>
 					  		<div class="col-sm-5 mb-3">
