@@ -127,7 +127,7 @@
 		                        <?php
 		                        	if(trim($response->description)){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
+		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <!-- <div class="col-sm-4 p-0">Description:</div> -->
 		                            <div class="col-sm-12"><?php echo trim($response->description); ?></div>
 		                        </div>
@@ -135,32 +135,32 @@
 		                        	}
 		                        	if($response->eventType){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Event Type:</div>
+		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                            <div class="col-sm-4 ">Event Type:</div>
 		                            <div class="col-sm-8"><?php echo $response->eventType; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->startDateTime){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                        	<div class="col-sm-4 p-0">Event Start Date</div>
+		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                        	<div class="col-sm-4 ">Event Start Date</div>
 		                        	<div class="col-sm-8"><?php echo $response->startDateTime; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->endDateTime){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Event End Date</div>
+		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                            <div class="col-sm-4 ">Event End Date</div>
 		                            <div class="col-sm-8"><?php echo $response->endDateTime; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
-		                         <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Skills:</div>
+		                         <div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                            <div class="col-sm-4 ">Skills:</div>
 		                            <div class="col-sm-8"><?php foreach ($response->skills as $key => $value) {
 		                            ?>
 		                            		<span class="border round-tag p-2 text-capitalize"><?php echo $value->name; ?></span>
@@ -172,7 +172,7 @@
 		                        ?>
 		                    </div>
 					  		</div>
-					  		<div class="col-sm-7 mb-3">
+					  		<div class="col-sm-5 mb-3">
 					  			<div class="border rounded shadow-sm h-100"> 
 						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
