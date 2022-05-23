@@ -123,7 +123,7 @@ wp_enqueue_script(
 			'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.concat.min.js', 
 			array('jquery'), 
 			'1.0.0', 
-			true  
+			false  
 		);
 			wp_enqueue_script( 'engagifii-select2jstz', plugin_dir_url( __FILE__ ) . 'assets/js/select2.min.js', array("jquery"), $this->version, false );
 			wp_enqueue_script( 'engagifii-jquerydatatable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.dataTables.min.js', array("jquery"), $this->version, false );
@@ -131,19 +131,18 @@ wp_enqueue_script(
 			wp_enqueue_script( 'dt-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
 			wp_enqueue_script( 'range-slider', 'https://code.jquery.com/ui/1.13.1/jquery-ui.js', array('jquery'), $this->version, false );
-			
-			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_ebt', admin_url('admin-ajax.php?action=endorsement') );
-			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_evt', admin_url('admin-ajax.php?action=events') );
-			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_lbt', admin_url('admin-ajax.php?action=legislation') );
-			wp_localize_script( 'engagifii-jquerydatatable', 'engagifiiUrl_ajaxurl', admin_url('admin-ajax.php') );
-			wp_enqueue_script( 'custom-engagifii-js-ebt', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('jquery'), '1.0.01', true );
-			
-
+			wp_enqueue_script( 'custom-engagifii', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('jquery','bootstrap'), '1.0.01', false );
 			wp_register_script( 'moment-js', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js' ); 
 			wp_enqueue_script('moment-js');
 
 			wp_register_script( 'datepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', array(), $this->version, false );
 			wp_enqueue_script('datepicker-js');
+			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_ebt', admin_url('admin-ajax.php?action=endorsement') );
+			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_evt', admin_url('admin-ajax.php?action=events') );
+			wp_localize_script( 'engagifii-jquerydatatable', 'ajax_url_lbt', admin_url('admin-ajax.php?action=legislation') );
+			wp_localize_script( 'engagifii-jquerydatatable', 'engagifiiUrl_ajaxurl', admin_url('admin-ajax.php') );
+			
+
 
 			}else{			
 

@@ -54,12 +54,15 @@ if(isset($attr['calendar'])){
 <?php
   if($calendar_view){
 ?>
-	<div class="container-fluid">
+	<div class="container-fluid pb-4">
   <div class="row">
-    <div class="col-11 text-center text-lg-right view-mode">
-    	<div class="btn-group" role="group">
-        			 <button type="button" id="calendar" class="btn bg-white border  bg-primary text-white" aria-pressed="false"><i class="fa fa-calendar-alt mr-2"></i>Calendar</button>
-                  <button type="button" id="list" class="btn bg-white border" aria-pressed="false"><i class="fa fa-list mr-2"></i> List</button> 
+    <div class="col-12 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
+    <div class="flt-btn mr-3 mr-xl-5" style="display:none">
+        
+        </div>
+    	<div class="btn-group view-m" role="group">
+        			 <button type="button" id="calendar" class="btn border  btn-primary shadow-none" aria-pressed="false"><i class="fal fa-calendar-alt mr-2"></i></i>Calendar</button>
+                  <button type="button" id="list" class="btn btn-light border shadow-none" aria-pressed="false"><i class="fal fa-list mr-2"></i> List</button> 
                  
         </div>
     </div>
@@ -84,40 +87,42 @@ function removeWhitespace($buffer)
 ob_start();
 ?>
 <div class="filter-content" id="filterdp1">
-	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative"><i class="fas fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
+	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div>
   <div class="filter-border">
   <div class="filter-area" id="filterdp">
-    <div class="Engagiirow filter-top-bg col-sm-12">
-      <div class="col-sm-6 text-left">
+    <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
+      <div class="row">
+      <div class="col-6 text-left">
         <span class="filter-title">
-          <i class="fas fa-filter"></i> Filter 
+          <i class="far fa-filter mr-2"></i> Filter
           <span id="blockedchecked"></span> 
         </span>
       </div>
-      <div class="col-sm-6 text-right">
-        <span class="clear-all" id="clear-all"> Clear All </span>
+      <div class="col-6 text-right">
+        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+      </div>
       </div>
     </div>
     <div class="col-sm-12 height-4" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
       
-      <div class="filter-list">
-        <div class="heading-title"> Created Between <i class="fa fa-angle-down pull-right"></i></div>
+       <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Between <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
-          <input type="text" name="createdbetween"  class="form-control input-xs small-css" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span class="position-absolute cleardate mt-1 mr-1 text-secondary" style="right:0; top:0; cursor:pointer"><i class="fa fa-times"></i></span>
+          <input type="text" name="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
+          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
       <?php
       
         if(array_search('tags', $ebt_visib_datacol_list)){
       ?>
-      <div class="filter-list">
-        <div class="heading-title"> Tags <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area d-none"><ul class="list-group height-100">
+       <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="eventsTags[]" id="instruct_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['name']).'</li>';
+              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> '.addslashes($value->name).'<label class="" for="instruct_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -129,7 +134,7 @@ ob_start();
       
       if(array_search('eventType', $ebt_visib_datacol_list)){
       ?>
-      <div class="filter-list">
+       <div class="filter-list border-bottom">
         <div class="heading-title"> Event Types <i class="fa fa-angle-down pull-right"></i></div>
         <div class="content-area d-none"><ul class="list-group height-100">
           <?php
@@ -177,10 +182,22 @@ $filter_content = removeWhitespace($filter_content);
 $title_key = -1;
 ?>
 
-
+<?php 
+$dt_class=' ';
+$dt_respnsive = '';
+$dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
+if($dt_respnsive==1){
+$dt_class = 'dt-responsive nowrap ';	
+}
+$dt_darktheme = '';
+$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
+if($dt_darktheme==1){
+$dt_class .= 'table-dark ';	
+}
+?>
 <div class="containerEngagii" id="list_div">
-<div class="container-fluid engagifii-box engagifii-main-cotainer">
-  <table  id="ebtmaintable" class="table table-bordered light-background main-list-here nowrap events-page" style="width: 100% !important;">
+  <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
+    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here events-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
     <thead> 
       <tr>                
         <?php 
@@ -246,18 +263,20 @@ $title_key = -1;
   var fv = 0;
 
   $('#list').click(function(){
-	   		$(this).addClass('bg-primary text-white');
-			$('#calendar').removeClass('bg-primary text-white');
+	   		$(this).addClass('btn-primary').removeClass('btn-light');
+			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
+			$('.flt-btn').fadeIn(300);
             $('#calendar_div').hide();
             $('#calendar_filter').hide();
         })
         $('#calendar').click(function(){
-	   		$(this).addClass('bg-primary text-white');
-			$('#list').removeClass('bg-primary text-white');
+	   		$(this).addClass('btn-primary').removeClass('btn-light');
+			$('#list').removeClass('btn-primary').addClass('btn-light');
             $('#calendar_div').show();
             $('#calendar_filter').show();
             $('#list_div').hide();
+			$('.flt-btn').fadeOut(100);
         })
         
 var table = $('#ebtmaintable').DataTable( {
@@ -265,15 +284,17 @@ var table = $('#ebtmaintable').DataTable( {
         
        "pageLength": 10,
        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50]],
-       "dom": '<"row"<"col-md-11 col-10"><"top-filter col-md-1 col-2 text-right">><"row"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 pt-2"l><"col-sm-7 "p">>',
+		"dom": '<"row no-gutters"<"col-12 custom-scroll"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        "bInfo":false,
        "processing": true,
        "searching": true,
        "ordering":true,
        "columnDefs": [ 
-          { "targets": ['tags','register'],
+          { "targets": ['tags','register','eventType','eventDates','city'],
             "orderable": false
-          }
+          },
+		  { className: "title-col", "targets": "name" },
+		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -296,7 +317,7 @@ var table = $('#ebtmaintable').DataTable( {
             }, 
         },
         createdRow: function (row, data, index) { 
-             $(row).addClass( 'bg-white' );
+            // $(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 "initComplete": function(settings, json) {
@@ -313,43 +334,42 @@ var table = $('#ebtmaintable').DataTable( {
 
     },
      "drawCallback": function( settings ) {
-            $('.dataTables_wrapper ').append('<span class="nxt"><i class="fa fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv"><i class="fa fa-angle-left"></i></span>');
-            $('.prv').addClass('disabled');
-             var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-              console.log(leftwidth);
-               if(scrollwidth - divWidth - leftwidth == '24') //-24
-               {
-                  $('.nxt').addClass('disabled');
-               }
-            $('.nxt').click(function () {
-              console.log("nxt");
-               $('.custom-scroll').animate({
-                  scrollLeft: "+=200px"
-               }, "slow"); 
-               $('.prv').removeClass('disabled');
-               var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
-            $('.prv').click(function () {
-               $('.custom-scroll').animate({
-                  scrollLeft: "-=200px"
-               }, "slow");
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
+		 dt_dropdown();
+			 <?php if($dt_respnsive==''){ ?>
+            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center "><i class="far fa-angle-right"></i></span>');
+            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
+              var divWidth = parseInt($('.custom-scroll').width());
+			 var tablewidth = parseInt($('#ebtmaintable').width());
+               if(tablewidth<=divWidth){
+					$('.nxt,.prv').addClass('disabled');   
+					return false;
+			   } else {
+				$('.nxt').click(function () {
+					   tablewidth = parseInt($('#ebtmaintable').width());
+				   $('.custom-scroll').animate({
+					  scrollLeft: "+=250px"
+				   }, "slow",function() {
+					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
+					   //console.log(tablewidth+','+divWidth+scrollLeft)
+    					$('.prv').removeClass('disabled'); 
+				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
+						  $('.nxt').addClass('disabled');  
+				  		 }	
+  					}); 
+				   
+				});  
+				$('.prv').click(function () {
+				   $('.custom-scroll').animate({
+					  scrollLeft: "-=250px"
+				   }, "slow",function(){
+					 $('.nxt').removeClass('disabled');  
+					 if($('.custom-scroll').scrollLeft()==0){
+						$('.prv').addClass('disabled');  
+					 }
+				   });
+				});  
+			   }
+			   <?php } ?>
          }
 		
     });
@@ -361,17 +381,53 @@ var table = $('#ebtmaintable').DataTable( {
 
   $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
         var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search events" class="form-control form-control-sm search-events" value=""/>' );
- 
-        $( 'input', this ).on( 'keyup change', function () {
+        $(this).html( '<div class="position-relative"><label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm search-events pr-4" value=""/> <button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
+		function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var titlesearch = this.value;
+            if ( table.column(i).search() !== titlesearch ) {
+				table.column(i).search(titlesearch).draw();
+            }
+}, 500));
+
+
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#searchclass').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(i).search('').draw();
+ });
+
+        /*$( 'input', this ).on( 'keyup change', function () {
             if ( table.column(i).search() !== this.value ) {
                 table
                     .column(i)
                     .search( this.value )
                     .draw();
             }
-        } );
+        } );*/
     } );
+	$(document).ready(function (){    
+    $('#searchclass').on('click', function(e){
+       e.stopPropagation();    
+    });
+});
   <?php
 }
   ?>
@@ -380,11 +436,12 @@ var table = $('#ebtmaintable').DataTable( {
 			$(this).parent('label').removeClass('has-data');
 			table.draw();
 		});
-    $('div.top-filter').html('<?php echo $filter_content; ?>');
+    //$('div.top-filter').html('<?php //echo $filter_content; ?>');
+	$('div.flt-btn').html('<?php echo $filter_content; ?>');
 
  
     $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
-        console.log(processing);
+        //console.log(processing);
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 
