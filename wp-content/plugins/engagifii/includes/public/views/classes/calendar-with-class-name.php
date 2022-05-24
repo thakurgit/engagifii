@@ -187,14 +187,17 @@ aside .box {
  <div id="calendar_div" class="position-relative container-fluid">
         
     </div>
-    <div id="calendarsearch_div" class="position-relative container-fluid">
+    <div id="calendarsearch_div" class="position-relative container-fluid" style="display:none">
     
     <?php echo do_shortcode('[classes-calendar-search]'); ?>
     
         </div>
     <script>
-
+ if(localStorage.getItem("view_mode")=='list'){
+		  $('#calendar_div').hide();
+	} 
 $(document).ready(function() {
+	
             $('[data-toggle="tooltip"]').tooltip();
         });
     
@@ -203,12 +206,12 @@ $(document).ready(function() {
         var fv = 0;
         var day = '';
         var calendar_view = 'month';
-        $('.filter-icon-cal').click(function(e){
+        /*$('.filter-icon-cal').click(function(e){
         e.stopPropagation();
         $('.filter-border-cal').show();
         $('.filter-area-cal').toggleClass('d-none');
         
-    });
+    });*/
         function getCalendarClassName(target_div, year, month, day){
             $.ajax({
                 type:'POST',
@@ -226,7 +229,7 @@ $(document).ready(function() {
                 success:function(html){
                     $('#'+target_div).html(html);
                     $('.calendar__days').hide();
-                    $('#'+calendar_view).addClass('bg-primary text-white');
+                    $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');
                     var date = year+'-'+month+'-'+day;
                     if(calendar_view == 'day'){ $('#event_list').hide();}
                     getEvents(date);
@@ -292,7 +295,7 @@ $(document).ready(function() {
                       $('#event_list').removeClass('col-md-4');
                       $('#event_list').addClass('col-12');
                    }
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-responsive img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
 					
 
                 });
@@ -332,7 +335,7 @@ $(document).ready(function() {
 		
 		
 
-        $('.clear-all-cal').click(function(){
+        /*$('.clear-all-cal').click(function(){
             $('input[type=checkbox]').prop('checked',false);
             $('#countFilterResultCal').html(' ');
             fv = 0;
@@ -343,11 +346,11 @@ $(document).ready(function() {
             getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), '');
 
 
-      })
+      });*/
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100"><div class="loading-animation"></div></div>');
+				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();
@@ -355,7 +358,6 @@ $(document).ready(function() {
 		});
 
         $(document).ready(function(){
-          $("#calendarsearch_div").hide();
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -376,7 +378,7 @@ $(document).ready(function() {
                     $('#calendar_div').html(html);
                     
                     getEvents(today);
-           			$('button#month').addClass('bg-primary text-white ');
+           			$('button#month').addClass('bg-primary text-white ').removeClass('bg-white');
            			$('#dayView').hide();
                 $('#weekView').hide();
 
@@ -408,14 +410,14 @@ $(document).ready(function() {
           getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
         })
 
-         $('#apply-filter-data-cal').click(function(){
+         /*$('#apply-filter-data-cal').click(function(){
             courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
             instructor = $.map($('input[name="courseInstrutorCal[]"]:checked'), function(c){return c.value; });
             
             $(".filter-area-cal").toggleClass('d-none');
             getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), day);
 
-        });
+        });*/
 
         // Calendar search //
         // $('#apply-filter-search-cal').click(function(e){
@@ -429,7 +431,7 @@ $(document).ready(function() {
         // });
 
         //Calendar search ends here
-        $('.heading-title').click(function(){$(this).next('.content-area-cal').toggleClass('d-none')});
+        /*$('.heading-title').click(function(){$(this).next('.content-area-cal').toggleClass('d-none')});
         $(document).on('click', function (e) {
             var container = $(".filter-border-cal");
             // If the target of the click isn't the container
@@ -442,7 +444,7 @@ $(document).ready(function() {
 
       	$('.filter-list-cal input[type=checkbox]').change(function(){
         	countFilterDataCal();
-      	})
+      	});
     	function countFilterDataCal()
     	{
 
@@ -481,7 +483,7 @@ $(document).ready(function() {
   			} else {
   				$('.filter-icon-cal').removeClass('active');  
   			}
- 		});
+ 		});*/
 
     
 

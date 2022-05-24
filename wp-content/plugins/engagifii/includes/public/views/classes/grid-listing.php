@@ -74,7 +74,7 @@ if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
 ?>
-<div class="containerEngagii ff" id="list_div">
+<div class="containerEngagii ff" id="list_div" <?php if($calendar_view || $calendar_view_classname){ echo 'style="display:none"'; } ?>>
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
     <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here classes-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
       <thead> 
@@ -214,7 +214,11 @@ $filter_content = removeWhitespace($filter_content);
 
   var fv = 0;
   
-  
+   $( document ).ready(function() {
+	  if(localStorage.getItem("view_mode")=='list'){
+		$('#list').trigger("click");
+	} 
+   });
  
  
    $('#list').click(function(){
@@ -222,25 +226,18 @@ $filter_content = removeWhitespace($filter_content);
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
 			$('.flt-btn').fadeIn(300);
-            $('#calendar_div').hide();
-            $('#calendar_filter').hide();
-            $('#calendarsearch_div').hide();
-            $('.calendarsearch-form').hide();
+            $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form').hide();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
-        })
+        });
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#list').removeClass('btn-primary').addClass('btn-light');
-            $('#calendar_div').show();
-            $('#calendar_filter').show();
-            $('#list_div').hide();
+            $('#calendar_div, #calendar_filter, .calendarsearch-form').show();
+            $('#list_div, #calendarsearch_div, .filter-border').hide();
 			$('.flt-btn').fadeOut(100);
-            $('#calendarsearch_div').hide();
-			$('.filter-border').hide();
         $('.filter-area').toggleClass('d-none');
-        $('.calendarsearch-form').show();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
-        })
+        });
   var table = $('#ebtmaintable').DataTable( {
         "pageLength": '<?php echo $default_length; ?>',
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -574,7 +571,7 @@ $(document).ready(function(){
   <?php
   if($calendar_view || $calendar_view_classname){
   ?>
-   $('#list_div').hide();
+   //$('#list_div').hide();
    <?php
     }
    ?>
@@ -582,9 +579,7 @@ $(document).ready(function(){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
 	}
 	
-	if(localStorage.getItem("view_mode")=='list'){
-		$('#list').trigger("click");
-	}
+	
 });
 
 </script>

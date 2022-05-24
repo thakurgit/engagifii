@@ -109,7 +109,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 
 #ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt, .filter-top-bg{ 
   background: <?php echo $table_heading_bg;?> !important;
-  color:<?php echo $table_heading_color?>;
+  color:<?php echo $table_heading_color?> !important;
 }
 .containerEngagii .click-filter{color:<?php echo $table_heading_bg?>;}
 .engTrackingLevels{

@@ -86,7 +86,6 @@ h5#exampleModalLabel2 {
     border-radius: 100%;
     cursor: pointer;
     display: inline-block;
-    font-family: Google Sans,Roboto,Arial,sans-serif;
     height: 36px;
     line-height: 36px;
     text-align: center;
