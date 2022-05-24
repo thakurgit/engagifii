@@ -180,11 +180,8 @@
 						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
 			                        </div>
-                                    <div class="border rounded shadow-sm">
-			  					
-		                    	 <div class="p-3">
-                                  	<div class="row">
-		                    		<?php
+                                   <div class="p-3">
+                                   	<?php
 									
 		                    		if(count($response->eventDates)){
 		                    			
@@ -193,38 +190,21 @@
 		                    				$department = $value->$department;
 
 		                    		?>
-                                    <div class="col-md-12">
-		                    			<div class="card">
-		                    				<div class="card-body d-flex py-3 px-2 align-items-start instructor-detail">
-		                    					<div class="col-12">
-		                    					<h6> Day <?php echo $key+1 ?> </h6>
-												<?php echo $value->sessionDay.",".$value->sessionStartTime." To ".$value->sessionEndTime; ?>
-												<br>
-												Venue: <?php echo $value->name; ?>
-												<br>
-												Address:<br>
-												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>
-												<br>
-												<?php echo $value->country; ?>
-		                    					
-		                    					</div>
-		                    					
-                                                
-                                             </div>
-                                            
+		                    			<div class="border rounded p-3 pt-xl-2 mb-3 bg-light">
+		                    					<h6 class="pb-2 mb-2 border-bottom"> Day <?php echo $key+1 ?> </h6>
+                                                <ul class="list-unstyled mb-0 lh-lg">
+                                                	<li><?php echo $value->sessionDay.",".$value->sessionStartTime." To ".$value->sessionEndTime; ?></li>
+                                                    <li><strong>Venue:</strong> <?php echo $value->name; ?></li>
+                                                    <li><strong>Address: </strong>
+												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>, <?php echo $value->country; ?></li>
+                                                </ul>
 		                    			</div>
-                                        </div>
 		                    		<?php
 		                    			}
 		                    		}
 		                    		?>
+                                   </div>
 		                    	</div>
-		                    	</div>
-</div>
-
-                                     
-		                     </div>
-								<!--here -->
 					  		</div>
 			  		</div>
 			  		<div class="row">
@@ -339,7 +319,7 @@
 			  	</div>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
-			  		<table class="table table-bordered table-striped" id="class_table" width="100%">
+			  		<table class="table table-bordered table-striped" id="" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th>Class</th>
