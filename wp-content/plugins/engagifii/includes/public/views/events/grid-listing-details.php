@@ -180,58 +180,51 @@
 						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
 			                        </div>
-                                    <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="myTab" role="tablist">
-									  	<li class="nav-item">
-										    <a class="nav-link rounded-0 px-0 mx-3 text-dark <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline-tab" data-toggle="tab" href="#offline" role="tab" aria-controls="offline" aria-selected="true">In Person Class</a>
-									  	</li>
-									  	<li class="nav-item">
-									    	<a class="nav-link rounded-0 px-0 mx-3 text-dark  <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online-tab" data-toggle="tab" href="#online" role="tab" aria-controls="online" aria-selected="false">Online Class</a>
-									  	</li>
-									 </ul>
-                                     <div class="p-3">
-									 <div class="tab-content">
-									  	<div class="tab-pane fade show  <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
-									  		
-									  			<?php
-									  				if(!empty($response->location) && isset($response->location->address))
-									  				{
-									  			?>
-									  				<div class="summary-content-para-engagiigii row flex-wrap mb-3">
-									  					<div class="col-sm-4">Room Name:</div>
-					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
-					                            	</div>
-					                            	<div class="summary-content-para-engagiigii row flex-wrap mb-3">
-					                            		<div class="col-sm-4">Address:</div>
-					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
-					                            	</div> 
-					                            	<div class="summary-content-para-engagiigii col-12">
-					                            		<iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
+                                    <div class="border rounded shadow-sm">
+			  					
+		                    	 <div class="p-3">
+                                  	<div class="row">
+		                    		<?php
+									
+		                    		if(count($response->eventDates)){
+		                    			
+		                    			foreach ($response->eventDates as $key => $value) {
+		                    				$position  = $value->position;
+		                    				$department = $value->$department;
 
-					                            	</div>
-									  			<?php
-									  				}
-									  				else{
-									  				?>
-									  						<div class="summary-content-para-engagiigii">No class room is selected now</div>
-									  				<?php	
-									  				}
-									  			?>
-					                            
-					                        
-									  	</div>
-									  	<div class="tab-pane fade show <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
-									  		<div class="summary-content-para-engagiigii row flex-wrap mb-3">
-			                            		<div class="col-sm-4 ">Online Class Location:</div>
-			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
-			                        		</div> 
-			                        		<div class="summary-content-para-engagiigii row flex-wrap mb-3">
-			                            		<div class="col-sm-4 ">Login Steps:</div>
-			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
-			                        		</div> 
-									  	</div>
-			                       	</div>
-                                    </div>
+		                    		?>
+                                    <div class="col-md-12">
+		                    			<div class="card">
+		                    				<div class="card-body d-flex py-3 px-2 align-items-start instructor-detail">
+		                    					<div class="col-12">
+		                    					<h6> Day <?php echo $key+1 ?> </h6>
+												<?php echo $value->sessionDay.",".$value->sessionStartTime." To ".$value->sessionEndTime; ?>
+												<br>
+												Venue: <?php echo $value->name; ?>
+												<br>
+												Address:<br>
+												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>
+												<br>
+												<?php echo $value->country; ?>
+		                    					
+		                    					</div>
+		                    					
+                                                
+                                             </div>
+                                            
+		                    			</div>
+                                        </div>
+		                    		<?php
+		                    			}
+		                    		}
+		                    		?>
 		                    	</div>
+		                    	</div>
+</div>
+
+                                     
+		                     </div>
+								<!--here -->
 					  		</div>
 			  		</div>
 			  		<div class="row">
