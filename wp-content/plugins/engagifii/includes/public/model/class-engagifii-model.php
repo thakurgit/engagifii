@@ -2396,7 +2396,7 @@ $vars = "";
                    $data['objectType'] = $value->objectType;
                    $data['name'] = $value->name;
                    $data['price'] = $value->price;
-                   $data['createdOn'] = date('Y-m-d', strtotime($value->createdOn));
+                   $data['createdOn'] = date('Y-m-d', strtotime($value->startDateTime));
                    //$data['hours']      = $value->parentCourse->creditHours;
                    $data['icon']       = $value->icon;
                    $data['validity'] = $value->validity;
@@ -3320,7 +3320,7 @@ public function getEventsCalendar(){
                 $dayCount = 1;
                 $eventsdata = $this->eventsCalendar();
                 //echo "Hello events here";
-                //print_r($endorsementdata); 
+               //print_r($eventsdata); 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -3345,7 +3345,7 @@ public function getEventsCalendar(){
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                                     <?php if(count($filteredItems) > 0){
-                                        echo count($filteredItems).' Endorsement'; if(count($filteredItems) >1) {echo "s"; }
+                                        echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; }
                                     } ?>
                                     </span>
                                 </div>
@@ -3354,7 +3354,7 @@ public function getEventsCalendar(){
                             ?>
                                 <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
-                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text"><?php echo count($filteredItems).' Endorsement'; if(count($filteredItems) >1) {echo "s"; } ?></span>
+                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text"><?php echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; } ?></span>
                                 </div>
                                 <?php
                             
