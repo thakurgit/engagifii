@@ -109,6 +109,7 @@ Final Class Engagifii {
 		include_once('includes/public/model/class-engagifii-model.php');
 		
 		include_once('includes/public/model/class-engagifii-shortcodes.php');
+		include_once('includes/public/views/blocks.php');
 	}
 
 	public function engagifii_load_js_script(){
