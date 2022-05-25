@@ -2431,7 +2431,7 @@ $vars = "";
        //print_r(json_encode($postData));
            $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
            
-       print_r($dataResponse);
+      // print_r(json_encode($dataResponse));
            $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
