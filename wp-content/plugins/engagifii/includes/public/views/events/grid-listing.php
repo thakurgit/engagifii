@@ -55,13 +55,8 @@ if(isset($attr['calendar'])){
   if($calendar_view){
 	  
 ?>
-	<div class="container-fluid pb-4">
-  <div class="row">
-    <div class="col-12 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
-    <?php viewmode(); ?>
-    </div>
-  </div>
-  </div>
+
+  <?php echo do_shortcode('[view_mode]'); ?>
 
 <div class="container-fluid">
   <?php echo do_shortcode('[events-calendar]'); ?>

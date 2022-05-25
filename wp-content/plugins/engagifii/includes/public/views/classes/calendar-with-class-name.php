@@ -155,28 +155,9 @@ aside .box {
     $instructor = $obj->classAllInstructors($date);
     $classes = $obj->getAllClassCourses($date);
   ?>
-	<div class="container-fluid pb-4">
-    <div class="row">
-    <div class="col-md-6 col-12">
-    <form action="calendar-search.php" class="calendarsearch-form" method="POST">
-
-<div class="apply-search form-inline">
-	<div class="form-group mr-2 position-relative">
-    <input type="text" name="search" id="calendar-search" placeholder="Search by Class or Instructor" class="bg-light pr-5 form-control" >
-    <button type="button" class="clear-search btn position-absolute p-2 shadow-none" style="right:0; top:4px; display:none"><i class="far fa-times"></i></button>
-</div>
-    <input type="submit" value="Search" class="btn btn-primary" id="apply-filter-search-cal" />
-</div>
-</form>
+  
+   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]'); ?>
 	
-    </div>
-    <div class="col-12 col-md-6 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
-     <?php viewmode(); ?>
-        
-       
-    </div>
-  </div>
-  </div>
  <div id="calendar_div" class="position-relative container-fluid">
         
     </div>
