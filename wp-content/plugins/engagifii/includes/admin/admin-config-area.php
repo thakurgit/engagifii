@@ -65,7 +65,7 @@ function ebt_api_shortocde_description(){
 
 	echo "<h3 class='mb-0 bg-grey bordered'>Event Shortcodes </h3>";
 	echo "<div class='engagifii-setting'>";
-	echo "<ul class='list'><li><strong>Event List</strong> <code>[event-list]</code></li> <li><strong>Event Detail</strong> <code>[event-details Id='event-id']</code></li><li><strong>Event Calendar</strong> <code>[events-calendar]</code></li><li><strong>Event List & Calendar</strong> <code>[events-list-calendar calendar=true]</code></li> </ul>";
+	echo "<ul class='list'><li><strong>Event List</strong> <code>[event-list]</code></li> <li><strong>Event Detail</strong> <code>[events-details Id='event-id']</code></li><li><strong>Event Calendar</strong> <code>[events-calendar]</code></li><li><strong>Event List & Calendar</strong> <code>[events-list-calendar calendar=true]</code></li> </ul>";
 	echo "</div>";
 
 	echo "<h3 class='mb-0 bg-grey bordered'>Legislation Shortcodes </h3>";

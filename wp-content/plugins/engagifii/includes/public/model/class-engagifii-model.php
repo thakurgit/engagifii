@@ -588,14 +588,14 @@ class abstractModelEngagifii extends Engagifii_API
            
             /* getdata for tables */
             $nestedData = array();
-            $instructorPopOver = '';
+            $contactPopOver = '';
             $classPopover      = '';
 
-           // if(count($value->classInstructors))
-              //  $instructorPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
+        //    if(count($value->contact))
+        //        $contactPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
 
-            //if(count($row->classSessions))
-              //  $classPopover  = $this->_popOverClassData($key, $row->classSessions);
+            if(count($row->classSessions))
+                $classPopover  = $this->_popOverEventsData($key, $row->classSessions);
 
             $default_Title = $row->name;
             $default_Id = $row->id;
@@ -609,7 +609,7 @@ class abstractModelEngagifii extends Engagifii_API
 
             $nestedData['eventType'] = $row->eventType;
             $nestedData['eventWithClass'] = "<span class='text-center'>".$row->eventWithClass."</span>";
-            //$nestedData['eventWithClass'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" alt="class-icon" class="img-icon-lg"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$row->courseClassesCount.'</span></div>'.$classPopover;
+            $nestedData['class'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" alt="class-icon" class="img-icon-lg"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$value->courseClassesCount.'</span></div>'.$classPopover;
             $default_Date = $row->createdOn;
             $convert_Date = strtotime($default_Date);
             $new_Date = date('M d, Y', $convert_Date);
@@ -630,7 +630,7 @@ class abstractModelEngagifii extends Engagifii_API
 
             }
             $nestedData['startDateTime'] = $row->startDateTime;//'<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
-            
+            // $nestedData['contacts'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$contactPopOver.'</div>';  
             $nestedData['eventDates'] = $row->eventDates->id;
             
             $default_Courses = $row->courses;
@@ -1607,7 +1607,54 @@ class abstractModelEngagifii extends Engagifii_API
         return $popOverHtml . $vars;
     }
 
+//Popover events class data
 
+private function _popOverEventsData($id, $eventsData){
+    //print_r($classData);
+    $rowName = array();
+    $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
+    $subItems = "";
+    $li=1;
+    foreach ($eventsData as $key => $rowData) {
+        
+        $rowName[$rowData->id] = $rowData->id;
+        $classTime = '';
+        if($rowData->sessionDate)
+            
+        $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
+        $class='';
+        if($li%2==1){
+        $class='bg-light';	
+        }
+        $subItems .= '<li class="px-2 py-1 border-bottom d-flex align-items-center small '.$class.'"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+        $li++;
+    }
+
+    $popOverHtml .= $subItems;
+    $popOverHtml.= '</div>';
+    $searchName = json_encode(array_values($rowName));
+
+    /*$vars = "<script>
+                $('.td-dropdown').mCustomScrollbar({
+          scrollButtons:{enable:true},
+                theme:'minimal-dark',
+                 scrollbarPosition:'outside'
+                 });
+                
+            </script>";*/
+    $vars = "";
+    $popOverHtml .= '</ul></span>';
+    $popOverHtml .= '</div>';
+
+    $popOverHtml .= '</div>';
+    $popOverHtml .= '</div>';
+    $popOverHtml .= '</div> ';
+
+    return $popOverHtml . $vars;
+}
+
+
+//ends here 
      private function _popOverTagData($id, $tagData){
         
         $rowName = array();
@@ -2384,7 +2431,7 @@ $vars = "";
        //print_r(json_encode($postData));
            $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
            
-       //print_r($dataResponse);
+       print_r($dataResponse);
            $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
@@ -2401,8 +2448,9 @@ $vars = "";
                    $data['icon']       = $value->icon;
                    $data['validity'] = $value->validity;
                     $data['createdBy'] = $value->createdBy->name;
+                    $data['location'] = $value->location;
                    $class_schedule = '';
-                   $endorsementTag = $value->tags;
+                   $eventsTag = $value->tags;
                    $allTags = array();
                    foreach ($endorsementTag as $index => $tag) {
                                  

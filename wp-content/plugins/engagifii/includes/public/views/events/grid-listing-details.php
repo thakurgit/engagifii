@@ -144,18 +144,26 @@
 		                        <?php
 		                        	}
 		                        	if($response->startDateTime){
+										$defaulget_Date = $response->startDateTime;
+										$convert_Date = strtotime($defaulget_Date);
+										$date = date('M d, Y', $convert_Date);
+										$time = date('h:i A', $convert_Date);
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                        	<div class="col-sm-4 ">Event Start Date</div>
-		                        	<div class="col-sm-8"><?php echo $response->startDateTime; ?></div>
+		                        	<div class="col-sm-8"><?php echo $date." at ".$time; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->endDateTime){
+										$defaulget_Date = $response->endDateTime;
+										$convert_Date = strtotime($defaulget_Date);
+                                            $date = date('M d, Y', $convert_Date);
+											$time = date('h:i A', $convert_Date); //$convert_Date->format('h:i:s A');
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Event End Date</div>
-		                            <div class="col-sm-8"><?php echo $response->endDateTime; ?></div>
+		                            <div class="col-sm-8"><?php echo $date." at ".$time; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
@@ -188,12 +196,18 @@
 		                    			foreach ($response->eventDates as $key => $value) {
 		                    				$position  = $value->position;
 		                    				$department = $value->$department;
+											$sessionStart_Date = strtotime($value->sessionStartTime);
+											$startDate = date('M d, Y', $sessionStart_Date);
+											$startTime = date('h:i A', $sessionStart_Date);
+											$sessionEnd_Date = strtotime($value->sessionEndTime);
+											$endDate = date('M d, Y', $sessionEnd_Date);
+											$endTime = date('h:i A', $sessionEnd_Date);
 
 		                    		?>
 		                    			<div class="border rounded p-3 pt-xl-2 mb-3 bg-light">
 		                    					<h6 class="pb-2 mb-2 border-bottom"> Day <?php echo $key+1 ?> </h6>
                                                 <ul class="list-unstyled mb-0 lh-lg">
-                                                	<li><?php echo $value->sessionDay.",".$value->sessionStartTime." To ".$value->sessionEndTime; ?></li>
+                                                	<li><?php echo $value->sessionDay.", ".$startDate.' at '.$startTime." To ".$endTime; ?></li>
                                                     <li><strong>Venue:</strong> <?php echo $value->name; ?></li>
                                                     <li><strong>Address: </strong>
 												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>, <?php echo $value->country; ?></li>

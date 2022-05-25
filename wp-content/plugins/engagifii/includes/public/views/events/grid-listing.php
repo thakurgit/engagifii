@@ -218,17 +218,14 @@ $dt_class .= 'table-dark ';
           if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
               $forDatatable[$i]['name'] =$value->colName;
-              if($value->displayName == 'eventType')
+              if($value->colName == 'eventType')
               {
                  $value->displayName = "Type";
               }
               if($value->colName == 'name'){
                 $title_key = $i;
               }
-              if($value->colName =='startDateTime'){
-                $value->displayName = "Event Date";
-              }
-              if($value->colName =='city'){
+              if($value->colName == 'city'){
                 $value->displayName = "Location";
               }
 
