@@ -665,11 +665,12 @@ class abstractModelEngagifii extends Engagifii_API
                     $default_Tags[$index]->tagName = $tag;
                     $default_Tags[$index]->id =$index;
                 }
-                
+               
                 foreach ($default_Tags as $index => $value) {
-
+                   
                     if(count($default_Tags) > 1 && $index == 0)
                     {   
+                        
                         $tagPopover =  $this->_popOverTagData($key, $default_Tags);
                          $tagCount   = count($default_Tags) - 1;
                     $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$value->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
@@ -678,6 +679,10 @@ class abstractModelEngagifii extends Engagifii_API
                         $allTags[] = $value->tagName;
 
                 }
+                $allTags = array_diff($allTags, array('PUBLIC', 'public', 'Public'));
+                // if (($key = array_search('PUBLIC', $allTags)) !== false) {
+                //     unset($allTags[$key]);
+                // }
                 $nestedData['tags'] = $allTags;
             }else{
                 $nestedData['tags'] = "";

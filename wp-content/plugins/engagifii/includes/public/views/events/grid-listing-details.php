@@ -50,7 +50,7 @@
             ?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s):</span>
-                <span class="pl-1"> <?php echo count($response->tags);  ?></span>
+                <span class="pl-1"> <?php echo count($response->tags)-1;  ?></span>
                 <?php
                 	foreach ($response->tags as $key => $value) {
                 		?>
