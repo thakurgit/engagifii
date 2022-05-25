@@ -640,14 +640,20 @@ class abstractModelEngagifii extends Engagifii_API
                 $nestedData['courseCount'] = '<div class="course-badge"><img src="'.ENGAGIFII_ASSETS_URL.'/images/course-icon.png" class="img-circle" alt="course-icon"></div>';
             }
             
-            $default_Register = $row->register;
+            $event_status = $row->eventStatus;
+            $registration_state = $raw->eventRegistrationState;
             $default_RegisterBtn = "";
-            $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/awards/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
-            if ($default_Register) {
-                $nestedData['register'] = $default_RegisterBtn;
-            }else{
-                $nestedData['register'] = $default_RegisterBtn;
+            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$raw->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
+            else{
+                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/awards/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+            }
+            
+           
+           
+                $nestedData['register'] = $default_RegisterBtn;
+           
             
             $default_Tags = array();
             if (count($row->tags)) {
@@ -2431,11 +2437,11 @@ $vars = "";
        //print_r(json_encode($postData));
            $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
            
-      // print_r(json_encode($dataResponse));
+      //print_r(json_encode($dataResponse));
            $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
-           //print_r(json_encode($collection)); 
+           print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
                    $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
                    $data['id']    = $value->id;

@@ -305,18 +305,7 @@
                                                     </li> -->
                                                 </ul>
                                                 </div>
-                                                 <div class="ml-auto text-right col-3 px-0"> 
-                                                 <?php 
-                                                 	if($value->isLead){
-                                                 ?>	
-                                               	<span class="badge badge-success">Lead</span>
-                                               	<?php
-                                               		}
-				                               	?>
-                                               		
-                                               	<span class="badge badge-warning">Certified</span>
                                                 
-		                    				</div>
                                              </div>
                                             
 		                    			</div>
