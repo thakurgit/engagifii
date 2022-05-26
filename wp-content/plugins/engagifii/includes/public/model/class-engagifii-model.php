@@ -729,7 +729,7 @@ wp_die();
     public function eventCountFilterData()
     {
 
-        $postedData = $this->_preparePostCountData();
+        $postedData = $this->_eventsPostCountData();
         $dataResponse = $this->submitApiRequest("Public/count", $postedData, "POST", 'event');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
@@ -1206,7 +1206,7 @@ wp_die();
     // Events Grid Data
     public function eventsLoadGridData(){
 //print_r("event Grid");
-        $postedData = $this->_preparePostData();
+        $postedData = $this->_prepareEventsData();
         //print_r($postedData);
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         //print_r($dataResponse);
@@ -2683,6 +2683,59 @@ $vars = "";
         }
         return $postData;
     }
+    public function _prepareEventsData(){
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+
+        $isAsscend = $_POST["order"][0]["dir"];
+
+        if ($isAsscend == 'asc') {
+            $isAsscending = true;
+        } else {
+            $isAsscending = false;
+        }
+        
+
+        $title = $_POST['columns'][0]['search']['value'];
+
+        if (strlen($_POST['search']['value']) > 1) {
+            $title = $_POST['search']['value'];
+        }
+        $postData = array();
+        $sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $postData['itemCount'] = $_POST['length'];
+        $postData['sortBy'] = $sortBy;
+        //$postData['isAsscending'] = $isAsscending;
+        $postData['pageNumber'] = ($startPageNum);
+        $postData['pageSize'] = ((int) $_POST['length']);
+        $postData['sortDirection'] = $_POST["order"][0]["dir"];
+        $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        if(!empty($_POST['tags']))
+        {
+            $postData['filterBody']['tags'] = $_POST['tags'];
+        }
+        if(!empty($_POST['types']))
+        {
+            $postData['filterBody']['types'] = $_POST['types'];
+        }
+		 if(!empty($_POST['locations']))
+        {
+            $postData['filterBody']['locations'] = $_POST['locations'];
+        }
+         if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+        return $postData;
+    }
 
 
     public function _coursePostCountData()
@@ -2792,6 +2845,69 @@ $vars = "";
         if(!empty($_POST['instructors']))
         {
             $postData['instructors'] = $_POST['instructors'];
+        }
+      
+
+        if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+
+        $getCurrentdate = date("Y-m-d");
+        $postData['selectedDate'] = $getCurrentdate;
+        //echo json_encode($postData);
+        return $postData;
+    }
+	
+	 public function _eventsPostCountData(){
+
+         $searchValue = '';
+        if (strlen($_POST['search']['value']) > 1) {
+            $searchValue = $_POST['search']['value'];
+        }
+
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+
+        if ($columnsData["sectionname"] == "sectionname") {
+            $sortBy = "sectionname";
+        }else if ($columnsData["startdate"] == "startdate") {
+            $sortBy = "startdate";
+        }else if ($columnsData["credithours"] == "credithours") {
+            $sortBy = "credithours";
+        }else {
+            $sortBy = "";
+        }
+
+
+        $postData = array();
+        $postData['title'] = $searchValue;            
+        $postData['searchText'] = $searchText;      
+        $postData['lastActionStartDate'] = $datepickerstart;
+        $postData['lastActionEndDate'] = $datepickerend;
+        $postData['sortBy'] = $sortBy;
+        $postData['pageNumber'] = $startPageNum;
+       // $postData['pageSize'] = $_POST['length'];
+
+        if(!empty($_POST['tags']))
+        {
+            $postData['tags'] = $_POST['tags'];
+        }
+        if(!empty($_POST['types']))
+        {
+            $postData['types'] = $_POST['types'];
+        }
+		if(!empty($_POST['locations']))
+        {
+            $postData['locations'] = $_POST['locations'];
         }
       
 
@@ -3054,7 +3170,7 @@ $vars = "";
         $options = get_option('ebt_api_settings');
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-        $postedData = $this->_preparePostCountData();
+        $postedData = $this->_eventsPostCountData();
        //print_r($postedData);
         $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
         $classCount = $dataResponse['api_response'];

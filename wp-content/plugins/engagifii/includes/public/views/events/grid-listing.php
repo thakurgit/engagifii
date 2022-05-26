@@ -245,8 +245,8 @@ $dt_class .= 'table-dark ';
   var tags       = '';
   var types       = '';
   var city       = '';
-  var createdDate = '';
-  var endDate     = '';
+  var startdate = '';
+  var enddate     = '';
 
   var fv = 0;
 
@@ -300,11 +300,12 @@ var table = $('#ebtmaintable').DataTable( {
           "url": ajax_url_evt,
             "type": "POST",
             "data": function(d) {           
-             d.action = 'events';   
+            d.action = 'events';   
               d.tags    = tags; 
               d.types    = types; 
-              d.city    = city; 
-              d.createdDate = createdDate;   
+              d.locations    = city; 
+              d.eventEndDate = enddate;   
+			  d.eventStartDate = startdate;   
               
             }, 
         },
@@ -471,18 +472,18 @@ $( '.cleardate' ).click(function() {
 
     //filter
     $('#apply-filter-data').click(function(){
-      <?php
+     <?php /*?> <?php
        if(in_array('tags', $ebt_visib_datacol_list))
        {
       ?>
           tags       = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
       <?php
         }
-      ?>
+      ?><?php */?>
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
 var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
-      createdDate = $('input[name="createdbetween"]').val();
+     // createdDate = $('input[name="createdbetween"]').val();
       
       $(".filter-area").toggleClass('d-none');
       table.draw();
@@ -554,10 +555,12 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
         action:'eventfiltercountdata',
         tags : tags,  
         types : types,  
-        city : city,  
+        locations : city,  
+         eventEndDate : enddate,   
+		eventStartDate : startdate   
     },
     success: function(response) {     
-	console.log(response); 
+	//console.log(response); 
       var element  = document.getElementById("countFilterResult");
       if(element)
       {
