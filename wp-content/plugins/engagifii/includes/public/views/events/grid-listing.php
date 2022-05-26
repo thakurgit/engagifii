@@ -41,7 +41,7 @@ if(isset($attr['calendar'])){
     $tags = $obj->eventsAllTags($date);
     $eventTypes = $obj->eventTypes($date);
     $eventLocations = $obj->eventLocation();
-    //print_r($eventLocations);
+    //print_r($dataResponse);
     $dateRange  = $obj->awardDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -111,7 +111,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="instruct_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -128,7 +128,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($eventTypes as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="instruct_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="instruct_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -479,6 +479,9 @@ $( '.cleardate' ).click(function() {
       <?php
         }
       ?>
+var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
+var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
       createdDate = $('input[name="createdbetween"]').val();
       
       $(".filter-area").toggleClass('d-none');
@@ -553,7 +556,8 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
         types : types,  
         city : city,  
     },
-    success: function(response) {      
+    success: function(response) {     
+	console.log(response); 
       var element  = document.getElementById("countFilterResult");
       if(element)
       {
