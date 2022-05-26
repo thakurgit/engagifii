@@ -156,7 +156,7 @@ aside .box {
     $classes = $obj->getAllClassCourses($date);
   ?>
   
-   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]'); ?>
+   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]');  ?>
 	
  <div id="calendar_div" class="position-relative container-fluid">
         

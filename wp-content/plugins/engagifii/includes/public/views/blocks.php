@@ -41,3 +41,5 @@
 
 }
 add_shortcode( 'view_mode', 'view_mode' );
+
+
