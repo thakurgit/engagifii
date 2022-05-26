@@ -111,7 +111,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="instruct_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
+              echo '<li class="d-flex align-items-start"><input id="instruct_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="instruct_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -243,6 +243,8 @@ $dt_class .= 'table-dark ';
 <script type="text/javascript">
 
   var tags       = '';
+  var types       = '';
+  var city       = '';
   var createdDate = '';
   var endDate     = '';
 
@@ -298,8 +300,10 @@ var table = $('#ebtmaintable').DataTable( {
           "url": ajax_url_evt,
             "type": "POST",
             "data": function(d) {           
-             //d.action = 'events';   
+             d.action = 'events';   
               d.tags    = tags; 
+              d.types    = types; 
+              d.city    = city; 
               d.createdDate = createdDate;   
               
             }, 
@@ -537,22 +541,24 @@ $(document).on('click', '.daterangepicker ', function (e) {
       {
 
 //var courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
-var tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){alert (c.value); return c.value; });
+var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
+var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
   $.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
         action:'eventfiltercountdata',
-        //courses : courses,
         tags : tags,  
+        types : types,  
+        city : city,  
     },
     success: function(response) {      
-     console.log(tags); 
       var element  = document.getElementById("countFilterResult");
       if(element)
       {
           element.innerHTML = " ("+response.api_response +")";
-          console.log(response.api_response);
+          //console.log(response.api_response);
       }    
     }
 });

@@ -242,7 +242,7 @@ div#calendar_filter {
                 success:function(html){
                     $('#'+target_div).html(html);
                     $('.calendar__days').hide();
-                     $('#'+calendar_view).addClass('bg-primary text-white');
+                     $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');;
                     var date = year+'-'+month+'-'+day;
                     if(calendar_view == 'day'){ $('#event_list').hide();}
                     getEvents(date);
@@ -361,7 +361,7 @@ div#calendar_filter {
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100"><div class="loading-animation"></div></div>');
+				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();
@@ -423,7 +423,7 @@ div#calendar_filter {
           getEndorsementCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
         })
 
-         $('#apply-filter-data-cal').click(function(){
+         /*$('#apply-filter-data-cal').click(function(){
             //courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
             tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){return c.value; });
             
@@ -486,7 +486,7 @@ div#calendar_filter {
                 $('.filter-icon-cal').removeClass('active');  
               }
  		});
-
+*/
 
 
     </script>
