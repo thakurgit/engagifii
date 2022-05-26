@@ -1294,18 +1294,20 @@ wp_die();
            
                 $nestedData['register'] = $default_RegisterBtn;
            
-            
+            $filter = $row->tags;
+            $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
+            $filterTag = array_values($allTags);
             $default_Tags = array();
-            if (count($row->tags)) {
+            if (count($filterTag)) {
 
                 $allTags = array();
                 
-                foreach ($row->tags as $index => $tag) {
+                foreach ($filterTag as $index => $tag) {
 
                     $default_Tags[$index]->tagName = $tag;
                     $default_Tags[$index]->id =$index;
                 }
-               
+                
                 foreach ($default_Tags as $index => $value) {
                    
                     if(count($default_Tags) > 1 && $index == 0)
@@ -1319,11 +1321,7 @@ wp_die();
                         $allTags[] = $value->tagName;
 
                 }
-                $allTags = array_diff($allTags, array('PUBLIC', 'public', 'Public'));
-                // if (($key = array_search('PUBLIC', $allTags)) !== false) {
-                //     unset($allTags[$key]);
-                // }
-                $nestedData['tags'] = $allTags;
+               $nestedData['tags'] = $allTags;
             }else{
                 $nestedData['tags'] = "";
             }
