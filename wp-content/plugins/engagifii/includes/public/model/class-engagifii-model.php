@@ -911,6 +911,8 @@ wp_die();
 
     public function classLoadGridData(){
         $postedData  = $this->_prepareClassData();
+		//print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postedData, "POST", 'classes');
         
         $collection   = json_decode($dataResponse['api_response'])->result;
@@ -2797,6 +2799,11 @@ $vars = "";
             $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
             $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
+		if(!empty($_POST['creditHour']))
+        {
+            $postData['creditHour']['min'] = $_POST['minRange'];
+            $postData['creditHour']['max'] = $_POST['maxRange'];
+        }
         return $postData;
     }
     public function _prepareEventsData(){
@@ -2968,6 +2975,12 @@ $vars = "";
             $dateRange = explode("-", $_POST['createdDate']);
             $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
             $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+
+if(!empty($_POST['creditHour']))
+        {
+            $postData['creditHour']['min'] = $_POST['minRange'];
+            $postData['creditHour']['max'] = $_POST['maxRange'];
         }
 
         $getCurrentdate = date("Y-m-d");

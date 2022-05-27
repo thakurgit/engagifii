@@ -36,11 +36,8 @@
     $creditFilter    = $obj->getCreditHoursFilter($date);
     $instructor = $obj->classAllInstructors($date);
     $dateRange  = $obj->classdateFilters($date);
-
-    //print_r($classes);
-
-    $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
+ 	   $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
+  	  $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
     
 ?>
@@ -273,7 +270,7 @@ $filter_content = removeWhitespace($filter_content);
               d.courses = courses;
               d.instructors = instructor;  
               d.createdDate = createdDate;   
-              d.creditHour = creditFilter;
+              d.creditHour = [50,60];
 			   d.minRange = 50; 
             d.maxRange = 60;
             }, 
