@@ -1315,7 +1315,7 @@ wp_die();
         //print_r($dataResponse);
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
-        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+        //$totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
 
         header("Content-Type: application/json");
         $request = $_GET;
@@ -2814,28 +2814,28 @@ $vars = "";
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = $_POST['length'];
         $postData['sortBy'] = $sortBy;
-        //$postData['isAsscending'] = $isAsscending;
+        $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
-        $postData['sortDirection'] = $_POST["order"][0]["dir"];
+        //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
         if(!empty($_POST['tags']))
         {
-            $postData['filterBody']['tags'] = $_POST['tags'];
+            $postData['tags'] = $_POST['tags'];
         }
         if(!empty($_POST['types']))
         {
-            $postData['filterBody']['types'] = $_POST['types'];
+            $postData['types'] = $_POST['types'];
         }
 		 if(!empty($_POST['locations']))
         {
-            $postData['filterBody']['locations'] = $_POST['locations'];
+            $postData['locations'] = $_POST['locations'];
         }
          if(!empty($_POST['createdDate']))
         {
             $dateRange = explode("-", $_POST['createdDate']);
-            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+            $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
         return $postData;
     }
