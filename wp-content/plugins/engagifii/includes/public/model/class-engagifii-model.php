@@ -233,7 +233,7 @@ public function getCalendarClassName(){
                 $classdata = $this->classCalendar();
                 //echo "Hello Class Data";
 
-                //print_r($classdata);
+                //print_r(json_encode($classdata));
 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
@@ -271,7 +271,7 @@ public function getCalendarClassName(){
                                                 <?php
                                         
                                            if(count($filteredItems) >1) {$test; } 
-                                         if(count($filteredItems) >1) { }
+                                         //if(count($filteredItems) >1) { }
                                         echo "</div>";
                                         }
                                     } ?>
@@ -587,7 +587,7 @@ public function getEventsCalendar(){
                 $dayCount = 1;
                 $eventsdata = $this->eventsCalendar();
                 //echo "Hello events here";
-               //print_r($eventsdata); 
+               //print_r(json_encode($eventsdata)); 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -601,10 +601,10 @@ public function getEventsCalendar(){
                            // return $currentDate >= $item['start'] && $currentDate <= $item['end'];
                            //$currentDate ==$item['createdOn'];
                            //print_r($currentDate);
-                            return $currentDate >=$item['createdOn'] && $currentDate <=$item['createdOn'] ;
+                            return $currentDate >=$item['start'] && $currentDate <=$item['start'] ;
                         });
                        sort($filteredItems);
-//print_r(count($filteredItems));
+//print_r($filteredItems);
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
@@ -612,19 +612,112 @@ public function getEventsCalendar(){
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                                     <?php if(count($filteredItems) > 0){
-                                        echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; }
+                                        //echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; }
+                                        for($fi=0; $fi<count($filteredItems); $fi++){
+                                       
+                                            $test = $filteredItems[$fi]['name'];
+                                            $test = substr($test,0,20);
+                                           //echo $test.'...'; 
+                                           echo '<div class="classNames">';
+                                           ?>
+                                        <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                                <?php
+                                        
+                                           if(count($filteredItems) >1) {$test; } 
+                                         //if(count($filteredItems) >1) { }
+                                        echo "</div>";
+                                        }
                                     } ?>
                                     </span>
                                 </div>
+                                <?php  for($fi=0; $fi<count($filteredItems); $fi++){
+                                       
+                                       $test = $filteredItems[$fi]['name'];
+                                       $test = substr($test,0,20);
+                                      ?>
+                                        <!-- Modal -->
+                                           <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered" role="document">
+                                               <div class="modal-content">
+                                               <div class="modal-header text-left align-items-center">
+                                                   <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                                   </button>
+                                               </div>
+                                               <div class="modal-body text-left" >
+                                                   <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
+                                                   <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                   <p><strong>Price :</strong> <?php echo '$'.$$filteredItems[$fi]['price']; ?></p>
+                                                   <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
+                                                   
+                                               </div>
+                                               <div class="modal-footer">
+                                               <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <?php echo $filteredItems[$fi]['register']; ?>
+                                               </div>
+                                               </div>
+                                           </div>
+                                           </div> 
+                                           <?php
+                                   
+                                      
+                                   }
+                                ?>
                             <?php
                         }elseif(count($filteredItems) > 0){
                             ?>
                                 <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
-                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text"><?php echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; } ?></span>
+                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
+                                    <?php
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+                                            //print_r($filteredItems[$fi]['id']);
+                                            $test = $filteredItems[$fi]['name'];
+                                            $test = substr($test,0,20);
+                                        //echo $test.'...'; 
+                                        echo '<div class="classNames">';
+                                        ?>
+                                        <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                            <?php
+                                        if(count($filteredItems) >1) {$test; } 
+                                        echo "</div>";
+                                        }?>
+                                        </span>
                                 </div>
                                 <?php
+                             for($fi=0; $fi<count($filteredItems); $fi++){ 
+                                            
+                                $test = $filteredItems[$fi]['name'];
+                                $test = substr($test,0,20);
+                            ?>
+                                    <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header text-left d-flex align-items-center">
+                                        <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                                    <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
+                                                   <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                   <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
+                                                   <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                        <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <?php echo $filteredItems[$fi]['register']; ?>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div> 
+                                <?php
                             
+                            }?>
+                    <?php
                         }else{
                             echo '
                                 <div class="calendar__day no-event border-right col flex-column d-flex p-0" data-event="'.$currentDate.'" data-start="no-data">
@@ -686,7 +779,7 @@ public function getEventsCalendar(){
                         // Get number of events based on the current date
                         
                         $weekfilteredItems = array_filter($eventsdata, function($item) use ($currentDate) {
-                            return $currentDate >=$item['createdOn'] && $currentDate <=$item['createdOn'] ;
+                            return $currentDate >=$item['start'] && $currentDate <=$item['start'] ;
                         });
                         sort($weekfilteredItems);
             ?>			
@@ -695,8 +788,18 @@ public function getEventsCalendar(){
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){
-                                echo count($weekfilteredItems).' Event'; if(count($weekfilteredItems) >1) {echo "s"; }
-                            } ?>
+                                for($fi=0; $fi<count($weekfilteredItems); $fi++){ 
+                                  $test = $weekfilteredItems[$fi]['name'];
+                                  $test = substr($test,0,20);
+                              //echo $test.'...'; 
+                              echo '<div class="classNames">';
+                              ?>
+                              <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                  <?php
+                              if(count($weekfilteredItems) >1) {$test; } 
+                              echo "</div>";
+                                //echo count($weekfilteredItems).' Event'; if(count($weekfilteredItems) >1) {echo "s"; }
+                            } }?>
                             </span>
                         </div>
                         <?php                    
@@ -1211,7 +1314,7 @@ wp_die();
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         //print_r($dataResponse);
         $collection = json_decode($dataResponse['api_response'])->collection;
-        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
 
         header("Content-Type: application/json");
@@ -2737,7 +2840,6 @@ $vars = "";
         return $postData;
     }
 
-
     public function _coursePostCountData()
     {
 
@@ -2860,7 +2962,7 @@ $vars = "";
         //echo json_encode($postData);
         return $postData;
     }
-	
+
 	 public function _eventsPostCountData(){
 
          $searchValue = '';
@@ -2923,7 +3025,7 @@ $vars = "";
         //echo json_encode($postData);
         return $postData;
     }
-
+ 
      public function classCalendar(){
          //print_r("Hello class Calendar"); 
         $options = get_option('ebt_api_settings');
@@ -2959,7 +3061,7 @@ $vars = "";
         $collection   = json_decode($dataResponse['api_response'])->result;
         $data         = array();
         $classData    = array();
-        //print_r($collection); die;
+        //print_r(json_encode($collection));
         foreach ($collection as $key => $value) {
         	if(count($value->classSessions))
         	{
@@ -3202,37 +3304,112 @@ $vars = "";
            $endorsmentData    = array();
            //print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
+            if(count($value->eventDates))
+        	{
+                //$i=0;
+        	 foreach ($value->eventDates as $index => $event) {
+                 //session start time and date
+                $default_StartDate = $event->sessionStartTime;
+                $convert_StartDate = strtotime($default_StartDate);
+                $new_StartDate = date('M d, Y', $convert_StartDate);
+                $sessionStartTime = date('H:i', $convert_StartDate);
+                //end here
+
+                //session end date and time
+                $default_EndDate = $event->sessionEndTime;
+                $convert_EndDate = strtotime($default_EndDate);
+                $new_EndDate = date('M d, Y', $convert_EndDate);
+                $sessionEndTime = date('H:i', $convert_EndDate);
+                // end here
+
+                $startDate = date('Y-m-d', strtotime($value->startDateTime));
+                //$sessionEndTime = date('Y-m-d', strtotime($value->endDateTime));
+                   $endDate = date('Y-m-d', strtotime($value->endDateTime));
                    $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
+                   $data['titleNoLink'] = $value->name;
                    $data['id']    = $value->id;
+                   $data['start'] = date('Y-m-d', strtotime($event->sessionStartTime));
+                   $data['end']   = date('Y-m-d', strtotime($event->sessionStartTime));
                    $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-                   $data['objectType'] = $value->objectType;
+                   $data['objectType'] = $value->eventType;
                    $data['name'] = $value->name;
-                   $data['price'] = $value->price;
+                   $data['price'] = $value->defaultPrice;
                    $data['createdOn'] = date('Y-m-d', strtotime($value->startDateTime));
                    //$data['hours']      = $value->parentCourse->creditHours;
-                   $data['icon']       = $value->icon;
-                   $data['validity'] = $value->validity;
-                    $data['createdBy'] = $value->createdBy->name;
+                   $data['icon'] = $value->imageUrl;
+                   $data['schedule'] = $new_StartDate.' '.$sessionStartTime.' To '.$sessionEndTime;
+                   // $data['firstcondition'] = $i++;
                     $data['location'] = $value->location;
                    $class_schedule = '';
                    $eventsTag = $value->tags;
+                   $allTags = array_diff($eventsTag, array('PUBLIC', 'public', 'Public'));
+                    $filterTag = array_values($allTags);
                    $allTags = array();
-                   foreach ($endorsementTag as $index => $tag) {
-                                 
-                       $allTags[] = $tag;
-                   }
+                   if($filterTag){
+                    foreach ($filterTag as $index => $tag) {
+                                    
+                        $allTags[] = $tag;
+                    }
+                }else{
+                    $allTags[] ="NA";
+                }
     
                    $data['endorsementTag'] = $allTags;
-    
+                   $data['viewdetails'] = '<a href="'.site_url().'/event-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                    if(!$value->isAlreadyRegistered)
                    {
-                     $data['register'] = '<a href="'.$tenant_url.'/pages/awards/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                     $data['register'] = '<a href="'.$tenant_url.'pages/events/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                    }
                    else{
                     $data['register'] = ' ';
                    }
                    $endorsementData[] = $data; 
-               //} 
+                }
+                   
+               } 
+               else{
+                        $startDate = date('Y-m-d', strtotime($value->startDateTime));
+                        $endDate = date('Y-m-d', strtotime($value->endDateTime));
+                        $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
+                        $data['titleNoLink'] = $value->name;
+                        $data['id']    = $value->id;
+                        $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
+	                    $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
+                        $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+                        $data['objectType'] = $value->eventType;
+                        $data['name'] = $value->name;
+                        $data['price'] = $value->defaultPrice;
+                        $data['createdOn'] = date('Y-m-d', strtotime($value->startDateTime));
+                        //$data['hours']      = $value->parentCourse->creditHours;
+                        $data['icon'] = $value->imageUrl;
+                        $data['schedule'] = $startDate."-".$endDate; //today
+                        $data['secondCondition'] = $value->createdBy->name;
+                        $data['location'] = $value->location;
+                        $class_schedule = '';
+                        $eventsTag = $value->tags;
+                        $allTags = array_diff($eventsTag, array('PUBLIC', 'public', 'Public'));
+                        $filterTag = array_values($allTags);
+                        $allTags = array();
+                        if($filterTag){
+                        foreach ($filterTag as $index => $tag) {
+                                        
+                            $allTags[] = $tag;
+                        }
+                    }else{
+                        $allTags[] ="NA";
+                    }
+
+                        $data['endorsementTag'] = $allTags;
+
+                        if(!$value->isAlreadyRegistered)
+                        {
+                            $data['register'] = '<a href="'.$tenant_url.'pages/events/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                        }
+                        else{
+                            $data['register'] = ' ';
+                        }
+               $endorsementData[] = $data; 
+               }
            }
            return $endorsementData;
        }
@@ -3318,7 +3495,7 @@ public function getCalendar(){
                 $classdata = $this->classCalendar();
                 //echo "Hello Class Data";
 
-                //print_r($classata);
+                //print_r(json_encode($classdata));
 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
@@ -3473,6 +3650,7 @@ public function getEndorsementCalendar(){
     $month = $_POST['month'];
     $day   = $_POST['day'] ? $_POST['day'] :date('d');
     $dateYear = ($year != '')?$year:date("Y");
+
     $dateMonth = ($month != '')?$month:date("m");
     $postedDate = $year.'-'.$month.'-'.$day;
     $date = $dateYear.'-'.$dateMonth.'-01';
