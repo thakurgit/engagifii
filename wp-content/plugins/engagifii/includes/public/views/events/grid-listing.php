@@ -155,12 +155,13 @@ ob_start();
           // }
       ?>
       
-      <div class="apply-filter">
+    </div>
+          <div class="apply-filter">
         <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
           <span id="countFilterResult"></span>
         </button>
       </div>
-    </div>
+
   </div>
 </div>
 </div>
@@ -480,9 +481,9 @@ $( '.cleardate' ).click(function() {
       <?php
         }
       ?><?php */?>
-var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
-var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
-var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
+tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
+city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
      // createdDate = $('input[name="createdbetween"]').val();
       
       $(".filter-area").toggleClass('d-none');
@@ -506,6 +507,8 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
             fv = 0;
           $('.filter-icon').removeClass('active'); 
             tags = '';
+			types='';
+			city='';
             createdDate = '';
             table.draw();
 
@@ -538,6 +541,10 @@ $(document).on('click', '.daterangepicker ', function (e) {
 });
 
       $('.filter-list input[type=checkbox]').change(function(){
+		  if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
+		  
           countFilterData();
       })
 
@@ -562,6 +569,8 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
     success: function(response) {     
 	//console.log(response); 
       var element  = document.getElementById("countFilterResult");
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled')
       if(element)
       {
           element.innerHTML = " ("+response.api_response +")";
