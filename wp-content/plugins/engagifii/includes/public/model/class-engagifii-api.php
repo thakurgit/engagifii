@@ -663,7 +663,7 @@ class Engagifii_API{
 	}
 
 	/*Get all Events Tags */
-	public function eventsAllTags($date){
+	public function eventsAllTags(){
 
 		$postData=array();
 		$responseArray = array();

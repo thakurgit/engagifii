@@ -1310,7 +1310,8 @@ wp_die();
     public function eventsLoadGridData(){
 //print_r("event Grid");
         $postedData = $this->_prepareEventsData();
-        //print_r($postedData);
+        //print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         //print_r($dataResponse);
         $collection = json_decode($dataResponse['api_response'])->collection;
@@ -1374,7 +1375,19 @@ wp_die();
             }
             $nestedData['startDateTime'] = $row->startDateTime;//'<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
             // $nestedData['contacts'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$contactPopOver.'</div>';  
-            $nestedData['eventDates'] = $row->eventDates->id;
+            if($row->startDateTime){
+                $default_Date = $row->startDateTime;
+                $convert_Date = strtotime($default_Date);
+                $startdate = date('M d, Y', $convert_Date);
+                $starttime = date('h:i A', $convert_Date);
+            }
+            if($row->endDateTime){
+                $default_Date = $row->endDateTime;
+                $convert_Date = strtotime($default_Date);
+                $enddate = date('M d, Y', $convert_Date);
+                $endtime = date('h:i A', $convert_Date);
+            }
+            $nestedData['eventDates'] = $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
             
             $default_Courses = $row->courses;
             if ($default_Courses) {
@@ -1384,10 +1397,10 @@ wp_die();
             }
             
             $event_status = $row->eventStatus;
-            $registration_state = $raw->eventRegistrationState;
+            $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
             if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$raw->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$row->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
                 $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/awards/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
@@ -2797,10 +2810,10 @@ $vars = "";
 
         $isAsscend = $_POST["order"][0]["dir"];
 
-        if ($isAsscend == 'asc') {
-            $isAsscending = true;
-        } else {
+        if ($isAsscend == 'desc') {
             $isAsscending = false;
+        } else {
+            $isAsscending = true;
         }
         
 
@@ -2813,7 +2826,7 @@ $vars = "";
         $sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = $_POST['length'];
-        $postData['sortBy'] = $sortBy;
+        $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
