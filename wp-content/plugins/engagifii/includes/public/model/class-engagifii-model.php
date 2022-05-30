@@ -1505,14 +1505,14 @@ wp_die();
             /* getdata for tables */
             $nestedData = array();
             $contactPopOver = '';
-            $classPopover      = '';
+            $locationPopover      = '';
 
         //    if(count($value->contact))
         //        $contactPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
 
-            if(count($row->classSessions))
-                $classPopover  = $this->_popOverEventsData($key, $row->classSessions);
-
+            if(count($row->eventDates))
+                $locationPopover  = $this->_popOverLocationData($key, $row->eventDates);
+            print_r($locationPopOver);
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
@@ -1545,6 +1545,8 @@ wp_die();
                 $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
 
             }
+            //$nestedData['city'] = $row->eventDates;
+            $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.(count($row->eventDates)).'</span></div>'.$locationPopOver.'</div>';
             $nestedData['startDateTime'] = $row->startDateTime;//'<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
             // $nestedData['contacts'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$contactPopOver.'</div>';  
             if($row->startDateTime){
@@ -3333,7 +3335,7 @@ if(!empty($_POST['minRange']))
            $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
-           //print_r(json_encode($collection)); 
+           print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
             $event_status = $value->eventStatus;
             $registration_state = $value->eventRegistrationState;
