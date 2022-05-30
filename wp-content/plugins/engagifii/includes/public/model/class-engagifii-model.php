@@ -3346,14 +3346,14 @@ $vars = "";
                 $default_StartDate = $event->sessionStartTime;
                 $convert_StartDate = strtotime($default_StartDate);
                 $new_StartDate = date('M d, Y', $convert_StartDate);
-                $sessionStartTime = date('H:i', $convert_StartDate);
+                $sessionStartTime = date('h:i A', $convert_StartDate);
                 //end here
 
                 //session end date and time
                 $default_EndDate = $event->sessionEndTime;
                 $convert_EndDate = strtotime($default_EndDate);
                 $new_EndDate = date('M d, Y', $convert_EndDate);
-                $sessionEndTime = date('H:i', $convert_EndDate);
+                $sessionEndTime = date('h:i A', $convert_EndDate);
                 // end here
 
                 $startDate = date('Y-m-d', strtotime($value->startDateTime));
@@ -3371,7 +3371,7 @@ $vars = "";
                    $data['createdOn'] = date('Y-m-d', strtotime($value->startDateTime));
                    //$data['hours']      = $value->parentCourse->creditHours;
                    $data['icon'] = $value->imageUrl;
-                   $data['schedule'] = $new_StartDate.' '.$sessionStartTime.' To '.$sessionEndTime;
+                   $data['schedule'] = $new_StartDate.' at '.$sessionStartTime.' - '.$sessionEndTime;
                    // $data['firstcondition'] = $i++;
                     $data['location'] = $value->location;
                    $class_schedule = '';
@@ -3391,7 +3391,7 @@ $vars = "";
                    $data['endorsementTag'] = $allTags;
                    $data['viewdetails'] = '<a href="'.site_url().'/event-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                   
-                   $default_RegisterBtn = "hello";
+                   $default_RegisterBtn = "";
                    if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
                        $default_RegisterBtn = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registration_state.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                    }
@@ -3404,6 +3404,19 @@ $vars = "";
                    
                } 
                else{
+                   //session start time and date
+                $default_StartDate = $event->sessionStartTime;
+                $convert_StartDate = strtotime($default_StartDate);
+                $new_StartDate = date('M d, Y', $convert_StartDate);
+                $sessionStartTime = date('h:i A', $convert_StartDate);
+                //end here
+
+                //session end date and time
+                $default_EndDate = $event->sessionEndTime;
+                $convert_EndDate = strtotime($default_EndDate);
+                $new_EndDate = date('M d, Y', $convert_EndDate);
+                $sessionEndTime = date('h:i A', $convert_EndDate);
+                // end here
                         $startDate = date('Y-m-d', strtotime($value->startDateTime));
                         $endDate = date('Y-m-d', strtotime($value->endDateTime));
                         $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
@@ -3418,7 +3431,7 @@ $vars = "";
                         $data['createdOn'] = date('Y-m-d', strtotime($value->startDateTime));
                         //$data['hours']      = $value->parentCourse->creditHours;
                         $data['icon'] = $value->imageUrl;
-                        $data['schedule'] = $startDate."-".$endDate; //today
+                        $data['schedule'] = $new_StartDate.' at '.$sessionStartTime.' - '.$sessionEndTime;
                         $data['secondCondition'] = $value->createdBy->name;
                         $data['location'] = $value->location;
                         $class_schedule = '';
