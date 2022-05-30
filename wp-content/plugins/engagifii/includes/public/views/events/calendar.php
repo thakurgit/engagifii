@@ -1,11 +1,8 @@
 <style>
-
-
-
-
 @media screen and (min-width: 55em) {
   .calendar-contain {
     margin: auto;
+    top: 5%;
   }
 }
 
@@ -79,9 +76,12 @@
 	opacity: 0.6;
 }
 .calendar__day.no-event {
-	opacity: 0.5;
 	cursor: auto;
 	pointer-events: none;
+}
+
+.calendar__day.no-event * {
+	opacity: 0.5;
 }
 #calendar_div .loader {
 	z-index: 2;
@@ -98,7 +98,6 @@
 }
 @media screen and (min-width: 1200px) {
 .calendar__day:not(.today):hover {
-    border:1px solid #28a745;
     background-color:#F7F9FC ;
 }
 .calendar-dark .calendar__day:not(.today):hover {
@@ -106,8 +105,8 @@
 }
 }
 @media screen and (min-width: 768px) {
-.scroll {
-	height: 620px;
+.scroll.mCustomScrollbar {
+height: 605px;	
 }
 }
 @media screen and (max-width: 992px) {
@@ -119,9 +118,6 @@
 }
 aside .box {
 	font-size: 13px;
-}
-.view-mode {
-    transform: translateY(35px) translateX(0px);
 }
 }
 @media screen and (max-width: 767px) {
@@ -146,6 +142,12 @@ aside .box {
 #event_list .scroll > div.last ~ div {
 	display: none;
 }
+
+
+.modal-header {
+        padding: 1rem .4rem;
+        justify-content: flex-start;
+}
 	</style>
   <?php
     $obj      =  new Engagifii_API();
@@ -160,57 +162,6 @@ aside .box {
 
 
 
-  <div class="row engagifii-box d-none" id="calendar_filter">
-  <div class="col-md-1 col-2 text-right ml-auto pb-2">
-  <div class=" filter-content">
-  <div class="containerEngagii filter-icon-cal d-inline-flex align-items-center justify-content-center rounded-circle position-relative pull-right"><i class="fas fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
-  <div class="filter-border-cal">
-  <div class="filter-area filter-area-cal d-none">
-    <div class="Engagiirow filter-top-bg col-sm-12">
-      <div class="col-sm-6 text-left">
-        <span class="filter-title">
-          <i class="fas fa-filter"></i> Filter 
-          <span id="blockedchecked"></span> 
-        </span>
-      </div>
-      <div class="col-sm-6 text-right">
-        <span class="clear-all-cal" id="clear-all-cal"> Clear All </span>
-      </div>
-    </div>
-    <div class="col-sm-12 height-4">
-      <input type="hidden" id="isApplyACtive" value="0">
-      <!-- <div class="filter-list-cal">
-        <div class="heading-title">Award Name <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none">
-          <ul class="list-group m-0">
-          <? //php foreach ($classes as $key => $value) { echo '<li class=""><label class="d-none" for="coursename_'.$key.'">course</label><input type="checkbox" name="courseClassCal[]" id="coursename_'.$key.'" value="'.addslashes($value['name']).'"> '.addslashes($value['name']).'</li>';} ?>
-          </ul>
-        </div>
-      </div> -->
-      <div class="filter-list-cal">
-        <div class="heading-title"> Tags <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none"><ul class="list-group m-0">
-          <?php
-
-            foreach ($tags as $key => $value) {
-              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="endorsementTags[]" id="instruct_'.$key.'" value="'.$value['name'].'"> '.addslashes($value['name']).'</li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-
-      
-    </div>
-    <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button"  id="apply-filter-data-cal">Apply 
-          <span id="countFilterResultCal"></span>
-        </button>
-      </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
  <div id="calendar_div" class="position-relative">
         
     </div>
@@ -244,7 +195,7 @@ aside .box {
                 success:function(html){
                     $('#'+target_div).html(html);
                     $('.calendar__days').hide();
-                    $('#'+calendar_view).addClass('bg-primary text-white ');
+                    $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');
                     var date = year+'-'+month+'-'+day;
                     if(calendar_view == 'day'){ $('#event_list').hide();}
                     getEvents(date);
@@ -311,12 +262,12 @@ aside .box {
                       $('#event_list').removeClass('col-md-4');
                       $('#event_list').addClass('col-12');
                    }
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-responsive img-icon-lg mr-2">'+value['title']+'</div><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'</div><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
 
                 });
 				class_html += '</div>';
             } else{ 
-				class_html += '<div class="box border"><div class="col-12 text-center">No Event</div></div>'; 
+				class_html += '<div class="box"><h5 class="col-12 text-center opacity-50">Oops! No events found for selected date.</h5></div>'; 
 			}
             
             $('#event_list').html(class_html);
@@ -348,7 +299,7 @@ aside .box {
 		
 		
 
-        $('.clear-all-cal').click(function(){
+       /* $('.clear-all-cal').click(function(){
             $('input[type=checkbox]').prop('checked',false);
             $('#countFilterResultCal').html(' ');
             fv = 0;
@@ -359,11 +310,11 @@ aside .box {
             getEventsCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), '');
 
 
-      })
+      })*/
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100"><div class="loading-animation"></div></div>');
+				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();
@@ -393,7 +344,7 @@ aside .box {
                     $('#calendar_div').html(html);
                     
                     getEvents(today);
-           			$('button#month').addClass('bg-primary text-white ');
+           			$('button#month').addClass('bg-primary text-white ').removeClass('bg-white');
            			$('#dayView').hide();
                 $('#weekView').hide();
 
@@ -425,7 +376,7 @@ aside .box {
           getEventsCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
         })
 
-         $('#apply-filter-data-cal').click(function(){
+       <?php /*?>  $('#apply-filter-data-cal').click(function(){
             //courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
             tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){ return c.value; });
             
@@ -487,7 +438,7 @@ aside .box {
               } else {
                 $('.filter-icon-cal').removeClass('active');  
               }
- 		});
+ 		});<?php */?>
 
 
 

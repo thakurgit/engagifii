@@ -275,7 +275,7 @@ $(document).ready(function() {
                 });
 				class_html += '</div>';
             } else{ 
-				class_html += '<div class="box"><h5 class="col-12 text-center opacity-50">Oops! No classes available for selected date.</div></h5>'; 
+				class_html += '<div class="box"><h5 class="col-12 text-center opacity-50">Oops! No classes available for selected date.</h5></div>'; 
 			}
             
             $('#event_list').html(class_html);

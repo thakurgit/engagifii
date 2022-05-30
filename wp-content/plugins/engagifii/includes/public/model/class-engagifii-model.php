@@ -741,14 +741,14 @@ public function getEventsCalendar(){
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center ">
-                <span class="top-bar__days  py-3">Mon</span>
-                <span class="top-bar__days  py-3">Tue</span>
-                <span class="top-bar__days  py-3">Wed</span>
-                <span class="top-bar__days  py-3">Thu</span>
-                <span class="top-bar__days  py-3">Fri</span>
-                <span class="top-bar__days  py-3">Sat</span>
-                <span class="top-bar__days  py-3">Sun</span>
+            <div class="calendar__top-bar bg-light border-top mt-4 text-uppercase d-flex text-center">
+                <span class="top-bar__days  py-3 border-right">Mon</span>
+                <span class="top-bar__days  py-3 border-right">Tue</span>
+                <span class="top-bar__days  py-3 border-right">Wed</span>
+                <span class="top-bar__days  py-3 border-right">Thu</span>
+                <span class="top-bar__days  py-3 border-right">Fri</span>
+                <span class="top-bar__days  py-3 border-right">Sat</span>
+                <span class="top-bar__days  py-3 ">Sun</span>
             </div>
 
             <?php
@@ -916,7 +916,7 @@ public function getEventsCalendar(){
                 echo '</div>';
             ?>
         </div>
-          <div id="weekView" class="calendar__days col-12 pb-4 pt-5 px-1 px-lg-2 border">
+          <div id="weekView" class="calendar__days col-12 pt-5 px-0 border">
             <?php
                     list($week_start_date, $week_end_date) = $this->x_week_range($postedDate);
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
@@ -929,16 +929,16 @@ public function getEventsCalendar(){
                 
             <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getEventsCalendar('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
             
-            <div class="calendar__top-bar bg-light mt-4 mt-lg-5 text-uppercase d-flex text-center bg-light">
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Mon</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Tue</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Wed</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Thu</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Fri</span>
-                <span class="top-bar__days border border-right-0  py-2 py-md-4">Sat</span>
-                <span class="top-bar__days border   py-2 py-md-4">Sun</span>
+            <div class="calendar__top-bar bg-light border-top mt-4 text-uppercase d-flex text-center">
+                <span class="top-bar__days  py-3 border-right">Mon</span>
+                <span class="top-bar__days  py-3 border-right">Tue</span>
+                <span class="top-bar__days  py-3 border-right">Wed</span>
+                <span class="top-bar__days  py-3 border-right">Thu</span>
+                <span class="top-bar__days  py-3 border-right">Fri</span>
+                <span class="top-bar__days  py-3 border-right">Sat</span>
+                <span class="top-bar__days  py-3 ">Sun</span>
             </div>
-            <div class="calendar__week text-center d-flex justify-content-around border-top pt-3">
+            <div class="calendar__week text-center d-flex justify-content-around border-top">
             <?php 
                 for ($i=0; $i <7 ; $i++) { 
                    
@@ -952,7 +952,7 @@ public function getEventsCalendar(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){
