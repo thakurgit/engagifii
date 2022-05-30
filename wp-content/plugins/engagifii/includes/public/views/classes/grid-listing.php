@@ -207,7 +207,6 @@ $filter_content = removeWhitespace($filter_content);
  
   var createdDate = '';
   var endDate     = '';
-  var creditFilter ='';
   var minRange ='<?php echo (int)$creditFilter['minRange']; ?>';
   var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
 
@@ -272,7 +271,6 @@ $filter_content = removeWhitespace($filter_content);
               d.courses = courses;
               d.instructors = instructor;  
               d.createdDate = createdDate;   
-             // d.creditHour = [50,60];
 			   d.minRange = minRange; 
             d.maxRange = maxRange;
             }, 
@@ -404,7 +402,6 @@ $('th .clear-search').click(function(e){
 			$(this).parent('label').removeClass('has-data');
 			table.draw();
 		});
-  /*$('div.top-filter').html('<?php //echo $filter_content; ?>');*/
   $('div.flt-btn').html('<?php echo $filter_content; ?>');
 
 
@@ -474,26 +471,10 @@ $('.clear-all').click(function(){
 	  var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
-
-      //creditFilter = $.map($('input[name="creditFilter"]:checked'), function(c){return c.value; });
-      //alert(creditFilter);
-
       $(".filter-area").toggleClass('d-none');
       table.draw();
 
     });
-
-
-    $(document).on('click', function (e) {
-      var container = $(".filter-border");
-      // If the target of the click isn't the container
-     // if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-      if(!container.is(e.target)){
-      //  container.hide();
-       // $('.filter-area').addClass('d-none'); 
-      }
-      });
-	  
 	  
 	  $(document).on('click', function (e) {
  $('.filter-area').addClass('d-none');
@@ -537,22 +518,20 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
 
      $('.filter-list input[type=checkbox]').change(function(){
+		 if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
           countFilterData();
       })
 
 
-    function countFilterData()
-    {
+    function countFilterData()  {
 
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-      //var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
-      //$.map($('input[name="creditFilter"]'), function(c){return c.value; });
-     //alert(creditFilter);
-
       
           $.ajax({
           type : "post",
@@ -568,7 +547,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
           },
           success: function(response) {       
             var element  = document.getElementById("countFilterResult");
-           
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled');
             if(element)
             {
               element.innerHTML = " ("+response.api_response +")";
@@ -604,16 +584,19 @@ $("#slider-range").slider({
         
      slide: function(event, ui ) {
 	    $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
-      //countFilterData();  
-       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
-      instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+		if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
+      countFilterData();  
+      // courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
+     // instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
      // var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
-       var createdDate = $('input[name="createdbetween"]').val();
+     //  var createdDate = $('input[name="createdbetween"]').val();
 
 
 
       
-          $.ajax({
+         <?php /*?> $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
 		  
@@ -629,13 +612,14 @@ $("#slider-range").slider({
           },
           success: function(response) {       
             var element  = document.getElementById("countFilterResult");
-           
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled');
             if(element)
             {
               element.innerHTML = " ("+response.api_response +")";
             }    
           }
-        });
+        });<?php */?>
 
       }
 
