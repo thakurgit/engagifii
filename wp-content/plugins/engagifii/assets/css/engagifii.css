@@ -69,6 +69,30 @@ cursor:pointer;
 .engagifii-tabs-content button:not(.collapsed) i {
 	transform:rotate(180deg)
 }
+.ui-slider-horizontal {
+	height: .4em;
+}
+.ui-widget-content {
+	border: 1px solid #007bff;
+	background: #efefef;
+}
+.ui-widget-header {
+	background: #007bff;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus  {
+	border: 2px solid #fff;
+	background: #007bff;
+	border-radius: 50%;
+	box-shadow: 0 0 3px #999;
+}
+.ui-slider-horizontal .ui-slider-handle {
+	top: -.4em;
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;
@@ -396,12 +420,12 @@ a.next-link {
 	background-color: #fff;
 	text-align: center;
 }
-.filter-btn-tz {
+/*.filter-btn-tz {
 	background-color: #2196F3 !important;
 	border-color: #2196F3 !important;
 	font-size: 15px;
 	padding: 5px 30px;
-}
+}*/
 .master-title {
 	padding: 0px 7px;
 	font-size: 14px;

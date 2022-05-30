@@ -171,7 +171,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
 
-              echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm " readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
+              echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm mb-3 shadow-none" readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
           ?>  
         </ul></div>
       </div>
@@ -454,7 +454,7 @@ $('.clear-all').click(function(){
   				$slider.slider("values", 1, <?php echo (int)$creditFilter['maxRange']; ?>);
             $('#countFilterResult').html(' ');
             fv = 0;
-          $('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light');  
+          $('.filter-icon').removeClass('active');  
             tags = '';
             courses = '';
             instructor = '';

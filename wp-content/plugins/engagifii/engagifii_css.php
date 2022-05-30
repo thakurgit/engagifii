@@ -111,7 +111,26 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
   background: <?php echo $table_heading_bg;?> !important;
   color:<?php echo $table_heading_color?> !important;
 }
+.ui-widget-content {
+	border-color: <?php echo $table_heading_bg;?> !important;
+}
+.ui-widget-header {
+	background: <?php echo $table_heading_bg;?> !important;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus  {
+	background:<?php echo $table_heading_bg;?> !important;
+}
 .containerEngagii .click-filter{color:<?php echo $table_heading_bg?>;}
+.containerEngagii.active .click-filter{
+	background:<?php echo $table_heading_bg?> !important;
+	color:<?php echo $table_heading_color?> !important;
+
+}
 .engTrackingLevels{
 	background: <?php echo $table_heading_bg;?> !important;
 	font-family: <?php echo $font_family;?> !important;
@@ -195,17 +214,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
     color: <?php echo $ebt_detail_text_color?> !important;
 }
 
-.filter-title{
-	font-family: <?php echo $font_family;?> !important;
-	color: <?php echo $ebt_detail_text_color?> !important;
-	font-size: <?php echo $ebt_detail_text_font?>px;
-}
 
-.clear-all{
-	font-family: <?php echo $font_family;?> !important;
-	font-size: <?php echo $ebt_detail_text_font?>px;
-	color: <?php echo $ebt_detail_text_color?> !important;
-}
 
 .heading-title{
 	font-family: <?php echo $font_family;?> !important;
@@ -220,12 +229,10 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 }
 
 .filter-btn-tz{
-	font-family: <?php echo $font_family;?> !important;
 	background: <?php echo $table_heading_bg;?> !important;
 	border: <?php echo $table_heading_bg;?> !important;
 	box-shadow: none;
-	font-size: <?php echo $ebt_detail_text_font?>px;
-	color: <?php echo $ebt_detail_text_color?> !important;
+	color: <?php echo $table_heading_color?> !important;
 }
 
 .engagifii-box table.table thead th{border-bottom: none;}
