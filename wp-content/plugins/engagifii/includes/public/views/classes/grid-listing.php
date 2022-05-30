@@ -208,6 +208,8 @@ $filter_content = removeWhitespace($filter_content);
   var createdDate = '';
   var endDate     = '';
   var creditFilter ='';
+  var minRange ='<?php echo (int)$creditFilter['minRange']; ?>';
+  var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
 
   var fv = 0;
   
@@ -270,9 +272,9 @@ $filter_content = removeWhitespace($filter_content);
               d.courses = courses;
               d.instructors = instructor;  
               d.createdDate = createdDate;   
-              d.creditHour = [50,60];
-			   d.minRange = 50; 
-            d.maxRange = 60;
+             // d.creditHour = [50,60];
+			   d.minRange = minRange; 
+            d.maxRange = maxRange;
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -446,8 +448,10 @@ $('.clear-all').click(function(){
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
 
-            $('input[name="creditFilter"]').val('');
-
+            $('input[name="creditFilter"]').val('<?php echo (int)$creditFilter['minRange']; ?>'+'-'+'<?php echo (int)$creditFilter['maxRange']; ?>');
+			var $slider = $("#slider-range");
+  				$slider.slider("values", 0, <?php echo (int)$creditFilter['minRange']; ?>);
+  				$slider.slider("values", 1, <?php echo (int)$creditFilter['maxRange']; ?>);
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light');  
@@ -455,7 +459,9 @@ $('.clear-all').click(function(){
             courses = '';
             instructor = '';
             createdDate = '';
-            creditFilter = '';
+            minRange = '<?php echo (int)$creditFilter['minRange']; ?>';
+			 maxRange = '<?php echo (int)$creditFilter['maxRange']; ?>';
+			  $(".filter-area").toggleClass('d-none');
             table.draw();
 
       })
@@ -465,6 +471,9 @@ $('.clear-all').click(function(){
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       createdDate = $('input[name="createdbetween"]').val();
+	  var range = $('#creditFilter').val().split("-");
+	  minRange = range[0];
+	   maxRange = range[1];
 
       //creditFilter = $.map($('input[name="creditFilter"]:checked'), function(c){return c.value; });
       //alert(creditFilter);
@@ -538,7 +547,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       //var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
-      var creditFilter = [4,50];
+      var range = $('#creditFilter').val().split("-");
+	  minRange = range[0];
+	   maxRange = range[1];
       //$.map($('input[name="creditFilter"]'), function(c){return c.value; });
      //alert(creditFilter);
 
@@ -551,7 +562,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
               courses : courses,
               instructors : instructor,
               createdDate : createdDate,   
-              creditHour : creditFilter,
+              minRange : minRange,
+			  maxRange:maxRange
         
           },
           success: function(response) {       
@@ -593,10 +605,10 @@ $("#slider-range").slider({
      slide: function(event, ui ) {
 	    $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
       //countFilterData();  
-       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
-      var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-      //var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
-       var     createdDate = $('input[name="createdbetween"]').val();
+       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
+      instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+     // var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
+       var createdDate = $('input[name="createdbetween"]').val();
 
 
 
@@ -610,9 +622,9 @@ $("#slider-range").slider({
               courses : courses,
               instructors : instructor,
               createdDate : createdDate,   
-              creditHour : [50,60],
-			  minRange:50,
-			  maxRange:60
+              //creditHour : [50,60],
+			  minRange:ui.values[ 0 ],
+			  maxRange:ui.values[ 1 ]
         
           },
           success: function(response) {       
