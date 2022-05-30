@@ -1405,7 +1405,7 @@ wp_die();
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$row->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
-                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/awards/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
             }
             
            
@@ -3330,6 +3330,9 @@ if(!empty($_POST['creditHour']))
            $endorsmentData    = array();
            //print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
+            $event_status = $value->eventStatus;
+            $registration_state = $value->eventRegistrationState;
+           
             if(count($value->eventDates))
         	{
                 //$i=0;
@@ -3382,14 +3385,16 @@ if(!empty($_POST['creditHour']))
     
                    $data['endorsementTag'] = $allTags;
                    $data['viewdetails'] = '<a href="'.site_url().'/event-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
-                   if(!$value->isAlreadyRegistered)
-                   {
-                     $data['register'] = '<a href="'.$tenant_url.'pages/events/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                  
+                   $default_RegisterBtn = "hello";
+                   if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
+                       $default_RegisterBtn = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registration_state.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                    }
                    else{
-                    $data['register'] = ' ';
+                       $default_RegisterBtn = '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                    }
-                   $endorsementData[] = $data; 
+                   $data['register'] = $default_RegisterBtn;
+                    $endorsementData[] = $data; 
                 }
                    
                } 
@@ -3426,15 +3431,16 @@ if(!empty($_POST['creditHour']))
                     }
 
                         $data['endorsementTag'] = $allTags;
-
-                        if(!$value->isAlreadyRegistered)
-                        {
-                            $data['register'] = '<a href="'.$tenant_url.'pages/events/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                   $default_RegisterBtn = "";
+                        if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
+                            $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }
                         else{
-                            $data['register'] = ' ';
+                            $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                         }
-               $endorsementData[] = $data; 
+                        
+                            $data['register'] = $default_RegisterBtn;
+                    $endorsementData[] = $data; 
                }
            }
            return $endorsementData;
