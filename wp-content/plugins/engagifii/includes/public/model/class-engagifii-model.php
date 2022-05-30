@@ -1505,14 +1505,15 @@ wp_die();
             /* getdata for tables */
             $nestedData = array();
             $contactPopOver = '';
-            $locationPopover      = '';
+           $locationPopOver      = '';
 
         //    if(count($value->contact))
         //        $contactPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
 
-            if(count($row->eventDates))
-                $locationPopover  = $this->_popOverLocationData($key, $row->eventDates);
-            print_r($locationPopOver);
+            if(count($row->eventDates)) {
+                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
+			}
+            //print_r($locationPopOver);
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
@@ -1603,9 +1604,12 @@ wp_die();
                     if(count($default_Tags) > 1 && $index == 0)
                     {   
                         
-                        $tagPopover =  $this->_popOverTagData($key, $default_Tags);
+                        $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
                          $tagCount   = count($default_Tags) - 1;
-                    $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$value->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
+                   // $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$value->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
+					
+					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+					
                     }
                     elseif(count($default_Tags) == 1)
                         $allTags[] = $value->tagName;
@@ -2592,7 +2596,64 @@ private function _popOverEventsData($id, $eventsData){
     return $popOverHtml . $vars;
 }
 
+	//Events Date popover 
+	public function _popOverLocationData($id, $locationData){
+		//$options = get_option('evt_api_settings');
+	 // $events_api_url = $options['evt_api_url'];
+	 // $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
 
+		   
+
+
+	  $rowName = array();
+ $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Locations.."/></div>';
+	 // $popOverHtml = '<span id="span_' . $id . '"  style=""> <select class="form-control" id="searchbox_' . $id . '">';
+	  $subItems = "";
+$li=1;
+	  foreach ($locationData as $key => $rowData) {
+		  
+		  $rowName[$rowData->id] = $rowData->city;
+		  
+		//   if($rowData->thumbnailUrl)
+		//   {
+		// 	  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
+		// 		  $instructor_img = $rowData->thumbnailUrl;
+		// 	  }
+		// 	  else
+		// 	  {
+		// 		  $instructor_img = $tenant_url.$rowData->thumbnailUrl;
+		// 	  }
+			  
+		//   }
+		//   else
+		//   {
+		// 	  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+		// 	 }
+$class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+		  //$subItems .= ' <option value="' . $rowData->city . '" data-capital="' . $rowData->city . '"  >' . $rowData->city . '</option>'; 
+		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->city . '</li>';
+		  $li++;
+	  }
+
+	  $popOverHtml .= $subItems;
+	  $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+
+	  $vars = "";
+
+	  $popOverHtml .= '</ul></span>';
+	  $popOverHtml .= '</div>';
+
+	  $popOverHtml .= '</div>';
+	  $popOverHtml .= '</div>';
+	  $popOverHtml .= '</div> ';
+
+	  return $popOverHtml . $vars;
+
+  }
 //ends here 
      private function _popOverTagData($id, $tagData){
         
