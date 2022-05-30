@@ -158,6 +158,174 @@ public function calendar_mode(){
         </div>
 
 <?php  }
+     public function classCalendar(){
+         //print_r("Hello class Calendar"); 
+        $options = get_option('ebt_api_settings');
+        
+        $endorsement_api_url = $options['ebt_api_url'];
+        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+        $postedData = $this->_classPostCountData();
+        $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
+        $classCount = $dataResponse['api_response'];
+
+        $postData = array();    
+        $postData['itemCount'] = $classCount;
+        $postData['sortBy'] = 'sectionname';
+        $postData['pageNumber'] = 1;
+        $postData['pageSize'] = ((int) $classCount);
+        $postData['sortDirection'] = 'asc';
+        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
+        if(!empty($_POST['courses']))
+        {
+            $postData['filterBody']['courses'] = $_POST['courses'];
+        }
+        if(!empty($_POST['instructors']))
+        {
+            $postData['filterBody']['instructors'] = $_POST['instructors'];
+           
+        }
+        //print_r(json_encode($postData));
+      
+        //echo json_encode($postData);
+       // echo json_encode($postData);
+        $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
+//print_r($dataResponse);
+        $collection   = json_decode($dataResponse['api_response'])->result;
+        $data         = array();
+        $classData    = array();
+        //print_r(json_encode($collection));
+        foreach ($collection as $key => $value) {
+        	if(count($value->classSessions))
+        	{
+        		foreach ($value->classSessions as $index => $class) {
+        			$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
+                    $data['titleNoLink'] = $value->sectionName;
+		            $data['id']    = $value->id;
+		            $data['start'] = date('Y-m-d', strtotime($class->sessionDate));
+		            $data['end']   = date('Y-m-d', strtotime($class->sessionDate));
+		            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+		            $data['objectType'] = $value->objectType;
+		            $data['hours']      = $value->parentCourse->creditHours;
+		            $data['icon']       = $value->parentCourse->iconReference;
+		            $class_schedule = '';
+		            if($value->classDuration > 1){
+		                $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
+		            }
+		            else{
+		                $class_schedule = date('d M Y', strtotime($value->startDate));
+		            }
+
+		            $sessionStartTime = date('g:i A',strtotime($value->classSessionSettings[0]->sessionStartTime));
+		            $sessionEndTime   = date('g:i A',strtotime($value->classSessionSettings[0]->sessionEndTime));
+
+		            $data['classTime']  =  $class_schedule.' at '.$sessionStartTime.' - '.$sessionEndTime;
+		            $classTag = $value->classTag;
+		            $allTags = array();
+		            foreach ($classTag as $index => $tag) {
+		                          
+		                $allTags[] = $tag->tagName;
+		            }
+
+		            $data['classTag'] = $allTags;
+                    $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+
+		            if($value->isClassRegistrationAllow)
+		            {
+		                if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+                        {
+                            if($value->locationType->name=="onlocation")
+                            {
+                                $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                                
+                            }
+                            elseif($value->locationType->name=="online"){
+                                $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                            }
+                            elseif($value->locationType->name=="onlocationandonline")
+                            {
+                                $data['register'] ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px;">Register online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank">Register in person</a></span>';
+                            }
+                            else{
+                                $data['register'] = ' ';
+                            }
+
+		                    //$data['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/online/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+
+		                }
+		                else{
+		                    $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+		                }
+		                
+		            }
+		            $classData[] = $data; 
+        		}
+        	}
+        	else
+        	{
+        		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
+				$data['titleNoLink'] = $value->sectionName;
+	            $data['id']    = $value->id;
+	            $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
+	            $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
+	            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+	            $data['objectType'] = $value->objectType;
+	            $data['hours']      = $value->parentCourse->creditHours;
+	            $data['icon']       = $value->parentCourse->iconReference;
+	            $class_schedule = '';
+	            if($value->classDuration > 1){
+	                $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
+	            }
+	            else{
+	                $class_schedule = date('d M Y', strtotime($value->startDate));
+	            }
+
+	            $sessionStartTime = date('g:i A',strtotime($value->classSessionSettings[0]->sessionStartTime));
+	            $sessionEndTime   = date('g:i A',strtotime($value->classSessionSettings[0]->sessionEndTime));
+
+	            $data['classTime']  =  $class_schedule.' at '.$sessionStartTime.' - '.$sessionEndTime;
+	            $classTag = $value->classTag;
+	            $allTags = array();
+	            foreach ($classTag as $index => $tag) {
+	                          
+	                $allTags[] = $tag->tagName;
+	            }
+
+	            $data['classTag'] = $allTags;
+				 $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+                if($value->isClassRegistrationAllow)
+	            {
+                    //echo $value->registrationState;
+
+	                if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+                    {
+                        if($value->locationType->name=="onlocation")
+                            {
+                                $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                            }
+                            elseif($value->locationType->name=="online"){
+                                $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                            }
+                            elseif($value->locationType->name=="onlocationandonline")
+                            {
+                                $data['register'] ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px; ">Register online</a><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a></span>';
+                            }
+                            else{
+                                $data['register'] = ' ';
+                            }
+
+	                    //$data['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/online/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+
+                    }
+                    else{
+                            $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                        }
+	                
+	            }
+	            $classData[] = $data; 
+        	} 
+        }
+        return $classData;
+    }
 //Class Calendar with Class names
 public function getCalendarClassName(){
     $year = $_POST['year'];
@@ -2981,11 +3149,11 @@ $vars = "";
             $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
 
-//if(!empty($_POST['creditHour']))
-       // {
+if(!empty($_POST['minRange']))
+        {
             $postData['creditHour']['min'] = $_POST['minRange'];
             $postData['creditHour']['max'] = $_POST['maxRange'];
-        //}
+        }
 
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
@@ -3057,174 +3225,6 @@ $vars = "";
         return $postData;
     }
  
-     public function classCalendar(){
-         //print_r("Hello class Calendar"); 
-        $options = get_option('ebt_api_settings');
-        
-        $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-        $postedData = $this->_classPostCountData();
-        $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
-        $classCount = $dataResponse['api_response'];
-
-        $postData = array();    
-        $postData['itemCount'] = $classCount;
-        $postData['sortBy'] = 'sectionname';
-        $postData['pageNumber'] = 1;
-        $postData['pageSize'] = ((int) $classCount);
-        $postData['sortDirection'] = 'asc';
-        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
-        if(!empty($_POST['courses']))
-        {
-            $postData['filterBody']['courses'] = $_POST['courses'];
-        }
-        if(!empty($_POST['instructors']))
-        {
-            $postData['filterBody']['instructors'] = $_POST['instructors'];
-           
-        }
-        //print_r(json_encode($postData));
-      
-        //echo json_encode($postData);
-       // echo json_encode($postData);
-        $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
-//print_r($dataResponse);
-        $collection   = json_decode($dataResponse['api_response'])->result;
-        $data         = array();
-        $classData    = array();
-        //print_r(json_encode($collection));
-        foreach ($collection as $key => $value) {
-        	if(count($value->classSessions))
-        	{
-        		foreach ($value->classSessions as $index => $class) {
-        			$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
-                    $data['titleNoLink'] = $value->sectionName;
-		            $data['id']    = $value->id;
-		            $data['start'] = date('Y-m-d', strtotime($class->sessionDate));
-		            $data['end']   = date('Y-m-d', strtotime($class->sessionDate));
-		            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-		            $data['objectType'] = $value->objectType;
-		            $data['hours']      = $value->parentCourse->creditHours;
-		            $data['icon']       = $value->parentCourse->iconReference;
-		            $class_schedule = '';
-		            if($value->classDuration > 1){
-		                $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
-		            }
-		            else{
-		                $class_schedule = date('d M Y', strtotime($value->startDate));
-		            }
-
-		            $sessionStartTime = date('g:i A',strtotime($value->classSessionSettings[0]->sessionStartTime));
-		            $sessionEndTime   = date('g:i A',strtotime($value->classSessionSettings[0]->sessionEndTime));
-
-		            $data['classTime']  =  $class_schedule.' at '.$sessionStartTime.' - '.$sessionEndTime;
-		            $classTag = $value->classTag;
-		            $allTags = array();
-		            foreach ($classTag as $index => $tag) {
-		                          
-		                $allTags[] = $tag->tagName;
-		            }
-
-		            $data['classTag'] = $allTags;
-                    $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
-
-		            if($value->isClassRegistrationAllow)
-		            {
-		                if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-                        {
-                            if($value->locationType->name=="onlocation")
-                            {
-                                $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                                
-                            }
-                            elseif($value->locationType->name=="online"){
-                                $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                            elseif($value->locationType->name=="onlocationandonline")
-                            {
-                                $data['register'] ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px;">Register online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank">Register in person</a></span>';
-                            }
-                            else{
-                                $data['register'] = ' ';
-                            }
-
-		                    //$data['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/online/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-
-		                }
-		                else{
-		                    $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-		                }
-		                
-		            }
-		            $classData[] = $data; 
-        		}
-        	}
-        	else
-        	{
-        		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
-				$data['titleNoLink'] = $value->sectionName;
-	            $data['id']    = $value->id;
-	            $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
-	            $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
-	            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-	            $data['objectType'] = $value->objectType;
-	            $data['hours']      = $value->parentCourse->creditHours;
-	            $data['icon']       = $value->parentCourse->iconReference;
-	            $class_schedule = '';
-	            if($value->classDuration > 1){
-	                $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
-	            }
-	            else{
-	                $class_schedule = date('d M Y', strtotime($value->startDate));
-	            }
-
-	            $sessionStartTime = date('g:i A',strtotime($value->classSessionSettings[0]->sessionStartTime));
-	            $sessionEndTime   = date('g:i A',strtotime($value->classSessionSettings[0]->sessionEndTime));
-
-	            $data['classTime']  =  $class_schedule.' at '.$sessionStartTime.' - '.$sessionEndTime;
-	            $classTag = $value->classTag;
-	            $allTags = array();
-	            foreach ($classTag as $index => $tag) {
-	                          
-	                $allTags[] = $tag->tagName;
-	            }
-
-	            $data['classTag'] = $allTags;
-				 $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
-                if($value->isClassRegistrationAllow)
-	            {
-                    //echo $value->registrationState;
-
-	                if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-                    {
-                        if($value->locationType->name=="onlocation")
-                            {
-                                $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                            elseif($value->locationType->name=="online"){
-                                $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                            elseif($value->locationType->name=="onlocationandonline")
-                            {
-                                $data['register'] ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px; ">Register online</a><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a></span>';
-                            }
-                            else{
-                                $data['register'] = ' ';
-                            }
-
-	                    //$data['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/online/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-
-                    }
-                    else{
-                            $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-                        }
-	                
-	            }
-	            $classData[] = $data; 
-        	} 
-        }
-        return $classData;
-    }
     //Endorsement : Get data - Added by Gurpreet
 
     public function endorsementCalendar(){

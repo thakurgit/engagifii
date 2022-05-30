@@ -166,7 +166,7 @@ wp_enqueue_script(
 			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css',array(),wp_get_theme()->get('Version')  );
 			wp_register_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css' );
 			wp_enqueue_style('datepicker-css');
-			wp_register_style( 'range-selector', 'https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
+			wp_register_style( 'range-selector', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css' );
 			wp_enqueue_style('range-selector');
 
 			$load_script = get_option('ebt_api_settings'); 

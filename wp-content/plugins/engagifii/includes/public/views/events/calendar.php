@@ -6,7 +6,6 @@
 @media screen and (min-width: 55em) {
   .calendar-contain {
     margin: auto;
-    top: 5%;
   }
 }
 
@@ -91,6 +90,9 @@
 	top: 0;
 }
 
+.view-mode {
+	z-index: 2;
+}
 .mCustomScrollBox {
 	width: 100%;
 }
@@ -118,7 +120,9 @@
 aside .box {
 	font-size: 13px;
 }
-
+.view-mode {
+    transform: translateY(35px) translateX(0px);
+}
 }
 @media screen and (max-width: 767px) {
 #monthView {
@@ -142,9 +146,6 @@ aside .box {
 #event_list .scroll > div.last ~ div {
 	display: none;
 }
-/* div#calendar_filter {
-  visibility: hidden !important;
-} */
 	</style>
   <?php
     $obj      =  new Engagifii_API();
