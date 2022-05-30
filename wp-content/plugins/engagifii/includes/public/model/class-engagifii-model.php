@@ -864,6 +864,8 @@ wp_die();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
+		//print_r(json_encode($dataResponse));
+		//die;
         wp_die();
     }
 
@@ -2784,7 +2786,8 @@ $vars = "";
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
         $postData['sortDirection'] = $_POST["order"][0]["dir"];
-        $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+		$postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        
         if(!empty($_POST['courses']))
         {
             $postData['filterBody']['courses'] = $_POST['courses'];
@@ -2799,11 +2802,12 @@ $vars = "";
             $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
             $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
-		if(!empty($_POST['creditHour']))
-        {
-            $postData['creditHour']['min'] = $_POST['minRange'];
-            $postData['creditHour']['max'] = $_POST['maxRange'];
-        }
+		//if(!empty($_POST['creditHour']))
+        //{
+            $postData['filterBody']['creditHour']['min'] = $_POST['minRange'];
+            $postData['filterBody']['creditHour']['max'] = $_POST['maxRange'];
+        //}
+		
         return $postData;
     }
     public function _prepareEventsData(){
@@ -2977,15 +2981,16 @@ $vars = "";
             $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
 
-if(!empty($_POST['creditHour']))
-        {
+//if(!empty($_POST['creditHour']))
+       // {
             $postData['creditHour']['min'] = $_POST['minRange'];
             $postData['creditHour']['max'] = $_POST['maxRange'];
-        }
+        //}
 
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
-        //echo json_encode($postData);
+       // print_r(json_encode($postData));
+		//die;
         return $postData;
     }
 
