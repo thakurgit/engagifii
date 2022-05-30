@@ -528,10 +528,10 @@ $(document).on('click', '.daterangepicker ', function (e) {
   });
   fv = $('.filter-list.checked').length;
   if(fv>0){
-	$('.filter-icon').addClass('active bg-primary text-white').removeClass('bg-light'); 
+	$('.filter-icon').addClass('active');
 	$('.filter-icon span').text(fv); 
   } else {
-	$('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light');  
+	$('.filter-icon').removeClass('active');  
   }
  });  
 
