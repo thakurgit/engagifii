@@ -127,9 +127,10 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 }
 .containerEngagii .click-filter{color:<?php echo $table_heading_bg?>;}
 .containerEngagii.active .click-filter{
-	background:<?php echo $table_heading_bg?> !important;
 	color:<?php echo $table_heading_color?> !important;
-
+}
+.containerEngagii.active{
+	background:<?php echo $table_heading_bg?> !important;
 }
 .engTrackingLevels{
 	background: <?php echo $table_heading_bg;?> !important;
