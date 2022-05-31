@@ -3042,6 +3042,13 @@ $vars = "";
         return $postData;
     }
     public function _prepareEventsData(){
+
+        $upcomingEvents = 'false';
+        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
+        if($upcomingEvents==1){
+        $upcomingEvents = 'true';	
+        }
+
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
             if ($value['orderable'] == "true") {
@@ -3068,7 +3075,7 @@ $vars = "";
         $sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = $_POST['length'];
-        $postData['onlyUpcoming'] = "true";
+        $postData['onlyUpcoming'] = $upcomingEvents;
         $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
@@ -3368,6 +3375,11 @@ if(!empty($_POST['minRange']))
         $options = get_option('evt_api_settings');
         $endorsement_api_url = $options['evt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
+        $upcomingEvents = 'false';
+        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
+        if($upcomingEvents==1){
+        $upcomingEvents = 'true';	
+        }
         $postedData = $this->_eventsPostCountData();
        //print_r(json_encode($postedData));
         $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
@@ -3378,7 +3390,7 @@ if(!empty($_POST['minRange']))
         $postData = array();    
         $postData['itemCount'] = $classCount;
         $postData['sortBy'] = 'sectionname';
-        $postData['onlyUpcoming'] ="true";
+        $postData['onlyUpcoming'] = $upcomingEvents;
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = ((int) $classCount);
         $postData['sortDirection'] = 'asc';

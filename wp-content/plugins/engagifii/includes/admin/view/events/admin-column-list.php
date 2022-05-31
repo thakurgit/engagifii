@@ -42,8 +42,19 @@
 				$counter++;
 		}
     	}
-    	echo '</ul>
-		<div> Do you want to show only upcoming events ? Yes or No" </div>	
+    	echo '</ul>';
+		if(isset($options['upcomingEvents'])){
+			$upcomingEvents = $options['upcomingEvents'];
+		   }else{
+			   $upcomingEvents = 0;
+		   }
+		
+			$dark = '';
+			if($upcomingEvents==1)
+			{
+				 $upcomingEvents  = 'checked';
+			}
+		echo '<span>Show only Upcoming Events: <input type="checkbox" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$upcomingEvents.'</span>
 		</div>';	
 		
     }
