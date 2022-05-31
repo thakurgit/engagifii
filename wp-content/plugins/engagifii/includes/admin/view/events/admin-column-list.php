@@ -49,12 +49,12 @@
 			   $upcomingEvents = 0;
 		   }
 		
-			$dark = '';
+			$up_events = '';
 			if($upcomingEvents==1)
 			{
-				 $upcomingEvents  = 'checked';
+				 $up_events  = 'checked';
 			}
-		echo '<span>Show only Upcoming Events: <input type="checkbox" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$upcomingEvents.'</span>
+		echo '<span>Show only Upcoming Events: <input type="checkbox" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/></span>
 		</div>';	
 		
     }

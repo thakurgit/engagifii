@@ -245,7 +245,9 @@ $filter_content = removeWhitespace($filter_content);
         "processing": true,
         "searching": true,
         "ordering":true,
-		"search": {regex: true},
+		"search": {
+			regex: true,
+			},
         "columnDefs": [ 
           { "targets": ['objectType','classDuration', 'startdate', 'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
@@ -375,17 +377,7 @@ $('th .clear-search').click(function(e){
 	e.stopPropagation();
 	table.column(i).search('').draw();
  });
- 
- 
- 
-     /* $( 'input', this ).on( 'keyup change', function () {
-			
-            if ( table.column(i).search() !== this.value ) {
-				table.column(i).search( this.value ).draw();
-            }
-			
-			
-        } );*/
+
     } );
 	
 	$(document).ready(function (){    
