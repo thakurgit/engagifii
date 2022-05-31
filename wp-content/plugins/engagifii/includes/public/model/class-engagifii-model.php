@@ -3068,6 +3068,7 @@ $vars = "";
         $sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = $_POST['length'];
+        $postData['onlyUpcoming'] = "true";
         $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
@@ -3259,6 +3260,7 @@ if(!empty($_POST['minRange']))
         $postData['lastActionEndDate'] = $datepickerend;
         $postData['sortBy'] = $sortBy;
         $postData['pageNumber'] = $startPageNum;
+        $postData['onlyUpcoming'] = "true";
        // $postData['pageSize'] = $_POST['length'];
 
         if(!empty($_POST['tags']))
@@ -3363,11 +3365,11 @@ if(!empty($_POST['minRange']))
 
     public function eventsCalendar(){
         
-        $options = get_option('ebt_api_settings');
-        $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+        $options = get_option('evt_api_settings');
+        $endorsement_api_url = $options['evt_api_url'];
+        $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
         $postedData = $this->_eventsPostCountData();
-       //print_r($postedData);
+       //print_r(json_encode($postedData));
         $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
         $classCount = $dataResponse['api_response'];
         //print_r('<br>');
@@ -3376,6 +3378,7 @@ if(!empty($_POST['minRange']))
         $postData = array();    
         $postData['itemCount'] = $classCount;
         $postData['sortBy'] = 'sectionname';
+        $postData['onlyUpcoming'] ="true";
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = ((int) $classCount);
         $postData['sortDirection'] = 'asc';
@@ -3396,7 +3399,7 @@ if(!empty($_POST['minRange']))
            $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
-           print_r(json_encode($collection)); 
+           //print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
             $event_status = $value->eventStatus;
             $registration_state = $value->eventRegistrationState;

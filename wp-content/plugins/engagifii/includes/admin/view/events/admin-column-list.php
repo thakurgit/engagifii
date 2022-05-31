@@ -6,12 +6,13 @@
     $options = get_option( 'ebt_api_settings' );
 	$required_column_array = ['name', 'city', 'tags', 'eventClasses', 'register', 'eventStatus', 'eventType', 'eventDates'];
 	//print_r(json_encode($response));
+	
     $events_visible_column_list = array();
     if(isset($options['events_visible_column_list']))
 	{
 	$events_visible_column_list = $options['events_visible_column_list'];   
 	}
-	
+	//print_r(json_encode($events_visible_column_list));
 		if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
@@ -41,7 +42,10 @@
 				$counter++;
 		}
     	}
-    	echo '</ul></div>';				
+    	echo '</ul>
+		<div> Do you want to show only upcoming events ? Yes or No" </div>	
+		</div>';	
+		
     }
 ?>
 </div>
