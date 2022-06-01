@@ -432,16 +432,18 @@ public function getCalendarClassName(){
                                         for($fi=0; $fi<count($filteredItems); $fi++){
                                        
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                            $test = substr($test,0,20);
+                                           // $test = substr($test,0,20);
                                            //echo $test.'...'; 
+										  // if($fi<2) {
+											   
+										   
                                            echo '<div class="classNames">';
                                            ?>
-                                        <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                        <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php  echo $test; ?>...</a>                                    
                                                 <?php
                                         
-                                           if(count($filteredItems) >1) {$test; } 
-                                         //if(count($filteredItems) >1) { }
                                         echo "</div>";
+										//}
                                         }
                                     } ?>
                                     </span>
@@ -488,24 +490,26 @@ public function getCalendarClassName(){
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
-                                            //print_r($filteredItems);
+                                            if($fi<2) {
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                            $test = substr($test,0,20);
-                                        //echo $test.'...'; 
                                         echo '<div class="classNames">';
                                         ?>
                                         <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
                                             <?php
-                                        if(count($filteredItems) >1) {$test; } 
                                         echo "</div>";
-                                        }?>
+                                        }
+										}
+										if(count($filteredItems)>2){
+											$more = count($filteredItems)-2;
+											echo '<div class="classNames"><a style="font-size:11px;" href="javascript:void" class="calendar-class badge">+'.$more.' more</a></div>';
+										} ?>
                                         </span>
                                 </div>
                                 <?php
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
                                             
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                            $test = substr($test,0,20);
+                                            //$test = substr($test,0,20);
                                         ?>
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
