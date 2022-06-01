@@ -1,7 +1,7 @@
  <script type="text/javascript">
    var search="";
     $('#apply-filter-search-cal').click(function(e){
-        alert("event");
+        
 		    e.preventDefault(); 
             search = $('#calendar-search').val();
 			
