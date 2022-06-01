@@ -41,13 +41,13 @@
     $title_key = -1;
     
 ?>
-
+   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]');  ?>
 <?php
 
   if($calendar_view){
 ?>
 
-  <?php echo do_shortcode('[class-calendar]'); ?>
+  <?php //echo do_shortcode('[class-calendar]'); ?>
 <?php
   }
   else if($calendar_view_classname){
@@ -245,9 +245,7 @@ $filter_content = removeWhitespace($filter_content);
         "processing": true,
         "searching": true,
         "ordering":true,
-		"search": {
-			regex: true,
-			},
+		"search": {regex: true},
         "columnDefs": [ 
           { "targets": ['objectType','classDuration', 'startdate', 'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false

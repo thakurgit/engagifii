@@ -156,7 +156,6 @@ aside .box {
     $classes = $obj->getAllClassCourses($date);
   ?>
   
-   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]');  ?>
 	
  <div id="calendar_div" class="position-relative container-fluid">
         
@@ -201,7 +200,7 @@ $(document).ready(function() {
 
           		},
                 success:function(html){
-                    $('#'+target_div).html(html);
+                	    $('#'+target_div).html(html);
                     $('.calendar__days').hide();
                     $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');
                     var date = year+'-'+month+'-'+day;
