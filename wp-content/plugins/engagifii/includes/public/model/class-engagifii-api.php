@@ -755,6 +755,15 @@ class Engagifii_API{
 		return $responseArray;
 	}
 
+	public function classRegDateFilters($date){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'Public/Class/GetMinMaxClassRegDate/'.$date;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+
 	public function getAllClassCourses($date){
 		$postData=array();
 		$responseArray = array();

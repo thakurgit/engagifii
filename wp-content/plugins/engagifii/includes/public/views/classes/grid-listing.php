@@ -35,7 +35,7 @@
     $classes = $obj->getAllClassCourses($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);
     $instructor = $obj->classAllInstructors($date);
-    $dateRange  = $obj->classdateFilters($date);
+    $dateRange  = $obj->classRegDateFilters($date);
  	   $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
   	  $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
