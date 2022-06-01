@@ -83,12 +83,7 @@
 .calendar__day.no-event * {
 	opacity: 0.5;
 }
-#calendar_div .loader {
-	z-index: 2;
-	background: rgba(255,255,255,0.8);
-	left: 0;
-	top: 0;
-}
+
 
 .view-mode {
 	z-index: 2;
@@ -259,13 +254,13 @@ $(document).ready(function() {
                       
                    }
                    else if(calendar_view == 'month'){
-                      $('#event_list').removeClass('col-md-4 col-12');
-                      $('#event_list').addClass('col-md-4');
+                      $('#event_list').removeClass('col-md-3 col-12');
+                      $('#event_list').addClass('col-md-3');
                    }
                    else if(calendar_view == 'week')
                    {
 					   html_class = 'col-lg-6';
-                      $('#event_list').removeClass('col-md-4');
+                      $('#event_list').removeClass('col-md-3');
                       $('#event_list').addClass('col-12');
                    }
                     class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
@@ -323,7 +318,7 @@ $(document).ready(function() {
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
+				$("#calendar_div").prepend('<div class="loader"><span class="spinner"></span></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();

@@ -378,11 +378,11 @@ public function getCalendarClassName(){
         </div><?php */?>
         <div class="col-12 pt-4">
             <div class="row ">
-        <aside class="calendar__sidebar col-md-4 order-2 border  pb-4 class-background" id="event_list">
+        <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
             
         </aside>
 
-        <div class="calendar__days col-md-8 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
+        <div class="calendar__days col-md-9 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
 
             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>

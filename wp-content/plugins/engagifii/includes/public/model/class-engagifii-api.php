@@ -739,7 +739,9 @@ class Engagifii_API{
 		$responseArray = array();
 		$apiUrl = 'Public/Class/GetAllClassInstructors/'.$date;
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+		if($response!=null) {
 		$responseArray = json_decode($response['api_response'], true);
+		}
 		return $responseArray;
 
 	}

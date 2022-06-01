@@ -194,7 +194,7 @@ div.dataTables_wrapper div.dataTables_length select {
 .text-break {
 	white-space: normal;
 }
-#eng-overlay {
+#eng-overlay, .loader {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -207,6 +207,7 @@ div.dataTables_wrapper div.dataTables_length select {
 	margin: auto;
 	box-shadow: 0 0 30px #999;
 	border-radius: 5px;
+	z-index: 2;
 }
 @keyframes spinner {
 	to {
