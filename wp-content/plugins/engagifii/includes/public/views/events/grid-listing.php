@@ -56,7 +56,7 @@ if(isset($attr['calendar'])){
 	  
 ?>
 
-  <?php echo do_shortcode('[view_mode]'); ?>
+ 
 
 <div class="container-fluid">
   <?php echo do_shortcode('[events-calendar]'); ?>

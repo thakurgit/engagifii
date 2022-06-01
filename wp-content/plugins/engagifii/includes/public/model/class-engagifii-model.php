@@ -193,7 +193,8 @@ public function calendar_mode(){
         $collection   = json_decode($dataResponse['api_response'])->result;
         $data         = array();
         $classData    = array();
-        //print_r(json_encode($collection));
+       
+        //print_r(json_encode($dataResponse));
         foreach ($collection as $key => $value) {
         	if(count($value->classSessions))
         	{
@@ -3043,10 +3044,12 @@ $vars = "";
     }
     public function _prepareEventsData(){
 
-        $upcomingEvents = 'false';
+        //$upcomingEvents = 'false';
         $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
         if($upcomingEvents==1){
         $upcomingEvents = 'true';	
+        }else{
+            $upcomingEvents = 'false';
         }
 
         $columnsData = [];
@@ -3259,7 +3262,13 @@ if(!empty($_POST['minRange']))
             $sortBy = "";
         }
 
-
+        
+        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
+        if($upcomingEvents==1){
+        $upcomingEvents = 'true';	
+        }else{
+            $upcomingEvents = 'false';
+        }
         $postData = array();
         $postData['title'] = $searchValue;            
         $postData['searchText'] = $searchText;      
@@ -3267,7 +3276,7 @@ if(!empty($_POST['minRange']))
         $postData['lastActionEndDate'] = $datepickerend;
         $postData['sortBy'] = $sortBy;
         $postData['pageNumber'] = $startPageNum;
-        $postData['onlyUpcoming'] = "true";
+        $postData['onlyUpcoming'] = $upcomingEvents;
        // $postData['pageSize'] = $_POST['length'];
 
         if(!empty($_POST['tags']))
@@ -3375,10 +3384,12 @@ if(!empty($_POST['minRange']))
         $options = get_option('evt_api_settings');
         $endorsement_api_url = $options['evt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
-        $upcomingEvents = 'false';
+        // $upcomingEvents = 'false';
         $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
         if($upcomingEvents==1){
         $upcomingEvents = 'true';	
+        }else{
+            $upcomingEvents = 'false';
         }
         $postedData = $this->_eventsPostCountData();
        //print_r(json_encode($postedData));

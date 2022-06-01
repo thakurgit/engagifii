@@ -58,6 +58,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'events-calendar'    => 'events_calendar',
 			'events-list-calendar' => 'events_list_calender_grid_view', 
 			'classes-calendar-search' => 'classes_calendar_search',
+			'events-calendar-search' => 'events_calendar_search',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -174,11 +175,21 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		return ob_get_clean();
 	}
 
-	//Calendar Search
+	//Class Calendar Search
 	public function classes_calendar_search()
 	{
 		ob_start();
 		include $this->basePath.'includes/public/views/classes/calendar-search.php';
+		return ob_get_clean();
+	}
+
+	//calendar search ends here
+
+	//Events Calendar Search
+	public function events_calendar_search()
+	{
+		ob_start();
+		include $this->basePath.'includes/public/views/events/calendar-search.php';
 		return ob_get_clean();
 	}
 

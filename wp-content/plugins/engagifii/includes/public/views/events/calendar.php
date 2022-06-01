@@ -160,13 +160,18 @@ aside .box {
   ?>
 
 
-
+<?php echo do_shortcode('[view_mode search="on" placeholder="Search by Name"]');  ?>
 
  <div id="calendar_div" class="position-relative">
         
     </div>
-  	
+  	<div id="calendarsearch_div" class="position-relative container-fluid" style="display:none">
+    
+    <?php echo do_shortcode('[events-calendar-search]'); ?>
+    
+        </div>
     <script>
+      
         //var courses = '';
         var tags = '';
         var fv = 0;
