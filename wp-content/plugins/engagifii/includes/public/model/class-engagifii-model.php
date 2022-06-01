@@ -451,7 +451,7 @@ public function getCalendarClassName(){
                                 <?php  for($fi=0; $fi<count($filteredItems); $fi++){
                                        
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                            $test = substr($test,0,20);
+                                            //$test = substr($test,0,20);
                                            ?>
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -490,7 +490,11 @@ public function getCalendarClassName(){
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
-                                            if($fi<2) {
+											$tc =2;
+											if(count($filteredItems)<4) {
+												$tc = count($filteredItems);	
+											}
+                                            if($fi<$tc) {
                                             $test = $filteredItems[$fi]['titleNoLink'];
                                         echo '<div class="classNames">';
                                         ?>
@@ -499,7 +503,7 @@ public function getCalendarClassName(){
                                         echo "</div>";
                                         }
 										}
-										if(count($filteredItems)>2){
+										if(count($filteredItems)>3){
 											$more = count($filteredItems)-2;
 											echo '<div class="classNames"><a style="font-size:11px;" href="javascript:void" class="calendar-class badge">+'.$more.' more</a></div>';
 										} ?>
