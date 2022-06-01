@@ -34,8 +34,13 @@
 			{
 				echo '</ul>';
 				echo '<ul class="ebt-grid-column-list">'; 			 
-			}			 
-			echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			}		
+			if($row->colName == "sectionname"){
+				echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" disabled type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			}	else{
+				echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			} 
+			//echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}
     	echo '</ul></div>';				
