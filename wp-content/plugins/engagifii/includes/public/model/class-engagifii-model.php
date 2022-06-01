@@ -1518,6 +1518,13 @@ wp_die();
             if(count($row->eventDates)) {
                 $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
 			}
+            $locationCount = 0 ;
+            foreach($row->eventDates as $key => $location){
+
+                if($location->city){
+                    $locationCount = $locationCount+1;
+                }
+            }
             //print_r($locationPopOver);
             $default_Title = $row->name;
             $default_Id = $row->id;
@@ -1552,7 +1559,13 @@ wp_die();
 
             }
             //$nestedData['city'] = $row->eventDates;
-            $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.(count($row->eventDates)).'</span></div>'.$locationPopOver.'</div>';
+            if($locationCount>0){
+                $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
+
+            }
+            else{
+            $nestedData['city'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
+            }
             $nestedData['startDateTime'] = $row->startDateTime;//'<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
             // $nestedData['contacts'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$contactPopOver.'</div>';  
             if($row->startDateTime){
@@ -2611,6 +2624,7 @@ private function _popOverEventsData($id, $eventsData){
 
 
 	  $rowName = array();
+     
  $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Locations.."/></div>';
 	 // $popOverHtml = '<span id="span_' . $id . '"  style=""> <select class="form-control" id="searchbox_' . $id . '">';
 	  $subItems = "";
@@ -2618,29 +2632,14 @@ $li=1;
 	  foreach ($locationData as $key => $rowData) {
 		  
 		  $rowName[$rowData->id] = $rowData->city;
-		  
-		//   if($rowData->thumbnailUrl)
-		//   {
-		// 	  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
-		// 		  $instructor_img = $rowData->thumbnailUrl;
-		// 	  }
-		// 	  else
-		// 	  {
-		// 		  $instructor_img = $tenant_url.$rowData->thumbnailUrl;
-		// 	  }
-			  
-		//   }
-		//   else
-		//   {
-		// 	  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
-
-		// 	 }
-$class='';
+		    $class='';
             if($li%2==1){
 			$class='bg-light';	
 			}
 		  //$subItems .= ' <option value="' . $rowData->city . '" data-capital="' . $rowData->city . '"  >' . $rowData->city . '</option>'; 
+          if($rowData->city){
 		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->city . '</li>';
+          }
 		  $li++;
 	  }
 
@@ -2649,7 +2648,7 @@ $class='';
 
 	  $vars = "";
 
-	  $popOverHtml .= '</ul></span>';
+	  $popOverHtml .= '</span>';
 	  $popOverHtml .= '</div>';
 
 	  $popOverHtml .= '</div>';
