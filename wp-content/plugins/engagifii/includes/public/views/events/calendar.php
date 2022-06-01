@@ -258,13 +258,13 @@ aside .box {
                       
                    }
                    else if(calendar_view == 'month'){
-                      $('#event_list').removeClass('col-md-4 col-12');
-                      $('#event_list').addClass('col-md-4');
+                      $('#event_list').removeClass('col-md-3 col-12');
+                      $('#event_list').addClass('col-md-3');
                    }
                    else if(calendar_view == 'week')
                    {
 					   html_class = 'col-lg-6';
-                      $('#event_list').removeClass('col-md-4');
+                      $('#event_list').removeClass('col-md-3');
                       $('#event_list').addClass('col-12');
                    }
                     class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'</div><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
