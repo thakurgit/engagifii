@@ -256,16 +256,15 @@ $dt_class .= 'table-dark ';
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
 			$('.flt-btn').fadeIn(300);
-            $('#calendar_div').hide();
+      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form').hide();
             $('#calendar_filter').hide();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#list').removeClass('btn-primary').addClass('btn-light');
-            $('#calendar_div').show();
-            $('#calendar_filter').show();
-            $('#list_div').hide();
+      $('#calendar_div, #calendar_filter, .calendarsearch-form').show();
+      $('#list_div, #calendarsearch_div, .filter-border').hide();
 			$('.flt-btn').fadeOut(100);
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
