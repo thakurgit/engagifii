@@ -613,10 +613,13 @@ public function getCalendarClassName(){
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                             <?php if(count($weekfilteredItems) > 0){
-                               // echo count($weekfilteredItems).' class'; if(count($weekfilteredItems) >1) {echo "es"; }
                                for($fi=0; $fi<count($weekfilteredItems); $fi++){
+								   $tc =2;
+											if(count($weekfilteredItems)<4) {
+												$tc = count($weekfilteredItems);	
+											}
+                                            if($fi<$tc) {
                                 $test = $weekfilteredItems[$fi]['titleNoLink'];
-                                $test = substr($test,0,20);
                             
                             echo '<div class="classNames">';
                             ?>
@@ -627,13 +630,17 @@ public function getCalendarClassName(){
                             echo "<br>";
                             echo '</div>';
                             }
+							}
+							if(count($weekfilteredItems)>3){
+											$more = count($weekfilteredItems)-2;
+											echo '<div class="classNames"><a style="font-size:11px;" href="javascript:void" class="calendar-class badge">+'.$more.' more</a></div>';
+										}
                             } ?>
                             </span>
                         </div>
                         <?php   
 						for($fi=0; $fi<count($weekfilteredItems); $fi++){
                                 $test = $weekfilteredItems[$fi]['titleNoLink'];
-                                $test = substr($test,0,20);
                             ?>
                                     <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
