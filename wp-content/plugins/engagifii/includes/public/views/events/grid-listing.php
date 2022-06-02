@@ -92,7 +92,7 @@ ob_start();
       </div>
       </div>
     </div>
-    <div class="col-sm-12 height-4" id="test">
+    <div class="col-sm-12" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
       
        <div class="filter-list border-bottom">
@@ -456,9 +456,17 @@ $( '.cleardate' ).click(function() {
         $('.filter-border').show();
        $('.filter-area').toggleClass('d-none');
         $('#isApplyACtive').val(1);
+		jQuery(".filter-area .list-group").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
     })
 
-    $('.heading-title').click(function(){$(this).next('.content-area').toggleClass('d-none')});
+   $('.heading-title').click(function(){
+		$(this).next('.content-area').toggleClass('d-none');
+		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
+	});
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',
