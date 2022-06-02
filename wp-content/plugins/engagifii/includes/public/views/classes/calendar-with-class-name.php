@@ -216,11 +216,13 @@ $(document).ready(function() {
             const options = { weekday: 'long', month: 'long', day: 'numeric', year:'numeric' };
             
 		   var event_date = new Date(date).toUTCString(); 
+		   const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+		   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+		   var selectedDate = '0'+new Date(date).getUTCDate();
+		   selectedDate = weekday[new Date(date).getUTCDay()].slice(0,3)+' - '+month[new Date(date).getUTCMonth()].slice(0,3)+' '+selectedDate.slice(-2) +', '+ new Date(date).getUTCFullYear();
+		  // console.log(selectedDate);
 		   day = event_date.slice(5,7);
-           // var event_date = new Date(date);
-           // day = String(event_date.getDate()).padStart(2, '0');
-           // event_date = event_date.toLocaleDateString(undefined, options);
-            var class_html = '<h4 class="sidebar__heading text-center py-3">'+event_date.slice(0,17)+'</h4>'; 
+            var class_html = '<h4 class="sidebar__heading text-center py-3" title="'+event_date.slice(0,17)+'">'+selectedDate+'</h4>'; 
             
             if(response!= 'no-data') {
                 var obj = JSON.parse(JSON.stringify(response));
