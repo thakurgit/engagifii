@@ -417,8 +417,7 @@ a.next-link {
 	overflow: auto;
 	margin-left: 0;
 }
-.filter-area,
-.filter-area-cal {
+.filter-area {
 	position: absolute;
 	background: #fff;
 	width: 450px;
@@ -432,6 +431,10 @@ a.next-link {
 	display: none;
 	box-shadow: 0px 0px 5px #b3b2b2;
 	position: relative;
+}
+.filter-area .list-group {
+max-height:180px;
+overflow:auto;	
 }
 /*.filter-top-bg {
     background-color: #999999;

@@ -144,7 +144,7 @@ ob_start();
       </div>
       </div>
     </div>
-    <div class="col-sm-12 height-4">
+    <div class="col-sm-12">
       <input type="hidden" id="isApplyACtive" value="0">
       <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
@@ -170,18 +170,18 @@ ob_start();
 
 <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
+        <div class="content-area d-none">
           <?php
 
               echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm mb-3 shadow-none" readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range"></div>';
           ?>  
-        </ul></div>
+        </div>
       </div>
       
       
 
       <div class="filter-list border-bototm">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="">Registeration date</label> <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registeration Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
@@ -410,9 +410,17 @@ $('th .clear-search').click(function(e){
         $('.filter-border').show();
         $('.filter-area').toggleClass('d-none');
         $('#isApplyACtive').val(1);
+		jQuery(".filter-area .list-group").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
     })
 
-    $('.heading-title').click(function(){$(this).next('.content-area').toggleClass('d-none')});
+    $('.heading-title').click(function(){
+		$(this).next('.content-area').toggleClass('d-none');
+		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
+	});
 
   
 
@@ -425,9 +433,10 @@ $('input[name="createdbetween"]').daterangepicker({
 		var regDate = createdDate.split("-");
 	 	  minReg = $.trim(regDate[0]);
 		maxReg = $.trim(regDate[1]);
-		console.log(minReg);
      countFilterData();
-
+ if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
     });
 
  $( document ).ready(function() {
@@ -435,6 +444,9 @@ $('input[name="createdbetween"]').daterangepicker({
 });
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
+	 if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
 	minReg = '<?php echo $min_date; ?>';
 	maxReg = '<?php echo $max_date; ?>';
     countFilterData();
