@@ -3035,12 +3035,13 @@ $vars = "";
         {
             $postData['filterBody']['instructors'] = $_POST['instructors'];
         }
-         if(!empty($_POST['createdDate']))
-        {
-            $dateRange = explode("-", $_POST['createdDate']);
-            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
-        }
+        // if(!empty($_POST['minReg'])){
+           // $dateRange = explode("-", $_POST['createdDate']);
+           // $postData['filterBody']['registrationDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+           // $postData['filterBody']['registrationDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+            $postData['filterBody']['registrationDateRange']['startDate'] = $_POST['minReg'];
+            $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
+        //}
 		//if(!empty($_POST['creditHour']))
         //{
             $postData['filterBody']['creditHour']['min'] = $_POST['minRange'];
@@ -3223,11 +3224,11 @@ $vars = "";
         }
       
 
-        if(!empty($_POST['createdDate']))
+        if(!empty($_POST['minReg']))
         {
-            $dateRange = explode("-", $_POST['createdDate']);
-            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+           // $dateRange = explode("-", $_POST['createdDate']);
+            $postData['registrationDateRange']['startDate'] = $_POST['minReg'];
+            $postData['registrationDateRange']['endDate'] = $_POST['maxReg'];
         }
 
 if(!empty($_POST['minRange']))

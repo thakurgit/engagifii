@@ -38,6 +38,8 @@
     $dateRange  = $obj->classRegDateFilters($date);
  	   $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
   	  $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
+	//print_r($max_date);
+	//die;
     $title_key = -1;
     
 ?>
@@ -179,7 +181,7 @@ ob_start();
       
 
       <div class="filter-list border-bototm">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="">Created Between</label> <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> <label for="">Registeration date</label> <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
@@ -209,6 +211,8 @@ $filter_content = removeWhitespace($filter_content);
   var endDate     = '';
   var minRange ='<?php echo (int)$creditFilter['minRange']; ?>';
   var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
+  var minReg ='<?php echo $min_date; ?>';
+  var maxReg ='<?php echo $max_date; ?>';
 
   var fv = 0;
   
@@ -270,9 +274,11 @@ $filter_content = removeWhitespace($filter_content);
               d.action='classes'; 
               d.courses = courses;
               d.instructors = instructor;  
-              d.createdDate = createdDate;   
+             // d.createdDate = createdDate;   
 			   d.minRange = minRange; 
             d.maxRange = maxRange;
+			d.minReg = minReg;
+			d.maxReg = maxReg;
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -416,8 +422,11 @@ $('input[name="createdbetween"]').daterangepicker({
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
-      
-      countFilterData();
+		var regDate = createdDate.split("-");
+	 	  minReg = $.trim(regDate[0]);
+		maxReg = $.trim(regDate[1]);
+		console.log(minReg);
+     countFilterData();
 
     });
 
@@ -426,7 +435,8 @@ $('input[name="createdbetween"]').daterangepicker({
 });
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
-    createdDate= '';
+	minReg = '<?php echo $min_date; ?>';
+	maxReg = '<?php echo $max_date; ?>';
     countFilterData();
 });
 
@@ -442,10 +452,10 @@ $('.clear-all').click(function(){
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active');  
-            tags = '';
             courses = '';
             instructor = '';
-            createdDate = '';
+            minReg = '<?php echo $min_date; ?>';
+			maxReg = '<?php echo $max_date; ?>';
             minRange = '<?php echo (int)$creditFilter['minRange']; ?>';
 			 maxRange = '<?php echo (int)$creditFilter['maxRange']; ?>';
 			  $(".filter-area").toggleClass('d-none');
@@ -457,7 +467,12 @@ $('.clear-all').click(function(){
     $('#apply-filter-data').click(function(){
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-      createdDate = $('input[name="createdbetween"]').val();
+	  if($('input[name="createdbetween"]').val()!=''){
+		var regDate = $('input[name="createdbetween"]').val().split("-");
+	 	  minReg = $.trim(regDate[0]);
+		maxReg = $.trim(regDate[1]);
+	  }
+      
 	  var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
@@ -530,7 +545,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
               action:'classcountdata',
               courses : courses,
               instructors : instructor,
-              createdDate : createdDate,   
+              minReg : minReg,
+			  maxReg : maxReg,   
               minRange : minRange,
 			  maxRange:maxRange
         
