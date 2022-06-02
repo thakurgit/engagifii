@@ -489,6 +489,7 @@ public function getCalendarClassName(){
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
+					$class_pop='';
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
 											$tc =2;
 											if(count($filteredItems)<4) {
@@ -498,14 +499,16 @@ public function getCalendarClassName(){
                                             $test = $filteredItems[$fi]['titleNoLink'];
                                         echo '<div class="classNames">';
                                         ?>
-                                        <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                                        <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?></a>                                    
                                             <?php
                                         echo "</div>";
                                         }
+										$test = $filteredItems[$fi]['titleNoLink'];
+										$class_pop .= '<div class="classNames"><a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal'. $filteredItems[$fi]['id'].'" href="" style="font-size:11px;" >'.$test.'</a></div>';
 										}
 										if(count($filteredItems)>3){
 											$more = count($filteredItems)-2;
-											echo '<div class="classNames"><a style="font-size:11px;" href="javascript:void" class="calendar-class badge">+'.$more.' more</a></div>';
+											echo '<div class="classNames"><a id="class-pop" style="font-size:11px;" href="#" class="calendar-class badge">+'.$more.' more</a></div><div class="position-absolute class-pop bg-light py-2" style="display:none;"> <span class="calendar__date mt-auto calendar-text d-block mb-2 text-dark"><strong>'.$dayCount.'</strong></span>'.$class_pop.'</div>';
 										} ?>
                                         </span>
                                 </div>

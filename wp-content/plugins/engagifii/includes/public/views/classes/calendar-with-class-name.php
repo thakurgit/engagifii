@@ -143,6 +143,15 @@ aside .box {
         padding: 1rem .4rem;
         justify-content: flex-start;
 }
+.class-pop {
+	left: 50%;
+	top: 50%;
+	transform: translatey(-50%) translatex(-50%);
+	min-height: 100%;
+	width: 120%;
+	box-shadow: 0 0 1rem rgba(0,0,0,.5) !important;
+	z-index: 1;
+}
 	</style>
   <?php
     $obj      =  new Engagifii_API();
@@ -244,28 +253,24 @@ $(document).ready(function() {
 						          tags += '</ul></span>';
                     } else if(value['classTag'].length == 0) {
 						
-						tags = '<i class="small">NA</i>';
+						tags = '<i class="small">N/A</i>';
 						} else { 
 						          tags = value['classTag']; 
 					         }
 
                    var html_class = 'col-12';
-                   if(calendar_view == 'day')
+                   if(calendar_view == 'day' || calendar_view == 'week')
                    {
-                      html_class = 'col-lg-6';
+                      html_class = 'col-md-4';
+                      $('#event_list').removeClass('col-md-3').addClass('col-12');
                       
                    }
                    else if(calendar_view == 'month'){
-                      $('#event_list').removeClass('col-md-3 col-12');
-                      $('#event_list').addClass('col-md-3');
+                      $('#event_list').removeClass('col-12').addClass('col-md-3');
+					   html_class = 'col-12';
                    }
-                   else if(calendar_view == 'week')
-                   {
-					   html_class = 'col-lg-6';
-                      $('#event_list').removeClass('col-md-3');
-                      $('#event_list').addClass('col-12');
-                   }
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value["title"]+'</div><div class="col-12 py-1 text-left">'+value["classTime"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Credit Hours: </span><span>'+value["hours"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span>'+tags+'</div><div class="col-12 text-center py-3">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+                  
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light p-2"><div class=" text-left d-flex align-items-center pb-2"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value["title"]+'</div><div class=" text-left">'+value["classTime"]+'</div><table class="table table-borderless table-sm text-left"><tr><td class="text-muted">Duration: </td><td>'+value["classDuration"]+'</td></tr><tr><td class="text-muted">Type: </td><td>'+value["objectType"]+'</td></tr><tr><td class=" text-muted">Credit Hours: </td><td>'+value["hours"]+'</td></tr><tr><td class=" text-muted">Tags: </td><td>'+tags+'</td></tr></table><div class="text-center">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
 					
 
                 });
@@ -368,17 +373,30 @@ $(document).ready(function() {
         	calendar_view = 'month';
         	getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
         	
-        })
+        });
         $('body').on('click', '#day', function(){
         	calendar_view = 'day';
           getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
-        })
+        });
 
         $('body').on('click', '#week', function(){
           calendar_view = 'week';
           
           getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
-        })
+        });
+		
+		$('body').on('click', '#class-pop', function(e){
+          $(this).parent().siblings('.class-pop').fadeIn();
+          return false;
+        });
+		$(document).on('click', function (e) {
+			if(!$('.modal').is(':visible')){
+ 				$('.class-pop').fadeOut();
+			}
+});
+$(document).on('click', '.class-pop', function (e) {
+  e.stopPropagation();
+});
 
          /*$('#apply-filter-data-cal').click(function(){
             courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });

@@ -21,7 +21,8 @@
 
    // print_r($class_visible_column_list);
     $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
-    //print_r($dataResponse);
+   // print_r($dataResponse);
+	//die;
 
     $collection   = json_decode($dataResponse['api_response']);
     unset($collection[0]);
