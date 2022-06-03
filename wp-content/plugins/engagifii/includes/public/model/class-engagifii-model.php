@@ -62,8 +62,8 @@ class abstractModelEngagifii extends Engagifii_API
         add_action('wp_ajax_nopriv_getcalendar', array($this, 'getCalendar'));
         add_action('wp_ajax_getcalendar', array($this, 'getCalendar')); 
 
-        add_action('wp_ajax_nopriv_getcalendarclassname', array($this, 'getcalendarclassname'));
-        add_action('wp_ajax_getcalendarclassname', array($this, 'getcalendarclassname'));
+        add_action('wp_ajax_nopriv_getcalendarclassname', array($this, 'getcalendarclassname1'));
+        add_action('wp_ajax_getcalendarclassname', array($this, 'getcalendarclassname1'));
 
         //Added by guru
 
@@ -637,6 +637,295 @@ public function getCalendarClassName(){
 							if(count($weekfilteredItems)>3){
 											$more = count($weekfilteredItems)-2;
 											echo '<div class="classNames"><a style="font-size:11px;" href="javascript:void" class="calendar-class badge">+'.$more.' more</a></div>';
+										}
+                            } ?>
+                            </span>
+                        </div>
+                        <?php   
+						for($fi=0; $fi<count($weekfilteredItems); $fi++){
+                                $test = $weekfilteredItems[$fi]['titleNoLink'];
+                            ?>
+                                    <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header text-left d-flex align-items-center pr-5">
+                                        <img src="<?php echo $weekfilteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $weekfilteredItems[$fi]['title']; ?></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" >
+                                            <p><strong>Date :</strong> <?php echo $weekfilteredItems[$fi]['classTime']; ?></p>
+                                            <p><strong>Duration : </strong><?php echo $weekfilteredItems[$fi]['classDuration']; ?></p>
+                                            <p><strong>Type :</strong> <?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
+                                            <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p>
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                        <a href="../class-details/?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <?php echo $weekfilteredItems[$fi]['register']; ?>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div> 
+                                <?php
+                           
+                            }
+							                 
+                }
+            ?>
+            </div>
+           
+        </div>
+        <div id="dayView" class="calendar__days col-12 pb-4 pt-5 px-lg-5 border">
+            <?php
+                    $prev_date = date('D', strtotime($postedDate .' -1 day'));
+                    $next_date = date('D', strtotime($postedDate .' +1 day'));
+            ?>
+             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($postedDate.' - 1 day')); ?>','<?php echo date("m",strtotime($postedDate.' - 1 day')); ?>','<?php echo date("d",strtotime($postedDate.' - 1 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo $prev_date; ?></span></a>
+                
+            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($postedDate.' + 1 day')); ?>','<?php echo date("m",strtotime($postedDate.' + 1 day')); ?>','<?php echo date("d",strtotime($postedDate.' + 1 day')); ?>');"><span class="mr-2"><?php echo $next_date; ?></span><i class="fa fa-chevron-right"></i></a>
+            <div class="calendar__week text-center justify-content-around" id="today_event">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+    </main>
+
+<?php
+wp_die();
+}
+public function getCalendarClassName1(){
+    $year = $_POST['year'];
+    $month = $_POST['month'];
+    $day   = $_POST['day'] ? $_POST['day'] :date('d');
+    $dateYear = ($year != '')?$year:date("Y");
+    $dateMonth = ($month != '')?$month:date("m");
+    $postedDate = $year.'-'.$month.'-'.$day;
+    $date = $dateYear.'-'.$dateMonth.'-01';
+    $currentMonthFirstDay = date("N",strtotime($date));
+    $totalDaysOfMonth = cal_days_in_month(CAL_GREGORIAN,$dateMonth,$dateYear);
+    $totalDaysOfMonthDisplay = ($currentMonthFirstDay == 1)?($totalDaysOfMonth):($totalDaysOfMonth + ($currentMonthFirstDay - 1));
+    $boxDisplay = ($totalDaysOfMonthDisplay <= 35)?35:42;
+
+    $prevMonth = date("m", strtotime('-1 month', strtotime($date)));
+    $prevYear = date("Y", strtotime('-1 month', strtotime($date)));
+    $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
+
+?>
+
+    <main class="calendar-contain row">
+    <?php echo $this->calendar_mode(); ?>
+        
+        <div class="col-12 pt-4">
+            <div class="row ">
+        <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
+            
+        </aside>
+
+        <div class="calendar__days col-md-9 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
+
+            <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
+                <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
+            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
+            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+                <span class="top-bar__days  py-3 border-right">Mon</span>
+                <span class="top-bar__days  py-3 border-right">Tue</span>
+                <span class="top-bar__days  py-3 border-right">Wed</span>
+                <span class="top-bar__days  py-3 border-right">Thu</span>
+                <span class="top-bar__days  py-3 border-right">Fri</span>
+                <span class="top-bar__days  py-3 border-right">Sat</span>
+                <span class="top-bar__days  py-3">Sun</span>
+            </div>
+
+            <?php
+                $dayCount = 1;
+                $classdata = $this->classCalendar();
+                
+
+                echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
+                for($cb=1;$cb<=$boxDisplay;$cb++){
+                    if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
+                        // Current date
+                        $currentDate = $dateYear.'-'.$dateMonth.'-'.str_pad($dayCount, 2, '0', STR_PAD_LEFT);; 
+
+                        // Get number of events based on the current date
+                        
+                        $filteredItems = array_filter($classdata, function($item) use ($currentDate) {
+                            return $currentDate >= $item['start'] && $currentDate <= $item['end'];
+                        });
+                       sort($filteredItems);
+                      //print_r(json_encode($filteredItems));
+                       //$test = json_encode($filteredItems);
+                      //print_r($filteredItems[0]['title']);
+                      
+
+
+                        // Define date cell color
+                        if(count($filteredItems) > 0){
+							$today='';
+							if(strtotime($currentDate) == strtotime(date("Y-m-d"))){
+								$today = ' today bg-light';	
+							}
+                            ?>
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
+                                    <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
+                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
+                                        <?php
+										$class_pop='';
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+											$tc =2;
+											if(count($filteredItems)<4) {
+												$tc = count($filteredItems);	
+											}
+                                            if($fi<$tc) {
+                                            $test = $filteredItems[$fi]['titleNoLink'];
+                                        echo '<div class="classNames">';
+                                        ?>
+                                        <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?></a>                                    
+                                            <?php
+                                        echo "</div>";
+                                        }
+										$test = $filteredItems[$fi]['titleNoLink'];
+										$class_pop .= '<div class="classNames"><a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal'. $filteredItems[$fi]['id'].'" href="" style="font-size:11px;" >'.$test.'</a></div>';
+										}
+										if(count($filteredItems)>3){
+											$more = count($filteredItems)-2;
+											echo '<div class="classNames"><a id="class-pop" style="font-size:11px;" href="#" class="calendar-class badge">+'.$more.' more</a></div><div class="position-absolute class-pop bg-light py-2" style="display:none;"> <span class="calendar__date mt-auto calendar-text d-block mb-2 text-dark"><strong>'.$dayCount.'</strong></span>'.$class_pop.'</div>';
+										} ?>
+                                        </span>
+                                </div>
+                                <?php
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+                                            
+                                            $test = $filteredItems[$fi]['titleNoLink'];
+                                            //$test = substr($test,0,20);
+                                        ?>
+                                                <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header text-left d-flex align-items-center">
+                                                    <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['classTime']; ?></p>
+                                                        <p><strong>Duration : </strong><?php echo $filteredItems[$fi]['classDuration']; ?></p>
+                                                        <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                        <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <a href="../class-details/?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <?php echo $filteredItems[$fi]['register']; ?>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div> 
+                                            <?php
+                                        
+                                        }?>
+                                <?php
+                            
+                        }else{
+                            echo '
+                                <div class="calendar__day no-event border-right col flex-column d-flex p-0"  data-event="'.$currentDate.'" data-start="no-data">
+                                    <span class="calendar__date my-auto calendar-text">'.$dayCount.'</span>
+                                    
+                                    
+                                </div>
+                            ';
+                        }
+                        $dayCount++;
+                    }else{
+                        if($cb < $currentMonthFirstDay){
+                            $inactiveCalendarDay = ((($totalDaysOfMonth_Prev-$currentMonthFirstDay)+1)+$cb);
+                            $inactiveLabel = 'expired';
+                        }else{
+                            $inactiveCalendarDay = ($cb-$totalDaysOfMonthDisplay);
+                            $inactiveLabel = 'upcoming';
+                        }
+                        echo '
+                            <div class="calendar__day no-event border-right col flex-column d-flex p-0 inactive '.$inactiveLabel.'">
+                                <span class="calendar__date my-auto">'.$inactiveCalendarDay.'</span>
+                               
+                            </div>
+                        ';
+                    }
+                    echo ($cb%7 == 0 && $cb != $boxDisplay)?'</div><div class="calendar__week text-center d-flex justify-content-around border-top">':'';
+                }
+                echo '</div>';
+            ?>
+        </div>
+          <div id="weekView" class="calendar__days col-12 pt-5 px-0 border">
+            <?php
+                    list($week_start_date, $week_end_date) = $this->x_week_range($postedDate);
+                    $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
+                    $week_end_date = date("Y-m-d",strtotime($week_end_date.' +1 day'));
+                    $week_array = $this->date_range($week_start_date, $week_end_date);
+
+
+            ?>
+             <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' - 7 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2">Prev</span></a>
+                
+            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' + 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' + 7 day')); ?>');"><span class="mr-2">Next</span><i class="fa fa-chevron-right"></i></a>
+            
+            <div class="calendar__top-bar bg-light border-top mt-4 text-uppercase d-flex text-center">
+                <span class="top-bar__days  py-3 border-right">Mon</span>
+                <span class="top-bar__days  py-3 border-right">Tue</span>
+                <span class="top-bar__days  py-3 border-right">Wed</span>
+                <span class="top-bar__days  py-3 border-right">Thu</span>
+                <span class="top-bar__days  py-3 border-right">Fri</span>
+                <span class="top-bar__days  py-3 border-right">Sat</span>
+                <span class="top-bar__days  py-3 ">Sun</span>
+            </div>
+            <div class="calendar__week text-center d-flex justify-content-around border-top">
+            <?php 
+                for ($i=0; $i <7 ; $i++) { 
+                   
+                        $currentDate = $week_array[$i];
+
+                        // Get number of events based on the current date
+                        
+                        $weekfilteredItems = array_filter($classdata, function($item) use ($currentDate) {
+                            return $currentDate >= $item['start'] && $currentDate <= $item['end'];
+                        });
+                        sort($weekfilteredItems);
+            ?>			
+            
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                            <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
+                            <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
+                            <?php if(count($weekfilteredItems) > 0){
+								$class_pop='';
+                               for($fi=0; $fi<count($weekfilteredItems); $fi++){
+								   $tc =2;
+											if(count($weekfilteredItems)<4) {
+												$tc = count($weekfilteredItems);	
+											}
+                                            if($fi<$tc) {
+                                $test = $weekfilteredItems[$fi]['titleNoLink'];
+                            
+                            echo '<div class="classNames">';
+                            ?>
+                            <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?></a>                                    
+                                 
+                                <?php
+                            if(count($weekfilteredItems) >1) { }
+                            echo "<br>";
+                            echo '</div>';
+                            }
+							$test = $weekfilteredItems[$fi]['titleNoLink'];
+										$class_pop .= '<div class="classNames"><a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal'. $weekfilteredItems[$fi]['id'].'" href="" style="font-size:11px;" >'.$test.'</a></div>';
+							}
+							if(count($weekfilteredItems)>3){
+											$more = count($weekfilteredItems)-2;
+											
+											echo '<div class="classNames"><a id="class-pop" style="font-size:11px;" href="#" class="calendar-class badge">+'.$more.' more</a></div><div class="position-absolute class-pop bg-light py-2" style="display:none;"> <span class="calendar__date mt-auto calendar-text d-block mb-2 text-dark"><strong>'.date('d',strtotime($week_array[$i])).'</strong></span>'.$class_pop.'</div>';
 										}
                             } ?>
                             </span>
