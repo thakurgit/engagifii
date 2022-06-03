@@ -290,8 +290,6 @@ div.dataTables_filter input,
 	font-size: 16px;
 }
 .heading-title {
-	/* font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
-    font-size: 14px;*/
 	color: #333333;
 	cursor: pointer;
 }
@@ -307,7 +305,6 @@ div.dataTables_filter input,
     margin-bottom: 16px !important;
 }*/
 .list-box li {
-	font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
 	font-size: 14px;
 	font-weight: 400;
 	color: #333;
@@ -400,7 +397,6 @@ a.next-link {
 	margin-bottom: 7px;
 	font-weight: 400;
 	color: #777;
-	font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
 	font-size: 14px;
 	margin-left: 7px;
 }
@@ -457,7 +453,6 @@ overflow:auto;
 	padding: 0px 7px;
 	font-size: 14px;
 	color: #333333;
-	font-family: "inherit";
 }
 .house_click {
 	text-decoration: none !important;
@@ -509,7 +504,6 @@ overflow:auto;
 .filter-section .select2-selection__rendered {
 	color: #333 !important;
 	font-size: 14px !important;
-	font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
 }
 .filter-section .select2-container {
 	width: 100% !important;
@@ -522,7 +516,6 @@ overflow:auto;
 }
 .select2-results__option {
 	font-size: 14px !important;
-	font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
 }
 /* Change sorting icon bootstrap table */
 /*!
@@ -656,7 +649,6 @@ button.dropdown-toggle:focus {
 	border-radius: 5px;
 	display: block;
 	font-size: 14px;
-	font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif !important;
 	line-height: 21px;
 	color: #777;
 }
@@ -717,14 +709,12 @@ button.dropdown-toggle:focus {
 	width: 250px !important;
 }
 .select2-results__option.select2-results__option--highlighted label {
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	font-size: 15px !important;
 }
 .select2-results__option img {
 	display: inline !important;
 	height: 20px !important;
 	width: 20px !important;
-	display: inline-block;
 	overflow: hidden;
 	border-radius: 50%;
 	text-align: center;
@@ -766,13 +756,11 @@ button.dropdown-toggle:focus {
 	font-size: 14px;
 }
 .sponsors-new {
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	font-size: 15px;
 	padding-bottom: 8px;
 	padding-top: 8px;
 }
 .sp-name {
-	font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	font-size: 15px;
 }
 .selectMenu-fixed-width .fa-search {

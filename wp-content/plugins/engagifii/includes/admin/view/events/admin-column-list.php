@@ -53,8 +53,13 @@
 			if($upcomingEvents==1)
 			{
 				 $up_events  = 'checked';
+				 $all_events = '';
+			} else {
+				 $up_events  = '';
+				 $all_events = 'checked';
 			}
-		echo '<span>Show only Upcoming Events: <input type="checkbox" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/></span>
+		echo '<span>Show only Upcoming Events: <input type="radio" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/></span><br>';
+		echo '<span>Show All Events: <input type="radio" name="ebt_api_settings[upcomingEvents]" id="allEvents" value="0" '.$all_events.'/></span>
 		</div>';	
 		
     }

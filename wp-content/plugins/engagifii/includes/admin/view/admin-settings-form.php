@@ -408,6 +408,13 @@
 	
 	jQuery('.accordion-btn').click(function(){
 		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
+		
+		
 	
 });
+jQuery( '.shortcode-list code' ).click( function( event ) {
+			var range = document.createRange();
+			range.selectNodeContents( this );
+			window.getSelection().addRange( range );
+		} );
 </script>

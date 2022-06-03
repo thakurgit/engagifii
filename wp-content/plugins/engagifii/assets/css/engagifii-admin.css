@@ -99,4 +99,7 @@ justify-content:space-between;
 .mb-0 {
 margin-bottom: 0;	
 }
+.shortcode-list code {
+	cursor:pointer;
+}
 
