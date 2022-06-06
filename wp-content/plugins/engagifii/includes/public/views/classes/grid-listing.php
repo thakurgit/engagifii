@@ -292,11 +292,12 @@ $filter_content = removeWhitespace($filter_content);
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
+			   $('[data-toggle="tooltip"]').tooltip() ;
          },
 		 
 		  "initComplete": function(settings, json) {
-
-		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
+			
+		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
 		 $('.dataTables_filter input').keyup(function(){
 			if($(this).val()==''){
 				$(this).parent('label').removeClass('has-data');
@@ -304,7 +305,7 @@ $filter_content = removeWhitespace($filter_content);
 				$(this).parent('label').addClass('has-data');
 			}
 		 });
-		 
+		 */
 
     }
 		
@@ -362,11 +363,11 @@ $('th .clear-search').click(function(e){
 }
   ?>
 
-   	$('body').on('click', '.blank', function(){
+   	/*$('body').on('click', '.blank', function(){
 			$('.dataTables_filter input[type=search]').val('').keyup(); 
 			$(this).parent('label').removeClass('has-data');
 			table.draw();
-		});
+		});*/
   $('div.flt-btn').html('<?php echo $filter_content; ?>');
 
 
@@ -392,7 +393,9 @@ $('th .clear-search').click(function(e){
 	});
 
   
-
+ $( document ).ready(function() {
+    $('input[name="createdbetween"]').val('');
+});
 $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',
     maxDate: '<?php echo $max_date; ?>',
@@ -408,9 +411,7 @@ $('input[name="createdbetween"]').daterangepicker({
 		  }
     });
 
- $( document ).ready(function() {
-    $('input[name="createdbetween"]').val('');
-});
+
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
 	 if($('#apply-filter-data .spinner-border').length==0){
