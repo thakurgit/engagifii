@@ -182,7 +182,7 @@ ob_start();
       
 
       <div class="filter-list border-bototm">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registeration Date <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
@@ -290,39 +290,7 @@ $filter_content = removeWhitespace($filter_content);
          "drawCallback": function( settings ) {
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center "><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
-              var divWidth = parseInt($('.custom-scroll').width());
-			 var tablewidth = parseInt($('#ebtmaintable').width());
-               if(tablewidth<=divWidth){
-					$('.nxt,.prv').addClass('disabled');   
-					return false;
-			   } else {
-				$('.nxt').click(function () {
-					   tablewidth = parseInt($('#ebtmaintable').width());
-				   $('.custom-scroll').animate({
-					  scrollLeft: "+=250px"
-				   }, "slow",function() {
-					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
-					   //console.log(tablewidth+','+divWidth+scrollLeft)
-    					$('.prv').removeClass('disabled'); 
-				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
-						  $('.nxt').addClass('disabled');  
-				  		 }	
-  					}); 
-				   
-				});  
-				$('.prv').click(function () {
-				   $('.custom-scroll').animate({
-					  scrollLeft: "-=250px"
-				   }, "slow",function(){
-					 $('.nxt').removeClass('disabled');  
-					 if($('.custom-scroll').scrollLeft()==0){
-						$('.prv').addClass('disabled');  
-					 }
-				   });
-				});  
-			   }
+           dt_scroll();
 			   <?php } ?>
          },
 		 
