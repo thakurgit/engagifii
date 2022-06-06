@@ -1240,39 +1240,7 @@ var table = $('#ebtmaintable').DataTable( {
 		 "drawCallback": function( settings ) {
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
-              var divWidth = parseInt($('.custom-scroll').width());
-			 var tablewidth = parseInt($('#ebtmaintable').width());
-               if(tablewidth<=divWidth){
-					$('.nxt,.prv').addClass('disabled');   
-					return false;
-			   } else {
-				$('.nxt').click(function () {
-					   tablewidth = parseInt($('#ebtmaintable').width());
-				   $('.custom-scroll').animate({
-					  scrollLeft: "+=250px"
-				   }, "slow",function() {
-					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
-					  // console.log(tablewidth+','+divWidth+scrollLeft)
-    					$('.prv').removeClass('disabled'); 
-				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
-						  $('.nxt').addClass('disabled');  
-				  		 }	
-  					}); 
-				   
-				});  
-				$('.prv').click(function () {
-				   $('.custom-scroll').animate({
-					  scrollLeft: "-=250px"
-				   }, "slow",function(){
-					 $('.nxt').removeClass('disabled');  
-					 if($('.custom-scroll').scrollLeft()==0){
-						$('.prv').addClass('disabled');  
-					 }
-				   });
-				});  
-			   }
+           dt_scroll();
 			   <?php } ?>
          }
 		 
