@@ -122,7 +122,7 @@
 			  		<div class="row">
 					  		<div class="col-sm-7 mb-3 ">
 					  			<div class="border rounded shadow-sm h-100">
-					  			<div class="panel-title bg-light px-2 py-1 border-bottom">
+					  			<div class="panel-title bg-light p-2  border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Details</h6>
 		                        </div>
                                 <div class="p-3">
@@ -185,7 +185,7 @@
 					  		</div>
 					  		<div class="col-sm-5 mb-3">
 					  			<div class="border rounded shadow-sm h-100"> 
-						  			<div class="panel-title bg-light px-2 py-1 border-bottom">
+						  			<div class="panel-title bg-light p-2  border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Event Schedule</h6>
 			                        </div>
                                    <div class="p-3">
@@ -224,7 +224,7 @@
 			  		<div class="row">
 			  			<div class="col-12">
 			  				<div class="border rounded shadow-sm">
-			  					<div class="panel-title bg-light px-2 py-1 border-bottom">
+			  					<div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">Contacts</h6>
                                   </div>
 		                    	 <div class="p-3">

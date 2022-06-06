@@ -133,12 +133,7 @@ $(document).ready(function(){
     });
     
 
-    $('.panel-title').click(function(){
-            $(this).next('.panel-details').slideToggle('slow');
-            let icon = $(this).find("svg");
-            console.log(icon);
-            icon.toggleClass("fa-angle-up fa-angle-down");
-    })
+   
 
 });
 

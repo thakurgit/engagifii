@@ -382,7 +382,7 @@ $siteURL= site_url();
                               <div class="row">
                                   <div class="col-md-4 order-2">
                                   <div class="border rounded shadow-sm h-100">
-                                    <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                    <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">House Committees</h6>
                                     </div>
                                       <div class="p-3">
@@ -397,7 +397,7 @@ $siteURL= site_url();
 
                                   </div>
 
-                                       <div class="panel-title bg-light px-2 py-1 border-bottom border-top">
+                                       <div class="panel-title bg-light p-2  border-bottom border-top">
                                       <h6 class="mb-0 font-weight-normal">Senate Committees</h6>
                                       </div>
                                       <div class="p-3">
@@ -412,7 +412,7 @@ $siteURL= site_url();
                                   </div>
                                   <div class="col-md-8">
                                   <div class="border rounded shadow-sm h-100">
-                                       <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                       <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal"> <?php echo $billResponses->title;?> </h6>
                                       </div>
                                       <div class="p-3">
@@ -420,7 +420,7 @@ $siteURL= site_url();
                                          </div>
 
                                       <?php $countSponsors =  count($billResponses->sponsors); ?>
-                                       <div class="panel-title bg-light px-2 py-1 border-bottom border-top">
+                                       <div class="panel-title bg-light p-2  border-bottom border-top">
                                       <h6 class="mb-0 font-weight-normal">Sponsors (<?php echo $countSponsors;?>) </h6>
                                       </div>
 										<div class="p-3">

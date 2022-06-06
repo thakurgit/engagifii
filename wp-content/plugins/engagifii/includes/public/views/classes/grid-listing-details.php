@@ -34,7 +34,7 @@
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
     <div class="row">
-        <div class="col-md-11 d-flex align-items-center">
+        <div class="col-md-10 d-flex align-items-center">
             <img class="img-rounded img-fluid mr-3 img-icon-lg p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
@@ -56,7 +56,7 @@
             ?>
             </div>
         </div>
-        <div class="col-md-1 text-md-right">
+        <div class="col-md-2 text-md-right">
           <div class="d-flex align-items-center mb-2">
           	 <?php
                 if($prev){
@@ -128,7 +128,7 @@
                       <div class="row">
                               <div class="col-sm-6 mb-3">
                                   <div class="border rounded shadow-sm h-100">
-                                  <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                  <div class="panel-title bg-light p-2  border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Class Details</h6>
                                   </div>
                                   <div class="p-3">
@@ -164,7 +164,7 @@
                               </div>
                               <div class="col-sm-6 mb-3">
                                   <div class="border rounded shadow-sm h-100">
-                                      <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                      <div class="panel-title bg-light p-2  border-bottom">
                                         <h6 class="mb-0 font-weight-normal">Class Location</h6>
                                       </div>
                                       <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
@@ -191,8 +191,8 @@
                                                           <div class="col-sm-4 "><strong>Address:</strong></div>
                                                           <div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
                                                       </div> 
-                                                      <div class="summary-content-para-engagiigii row mb-2">
-                                                          <iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1.' '.$response->location->address->city.' '.$response->location->address->state.' '.$response->location->address->zipCode); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
+                                                      <div class="summary-content-para-engagiigii">
+                                                          <iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1.' '.$response->location->address->city.' '.$response->location->address->state.' '.$response->location->address->zipCode); ?>&hl=en;z=14&amp;output=embed" width="100%" height="300"></iframe>
   
                                                       </div>
                                                   <?php
@@ -224,7 +224,7 @@
                       <div class="row">
                           <div class="col-12">
                               <div class="border rounded shadow-sm">
-                                  <div class="panel-title bg-light px-2 py-1 border-bottom">
+                                  <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">Instructor</h6>
                                   </div>
                                   <div class="p-3">
