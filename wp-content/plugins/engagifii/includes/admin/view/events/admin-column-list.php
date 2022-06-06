@@ -58,8 +58,8 @@
 				 $up_events  = '';
 				 $all_events = 'checked';
 			}
-		echo '<span>Show only Upcoming Events: <input type="radio" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/></span><br>';
-		echo '<span>Show All Events: <input type="radio" name="ebt_api_settings[upcomingEvents]" id="allEvents" value="0" '.$all_events.'/></span>
+		echo '<span> <input type="radio" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/> Show only Upcoming Events</span><br>';
+		echo '<span><input type="radio" name="ebt_api_settings[upcomingEvents]" id="allEvents" value="0" '.$all_events.'/> Show All Events</span>
 		</div>';	
 		
     }
