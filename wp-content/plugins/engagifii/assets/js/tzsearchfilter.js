@@ -135,8 +135,4 @@ var pluginFilterData = (function () {
 
 });
 
-$(document).ready(function(){
-    $('body').on('click', '.heading-title' ,function(){
-        $(this).parent().toggleClass('active');
-    });
-});
+

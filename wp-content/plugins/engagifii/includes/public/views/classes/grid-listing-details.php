@@ -236,7 +236,7 @@
                                       ?>
                                       <div class="col-md-4">
                                           <div class="card">
-                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail">
+                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail shadow-sm">
                                               <div class="col-9 d-flex align-items-center">
                                                   <?php if (filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) { ?>
                                                       <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $value->imageThumbUrl;?>" class="inst-thumb rounded-circle mr-3">
