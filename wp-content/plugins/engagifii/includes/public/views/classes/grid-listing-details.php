@@ -35,18 +35,18 @@
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
     <div class="row">
         <div class="col-md-10 d-flex align-items-center">
-            <img class="img-rounded img-fluid mr-3 img-icon-lg p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
+            <img class="img-rounded  mr-3  p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
             <p  class="mb-2"> <?php echo $response->sectionName; ?></p>
             <?php if(is_array($response->classTag) && count($response->classTag)>0) {?>
             <div class="">
-                <span>Tag(s): </span>
-                <span class="pl-1 pr-1"><i class="fas fa-tags"></i> <?php echo count($response->classTag);  ?></span>
+                <span><i class="fas fa-tags mr-1"></i>Tag(s): </span>
+                <span class="pl-1 pr-1 d-none"> <?php echo count($response->classTag);  ?></span>
                 <?php
                 	foreach ($response->classTag as $key => $value) {
                 		?>
-                			<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><?php echo $value->tagName; ?></span>
+                			<span class="badge badge-pill badge-light text-capitalize border mr-1 "><?php echo $value->tagName; ?></span>
                 		<?php
                 	}
                 ?>
@@ -57,19 +57,18 @@
             </div>
         </div>
         <div class="col-md-2 text-md-right">
-          <div class="d-flex align-items-center mb-2">
+          <div class="d-flex align-items-center mb-2 justify-content-end">
           	 <?php
                 if($prev){
               ?>
-              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class=" <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="text-muted" href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a class="" href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
-            <a href="<?php echo site_url();?>/classes/" class="p-2 text-muted d-none"><i class="fa fa-times"></i></a>
             
           </div>
           <?php
@@ -126,7 +125,7 @@
                <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
                       <div class="row">
-                              <div class="col-sm-6 mb-3">
+                              <div class="col-md-7 mb-3">
                                   <div class="border rounded shadow-sm h-100">
                                   <div class="panel-title bg-light p-2  border-bottom">
                                     <h6 class="mb-0 font-weight-normal">Class Details</h6>
@@ -137,24 +136,24 @@
                                       if(trim($response->description)){
                                   ?>
                                   <div class="summary-content-para-engagiigii row flex-wrap mb-3">
-                                      <div class="col-sm-4"><strong>Description:</strong></div>
-                                      <div class="col-sm-8"><?php echo trim($response->description); ?></div>
+                                      <div class="col-md-4 col-xl-3 mb-3 mb-md-0"><strong>Description:</strong></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo trim($response->description); ?></div>
                                   </div>
                                   <?php
                                       }
                                       if($response->objectType){
                                   ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
-                                      <div class="col-sm-4"><strong>Class Type:</strong></div>
-                                      <div class="col-sm-8"><?php echo $response->objectType; ?></div>
+                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Class Type:</strong></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo $response->objectType; ?></div>
                                   </div>
                                   <?php
                                       }
                                       if($response->parentCourse->creditHours){
                                   ?>
                                   <div class="summary-content-para-engagiigii row">
-                                      <div class="col-sm-4 "><strong>Credit Hours:</strong></div>
-                                      <div class="col-sm-8"><?php echo $response->parentCourse->creditHours; ?></div>
+                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours:</strong></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo $response->parentCourse->creditHours; ?></div>
                                   </div>
                                   <?php
                                       }
@@ -162,7 +161,7 @@
                               </div>
                               </div>
                               </div>
-                              <div class="col-sm-6 mb-3">
+                              <div class="col-md-5 mb-3">
                                   <div class="border rounded shadow-sm h-100">
                                       <div class="panel-title bg-light p-2  border-bottom">
                                         <h6 class="mb-0 font-weight-normal">Class Location</h6>
@@ -237,25 +236,24 @@
                                       ?>
                                       <div class="col-md-4">
                                           <div class="card">
-                                              <div class="card-body d-flex py-3 px-2 py-lg-4 align-items-start instructor-detail">
-                                                  <div class="col-3">
+                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail">
+                                              <div class="col-9 d-flex align-items-center">
                                                   <?php if (filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) { ?>
-                                                      <img src="<?php echo $value->imageThumbUrl;?>" class="inst-thumb img-fluid rounded-circle">
+                                                      <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $value->imageThumbUrl;?>" class="inst-thumb rounded-circle mr-3">
                                                   <?php
                                                       }
                                                       else if($value->imageThumbUrl)
                                                       {
                                                   ?>
-                                                          <img src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class="img-fluid mr-2">
+                                                          <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class="rounded-circle mr-3">
                                                   <?php		
                                                       }else{
                                                   ?>
-                                                              <img src="<?php echo ENGAGIFII_ASSETS_URL.'/images/user-default.png'; ?>" class="img-fluid mr-2">
+                                                              <img style="max-width:90px; flex: 0 0 90px" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/user-default.png'; ?>" class="rounded-circle mr-3">
                                                   <?php
                                                       }
                                                   ?>
-                                                  </div>
-                                                  <div class="col-6">
+                                                  <div>
                                                   <p class="card-title mb-2"><?php echo $value->fullName;?></p>
                                                   <ul class="list-unstyled mb-0 ml-0 d-flex flex-wrap">
                                                       <li class="position-relative mr-2 inst-ac ml-0"><img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/trophy.png" class="img-fluid" alt=""></li>
@@ -265,7 +263,8 @@
                                                       </li>
                                                   </ul>
                                                   </div>
-                                                   <div class="ml-auto text-right col-3 px-0"> 
+                                                  </div>
+                                                   <div class="ml-auto text-right col-3 pl-0"> 
                                                    <?php 
                                                       if($value->isLead){
                                                    ?>	
