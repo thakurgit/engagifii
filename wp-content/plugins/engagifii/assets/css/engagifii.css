@@ -1,5 +1,8 @@
 /* Filter Section*/ 
-
+table.dataTable {
+	 margin-top: 0px !important; 
+	 margin-bottom: 0px !important; 
+}
 #ebtmaintable.dt-responsive {
 }
 table.dataTable td.title-col {

@@ -576,7 +576,7 @@ $siteURL= site_url();
                             </div>
                            
                             <div class="tab-pane fade " id="versions">
-                                    <table class="table table-bordered table-striped" id="">
+                                    <table class="table table-bordered border-0 table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th>Version</th>
@@ -615,7 +615,7 @@ $siteURL= site_url();
                                     </table>
                                 </div>
                             <div class="tab-pane fade" id="votes">
-                                    <table class="table table-bordered  table-striped" id="">
+                                    <table class="table table-bordered border-0  table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal">Chamber</th>
@@ -661,7 +661,7 @@ $siteURL= site_url();
                                     </table>
                                 </div>
                             <div class="tab-pane fade" id="history">
-                                    <table class="table table-bordered table-striped" id="">
+                                    <table class="table table-bordered border-0 table-striped" id="">
                                         <thead>
                                             <tr>
                                                 <th class="alpha-teal" width="150">Date</th>
@@ -691,7 +691,7 @@ $siteURL= site_url();
                                 
                             <div class="tab-pane fade" id="quick">
                                         
-                                        <table class="table table-bordered table-striped" id="">
+                                        <table class="table table-bordered border-0 table-striped" id="">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
@@ -902,7 +902,7 @@ $siteURL= site_url();
 
                 $('#votetable').DataTable({
                 "pageLength": 10,
-                "dom": '<"row"<"col-sm-12 pull-left"f">><"row custom-scroll"t>i<"row"<"col-sm-5 pt-2"l><"col-sm-7 text-right"p>>',
+                "dom": '<"row"<"col-sm-12 pull-left"f">><"row custom-scroll border-left border-right border-bottom"t>i<"row"<"col-sm-5 pt-2"l><"col-sm-7 text-right"p>>',
                 "bInfo":false,
                 "processing": true,
                 "searching": true,
