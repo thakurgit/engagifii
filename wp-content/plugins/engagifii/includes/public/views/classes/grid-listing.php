@@ -76,7 +76,7 @@ $dt_class .= 'table-dark ';
 ?>
 <div class="containerEngagii ff" id="list_div" <?php if($calendar_view || $calendar_view_classname){ echo 'style="display:none"'; } ?>>
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-    <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here classes-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here classes-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
       <thead> 
         <tr>        
           <?php
@@ -245,7 +245,7 @@ $filter_content = removeWhitespace($filter_content);
         "pageLength": '<?php echo $default_length; ?>',
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         //"dom": '<"row"<"col-md-11 col-10"><"top-filter col-md-1 col-2 text-right">><"row"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-		"dom": '<"row no-gutters"<"col-12 custom-scroll"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
         "bInfo":false,
         "processing": true,
         "searching": true,

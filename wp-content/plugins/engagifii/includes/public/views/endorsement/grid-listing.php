@@ -195,7 +195,7 @@ $dt_class .= 'table-dark ';
 ?>
 <div class="containerEngagii ff" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-  <table  id="ebtmaintable" class="table table-bordered table-striped main-list-here endorsement-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
+  <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here endorsement-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
     <thead> 
       <tr>                
         <?php 
@@ -269,7 +269,7 @@ var table = $('#ebtmaintable').DataTable( {
     
         
        "pageLength": 10,
-       "dom": '<"row no-gutters"<"col-12 custom-scroll"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+       "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        "bInfo":false,
        "processing": true,
        "searching": true,

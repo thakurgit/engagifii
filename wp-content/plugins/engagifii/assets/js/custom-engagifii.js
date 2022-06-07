@@ -259,3 +259,9 @@ function dt_scroll(){
 				});  
 			   }	
 }
+$(document).ready(function(){
+    $('body').on('click', '.heading-title' ,function(){
+        $(this).parent().toggleClass('active');
+		 $(this).parent().siblings('.filter-list').removeClass('active');
+    });
+});

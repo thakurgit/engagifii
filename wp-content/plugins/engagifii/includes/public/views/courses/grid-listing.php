@@ -41,7 +41,7 @@ $dt_class .= 'table-dark ';
     </div>
 </div>
 	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-  	<table  id="ebtmaintable" class="table table-bordered table-striped main-list-here course-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
+  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
     	<thead> 
 		    <tr>        
 		    	<?php
@@ -160,7 +160,7 @@ $filter_content = removeWhitespace($filter_content);
   var fv= 0;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
-       	"dom": '<"row no-gutters"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 pt-2"l><"col-sm-7 "p">>',
+       	"dom": '<"row no-gutters"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-2"l><"col-sm-7 "p">>',
        	"bInfo":false,
        	"processing": true,
        	"searching": true,

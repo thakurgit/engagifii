@@ -322,7 +322,7 @@
 			  	</div>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
-			  		<table class="table table-bordered table-striped" id="" width="100%">
+			  		<table class="table table-bordered border-0 table-striped" id="" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th>Class</th>
@@ -376,7 +376,7 @@
 			  	</div>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
 			  			<div class="p-3">
-			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
+			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -394,7 +394,7 @@
 			  	</div>
 				  <div class="tab-pane fade" id="material" role="tabpanel" aria-labelledby="material-tab">
 			  			<div class="p-3">
-			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
+			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -413,7 +413,7 @@
 
 				  <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
 			  			<div class="p-3">
-			  				<table class="table table-bordered table-striped" id="doc_table" width="100%">
+			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>File</td>
@@ -438,7 +438,7 @@
 	$(document).ready(function() {
 		$('table#class_table').DataTable({
 			"pageLength": 10,
-			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
+			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
 			"bInfo":false,
 			"processing": true,
 			"searching": true,

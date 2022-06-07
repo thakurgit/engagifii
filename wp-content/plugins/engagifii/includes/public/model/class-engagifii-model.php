@@ -2138,8 +2138,9 @@ wp_die();
             if(count($row->assignedTo)){
                 if(count($row->assignedTo) > 1){
                     $assignCount              = count($row->assignedTo) - 1;
-                    $assignList               = $this->_popOverAssignHtml($row->id, $row->assignedTo);
-                    $nestedData['assignedto'] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;"> '.$row->assignedTo[0].'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  assign_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' .$assignCount .'</span></div>'.$assignList;
+                    $assignList               = $this->_popOverAssignHtml1($row->id, $row->assignedTo);
+                  //  $nestedData['assignedto'] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;"> '.$row->assignedTo[0].'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  assign_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' .$assignCount .'</span></div>'.$assignList;
+					$nestedData['assignedto'] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2"> '.$row->assignedTo[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle  assign_'.$row->id.'" data-containerid="' . $row->id . '" id=' . $row->id . '> +' .$assignCount .'</span>'.$assignList.'</div>';
                 }
                 else{
                     $nestedData['assignedto'] = $row->assignedTo[0];
@@ -2574,6 +2575,55 @@ wp_die();
                     });
                 </script>";
 
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+    private function _popOverAssignHtml1($id, $assignedto){
+        $rowName = array();
+       // $popOverHtml .= '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="assign_' . $id . '">';
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Assigned To</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown assign_' . $id . '" placeholder="Search assigned to.."/></div>';
+        $subItems = "";
+        $li=1;
+        //s($assignedto);
+        foreach ($assignedto as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $key;
+
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+           // $subItems .= ' <option value="' . $rowData . '" data-capital="' .$rowData . '" >' . $rowData . '</option>';
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><span>' . $rowData .  '</span></li>';
+			$li++;
+        }
+
+      //  $popOverHtml.= '</select>';
+        $popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+
+        /*$vars = "<script>
+                    $(function() {
+                        assign_{$id} = $('#assign_{$id}').select2({
+                            templateResult: function(item) {
+                                return format(item,  false);
+                            }
+                        });
+
+                        $(document).on('click', '.assign_{$id}', function () {
+                            assign_{$id}.select2('open');
+                            setTimeout(function(){ __addExtraDiv('Assigned To')},100);
+                        });
+                    });
+                </script>";*/
+
+		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 

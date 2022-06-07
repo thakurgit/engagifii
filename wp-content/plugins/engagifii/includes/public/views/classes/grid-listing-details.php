@@ -236,7 +236,7 @@
                                       ?>
                                       <div class="col-md-4">
                                           <div class="card">
-                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail">
+                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail shadow-sm">
                                               <div class="col-9 d-flex align-items-center">
                                                   <?php if (filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) { ?>
                                                       <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $value->imageThumbUrl;?>" class="inst-thumb rounded-circle mr-3">
@@ -302,7 +302,7 @@
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   	<div class="p-3">
-                      <table class="table table-bordered table-striped" id="class_table" width="100%">
+                      <table class="table table-bordered border-0 table-striped" id="class_table" width="100%">
                           <thead>
                               <tr>
                                   <th>Class</th>
@@ -384,7 +384,7 @@
 	$(document).ready(function() {
 		$('table#class_table').DataTable({
 			"pageLength": 10,
-			"dom": '<"row custom-scroll"t>i<"row"<"col-sm-5"l><"col-sm-7"p">>',
+			"dom": '<"row custom-scroll border-left border-right border-bottom"t>i<"row"<"col-sm-5"l><"col-sm-7"p">>',
 			"bInfo":false,
 			"processing": true,
 			"searching": true,

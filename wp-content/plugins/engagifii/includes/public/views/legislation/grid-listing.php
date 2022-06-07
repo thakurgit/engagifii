@@ -127,7 +127,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
 
       <div class="filter-border">
-      <div class="filter-area">
+      <div class="filter-area d-none">
          <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
          <div class="row">
             <div class="col-6">
@@ -247,29 +247,24 @@ $assignToTags = $obj->legislationAssignToTagFilter();
      
      <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Last Action Date  <i class="far fa-angle-down ml-auto"> </i></div>
-    <div class="multiple-select">
-      <div class="input-box">
-       
-      </div>
-      <div class="list-box">
+    <div class="multiple-select mb-2">
       <div class="row">
-                <div class="six-coloumnsEngagii">
+                <div class="col-6">
                   <label class="date-label" for ="datepicker-start"> Start Date: </label> 
                   <div class="date-design position-relative">
-                  <input class="form-control input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-start">
-                  <i class="fa fa-calendar custom-calendar"> </i>
+                  <input class="form-control form-control-sm input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-start">
+                  <i class="fal fa-calendar-alt custom-calendar"> </i>
                   </div>
                 </div>
 
-                <div class="six-coloumnsEngagii">
+                <div class="col-6">
                   <label class="date-label" for="datepicker-end"> End Date: </label>
                   <div class="date-design position-relative">
-                  <input class="form-control input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-end">
-                  <i class="fa fa-calendar custom-calendar"> </i>
+                  <input class="form-control form-control-sm input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-end">
+                  <i class="fal fa-calendar-alt custom-calendar"> </i>
                     </div>
                 </div>
               </div>
-      </div>
     </div>
     </div>
 
@@ -886,7 +881,7 @@ $dt_class .= 'table-dark ';
 }
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
-    <table  id="ebtmaintable" class="table table-bordered table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
       <thead> 
              <tr>
                 <?php
@@ -998,7 +993,7 @@ function dateChanged(ev) {
    $('#datepicker-end').val('');
     
     
-   $( document).on('click', '.click-filter', function (e) {
+   /*$( document).on('click', '.click-filter', function (e) {
       if($(".filter-border").is(":visible")){
         //alert('bh');
         $(".filter-border").hide();  
@@ -1006,10 +1001,21 @@ function dateChanged(ev) {
         $(".filter-border").show();
       }
      e.stopPropagation();
+    });*/
+	 $('.filter-icon').click(function(e){
+        e.stopPropagation();
+        $('.filter-border').show();
+        $('.filter-area').toggleClass('d-none');
+		jQuery(".filter-area .list-group, .list-box").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
+		
     });
  
 
-    $(document).on('click', function (e) {
+    /*$(document).on('click', function (e) {
       var container = $(".filter-border");
 
       
@@ -1022,8 +1028,22 @@ function dateChanged(ev) {
     if(!container.is(e.target) && container.has(e.target).length === 0   && (e.target.className == 'prev available' || e.target.className == 'next available' )){
       container.hide();
     }
-  });
-
+  });*/
+	  $(document).on('click', function (e) {
+ $('.filter-area').addClass('d-none');
+});
+$(document).on('click', '.filter-area', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.prev', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.next', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', '.daterangepicker ', function (e) {
+  e.stopPropagation();
+});
    
     $(document).find('th').on("click", function (event) {
         if($(event.target).is("input"))
@@ -1164,7 +1184,7 @@ var blog_title = "<?php echo _WORKSPACE_; ?>";
 var table = $('#ebtmaintable').DataTable( {
     
       "pageLength": 10,
-      "dom": '<"row no-gutters"<"col-sm-12 custom-scroll"t>><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3 "p>>',
+      "dom": '<"row no-gutters"<"col-sm-12 custom-scroll border-left border-right border-bottom"t>><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3 "p>>',
       "bInfo":false,
       "processing": true,
       "searching": true,

@@ -400,7 +400,7 @@
 	$(document).ready(function() {
 		$('table#class_table').DataTable({
 			"pageLength": 10,
-			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
+			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
 			"bInfo":false,
 			"processing": true,
 			"searching": true,
