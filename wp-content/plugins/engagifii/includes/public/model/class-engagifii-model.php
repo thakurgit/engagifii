@@ -2885,7 +2885,8 @@ wp_die();
     private function _popOverClassData1($id, $classData){
         //print_r($classData);
         $rowName = array();
-        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
+        //$popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" >'.dd_title ('Class Dates');
         $subItems = "";
         $li=1;
         foreach ($classData as $key => $rowData) {

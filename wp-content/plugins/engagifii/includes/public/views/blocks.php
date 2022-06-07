@@ -42,4 +42,9 @@
 }
 add_shortcode( 'view_mode', 'view_mode' );
 
+function dd_title ($title) {
+      $title = '<h6 class="text-center border-bottom mb-0 pb-3">'.$title.'</h6>';
+      return $title;
+   }
+
 

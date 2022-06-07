@@ -144,7 +144,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
             <div class="col-sm-12 tz-areafix">
                <div class="filter-section">
                <!-- Tags -->
-     
+     				
                   <div class="filter-list border-bottom">
                      <div class="heading-title py-2 d-flex align-items-center">Assign To <span id="countviewbyassign" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
                      <div class="multiple-select">
@@ -154,7 +154,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
                         </div>
                         <div class="list-box">
                            <ul class="searchbyassignto tz-dropdown-filter list-unstyled" >
-                           <?php 
+                           <?php if(count($lbt_visib_members_list) > 0) {
                               foreach ($assignto as $assign){
                                  if (in_array($assign->personId, $lbt_visib_members_list)){
                            ?>
@@ -185,7 +185,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
                                        <input type="checkbox" name="enggafifilterdata[]" data-type="tags" value="<?php echo $assign->value; ?>" id="item_id_<?php echo $assign->value; ?>" >
                                        <?php echo $assign->text; ?>
                                     </li>
-                                 <?php } } ?>
+                                 <?php } } 
+								 } else {
+									echo '<em>No data found!!</em>'; 
+								 }?>
                            </ul>
                         </div>
                      </div>
