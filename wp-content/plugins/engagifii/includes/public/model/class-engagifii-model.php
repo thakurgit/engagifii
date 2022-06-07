@@ -3673,7 +3673,8 @@ if(!empty($_POST['minRange']))
                }
 
                $data['endorsementTag'] = $allTags;
-
+               $data['viewdetails'] = '<a href="'.site_url().'/endorsement-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+                  
                if(!$value->isAlreadyRegistered)
                {
                  $data['register'] = '<a href="'.$tenant_url.'/pages/awards/'. $value->id .'/signup/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
@@ -4187,26 +4188,77 @@ public function getEndorsementCalendar(){
                        sort($filteredItems);
 //print_r(count($filteredItems));
                         // Define date cell color
-                        if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
+                        if(count($filteredItems) > 0){
+							$today='';
+							if(strtotime($currentDate) == strtotime(date("Y-m-d"))){
+								$today = ' today bg-light';	
+							}
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
-                                    <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
-                                    <?php if(count($filteredItems) > 0){
-                                        echo count($filteredItems).' Endorsement'; if(count($filteredItems) >1) {echo "s"; }
-                                    } ?>
-                                    </span>
-                                </div>
-                            <?php
-                        }elseif(count($filteredItems) > 0){
-                            ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
-                                    <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
-                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text"><?php echo count($filteredItems).' Endorsement'; if(count($filteredItems) >1) {echo "s"; } ?></span>
+                                    <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
+                                        <?php
+										$class_pop='';
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+											$tc =2;
+											if(count($filteredItems)<4) {
+												$tc = count($filteredItems);	
+											}
+                                            if($fi<$tc) {
+                                            $test = $filteredItems[$fi]['name'];
+                                        echo '<div class="classNames">';
+                                        ?>
+                                        <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?></a>                                    
+                                            <?php
+                                        echo "</div>";
+                                        }
+										$test = $filteredItems[$fi]['name'];
+										$class_pop .= '<div class="classNames"><a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal'. $filteredItems[$fi]['id'].'" href="" style="font-size:11px;" >'.$test.'</a></div>';
+										}
+										if(count($filteredItems)>3){
+											$more = count($filteredItems)-2;
+											echo '<div class="classNames"><a id="class-pop" style="font-size:11px;" href="#" class="calendar-class badge">+'.$more.' more</a></div><div class="position-absolute class-pop bg-light py-2" style="display:none;"> <span class="calendar__date mt-auto calendar-text d-block mb-2 text-dark"><strong>'.$dayCount.'</strong></span>'.$class_pop.'</div>';
+										} ?>
+                                        </span>
                                 </div>
                                 <?php
+                                        for($fi=0; $fi<count($filteredItems); $fi++){ 
+                                            
+                                            $test = $filteredItems[$fi]['name'];
+                                            //$test = substr($test,0,20);
+                                        ?>
+                                                <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header text-left d-flex align-items-center">
+                                                    <img src="<?php echo $filteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $filteredItems[$fi]['title']; ?></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <p><strong>Created By :</strong> <?php echo $filteredItems[$fi]['createdBy']; ?></p>
+                                                        <p><strong>Validity : </strong><?php echo $filteredItems[$fi]['validity']; ?></p>
+                                                        <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                        <p><strong>Price : $</strong><?php echo $filteredItems[$fi]['price']; ?></p>
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <a href="../endorsement-details/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <?php echo $filteredItems[$fi]['register']; ?>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div> 
+                                            <?php
+                                        
+                                        }?>
+                                <?php
                             
-                        }else{
+                        }
+                        
+                        else{
                             echo '
                                 <div class="calendar__day no-event border-right col flex-column d-flex p-0" data-event="'.$currentDate.'" data-start="no-data">
                                     <span class="calendar__date mt-auto calendar-text">'.$dayCount.'</span>
@@ -4276,16 +4328,72 @@ public function getEndorsementCalendar(){
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){
-                                echo count($weekfilteredItems).' Endorsement'; if(count($weekfilteredItems) >1) {echo "s"; }
-                            } ?>
-                            </span>
+                               				$class_pop='';
+                                               for($fi=0; $fi<count($weekfilteredItems); $fi++){
+                                                   $tc =2;
+                                                            if(count($weekfilteredItems)<4) {
+                                                                $tc = count($weekfilteredItems);	
+                                                            }
+                                                            if($fi<$tc) {
+                                                $test = $weekfilteredItems[$fi]['name'];
+                                            
+                                            echo '<div class="classNames">';
+                                            ?>
+                                            <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?></a>                                    
+                                                 
+                                                <?php
+                                            if(count($weekfilteredItems) >1) { }
+                                            echo "<br>";
+                                            echo '</div>';
+                                            }
+                                            $test = $weekfilteredItems[$fi]['name'];
+                                                        $class_pop .= '<div class="classNames"><a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal'. $weekfilteredItems[$fi]['id'].'" href="" style="font-size:11px;" >'.$test.'</a></div>';
+                                            }
+                                            if(count($weekfilteredItems)>3){
+                                                            $more = count($weekfilteredItems)-2;
+                                                            
+                                                            echo '<div class="classNames"><a id="class-pop" style="font-size:11px;" href="#" class="calendar-class badge">+'.$more.' more</a></div><div class="position-absolute class-pop bg-light py-2" style="display:none;"> <span class="calendar__date mt-auto calendar-text d-block mb-2 text-dark"><strong>'.date('d',strtotime($week_array[$i])).'</strong></span>'.$class_pop.'</div>';
+                                                        }
+                                            } ?>
+                                            </span>
+                                        </div>
+                                        <?php   
+                                        for($fi=0; $fi<count($weekfilteredItems); $fi++){
+                                                $test = $weekfilteredItems[$fi]['name'];
+                                            ?>
+                                                    <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header text-left d-flex align-items-center">
+                                                    <img src="<?php echo $weekfilteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $weekfilteredItems[$fi]['title']; ?></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <p><strong>Created By :</strong> <?php echo $weekfilteredItems[$fi]['createdBy']; ?></p>
+                                                        <p><strong>Validity : </strong><?php echo $weekfilteredItems[$fi]['validity']; ?></p>
+                                                        <p><strong>Type :</strong> <?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
+                                                        <p><strong>Price : $</strong><?php echo $weekfilteredItems[$fi]['price']; ?></p>
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <a href="../endorsement-details/?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <?php echo $weekfilteredItems[$fi]['register']; ?>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    </div> 
+                                                <?php
+                                           
+                                            }
+                                                             
+                                }
+                            ?>
+                            </div>
+                           
                         </div>
-                        <?php                    
-                }
-            ?>
-            </div>
-           
-        </div>
         <div id="dayView" class="calendar__days col-12 pb-4 pt-5 px-lg-5 border">
             <?php
                     $prev_date = date('D', strtotime($postedDate .' -1 day'));
