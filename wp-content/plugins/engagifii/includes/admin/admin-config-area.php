@@ -208,8 +208,8 @@ function ebt_tenant_code_render(  ) {
         			$this->ebt_api_shortocde_description();
         		break;
 				case 'customizer':
-        			//$this->engagifii_api_settings('hide');
-        			//$this->engagifii_apply_css_ebt_render('show');
+        			$this->engagifii_api_settings('hide');
+        			$this->engagifii_apply_css_ebt_render('hide');
         		break;
       			default:
       				$this->engagifii_api_settings('hide');
