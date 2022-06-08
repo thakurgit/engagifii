@@ -43,6 +43,10 @@ class ebtAdminConfigSettings {
 
 	function ebt_api_add_admin_menu() {
 				add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
+				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
+				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
+				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
+				add_submenu_page( 'engagifii-module-api', 'Customizer', 'Customizer', 'manage_options', $parent.'&tab=customizer',  $callback = '');
 	}
 
 	function ebt_api_settings_init(  ) {
