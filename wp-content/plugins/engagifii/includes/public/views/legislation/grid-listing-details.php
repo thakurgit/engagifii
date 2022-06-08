@@ -266,7 +266,7 @@ $siteURL= site_url();
               ?>
             </div>
             <div class="">
-              <span class="btn btn-danger tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
+              <span class="btn btn-sm btn-danger tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
             </div>
             <div class="d-flex align-items-center justify-content-lg-end py-3">
               
