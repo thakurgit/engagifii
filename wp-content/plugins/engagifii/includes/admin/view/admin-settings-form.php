@@ -19,7 +19,7 @@
         
             $checkedHtml  = ' style="display:none"';
            // if($engagifii_apply_css_ebt==1 && $tab === null)
-			if( $tab === null || $tab === 'customizer')
+			if( $tab === null)
             {
             	$checkedHtml  = ' style="display:block"';
             }
@@ -345,6 +345,7 @@
         
 <?php
        do_action('engagifiiGetColumnList');
+	   do_action('engagifiiCustomizer');
         ?>
     <div class="ebt-submit-btn">
         <?php 

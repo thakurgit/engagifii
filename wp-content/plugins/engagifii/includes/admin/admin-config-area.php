@@ -20,6 +20,7 @@ class ebtAdminConfigSettings {
 	add_action('admin_menu',array($this,'ebt_api_add_admin_menu'));			
 	add_action('admin_init',array($this,'ebt_api_settings_init'));
 		add_action('engagifiiGetColumnList', array($this,'show_datatable_column'));		
+		add_action('engagifiiCustomizer', array($this,'engagifii_Customizer'));		
  	}
 
  	function show_datatable_column()
@@ -32,6 +33,12 @@ class ebtAdminConfigSettings {
 
 	include_once( __DIR__.'/view/events/admin-column-list.php' );
 		include_once( __DIR__.'/view/legislation/admin-column-list.php' );
+ 	}
+	function engagifii_Customizer()
+ 	{
+		
+ 		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+		include_once( __DIR__.'/view/customizer.php' );
  	}
 
 	function ebt_api_add_admin_menu() {
@@ -197,8 +204,8 @@ function ebt_tenant_code_render(  ) {
         			$this->ebt_api_shortocde_description();
         		break;
 				case 'customizer':
-        			$this->engagifii_api_settings('hide');
-        			$this->engagifii_apply_css_ebt_render('show');
+        			//$this->engagifii_api_settings('hide');
+        			//$this->engagifii_apply_css_ebt_render('show');
         		break;
       			default:
       				$this->engagifii_api_settings('hide');
@@ -318,7 +325,7 @@ function ebt_tenant_code_render(  ) {
   		}
 		include_once( __DIR__.'/view/admin-settings-form.php' );
 		//if($tab === 'customizer'){
-		//include_once( __DIR__.'/view/xxx.php' );
+		//include_once( __DIR__.'/view/customizer.php' );
 		//}
 	 
 	}
