@@ -25,8 +25,8 @@
 			}
 			if($counter >1 && $counter%3==0)
 			{
-				echo '</ul>';
-				echo '<ul class="ebt-grid-column-list">'; 			 
+			//	echo '</ul>';
+				//echo '<ul class="ebt-grid-column-list">'; 			 
 			}			 
 			echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[ebt_visib_datacol_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  

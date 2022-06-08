@@ -417,4 +417,16 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			range.selectNodeContents( this );
 			window.getSelection().addRange( range );
 		} );
+		var tid =0;
+		jQuery('.ebt-grid-column-list').each(function() {
+            jQuery(this).prepend('<li><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
+			jQuery('#toggleAll_'+tid).change(function(){
+				if(jQuery(this).is(':checked')){
+					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').prop('checked',true);
+				} else {
+					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').prop('checked',false);
+				}
+			});
+          tid++;  
+        }); 
 </script>
