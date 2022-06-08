@@ -90,22 +90,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px');
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);
 */
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  font-family: <?php echo $font_family;?> !important;
-  font-size: <?php echo $ebt_detail_text_font?>px !important;
-}
-::-moz-placeholder { /* Firefox 19+ */
-  font-family: <?php echo $font_family;?> !important;
-  font-size: <?php echo $ebt_detail_text_font?>px !important;
-}
-:-ms-input-placeholder { /* IE 10+ */
-  font-family: <?php echo $font_family;?> !important;
-  font-size: <?php echo $ebt_detail_text_font?>px !important;
-}
-:-moz-placeholder { /* Firefox 18- */
-  font-family: <?php echo $font_family;?> !important;
-  font-size: <?php echo $ebt_detail_text_font?>px !important;
-}
+
 
 #ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt, .filter-top-bg{ 
   background: <?php echo $table_heading_bg;?> !important;
@@ -179,11 +164,7 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 	font-size: <?php echo $ebt_detail_text_font?>px;
 }
 
-.go-back{
-	color: <?php echo $ebt_table_link_color?>!important;
-	font-family: <?php echo $font_family;?> !important;
-	font-size: <?php echo $ebt_detail_text_font?>px;
-}
+
 
 .engagifii-left-pane .engagifii-btn-tz{
 	font-family: <?php echo $font_family;?> !important;
@@ -203,17 +184,11 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 	color: <?php echo $ebt_detail_text_color?> !important;
 }
 
-#ebtmaintable_length label{
+<?php /*?>#ebtmaintable_length label{
 	font-family: <?php echo $font_family;?> !important;
     font-size: <?php echo $ebt_detail_text_font?>px !important;
     color: <?php echo $ebt_detail_text_color?> !important;
-}
-
-#ebtmaintable_length .custom-select{
-	font-family: <?php echo $font_family;?> !important;
-    font-size: <?php echo $ebt_detail_text_font?>px !important;
-    color: <?php echo $ebt_detail_text_color?> !important;
-}
+}<?php */?>
 
 
 
@@ -237,9 +212,9 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 }
 
 .engagifii-box table.table thead th{border-bottom: none;}
-#ebtmaintable tbody tr:hover {
+/*#ebtmaintable tbody tr:hover {
     background-color: <?php echo $ebt_table_hover_color;?> !important;
-}
+}*/
 
 .no-table-gapping-detail tr:hover{
 	background-color: <?php echo $ebt_table_hover_color;?> !important;
@@ -369,14 +344,11 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 	color: <?php echo $ebt_table_link_hover_color?>!important;
 }
 
-#ebtmaintable span.badge{
-	background: <?php echo $ebt_sponsors_color;?> !important;
-	font-family: <?php echo $font_family;?> !important;
-}
 
 
 
-#ebtmaintable_paginate .page-item.active a{
+
+/*#ebtmaintable_paginate .page-item.active a{
 	background-color: <?php echo $ebt_pagination_color?>;
     border-color: <?php echo $ebt_pagination_color?>;
 }
@@ -391,17 +363,17 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 
 #ebtmaintable_paginate .page-item.active a:hover{
 	background-color: <?php echo $ebt_pagination_color?> !important;
-}
+}*/
 
 .no-border{
 	font-size: <?php echo $ebt_detail_heading_font?>px;
     color: <?php echo $ebt_detail_heading_color?>;
 }
 
-.vertical-middle , .summary-content-para-engagiigii, .ebt-link, .ebt-link.active, .summary-content-para{
+<?php /*?>.vertical-middle , .summary-content-para-engagiigii, .ebt-link, .ebt-link.active, .summary-content-para{
 	font-size: <?php echo $ebt_detail_text_font?>px;
     color: <?php echo $ebt_detail_text_color?> !important;
-}
+}<?php */?>
 
 /*.calendar-background{background-color: <?php echo $ebt_detail_calendar_background_color; ?>}
 .calendar-text {color: <?php echo $ebt_detail_calendar_text_color; ?>}

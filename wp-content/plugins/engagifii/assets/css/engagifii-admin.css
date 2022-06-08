@@ -45,15 +45,19 @@ margin-bottom: 20px;
     color: red;
     padding-left: 5px;
 }
-.engtcustomtbl td{text-align: right; width: 25%}
+.engtcustomtbl td{ width: 25%}
 .engtcustomtbl th{
     text-align: left;
     width: 25%
+}
+.engtcustomtbl h3, .engtcustomtbl h4 {
+margin-top: 0 !important;	
 }
 .lbt-column-opt-list{
     width: 300px;
     float: left;
 }
+
 
 #lbt_tenantcode_preview, #evt_tenantcode_preview{
     font-weight: bold;

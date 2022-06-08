@@ -32,33 +32,20 @@
     <div class="wrap tab-content ff">
     <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
+        <tr>
+        	<td colspan="4"><h3>Table Header</h3><hr></td>
+        </tr>
             <tr>
+                
+                <td><h4>Table Heading Background</h4>
                 <?php
-                	if ( isset( $options['engagifii_font_family'])){
-                        $current = $options['engagifii_font_family'];
-                	}
-                    else{
-                        $current = '';
-                    }
-                ?>
-                <th> Table Heading Background</th>
-                <td><?php
                        $ebt_table_bg = @$options['ebt_table_bg_color'];
                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_bg_color]" value="'.$ebt_table_bg.'" class="engagifii-color-picker hide-options-here-tz">';
                          echo $_inputHtml;
-                          ?> </td>
-                <th>Font Family</th>
-                <td>
-                    <select name="ebt_api_settings[engagifii_font_family]" id="font-family-tz">
-                        <option> </option>
-                        <?php foreach( $fonts as $key => $font ):?>
-                        <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                          ?>
                 </td>
-            </tr>
-            <tr>
-                <?php
+                <td>
+                 <?php
                     if ( isset( $options['ebt_table_thead_fontsize'])){
                             $current = $options['ebt_table_thead_fontsize'];
                     	}
@@ -66,55 +53,47 @@
                             $current = '';
                         }
                     ?>
-                <th>Table Hover Color </th>
-                <td><?php 
-                       $ebt_table_hover_color = $options['ebt_table_hover_color'];
-                       $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_hover_color]" value="'.$ebt_table_hover_color.'" class="engagifii-color-picker hide-options-here-tz">';
-                         echo $_inputHtml;
-                    ?></td>
-                <th>Table Heading Font Size </th>
-                <td>
-                    <select name="ebt_api_settings[ebt_table_thead_fontsize]" id="font-size-tz">
+                	<h4>Table Header Font Size</h4>	
+                     <select name="ebt_api_settings[ebt_table_thead_fontsize]" id="font-size-tz">
                         <option> </option>
                         <?php foreach( $fontssie as $key => $font ):?>
                         <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
-            </tr>
-            <tr>
-                <th>Sponsors Background </th>
-                <td><?php
-                       $ebt_sponsors_color = $options['ebt_sponsors_color'];
-                       $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_sponsors_color]" value="'.$ebt_sponsors_color.'" class="engagifii-color-picker">';
-                       echo $_inputHtml;
-                    ?></td>
-                <th>Heading 1 Font Size </th>
-                <td>
+                <td colspan="2">
+                	<h4>Table Heading Color</h4>
                     <?php
-                    if ( isset( $options['ebt_detail_heading_font'])){
-                            $current = $options['ebt_detail_heading_font'];
-                        }
-                        else{
-                            $current = '';
-                        }
-                    ?>
-                    <select name="ebt_api_settings[ebt_detail_heading_font]" id="detail-size-tz">
+                        $ebt_table_thead_color = $options['ebt_table_thead_color'];
+                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_thead_color]" value="'.$ebt_table_thead_color.'" class="engagifii-color-picker hide-options-here-tz">';
+                          echo $_inputHtml;
+                    	 ?>
+                </td>
+                
+                <?php /*?><th>Font Family</th>
+                <td>
+                    <select name="ebt_api_settings[engagifii_font_family]" id="font-family-tz">
                         <option> </option>
-                        <?php foreach( $fontssie as $key => $font ):?>
+                        <?php foreach( $fonts as $key => $font ):?>
                         <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
                         <?php endforeach; ?>
                     </select>
-                </td>
+                </td><?php */?>
             </tr>
+              <tr>
+        	<td colspan="4"><h3>Table Body</h3><hr></td>
+        </tr>
             <tr>
-                <th>Table Normal Text </th>
-                <td><?php
+            	<td>
+                	<h4>Table Body color</h4>
+                    <?php
                         $ebt_table_tbody_color = $options['ebt_table_tbody_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_tbody_color]" value="'.$ebt_table_tbody_color.'" class="engagifii-color-picker">';
                           echo $_inputHtml;
-                    	 ?></td>
-                <?php
+                    	 ?>
+                </td>
+                <td>
+                 <?php
                     if ( isset( $options['ebt_table_tbody_fontsize'])){
                             $current = $options['ebt_table_tbody_fontsize'];
                     	}
@@ -122,180 +101,59 @@
                             $current = '';
                         }
                     ?>
-                <th> Table Normal Font </th>
-                <td>
-                    <select name="ebt_api_settings[ebt_table_tbody_fontsize]" id="table-size-tz">
+                	<h4>Table Body Font size</h4>
+                     <select name="ebt_api_settings[ebt_table_tbody_fontsize]" id="table-size-tz">
                         <option> </option>
                         <?php foreach( $fontssie as $key => $font ):?>
                         <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
-            </tr>
-            <tr>
-                <th>Hyperlink Color </th>
-                <td><?php
+                <td>
+                	<h4>Hyperlink Color</h4>
+                    <?php
                         $ebt_table_link_color = $options['ebt_table_link_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_link_color]" value="'.$ebt_table_link_color.'" class="engagifii-color-picker">';
                           echo $_inputHtml;
-                    	 ?></td>
-                <th> Text Font Size</th>
-                <td>
-                    <?php
-                    if ( isset( $options['ebt_detail_text_font'])){
-                            $current = $options['ebt_detail_text_font'];
-                        }
-                        else{
-                            $current = '';
-                        }
-                    ?>
-                    <select name="ebt_api_settings[ebt_detail_text_font]" id="ebt-size-tz">
-                        <option> </option>
-                        <?php foreach( $fontssie as $key => $font ):?>
-                        <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    	 ?>
                 </td>
-            </tr>
-            <tr>
-                <th>Table Heading Color </th>
-                <td><?php
-                        $ebt_table_thead_color = $options['ebt_table_thead_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_thead_color]" value="'.$ebt_table_thead_color.'" class="engagifii-color-picker hide-options-here-tz">';
-                          echo $_inputHtml;
-                    	 ?></td>
-            </tr>
-            <tr>
-                <th> Hyperlink Hover Color</th>
-                <td><?php
+                <td>
+                	<h4>Hyperlink Hover Color</h4>
+                    <?php
                        $ebt_table_link_hover_color = $options['ebt_table_link_hover_color'];
                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_link_hover_color]" value="'.$ebt_table_link_hover_color.'" class="engagifii-color-picker">';
-                       echo $_inputHtml;?> </td>
-            </tr>
-            <tr>
-                <th>Pagination Default Color </th>
-                <td><?php
-                       $ebt_pagination_default_color = $options['ebt_pagination_default_color'];
-                       $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_pagination_default_color]" value="'.$ebt_pagination_default_color.'" class="engagifii-color-picker">';
-                       echo $_inputHtml;
-                       ?></td>
-            </tr>
-            <tr>
-                <th> Pagination Hover Color</th>
-                <td><?php
-                        $ebt_pagination_hover_color = $options['ebt_pagination_hover_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_pagination_hover_color]" value="'.$ebt_pagination_hover_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    	 ?></td>
-            </tr>
-            <tr>
-              	
-                <th> Text Color</th>
-                <td><?php 
-                        $ebt_detail_text_color = $options['ebt_detail_text_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_text_color]" value="'.$ebt_detail_text_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    	?></td>
-            </tr>
-            <tr>
-                <th>Pagination Selected Color </th>
-                <td><?php 
-                        $ebt_pagination_color = $options['ebt_pagination_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_pagination_color]" value="'.$ebt_pagination_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    	?></td>
-            </tr>
-            <tr>
-            	
-                <th> Heading 1</th>
-                <td><?php
-                        $ebt_detail_heading_color = $options['ebt_detail_heading_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_heading_color]" value="'.$ebt_detail_heading_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    	 ?></td>
-            </tr>
-            <!--
-            	<tr>
-                <th>Calendar Background Color</th>
-                <td>
-                    <?php
-                        $ebt_detail_calendar_background_color = $options['ebt_detail_calendar_background_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_background_color]" value="'.$ebt_detail_calendar_background_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
+                       echo $_inputHtml;?>
                 </td>
             </tr>
-            <tr>
-                <th>Calendar class list Background Color</th>
-                <td>
-                    <?php
-                        $ebt_detail_class_list_background_color = $options['ebt_detail_class_list_background_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_class_list_background_color]" value="'.$ebt_detail_class_list_background_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Calendar Text Color</th>
-                <td>
-                    <?php
-                        $ebt_detail_calendar_text_color = $options['ebt_detail_calendar_text_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_text_color]" value="'.$ebt_detail_calendar_text_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Class Text Color</th>
-                <td>
-                    <?php
-                        $ebt_detail_class_calendar_text_color = $options['ebt_detail_class_calendar_text_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_class_calendar_text_color]" value="'.$ebt_detail_class_calendar_text_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Calendar Button Color</th>
-                <td>
-                    <?php
-                        $ebt_detail_button_color = $options['ebt_detail_button_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_button_color]" value="'.$ebt_detail_button_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
-                </td>
-            </tr> 
-            -->
-            <tr>
-                <th>Calendar Active Date Background</th>
-                <td>
-                    <?php
+             <tr>
+        	<td colspan="4"><h3>Calendar</h3><hr></td>
+        </tr>
+        <tr>
+        	<td><h4>Calendar Active Date Background</h4>
+             <?php
                         $ebt_detail_calendar_hover_color = $options['ebt_detail_calendar_hover_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_hover_color]" value="'.$ebt_detail_calendar_hover_color.'" class="engagifii-color-picker">';
                         echo $_inputHtml;
                     ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Calendar Class Name Background </th>
-                <td>
-                    <?php
+              </td>
+              <td>
+              	<h4>Calendar Class Name Background</h4>
+                 <?php
                         $ebt_detail_calendar_strip_color = $options['ebt_detail_calendar_strip_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_strip_color]" value="'.$ebt_detail_calendar_strip_color.'" class="engagifii-color-picker">';
                         echo $_inputHtml;
                     ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Calendar Class Name Background - Hover</th>
-                <td>
-                    <?php
+              </td>
+              <td colspan="2">
+              	<h4>Calendar Class Name Background - Hover</h4>
+                 <?php
                         $ebt_detail_calendar_strip_hover_color = $options['ebt_detail_calendar_strip_hover_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_strip_hover_color]" value="'.$ebt_detail_calendar_strip_hover_color.'" class="engagifii-color-picker">';
                         echo $_inputHtml;
                     ?>
-                </td>
-            </tr>
+              </td>
+        </tr>
+        
 
         </table>
         

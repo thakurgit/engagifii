@@ -35,7 +35,7 @@
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
     <div class="row">
         <div class="col-md-10 d-flex align-items-center">
-            <img class="img-rounded  mr-3  p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
+            <img class="rounded-circle  mr-3  p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
             <p  class="mb-2"> <?php echo $response->sectionName; ?></p>

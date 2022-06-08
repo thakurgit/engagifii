@@ -17,6 +17,9 @@ if(isset($_REQUEST['billId'])){
   $options = get_option( 'ebt_api_settings' );
   $lbt_api_url = $options['lbt_api_url'];
   $lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
+  if($lbt_vsbl_tag_list==null){
+  	$lbt_vsbl_tag_list = array();
+  }
 
   $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings      = $options['lbt_title_display_setting'];
@@ -103,14 +106,14 @@ $siteURL= site_url();
 </div>
 
 <div class="engagifii-box border border-bottom-0" style="border-left:7px solid <?php echo $billResponses->trackingLevelColorCode;?> !important;">
-  <div class="position-relative">
+  <div class="position-relative p-3">
     <span style="background-color:<?php echo $billResponses->trackingLevelColorCode;?>;" class="bg-span"></span>
-  <div class="col-sm-12 d-lg-flex  p-2">
-        <div class="col-lg-1 pt-3">
-            <img class="img-circle img-icon-lg p-0 m-auto" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/all-state-bill-icon.png';?>" alt="bill-icon">
-        </div>
-        <div class="col-lg-8 pt-3 pr-3 pb-3 pl-0">
-          <h3 class="no-border m-auto">
+  <div class="row">
+        
+        <div class="col-md-10 d-flex align-items-center">
+        <img class="rounded-circle  mr-3" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/all-state-bill-icon.png';?>" alt="bill-icon" style="max-width:78px; flex:0 0 78px">
+        <div>
+          <h3 class="mb-0 pb-1">
             <?php
 
               if($title_settings == 'title'){
@@ -145,7 +148,7 @@ $siteURL= site_url();
 
             if($billResponses->alternateTitle && $title_settings == 'title-top'){
           ?>
-          <div class="text-size-medium"><span class="p-1 bg-light"><?php echo $billResponses->alternateTitle; ?></span></div>
+          <div class=""><?php echo $billResponses->alternateTitle; ?></div>
           <?php
             }
           ?>
@@ -155,7 +158,7 @@ $siteURL= site_url();
             if($title_settings == 'alternate-top'){
               if($billResponses->alternateTitle){
           ?>
-          <div class="text-size-medium"><span class="p-1 bg-light"><?php echo $billResponses->title; ?></span></div>
+          <div class=""><?php echo $billResponses->title; ?></div>
           <?php
               }
             }
@@ -174,15 +177,14 @@ $siteURL= site_url();
           </div>
           <?php }
                 else{ ?>
-            <div class="pt-1 text-size-medium">
-            <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span>
-            <span class="pt-2 pl-2 text-bold">Last Action: </span><span><?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span>
-          </div>
-          <div class="pt-1 text-size-medium">
-            <span class="pt-2 text-bold">Introduced Date: </span><span><?php echo $intro_new_date;?> </span><span class="pt-2 pl-2 text-bold">Status: </span><span><?php echo $billResponses->status; ?></span>
-          </div>
-          <div class="pt-1 text-size-medium">
-            <span class="pt-2 text-bold">Session: </span><span><?php echo $billResponses->session; ?></span>
+            <div class="pt-1 small">
+            <span class=""><strong>State:</strong> <?php echo $billResponses->state;?></span><br>
+            <span class=""><strong>Last Action:</strong> <?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span><br>
+         
+            <span class=""><strong>Introduced Date:</strong> <?php echo $intro_new_date;?> </span><br>
+            <span class=""><strong>Status:</strong> <?php echo $billResponses->status; ?></span><br>
+         
+            <span class=""><strong>Session:</strong> <?php echo $billResponses->session; ?></span>
           </div>
           <?php
           }
@@ -191,19 +193,23 @@ $siteURL= site_url();
                   usort($billResponses->clientTags, "sort_associative_array");
                   $countTag = 0;
                  ?> 
-                 <div id="tag-order" class="pt-1 d-flex align-items-center"> 
+                 <div id="tag-order" class="pt-1 d-flex align-items-center small"> 
+                 <i class="fas fa-tags mr-1"></i><strong>Tag(s):</strong> 
+                 <span class="d-flex align-items-center">
 				 <?php
                   foreach ($billResponses->clientTags as $key => $tag) {
                     $tagMatch = $tag->tagId;
                   if (in_array($tagMatch, $lbt_vsbl_tag_list)){
                     $countTag = $countTag+1;
-                     echo '<span id="blockC"  class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal order-3 ml-2"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+						
                   }
                 
-                    } ?>
+                    }
+					echo '<span class="order-1 mx-1">'.$countTag.'</span>';
+					 ?>
                     
-                    <span id="blockA" class="order-1">Tag(s): </span><span id="blockB" class="order-2"><i class="fas fa-tags"></i>&nbsp;&nbsp;<?php echo $countTag; ?></span>
-                    
+                    </span>
                       </div>
 					  <?php
                 }
@@ -215,69 +221,69 @@ $siteURL= site_url();
           <?php if(count($billResponses->clientUsers) || count($billResponses->clientUserTags) || count($billResponses->clientGroups)){ 
               $total_assign_to = (int)count($billResponses->clientUsers) + (int)count($billResponses->clientUserTags) + (int)count($billResponses->clientGroups);
             ?>
-          <div class="pt-2 text-size-medium">
-            <span class="pt-2 text-bold">Assign To: </span><span class="pl-1"><i class="fa fa-users"></i>&nbsp;&nbsp;<?php if($total_assign_to){ echo $total_assign_to;}else {echo '<span class="text-muted">No Member assigned</span>'; } ?></span>
+          <div class="pt-1 small">
+            <i class="fa fa-users mr-1"></i><strong>Assign To:</strong><span class="mx-1"> <?php if($total_assign_to){ echo $total_assign_to;}else {echo '<span class="text-muted"><em>No Member assigned</em></span>'; } ?></span>
               <?php
                 if(count($billResponses->clientUsers)){
                   foreach ($billResponses->clientUsers as $key => $assignto) {
                    
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
                   }
                 }
               ?>
               <?php if(count($billResponses->clientUserTags)){ 
                   foreach ($billResponses->clientUserTags as $key => $assignto) {
                   
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
                   }
              } ?>
 
               <?php if(count($billResponses->clientGroups)){ 
                   foreach ($billResponses->clientGroups as $key => $assignto) {
                     
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
                   }
              } ?>
   
           </div>
           <?php } ?>
 
-         
+         </div>
         </div>
-        <div class="col-12 col-lg-3 pt-3">
+        <div class="col-md-2 text-md-right">
             
-            <div class="col-sm-12 pb-2 text-right navigation-area">
+            <div class="d-flex align-items-center mb-3 justify-content-end">
               <?php
                 if($prev){
               ?>
-              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $prev; ?>"><i class="fa fa-arrow-left"></i> </a>
+              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $next; ?>"> <i class="fa fa-arrow-right"></i></a>
+              <a href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
             </div>
-            <div class="col-sm-12 pb-2 text-lg-right">
+            <div class="">
               <span class="btn btn-danger tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
             </div>
-            <div class="col-sm-12 text-right col-sm-12 text-right d-flex align-items-center justify-content-lg-end">
+            <div class="d-flex align-items-center justify-content-lg-end py-3">
               
-              <a class="text-underline pl-3 mt-4 download-detail order-2 " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>">Download Full Text</a>
-              <img class="inline-block  mt-4" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/pdf.png';?>" alt="pdf">
+              <a class="text-underline pl-3  download-detail order-2 " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>">Download Full Text</a>
+              <img class="inline-block  " src="<?php echo ENGAGIFII_ASSETS_URL.'/images/pdf.png';?>" alt="pdf">
             </div>
  <?php 
               if ($siteURL == "https://engagifiiweb.com/maco"){ 
                 $siteLink = $quicklinkResponses[0]->url;
                 
                 ?>
-                <div class="col-sm-12 text-right col-sm-12 text-right d-flex align-items-center justify-content-lg-end">
-                <a class="btn btn-success order-3" style="float:right; color:white; margin-top:20px;" href="<?php echo $siteLink ?>">MGA Site </a>
+                <div class="mt-auto">
+                <a class="btn btn-success btn-sm" href="<?php echo $siteLink ?>">MGA Site </a>
               </div>
                 <?php
                
-              } ?>
+             } ?>
         </div>
 </div>
 </div>
