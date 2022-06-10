@@ -237,7 +237,8 @@ class Engagifii_API{
 
         $rowName = array();
 
-        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Instructors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Instructors.."/></div>';
+       // $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Instructors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Instructors.."/></div>';
+		$popOverHtml =  dd_header('Instructors','Search Instructors..');
         $subItems = "";
 		$li=1;
         foreach ($instructorData as $key => $rowData) {

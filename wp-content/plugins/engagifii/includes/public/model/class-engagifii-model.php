@@ -2109,7 +2109,7 @@ wp_die();
                     }
 
             } else {
-                $nestedData["houseCommittees"] = "None";
+                $nestedData["houseCommittees"] = '<em class="text-muted">None</em>';
             }
 
             if (count($row->senateCommittees) > 0) {
@@ -2133,13 +2133,12 @@ wp_die();
                 else
                     $nestedData["senateCommittees"] = '<p style="white-space:normal;">'.$row->senateCommittees[0].'</p>';
             } else {
-                $nestedData["senateCommittees"] = "None";
+                $nestedData["senateCommittees"] = '<em class="text-muted">None</em>';
             }
             if(count($row->assignedTo)){
                 if(count($row->assignedTo) > 1){
                     $assignCount              = count($row->assignedTo) - 1;
                     $assignList               = $this->_popOverAssignHtml1($row->id, $row->assignedTo);
-                  //  $nestedData['assignedto'] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;"> '.$row->assignedTo[0].'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  assign_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' .$assignCount .'</span></div>'.$assignList;
 					$nestedData['assignedto'] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2"> '.$row->assignedTo[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle  assign_'.$row->id.'" data-containerid="' . $row->id . '" id=' . $row->id . '> +' .$assignCount .'</span>'.$assignList.'</div>';
                 }
                 else{
@@ -2147,7 +2146,7 @@ wp_die();
                 }
             }
             else
-                $nestedData['assignedto'] = '';
+                $nestedData['assignedto'] = '<em class="text-muted">None</em>';
 
             if(count($row->tags)){
               
@@ -2886,7 +2885,7 @@ wp_die();
         //print_r($classData);
         $rowName = array();
         //$popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
-        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" >'.dd_title ('Class Dates');
+        $popOverHtml .= dd_header('Class Dates');
         $subItems = "";
         $li=1;
         foreach ($classData as $key => $rowData) {
@@ -2900,12 +2899,12 @@ wp_die();
             if($li%2==1){
 			$class='bg-light';	
 			}
-            $subItems .= '<li class="px-2 py-1 border-bottom d-flex align-items-center small '.$class.'"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+            $subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
 			$li++;
         }
 
         $popOverHtml .= $subItems;
-        $popOverHtml.= '</div>';
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
         /*$vars = "<script>

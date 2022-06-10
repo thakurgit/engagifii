@@ -324,17 +324,13 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 
 
 
-.download-detail{
-	color: <?php echo $ebt_table_link_color?>!important;
-}
 
-#ebtmaintable a:hover , .go-back:hover{
+
+#ebtmaintable a:hover {
 	color: <?php echo $ebt_table_link_hover_color?>!important;
 }
 
-.download-detail:hover{
-	color: <?php echo $ebt_table_link_hover_color?>!important;
-}
+
 
 .no-table-gapping-detail td a{
 	color: <?php echo $ebt_table_link_color?>!important;

@@ -1,4 +1,4 @@
-	<?php
+<?php
 	function view_mode( $atts ) {	
 	 $values = shortcode_atts(array(
         'search' => '',
@@ -42,9 +42,12 @@
 }
 add_shortcode( 'view_mode', 'view_mode' );
 
-function dd_title ($title) {
-      $title = '<h6 class="text-center border-bottom mb-0 pb-3">'.$title.'</h6>';
-      return $title;
-   }
+function dd_header ($title, $search='') {
+      $dd_header = '<div class="dropdown-menu shadow-lg dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">'.$title.'</h6>';
+	  if($search){
+		  $dd_header ='<div class="dropdown-menu shadow-lg dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-3">'.$title.'</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="'.$search.'"/></div>';
+	  }
+      return $dd_header;
+}
 
 
