@@ -158,57 +158,6 @@ div#calendar_filter {
 
 
 
-  <div class="row engagifii-box d-none" id="calendar_filter">
-  <div class="col-md-1 col-2 text-right ml-auto pb-2">
-  <div class=" filter-content">
-  <div class="containerEngagii filter-icon-cal d-inline-flex align-items-center justify-content-center rounded-circle position-relative pull-right"><i class="fas fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
-  <div class="filter-border-cal">
-  <div class="filter-area filter-area-cal d-none">
-    <div class="Engagiirow filter-top-bg col-sm-12">
-      <div class="col-sm-6 text-left">
-        <span class="filter-title">
-          <i class="fas fa-filter"></i> Filter 
-          <span id="blockedchecked"></span> 
-        </span>
-      </div>
-      <div class="col-sm-6 text-right">
-        <span class="clear-all-cal" id="clear-all-cal"> Clear All </span>
-      </div>
-    </div>
-    <div class="col-sm-12 height-4">
-      <input type="hidden" id="isApplyACtive" value="0">
-      <!-- <div class="filter-list-cal">
-        <div class="heading-title">Award Name <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none">
-          <ul class="list-group m-0">
-          <? //php foreach ($classes as $key => $value) { echo '<li class=""><label class="d-none" for="coursename_'.$key.'">course</label><input type="checkbox" name="courseClassCal[]" id="coursename_'.$key.'" value="'.addslashes($value['name']).'"> '.addslashes($value['name']).'</li>';} ?>
-          </ul>
-        </div>
-      </div> -->
-      <div class="filter-list-cal">
-        <div class="heading-title"> Tags <i class="fa fa-angle-down pull-right"></i></div>
-        <div class="content-area-cal d-none"><ul class="list-group m-0">
-          <?php
-
-            foreach ($tags as $key => $value) {
-              echo '<li class=""><label class="d-none" for="instruct_'.$key.'">Inst</label><input type="checkbox" name="endorsementTags[]" id="instruct_'.$key.'" value="'.$value['id'].'"> '.addslashes($value['name']).'</li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-
-      
-    </div>
-    <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button"  id="apply-filter-data-cal">Apply 
-          <span id="countFilterResultCal"></span>
-        </button>
-      </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
  <div id="calendar_div" class="position-relative">
         
     </div>
