@@ -45,7 +45,7 @@ if(isset($attr['calendar'])){
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
 
 ?>
-
+ <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Award Name"]');  ?>
 
 <?php
   if($calendar_view){
@@ -56,11 +56,11 @@ if(isset($attr['calendar'])){
     <div class="flt-btn mr-3 mr-xl-5" style="display:none">
         
         </div>
-    	<div class="btn-group view-m" role="group">
+    	<!-- <div class="btn-group view-m" role="group">
         			 <button type="button" id="calendar" class="btn border  btn-primary shadow-none" aria-pressed="false"><i class="fal fa-calendar-alt mr-2"></i></i>Calendar</button>
                   <button type="button" id="list" class="btn btn-light border shadow-none" aria-pressed="false"><i class="fal fa-list mr-2"></i> List</button> 
                  
-        </div>
+        </div> -->
     </div>
   </div>
   </div>
@@ -251,16 +251,15 @@ $dt_class .= 'table-dark ';
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
 			$('.flt-btn').fadeIn(300);
-            $('#calendar_div').hide();
-            $('#calendar_filter').hide();
+      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form').hide();
+           $('#calendar_filter').hide();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#list').removeClass('btn-primary').addClass('btn-light');
-            $('#calendar_div').show();
-            $('#calendar_filter').show();
-            $('#list_div').hide();
+      $('#calendar_div, #calendar_filter, .calendarsearch-form').show();
+      $('#list_div, #calendarsearch_div, .filter-border').hide();
 			$('.flt-btn').fadeOut(100);
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })

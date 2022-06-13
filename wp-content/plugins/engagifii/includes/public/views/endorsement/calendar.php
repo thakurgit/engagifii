@@ -212,7 +212,11 @@ div#calendar_filter {
  <div id="calendar_div" class="position-relative">
         
     </div>
-  	
+  	<div id="calendarsearch_div" class="position-relative container-fluid" style="display:none">
+    
+    <?php echo do_shortcode('[endorsement-calendar-search]'); ?>
+    
+        </div>
     <script>
         //var courses = '';
         var tags = '';
