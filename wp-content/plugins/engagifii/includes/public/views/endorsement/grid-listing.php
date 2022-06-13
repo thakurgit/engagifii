@@ -382,6 +382,9 @@ $('.clear-search').click(function(e){
 
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
+	 if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
     createdDate = '';
     countFilterData();
 });
@@ -410,7 +413,9 @@ $( '.cleardate' ).click(function() {
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
       countFilterData();
-
+ if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
     });
 
     //filter
@@ -477,6 +482,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
 });
 
       $('.filter-list input[type=checkbox]').change(function(){
+		   if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
           countFilterData();
       })
 
@@ -503,7 +511,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
           },
           success: function(response) {       
             var element  = document.getElementById("countFilterResult");
-            console.log(response);
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled');
+           // console.log(response);
             if(element)
             {
               element.innerHTML = " ("+response.api_response +")";
