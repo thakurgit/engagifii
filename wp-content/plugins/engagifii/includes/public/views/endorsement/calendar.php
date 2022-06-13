@@ -195,7 +195,7 @@ div#calendar_filter {
                 success:function(html){
                     $('#'+target_div).html(html);
                     $('.calendar__days').hide();
-                     $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');;
+                    $('#'+calendar_view).addClass('bg-primary text-white').removeClass('bg-white');
                     var date = year+'-'+month+'-'+day;
                     if(calendar_view == 'day'){ $('#event_list').hide();}
                     getEvents(date);
@@ -344,7 +344,7 @@ div#calendar_filter {
                     $('#calendar_div').html(html);
                     
                     getEvents(today);
-           			$('button#month').addClass('bg-primary text-white ');
+           			$('button#month').addClass('bg-primary text-white ').removeClass('bg-white');
            			$('#dayView').hide();
                 $('#weekView').hide();
 

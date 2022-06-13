@@ -419,7 +419,7 @@ $( '.cleardate' ).click(function() {
        if(in_array('tags', $ebt_visib_datacol_list))
        {
       ?>
-          tags       = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
+          tags = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
       <?php
         }
       ?>
@@ -487,7 +487,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
            if(in_array('tags', $ebt_visib_datacol_list))
            {
           ?>
-              tags       = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
+              tags = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
           <?php
             }
           ?>

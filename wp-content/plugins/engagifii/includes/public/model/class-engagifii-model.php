@@ -4167,33 +4167,7 @@ public function getEndorsementCalendar(){
 
 ?>
     <main class="calendar-contain row">
-        <div class="title-bar col-12 bg-light p-3 border rounded">
-            <div class="row">
-            <div class="title-bar__month col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pr-0">
-                <div class="input-group input-group-sm mb-2 mb-md-0">
-        <div class="input-group-prepend">
-          <div class="input-group-text bg-white rounded-left"><i class="fal fa-calendar-alt"></i></div>
-        </div>
-                <select class="month-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getMonthList($dateMonth); ?>
-                </select>
-                </div>
-            </div>
-             <div class="title-bar__year col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pl-0">
-                <select class="year-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getYearList($dateYear); ?>
-                </select>
-            </div>
-             <div class="col-12 col-md-6 col-lg-8 text-center text-md-right text-uppercase">
-                <div class="btn-group btn-group-sm calendar-view" role="group" >
-                  <button type="button" id="month" class="btn bg-white border shadow-none" aria-pressed="false">Monthly</button>
-                  <button type="button" id="week" class="btn bg-white border shadow-none" aria-pressed="false">Weekly</button>
-                  <button type="button" id="day" class="btn bg-white border shadow-none" aria-pressed="false">Daily</button>
-                </div>
-            </div>
-        </div>
-            
-        </div>
+    <?php echo $this->calendar_mode(); ?>
         <div class="col-12 pt-4">
             <div class="row ">
         <aside class="calendar__sidebar col-md-4 order-2 border  pb-4 class-background" id="event_list">
