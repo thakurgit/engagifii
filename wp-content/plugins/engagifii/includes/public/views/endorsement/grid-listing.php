@@ -123,7 +123,7 @@ ob_start();
       </div>
       </div>
     </div>
-    <div class="col-sm-12 height-4">
+    <div class="col-sm-12 ">
       <input type="hidden" id="isApplyACtive" value="0">
       
       <div class="filter-list border-bottom">
@@ -142,7 +142,7 @@ ob_start();
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
             foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="emdorsementTag[]" value="'.$value->id.'"> '.addslashes($value->name).'<label class="" for="tag_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
+              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="emdorsementTag[]" value="'.$value->id.'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value->name).'</small></label></li>';
             }
           ?>  
         </ul></div>
@@ -305,40 +305,9 @@ var table = $('#ebtmaintable').DataTable( {
     "drawCallback": function( settings ) {
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center "><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
-              var divWidth = parseInt($('.custom-scroll').width());
-			 var tablewidth = parseInt($('#ebtmaintable').width());
-               if(tablewidth<=divWidth){
-					$('.nxt,.prv').addClass('disabled');   
-					return false;
-			   } else {
-				$('.nxt').click(function () {
-					   tablewidth = parseInt($('#ebtmaintable').width());
-				   $('.custom-scroll').animate({
-					  scrollLeft: "+=250px"
-				   }, "slow",function() {
-					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
-					   //console.log(tablewidth+','+divWidth+scrollLeft)
-    					$('.prv').removeClass('disabled'); 
-				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
-						  $('.nxt').addClass('disabled');  
-				  		 }	
-  					}); 
-				   
-				});  
-				$('.prv').click(function () {
-				   $('.custom-scroll').animate({
-					  scrollLeft: "-=250px"
-				   }, "slow",function(){
-					 $('.nxt').removeClass('disabled');  
-					 if($('.custom-scroll').scrollLeft()==0){
-						$('.prv').addClass('disabled');  
-					 }
-				   });
-				});  
-			   }
+            dt_scroll();
 			   <?php } ?>
+			   $('[data-toggle="tooltip"]').tooltip() ;
          },
 		
     });
@@ -421,9 +390,18 @@ $( '.cleardate' ).click(function() {
         $('.filter-border').show();
         $('.filter-area').toggleClass('d-none');
         $('#isApplyACtive').val(1);
+		jQuery(".filter-area .list-group").mCustomScrollbar({
+	 scrollButtons:{enable:true},
+			theme:"minimal-dark",
+			scrollbarPosition:"outside"
+			});
+
     })
 
-    $('.heading-title').click(function(){$(this).next('.content-area').toggleClass('d-none')});
+    $('.heading-title').click(function(){
+		$(this).next('.content-area').toggleClass('d-none');
+		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
+	});
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',
