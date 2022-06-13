@@ -96,6 +96,15 @@ cursor:pointer;
 .ui-slider-horizontal .ui-slider-handle {
 	top: -.4em;
 }
+.class-pop {
+	left: 50%;
+	top: 50%;
+	transform: translatey(-50%) translatex(-50%);
+	min-height: 100%;
+	width: 120%;
+	box-shadow: 0 0 1rem rgba(0,0,0,.5) !important;
+	z-index: 1;
+}
 .engagiifii-custom-input {
 	border: 1px solid #d3d3d3;
 	display: block;

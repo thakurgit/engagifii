@@ -143,15 +143,7 @@ aside .box {
         padding: 1rem .4rem;
         justify-content: flex-start;
 }
-.class-pop {
-	left: 50%;
-	top: 50%;
-	transform: translatey(-50%) translatex(-50%);
-	min-height: 100%;
-	width: 120%;
-	box-shadow: 0 0 1rem rgba(0,0,0,.5) !important;
-	z-index: 1;
-}
+
 	</style>
   <?php
     $obj      =  new Engagifii_API();
@@ -276,7 +268,7 @@ $(document).ready(function() {
                 });
 				class_html += '</div>';
             } else{ 
-				class_html += '<div class="box"><h5 class="col-12 text-center opacity-50">Oops! No classes available for selected date.</h5></div>'; 
+				class_html += '<div class="box"><h5 class="col-12 text-center text-muted"><em>Oops! No classes available for selected date.</em></h5></div>'; 
 			}
             
             $('#event_list').html(class_html);

@@ -215,11 +215,15 @@ div#calendar_filter {
             const options = { weekday: 'long', month: 'long', day: 'numeric', year:'numeric' };
             
             var event_date = new Date(date).toUTCString(); 
+		   const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+		   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+		   var selectedDate = '0'+new Date(date).getUTCDate();
+		   selectedDate = weekday[new Date(date).getUTCDay()].slice(0,3)+' - '+month[new Date(date).getUTCMonth()].slice(0,3)+' '+selectedDate.slice(-2) +', '+ new Date(date).getUTCFullYear();
 		        day = event_date.slice(5,7);
             // var event_date = new Date(date);
             // day = String(event_date.getDate()).padStart(2, '0');
             // event_date = event_date.toLocaleDateString(undefined, options);
-            var class_html = '<h4 class="sidebar__heading text-center py-3">'+event_date.slice(0,17)+'</h4>';
+            var class_html = '<h4 class="sidebar__heading text-center py-3" title="'+event_date.slice(0,17)+'">'+selectedDate+'</h4>';
             
             //Get Class data and print here
             if(response!= 'no-data') {
@@ -267,7 +271,7 @@ div#calendar_filter {
                 });
 				class_html += '</div>';
             } else{ 
-				class_html += '<div class="box border"><div class="col-12 text-center">No Endorsement</div></div>'; 
+				class_html += '<div class="box"><h5 class="col-12 text-center text-muted"><em>Oops! No endorsements available for selected date.</em></h5></div>'; 
 			}
             
             $('#event_list').html(class_html);
@@ -314,11 +318,11 @@ div#calendar_filter {
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
+				$("#calendar_div").prepend('<div class="loader"><span class="spinner"></span></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();
-    		}    
+    		}     
 		});
 
         $(document).ready(function(){
@@ -374,8 +378,19 @@ div#calendar_filter {
           calendar_view = 'week';
           
           getEndorsementCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
-        })
-
+        });
+		$('body').on('click', '#class-pop', function(e){
+          $(this).parent().siblings('.class-pop').fadeIn();
+          return false;
+        });
+		$(document).on('click', function (e) {
+			if(!$('.modal').is(':visible')){
+ 				$('.class-pop').fadeOut();
+			}
+});
+$(document).on('click', '.class-pop', function (e) {
+  e.stopPropagation();
+});
          /*$('#apply-filter-data-cal').click(function(){
             //courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
             tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){return c.value; });
