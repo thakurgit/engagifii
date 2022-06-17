@@ -222,7 +222,82 @@ class Engagifii_API{
 
     }
 
+//Events Speakers Popover Data
 
+public function _popOverSpeakerData3($id, $instructorData){
+	$options = get_option('ebt_api_settings');
+  $endorsement_api_url = $options['ebt_api_url'];
+  $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+
+	   
+
+
+  $rowName = array();
+
+  $popOverHtml = '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="searchbox_' . $id . '">';
+  $subItems = "";
+
+  foreach ($instructorData as $key => $rowData) {
+	  
+	  $rowName[$rowData->id] = $rowData->fullName;
+	  
+	  if($rowData->thumbnailUrl)
+	  {
+		  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
+			  $instructor_img = $rowData->thumbnailUrl;
+		  }
+		  else
+		  {
+			  $instructor_img = $tenant_url.$rowData->thumbnailUrl;
+		  }
+		  
+	  }
+	  else
+	  {
+		  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+		 }
+
+	  
+	  $subItems .= ' <option value="' . $rowData->fullName . '" data-capital="' . $rowData->fullName . '"  >' . $rowData->fullName . '</option>';
+  }
+
+  $popOverHtml .= $subItems;
+  $popOverHtml.= '</select>';
+
+  $vars = "
+				 <script>
+				 $(function() {
+
+					  instructor_{$id} = $('#searchbox_{$id}').select2({
+						  templateResult: function(item) {
+							  return format(item,   false);
+						  }
+						  });
+
+						  $(document).on('click', '.instructor_{$id}', function () {
+
+							  instructor_{$id}.select2('open');
+							  setTimeout(function(){ __addExtraDiv('Instructors')},100);
+							  });
+
+
+							  });
+							  </script>";
+
+  $popOverHtml .= '</ul></span>';
+  $popOverHtml .= '</div>';
+
+  $popOverHtml .= '</div>';
+  $popOverHtml .= '</div>';
+  $popOverHtml .= '</div> ';
+
+  return $popOverHtml . $vars;
+
+}
+
+
+//Events Speaker data ends
 
 
 	// 
@@ -698,6 +773,8 @@ class Engagifii_API{
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
+
+	
 	public function courseAllClasses($date) :array{
 		$postData=array();
 		$responseArray = array();
@@ -848,6 +925,19 @@ public function getEventDetailsByID($id)
 		$postData['pageNumber'] = '1';
 		$postData['sortDirection'] = 'desc';
 		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'courses');
+		$responseArray = json_decode($response['api_response']);
+		return $responseArray;
+
+	}
+	public function getEventRelatedClassBycourse($id, $count){
+	
+		$postData = array();
+		$apiUrl = 'Public/getEventRelatedClassBycourse/'.$id;
+		$postData['courseId'] = $id;
+		$postData['itemCount'] = $count;
+		$postData['pageNumber'] = '1';
+		$postData['sortDirection'] = 'desc';
+		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'event');
 		$responseArray = json_decode($response['api_response']);
 		return $responseArray;
 

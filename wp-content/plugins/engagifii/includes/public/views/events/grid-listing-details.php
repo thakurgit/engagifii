@@ -3,10 +3,19 @@
 	$id 		= $_REQUEST['endId'] ?? null;
 	$obj 			=  new Engagifii_API();
 	$response       =  $obj->getEventDetailsByID($id);
-	//print_r(json_encode($response));
+	$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/eventactivity/list';
+		$postData['pageNumber'] = 1;
+		$postData['pagesize'] = 10;
+		$postData['eventId']              = $id;
+		$postData['sortBy']        = 'StartDateTime';
+	//print_r($response);
 	//print_r(count($response->eventClasses));
-	//$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
-	//print_r(json_encode($classesData));
+	$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
+	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
+	$collections  = json_decode($dataResponse['api_response'])->collection;
+	//print_r($collections);
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
@@ -375,43 +384,60 @@
 			  	</div>
 			  	</div>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
-			  			<div class="p-3">
-			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
-			  					<thead>
-			  						<tr>
-			  							<td>File</td>
-			  							<td>Size</td>
-			  						</tr>
-			  					</thead>
-			  					<tbody>
-			  						<tr class="bg-white">
-			  							<td>Document1</td>
-			  							<td>50KB</td>
-			  						</tr>
-			  					</tbody>
-			  				</table>
-			  			</div>
+				  <div class="p-3">
+			  		<table class="table table-bordered border-0 table-striped" id="" width="100%">
+			  			<thead>
+			  				<tr>
+			  					<th>Session Name </th>
+			  					<th>Date/Time</th>
+			  					<th>Type</th>
+			  					<th>price</th>
+			  					<th>speakers</th>
+			  					<th>Session Status</th>
+			  					
+			  				</tr>
+			  			</thead>
+			  			<tbody>
+			  				<?php
+							  //print_r(count($sessionsData));
+							  //print_r(count($collections));
+							  //$i=0;
+			  					//if(($collection) && count($collection)){
+			  						//$sessionData = $sessionsData[0];
+			  						foreach ($collections as $key => $value) {
+									
+			  							$instructorPopOver = $obj->_popOverSpeakerData3($key, $value->speakers);
+			  							//$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
+			  				?>
+			  					<tr class="bg-white">
+			  						<td><span><?php echo $value->name; ?><br/><a href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $value->id; ?>"><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
+									</td><td><?php 
+			  								if(!empty($value->startDateTime) ){
+			  									echo date('M d, Y', strtotime($value->startDateTime)); //date('M d, Y', $convert_Date);
+			  									
+			  									 echo ' at '.date("h:i A",strtotime($value->startDateTime)).' - '.date("h:i A",strtotime($value->endDateTime));
+			  								}
+			  							 ?>
+			  						</span></td>
+			  						
+			  						<td><?php echo $value->type; ?></td>
+			  						<td>
+									  <?php echo $value->defaultPrice; ?>
+			  						</td>
+			  						<td><div class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></td>
+			  						<td><?php echo $value->activityStatus; ?></td>
+			  						
+			  					</tr>
+			  				<?php 
+			  					}
+			  			//	}
+			  				?>
+			  			</tbody>
+			  		</table>
 			  	</div>
-				  <div class="tab-pane fade" id="material" role="tabpanel" aria-labelledby="material-tab">
-			  			<div class="p-3">
-			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
-			  					<thead>
-			  						<tr>
-			  							<td>File</td>
-			  							<td>Size</td>
-			  						</tr>
-			  					</thead>
-			  					<tbody>
-			  						<tr class="bg-white">
-			  							<td>Document1</td>
-			  							<td>50KB</td>
-			  						</tr>
-			  					</tbody>
-			  				</table>
-			  			</div>
 			  	</div>
 
-				  <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
+				  <!-- <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
 			  			<div class="p-3">
 			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
@@ -428,7 +454,7 @@
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  	</div>
+			  	</div> -->
 
 			</div>
             </div>
