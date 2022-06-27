@@ -234,7 +234,7 @@
 			  			<div class="col-12">
 			  				<div class="border rounded shadow-sm">
 			  					<div class="panel-title bg-light p-2  border-bottom">
-                                      <h6 class="mb-0 font-weight-normal">Contacts</h6>
+                                      <h6 class="mb-0 font-weight-normal">Contacts </h6>
                                   </div>
 		                    	 <div class="p-3">
                                   	<div class="row">
