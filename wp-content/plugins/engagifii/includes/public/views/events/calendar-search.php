@@ -136,7 +136,7 @@ function _prepareEventData($searchtext){
 
 
 $postedData = _prepareEventData($searchtext);
-print_r(json_encode($postedData));
+//print_r(json_encode($postedData));
 $dataResponse = $this->submitApiRequest("Public/listEventsByFilter",$postedData,"POST",'event');
 $collection   = json_decode($dataResponse['api_response'])->collection;
 //print_r(json_encode($collection));
