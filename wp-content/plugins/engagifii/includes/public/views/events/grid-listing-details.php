@@ -10,7 +10,7 @@
 		$postData['pagesize'] = 10;
 		$postData['eventId']              = $id;
 		$postData['sortBy']        = 'StartDateTime';
-	//print_r($response);
+	//print_r(json_encode($response));
 	//print_r(count($response->eventClasses));
 	$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
@@ -18,7 +18,7 @@
 	//print_r($collections);
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
-    $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+    $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
 	
 
 	$contactPersons = $response->contacts;
@@ -92,16 +92,20 @@
         </div>
 		
           <?php 
-		 if($response->isRegistrationAllowed){ ?>
-					<div class="mt-auto">
-				
-					  <a class="btn btn-primary " target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register</a>
-					 		
-					
-					 
-					  <!-- <a class="btn btn-primary px-3 py-1" target="_blank" href="<?php echo $tenant_url;  ?>/pages/classes/<?php echo $id; ?>/signup/online/overview">Register</a> -->
-					</div>
-				<?php } ?>
+		  $event_status = $response->eventStatus;
+		  $registration_state = $response->eventRegistrationState;
+		  $default_RegisterBtn = "";
+		  if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') { ?>
+			<div class="mt-auto">				
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $response->eventRegistrationState; ?>"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>
+		  </div>
+		  <?php }
+		  else{
+			  ?>
+			<div class="mt-auto">				
+			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'pages/events/'. $id .'/signup/overview'; ?>">Register</a></div>  
+			<?php }
+		  ?>
        </div>
        </div>
        
