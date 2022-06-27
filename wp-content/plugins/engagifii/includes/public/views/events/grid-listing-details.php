@@ -426,7 +426,7 @@
 			  						
 			  						<td><?php echo $value->type; ?></td>
 			  						<td>
-									  <?php echo $value->defaultPrice; ?>
+									  <?php echo '$'.$value->defaultPrice; ?>
 			  						</td>
 			  						<td><div class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></td>
 			  						<td><?php echo $value->activityStatus; ?></td>
