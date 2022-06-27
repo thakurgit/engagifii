@@ -108,6 +108,19 @@ $searchtext = "";
 
 
 function _prepareEventData($searchtext){    
+    $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
+        if($upcomingEvents==1){
+        $upcomingEvents = 'true';	
+        }else{
+            $upcomingEvents = 'false';
+        }
+        if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+
     $title = $searchtext;
     $postData = array();  
     $sortBy       = "";
@@ -116,13 +129,14 @@ function _prepareEventData($searchtext){
     $postData['pageNumber'] = 1;    
     $postData['pageSize'] = 12;
     $postData['sortDirection'] = "desc";
-    $postData['upcomingEvents'] = "true";
+    $postData['upcomingEvents'] = $upcomingEvents;
     $postData['filterBody'] = array('searchText'=>$title,'selectedDate' => date('Y-m-d')); //'searchText'=>$title,  
     return $postData;
 }
 
 
 $postedData = _prepareEventData($searchtext);
+print_r(json_encode($postedData));
 $dataResponse = $this->submitApiRequest("Public/listEventsByFilter",$postedData,"POST",'event');
 $collection   = json_decode($dataResponse['api_response'])->collection;
 //print_r(json_encode($collection));
@@ -251,7 +265,7 @@ usort($res, function($a, $b) {
                     <p><strong>Price : $</strong><?php echo $data['price']; ?></p>
                 </div>
                 <div class="modal-footer">
-                    <a href="../event-details/?endId=<?php echo $eventId ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                    <a href="../event-detail/?endId=<?php echo $eventId ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                     <?php echo $data['register']; ?>
                 </div>
             </div>
