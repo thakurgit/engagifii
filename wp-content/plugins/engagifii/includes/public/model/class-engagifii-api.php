@@ -278,7 +278,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 						  $(document).on('click', '.instructor_{$id}', function () {
 
 							  instructor_{$id}.select2('open');
-							  setTimeout(function(){ __addExtraDiv('Instructors')},100);
+							  setTimeout(function(){ __addExtraDiv('Speakers')},100);
 							  });
 
 
