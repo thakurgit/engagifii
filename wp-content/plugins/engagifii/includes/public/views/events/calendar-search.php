@@ -150,42 +150,27 @@ foreach ($collection as $key => $value) {
                 $eventName = $value->name;
                 $eventId = $value->id;
                 $icon = $value->imageUrl;
-                if($value->isRegistrationAllowed)
-                    {
-                    if($value->eventRegistrationState !== 'Registration Not Setup' && $value->eventRegistrationState !== 'Registration Closed' && $value->eventRegistrationState!== 'Sold Out' && $value->eventRegistrationState !== 'Registration Scheduled' && $value->eventRegistrationState !== 'Early Sold Out' && $value->eventRegistrationState !== 'Standard Sold Out')
+                $eventRegState = preg_replace('/(?<!\ )[A-Z]/', ' $0', $value->eventRegistrationState);
+                    if($value->eventRegistrationState == 'Completed' || $value->eventRegistrationState == 'RegistrationClosed' || $value->eventRegistrationState == 'RegistrationNotStarted')
                         {
-                        if($value->locationType->name=="onlocation")
-                            {
-                              $register = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                           elseif($value->locationType->name=="online"){
-                                 $register = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                           elseif($value->locationType->name=="onlocationandonline")
-                            {
-                              $register ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px;">Register online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank">Register in person</a></span>';
-                            }
-                            else{
-                                  $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
-                                }
-                        }
+                            $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$eventRegState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
+                             }
                         else{
-                             $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
+                             $register = '<a href="'.$tenant_url.'/pages/events/'. $eventId .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                             //$register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
+                          
                             }
-                    } 
-                    else{
-                        $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
-                    }
+                    
                 
     foreach ($value->eventDates as $key => $result) {
                         $id = $result->id;
-                        $eventData[$id]['title'] = '<a href="'.site_url().'/event-details/?endId='.$eventId.'">'.$eventName.'</a>';
+                        $eventData[$id]['title'] = '<a href="'.site_url().'/event-detail/?endId='.$eventId.'">'.$eventName.'</a>';
                         $eventData[$id]['titleNoLink'] = $eventName;
                         $eventData[$id]['hours']      = $value->parentCourse->creditHours;
                         $eventData[$id]['objectType'] = $value->eventType;
                         $eventData[$id]['price'] = $value->defaultPrice;
                         $eventData[$id]['date'] = date('Y-m-d', strtotime($result->sessionStartTime));//$result->sessionDate;
-                        $eventData[$id]['eventId'] .= $classId;
+                        $eventData[$id]['eventId'] .= $eventId;
                         $eventData[$id]['Icon'] .= $icon;
                         $eventData[$id]['eventName'] .= $eventName;
                         $eventData[$id]['sessionStatus'] .=$result->sessionStatus;
@@ -227,12 +212,13 @@ usort($res, function($a, $b) {
     return strtotime($a['startTime']) <=> strtotime($b['startTime']);
 });
     foreach($res as $keyobj => $data){
+        //print_r(json_encode($data));
         //$testing = $data['instructors'];
 ?>
 	<div class="row mb-2 px-xl-4">
     <div class="col-md-2"><span class="calendarsearch text-nowrap"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span></div>
 	<div class="col-md-6 pt-2">
-    	<div> <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" ><?php echo $data['titleNoLink'];?></a></div>
+    	<div> <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['eventId'];echo $i; ?>" href="" ><?php echo $data['titleNoLink'];?></a></div>
     	
     </div>
     <div class="col-md-4 pt-2">
@@ -265,7 +251,7 @@ usort($res, function($a, $b) {
                     <p><strong>Price : $</strong><?php echo $data['price']; ?></p>
                 </div>
                 <div class="modal-footer">
-                    <a href="../event-detail/?endId=<?php echo $eventId ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                    <a href="../event-detail/?endId=<?php echo $data['eventId'] ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                     <?php echo $data['register']; ?>
                 </div>
             </div>

@@ -1901,7 +1901,8 @@ wp_die();
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
             if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$row->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->eventRegistrationState);
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
                 $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
@@ -3788,7 +3789,7 @@ if(!empty($_POST['minRange']))
            //print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
             $event_status = $value->eventStatus;
-            $registration_state = $value->eventRegistrationState;
+            $registration_state = preg_replace('/(?<!\ )[A-Z]/', ' $0', $value->eventRegistrationState);//$value->eventRegistrationState;
            
             if(count($value->eventDates))
         	{
@@ -3903,7 +3904,8 @@ if(!empty($_POST['minRange']))
                         $data['endorsementTag'] = $allTags;
                    $default_RegisterBtn = "";
                         if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
-                            $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->eventRegistrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                            $registration_state = preg_replace('/(?<!\ )[A-Z]/', ' $0', $value->eventRegistrationState);//$value->eventRegistrationState
+                            $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registration_state.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }
                         else{
                             $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
