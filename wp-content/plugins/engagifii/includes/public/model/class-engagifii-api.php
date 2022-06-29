@@ -234,7 +234,8 @@ public function _popOverSpeakerData3($id, $instructorData){
 
   $rowName = array();
 
-  $popOverHtml = '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="searchbox_' . $id . '">';
+ // $popOverHtml = '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="searchbox_' . $id . '">';
+		$popOverHtml =  dd_header('Speakers','Search speakers..');
   $subItems = "";
 
   foreach ($instructorData as $key => $rowData) {
@@ -259,31 +260,39 @@ public function _popOverSpeakerData3($id, $instructorData){
 		 }
 
 	  
-	  $subItems .= ' <option value="' . $rowData->fullName . '" data-capital="' . $rowData->fullName . '"  >' . $rowData->fullName . '</option>';
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
+			$li++;
+	 // $subItems .= ' <option value="' . $rowData->fullName . '" data-capital="' . $rowData->fullName . '"  >' . $rowData->fullName . '</option>';
   }
 
   $popOverHtml .= $subItems;
-  $popOverHtml.= '</select>';
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 
-  $vars = "
-				 <script>
-				 $(function() {
-
-					  instructor_{$id} = $('#searchbox_{$id}').select2({
-						  templateResult: function(item) {
-							  return format(item,   false);
-						  }
-						  });
-
-						  $(document).on('click', '.instructor_{$id}', function () {
-
-							  instructor_{$id}.select2('open');
-							  setTimeout(function(){ __addExtraDiv('Speakers')},100);
-							  });
-
-
-							  });
-							  </script>";
+  /*$vars = "<script>
+					$('.td-dropdown').mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+		 			});
+                  $(document).ready(function(){
+  $('.search-dropdown').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).parent().siblings('li').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).parent().siblings('li:visible').length<1){
+		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
+	  } else {
+		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
+	  }
+  });
+});  
+                </script>";*/
+		$vars = "";
 
   $popOverHtml .= '</ul></span>';
   $popOverHtml .= '</div>';

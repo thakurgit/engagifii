@@ -409,8 +409,12 @@
 			  					//if(($collection) && count($collection)){
 			  						//$sessionData = $sessionsData[0];
 			  						foreach ($collections as $key => $value) {
-									
-			  							$instructorPopOver = $obj->_popOverSpeakerData3($key, $value->speakers);
+										 $instructorPopOver = '';
+
+										if(count($value->speakers)){
+											$instructorPopOver = $obj->_popOverSpeakerData3($key, $value->speakers);
+										}
+			  							
 			  							//$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
 			  				?>
 			  					<tr class="bg-white">
@@ -428,8 +432,11 @@
 			  						<td>
 									  <?php echo '$'.$value->defaultPrice; ?>
 			  						</td>
-			  						<td><div class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></td>
+			  						<td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id="<?php echo $key ?>"><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></div>
+                                    </td>
 			  						<td><?php echo $value->activityStatus; ?></td>
+                                    
+                                    
 			  						
 			  					</tr>
 			  				<?php 
