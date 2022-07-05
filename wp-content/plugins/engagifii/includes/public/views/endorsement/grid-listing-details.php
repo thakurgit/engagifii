@@ -19,7 +19,7 @@
   $curriculamResponses = json_decode($curriculamResponse['api_response']);
 
   $class_array = @json_decode(stripslashes($_COOKIE['awardids']), true);
-  print_r($class_array);
+  //print_r($class_array);
   $class_key = array_search ($_GET['endId'], $class_array);
   $class_count = count($class_array)-1;
   if($class_key == 0){
