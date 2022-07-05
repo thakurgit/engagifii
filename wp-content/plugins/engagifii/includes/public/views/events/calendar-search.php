@@ -135,10 +135,8 @@ function _prepareEventData($searchtext){
 }
 
 $options = get_option('ebt_api_settings');
-        
-//$events_api_url = $options['evt_api_url'];
 $engagifii_url          = $options['evt_tenant_code']['engagifii_url'];
-print_r(json_encode($options));
+
 $postedData = _prepareEventData($searchtext);
 //print_r(json_encode($postedData));
 $dataResponse = $this->submitApiRequest("Public/listEventsByFilter",$postedData,"POST",'event');
