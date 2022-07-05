@@ -11,14 +11,15 @@
   $ebt_api_url = $options['ebt_api_url'];
   $tenant_url = $options['ebt_tenant_code']['engagifii_url'];
   /* General Tab */
-  $endResponse = $api->getEndDetails('$endId');
+  $endResponse = $api->getEndDetails($endId);
   $endResponses = json_decode($endResponse['api_response']);
-  //print_r($endResponses);
+
   /* Course Curriculam Tab */
   $curriculamResponse = $api->getCurriculam($endId);
   $curriculamResponses = json_decode($curriculamResponse['api_response']);
 
   $class_array = @json_decode(stripslashes($_COOKIE['awardids']), true);
+  print_r($class_array);
   $class_key = array_search ($_GET['endId'], $class_array);
   $class_count = count($class_array)-1;
   if($class_key == 0){
