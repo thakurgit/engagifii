@@ -134,7 +134,11 @@ function _prepareEventData($searchtext){
     return $postData;
 }
 
-
+$options = get_option('ebt_api_settings');
+        
+//$events_api_url = $options['evt_api_url'];
+$engagifii_url          = $options['evt_tenant_code']['engagifii_url'];
+print_r(json_encode($options));
 $postedData = _prepareEventData($searchtext);
 //print_r(json_encode($postedData));
 $dataResponse = $this->submitApiRequest("Public/listEventsByFilter",$postedData,"POST",'event');
@@ -156,7 +160,7 @@ foreach ($collection as $key => $value) {
                             $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$eventRegState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                              }
                         else{
-                             $register = '<a href="'.$tenant_url.'/pages/events/'. $eventId .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                             $register = '<a href="'.$engagifii_url.'/pages/events/'. $eventId .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                              //$register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                           
                             }
@@ -225,13 +229,7 @@ usort($res, function($a, $b) {
     	<div class="">
     <?php 
     $inc = 1;
-    // foreach( $testing as $keyval => $instructor){
-    //     if($inc==1){
-	// 		echo "<span>Instructor(s) : </span>";
-	// 	}
-    //      echo '<span class="badge badge-light mr-1"><small>'.$instructor->fullName.'</small></span>'; 
-	// 	$inc++; 
-	//   }
+    
 ?>    </div>
     </div>
     
@@ -266,7 +264,7 @@ usort($res, function($a, $b) {
 <?php if($result2) {
 $noresults ='Oops! No data found!! Try some other keyword';
  } else {
-	$noresults ='No session available of any class.'; 
+	$noresults ='No Events Available.'; 
  }?>
 <div class="d-none no-results"><h4 class="text-center text-secondary"><?php echo $noresults; ?></h4></div>
 
