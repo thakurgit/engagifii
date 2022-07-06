@@ -101,8 +101,15 @@ function sort_associative_array($a, $b) {
 $siteURL= site_url();
 ?>
 <div class="bill-detail-page">
-<div class="mb-2">
+<div class="mb-2 d-flex align-items-center justify-content-between">
 <a href="<?php echo site_url();?>/bill-tracking/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<div class="d-flex align-items-center">
+	<small><strong>Share:</strong></small>
+    <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px"><i class="fab fa-facebook-f"></i></a>
+
+    <a href=""  class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px"><i class="fab fa-twitter"></i></a>
+    <small class="ml-4"><strong>Views:</strong>&nbsp;<span></span></small>
+</div>
 </div>
 
 <div class="engagifii-box border border-bottom-0" style="border-left:7px solid <?php echo $billResponses->trackingLevelColorCode;?> !important;">
