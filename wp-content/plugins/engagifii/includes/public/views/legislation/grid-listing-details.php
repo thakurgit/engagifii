@@ -105,7 +105,7 @@ $siteURL= site_url();
 <a href="<?php echo site_url();?>/bill-tracking/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <div class="d-flex align-items-center">
 	<small><strong>Share:</strong></small>
-    <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px"><i class="fab fa-facebook-f"></i></a>
+    <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" target="_blank" rel="noopener" data-share-network="Facebook" data-share-action="Share" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
 
     <a href=""  class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px"><i class="fab fa-twitter"></i></a>
     <small class="ml-4"><strong>Views:</strong>&nbsp;<span></span></small>
