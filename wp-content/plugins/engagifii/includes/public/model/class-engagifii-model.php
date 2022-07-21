@@ -3446,6 +3446,7 @@ $vars = "";
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
+		$postData['text'] = $_POST['text'];
         //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
         if(!empty($_POST['tags']))

@@ -212,12 +212,14 @@ $dt_class .= 'table-dark ';
               {
                  $value->displayName = "Type";
               }
-              if($value->colName == 'name'){
-                $title_key = $i;
-              }
               if($value->colName == 'city'){
                 $value->displayName = "Location";
               }
+              if($value->colName == 'name'){
+				  $value->displayName = "event_name";
+                $title_key = $i;
+              }
+			  //$forDatatable[]['data'] = $value->colName;
 
           ?>    
             <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
@@ -248,6 +250,7 @@ $dt_class .= 'table-dark ';
   var city       = '';
   var startdate = '';
   var enddate     = '';
+  var text     = '';
 
   var fv = 0;
 
@@ -279,6 +282,7 @@ var table = $('#ebtmaintable').DataTable( {
        "processing": true,
        "searching": true,
        "ordering":true,
+	   //"search": {regex: true},
        "columnDefs": [ 
           { "targets": ['tags','register','eventType','eventDates','city'],
             "orderable": false
@@ -305,7 +309,8 @@ var table = $('#ebtmaintable').DataTable( {
               d.types    = types; 
               d.locations    = city; 
               d.eventEndDate = enddate;   
-			  d.eventStartDate = startdate;   
+			  d.eventStartDate = startdate;  
+			  d.text = text; 
               
             }, 
         },
@@ -327,42 +332,11 @@ var table = $('#ebtmaintable').DataTable( {
 
     },
      "drawCallback": function( settings ) {
-		 dt_dropdown();
+			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center "><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-none d-xl-inline-flex align-items-center justify-content-center disabled"><i class="far fa-angle-left"></i></span>');
-              var divWidth = parseInt($('.custom-scroll').width());
-			 var tablewidth = parseInt($('#ebtmaintable').width());
-               if(tablewidth<=divWidth){
-					$('.nxt,.prv').addClass('disabled');   
-					return false;
-			   } else {
-				$('.nxt').click(function () {
-					   tablewidth = parseInt($('#ebtmaintable').width());
-				   $('.custom-scroll').animate({
-					  scrollLeft: "+=250px"
-				   }, "slow",function() {
-					   var scrollLeft = parseInt($('.custom-scroll').scrollLeft());
-					   //console.log(tablewidth+','+divWidth+scrollLeft)
-    					$('.prv').removeClass('disabled'); 
-				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
-						  $('.nxt').addClass('disabled');  
-				  		 }	
-  					}); 
-				   
-				});  
-				$('.prv').click(function () {
-				   $('.custom-scroll').animate({
-					  scrollLeft: "-=250px"
-				   }, "slow",function(){
-					 $('.nxt').removeClass('disabled');  
-					 if($('.custom-scroll').scrollLeft()==0){
-						$('.prv').addClass('disabled');  
-					 }
-				   });
-				});  
-			   }
+           dt_scroll();
 			   <?php } ?>
+			   $('[data-toggle="tooltip"]').tooltip() ;
          }
 		
     });
@@ -385,10 +359,16 @@ var table = $('#ebtmaintable').DataTable( {
     }, ms || 0);
   };
 }
-  $( 'input', this ).keyup(delay(function (e) {
+ /* $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
             if ( table.column(i).search() !== titlesearch ) {
-				table.column(i).search(titlesearch).draw();
+				table.column(i).search('hotfix').draw();
+            }
+}, 500));*/
+$( 'input', this ).keyup(delay(function (e) {
+	  text = this.value;
+            if ( text !== '' ) {
+				table.draw();
             }
 }, 500));
 
@@ -404,7 +384,9 @@ $('th .clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();
-	table.column(i).search('').draw();
+	//table.column(i).search('').draw();
+	text = '';
+	table.draw();
  });
 
         /*$( 'input', this ).on( 'keyup change', function () {
