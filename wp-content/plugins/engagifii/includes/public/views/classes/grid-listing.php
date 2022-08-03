@@ -16,6 +16,7 @@
   $collection   = array();
     $forDatatable   =   array();
     $date           =   date('Y-m-d');
+    print_r($date);
     $options  = get_option( 'ebt_api_settings' );
     $class_visible_column_list = $options['class_visible_column_list'];
 

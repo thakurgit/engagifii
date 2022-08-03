@@ -110,9 +110,10 @@ function _prepareEndorsementData($searchtext){
     $title = $searchtext;
     $postData = array();  
     $sortBy       = "";
-    $postData['itemCount'] = 100;
+    $postData['itemCount'] = 1000;
     $postData['sortBy'] = $sortBy;    
     $postData['pageNumber'] = 1;    
+    $postData['pageSize'] = 1000;
     $postData['sortDirection'] = "desc";
     $postData['filterBody'] = array('searchText'=>$title,'selectedDate' => date('Y-m-d')); //'searchText'=>$title,  
     return $postData;
@@ -123,7 +124,9 @@ $postedData = _prepareEndorsementData($searchtext);
 //print_r(json_encode($postedData));
 $dataResponse = $this->submitApiRequest("Public/AwardListPublic",$postedData,"POST",'endorsement');
 $collection   = json_decode($dataResponse['api_response'])->result;
-//print_r($collection);
+//print_r(json_encode($collection));
+$options = get_option('ebt_api_settings');
+$engagifii_url          = $options['evt_tenant_code']['engagifii_url'];
 ?>
 
 <table class="table calendarlist table-hover table-sm table-bordered "> 
@@ -134,43 +137,15 @@ foreach ($collection as $key => $value) {
                 $awardName = $value->name;
                 $awardId = $value->id;
                 $icon = $value->icon;
-                if($value->isClassRegistrationAllow)
-                    {
-                    if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-                        {
-                        if($value->locationType->name=="onlocation")
-                            {
-                              $register = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                           elseif($value->locationType->name=="online"){
-                                 $register = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                            }
-                           elseif($value->locationType->name=="onlocationandonline")
-                            {
-                              $register ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px;">Register online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank">Register in person</a></span>';
-                            }
-                            else{
-                                  $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
-                                }
-                        }
-                        else{
-                             $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
-                            }
-                    } 
-                    else{
-                        $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
-                    }
-                   // print_r(json_encode($value->createdOn));
                 
-    //foreach ($value->createdOn as $key => $result) {
-        //print_r(json_encode($result->createdOn));
+                $register = '<a href="'.$engagifii_url.'/pages/awards/'. $awardId .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                         $id = $value->id;
                         $classData[$id]['title'] = '<a href="'.site_url().'/arards/'.$awardId.'">'.$className.'</a>';
                         $classData[$id]['titleNoLink'] = $awardName;
-                        $classData[$id]['hours']      = $value->parentCourse->creditHours;
+                        $classData[$id]['validity']      = $value->validity;
                         $classData[$id]['objectType'] = $value->objectType;
-                        $classData[$id]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-                        $classData[$id]['date'] = date('Y-m-d', strtotime($result->sessionDate));//$result->sessionDate;
+                        $classData[$id]['price'] = $value->price;
+                        $classData[$id]['date'] = date('Y-m-d', strtotime($value->createdOn));//$result->sessionDate;
                         $classData[$id]['classId'] .= $awardId;
                         $classData[$id]['Icon'] .= $icon;
                         $classData[$id]['className'] .= $className;
@@ -216,7 +191,7 @@ usort($res, function($a, $b) {
         $testing = $data['instructors'];
 ?>
 	<div class="row mb-2 px-xl-4">
-    <div class="col-md-2"><span class="calendarsearch text-nowrap"><?php echo $data['startTime']; echo "  -  ".$data['endTime'];?></span></div>
+    <div class="col-md-4"><span class="calendarsearch text-nowrap"><?php echo 'Validity: '.$data['validity'];?></span></div>
 	<div class="col-md-6 pt-2">
     	<div> <a data-toggle="modal" data-target="#exampleModal2<?php echo $data['classId'];echo $i; ?>" href="" ><?php echo $data['titleNoLink'];?></a></div>
     	
@@ -225,13 +200,13 @@ usort($res, function($a, $b) {
     	<div class="">
     <?php 
     $inc = 1;
-    foreach( $testing as $keyval => $instructor){
-        if($inc==1){
-			echo "<span>Instructor(s) : </span>";
-		}
-         echo '<span class="badge badge-light mr-1"><small>'.$instructor->fullName.'</small></span>'; 
-		$inc++; 
-	  }
+    // foreach( $testing as $keyval => $instructor){
+    //     if($inc==1){
+	// 		echo "<span>Instructor(s) : </span>";
+	// 	}
+    //      echo '<span class="badge badge-light mr-1"><small>'.$instructor->fullName.'</small></span>'; 
+	// 	$inc++; 
+	//   }
 ?>    </div>
     </div>
     
@@ -240,19 +215,19 @@ usort($res, function($a, $b) {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header align-items-center pr-5">
-                   <img src="<?php echo $data['Icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel2"><?php echo $data['title']; ?></h5>
+                   <img src="<?php echo $data['Icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel2"><?php echo $data['titleNoLink']; ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" >
-                    <p><strong>Date :</strong> <?php echo date("j M Y", strtotime($data['date'])).' at '; echo $data['startTime']; echo "  -  ".$data['endTime'];?></p>
-                    <p><strong>Duration : </strong><?php echo $data['classDuration']; ?></p>
-                    <p><strong>Type :</strong> <?php echo $data['objectType']; ?></p>
-                    <p><strong>Credit Hours : </strong><?php echo $data['hours']; ?></p>
+                    <p><strong>Created On :</strong> <?php echo date("j M Y", strtotime($data['date']));?></p>
+                    <p><strong>Validity : </strong><?php echo $data['validity']; ?></p>
+                    <p><strong>Award Type :</strong> <?php echo $data['objectType']; ?></p>
+                    <p><strong>Price : </strong><?php echo '$'.$data['price']; ?></p>
                 </div>
                 <div class="modal-footer">
-                    <a href="../class-details/?classId=<?php echo $data['classId']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                    <a href="../endorsement-detail?endId=<?php echo $data['classId']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                     <?php echo $data['register']; ?>
                 </div>
             </div>
