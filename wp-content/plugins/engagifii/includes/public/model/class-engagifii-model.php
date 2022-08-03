@@ -1419,7 +1419,7 @@ wp_die();
             $class_schedule = '';
             if($value->classDuration > 1)
             {
-                $class_schedule = '<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate)).'</small>';
+                $class_schedule = '<small class="d-block" style="white-space:normal;">'.date('d M Y h:i A', strtotime($value->startDate)).' - '.date('d M Y  h:i A', strtotime($value->endDate)).'</small>';
             }
             $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
