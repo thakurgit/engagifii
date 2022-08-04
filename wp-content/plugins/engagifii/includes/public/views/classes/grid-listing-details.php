@@ -125,6 +125,31 @@
                <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
                       <div class="row">
+                              <div class="col-12 mb-3">
+                                  <div class="border rounded shadow-sm">
+                                  <div class="panel-title bg-light p-2  border-bottom">
+                                    <h6 class="mb-0 font-weight-normal">Class Schedule</h6>
+                                  </div>
+                                  <div class="p-3">
+                                  <p class="mb-2">Class occurs on the following schedule:-</p>
+                                  <table class="table table-borderless small table-sm">
+                                  
+                                  <?php
+                                      if(is_array($response->classSessions) && count($response->classSessions)){
+                                          //print_r($response);
+                                          foreach ($response->classSessions as $key => $value) {
+                                      ?>
+                                      <tr>
+                                      	<td><?php echo date('M d, Y',strtotime($value->sessionDate)); ?> at  <?php echo $value->startTime.' - '. $value->endTime;?></td>
+                                      </tr>
+                                      
+                                      <?php } } ?>
+                                      </table>
+                                  <p><strong>Total sessions:</strong> <?php echo count($response->classSessions); ?></p>
+                                 
+                              </div>
+                              </div>
+                              </div>
                               <div class="col-md-7 mb-3">
                                   <div class="border rounded shadow-sm h-100">
                                   <div class="panel-title bg-light p-2  border-bottom">
@@ -151,13 +176,17 @@
                                       }
                                       if($response->parentCourse->creditHours){
                                   ?>
-                                  <div class="summary-content-para-engagiigii row">
+                                  <div class="summary-content-para-engagiigii row mb-2">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours:</strong></div>
                                       <div class="col-md-8 col-xl-9"><?php echo $response->parentCourse->creditHours; ?></div>
                                   </div>
                                   <?php
                                       }
                                   ?>
+                                  <div class="summary-content-para-engagiigii row">
+                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Registration Dates:</strong></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo date('M d, Y h:i A',strtotime($response->classRegistrationSetting->registrationStartDateTime)).' to '.date('M d, Y h:i A',strtotime($response->classRegistrationSetting->regularRegistrationEndDateTime)); ?></div>
+                                  </div>
                               </div>
                               </div>
                               </div>
@@ -221,6 +250,58 @@
                               </div>
                       </div>
                       <div class="row">
+                          <div class="col-12 mb-3">
+                              <div class="border rounded shadow-sm">
+                                  <div class="panel-title bg-light p-2  border-bottom">
+                                      <h6 class="mb-0 font-weight-normal">Contact Persons</h6>
+                                  </div>
+                                  <div class="p-3">
+                                  	<div class="row">
+                                    	<?php
+                                      if(is_array($response->classContactPersons) && count($response->classContactPersons)){
+                                          //print_r($response);
+                                          foreach ($response->classContactPersons as $key => $value) {
+                                      ?>
+                                      
+                                      <div class="col-md-4">
+                                          <div class="card">
+                                              <div class="card-body d-flex py-3 px-0 py-lg-4 align-items-center instructor-detail shadow-sm">
+                                              <div class="col-12 d-flex align-items-center">
+                                                  <?php if (filter_var($value->thumbnailUrl, FILTER_VALIDATE_URL)) { ?>
+                                                      <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $value->thumbnailUrl;?>" class=" rounded-circle mr-3">
+                                                  <?php
+                                                      }
+                                                      else if($value->thumbnailUrl)
+                                                      {
+                                                  ?>
+                                                          <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $tenant_url.$value->thumbnailUrl;?>" class="rounded-circle mr-3">
+                                                  <?php		
+                                                      }else{
+                                                  ?>
+                                                              <img style="max-width:90px; flex: 0 0 90px" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/user-default.png'; ?>" class="rounded-circle mr-3">
+                                                  <?php
+                                                      }
+                                                  ?>
+                                                  <div>
+                                                  <h5 class="card-title mb-2"><?php echo $value->lastName.', '.$value->firstName;?></h5>
+                                                  <p class="small text-secondary"><strong>Position:</strong> <?php echo $value->position;?></p>
+                                                  <p class="small text-secondary"><strong>Department:</strong> <?php echo $value->department;?></p>
+                                                  
+                                                  </div>
+                                                  </div>
+                                               </div>
+                                              
+                                          </div>
+                                      </div>
+                                      <?php
+                                          }
+                                      }
+                                      ?>	
+                                    </div>
+                                  </div>
+                                  
+                              </div>
+                          </div>
                           <div class="col-12">
                               <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
