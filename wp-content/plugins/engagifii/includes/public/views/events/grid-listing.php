@@ -118,22 +118,7 @@ ob_start();
       
       <?php
         }
-      
-        if(array_search('tags', $ebt_visib_datacol_list)){
-      ?>
-       <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-            foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-      
-      <?php
-        }
+              
        //if(array_search('location', $ebt_visib_datacol_list)){
           ?>
           <div class="filter-list border-bottom">
@@ -150,7 +135,21 @@ ob_start();
           
           <?php
           // }
+      
+        if(array_search('tags', $ebt_visib_datacol_list)){
       ?>
+       <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none"><ul class="list-group m-0">
+          <?php
+            foreach ($tags as $key => $value) {
+              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+            }
+          ?>  
+        </ul></div>
+      </div>
+      
+    <?php } ?>
       
     </div>
           <div class="apply-filter">

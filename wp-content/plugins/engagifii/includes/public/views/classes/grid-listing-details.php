@@ -284,8 +284,8 @@
                                                   ?>
                                                   <div>
                                                   <h5 class="card-title mb-2"><?php echo $value->lastName.', '.$value->firstName;?></h5>
-                                                  <p class="small text-secondary"><strong>Position:</strong> <?php echo $value->position;?></p>
-                                                  <p class="small text-secondary"><strong>Department:</strong> <?php echo $value->department;?></p>
+                                                  <p class="small"><strong>Position:</strong> <?php echo $value->position;?></p>
+                                                  <p class="small "><strong>Department:</strong> <?php echo $value->department;?></p>
                                                   
                                                   </div>
                                                   </div>
