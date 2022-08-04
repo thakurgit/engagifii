@@ -1414,14 +1414,35 @@ wp_die();
 			}
             if(count($value->classSessions)){
                 $classPopover  = $this->_popOverClassData1($key, $value->classSessions);
+                
 			}
+
+            
+
             ## row data
             $class_schedule = '';
+            $counter = 0; 
             if($value->classDuration > 1)
             {
-                $class_schedule = '<small class="d-block" style="white-space:normal;">'.date('d M Y h:i A', strtotime($value->startDate)).' - '.date('d M Y  h:i A', strtotime($value->endDate)).'</small>';
+                foreach ($value->classSessions as $key => $rowData) {
+            
+                    $classSessionTime = '';
+                    if( $counter == 0 ) {         
+                        $classSessionStartTime = $rowData->startTime;
+                        $classSessionStartDate = $rowData->sessionDate;
+                    }                  
+                    if( $counter == count( $value->classSessions ) - 1) {
+                         $classSessionEndTime = $rowData->endTime;
+                         $classSessionEndDate = $rowData->sessionDate;
+                    }
+                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
+                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
+                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' '.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+                    $counter = $counter + 1;
+                }
+                
             }
-            $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
 			
