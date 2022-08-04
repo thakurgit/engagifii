@@ -3420,6 +3420,8 @@ $vars = "";
            // $postData['filterBody']['registrationDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
             $postData['filterBody']['registrationDateRange']['startDate'] = $_POST['minReg'];
             $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
+            $postData['filterBody']['createdDateRange']['startDate'] = $_POST['class_start_date'];
+            $postData['filterBody']['createdDateRange']['endDate'] =$_POST['class_end_date'];
         //}
 		//if(!empty($_POST['creditHour']))
         //{
@@ -3603,7 +3605,8 @@ $vars = "";
             $postData['instructors'] = $_POST['instructors'];
         }
       
-
+         $postData['createdDateRange']['startDate'] = $_POST['class_start_date'];
+         $postData['createdDateRange']['endDate'] =$_POST['class_end_date'];
         if(!empty($_POST['minReg']))
         {
            // $dateRange = explode("-", $_POST['createdDate']);

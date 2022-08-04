@@ -16,7 +16,7 @@
   $collection   = array();
     $forDatatable   =   array();
     $date           =   date('Y-m-d');
-    print_r($date);
+    //print_r($date);
     $options  = get_option( 'ebt_api_settings' );
     $class_visible_column_list = $options['class_visible_column_list'];
 
@@ -40,7 +40,11 @@
     $dateRange  = $obj->classRegDateFilters($date);
  	   $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
   	  $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
-	//print_r($max_date);
+    $classdateRange  = $obj->classdateFilters($date);
+ 	   $class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
+  	 $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
+	//print_r($classdateRange);
+	//print_r($dateRange);
 	//die;
     $title_key = -1;
     
@@ -148,6 +152,13 @@ ob_start();
     </div>
     <div class="col-sm-12">
       <input type="hidden" id="isApplyACtive" value="0">
+      <div class="filter-list border-bottom ">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none position-relative pb-2">
+          <input type="text" name="classdates" id="classdates"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
+          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+        </div>
+      </div>
       <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none">
@@ -156,18 +167,6 @@ ob_start();
           </ul>
         </div>
       </div>
-      <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructor <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-
-            foreach ($instructor as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="instructor_'.$key.'" name="courseInstrutor[]" value="'.$value['id'].'"> <label  for="instructor_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-
 <!-- credit Hour filters -->
 
 <div class="filter-list border-bottom">
@@ -179,12 +178,24 @@ ob_start();
           ?>  
         </div>
       </div>
+      <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructors <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none"><ul class="list-group m-0">
+          <?php
+
+            foreach ($instructor as $key => $value) {
+              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="instructor_'.$key.'" name="courseInstrutor[]" value="'.$value['id'].'"> <label  for="instructor_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';
+            }
+          ?>  
+        </ul></div>
+      </div>
+
       
       
 
-      <div class="filter-list border-bottom">
+      <div class="filter-list border-bottom ">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative">
+        <div class="content-area d-none position-relative pb-2">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
@@ -209,8 +220,11 @@ $filter_content = removeWhitespace($filter_content);
   var courses = '';
   var instructor = '';
  
+  var class_start_date     = '<?php echo $class_start_date; ?>';
+  var class_end_date     = '<?php echo $class_end_date; ?>';
+  var classDates     = '';
+  //var endDate     = '';
   var createdDate = '';
-  var endDate     = '';
   var minRange ='<?php echo (int)$creditFilter['minRange']; ?>';
   var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
   var minReg ='<?php echo $min_date; ?>';
@@ -281,6 +295,8 @@ $filter_content = removeWhitespace($filter_content);
             d.maxRange = maxRange;
 			d.minReg = minReg;
 			d.maxReg = maxReg;
+			d.class_start_date = class_start_date;
+			d.class_end_date = class_end_date;
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -396,6 +412,7 @@ $('th .clear-search').click(function(e){
   
  $( document ).ready(function() {
     $('input[name="createdbetween"]').val('');
+	$('input[name="classdates"]').val('');
 });
 $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',
@@ -412,21 +429,41 @@ $('input[name="createdbetween"]').daterangepicker({
 		  }
     });
 
-
+$('input[name="classdates"]').daterangepicker({
+   minDate:'<?php echo $class_start_date; ?>',
+    maxDate: '<?php echo $class_end_date; ?>',
+    autoApply: true
+  }, function(start, end) {
+      classDates = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
+		var classDate = classDates.split("-");
+	 	  class_start_date = $.trim(classDate[0]);
+		class_end_date = $.trim(classDate[1]);
+     countFilterData();
+ if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
+    });
 $( '.cleardate' ).click(function() {
-    $('input[name="createdbetween"]').val('');
+	if($(this).siblings().attr('id')=='createdbetween'){
+		 $('input[name="createdbetween"]').val('');	
+		 minReg = '<?php echo $min_date; ?>';
+		maxReg = '<?php echo $max_date; ?>';
+	} else if($(this).siblings().attr('id')=='classdates'){
+		 $('input[name="classdates"]').val('');	
+		class_start_date     = '<?php echo $class_start_date; ?>';
+		class_end_date     = '<?php echo $class_end_date; ?>';
+	} 
+   
 	 if($('#apply-filter-data .spinner-border').length==0){
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
-	minReg = '<?php echo $min_date; ?>';
-	maxReg = '<?php echo $max_date; ?>';
     countFilterData();
 });
-
 $('.clear-all').click(function(){
             $('input[type=checkbox]').prop('checked',false);
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
+			$('input[name="classdates"]').val('');
 
             $('input[name="creditFilter"]').val('<?php echo (int)$creditFilter['minRange']; ?>'+'-'+'<?php echo (int)$creditFilter['maxRange']; ?>');
 			var $slider = $("#slider-range");
@@ -441,6 +478,8 @@ $('.clear-all').click(function(){
 			maxReg = '<?php echo $max_date; ?>';
             minRange = '<?php echo (int)$creditFilter['minRange']; ?>';
 			 maxRange = '<?php echo (int)$creditFilter['maxRange']; ?>';
+			class_start_date     = '<?php echo $class_start_date; ?>';
+			class_end_date     = '<?php echo $class_end_date; ?>';
 			  $(".filter-area").toggleClass('d-none');
             table.draw();
 
@@ -454,6 +493,11 @@ $('.clear-all').click(function(){
 		var regDate = $('input[name="createdbetween"]').val().split("-");
 	 	  minReg = $.trim(regDate[0]);
 		maxReg = $.trim(regDate[1]);
+	  }
+	  if($('input[name="classdates"]').val()!=''){
+		var classDate = $('input[name="classdates"]').val().split("-");
+	 	  class_start_date = $.trim(classDate[0]);
+		class_end_date = $.trim(classDate[1]);
 	  }
       
 	  var range = $('#creditFilter').val().split("-");
@@ -529,7 +573,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
               courses : courses,
               instructors : instructor,
               minReg : minReg,
-			  maxReg : maxReg,   
+			  maxReg : maxReg,
+			  class_start_date : class_start_date,
+			  class_end_date : class_end_date,   
               minRange : minRange,
 			  maxRange:maxRange
         
