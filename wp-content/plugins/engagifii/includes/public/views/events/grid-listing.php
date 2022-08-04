@@ -103,6 +103,21 @@ ob_start();
         </div>
       </div>
       <?php
+	   if(array_search('eventType', $ebt_visib_datacol_list)){
+      ?>
+       <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none"><ul class="list-group m-0">
+          <?php
+            foreach ($eventTypes as $key => $value) {
+              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+            }
+          ?>  
+        </ul></div>
+      </div>
+      
+      <?php
+        }
       
         if(array_search('tags', $ebt_visib_datacol_list)){
       ?>
@@ -119,25 +134,7 @@ ob_start();
       
       <?php
         }
-       
-      
-      if(array_search('eventType', $ebt_visib_datacol_list)){
-      ?>
-       <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-            foreach ($eventTypes as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
-            }
-          ?>  
-        </ul></div>
-      </div>
-      
-      <?php
-        }
-
-        //if(array_search('location', $ebt_visib_datacol_list)){
+       //if(array_search('location', $ebt_visib_datacol_list)){
           ?>
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
