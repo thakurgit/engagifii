@@ -770,7 +770,7 @@ public function getCalendarClassName1(){
 								$today = ' today bg-light';	
 							}
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo str_replace("'",'&#39;',json_encode($filteredItems)); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
