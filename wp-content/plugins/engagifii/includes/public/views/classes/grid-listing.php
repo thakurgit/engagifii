@@ -232,7 +232,7 @@ $filter_content = removeWhitespace($filter_content);
   var maxReg ='<?php echo $max_date; ?>';
   var classStates =[];
   <?php if($options['upcomingClasses']==1) { ?>
-  	classStates = "Upcoming";
+  	classStates = ["Upcoming"];
   <?php } ?>
   
 
@@ -591,7 +591,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
 			  class_start_date : class_start_date,
 			  class_end_date : class_end_date,   
               minRange : minRange,
-			  maxRange:maxRange
+			  maxRange:maxRange,
+			  classStates:classStates
         
           },
           success: function(response) {       

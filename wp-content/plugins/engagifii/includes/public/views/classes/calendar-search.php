@@ -104,9 +104,14 @@ span#digitofday {
 <?php 
 $obj      =  new Engagifii_API();
 $searchtext = ""; 
-
-
-function _prepareClassData($searchtext){    
+ 
+function _prepareClassData($searchtext){   
+$classStates = get_option('ebt_api_settings')['upcomingClasses'];
+        if($classStates==1){
+       	 $upcomingClasses = ["Upcoming"];	
+        }else{
+            $upcomingClasses = [];
+        } 
     $title = $searchtext;
     $postData = array();  
     $sortBy       = "";
@@ -114,12 +119,14 @@ function _prepareClassData($searchtext){
     $postData['sortBy'] = $sortBy;    
     $postData['pageNumber'] = 1;    
     $postData['sortDirection'] = "desc";
-    $postData['filterBody'] = array('searchText'=>$title,'selectedDate' => date('Y-m-d')); //'searchText'=>$title,  
+    $postData['filterBody'] = array('searchText'=>$title,'selectedDate' => date('Y-m-d'),'classStates'=>$upcomingClasses); //'searchText'=>$title,  
     return $postData;
 }
 
 
 $postedData = _prepareClassData($searchtext);
+//print_r($postedData);
+//die;
 $dataResponse = $this->submitApiRequest("Public/ClassPagingList",$postedData,"POST",'classes');
 $collection   = json_decode($dataResponse['api_response'])->result;
 //print_r($collection);

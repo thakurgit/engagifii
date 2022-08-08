@@ -164,6 +164,12 @@ public function calendar_mode(){
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+		 $classStates = $options['upcomingClasses'];
+        if($classStates==1){
+       	 $upcomingClasses = ["Upcoming"];	
+        }else{
+            $upcomingClasses = [];
+        }
         $postedData = $this->_classPostCountData();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
         $classCount = $dataResponse['api_response'];
@@ -174,7 +180,7 @@ public function calendar_mode(){
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = ((int) $classCount);
         $postData['sortDirection'] = 'asc';
-        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
+        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'),'classStates'=>$upcomingClasses);
         if(!empty($_POST['courses']))
         {
             $postData['filterBody']['courses'] = $_POST['courses'];
@@ -3610,6 +3616,9 @@ $vars = "";
       	if(!empty($_POST['class_start_date'])) {
          $postData['createdDateRange']['startDate'] = $_POST['class_start_date'];
          $postData['createdDateRange']['endDate'] =$_POST['class_end_date'];
+		}
+		if(!empty($_POST['classStates'])) {
+			$postData['classStates'] =$_POST['classStates'];
 		}
         if(!empty($_POST['minReg']))
         {
