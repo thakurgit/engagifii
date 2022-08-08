@@ -184,6 +184,7 @@ public function calendar_mode(){
             $postData['filterBody']['instructors'] = $_POST['instructors'];
            
         }
+		
         //print_r(json_encode($postData));
       
         //echo json_encode($postData);
@@ -3605,9 +3606,10 @@ $vars = "";
         {
             $postData['instructors'] = $_POST['instructors'];
         }
-      
-       //  $postData['createdDateRange']['startDate'] = $_POST['class_start_date'];
-       //  $postData['createdDateRange']['endDate'] =$_POST['class_end_date'];
+      	if(!empty($_POST['class_start_date'])) {
+         $postData['createdDateRange']['startDate'] = $_POST['class_start_date'];
+         $postData['createdDateRange']['endDate'] =$_POST['class_end_date'];
+		}
         if(!empty($_POST['minReg']))
         {
            // $dateRange = explode("-", $_POST['createdDate']);

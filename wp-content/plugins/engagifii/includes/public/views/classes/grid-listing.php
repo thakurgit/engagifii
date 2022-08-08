@@ -540,6 +540,13 @@ $(document).on('click', '.daterangepicker ', function (e) {
 	 }
   });
   fv = $('.filter-list.checked').length;
+  if($('input[name="createdbetween"]').val()!=''){
+	fv += 1;  
+  }
+  if($('input[name="classdates"]').val()!=''){
+	fv += 1;  
+  }
+  console.log(fv);
   if(fv>0){
 	$('.filter-icon').addClass('active');
 	$('.filter-icon span').text(fv); 
