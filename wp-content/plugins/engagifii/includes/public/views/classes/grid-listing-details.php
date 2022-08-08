@@ -24,7 +24,7 @@
     $prev = $class_array[$class_key-1];
     $next = $class_array[$class_key+1];
   }
-
+//print_r(json_encode($response));
   
 	//$documentData  =  $obj->getCourseDocument($id, $response->name);
 ?>
@@ -143,7 +143,21 @@
                                       	<td><?php echo date('M d, Y',strtotime($value->sessionDate)); ?> at  <?php echo $value->startTime.' - '. $value->endTime;?></td>
                                       </tr>
                                       
-                                      <?php } } ?>
+                                      <?php } } 
+                                      else{
+                                        $classStartDateTime = $response->classSessionSettings[0]->sessionStartTime;
+                                        $classStartTimeVal = date('h:i A',strtotime($classStartDateTime));
+                                        $classEndDateTime = $response->classSessionSettings[0]->sessionEndTime;
+                                        $classEndTimeVal = date('h:i A',strtotime($classEndDateTime));
+                                       
+
+                                        ?>
+                                      <tr>
+                                      	<td><?php echo date('M d, Y',strtotime($classStartDateTime)).' - '.date('M d, Y',strtotime($classEndDateTime)) ; ?> at  <?php echo $classStartTimeVal.' - '. $classEndTimeVal;?></td>
+                                      </tr>
+                                      
+                                      <?php
+                                      }?>
                                       </table>
                                   <p><strong>Total sessions:</strong> <?php echo count($response->classSessions); ?></p>
                                  
@@ -296,6 +310,9 @@
                                       <?php
                                           }
                                       }
+                                      else{ ?>
+                                        <div class="summary-content-para-engagiigii">No contact person assigned.</div>
+                                      <?php }
                                       ?>	
                                     </div>
                                   </div>

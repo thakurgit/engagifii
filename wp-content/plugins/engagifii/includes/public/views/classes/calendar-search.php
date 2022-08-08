@@ -159,7 +159,7 @@ foreach ($collection as $key => $value) {
                     else{
                         $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                     }
-                
+    if($value->classSessions){           
     foreach ($value->classSessions as $key => $result) {
                         $id = $result->id;
                         $classData[$id]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
@@ -179,6 +179,24 @@ foreach ($collection as $key => $value) {
                       
    
     }
+}else{
+    print_r($className);
+    print_r("<br>");
+    $classData[$classId]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
+    $classData[$classId]['titleNoLink'] = $className;
+    $classData[$classId]['hours']      = $value->parentCourse->creditHours;
+    $classData[$classId]['objectType'] = $value->objectType;
+    $classData[$classId]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+    $classData[$classId]['date'] = date('Y-m-d', strtotime($value->startDate));//$result->sessionDate;
+    $classData[$classId]['classId'] .= $classId;
+    $classData[$classId]['Icon'] .= $icon;
+    $classData[$classId]['className'] .= $className;
+    //$classData[$classId]['sessionStatus'] .=$result->sessionStatus;
+    $classData[$classId]['startTime'] .= date('h:i A', strtotime($value->startDate));
+    $classData[$classId]['endTime'] .= date('h:i A', strtotime($value->endDate));
+    $classData[$classId]['register'] = $register;
+    $classData[$classId]['instructors'] = $value->classInstructors;
+}
 }
 $result2 = array();
     foreach ($classData as $element) {
