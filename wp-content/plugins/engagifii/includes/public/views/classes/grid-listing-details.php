@@ -273,8 +273,7 @@
                                   	<div class="row">
                                     	<?php
                                       if(is_array($response->classContactPersons) && count($response->classContactPersons)){
-                                          //print_r($response);
-                                          foreach ($response->classContactPersons as $key => $value) {
+                                        foreach ($response->classContactPersons as $key => $value) {
                                       ?>
                                       
                                       <div class="col-md-4">
