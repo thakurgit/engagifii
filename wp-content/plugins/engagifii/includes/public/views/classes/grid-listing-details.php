@@ -310,7 +310,7 @@
                                           }
                                       }
                                       else{ ?>
-                                        <div class="summary-content-para-engagiigii">No contact person assigned.</div>
+                                        <div class="summary-content-para-engagiigii p-2">No contact person assigned.</div>
                                       <?php }
                                       ?>	
                                     </div>
