@@ -180,8 +180,6 @@ foreach ($collection as $key => $value) {
    
     }
 }else{
-    print_r($className);
-    print_r("<br>");
     $classData[$classId]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
     $classData[$classId]['titleNoLink'] = $className;
     $classData[$classId]['hours']      = $value->parentCourse->creditHours;
