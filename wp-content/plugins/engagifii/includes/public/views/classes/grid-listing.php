@@ -19,11 +19,12 @@
     //print_r($date);
     $options  = get_option( 'ebt_api_settings' );
     $class_visible_column_list = $options['class_visible_column_list'];
-
+	 
+//print_r($upcomingClasses);
+	//die;
    // print_r($class_visible_column_list);
     $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
-   // print_r($dataResponse);
-	//die;
+    
 
     $collection   = json_decode($dataResponse['api_response']);
     unset($collection[0]);
@@ -229,6 +230,11 @@ $filter_content = removeWhitespace($filter_content);
   var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
   var minReg ='<?php echo $min_date; ?>';
   var maxReg ='<?php echo $max_date; ?>';
+  var classStates =[];
+  <?php if($options['upcomingClasses']==1) { ?>
+  	classStates = "Upcoming";
+  <?php } ?>
+  
 
   var fv = 0;
   
@@ -297,6 +303,7 @@ $filter_content = removeWhitespace($filter_content);
 			d.maxReg = maxReg;
 			d.class_start_date = class_start_date;
 			d.class_end_date = class_end_date;
+			d.classStates=classStates;
             }, 
         },
         createdRow: function (row, data, index) { 

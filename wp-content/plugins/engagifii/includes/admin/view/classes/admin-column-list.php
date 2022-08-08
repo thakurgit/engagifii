@@ -40,7 +40,22 @@
 			//echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}
-    	echo '</ul></div>';				
+    	echo '</ul>';
+		if(isset($options['upcomingClasses'])){
+			$upcomingClasses = $options['upcomingClasses'];
+		   }else{
+			   $upcomingClasses = 0;
+		   }
+		
+			$up_classes = '';
+			if($upcomingClasses==1)
+			{
+				 $up_classes  = 'checked';
+			} else {
+				 $up_classes  = '';
+			}
+		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[upcomingClasses]" id="upcomingClasses" value="1" '.$up_classes.'/> <strong>Show only Upcoming classes</strong></div>';
+		echo '</div>';				
     }
 ?>
 

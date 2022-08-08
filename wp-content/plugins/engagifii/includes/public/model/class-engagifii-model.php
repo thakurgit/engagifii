@@ -1490,7 +1490,7 @@ wp_die();
                           $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       }
                       elseif($value->locationType->name=="onlocationandonline"){
-                      $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" >Register Online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
+                      $nestedData['register'] = '<a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
                       }
                   else{
                       $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
@@ -3424,6 +3424,7 @@ $vars = "";
             $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
             $postData['filterBody']['createdDateRange']['startDate'] = $_POST['class_start_date'];
             $postData['filterBody']['createdDateRange']['endDate'] =$_POST['class_end_date'];
+            $postData['filterBody']['classStates'] =$_POST['classStates'];
         //}
 		//if(!empty($_POST['creditHour']))
         //{
