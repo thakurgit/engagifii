@@ -159,7 +159,29 @@ public function calendar_mode(){
 
 <?php  }
      public function classCalendar(){
-         //print_r("Hello class Calendar"); 
+
+        
+
+        $year = $_POST['year'];
+         $month = $_POST['month'];
+        $day   = $_POST['day'] ? $_POST['day'] :date('d');
+        $dateYear = ($year != '')?$year:date("Y");
+        $dateMonth = ($month != '')?$month:date("m");
+        $postedDate = $year.'-'.$month.'-'.$day;
+        $date = $dateYear.'-'.$dateMonth.'-01';
+        $currentMonthFirstDay = date("N",strtotime($date));
+        $totalDaysOfMonth = cal_days_in_month(CAL_GREGORIAN,$dateMonth,$dateYear);
+        $totalDaysOfMonthDisplay = ($currentMonthFirstDay == 1)?($totalDaysOfMonth):($totalDaysOfMonth + ($currentMonthFirstDay - 1));
+
+        $first_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", first day of this month");
+        $first_date = date("Y-m-d",$first_date_find);
+
+        $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
+        $last_date = date("Y-m-d",$last_date_find);
+
+        //print_r($first_date.'-'.$last_date);
+
+        // print_r("Hello class Calendar"); 
         $options = get_option('ebt_api_settings');
         
         $endorsement_api_url = $options['ebt_api_url'];
@@ -178,9 +200,12 @@ public function calendar_mode(){
         $postData['itemCount'] = $classCount;
         $postData['sortBy'] = 'sectionname';
         $postData['pageNumber'] = 1;
-        $postData['pageSize'] = ((int) $classCount);
+        $postData['pageSize'] = 1;//((int) $classCount);
+        
         $postData['sortDirection'] = 'asc';
         $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'),'classStates'=>$upcomingClasses);
+        $postData['filterBody'] ['sessionDateRange'] = array('startDate'=>$first_date, 'endDate'=>$last_date) ;
+    
         if(!empty($_POST['courses']))
         {
             $postData['filterBody']['courses'] = $_POST['courses'];
@@ -213,7 +238,7 @@ public function calendar_mode(){
 		            $data['end']   = date('Y-m-d', strtotime($class->sessionDate));
 		            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 		            $data['objectType'] = $value->objectType;
-		            $data['hours']      = $value->parentCourse->creditHours;
+		            $data['hours']      = $value->courseCreditMapping[0]->credits;
 		            $data['icon']       = $value->parentCourse->iconReference;
 		            $class_schedule = '';
 		            if($value->classDuration > 1){
@@ -277,7 +302,7 @@ public function calendar_mode(){
 	            $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
 	            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 	            $data['objectType'] = $value->objectType;
-	            $data['hours']      = $value->parentCourse->creditHours;
+	            $data['hours']      = $value->courseCreditMapping[0]->credits;
 	            $data['icon']       = $value->parentCourse->iconReference;
 	            $class_schedule = '';
 	            if($value->classDuration > 1){
@@ -589,7 +614,7 @@ public function getCalendarClassName(){
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
                     $week_end_date = date("Y-m-d",strtotime($week_end_date.' +1 day'));
                     $week_array = $this->date_range($week_start_date, $week_end_date);
-
+//print_r($week_start_date.' - '.$week_end_date);
 
             ?>
              <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' - 7 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2">Prev</span></a>
@@ -874,7 +899,7 @@ public function getCalendarClassName1(){
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
                     $week_end_date = date("Y-m-d",strtotime($week_end_date.' +1 day'));
                     $week_array = $this->date_range($week_start_date, $week_end_date);
-
+                    //print_r($week_start_date.' - '.$week_end_date);
 
             ?>
              <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' - 7 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2">Prev</span></a>
@@ -1464,8 +1489,11 @@ wp_die();
 			if($value->classInstructorsCount>0){
 				$nestedData['classInstructorsCount'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
 			}
-            $nestedData['credithours'] = $value->parentCourse->creditHours;          
-           
+            if($value->isCreditTypeSingle =="true"){
+            $nestedData['credithours'] = $value->courseCreditMapping[0]->credits;          
+            }else{
+                $nestedData['credithours'] = $value->courseCreditMapping[0]->credits;      
+            }
             $classTag = $value->classTag;
             $allTags = array();
             foreach ($classTag as $index => $tag) {
@@ -3570,7 +3598,8 @@ $vars = "";
     }
 
     public function _classPostCountData(){
-
+        $year = $_POST['year'];
+        $month = $_POST['month'];
          $searchValue = '';
         if (strlen($_POST['search']['value']) > 1) {
             $searchValue = $_POST['search']['value'];
@@ -3635,6 +3664,7 @@ if(!empty($_POST['minRange']))
 
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
+        $postData['filterBody'] = array('year'=>$year, 'month'=>$month);
        // print_r(json_encode($postData));
 		//die;
         return $postData;
