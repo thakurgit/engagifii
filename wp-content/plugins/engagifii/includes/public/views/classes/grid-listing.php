@@ -151,16 +151,16 @@ ob_start();
       </div>
       </div>
     </div>
-    <div class="col-sm-12">
+    <div class="">
       <input type="hidden" id="isApplyACtive" value="0">
-      <div class="filter-list border-bottom ">
+      <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
           <input type="text" name="classdates" id="classdates"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
-      <div class="filter-list border-bottom">
+      <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none">
           <ul class="list-group m-0">
@@ -170,7 +170,7 @@ ob_start();
       </div>
 <!-- credit Hour filters -->
 
-<div class="filter-list border-bottom">
+<div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
         <div class="content-area d-none">
           <?php
@@ -179,7 +179,7 @@ ob_start();
           ?>  
         </div>
       </div>
-      <div class="filter-list border-bottom">
+      <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructors <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
@@ -194,7 +194,7 @@ ob_start();
       
       
 
-      <div class="filter-list border-bottom ">
+      <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
