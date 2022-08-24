@@ -163,7 +163,7 @@ public function calendar_mode(){
         
 
         $year = $_POST['year'];
-         $month = $_POST['month'];
+        $month = $_POST['month'];
         $day   = $_POST['day'] ? $_POST['day'] :date('d');
         $dateYear = ($year != '')?$year:date("Y");
         $dateMonth = ($month != '')?$month:date("m");
