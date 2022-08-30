@@ -140,8 +140,7 @@ aside .box {
 
 
 .modal-header {
-        padding: 1rem .4rem;
-        justify-content: flex-start;
+        padding: 1rem 1rem 1rem .4rem;
 }
 
 	</style>

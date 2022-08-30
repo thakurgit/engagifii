@@ -61,10 +61,7 @@ $('.apply-search .clear-search').click(function(e){
 h5#exampleModalLabel2 {    
     font-size: medium;
 }
-.modal-header {
-        padding: 1rem .4rem;
-        justify-content: flex-start;
-}
+
 
 
 .calendarsearch::before {
@@ -262,9 +259,9 @@ usort($res, function($a, $b) {
     <div class="modal fade" id="exampleModal2<?php echo $data['classId'];echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header align-items-center pr-5">
+                <div class="modal-header align-items-center">
                    <img src="<?php echo $data['Icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded"><h5 class="modal-title"  id="exampleModalLabel2"><?php echo $data['title']; ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
