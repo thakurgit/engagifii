@@ -1469,7 +1469,7 @@ wp_die();
                     }
                     //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
                     $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br> B/W '.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
                 $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
