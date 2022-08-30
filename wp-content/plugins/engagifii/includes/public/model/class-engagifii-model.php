@@ -238,7 +238,7 @@ public function calendar_mode(){
 		            $data['end']   = date('Y-m-d', strtotime($class->sessionDate));
 		            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 		            $data['objectType'] = $value->objectType;
-		            $data['hours']      = $value->courseCreditMapping[0]->credits;
+		            $data['hours']      = round($value->courseCreditMapping[0]->credits);
 		            $data['icon']       = $value->parentCourse->iconReference;
 		            $class_schedule = '';
 		            if($value->classDuration > 1){
@@ -302,7 +302,7 @@ public function calendar_mode(){
 	            $data['end']   = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionEndTime));
 	            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 	            $data['objectType'] = $value->objectType;
-	            $data['hours']      = $value->courseCreditMapping[0]->credits;
+	            $data['hours']      = round($value->courseCreditMapping[0]->credits);
 	            $data['icon']       = $value->parentCourse->iconReference;
 	            $class_schedule = '';
 	            if($value->classDuration > 1){
@@ -1490,9 +1490,9 @@ wp_die();
 				$nestedData['classInstructorsCount'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
 			}
             if($value->isCreditTypeSingle =="true"){
-            $nestedData['credithours'] = $value->courseCreditMapping[0]->credits;          
+            $nestedData['credithours'] = round($value->courseCreditMapping[0]->credits);          
             }else{
-                $nestedData['credithours'] = $value->courseCreditMapping[0]->credits;      
+                $nestedData['credithours'] = round($value->courseCreditMapping[0]->credits);      
             }
             $classTag = $value->classTag;
             $allTags = array();

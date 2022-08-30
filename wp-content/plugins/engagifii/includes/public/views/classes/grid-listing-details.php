@@ -186,16 +186,19 @@
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Class Type:</strong></div>
                                       <div class="col-md-8 col-xl-9"><?php echo $response->objectType; ?></div>
                                   </div>
-                                  <?php
+                                  <?php 
                                       }
-                                      if($response->parentCourse->creditHours){
-                                  ?>
+                                      //print_r(json_encode($response->courseCreditMapping[0]->credits));
+                                      if($response->parentCourse->courseCreditMapping){
+                                        
+                                        foreach ($response->parentCourse->courseCreditMapping as $key => $creditHrs){
+                                     ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
-                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours:</strong></div>
-                                      <div class="col-md-8 col-xl-9"><?php echo $response->parentCourse->creditHours; ?></div>
+                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours: </strong></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo $creditHrs->credits ?></div>
                                   </div>
                                   <?php
-                                      }
+                                      }}
                                   ?>
                                   <div class="summary-content-para-engagiigii row">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Registration Dates:</strong></div>
@@ -407,7 +410,7 @@
                                   <th>Class Type</th>
                                   <th>Class Dates</th>
                                   <th>Instructor</th>
-                                  <th>Credit Hours</th>
+                                 <th>Credit Hours</th>
                                   
                               </tr>
                           </thead>
@@ -442,8 +445,11 @@
                                               
                                       </td>
                                       <td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td>
-                                      <td><?php echo $response->parentCourse->creditHours; ?></td>
-                                      
+                                      <?php foreach ($response->courseCreditMapping as $key => $credithrs){
+                                        ?>
+                                      <td><?php echo $credithrs->credits;  ?></td>
+                                      <?php } 
+                                      ?>
                                   </tr>
                               <?php
                                   }

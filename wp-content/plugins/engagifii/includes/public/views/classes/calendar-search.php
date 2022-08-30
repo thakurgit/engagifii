@@ -108,8 +108,10 @@ $searchtext = "";
 function _prepareClassData($searchtext){   
 $classStates = get_option('ebt_api_settings')['upcomingClasses'];
         if($classStates==1){
+            //print_r("upcoming");
        	 $upcomingClasses = ["Upcoming"];	
         }else{
+            //print_r("ALL Classes");
             $upcomingClasses = [];
         } 
     $title = $searchtext;
@@ -125,11 +127,12 @@ $classStates = get_option('ebt_api_settings')['upcomingClasses'];
 
 
 $postedData = _prepareClassData($searchtext);
-//print_r($postedData);
+//print_r(json_encode($postedData));
 //die;
 $dataResponse = $this->submitApiRequest("Public/ClassPagingList",$postedData,"POST",'classes');
 $collection   = json_decode($dataResponse['api_response'])->result;
 //print_r($collection);
+
 ?>
 
 <table class="table calendarlist table-hover table-sm table-bordered "> 
@@ -171,7 +174,7 @@ foreach ($collection as $key => $value) {
                         $id = $result->id;
                         $classData[$id]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
                         $classData[$id]['titleNoLink'] = $className;
-                        $classData[$id]['hours']      = $value->parentCourse->creditHours;
+                        $classData[$id]['hours']      = round($value->courseCreditMapping[0]->credits);
                         $classData[$id]['objectType'] = $value->objectType;
                         $classData[$id]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
                         $classData[$id]['date'] = date('Y-m-d', strtotime($result->sessionDate));//$result->sessionDate;
@@ -189,7 +192,7 @@ foreach ($collection as $key => $value) {
 }else{
     $classData[$classId]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
     $classData[$classId]['titleNoLink'] = $className;
-    $classData[$classId]['hours']      = $value->parentCourse->creditHours;
+    $classData[$classId]['hours']      = round($value->courseCreditMapping[0]->credits);
     $classData[$classId]['objectType'] = $value->objectType;
     $classData[$classId]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
     $classData[$classId]['date'] = date('Y-m-d', strtotime($value->startDate));//$result->sessionDate;
