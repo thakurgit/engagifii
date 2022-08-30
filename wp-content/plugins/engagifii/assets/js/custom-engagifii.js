@@ -229,7 +229,8 @@ function dt_scroll(){
               var divWidth = parseInt($('.custom-scroll').outerWidth());
 			 var tablewidth = parseInt($('#ebtmaintable').outerWidth());
                if(tablewidth<=divWidth){
-					$('.nxt,.prv').addClass('disabled');   
+					$('.nxt,.prv').addClass('disabled').removeClass('d-xl-inline-flex');  
+					$('.engagifii-main-cotainer').removeClass('px-xl-5');  
 					return false;
 			   } else {
 				$('.nxt').click(function () {

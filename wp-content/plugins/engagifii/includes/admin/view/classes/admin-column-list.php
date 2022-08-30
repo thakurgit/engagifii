@@ -44,14 +44,12 @@
 		if(isset($options['upcomingClasses'])){
 			$upcomingClasses = $options['upcomingClasses'];
 		   }else{
-			   $upcomingClasses = 0;
+			   $upcomingClasses = null;
 		   }
 		
-			$up_classes = '';
-			if($upcomingClasses==1)
+			$up_classes = 'checked';
+			if($upcomingClasses==null)
 			{
-				 $up_classes  = 'checked';
-			} else {
 				 $up_classes  = '';
 			}
 		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[upcomingClasses]" id="upcomingClasses" value="1" '.$up_classes.'/> <strong>Show only Upcoming classes</strong></div>';
