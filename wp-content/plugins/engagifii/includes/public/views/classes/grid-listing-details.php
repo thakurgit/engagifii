@@ -195,7 +195,7 @@
                                      ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours: </strong></div>
-                                      <div class="col-md-8 col-xl-9"><?php echo $creditHrs->credits ?></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo number_format($creditHrs->credits,2); ?></div>
                                   </div>
                                   <?php
                                       }}
