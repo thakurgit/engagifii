@@ -447,7 +447,7 @@
                                       <td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td>
                                       <?php foreach ($response->courseCreditMapping as $key => $credithrs){
                                         ?>
-                                      <td><?php echo $credithrs->credits;  ?></td>
+                                      <td><?php echo number_format($credithrs->credits, 2);  ?></td>
                                       <?php } 
                                       ?>
                                   </tr>
