@@ -131,6 +131,7 @@ wp_enqueue_script(
 			wp_enqueue_script( 'engagifii-datatable-bootstrap', plugin_dir_url( __FILE__ ) . 'assets/js/dataTables.bootstrap4.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
+			//wp_enqueue_script( 'dt-date', 'https://cdn.datatables.net/plug-ins/1.12.1/sorting/date-eu.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'range-slider', 'https://code.jquery.com/ui/1.13.1/jquery-ui.js', array('jquery'), $this->version, false );
 			wp_enqueue_script( 'custom-engagifii', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('jquery','bootstrap'), '1.0.01', false );
 			wp_register_script( 'moment-js', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js' ); 

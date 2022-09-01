@@ -272,14 +272,22 @@ $filter_content = removeWhitespace($filter_content);
         "searching": true,
         "ordering":true,
 		"search": {regex: true},
+		"order": [[3, 'asc']],
         "columnDefs": [ 
-          { "targets": ['objectType','classDuration', 'startdate', 'credithours', 'classTag', 'classInstructorsCount', 'register'],
+          { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
           },
           //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
 		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
+		  {'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
+			  var html = $(cellData);
+			  var editor = $("<p>").append(html);
+			  var cell = editor.find("span:first-child").html();
+           $(td).attr('data-order', cell ); 
+       		 }
+    	 }
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -312,6 +320,7 @@ $filter_content = removeWhitespace($filter_content);
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 
          "drawCallback": function( settings ) {
+			 
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
