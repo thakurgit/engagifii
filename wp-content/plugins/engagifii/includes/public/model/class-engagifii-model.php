@@ -186,11 +186,11 @@ public function calendar_mode(){
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-		 $classStates = $options['upcomingClasses'];
+		 $classStates = $options['allClasses'];
         if($classStates==1){
-       	 $upcomingClasses = ["Upcoming"];	
+       	 $upcomingClasses = [];	
         }else{
-            $upcomingClasses = [];
+            $upcomingClasses = ["Upcoming"];
         }
         $postedData = $this->_classPostCountData();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');

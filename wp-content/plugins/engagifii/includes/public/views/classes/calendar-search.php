@@ -103,13 +103,13 @@ $obj      =  new Engagifii_API();
 $searchtext = ""; 
  
 function _prepareClassData($searchtext){   
-$classStates = get_option('ebt_api_settings')['upcomingClasses'];
+$classStates = get_option('ebt_api_settings')['allClasses'];
         if($classStates==1){
             //print_r("upcoming");
-       	 $upcomingClasses = ["Upcoming"];	
+       	 $upcomingClasses = [];	
         }else{
             //print_r("ALL Classes");
-            $upcomingClasses = [];
+            $upcomingClasses = ["Upcoming"];
         } 
     $title = $searchtext;
     $postData = array();  
