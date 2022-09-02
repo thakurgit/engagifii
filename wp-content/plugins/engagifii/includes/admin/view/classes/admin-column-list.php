@@ -41,18 +41,18 @@
 	    	$counter++;	  
     	}
     	echo '</ul>';
-		if(isset($options['upcomingClasses'])){
-			$upcomingClasses = $options['upcomingClasses'];
+		if(isset($options['allClasses'])){
+			$allClasses = $options['allClasses'];
 		   }else{
-			   $upcomingClasses = null;
+			   $allClasses = null;
 		   }
 		
-			$up_classes = 'checked';
-			if($upcomingClasses==null)
+			$all_classes = '';
+			if($allClasses==1)
 			{
-				 $up_classes  = '';
+				 $all_classes  = 'checked';
 			}
-		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[upcomingClasses]" id="upcomingClasses" value="1" '.$up_classes.'/> <strong>Show only Upcoming classes</strong></div>';
+		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" '.$all_classes.'/> <strong>Show All classes</strong><br><i>Note:- By default, only upcoming classes will be shown.</i></div>';
 		echo '</div>';				
     }
 ?>

@@ -231,7 +231,7 @@ $filter_content = removeWhitespace($filter_content);
   var minReg ='<?php echo $min_date; ?>';
   var maxReg ='<?php echo $max_date; ?>';
   var classStates =["Upcoming"];
-  <?php if($options['upcomingClasses']==null) { ?>
+  <?php if($options['allClasses']==1) { ?>
   	classStates = [];
   <?php } ?>
   
