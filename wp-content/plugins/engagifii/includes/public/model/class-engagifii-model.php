@@ -3487,11 +3487,11 @@ $vars = "";
     public function _prepareEventsData(){
 
         //$upcomingEvents = 'false';
-        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
-        if($upcomingEvents==1){
-        $upcomingEvents = 'true';	
+        $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+        if($allEvents==1){
+        $allEvents = 'false';	
         }else{
-            $upcomingEvents = 'false';
+            $allEvents = 'true';
         }
 
         $columnsData = [];
@@ -3520,7 +3520,7 @@ $vars = "";
         $sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = $_POST['length'];
-        $postData['onlyUpcoming'] = $upcomingEvents;
+        $postData['onlyUpcoming'] = $allEvents;
         $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
@@ -3836,11 +3836,11 @@ if(!empty($_POST['minRange']))
         $endorsement_api_url = $options['evt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
         // $upcomingEvents = 'false';
-        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
-        if($upcomingEvents==1){
-        $upcomingEvents = 'true';	
+        $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+        if($allEvents==1){
+        $allEvents = 'false';	
         }else{
-            $upcomingEvents = 'false';
+            $allEvents = 'true';
         }
         $postedData = $this->_eventsPostCountData();
        //print_r(json_encode($postedData));
@@ -3852,7 +3852,7 @@ if(!empty($_POST['minRange']))
         $postData = array();    
         $postData['itemCount'] = $classCount;
         $postData['sortBy'] = 'sectionname';
-        $postData['onlyUpcoming'] = $upcomingEvents;
+        $postData['onlyUpcoming'] = $allEvents;
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = ((int) $classCount);
         $postData['sortDirection'] = 'asc';

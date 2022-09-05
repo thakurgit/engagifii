@@ -108,11 +108,11 @@ $searchtext = "";
 
 
 function _prepareEventData($searchtext){    
-    $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
-        if($upcomingEvents==1){
-        $upcomingEvents = 'true';	
+    $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+       if($allEvents==1){
+        $allEvents = 'false';	
         }else{
-            $upcomingEvents = 'false';
+            $allEvents = 'true';
         }
         if(!empty($_POST['createdDate']))
         {
@@ -129,7 +129,7 @@ function _prepareEventData($searchtext){
     $postData['pageNumber'] = 1;    
     $postData['pageSize'] = 12;
     $postData['sortDirection'] = "desc";
-    $postData['upcomingEvents'] = $upcomingEvents;
+    $postData['onlyUpcoming'] = $allEvents;
     $postData['filterBody'] = array('searchText'=>$title,'selectedDate' => date('Y-m-d')); //'searchText'=>$title,  
     return $postData;
 }

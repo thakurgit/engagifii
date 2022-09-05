@@ -43,24 +43,19 @@
 		}
     	}
     	echo '</ul>';
-		if(isset($options['upcomingEvents'])){
-			$upcomingEvents = $options['upcomingEvents'];
+		if(isset($options['allEvents'])){
+			$allEvents = $options['allEvents'];
 		   }else{
-			   $upcomingEvents = 0;
+			   $allEvents = null;
 		   }
 		
-			$up_events = '';
-			if($upcomingEvents==1)
+			$all_events = '';
+			if($allEvents==1)
 			{
-				 $up_events  = 'checked';
-				 $all_events = '';
-			} else {
-				 $up_events  = '';
 				 $all_events = 'checked';
 			}
-		echo '<span> <input type="radio" name="ebt_api_settings[upcomingEvents]" id="upcomingEvents" value="1" '.$up_events.'/> Show only Upcoming Events</span><br>';
-		echo '<span><input type="radio" name="ebt_api_settings[upcomingEvents]" id="allEvents" value="0" '.$all_events.'/> Show All Events</span>
-		</div>';	
+		echo '<span><input type="checkbox" name="ebt_api_settings[allEvents]" id="allEvents" value="1" '.$all_events.'/> <strong>Show All Events</strong></span>
+		<br><i>Note:- By default, only upcoming events will be shown.</i></div>';	
 		
     }
 ?>
