@@ -1964,7 +1964,7 @@ wp_die();
                 $enddate = date('M d, Y', $convert_Date);
                 $endtime = date('h:i A', $convert_Date);
             }
-            $nestedData['eventDates'] = $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
+            $nestedData['eventDates'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
             
             $default_Courses = $row->courses;
             if ($default_Courses) {

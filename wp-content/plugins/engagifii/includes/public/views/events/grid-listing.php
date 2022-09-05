@@ -279,12 +279,20 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
+	   "order": [[3, 'asc']],
        "columnDefs": [ 
-          { "targets": ['tags','register','eventType','eventDates','city'],
+          { "targets": ['tags','register','eventType','city'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
 		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
+		  {'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
+			  var html = $(cellData);
+			  var editor = $("<p>").append(html);
+			  var cell = editor.find("span:first-child").html();
+           $(td).attr('data-order', cell ); 
+       		 }
+    	 }
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
