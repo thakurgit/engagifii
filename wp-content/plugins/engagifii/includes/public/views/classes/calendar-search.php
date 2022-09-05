@@ -166,30 +166,30 @@ foreach ($collection as $key => $value) {
                     else{
                         $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                     }
-    if($value->classSessions){           
-    foreach ($value->classSessions as $key => $result) {
-                        $id = $result->id;
-                        $classData[$id]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
-                        $classData[$id]['titleNoLink'] = $className;
-                        $classData[$id]['hours']      = round($value->courseCreditMapping[0]->credits);
-                        $classData[$id]['objectType'] = $value->objectType;
-                        $classData[$id]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-                        $classData[$id]['date'] = date('Y-m-d', strtotime($result->sessionDate));//$result->sessionDate;
-                        $classData[$id]['classId'] .= $classId;
-                        $classData[$id]['Icon'] .= $icon;
-                        $classData[$id]['className'] .= $className;
-                        $classData[$id]['sessionStatus'] .=$result->sessionStatus;
-                        $classData[$id]['startTime'] .= $result->startTime;
-                        $classData[$id]['endTime'] .= $result->endTime;
-                        $classData[$id]['register'] = $register;
-                        $classData[$id]['instructors'] = $value->classInstructors;
+//     if($value->classSessions){           
+//     foreach ($value->classSessions as $key => $result) {
+//                         $id = $result->id;
+//                         $classData[$id]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
+//                         $classData[$id]['titleNoLink'] = $className;
+//                         $classData[$id]['hours']      = round($value->courseCreditMapping[0]->credits);
+//                         $classData[$id]['objectType'] = $value->objectType;
+//                         $classData[$id]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+//                         $classData[$id]['date'] = date('Y-m-d', strtotime($result->sessionDate));//$result->sessionDate;
+//                         $classData[$id]['classId'] .= $classId;
+//                         $classData[$id]['Icon'] .= $icon;
+//                         $classData[$id]['className'] .= $className;
+//                         $classData[$id]['sessionStatus'] .=$result->sessionStatus;
+//                         $classData[$id]['startTime'] .= $result->startTime;
+//                         $classData[$id]['endTime'] .= $result->endTime;
+//                         $classData[$id]['register'] = $register;
+//                         $classData[$id]['instructors'] = $value->classInstructors;
                       
    
-    }
-}else{
+//     }
+// }else{
     $classData[$classId]['title'] = '<a href="'.site_url().'/class-details/?classId='.$classId.'">'.$className.'</a>';
     $classData[$classId]['titleNoLink'] = $className;
-    $classData[$classId]['hours']      = round($value->courseCreditMapping[0]->credits);
+    $classData[$classId]['hours']      = $value->courseCreditMapping[0]->credits;
     $classData[$classId]['objectType'] = $value->objectType;
     $classData[$classId]['classDuration'] = $value->classDuration.' '.$value->classDurationType;
     $classData[$classId]['date'] = date('Y-m-d', strtotime($value->startDate));//$result->sessionDate;
@@ -201,7 +201,7 @@ foreach ($collection as $key => $value) {
     $classData[$classId]['endTime'] .= date('h:i A', strtotime($value->endDate));
     $classData[$classId]['register'] = $register;
     $classData[$classId]['instructors'] = $value->classInstructors;
-}
+//}
 }
 $result2 = array();
     foreach ($classData as $element) {
@@ -269,7 +269,7 @@ usort($res, function($a, $b) {
                     <p><strong>Date :</strong> <?php echo date("j M Y", strtotime($data['date'])).' at '; echo $data['startTime']; echo "  -  ".$data['endTime'];?></p>
                     <p><strong>Duration : </strong><?php echo $data['classDuration']; ?></p>
                     <p><strong>Type :</strong> <?php echo $data['objectType']; ?></p>
-                    <p><strong>Credit Hours : </strong><?php echo $data['hours']; ?></p>
+                    <p><strong>Credit Hours : </strong><?php echo number_format($data['hours'],2); ?></p>
                 </div>
                 <div class="modal-footer">
                     <a href="../class-details/?classId=<?php echo $data['classId']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
