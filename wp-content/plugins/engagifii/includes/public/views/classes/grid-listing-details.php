@@ -222,7 +222,7 @@
                                        </ul>
                                        <div class="p-3">
                                         <div class="tab-content" id="pills-tabContent">
-                                          <div class="tab-pane fade  <?php if($response->classLocationType->name != 'online') {echo "active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
+                                          <div class="tab-pane fade  <?php if($response->classLocationType->name != 'online') {echo "show active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
                                               
                                                   <?php
                                                       if(!empty($response->location) && isset($response->location->address))
@@ -251,7 +251,7 @@
                                                   
                                               
                                           </div>
-                                          <div class="tab-pane fade show active <?php if($response->classLocationType->name == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
+                                          <div class="tab-pane fade <?php if($response->classLocationType->name == 'online') {echo "show active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
                                               <div class="summary-content-para-engagiigii row mb-2">
                                                   <div class="col-sm-4 "><strong>Online Class Location:</strong></div>
                                                   <div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
