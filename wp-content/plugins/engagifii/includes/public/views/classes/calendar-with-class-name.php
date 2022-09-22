@@ -65,7 +65,7 @@
 .calendar__day {
 	max-width: calc(100%/7);
 	flex: 0 0 calc(100%/7);
-	height: 105px;
+	height: 95px;
 	cursor: pointer;
 }
 .calendar-dark .calendar__day:not(.today), .calendar-dark .top-bar__days, .calendar-dark h3, .calendar-dark h4, .calendar-dark .box div{

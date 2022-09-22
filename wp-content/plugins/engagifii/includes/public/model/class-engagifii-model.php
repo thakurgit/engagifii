@@ -129,7 +129,7 @@ public function calendar_mode(){
     $prevMonth = date("m", strtotime('-1 month', strtotime($date)));
     $prevYear = date("Y", strtotime('-1 month', strtotime($date)));
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear); ?>
-	        <div class="title-bar col-12 bg-light p-3 border rounded">
+	        <div class="title-bar col-12 bg-light p-1 border rounded">
             <div class="row align-items-center">
             <div class="title-bar__month col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pr-0">
                 <div class="input-group input-group-sm mb-2 mb-md-0">
@@ -408,18 +408,18 @@ public function getCalendarClassName(){
         </div>
             
         </div><?php */?>
-        <div class="col-12 pt-4">
+        <div class="col-12 pt-2">
             <div class="row ">
         <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
             
         </aside>
 
-        <div class="calendar__days col-md-9 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
+        <div class="calendar__days col-md-9 pt-2 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
 
-            <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
+            <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
-            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2  text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
+            <div class="calendar__top-bar bg-light border-top  text-uppercase d-flex text-center ">
                 <span class="top-bar__days  py-3 border-right">Mon</span>
                 <span class="top-bar__days  py-3 border-right">Tue</span>
                 <span class="top-bar__days  py-3 border-right">Wed</span>
@@ -751,18 +751,18 @@ public function getCalendarClassName1(){
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
         
-        <div class="col-12 pt-4">
+        <div class="col-12 pt-2">
             <div class="row ">
         <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
             
         </aside>
 
-        <div class="calendar__days col-md-9 pt-5 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
+        <div class="calendar__days col-md-9 pt-2 border mb-4 mb-md-0 calendar-background  px-0" id="monthView">
 
-            <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
+            <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>','<?php echo date("d",strtotime($date.' - 1 Month')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2"><?php echo date("F",strtotime($date.' - 1 Month')); ?></span></a>
                 <h3 class="text-center text-uppercase"><?php echo date("F Y",strtotime($date)); ?></h3>
-            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2 p-lg-3 text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
-            <div class="calendar__top-bar bg-light border-top mt-4 mt-lg-5 text-uppercase d-flex text-center ">
+            <a href="javascript:void(0);" class="title-bar__next position-absolute border-left border-bottom p-2  text-uppercase small  btn-primary" style="right: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>','<?php echo date("d",strtotime($date.' + 1 Month')); ?>');"><span class="mr-2"><?php echo date("F",strtotime($date.' + 1 Month')); ?></span><i class="fa fa-chevron-right"></i></a>
+            <div class="calendar__top-bar bg-light border-top  text-uppercase d-flex text-center ">
                 <span class="top-bar__days  py-3 border-right">Mon</span>
                 <span class="top-bar__days  py-3 border-right">Tue</span>
                 <span class="top-bar__days  py-3 border-right">Wed</span>
@@ -1964,7 +1964,7 @@ wp_die();
                 $enddate = date('M d, Y', $convert_Date);
                 $endtime = date('h:i A', $convert_Date);
             }
-            $nestedData['eventDates'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
+            $nestedData['eventDates'] ='<span style="display:block;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
             
             $default_Courses = $row->courses;
             if ($default_Courses) {

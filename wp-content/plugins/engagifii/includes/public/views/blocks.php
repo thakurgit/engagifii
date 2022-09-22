@@ -6,7 +6,7 @@
     ),$atts); 
 	
 
-	$html = '<div class="container-fluid pb-4"><div class="row">';
+	$html = '<div class="container-fluid pb-2"><div class="row">';
 	$more='';
 	if ($values["search"]=='on') {
 		$more = 'col-md-6';
