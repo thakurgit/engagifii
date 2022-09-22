@@ -101,7 +101,7 @@
 }
 @media screen and (min-width: 768px) {
 .scroll.mCustomScrollbar {
-height: 620px;	
+height: 490px;	
 }
 }
 @media screen and (max-width: 992px) {
