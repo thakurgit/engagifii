@@ -230,7 +230,7 @@ public function calendar_mode(){
         foreach ($collection as $key => $value) {
             
             $class_icon = $value->parentCourse->iconReference;
-            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+            if($siteURL == "https://localhost/engagifiwebstg" || $siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
                 $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
             }
@@ -440,7 +440,7 @@ public function getCalendarClassName(){
                 $classdata = $this->classCalendar();
                 //echo "Hello Class Data";
 
-                //print_r(json_encode($classdata));
+                print_r(json_encode($classdata));
 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
@@ -782,7 +782,7 @@ public function getCalendarClassName1(){
                 $dayCount = 1;
                 $classdata = $this->classCalendar();
                 
-
+print_r(json_encode($classdata));
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
