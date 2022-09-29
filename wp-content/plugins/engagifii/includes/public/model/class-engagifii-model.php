@@ -160,7 +160,7 @@ public function calendar_mode(){
 <?php  }
      public function classCalendar(){
 
-        //$siteURL= site_url();
+        $siteURL= site_url();
 
         $year = $_POST['year'];
         $month = $_POST['month'];
@@ -230,10 +230,10 @@ public function calendar_mode(){
         foreach ($collection as $key => $value) {
             
             $class_icon = $value->parentCourse->iconReference;
-            // if($siteURL == "https://localhost/engagifiwebstg" || $siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
-            //     $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+            if($siteURL == "https://localhost/engagifiwebstg" || $siteURL == "https://engagifiwebstg.wpengine.com/okresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
-            // }
+            }
         	// if(count($value->classSessions))
         	// {
         	// 	foreach ($value->classSessions as $index => $class) {
@@ -1450,10 +1450,10 @@ wp_die();
             $classPopover      = '';
 
             $class_icon = $value->parentCourse->iconReference;
-            // if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
-            //     $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+            if($siteURL == "https://engagifiwebstg.wpengine.com/okresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
-            // }
+            }
 
             if(count($value->classInstructors)){
                 $instructorPopOver = $this->_popOverInstructorData1($key, $value->classInstructors);
