@@ -139,10 +139,10 @@ $collection   = json_decode($dataResponse['api_response'])->result;
 foreach ($collection as $key => $value) { 
     $siteURL= site_url();
     $class_icon = $value->parentCourse->iconReference;
-    if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
-        $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+    // if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+    //     $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
         
-    }
+    // }
                 $className = $value->sectionName;
                 $classId = $value->id;
                 $icon = $class_icon;
