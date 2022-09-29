@@ -160,7 +160,7 @@ public function calendar_mode(){
 <?php  }
      public function classCalendar(){
 
-        $siteURL= site_url();
+        //$siteURL= site_url();
 
         $year = $_POST['year'];
         $month = $_POST['month'];
