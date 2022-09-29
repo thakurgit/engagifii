@@ -137,9 +137,16 @@ $collection   = json_decode($dataResponse['api_response'])->result;
     $classData = array();
 
 foreach ($collection as $key => $value) { 
+    $siteURL= site_url();
+    $class_icon = $value->parentCourse->iconReference;
+    if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+        $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+        
+    }
                 $className = $value->sectionName;
                 $classId = $value->id;
-                $icon = $value->parentCourse->iconReference;
+                $icon = $class_icon;
+
                 if($value->isClassRegistrationAllow)
                     {
                     if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')

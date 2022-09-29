@@ -228,6 +228,12 @@ public function calendar_mode(){
        
         //print_r(json_encode($dataResponse));
         foreach ($collection as $key => $value) {
+            $siteURL= site_url();
+            $class_icon = $value->parentCourse->iconReference;
+            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+                
+            }
         	// if(count($value->classSessions))
         	// {
         	// 	foreach ($value->classSessions as $index => $class) {
@@ -303,7 +309,7 @@ public function calendar_mode(){
 	            $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 	            $data['objectType'] = $value->objectType;
 	            $data['hours']      = number_format($value->courseCreditMapping[0]->credits, 2);//round($value->courseCreditMapping[0]->credits);
-	            $data['icon']       = $value->parentCourse->iconReference;
+	            $data['icon']       = $class_icon;
 	            $class_schedule = '';
 	            if($value->classDuration > 1){
 	                $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
@@ -1420,6 +1426,8 @@ wp_die();
     }
 
     public function classLoadGridData(){
+        $siteURL= site_url();
+        
         $postedData  = $this->_prepareClassData();
 		//print_r(json_encode($postedData));
 		//die;
@@ -1440,6 +1448,12 @@ wp_die();
             $nestedData = array();
             $instructorPopOver = '';
             $classPopover      = '';
+
+            $class_icon = $value->parentCourse->iconReference;
+            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+                
+            }
 
             if(count($value->classInstructors)){
                 $instructorPopOver = $this->_popOverInstructorData1($key, $value->classInstructors);
@@ -1472,9 +1486,9 @@ wp_die();
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
-                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
