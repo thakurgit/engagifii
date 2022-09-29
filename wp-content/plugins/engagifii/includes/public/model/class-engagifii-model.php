@@ -160,7 +160,7 @@ public function calendar_mode(){
 <?php  }
      public function classCalendar(){
 
-        
+        $siteURL= site_url();
 
         $year = $_POST['year'];
         $month = $_POST['month'];
@@ -228,7 +228,7 @@ public function calendar_mode(){
        
         //print_r(json_encode($dataResponse));
         foreach ($collection as $key => $value) {
-            $siteURL= site_url();
+            
             $class_icon = $value->parentCourse->iconReference;
             if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
                 $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
