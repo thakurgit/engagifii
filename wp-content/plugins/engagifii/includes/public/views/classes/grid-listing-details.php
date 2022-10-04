@@ -236,7 +236,7 @@
                                                   ?>
                                                       <div class="summary-content-para-engagiigii row mb-2">
                                                           <div class="col-sm-4 "><strong>Room Name:</strong></div>
-                                                          <div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
+                                                          <div class="col-sm-8"><?php echo $response->location->classRoom->buildingName; ?></div>
                                                       </div>
                                                       <div class="summary-content-para-engagiigii row mb-2">
                                                           <div class="col-sm-4 "><strong>Address:</strong></div>
