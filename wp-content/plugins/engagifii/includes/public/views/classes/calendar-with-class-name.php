@@ -261,7 +261,7 @@ $(document).ready(function() {
 					   html_class = 'col-12';
                    }
                   
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light p-2"><div class=" text-left d-flex align-items-center pb-2"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value["title"]+'</div><div class=" text-left">'+value["classTime"]+'</div><table class="table table-borderless table-sm text-left"><tr><td class="text-muted">Duration: </td><td>'+value["classDuration"]+'</td></tr><tr><td class="text-muted">Type: </td><td>'+value["objectType"]+'</td></tr><tr><td class=" text-muted">Credit Hours: </td><td>'+value["hours"]+'</td></tr><tr><td class=" text-muted">Tags: </td><td>'+tags+'</td></tr></table><div class="text-center">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light p-2"><div class=" text-left d-flex align-items-center pb-2"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2 rounded-circle">'+value["title"]+'</div><div class=" text-left">'+value["classTime"]+'</div><table class="table table-borderless table-sm text-left"><tr><td class="text-muted">Duration: </td><td>'+value["classDuration"]+'</td></tr><tr><td class="text-muted">Type: </td><td>'+value["objectType"]+'</td></tr><tr><td class=" text-muted">Credit Hours: </td><td>'+value["hours"]+'</td></tr><tr><td class=" text-muted">Tags: </td><td>'+tags+'</td></tr></table><div class="text-center">'+value['viewdetails']+' '+value['register']+'</div></div></div>';
 					
 
                 });

@@ -24,6 +24,12 @@
     $prev = $class_array[$class_key-1];
     $next = $class_array[$class_key+1];
   }
+  $siteURL= site_url();
+  $class_icon = $response->parentCourse->icon->iconReference;
+  if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+      $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+      
+  }
 //print_r(json_encode($response));
   
 	//$documentData  =  $obj->getCourseDocument($id, $response->name);
@@ -35,7 +41,7 @@
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
     <div class="row">
         <div class="col-md-10 d-flex align-items-center">
-            <img class="rounded-circle  mr-3  p-0" src="<?php echo $response->parentCourse->icon->iconReference; ?>" style="max-width:78px; flex:0 0 78px">
+            <img class="rounded-circle  mr-3  p-0" src="<?php echo $class_icon; ?>" style="max-width:78px; flex:0 0 78px">
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
             <p  class="mb-2"> <?php echo $response->sectionName; ?></p>
@@ -189,12 +195,12 @@
                                   <?php 
                                       }
                                       //print_r(json_encode($response->courseCreditMapping[0]->credits));
-                                      if($response->parentCourse->courseCreditMapping){
+                                      if($response->courseCreditMapping){
                                         
-                                        foreach ($response->parentCourse->courseCreditMapping as $key => $creditHrs){
+                                        foreach ($response->courseCreditMapping as $key => $creditHrs){
                                      ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
-                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Credit Hours: </strong></div>
+                                      <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong> <?php echo $creditHrs->creditName; ?> </strong></div>
                                       <div class="col-md-8 col-xl-9"><?php echo number_format($creditHrs->credits,2); ?></div>
                                   </div>
                                   <?php
@@ -230,7 +236,7 @@
                                                   ?>
                                                       <div class="summary-content-para-engagiigii row mb-2">
                                                           <div class="col-sm-4 "><strong>Room Name:</strong></div>
-                                                          <div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
+                                                          <div class="col-sm-8"><?php echo $response->location->classRoom->buildingName; ?></div>
                                                       </div>
                                                       <div class="summary-content-para-engagiigii row mb-2">
                                                           <div class="col-sm-4 "><strong>Address:</strong></div>
