@@ -44,9 +44,9 @@
     $classdateRange  = $obj->classdateFilters($date);
  	   $class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
   	 $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
-	//print_r($classdateRange);
-	//print_r($dateRange);
-	//die;
+     $class_start_date = date("Y-m-d",strtotime ( '-1 day' , strtotime ( $class_start_date ) )) ;	
+     //print_r($class_start_date);
+	
     $title_key = -1;
     
 ?>
