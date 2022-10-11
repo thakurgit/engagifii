@@ -128,7 +128,7 @@ $postedData = _prepareClassData($searchtext);
 //die;
 $dataResponse = $this->submitApiRequest("Public/ClassPagingList",$postedData,"POST",'classes');
 $collection   = json_decode($dataResponse['api_response'])->result;
-//print_r($collection);
+print_r($collection);
 
 ?>
 
