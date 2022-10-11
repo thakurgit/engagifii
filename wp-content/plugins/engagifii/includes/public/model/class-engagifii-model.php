@@ -360,6 +360,10 @@ public function calendar_mode(){
                         }
 	                
 	            }
+                else{
+                    $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                        
+                }
 	            $classData[] = $data; 
         	//} 
         }
