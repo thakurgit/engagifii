@@ -434,7 +434,17 @@
 			  						</td>
 			  						<td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id="<?php echo $key ?>"><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></div>
                                     </td>
-			  						<td><?php echo $value->activityStatus; ?></td>
+			  						<td><?php 
+									if($value->activityStatus==1){
+										$sessionStatus = "Upcoming Session";
+									}
+									if($value->activityStatus==2){
+										$sessionStatus = "Session In-Play";
+									}
+									if($value->activityStatus==3){
+										$sessionStatus = "Session Completed";
+									}
+									echo $sessionStatus; ?></td>
                                     
                                     
 			  						
