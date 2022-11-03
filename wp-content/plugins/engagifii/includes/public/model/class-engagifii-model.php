@@ -1312,7 +1312,7 @@ public function getEventsCalendar(){
                               //echo $test.'...'; 
                               echo '<div class="classNames">';
                               ?>
-                              <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
+                              <a class="calendar-class badge" data-toggle="modal" data-target="#exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php echo $test; ?>...</a>                                    
                                   <?php
                               if(count($weekfilteredItems) >1) {$test; } 
                               echo "</div>";
@@ -1320,6 +1320,46 @@ public function getEventsCalendar(){
                             } }?>
                             </span>
                         </div>
+                        
+                        
+                        
+                         <?php  for($fi=0; $fi<count($weekfilteredItems); $fi++){
+                                       
+                                       $test = $weekfilteredItems[$fi]['name'];
+                                       $test = substr($test,0,20);
+                                      ?>
+                                        <!-- Modal -->
+                                           <div class="modal fade" id="exampleModal1<?php echo $weekfilteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered" role="document">
+                                               <div class="modal-content">
+                                               <div class="modal-header text-left align-items-center">
+                                                   <img src="<?php echo $weekfilteredItems[$fi]['icon']; ?>" class="img-fluid img-icon-lg mr-2 mCS_img_loaded rounded-circle"><h5 class="modal-title"  id="exampleModalLabel"><?php echo $weekfilteredItems[$fi]['title']; ?></h5>
+                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                                   </button>
+                                               </div>
+                                               <div class="modal-body text-left" >
+                                                   <p><strong>Date :</strong> <?php echo $weekfilteredItems[$fi]['schedule']; ?></p>
+                                                   <p><strong>Type : </strong><?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
+                                                   <p><strong>Price :</strong> <?php echo '$'.$weekfilteredItems[$fi]['price']; ?></p>
+                                                   <!-- <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p> -->
+                                                   
+                                               </div>
+                                               <div class="modal-footer">
+                                               <a href="../event-detail/?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <?php echo $weekfilteredItems[$fi]['register']; ?>
+                                               </div>
+                                               </div>
+                                           </div>
+                                           </div> 
+                                           <?php
+                                   
+                                      
+                                   }
+                                ?>
+                                
+                                
+                                
                         <?php                    
                 }
             ?>
