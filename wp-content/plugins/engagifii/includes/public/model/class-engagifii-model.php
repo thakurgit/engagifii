@@ -1999,7 +1999,7 @@ wp_die();
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
-                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
             }
             
            
@@ -3777,6 +3777,23 @@ if(!empty($_POST['minRange']))
     //Endorsement : Get data - Added by Gurpreet
 
     public function endorsementCalendar(){
+
+        $year = $_POST['year'];
+        $month = $_POST['month'];
+        $day   = $_POST['day'] ? $_POST['day'] :date('d');
+        $dateYear = ($year != '')?$year:date("Y");
+        $dateMonth = ($month != '')?$month:date("m");
+        $postedDate = $year.'-'.$month.'-'.$day;
+        $date = $dateYear.'-'.$dateMonth.'-01';
+        $currentMonthFirstDay = date("N",strtotime($date));
+        $totalDaysOfMonth = cal_days_in_month(CAL_GREGORIAN,$dateMonth,$dateYear);
+        $totalDaysOfMonthDisplay = ($currentMonthFirstDay == 1)?($totalDaysOfMonth):($totalDaysOfMonth + ($currentMonthFirstDay - 1));
+
+        $first_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", first day of this month");
+        $first_date = date("Y-m-d",$first_date_find);
+
+        $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
+        $last_date = date("Y-m-d",$last_date_find);
         
     $options = get_option('ebt_api_settings');
     $endorsement_api_url = $options['ebt_api_url'];
@@ -3802,6 +3819,7 @@ if(!empty($_POST['minRange']))
            $postData['instructors'] = $_POST['instructors'];
        }
        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => '');
+       $postData['filterBody'] ['createdDateRange'] = array('startDate'=>$first_date, 'endDate'=>$last_date) ;
        $dataResponse = $this->submitApiRequest("Public/AwardListPublic", $postData, "POST", 'endorsement');
 
        $collection   = json_decode($dataResponse['api_response'])->result;
@@ -3850,8 +3868,8 @@ if(!empty($_POST['minRange']))
 
     public function eventsCalendar(){
         
-        $options = get_option('evt_api_settings');
-        $endorsement_api_url = $options['evt_api_url'];
+        $options = get_option('ebt_api_settings');
+        $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
         // $upcomingEvents = 'false';
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
@@ -3954,7 +3972,7 @@ if(!empty($_POST['minRange']))
                        $default_RegisterBtn = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registration_state.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                    }
                    else{
-                       $default_RegisterBtn = '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                       $default_RegisterBtn = '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                    }
                    $data['register'] = $default_RegisterBtn;
                     $endorsementData[] = $data; 
@@ -4013,7 +4031,7 @@ if(!empty($_POST['minRange']))
                             $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registration_state.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }
                         else{
-                            $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                            $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $value->id .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                         }
                         
                             $data['register'] = $default_RegisterBtn;

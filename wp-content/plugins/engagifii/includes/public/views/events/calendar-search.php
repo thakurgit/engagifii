@@ -158,7 +158,7 @@ foreach ($collection as $key => $value) {
                             $register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$eventRegState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                              }
                         else{
-                             $register = '<a href="'.$engagifii_url.'/pages/events/'. $eventId .'/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                             $register = '<a href="'.$engagifii_url.'/pages/events/'. $eventId .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
                              //$register = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button"  class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span> ';
                           
                             }
