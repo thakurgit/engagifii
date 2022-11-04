@@ -26,7 +26,7 @@
   }
   $siteURL= site_url();
   $class_icon = $response->parentCourse->icon->iconReference;
-  if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa"){
+  if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
       $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
       
   }

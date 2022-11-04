@@ -907,7 +907,7 @@ public function getEventDetailsByID($id)
 		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'document');
 		$section_id = json_decode($response['api_response']);
 		$responseArray = $this->getDocumentDetails($section_id);
-		print_r($responseArray); die;
+		//print_r($responseArray); die;
 		return $responseArray;
 		
 	}
