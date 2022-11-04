@@ -319,7 +319,7 @@ aside .box {
 
         $(document).on({
     		ajaxStart: function(){
-				$("#calendar_div").prepend('<div class="loader position-absolute w-100 h-100  d-flex align-items-center justify-content-center"><div class="spinner-border text-dark" role="status"><span class="sr-only">Loading...</span></div></div>');
+				$("#calendar_div").prepend('<div class="loader "><div class="spinner" role="status"><span class="sr-only">Loading...</span></div></div>');
     		},
     		ajaxStop: function(){ 
 				$("#calendar_div > .loader").remove();
