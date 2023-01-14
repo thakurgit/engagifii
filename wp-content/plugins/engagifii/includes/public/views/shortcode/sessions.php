@@ -2,35 +2,34 @@
 $obj =  new Engagifii_API();
 $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);
+
 ?>
 <style type="text/css">
   button#billSearch{ padding: 0 15px; }
   button#billSearch:focus{ outline: none;  }
   .form-control:focus{ box-shadow: unset; border-color: unset; border: 1px solid #EAEDF2 !important }
 </style>
-<div class="m-2">
-      <div class="row">
+     <ul class="nav nav-tabs" id="myTab" role="tablist">
+
       
-   <!--    <div class="col-lg-5">
-        <select class="form-control sm-select text-break bill-search-height" id="bill_type">
+   
           <?php print_r($sessionResponses);
-             /* foreach ($sessionResponses  as $key => $value) {
+             foreach ($sessionResponses  as $key => $value) {
                 $bill_string = explode(" ", $value->value);
                 $bill_id = substr($value->value, 0, 1).substr($bill_string[1], 0,1);
-         		echo $bill_id; ?><?php echo $value->value; 
-          
-              }*/
+         		?>
+                 <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $value->value; echo $bill_id; ?></button>
+  </li>
+
+                <?php
+              }
 
           ?>
-          </select>
-      </div> -->
-      <div class="col-lg-12">
-        
-
-      </div>
-      </div>
+         
+     
+      </ul>
     
-  </div>
 
   <script type="text/javascript">
     $("#bill_number").keyup(function(event) {
