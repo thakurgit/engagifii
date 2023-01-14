@@ -650,6 +650,16 @@ public function _popOverSpeakerData3($id, $instructorData){
 	return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
 	}
 
+	/*Bill Session API */
+	
+	public function sessions()
+	{
+	$postData = array();
+	$apiUrl = 'legislative/public-bills/sessions/';
+	return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
+	}
+
+
 	/* Last Action Type  Api */
 
 	public function lastAction()

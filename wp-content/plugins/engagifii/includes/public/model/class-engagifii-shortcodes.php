@@ -46,6 +46,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'legislation-search-billnumber' => 'legislation_bill_number',
 			'legislative-issue' => 'legislation_issue',
 			'bill-count'        => 'bill_count',
+			'sessions'			=> 'sessions',
 			'course-count'      => 'course_count',
 			'class-count'       => 'class_count',
 			'endorsement-count' => 'endorsement_count',
@@ -303,7 +304,15 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/shortcode/bill-count.php';
 		return ob_get_clean();
 	}
-	
+
+//Added for sessions
+	public function sessions(){
+		ob_start();
+		include $this->basePath.'includes/public/views/shortcode/sessions.php';
+		return ob_get_clean();
+	}
+	//ends here
+
 	public function course_count(){
 		ob_start();
 		include $this->basePath.'includes/public/views/shortcode/course-count.php';
