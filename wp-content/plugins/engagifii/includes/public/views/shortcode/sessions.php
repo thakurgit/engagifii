@@ -13,16 +13,19 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 
       
    
-          <?php print_r($sessionResponses);
+          <?php //print_r($sessionResponses); 
+		  $i=0;
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
 				$session_name = $value->sessionName;
+				
          		?>
                  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="session-<?php echo $session_id;?>" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
+    <button class="nav-link <?php if($i==0){ echo 'active'; } ?> " id="<?php echo $session_id;?>" data-toggle="tab" data-target="#session-session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
   </li>
 
                 <?php
+				$i++;
               }
 
           ?>
