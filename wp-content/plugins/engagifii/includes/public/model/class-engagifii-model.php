@@ -3404,6 +3404,10 @@ $vars = "";
             $datepickerend = $_POST['endDate'];
 
         }
+        if (isset($_POST['sessionId'])) {
+            $sessionId = $_POST['sessionId'];
+
+        }
 
         $postData = array();
         $postData['trackingLevels'] = $trackingLevels;
