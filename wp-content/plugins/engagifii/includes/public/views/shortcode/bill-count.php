@@ -1,8 +1,8 @@
 <span id="bill-count"></span>
 <script type="text/javascript">
-
+var sessionId='';
 $(document).ready(function(){
-	var sessionId='';
+	
 	getCountSelected();
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
