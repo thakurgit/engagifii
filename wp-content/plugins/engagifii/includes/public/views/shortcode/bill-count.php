@@ -6,7 +6,8 @@ $(document).ready(function(){
 	getCountSelected();
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
-		alert(sessionId);
+		//alert(sessionId);
+		getCountSelected();
 	});
 });
 
@@ -16,7 +17,7 @@ function getCountSelected()
       type : "post",
       url: engagifiiUrl_ajaxurl,
       data:{
-		//sessionId = sessionId,
+		sessionId = sessionId,
         action:'legislationfiltercountdata'
       },
       success: function(response) {      
