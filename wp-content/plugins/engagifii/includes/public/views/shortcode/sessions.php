@@ -9,7 +9,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
   button#billSearch:focus{ outline: none;  }
   .form-control:focus{ box-shadow: unset; border-color: unset; border: 1px solid #EAEDF2 !important }
 </style>
-     <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+     <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
 
 
       
