@@ -9,7 +9,8 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
   button#billSearch:focus{ outline: none;  }
   .form-control:focus{ box-shadow: unset; border-color: unset; border: 1px solid #EAEDF2 !important }
 </style>
-     <ul class="nav nav-tabs" id="myTab" role="tablist">
+     <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+
 
       
    
@@ -21,7 +22,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 				
          		?>
                  <li class="nav-item" role="presentation">
-    <button class="nav-link <?php if($i==0){ echo 'active'; } ?> " id="<?php echo $session_id;?>" data-toggle="tab" data-target="#session-session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
+    <button class="nav-link <?php if($i==0){ echo 'active'; } ?> " id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
   </li>
 
                 <?php
