@@ -3407,7 +3407,7 @@ $vars = "";
         }
         $sessionId = "";
         if (isset($_POST['sessionId'])) {
-            $sessionId = 123;
+            $sessionId = $_POST['sessionId'];
 
         }
 
