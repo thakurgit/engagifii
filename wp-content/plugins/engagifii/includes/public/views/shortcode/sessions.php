@@ -15,11 +15,11 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
    
           <?php print_r($sessionResponses);
              foreach ($sessionResponses  as $key => $value) {
-                $bill_string = explode(" ", $value->value);
-                $bill_id = substr($value->value, 0, 1).substr($bill_string[1], 0,1);
+				$session_id = $value->sessionId;
+				$session_name = $value->sessionName;
          		?>
                  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $value->value; echo $bill_id; ?></button>
+    <button class="nav-link active" id="session-<?php echo $session_id;?>" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
   </li>
 
                 <?php
