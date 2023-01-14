@@ -16,6 +16,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
    
           <?php //print_r($sessionResponses); 
 		  $i=0;
+		  rsort($sessionResponses);
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
 				$session_name = $value->sessionName;
