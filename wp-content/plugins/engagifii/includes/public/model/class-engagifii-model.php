@@ -1430,6 +1430,7 @@ wp_die();
     public function countLegislationFilterData()
     {
         $postedData = $this->_prepareLegislationPostCountData();
+        print_r(json_encode($postedData));
         $dataResponse = $this->submitApiRequest("legislative/public-bills/all-filter-list/count", $postedData, "POST", 'legislation');
         header("Content-Type: application/json");     
         echo json_encode($dataResponse);
@@ -3404,8 +3405,9 @@ $vars = "";
             $datepickerend = $_POST['endDate'];
 
         }
+        $sessionId = "";
         if (isset($_POST['sessionId'])) {
-            $sessionId = $_POST['sessionId'];
+            $sessionId = 123;
 
         }
 
