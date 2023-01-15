@@ -1071,7 +1071,7 @@ var appl_assignto  = [];
 var appl_assignGroups = [];
 var appl_assignTags   = [];
 var appl_sessionId = '';
-if (window.location.href.indexOf("session") > -1)
+if (window.location.href.indexOf("session") > -1){
 	appl_sessionId = window.location.href.split('session=')[1];
 }
 <?php
