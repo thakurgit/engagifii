@@ -13,6 +13,7 @@ $(document).ready(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
 		getCountSelected();
+		legislationtagsdata();
 		$('.sessions-tracking a').each(function(i) {
 			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
@@ -33,6 +34,21 @@ function getCountSelected()
       },
       success: function(response) {       
         $('#bill-count').html('(Total '+response.api_response+' bills)');
+            
+         }
+    });
+}
+function legislationtagsdata()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislationtagsdata'
+      },
+      success: function(response) {       
+        //$('#bill-count').html('(Total '+response.api_response+' bills)');
             
          }
     });
