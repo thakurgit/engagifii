@@ -2550,15 +2550,15 @@ wp_die();
             $statusTypes = $_POST['statusTypes'];
            
         } 
-		 if (isset($_POST['sessionIds'])) {
-            $sessionId = $_POST['sessionIds'];
-           
-        } 
+		 
              
 
         }        
          
-
+if (isset($_POST['sessionIds'])) {
+            $sessionId = $_POST['sessionIds'];
+           
+        } 
         $postData = array();
         $postData['introducedDate'] = date('m/d/Y');
         $postData['trackingLevels'] = $trackingLevels;
@@ -2586,7 +2586,8 @@ wp_die();
         $postData['users'] = $assignTo;
 		$postData['sessionId'] = $sessionId;
         
-        echo json_encode($postData); die;
+        echo json_encode($postData); 
+		die;
         return $postData;
     }
 
