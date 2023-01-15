@@ -8,6 +8,9 @@ $(document).ready(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
 		getCountSelected();
+		$('.sessions-tracking a').each(function() {
+			$(this).attr('href',$(this).attr('href')+'&session='+sessionId);	
+		});
 	});
 });
 
