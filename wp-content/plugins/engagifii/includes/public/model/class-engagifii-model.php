@@ -2550,8 +2550,8 @@ wp_die();
             $statusTypes = $_POST['statusTypes'];
            
         } 
-		 if (isset($_POST['sessionId1'])) {
-            $sessionId = $_POST['sessionId1'];
+		 if (isset($_POST['sessionId'])) {
+            $sessionId = $_POST['sessionId'];
            
         } 
              
