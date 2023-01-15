@@ -38,8 +38,14 @@ $billResponses = json_decode($billResponse['api_response']);
       </div>
     
   </div>
-
+ 
   <script type="text/javascript">
+  var sessionId='';
+  	$('.session-tab li button').click(function(){
+		sessionId = $(this).attr('id');
+		//$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
+	});
+
     $("#bill_number").keyup(function(event) {
     if (event.keyCode === 13) {
         $("#billSearch").click();
@@ -48,7 +54,11 @@ $billResponses = json_decode($billResponse['api_response']);
     $('#billSearch').click(function(){
       var bill = $('#bill_number').val();
       $("body").removeClass('loaded');
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill;
+	  if(sessionId!=''){
+     	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill+'&sessionId='+sessionId;
+	  }else {
+     	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill;
+	  }
       window.location.href = redirect_url;
     })
   </script>
