@@ -53,10 +53,6 @@ class abstractModelEngagifii extends Engagifii_API
         add_action('wp_ajax_nopriv_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
         add_action('wp_ajax_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
 
-
-        add_action('wp_ajax_nopriv_legislationtagsdata', array($this, 'legislationTagsFilter'));
-        add_action('wp_ajax_legislationtagsdata', array($this, 'legislationTagsFilter'));
-
         add_action('wp_ajax_nopriv_getbillids', array($this, 'legislationbillids'));
         add_action('wp_ajax_getbillids', array($this, 'legislationbillids'));
 
