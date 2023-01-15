@@ -1,9 +1,9 @@
 <?php
-$sessionid    = $_REQUEST['sessionId'] ?? '';
+//$sessionid    = $_REQUEST['sessionId'] ?? '';
 //print_r($sessionid );
 //die;
  $obj =  new Engagifii_API();
-$tags = $obj->legislationTagsFilter($sessionid);
+$tags = $obj->legislationTagsFilter();
 $options = get_option( 'ebt_api_settings' );
  $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
 
