@@ -20,7 +20,7 @@ function getCountSelected()
 		sessionId : sessionId,
         action:'legislationfiltercountdata'
       },
-      success: function(response) {      
+      success: function(response) {       
         $('#bill-count').html('(Total '+response.api_response+' bills)');
             
          }
