@@ -1444,11 +1444,11 @@ wp_die();
         wp_die();
     }
 	
-	 public function legislativeIssues($sessionId)
+	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
         //print_r(json_encode($postedData));
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId".$sessionId, "GET", 'legislation');
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags", "GET", 'legislation');
         header("Content-Type: application/json");     
         echo json_encode($dataResponse);
         wp_die();
