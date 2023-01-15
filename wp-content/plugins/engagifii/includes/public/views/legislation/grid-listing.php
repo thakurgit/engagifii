@@ -1070,6 +1070,10 @@ var appl_tags =[];
 var appl_assignto  = [];
 var appl_assignGroups = [];
 var appl_assignTags   = [];
+var appl_sessionId = '';
+if (window.location.href.indexOf("session") > -1)
+	appl_sessionId = window.location.href.split('session=')[1];
+}
 <?php
 if (isset($_REQUEST['actionType']))
 {
@@ -1231,6 +1235,7 @@ var table = $('#ebtmaintable').DataTable( {
             d.assignTag = appl_assignTags;
             d.assignGroups = appl_assignGroups;
             d.isapplyactive = $("#isapplyactive").val();
+			d.sessionId = appl_sessionId;
          },
             
          },
