@@ -11,7 +11,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 	color:#333 !important;
  }
   .session-tab button.active{
-	border-bottom-color:var(--bg-primary) !important;
+	border-bottom-color:#002474  !important;
  }
 </style>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
@@ -28,7 +28,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 				
          		?>
                  <li class="nav-item mx-2" role="presentation">
-    <button class="nav-link bg-transparent border-0  <?php if($i==0){ echo ''; } ?> " id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
+    <button class="nav-link bg-transparent border-0 rounded-0  <?php if($i==0){ echo ''; } ?> " id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
   </li>
 
                 <?php
