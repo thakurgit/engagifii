@@ -1240,7 +1240,7 @@ var table = $('#ebtmaintable').DataTable( {
             d.assignTag = appl_assignTags;
             d.assignGroups = appl_assignGroups;
             d.isapplyactive = $("#isapplyactive").val();
-			d.sessionId = appl_sessionId1;
+			d.sessionId = '5028';
          },
             
          },
