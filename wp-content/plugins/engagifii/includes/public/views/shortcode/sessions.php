@@ -8,8 +8,14 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
   button#billSearch{ padding: 0 15px; }
   button#billSearch:focus{ outline: none;  }
   .form-control:focus{ box-shadow: unset; border-color: unset; border: 1px solid #EAEDF2 !important }
+ .session-tab a {
+	border-bottom:3px solid transparent !important;
+ }
+  .session-tab a.active{
+	border-bottom-color:var(--bg-primary) !important;
+ }
 </style>
-     <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
+     <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
 
 
       
@@ -22,8 +28,8 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 				$session_name = $value->sessionName;
 				
          		?>
-                 <li class="nav-item" role="presentation">
-    <button class="nav-link <?php if($i==0){ echo ''; } ?> " id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
+                 <li class="nav-item mx-2" role="presentation">
+    <button class="nav-link bg-transparent border-0  <?php if($i==0){ echo ''; } ?> " id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
   </li>
 
                 <?php
