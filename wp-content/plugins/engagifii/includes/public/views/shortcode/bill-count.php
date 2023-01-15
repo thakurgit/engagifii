@@ -1,16 +1,22 @@
 <span id="bill-count"></span>
 <script type="text/javascript">
 var sessionId='';
+var sessionTrackingUrl=[];
 $(document).ready(function(){
-	
+	$('.sessions-tracking a').each(function() {
+			 sessionTrackingUrl.push($(this).attr('href'));
+		});
 	getCountSelected();
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
 		getCountSelected();
-		$('.sessions-tracking a').each(function() {
-			$(this).attr('href',$(this).attr('href')+'&session='+sessionId);	
+		$('.sessions-tracking a').each(function(i) {
+			 $(this).attr('href',sessionTrackingUrl[i]+'&session='+sessionId);
+			 i++;
 		});
+		
+		
 	});
 });
 
