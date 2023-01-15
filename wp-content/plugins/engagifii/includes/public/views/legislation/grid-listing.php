@@ -779,6 +779,7 @@ for (var i = 0; i < eletitle; i++) {
         tzdatasearch: tzdatasearch,
         startDate: startDate,
         endDate: endDate,
+		sessionId: appl_sessionId,
       },
       success: function(response) {       
         var element  = document.getElementById("countFilterResult");
