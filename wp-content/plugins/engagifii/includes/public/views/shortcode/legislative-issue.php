@@ -71,7 +71,25 @@ usort($tags, "sort_associative_array");
       window.location.href= redirect_url;
 
     }
+	var sessionId='';
+	$('.session-tab li button').click(function(){
+		sessionId = $(this).attr('id');
+		getLegislativeIssues();
+	});
 	
-	
-	
+function getLegislativeIssues()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativeissuedata'
+      },
+      success: function(response) {       
+       // $('#bill-count').html('(Total '+response.api_response+' bills)');
+            
+         }
+    });
+}	
 </script>
