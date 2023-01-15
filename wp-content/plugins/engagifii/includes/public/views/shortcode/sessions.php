@@ -6,10 +6,10 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 ?>
 <style type="text/css">
   
- .session-tab a {
+ .session-tab button {
 	border-bottom:3px solid transparent !important;
  }
-  .session-tab a.active{
+  .session-tab button.active{
 	border-bottom-color:var(--bg-primary) !important;
  }
 </style>
