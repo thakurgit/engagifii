@@ -8,6 +8,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
   
  .session-tab button {
 	border-bottom:3px solid transparent !important;
+	color:#333 !important;
  }
   .session-tab button.active{
 	border-bottom-color:var(--bg-primary) !important;
