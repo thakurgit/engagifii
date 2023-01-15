@@ -2550,6 +2550,10 @@ wp_die();
             $statusTypes = $_POST['statusTypes'];
            
         } 
+		 if (isset($_POST['sessionId'])) {
+            $sessionId = $_POST['sessionId'];
+           
+        } 
              
 
         }        
@@ -2580,6 +2584,7 @@ wp_die();
         $postData['usersTags'] = $assignTag;
         $postData['clientPersonGroups'] = $assignGroups;
         $postData['users'] = $assignTo;
+		$postData['sessionId'] = $sessionId;
         
         //echo json_encode($postData); die;
         return $postData;

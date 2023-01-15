@@ -12,7 +12,7 @@ $(document).ready(function(){
 		//alert(sessionId);
 		getCountSelected();
 		$('.sessions-tracking a').each(function(i) {
-			 $(this).attr('href',sessionTrackingUrl[i]+'&session='+sessionId);
+			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
 		});
 		
