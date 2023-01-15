@@ -5,9 +5,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 
 ?>
 <style type="text/css">
-  button#billSearch{ padding: 0 15px; }
-  button#billSearch:focus{ outline: none;  }
-  .form-control:focus{ box-shadow: unset; border-color: unset; border: 1px solid #EAEDF2 !important }
+  
  .session-tab a {
 	border-bottom:3px solid transparent !important;
  }
