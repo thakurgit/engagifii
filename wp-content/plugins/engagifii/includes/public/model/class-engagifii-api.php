@@ -1008,15 +1008,15 @@ public function getEventDetailsByID($id)
 		return $responseArray;
 	}
 
-	public function legislationTagsFilter(){
-
-		$postData = array();
-		$responseArray = array();
-		$apiUrl= 'legislative/public-bills/filter/tags';
-		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response']);
-		return $responseArray;
-	}
+	
+	public function legislationTagsFilter($sessionId){
+        $postData = array();
+        $responseArray = array();
+        $apiUrl= 'legislative/public-bills/filter/tags?sessionId='.$sessionId;
+        $response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+        $responseArray = json_decode($response['api_response']);
+        return $responseArray;
+    }
 
 	public function legislationAssignToFilter(){
 
