@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
-		getSessionCountSelected();
+		getCountSelected();
 	});
 });
 
@@ -21,21 +21,7 @@ function getCountSelected()
         action:'legislationfiltercountdata'
       },
       success: function(response) {      
-        $('#bill-count').html('(Total '+response.api_response+' bills)');
-            
-         }
-    });
-}
-function getSessionCountSelected1()
-{
-  $.ajax({
-      type : "post",
-      url: engagifiiUrl_ajaxurl,
-      data:{
-		sessionId : sessionId,
-        action:'legislationfiltercountdata'
-      },
-      success: function(response) {      
+        alert(response);
         $('#bill-count').html('(Total '+response.api_response+' bills)');
             
          }
