@@ -753,6 +753,10 @@ for (var i = 0; i < eletitle; i++) {
     }
   var eltzdatasearch = document.getElementsByName("tzdatasearch");
   var tzdatasearch = "";
+  var appl_sessionId = '';
+if (window.location.href.indexOf("sessionId") > -1){
+	appl_sessionId = window.location.href.split('sessionId=')[1];
+}
  
   
     for (var i = 0; i < eltzdatasearch; i++) {
