@@ -2586,7 +2586,7 @@ wp_die();
         $postData['users'] = $assignTo;
 		$postData['sessionId'] = $sessionId;
         
-        //echo json_encode($postData); die;
+        echo json_encode($postData); die;
         return $postData;
     }
 
