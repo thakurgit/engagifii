@@ -1447,9 +1447,9 @@ wp_die();
 	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-        print_r(json_encode($postedData));
-		die;
-        $dataResponse = $this->submitApiRequestWithGet("legislative/public-bills/filter/tags?sessionId=".$sessionId, 'legislation');
+       // print_r(json_encode($postedData));
+		//die;
+        $dataResponse = $this->submitApiRequestWithGet("legislative/public-bills/filter/tags?sessionId=5028", 'legislation');
         header("Content-Type: application/json");     
         echo json_encode($dataResponse);
         wp_die();
