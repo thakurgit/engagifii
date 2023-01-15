@@ -1,5 +1,5 @@
 <?php
-$sessionid    = null;
+$sessionid    = '';
 print_r($sessionid );
 //die;
  $obj =  new Engagifii_API();
