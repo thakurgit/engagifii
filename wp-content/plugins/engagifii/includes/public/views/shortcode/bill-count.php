@@ -21,7 +21,7 @@ function getCountSelected()
         action:'legislationfiltercountdata'
       },
       success: function(response) {      
-        alert(response);
+        //alert(response);
         $('#bill-count').html('(Total '+response.api_response+' bills)');
             
          }
