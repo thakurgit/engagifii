@@ -1,6 +1,6 @@
 <?php
 $sessionid    = $_REQUEST['sessionId'] ?? '';
-print_r($sessionid );
+//print_r($sessionid );
 //die;
  $obj =  new Engagifii_API();
 $tags = $obj->legislationTagsFilter($sessionid);
@@ -71,4 +71,7 @@ usort($tags, "sort_associative_array");
       window.location.href= redirect_url;
 
     }
+	
+	
+	
 </script>

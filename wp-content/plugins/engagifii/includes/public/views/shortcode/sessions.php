@@ -42,15 +42,6 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
     
 
   <script type="text/javascript">
-    $("#bill_number").keyup(function(event) {
-    if (event.keyCode === 13) {
-        $("#billSearch").click();
-    }
-    });
-    $('#billSearch').click(function(){
-      var bill = $('#bill_number').val();
-      $("body").removeClass('loaded');
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill;
-      window.location.href = redirect_url;
-    })
+ 
+
   </script>
