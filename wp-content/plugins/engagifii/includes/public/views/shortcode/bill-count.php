@@ -29,7 +29,7 @@ function getCountSelected()
     });
 }
  $(window).on('load', function() {
-    // $('.session-tab li:first-child button').trigger('click') ;
+     $('.session-tab li:first-child button').trigger('click') ;
 	
 });
 </script>
