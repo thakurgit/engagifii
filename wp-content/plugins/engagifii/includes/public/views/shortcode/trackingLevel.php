@@ -58,7 +58,7 @@
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				if(item.count>0)
+				if(item.count>0){
 				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><div class="d-flex align-items-center"><p class="text-dark">'+item.title+'</p></div></div></a>';
 			}
 			});			
