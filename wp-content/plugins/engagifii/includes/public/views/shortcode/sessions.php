@@ -42,7 +42,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
     
 
   <script type="text/javascript">
-  $(window).onload(function() {
+  $(window).on('load', function() {
      $('.session-tab li:first-child button').trigger('click') 
 });
 
