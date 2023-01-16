@@ -58,7 +58,12 @@
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'">
+      <div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;">
+            <div class="d-flex align-items-center">
+              <p class="text-dark">'+item.title+'</p>
+            </div>
+          </div></a>';
 				
 			});			
 			
