@@ -39,7 +39,7 @@
   </div>
   <script>
  var sessionId='';
-	$('body .session-tab li button').click(function(){
+	$('.session-tab li button').click(function(){
 		alert();
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').appendTo(".session-tracking"); 
 		sessionId = $(this).attr('id');
@@ -59,12 +59,7 @@
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'">
-      <div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;">
-            <div class="d-flex align-items-center">
-              <p class="text-dark">'+item.title+'</p>
-            </div>
-          </div></a>';
+				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><div class="d-flex align-items-center"><p class="text-dark">'+item.title+'</p></div></div></a>';
 				
 			});			
 			
