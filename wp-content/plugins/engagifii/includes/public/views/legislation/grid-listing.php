@@ -1,4 +1,5 @@
 <?php
+
 $actionType = '';
 $billnumber = '';
 $tagsRequest = '';
@@ -25,7 +26,7 @@ if (isset($_REQUEST['tag']))
 {
     $tagsRequest = $_REQUEST['tag'];
     $key_array = array_keys($_GET);
-    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).'</h2>';
+    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).'<small class="sessionname"></small></h2>';
 }
 
 if (isset($_REQUEST['member']))
@@ -1439,5 +1440,8 @@ $("#apply-filter-data").click(function () {
  
 
 
+if (window.location.href.indexOf("sessionId") > -1){
+	$('.sessionname').html( localStorage.getItem("sessionname"));
+}
 </script>      
 </div>
