@@ -1455,6 +1455,7 @@ wp_die();
         wp_die();
     }
 	public function legislativeIssues($sessionId){
+		$sessionId = '5028';
         $postData = array();
         $responseArray = array();
 		if($sessionId=='') {
