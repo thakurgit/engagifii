@@ -44,7 +44,7 @@ usort($tags, "sort_associative_array");
  <div class=" mb-4 mb-md-0">
   <div class="row">
       <div class="col-sm-12">
-        <select class="form-control eq-height" size="5" name="issue_tags">
+        <select class="form-control eq-height legis-issues" size="5" name="issue_tags">
 
    <?php foreach($tags as $tag){
           if(in_array($tag->tagId, $lbt_visib_legislative_list))
@@ -87,7 +87,7 @@ function getLegislativeIssues()
         action:'legislativeissuedata'
       },
       success: function(response) {       
-       // $('#bill-count').html('(Total '+response.api_response+' bills)');
+        $('.legis-issues').html(response.api_response);
             
          }
     });
