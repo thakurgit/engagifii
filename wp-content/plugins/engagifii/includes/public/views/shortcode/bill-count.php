@@ -37,7 +37,7 @@ function getCountSelected()
          }
     });
 }
- $(body).on('click','.session-tab li:first-child button', function() {
+ $('body').on('click','.session-tab li:first-child button', function() {
      $(this).trigger('click') 
 });
 </script>
