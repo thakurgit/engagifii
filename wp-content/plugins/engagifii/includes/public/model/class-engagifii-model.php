@@ -1447,10 +1447,12 @@ wp_die();
 	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-        print_r(json_encode($postedData));
-		die;
+       // print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags",$postedData,"GET", 'legislation');
-        header("Content-Type: application/json");     
+        header("Content-Type: application/json");   
+		print_r($dataResponse);
+		die;  
         echo json_encode($dataResponse);
         wp_die();
     }
