@@ -40,7 +40,6 @@
   <script>
  var sessionId='';
 	$('.session-tab li button').click(function(){
-		alert();
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').appendTo(".session-tracking"); 
 		sessionId = $(this).attr('id');
 		getTrackingLevels();
