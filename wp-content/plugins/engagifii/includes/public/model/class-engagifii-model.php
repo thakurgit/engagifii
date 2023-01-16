@@ -1463,7 +1463,7 @@ wp_die();
 		} else {
 			$apiUrl= 'legislative/public-bills/filter/tags?sessionId='.$sessionId;	
 		}
-        $response = $this->submitApiRequestWithGet($apiUrl, $postData, 'GET', 'legislation');
+        $response = $this->submitApiRequestWithGet($apiUrl, $postData, 'legislation');
         $responseArray = json_decode($response['api_response']);
         return $responseArray;
     }
