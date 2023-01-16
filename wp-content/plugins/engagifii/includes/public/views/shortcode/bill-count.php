@@ -13,8 +13,9 @@ $(document).ready(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
 		getCountSelected();
+		alerts();
 		$('.sessions-tracking a').each(function(i) {
-			alerts();
+			
 			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
 		});
