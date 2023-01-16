@@ -19,7 +19,7 @@ if (isset($_REQUEST['actionType']))
 if (isset($_REQUEST['bill']))
 {
     $billnumber = $_REQUEST['bill'];
-    echo '<h2 class="text-center">Search related to bill number '.$billnumber.'</h2>';
+    echo '<h2 class="text-center">Search related to bill number '.$billnumber.'<span class="h5 sessionname d-inline-block"></span></h2></h2>';
 }
 
 if (isset($_REQUEST['tag']))
