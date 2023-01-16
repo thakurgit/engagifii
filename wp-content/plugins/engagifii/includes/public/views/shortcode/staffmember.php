@@ -61,10 +61,6 @@ if(site_url() == 'http://engagifiiweb.com')
         <option data-title="<?php echo base64_encode($assign->fullName);?>" data-type="member" data-id="<?php echo $assign->personId;?>" onclick="filterStaff('<?php echo $assign->personId; ?>')" >
         
         <?php 
-       
-        if($site == 'http://engagifiiweb.com')
-            echo $assign->fullName.' ('.$assign->count.')';
-        else 
            echo $assign->fullName.' ('.$assign->count.')';
         ?>
         </option>
@@ -138,9 +134,32 @@ if(site_url() == 'http://engagifiiweb.com')
 	$('.session-tab li button').click(function(){
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-members"); 
 		sessionId = $(this).attr('id');
-		getLegislativeIssues();
+		getStaffMembers();
 	});
- 
+function getStaffMembers()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativestaffmembers'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			$.each(data, function(i, item) {
+				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				
+			});			
+			
+        	$('.legis-members').html(html);
+			$('.legis-members').siblings('.issue-loader').remove();
+            
+         }
+    });
+}	
 	
     function filterStaff(id) {
       $("body").removeClass('loaded');
