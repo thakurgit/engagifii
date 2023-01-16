@@ -90,7 +90,8 @@ function getLegislativeIssues()
 	  		var data = response.api_response;
 			var html='';
 			$.each(data, function(i, item) {
-				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				// html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				html = item.text;
 			});			
 			
         	$('.legis-issues').html(html);
