@@ -150,8 +150,9 @@ function getStaffMembers()
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
-				
+				if(item.count>0){
+				 html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
+				}
 			});			
 			
         	$('.legis-members').html(html);
