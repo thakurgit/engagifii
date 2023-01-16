@@ -3468,139 +3468,14 @@ $vars = "";
     private function _prepareLegislativeIssuesData()
     {
 
-        $serachTxt = '';
-        if (strlen($_POST['search']['value']) > 1) {
-            $serachTxt = $_POST['search']['value'];
-        }
-
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-        $title = $_POST['searchbytitle'];
-        $searchText = $_POST['tzdatasearch'];
-
-        $columnsData = [];
-        foreach ($_POST['columns'] as $key => $value) {
-            if ($value['orderable'] == "true") {
-                $columnsData[$value['data']] = $value['data'];
-            }
-        }
-
-        $isAsscend = $_POST["order"][0]["dir"];
-
-        if ($isAsscend == 'asc') {
-            $isAsscending = true;
-        } else {
-            $isAsscending = false;
-        }
-
-        if ($columnsData["title"] == "title") {
-            $sortBy = "Title";
-        } else if ($columnsData["billType"] == "billType") {
-            $sortBy = "BillType";
-        } else if ($columnsData["billNumber"] == "billNumber") {
-            $sortBy = "BillNumber";
-        } else if ($columnsData["lastActionOn"] == "lastActionOn") {
-            $sortBy = "LastAction";
-        } else if ($columnsData["state"] == "state") {
-            $sortBy = "State";
-        } else {
-            $sortBy = "";
-        }
-
-        $trackingLevels = array();
-        if (isset($_POST['trackingLevels']) && !empty($_POST['trackingLevels'])) {
-            $trackingLevels = @explode(",", $_POST['trackingLevels']);
-           
-        }     
-        
-        $sponsors = array();
-        if (isset($_POST['sponsors']) && !empty($_POST['sponsors'])) {
-            $sponsors = @explode(",", $_POST['sponsors']);
-           
-        }
-        $tags = array();
-         if (isset($_POST['tags']) && !empty($_POST['tags'])) {
-            $tags =  @explode(",",$_POST['tags']);
-        }
-
-        $assignTo = array();
-         if (isset($_POST['assignTo']) && !empty($_POST['assignTo'])) {
-            $assignTo =  @explode(",", $_POST['assignTo']);
-        }
-
-         $assignTag = array();
-         if (isset($_POST['assignTag']) && !empty($_POST['assignTag'])) {
-            $assignTag =  @explode(",", $_POST['assignTag']);
-        }
-
-         $assignGroups = array();
-         if (isset($_POST['assignGroups']) && !empty($_POST['assignGroups'])) {
-            $assignGroups =  @explode(",", $_POST['assignGroups']);
-        }
-
-        $houseCommittees = array();
-        if (isset($_POST['houseCommittees']) && !empty($_POST['houseCommittees'])) {
-            $houseCommittees = @explode(",", $_POST['houseCommittees']);
-           
-        } 
-        $senateCommittees = array();
-        if (isset($_POST['senateCommittees']) && !empty($_POST['senateCommittees'])) {
-            $senateCommittees = @explode(",", $_POST['senateCommittees']);
-           
-        }  
-        $lastActionTypes = array();
-        if (isset($_POST['lastActionTypes']) && !empty($_POST['lastActionTypes'])) {
-            $lastActionTypes = @explode(",", $_POST['lastActionTypes']);
-           
-        }  
-        $billTypes = array();
-        if (isset($_POST['billTypes']) && !empty($_POST['billTypes'])) {
-            $billTypes = @explode(",", $_POST['billTypes']);
-           
-        }  
-        $statusTypes = array();
-        if (isset($_POST['statusTypes']) && !empty($_POST['statusTypes'])) {
-            $statusTypes = @explode(",", $_POST['statusTypes']);
-           
-        } 
-         
-
-         $datepickerstart = null;
-        $datepickerend = null;
-        if (isset($_POST['startDate']) && !empty($_POST['startDate'])) {
-            $datepickerstart = $_POST['startDate'];
-
-        }
-
-        if (isset($_POST['endDate']) && !empty($_POST['endDate'])) {
-            $datepickerend = $_POST['endDate'];
-
-        }
+       
         $sessionId = "";
         if (isset($_POST['sessionId'])) {
             $sessionId = $_POST['sessionId'];
 
         }
 
-        $postData = array();
-        $postData['trackingLevels'] = $trackingLevels;
-        $postData['title'] = $title;       
-        $postData['sponsors'] = $sponsors;
-        $postData['houseCommittees'] = $houseCommittees;
-        $postData['senateCommittees'] = $senateCommittees;        
-        $postData['searchText'] = $searchText;      
-        $postData['lastActionStartDate'] = $datepickerstart;
-        $postData['lastActionEndDate'] = $datepickerend;
-        $postData['lastActionTypes'] = $lastActionTypes;
-        $postData['users'] = $assignTo;
-        $postData['tags'] = $tags;
-        $postData['usersTags'] = $assignTag;
-        $postData['clientPersonGroups'] = $assignGroups;
-        $postData['billTypes'] = $billTypes;
-        $postData['status'] = $statusTypes;
-        $postData['sortBy'] = "";
-        $postData['isAsscending'] = $isAsscending;
-        $postData['pageNumber'] = 1;
-        $postData['pageSize'] = 10;
+       
 		$postData['sessionId'] = $sessionId;
         return $postData;
     }
