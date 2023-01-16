@@ -9,7 +9,7 @@ if (isset($_REQUEST['tracking']))
 {
    $get_tracking = $_REQUEST['tracking'];
    $key_array = array_keys($_GET);
-   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' bills</h2>';
+   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' bills <span class="h5 sessionname d-inline-block"></span></h2>';
 }
 if (isset($_REQUEST['actionType']))
 {
@@ -19,7 +19,7 @@ if (isset($_REQUEST['actionType']))
 if (isset($_REQUEST['bill']))
 {
     $billnumber = $_REQUEST['bill'];
-    echo '<h2 class="text-center">Search related to bill number '.$billnumber.'<span class="h5 sessionname d-inline-block"></span></h2></h2>';
+    echo '<h2 class="text-center">Search related to bill number '.$billnumber.' <span class="h5 sessionname d-inline-block"></span></h2>';
 }
 
 if (isset($_REQUEST['tag']))
