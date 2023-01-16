@@ -1486,8 +1486,8 @@ wp_die();
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/billusers?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json"); 
-		print_r($dataResponse);
-		die;  
+		//print_r($dataResponse);
+		//die;  
         echo json_encode($dataResponse);
         wp_die();
     }
