@@ -91,8 +91,8 @@ function getLegislativeIssues()
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				// html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
-				html = item.text;
+				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				
 			});			
 			
         	$('.legis-issues').html(html);
