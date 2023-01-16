@@ -33,7 +33,7 @@ if (isset($_REQUEST['member']))
 {
     $staffMember = $_REQUEST['member'];
     $key_array = array_keys($_GET);
-    echo '<h2 class="text-center">Bills assigned to '.str_replace("_", " ", base64_decode($key_array[1])).'</h2>';
+    echo '<h2 class="text-center">Bills assigned to '.str_replace("_", " ", base64_decode($key_array[1])).' <span class="h5 sessionname d-inline-block"></span></h2></h2>';
 }
 
 if (isset($_REQUEST['groups']))

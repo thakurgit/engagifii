@@ -49,7 +49,7 @@ if(site_url() == 'http://engagifiiweb.com')
          $site = site_url();
            if(is_array($assignto) && count($assignto) > 0){
         ?>
-      	<select class="form-control eq-height" name="staff_member" size="5">
+      	<select class="form-control eq-height legis-members" name="staff_member" size="5">
 
    <?php 
   
@@ -134,11 +134,20 @@ if(site_url() == 'http://engagifiiweb.com')
 
 
   <script type="text/javascript">
+  var sessionId='';
+	$('.session-tab li button').click(function(){
+		sessionId = $(this).attr('id');
+	});
+	
     function filterStaff(id) {
       $("body").removeClass('loaded');
       var name = $('select[name="staff_member"]').find(':selected').data('title');
       var assign_type = $('select[name="staff_member"]').find(':selected').data('type');
+	  if(sessionId==''){
       var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?'+assign_type+'='+id+'&'+name;
+	  }else {
+      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?'+assign_type+'='+id+'&'+name+'&sessionId='+sessionId;
+	  }
       window.location.href = redirect_url;
 
     }
