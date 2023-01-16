@@ -64,13 +64,6 @@ usort($tags, "sort_associative_array");
   </div>
 
   <script type="text/javascript">
-    function filterIssues(id) {
-      $("body").removeClass('loaded');
-     var tag = $('select[name="issue_tags"]').find(':selected').data('title');
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag;
-      window.location.href= redirect_url;
-
-    }
 	var sessionId='';
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
@@ -100,4 +93,17 @@ function getLegislativeIssues()
          }
     });
 }	
+
+
+    function filterIssues(id) {
+      $("body").removeClass('loaded');
+     var tag = $('select[name="issue_tags"]').find(':selected').data('title');
+	 if(sessionId==''){
+      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag;
+	 } else {
+      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag+'&sessionId='+sessionId;
+	 }
+      window.location.href= redirect_url;
+
+    }
 </script>
