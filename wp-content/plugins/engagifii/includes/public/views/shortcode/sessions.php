@@ -42,6 +42,8 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
     
 
   <script type="text/javascript">
- 
+  $(document).ready(function() {
+ $('.session-tab a').index(0).trigger('click');
+});
 
   </script>
