@@ -60,6 +60,8 @@ class abstractModelEngagifii extends Engagifii_API
 
 
 
+
+
         add_action('wp_ajax_nopriv_getbillids', array($this, 'legislationbillids'));
         add_action('wp_ajax_getbillids', array($this, 'legislationbillids'));
 

@@ -1,7 +1,4 @@
 <?php
-//$sessionid    = $_REQUEST['sessionId'] ?? '';
-//print_r($sessionid );
-//die;
  $obj =  new Engagifii_API();
 $tags = $obj->legislationTagsFilter();
 $options = get_option( 'ebt_api_settings' );

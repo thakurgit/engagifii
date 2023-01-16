@@ -7,7 +7,7 @@
 
 <div class="mb-4 mb-md-0">
   <div class="row">
-    <div class="col-sm-12 eq-height" style="overflow: auto;">
+    <div class="col-sm-12 eq-height sessions-tracking" style="overflow: auto;">
       <?php 
         $track_count = false;
         if(count($trackingResponses)){
@@ -37,3 +37,36 @@
       </div>
     </div>
   </div>
+  <script>
+ var sessionId='';
+	$('.session-tab li button').click(function(){
+		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').appendTo(".session-tracking"); 
+		sessionId = $(this).attr('id');
+		//getTrackingLevels();
+	}); 
+	/*function getTrackingLevels()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'trackingleveldata'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			$.each(data, function(i, item) {
+				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" onclick="filterIssues('+item.tagId+')">'+item.text+' ('+item.count+')';
+				
+			});			
+			
+        	$('.session-tracking').html(html);
+			$('.issue-loader').remove();
+            
+         }
+    });
+}	*/
+
+  </script>
