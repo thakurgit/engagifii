@@ -9,12 +9,9 @@ if (isset($_REQUEST['tracking']))
 {
    $get_tracking = $_REQUEST['tracking'];
    $key_array = array_keys($_GET);
-   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' bills <span class="h5 sessionname d-inline-block"></span></h2>';
+   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' bills </h2>';
 }
-// else{
-//   $key_array = array_keys($_GET);
-//   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' All Bills <span class="h5 sessionname d-inline-block"></span></h2>';
-// }
+
 if (isset($_REQUEST['actionType']))
 {
     $actionType = $_REQUEST['actionType'];
@@ -23,21 +20,21 @@ if (isset($_REQUEST['actionType']))
 if (isset($_REQUEST['bill']))
 {
     $billnumber = $_REQUEST['bill'];
-    echo '<h2 class="text-center">Search related to bill number '.$billnumber.' <span class="h5 sessionname d-inline-block"></span></h2>';
+    echo '<h2 class="text-center">Search related to bill number '.$billnumber.' </h2>';
 }
 
 if (isset($_REQUEST['tag']))
 {
     $tagsRequest = $_REQUEST['tag'];
     $key_array = array_keys($_GET);
-    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).' <span class="h5 sessionname d-inline-block"></span></h2>';
+    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).' </h2>';
 }
 
 if (isset($_REQUEST['member']))
 {
     $staffMember = $_REQUEST['member'];
     $key_array = array_keys($_GET);
-    echo '<h2 class="text-center">Bills assigned to '.str_replace("_", " ", base64_decode($key_array[1])).' <span class="h5 sessionname d-inline-block"></span></h2></h2>';
+    echo '<h2 class="text-center">Bills assigned to '.str_replace("_", " ", base64_decode($key_array[1])).' </h2>';
 }
 
 if (isset($_REQUEST['groups']))
@@ -51,6 +48,11 @@ if (isset($_REQUEST['membertags']))
     $staffMemberTags = $_REQUEST['membertags'];
     $key_array = array_keys($_GET);
     echo '<h2 class="text-center">Bills assigned to '.str_replace("_", " ", base64_decode($key_array[1])).'</h2>';
+}
+if (isset($_REQUEST['sessionId']))
+{
+  $key_array = array_keys($_GET);
+  echo '<h2 class="text-center"><span class="h5 sessionname d-inline-block"></span></h2>';
 }
 
 
@@ -1447,7 +1449,7 @@ $("#apply-filter-data").click(function () {
 
 
 if (window.location.href.indexOf("sessionId") > -1){
-	$('.sessionname').html(' -('+ localStorage.getItem("sessionname")+')');
+	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
 }
 </script>      
 </div>
