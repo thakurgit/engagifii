@@ -1,7 +1,6 @@
 <span id="bill-count"></span>
 <script type="text/javascript">
 var sessionId='';
-var sessionTrackingUrl=[];
 var viewAll;
 $(document).ready(function(){
 	
@@ -9,7 +8,6 @@ $(document).ready(function(){
 	getCountSelected();
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
-		//alert(sessionId);
 		getCountSelected();
 		$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
 		

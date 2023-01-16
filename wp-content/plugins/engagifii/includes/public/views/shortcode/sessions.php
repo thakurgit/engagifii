@@ -41,7 +41,4 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
       </ul>
     
 
-  <script type="text/javascript">
  
-
-  </script>
