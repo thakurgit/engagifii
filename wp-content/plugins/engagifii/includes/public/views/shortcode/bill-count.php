@@ -3,7 +3,7 @@
 var sessionId='';
 var sessionTrackingUrl=[];
 var viewAll;
-$(window).load(function(){
+$(window).on('load',function(){
 	$('.sessions-tracking a').each(function() {
 			 sessionTrackingUrl.push($(this).attr('href'));
 		});
