@@ -14,7 +14,7 @@ $(document).ready(function(){
 		//alert(sessionId);
 		getCountSelected();
 		$('.sessions-tracking a').each(function(i) {
-			alert($(this).attr('href'));
+			alerts();
 			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
 		});
@@ -22,7 +22,9 @@ $(document).ready(function(){
 		
 	});
 });
-
+function alerts(){
+alert();	
+}
 function getCountSelected()
 {
   $.ajax({
