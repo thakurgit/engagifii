@@ -86,8 +86,22 @@ function getLegislativeIssues()
 		sessionId : sessionId,
         action:'legislativeissuedata'
       },
-      success: function(response) {       
-        $('.legis-issues').html(response.api_response);
+      success: function(response) {    
+	  	 <?php
+		 $tags = response.api_response;
+		  foreach($tags as $tag){
+          if(in_array($tag->tagId, $lbt_visib_legislative_list))
+            {
+        ?>
+        <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" onclick="filterIssues('<?php echo $tag->tagId; ?>')">
+        
+        <?php  
+
+         echo $tag->text.' ('.$tag->count.')';
+      ?>
+        </option>
+        <?php } }?>   
+        //$('.legis-issues').html(response.api_response);
             
          }
     });
