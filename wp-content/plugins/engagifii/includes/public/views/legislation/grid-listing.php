@@ -11,10 +11,10 @@ if (isset($_REQUEST['tracking']))
    $key_array = array_keys($_GET);
    echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' bills <span class="h5 sessionname d-inline-block"></span></h2>';
 }
-else{
-  $key_array = array_keys($_GET);
-  echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' All Bills <span class="h5 sessionname d-inline-block"></span></h2>';
-}
+// else{
+//   $key_array = array_keys($_GET);
+//   echo '<h2 class="text-center">'.str_replace("_", " ", base64_decode($key_array[1])).' All Bills <span class="h5 sessionname d-inline-block"></span></h2>';
+// }
 if (isset($_REQUEST['actionType']))
 {
     $actionType = $_REQUEST['actionType'];
