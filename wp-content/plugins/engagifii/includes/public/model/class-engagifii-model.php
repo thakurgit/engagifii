@@ -3468,13 +3468,14 @@ $vars = "";
     private function _prepareLegislativeIssuesData()
     {
 
-       
+      
         $sessionId = "";
         if (isset($_POST['sessionId'])) {
             $sessionId = $_POST['sessionId'];
 
         }
 
+        $postData = array();
        
 		$postData['sessionId'] = $sessionId;
         return $postData;
