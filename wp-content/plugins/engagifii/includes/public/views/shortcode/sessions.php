@@ -14,6 +14,7 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 	border-bottom-color:#002474  !important;
  }
 </style>
+<?php if(count($sessionResponses )>1) { ?>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
 
 
@@ -39,6 +40,6 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
          
      
       </ul>
-    
+   <?php } ?> 
 
  
