@@ -3,6 +3,10 @@
 var sessionId='';
 var sessionTrackingUrl=[];
 var viewAll;
+$(window).on('load', function() {
+     $('.session-tab li:first-child button').trigger('click') ;
+	
+});
 $(document).ready(function(){
 	$('.sessions-tracking a').each(function() {
 			 sessionTrackingUrl.push($(this).attr('href'));
@@ -12,13 +16,14 @@ $(document).ready(function(){
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
+		getCountSelected();
 		$('.sessions-tracking a').each(function(i) {
 			
 			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
 		});
 		$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
-		getCountSelected();
+		
 	});
 });
 function getCountSelected()
@@ -36,8 +41,5 @@ function getCountSelected()
          }
     });
 }
- $(window).on('load', function() {
-     $('.session-tab li:first-child button').trigger('click') ;
-	
-});
+ 
 </script>
