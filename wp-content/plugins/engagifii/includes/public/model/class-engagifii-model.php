@@ -1447,7 +1447,7 @@ wp_die();
 	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-        print_r(json_encode($postedData));
+        print_r($postedData['sessionId']);
 		die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=5028",$postedData,"GET", 'legislation');
         header("Content-Type: application/json");   
