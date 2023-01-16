@@ -1444,7 +1444,7 @@ wp_die();
         wp_die();
     }
 	
-	 public function legislativeIssues()
+	 public function legislativeIssues1()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
        // print_r(json_encode($postedData));
@@ -1454,6 +1454,19 @@ wp_die();
         echo json_encode($dataResponse);
         wp_die();
     }
+	public function legislativeIssues($sessionId){
+        $postData = array();
+        $responseArray = array();
+		if($sessionId=='') {
+        	$apiUrl= 'legislative/public-bills/filter/tags';
+		} else {
+			$apiUrl= 'legislative/public-bills/filter/tags?sessionId='.$sessionId;	
+		}
+        $response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+        $responseArray = json_decode($response['api_response']);
+        return $responseArray;
+    }
+
 
     public function legislationbillids(){
         $postedData['sortBy'] = '';
