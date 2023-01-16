@@ -58,6 +58,9 @@ class abstractModelEngagifii extends Engagifii_API
         add_action('wp_ajax_nopriv_legislativeissuedata', array($this, 'legislativeIssues'));
         add_action('wp_ajax_legislativeissuedata', array($this, 'legislativeIssues'));
 
+        add_action('wp_ajax_nopriv_trackingleveldata', array($this, 'trackingLevels'));
+        add_action('wp_ajax_trackingleveldata', array($this, 'trackingLevels'));
+
 
 
 
@@ -1454,6 +1457,20 @@ wp_die();
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json");   
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+	
+	 public function trackingLevels()
+    {
+        $postedData = $this->_prepareLegislativeIssuesData();
+       // print_r($postedData);
+		//die;
+		$session = $postedData['sessionId'];
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/trackinglevels?sessionId=".$session,$postedData,"GET", 'legislation');
+        header("Content-Type: application/json"); 
+		print_r($dataResponse);
+		die;  
         echo json_encode($dataResponse);
         wp_die();
     }
