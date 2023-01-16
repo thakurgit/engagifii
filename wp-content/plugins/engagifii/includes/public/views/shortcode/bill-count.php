@@ -3,7 +3,7 @@
 var sessionId='';
 var sessionTrackingUrl=[];
 var viewAll;
-$(window).on('load',function(){
+$(document).ready(function(){
 	$('.sessions-tracking a').each(function() {
 			 sessionTrackingUrl.push($(this).attr('href'));
 		});
@@ -37,4 +37,7 @@ function getCountSelected()
          }
     });
 }
+ $(window).on('load', function() {
+     $('.session-tab li:first-child button').trigger('click') 
+});
 </script>
