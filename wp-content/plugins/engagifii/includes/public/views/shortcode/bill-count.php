@@ -9,7 +9,7 @@ $(document).ready(function(){
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		getCountSelected();
-		$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
+		
 		
 	});
 });
@@ -24,7 +24,7 @@ function getCountSelected()
       },
       success: function(response) {       
         $('#bill-count').html('(Total '+response.api_response+' bills)');
-            
+        $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);    
          }
     });
 }
