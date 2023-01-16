@@ -1455,8 +1455,6 @@ wp_die();
         wp_die();
     }
 	public function legislativeIssues($sessionId){
-		print_r('xxxxxxxxxxxx');
-		die;
 		$sessionId = '5028';
         $postData = array();
         $responseArray = array();
@@ -1465,7 +1463,7 @@ wp_die();
 		} else {
 			$apiUrl= 'legislative/public-bills/filter/tags?sessionId='.$sessionId;	
 		}
-        $response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+        $response = $this->submitApiRequestWithGet($apiUrl, $postData, 'GET', 'legislation');
         $responseArray = json_decode($response['api_response']);
         return $responseArray;
     }
