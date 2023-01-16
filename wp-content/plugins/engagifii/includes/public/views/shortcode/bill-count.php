@@ -12,20 +12,15 @@ $(document).ready(function(){
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		//alert(sessionId);
-		alerts();
-		getCountSelected();
 		$('.sessions-tracking a').each(function(i) {
 			
 			 $(this).attr('href',sessionTrackingUrl[i]+'&sessionId='+sessionId);
 			 i++;
 		});
 		$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
-		
+		getCountSelected();
 	});
 });
-function alerts(){
-alert();	
-}
 function getCountSelected()
 {
   $.ajax({
