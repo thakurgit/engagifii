@@ -88,7 +88,7 @@ function getLegislativeIssues()
 			});			
 			
         	$('.legis-issues').html(html);
-			$('.issue-loader').remove();
+			$('.legis-issues').siblings('.issue-loader').remove();
             
          }
     });

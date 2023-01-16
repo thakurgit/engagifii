@@ -64,7 +64,7 @@
 			});			
 			
         	$('.session-tracking').html(html);
-			$('.issue-loader').remove();
+			$(".session-tracking .issue-loader").remove();
             
          }
     });
