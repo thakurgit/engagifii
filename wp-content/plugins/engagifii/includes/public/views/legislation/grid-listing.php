@@ -26,7 +26,7 @@ if (isset($_REQUEST['tag']))
 {
     $tagsRequest = $_REQUEST['tag'];
     $key_array = array_keys($_GET);
-    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).' <h5 class="sessionname"></h5></h2>';
+    echo '<h2 class="text-center">Bills associated with '.str_replace("_", " ", base64_decode($key_array[1])).' <h5 class="sessionname d-inline-block"></h5></h2>';
 }
 
 if (isset($_REQUEST['member']))
