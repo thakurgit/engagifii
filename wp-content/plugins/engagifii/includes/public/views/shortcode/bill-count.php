@@ -1,20 +1,23 @@
+<?php
+$obj =  new Engagifii_API();
+$sessionResponse = $obj->sessions();
+$sessionResponses = json_decode($sessionResponse['api_response']);
+
+?>
 <span id="bill-count"></span>
 <script type="text/javascript">
 var sessionId='';
 var viewAll;
 $(document).ready(function(){
-	
-		viewAll = $('#bill-count').siblings('a').attr('href');
-	
-	$('.session-tab li button').click(function(){
-		sessionId = $(this).attr('id');
+	viewAll = $('#bill-count').siblings('a').attr('href');
+	<?php if(count($sessionResponses )<1) { ?>
 		getCountSelected();
-		
-		
-	});
-	if(sessionId==''){
-		getCountSelected();
-	}
+	<?php } else{ ?>
+		$('.session-tab li button').click(function(){
+			sessionId = $(this).attr('id');
+			getCountSelected();
+		});
+	<?php }?>
 });
 function getCountSelected()
 {
