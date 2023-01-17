@@ -152,7 +152,7 @@ function getStaffMembers()
 			var allmembers = <?php echo $lbt_visib_members_list; ?>;
 			$.each(data, function(i, item) {
 				if(item.count>0){
-					if(jQuery.inArray(item.personId, allmembers) !== -1)
+					if(jQuery.inArray(item.personId, allmembers) !== -1){
 				 html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
 				}}
 			});			
