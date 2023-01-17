@@ -149,7 +149,7 @@ function getStaffMembers()
 	  		var data = response.api_response;
 			data = JSON.parse(data);
 			var html='';
-			var allmembers = <?php echo $lbt_visib_members_list; ?>;
+			var allmembers = <?php echo $options['lbt_visib_groups_list']; ?>;
 			$.each(data, function(i, item) {
 				if(item.count>0){
 					//if(jQuery.inArray(item.personId, allmembers) !== -1){
