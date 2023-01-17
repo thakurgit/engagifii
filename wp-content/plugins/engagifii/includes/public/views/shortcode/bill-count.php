@@ -5,13 +5,14 @@ var viewAll;
 $(document).ready(function(){
 	
 		viewAll = $('#bill-count').siblings('a').attr('href');
-	getCountSelected();
+	
 	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		getCountSelected();
 		
 		
 	});
+	getCountSelected();
 });
 function getCountSelected()
 {
