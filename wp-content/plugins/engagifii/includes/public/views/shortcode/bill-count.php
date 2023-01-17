@@ -10,14 +10,14 @@ var sessionId='';
 var viewAll;
 $(document).ready(function(){
 	viewAll = $('#bill-count').siblings('a').attr('href');
-	<?php if(count($sessionResponses )<1) { ?>
-		getCountSelected();
-	<?php } else{ ?>
+	<?php if(count($sessionResponses )>1) { ?>
+		sessionId = $('.session-tab li:first-child button').attr('id');
+	<?php }?>
 		$('.session-tab li button').click(function(){
 			sessionId = $(this).attr('id');
-			getCountSelected();
 		});
-	<?php }?>
+	
+	getCountSelected();
 });
 function getCountSelected()
 {
