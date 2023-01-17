@@ -12,7 +12,9 @@ $(document).ready(function(){
 		
 		
 	});
-	getCountSelected();
+	if(sessionId==''){
+		getCountSelected();
+	}
 });
 function getCountSelected()
 {
