@@ -13,11 +13,12 @@ $(document).ready(function(){
 	<?php if(count($sessionResponses )>1) { ?>
 		sessionId = $('.session-tab li:first-child button').attr('id');
 	<?php }?>
+	getCountSelected();
 		$('.session-tab li button').click(function(){
 			sessionId = $(this).attr('id');
+			getCountSelected();
 		});
 	
-	getCountSelected();
 });
 function getCountSelected()
 {
