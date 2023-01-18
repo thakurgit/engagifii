@@ -44,8 +44,8 @@ usort($tags, "sort_associative_array");
         <select class="form-control eq-height legis-issues" size="5" name="issue_tags">
 
    <?php foreach($tags as $tag){
-          if(in_array($tag->tagId, $lbt_visib_legislative_list))
-            {
+          if(in_array($tag->tagId, $lbt_visib_legislative_list)){
+				if($tag->count>0){
         ?>
         <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" onclick="filterIssues('<?php echo $tag->tagId; ?>')">
         
@@ -54,7 +54,7 @@ usort($tags, "sort_associative_array");
          echo $tag->text.' ('.$tag->count.')';
       ?>
         </option>
-        <?php } }?>
+        <?php } } }?>
     </select>
     </div>
     </div>
