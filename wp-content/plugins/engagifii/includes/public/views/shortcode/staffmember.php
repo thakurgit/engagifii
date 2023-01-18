@@ -10,7 +10,8 @@ $options = get_option( 'ebt_api_settings' );
 $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-
+print_r($lbt_visib_members_list);
+die;
 if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();
