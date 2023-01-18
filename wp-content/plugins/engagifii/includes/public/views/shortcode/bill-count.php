@@ -13,7 +13,7 @@ $(document).ready(function(){
 	<?php if(count($sessionResponses )>1) { ?>
 		sessionId = $('.session-tab li:first-child button').attr('id');
 	<?php } else {
-	localStorage.setItem("sessionname", '');	
+	localStorage.setItem("sessionname", "");	
 	}?>
 	getCountSelected();
 		$('.session-tab li button').click(function(){
