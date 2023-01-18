@@ -148,12 +148,13 @@ function getStaffMembers()
       success: function(response) {    
 	  		var data = response.api_response;
 			var allmembers = <?php echo json_encode( $lbt_visib_members_list);  ?>;
+console.log(allmembers);
 			data = JSON.parse(data);
 			var html='';
 			
 			$.each(data, function(i, item) {
 				if(item.count>0){
-					html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
+					html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';<br>
 					if ($.inArray(item.personId, allmembers) != -1) {
 						console.log(item.personId+' Yes');
 				 
