@@ -12,9 +12,9 @@ $(document).ready(function(){
 	viewAll = $('#bill-count').siblings('a').attr('href');
 	<?php if(count($sessionResponses )>1) { ?>
 		sessionId = $('.session-tab li:first-child button').attr('id');
-	<?php } else {
+	<?php } else { ?>
 	localStorage.setItem("sessionname", "");	
-	}?>
+	<?php }?>
 	getCountSelected();
 		$('.session-tab li button').click(function(){
 			sessionId = $(this).attr('id');
