@@ -10,8 +10,6 @@ $options = get_option( 'ebt_api_settings' );
 $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-print_r($lbt_visib_members_list);
-die;
 if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();
@@ -150,7 +148,10 @@ function getStaffMembers()
 	  		var data = response.api_response;
 			data = JSON.parse(data);
 			var html='';
-			var allmembers = <?php echo $lbt_visib_members_list; ?>;
+			var allmembers = <?php echo $lbt_visib_members_list; print_r($lbt_visib_members_list);
+die;
+ ?>;
+			
 			$.each(data, function(i, item) {
 				if(item.count>0){
 					//if(jQuery.inArray(item.personId, allmembers) !== -1){
