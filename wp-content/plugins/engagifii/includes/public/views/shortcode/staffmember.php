@@ -148,7 +148,7 @@ function getStaffMembers()
 	  		var data = response.api_response;
 			data = JSON.parse(data);
 			var html='';
-			var allmembers = <?php print_r( $lbt_visib_members_list);  ?>;
+			var allmembers = <?php echo json_encode( $lbt_visib_members_list);  ?>;
 			
 			$.each(data, function(i, item) {
 				if(item.count>0){
