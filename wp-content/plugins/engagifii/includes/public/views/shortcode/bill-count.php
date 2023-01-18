@@ -33,7 +33,11 @@ function getCountSelected()
       },
       success: function(response) {       
         $('#bill-count').html('(Total '+response.api_response+' bills)');
-        $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);    
+		<?php if(count($sessionResponses )>1) { ?>
+       	 $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
+		<?php } else { ?>
+       	 $('#bill-count').siblings('a').attr('href',viewAll);  
+		<?php } ?>  
          }
     });
 }
