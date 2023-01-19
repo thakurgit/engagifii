@@ -184,10 +184,10 @@ console.log(allmembers);
 
     }
 
-    $('option').mouseover(function(){
+    $('option[onclick]').mouseover(function(){
      $(this).addClass('bg-secondary');
 });
-$('option').mouseout(function(){
+$('option[onclick]').mouseout(function(){
      $(this).removeClass('bg-secondary');
 });
 </script>
