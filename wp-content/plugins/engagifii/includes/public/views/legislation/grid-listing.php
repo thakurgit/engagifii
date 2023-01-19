@@ -15,6 +15,7 @@ if (isset($_REQUEST['tracking']))
 if (isset($_REQUEST['actionType']))
 {
     $actionType = $_REQUEST['actionType'];
+	 echo '<h2 class="text-center">Search related to action type '.$actionType.' </h2>';
 }
 
 if (isset($_REQUEST['bill']))
