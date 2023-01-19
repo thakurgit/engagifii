@@ -46,7 +46,7 @@ usort($tags, "sort_associative_array");
    <?php foreach($tags as $tag){
           if(in_array($tag->tagId, $lbt_visib_legislative_list)){
 				if($tag->count>0){
-					$cevent = 	'onclick="filterIssues('.$tag->tagId.')"';
+					$cevent = 'onclick="filterIssues('.$tag->tagId.')"';
 				} else {
 					$cevent = '';
 				}
@@ -67,6 +67,7 @@ usort($tags, "sort_associative_array");
 
   <script type="text/javascript">
 	var sessionId='';
+	optionhover();
 	$('.session-tab li button').click(function(){
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-issues"); 
 		sessionId = $(this).attr('id');
@@ -98,6 +99,7 @@ function getLegislativeIssues()
 			
         	$('.legis-issues').html(html);
 			$('.legis-issues').siblings('.issue-loader').remove();
+			optionhover();
             
          }
     });
@@ -115,4 +117,12 @@ function getLegislativeIssues()
       window.location.href= redirect_url;
 
     }
+	function optionhover(){
+	 $('option[onclick]').mouseover(function(){
+     $(this).addClass('bg-secondary');
+});
+$('option[onclick]').mouseout(function(){
+     $(this).removeClass('bg-secondary');
+});
+	}
 </script>
