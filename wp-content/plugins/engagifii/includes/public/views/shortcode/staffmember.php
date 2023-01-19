@@ -135,6 +135,7 @@ if(site_url() == 'http://engagifiiweb.com')
 	 return Number(value);
 		}
   allmembers  = allmembers.map(toNumber);
+			optionhover();
 	$('.session-tab li button').click(function(){
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-members"); 
 		sessionId = $(this).attr('id');
@@ -151,7 +152,6 @@ function getStaffMembers()
       },
       success: function(response) {    
 	  		var data = response.api_response;
-console.log(allmembers);
 			data = JSON.parse(data);
 			var html='';
 			
@@ -165,7 +165,7 @@ console.log(allmembers);
 			
         	$('.legis-members').html(html);
 			$('.legis-members').siblings('.issue-loader').remove();
-            
+			optionhover();
          }
     });
 }	
