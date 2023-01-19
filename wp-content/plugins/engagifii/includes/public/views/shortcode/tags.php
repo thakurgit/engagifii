@@ -41,7 +41,7 @@ usort($tags, "sort_list");
  <div class=" mb-4 mb-md-0">
   <div class="row">
       <div class="col-sm-12">
-      	<select class="form-control eq-height" name="bill_tags" size="5">
+      	<select class="form-control eq-height legis-tags" name="bill_tags" size="5">
 
    <?php foreach($tags as $tag){
           if(in_array($tag->tagId, $lbt_visib_tags_list))
@@ -60,10 +60,50 @@ usort($tags, "sort_list");
   </div>
 
   <script type="text/javascript">
+  var sessionId='';
+	optionhover();
+	$('.session-tab li button').click(function(){
+		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-tags"); 
+		sessionId = $(this).attr('id');
+		getLegislativeTags();
+	});
+function getLegislativeTags()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativeissuedata'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			$.each(data, function(i, item) {
+				if(item.count>0){
+					var cevent = 'onclick="filterTag('+item.tagId+')"';
+				}else {
+					var cevent = '';
+				}
+				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
+			});			
+			
+        	$('.legis-tags').html(html);
+			$('.legis-tags').siblings('.issue-loader').remove();
+			optionhover();
+            
+         }
+    });
+}	
     function filterTag(id) {
       var tag = $('select[name="bill_tags"]').find(':selected').data('title');
       $("body").removeClass('loaded');
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag;
+	  if(sessionId==''){
+   	   var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag;
+	  }else {
+   	   var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag+'&sessionId='+sessionId;
+	  }
       window.location.href= redirect_url;
 
     }
