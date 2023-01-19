@@ -64,6 +64,9 @@ class abstractModelEngagifii extends Engagifii_API
         add_action('wp_ajax_nopriv_legislativestaffmembers', array($this, 'staffMembers'));
         add_action('wp_ajax_legislativestaffmembers', array($this, 'staffMembers'));
 
+        add_action('wp_ajax_nopriv_legislativeactionsdata', array($this, 'lastActions'));
+        add_action('wp_ajax_legislativeactionsdata', array($this, 'lastActions'));
+
 
 
 
@@ -1488,6 +1491,20 @@ wp_die();
         header("Content-Type: application/json"); 
 		//print_r($dataResponse);
 		//die;  
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+	
+	 public function lastActions()
+    {
+        $postedData = $this->_prepareLegislativeIssuesData();
+       // print_r($postedData);
+		//die;
+		$session = $postedData['sessionId'];
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/lastactions?sessionId=".$session,$postedData,"GET", 'legislation');
+        header("Content-Type: application/json"); 
+		print_r($dataResponse);
+		die;  
         echo json_encode($dataResponse);
         wp_die();
     }

@@ -21,7 +21,7 @@
   	<div class="row">
     
       <div class="col-sm-12">
-      <select class="form-control eq-height" size="5">
+      <select class="form-control eq-height legis-actions" size="5">
 
    <?php foreach($lastResponses as $last){?>
         <option class="text-break pb-1" data-title="<?php echo $last->text;?>" data-id="<?php echo $last->value;?>" onclick="filterLastAction('<?php echo $last->value; ?>')" >
@@ -37,17 +37,52 @@
   </div>
 
 <script type="text/javascript">
+var sessionId='';
+	optionhover();
+	$('.session-tab li button').click(function(){
+		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-actions"); 
+		sessionId = $(this).attr('id');
+		getLegislativeActions();
+	});
+function getLegislativeActions()
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativeactionsdata'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			$.each(data, function(i, item) {
+				if(item.count>0){
+					var cevent = 'onclick="filterLastAction('+item.tagId+')"';
+				}else {
+					var cevent = '';
+				}
+				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text;
+			});			
+			
+        	$('.legis-actions').html(html);
+			$('.legis-actions').siblings('.issue-loader').remove();
+			optionhover();
+            
+         }
+    });
+}	
     function filterLastAction(id) {
       $("body").removeClass('loaded');
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?actionType='+id;
+	  if(sessionId==''){
+    	  var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?actionType='+id;
+	  } else {
+   		   var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?actionType='+id+'&sessionId='+sessionId;
+	  }
       window.location.href = redirect_url;
 
     }
 
-    $('option').mouseover(function(){
-     $(this).addClass('bg-secondary');
-});
-$('option').mouseout(function(){
-     $(this).removeClass('bg-secondary');
-});
+    
 </script>
