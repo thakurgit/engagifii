@@ -46,15 +46,20 @@ usort($tags, "sort_associative_array");
    <?php foreach($tags as $tag){
           if(in_array($tag->tagId, $lbt_visib_legislative_list)){
 				if($tag->count>0){
+					$cevent = 	'filterIssues('.$tag->tagId.')';
+				} else {
+					$cevent = '';
+				}
         ?>
-        <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" onclick="filterIssues('<?php echo $tag->tagId; ?>')">
+        <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" onclick="<?php echo $cevent; ?>">
         
         <?php  
 
          echo $tag->text.' ('.$tag->count.')';
       ?>
         </option>
-        <?php } } }?>
+        <?php //}
+		 } }?>
     </select>
     </div>
     </div>
