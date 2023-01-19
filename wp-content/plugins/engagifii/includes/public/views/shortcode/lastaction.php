@@ -58,8 +58,8 @@ function getLegislativeActions()
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				
-				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.value+'" onclick="filterLastAction("'+item.value+'")">'+item.text+'</option>';			
+				var items = "'"+item.value+"'";
+				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.value+'" onclick="filterLastAction('+items+')">'+item.text+'</option>';			
 			});
         	$('.legis-actions').html(html);
 			$('.legis-actions').siblings('.issue-loader').remove();
