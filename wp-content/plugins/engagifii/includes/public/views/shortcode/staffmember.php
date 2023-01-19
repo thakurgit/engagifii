@@ -154,7 +154,7 @@ console.log(allmembers);
 			
 			$.each(data, function(i, item) {
 				if(item.count>0){
-					console.log(typeOf(item.personId)+'-----'+typeOf(allmembers[0]));
+					console.log(typeof(item.personId)+'-----'+typeof(allmembers[0]));
 					html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
 					if ($.inArray(item.personId, allmembers) != -1) {
 						console.log(item.personId+' Yes');
