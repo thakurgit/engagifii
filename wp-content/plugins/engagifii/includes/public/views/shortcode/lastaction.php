@@ -64,7 +64,7 @@ function getLegislativeActions()
 					//var cevent = '';
 				//}
 				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.value+'" '+cevent+'>'+item.text+'</option>';			
-			
+			});
         	$('.legis-actions').html(html);
 			$('.legis-actions').siblings('.issue-loader').remove();
 			optionhover();
