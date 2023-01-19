@@ -156,10 +156,10 @@ console.log(allmembers);
 				if(item.count>0){
 					html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
 					if ($.inArray(item.personId, allmembers) != -1) {
-						console.log(item.personId+' Yes');
+						console.log(int(item.personId)+' Yes');
 				 
 				}else {
-					console.log(item.personId+' no');
+					console.log(int(item.personId)+' no');
 				}
 				}
 			});			
