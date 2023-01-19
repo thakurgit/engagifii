@@ -155,11 +155,11 @@ console.log(allmembers);
 			$.each(data, function(i, item) {
 				if(item.count>0){
 					html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
-					if ($.inArray(item.personId, allmembers) != -1) {
-						console.log(int(item.personId)+' Yes');
+					if ($.inArray(int(item.personId), allmembers) != -1) {
+						console.log(item.personId+' Yes');
 				 
 				}else {
-					console.log(int(item.personId)+' no');
+					console.log(item.personId+' no');
 				}
 				}
 			});			
