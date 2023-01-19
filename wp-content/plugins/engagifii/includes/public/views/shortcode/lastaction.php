@@ -61,7 +61,7 @@ function getLegislativeActions()
 				
 				 html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.value+'" onclick="filterLastAction('+item.value+')">'+item.text+'</option>';			
 			});
-        	//$('.legis-actions').html(html);
+        	$('.legis-actions').html(html);
 			$('.legis-actions').siblings('.issue-loader').remove();
 			optionhover();
             
