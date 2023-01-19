@@ -59,11 +59,11 @@ function getLegislativeActions()
 			var html='';
 			$.each(data, function(i, item) {
 				if(item.count>0){
-					var cevent = 'onclick="filterLastAction('+item.tagId+')"';
+					var cevent = 'onclick="filterLastAction('+item.value+')"';
 				}else {
 					var cevent = '';
 				}
-				// html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text;
+				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.value+'" '+cevent+'>'+item.text;
 			});			
 			
         	$('.legis-actions').html(html);
