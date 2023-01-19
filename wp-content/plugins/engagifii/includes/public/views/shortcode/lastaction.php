@@ -58,11 +58,11 @@ function getLegislativeActions()
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				if(item.count>0){
+				//if(item.count>0){
 					var cevent = 'onclick="filterLastAction('+item.value+')"';
-				}else {
-					var cevent = '';
-				}
+				//}else {
+					//var cevent = '';
+				//}
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.value+'" '+cevent+'>'+item.text;
 			});			
 			
