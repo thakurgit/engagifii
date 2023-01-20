@@ -299,7 +299,7 @@ function searchMembers() {
 }
 
 jQuery('#sessionsetting').change(function(){
-	if(jQuery(this).is('checked')){
+	if(jQuery(this).is(':checked')){
 		jQuery('#sessionList').show();
 	} else {
 		jQuery('#sessionList').hide();
