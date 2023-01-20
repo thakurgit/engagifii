@@ -14,7 +14,21 @@
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
-		   <?php
+		    <h3>Multiple Sessions</h3>
+<?php 
+if(isset($options['sessionsetting'])){
+    $sessionsetting = $options['sessionsetting'];
+   }else{
+       $sessionsetting = null;
+   }
+
+    $session_setting = '';
+    if($sessionsetting==1)
+    {
+         $session_setting  = 'checked';
+    }
+
+echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
 
 	if(is_array ($response->columnList)){
 		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
@@ -38,7 +52,7 @@
 		$counter++;					  
 	}
 
-	echo '</ul>';		?>		
+	echo '</ul>';				
 }
 ?>
 		
