@@ -28,9 +28,9 @@ if($sessionsetting==1) {
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
 				$session_name = $value->sessionName;
-				/*if(){
+				if(in_array($session_id, $sessionlist))
 					continue;
-				}*/
+				}
          		?>
                  <li class="nav-item mx-2" role="presentation">
     <button class="nav-link bg-transparent border-0 rounded-0  <?php if($i==0){ echo ''; } ?> " sessionname = "<?php echo $session_name;?>" id="<?php echo $session_id;?>" data-toggle="pill" data-target="#session-<?php echo $session_id;?>" type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $session_name;  ?></button>
