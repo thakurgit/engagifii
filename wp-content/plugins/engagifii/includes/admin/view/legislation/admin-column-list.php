@@ -15,7 +15,7 @@
 	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
-<?php  //print_r($sessionResponse); die;
+<?php  print_r($sessionResponse); 
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
 			foreach ($sessionResponse as $key => $row) {
 				echo '<li style="width:31%; display:inline-block;" id="'.$row->sessionId.'">'.$row->sessionName.'</li>';
@@ -37,7 +37,8 @@ if(isset($options['sessionsetting'])){
 echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
 
 	if(is_array ($response->columnList)){
-		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
+		echo '<h3>Columns visibility</h3>
+<hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
 		$counter=0;
  
