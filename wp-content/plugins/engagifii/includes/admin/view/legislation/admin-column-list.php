@@ -29,10 +29,13 @@ if(isset($options['sessionsetting'])){
          $session_setting  = 'checked';
     }
 
-echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
-
-  //print_r($sessionResponse); 
-		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
+echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting"><strong>Enable Multiple Sessions</strong></label><br><i>Note:- By default, multiple session will be off.</i></div>';
+		if($session_setting='checked'){
+				$sessionoption = 'display:block;';
+			} else {
+				$sessionoption = 'display:none;';
+			}
+		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
 			foreach (json_decode($sessionResponse) as $session) {
                     $checked = "";
                 if(in_array($session->sessionId, $lbt_visib_session_list))
@@ -42,7 +45,7 @@ echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settin
  		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
 			}
 		echo '</ul>';
-
+		
 
 	if(is_array ($response->columnList)){
 		echo '<h3>Columns visibility</h3>
@@ -295,4 +298,11 @@ function searchMembers() {
     }
 }
 
+jQuery('#sessionsetting').change(function(){
+	if(jQuery(this).is('checked')){
+		jQuery('#sessionList').show();
+	} else {
+		jQuery('#sessionList').hide();
+	}
+});
 </script>
