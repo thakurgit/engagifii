@@ -21,13 +21,13 @@ if($sessionsetting==1) {
 
       
    
-          <?php //print_r($sessionResponses); 
+          <?php 				print_r($sessionlist);
+
 		  $i=0;
 		  rsort($sessionResponses);
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
 				$session_name = $value->sessionName;
-				print_r($sessionlist);
 				/*if(){
 					continue;
 				}*/
