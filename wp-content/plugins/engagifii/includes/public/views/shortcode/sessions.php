@@ -28,7 +28,7 @@ if($sessionsetting==1) {
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
 				$session_name = $value->sessionName;
-				if(in_array($session_id, $sessionlist))
+				if(in_array($session_id, $sessionlist)){
 					continue;
 				}
          		?>
