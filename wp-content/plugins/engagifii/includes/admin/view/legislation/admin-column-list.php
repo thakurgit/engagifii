@@ -12,13 +12,20 @@
     $title_display_setting = $options['lbt_title_display_setting'] ?? 'title';
     $lbt_visib_groups_list  = $options['lbt_visib_groups_list'] ?? array();
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
+    $lbt_visib_session_list   = $options['lbt_visib_session_list']  ?? array();
 	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php  //print_r($sessionResponse); 
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
-			foreach (json_decode($sessionResponse) as $key => $row) {
- 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$row->sessionId.'" class="session-'.$row->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$row->sessionId.'><label for="'.$row->sessionId.'">'.$row->sessionName.'</label></li>'		;
+			foreach (json_decode($sessionResponse) as $session) {
+				 if($tag->count > 0){
+                   // $checked = "";
+                if(in_array($tag->tagId, $lbt_visib_session_list))
+                {
+                   // $checked = " checked";
+                }
+ 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
 			}
 		echo '</ul>';
 
