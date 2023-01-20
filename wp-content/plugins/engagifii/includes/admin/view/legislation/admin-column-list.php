@@ -13,7 +13,24 @@
     $lbt_visib_groups_list  = $options['lbt_visib_groups_list'] ?? array();
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
-		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
+		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
+		 <h3>Multiple Sessions </h3>
+<?php 
+if(isset($options['sessionsetting'])){
+    $sessionsetting = $options['sessionsetting'];
+   }else{
+       $sessionsetting = null;
+   }
+
+    $session_setting = '';
+    if($sessionsetting==1)
+    {
+         $session_setting  = 'checked';
+    }
+
+echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
+}
+
 	if(is_array ($response->columnList)){
 		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
@@ -37,23 +54,7 @@
 	}
 
 	echo '</ul>';		?>		
-    <h3>Sessions Setting</h3>
-<?php 
-if(isset($options['sessionsetting'])){
-    $sessionsetting = $options['sessionsetting'];
-   }else{
-       $sessionsetting = null;
-   }
-
-    $session_setting = '';
-    if($sessionsetting==1)
-    {
-         $session_setting  = 'checked';
-    }
-
-echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
-}
-?>
+   
 		
 
 <h3>Alternate Bill Title</h3>
