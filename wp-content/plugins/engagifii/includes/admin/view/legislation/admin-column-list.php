@@ -16,18 +16,7 @@
 	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
-<?php  //print_r($sessionResponse); 
-		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
-			foreach (json_decode($sessionResponse) as $session) {
-                    $checked = "";
-                if(in_array($session->sessionId, $lbt_visib_session_list))
-                {
-                    $checked = " checked";
-                }
- 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
-			}
-		echo '</ul>';
-
+<?php
 if(isset($options['sessionsetting'])){
     $sessionsetting = $options['sessionsetting'];
    }else{
@@ -41,6 +30,19 @@ if(isset($options['sessionsetting'])){
     }
 
 echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
+
+  //print_r($sessionResponse); 
+		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
+			foreach (json_decode($sessionResponse) as $session) {
+                    $checked = "";
+                if(in_array($session->sessionId, $lbt_visib_session_list))
+                {
+                    $checked = " checked";
+                }
+ 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
+			}
+		echo '</ul>';
+
 
 	if(is_array ($response->columnList)){
 		echo '<h3>Columns visibility</h3>
