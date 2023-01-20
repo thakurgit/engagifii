@@ -101,6 +101,21 @@ class adminDataColumn extends Engagifii_API{
 		
     	
 	}
+	
+	public function getSessionsData(){
+		$postData = array();
+ 	   $apiUrl = 'legislative/public-bills/sessions/';	
+		$dataResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+		//print_r("HEllo response<br/>");
+		//print_r($dataResponse);
+		//die;
+		//print_r("HEllo response<br/>");
+
+		
+			return $dataResponse;
+		
+    	
+	
 
 
 }

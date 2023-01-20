@@ -12,10 +12,10 @@
     $title_display_setting = $options['lbt_title_display_setting'] ?? 'title';
     $lbt_visib_groups_list  = $options['lbt_visib_groups_list'] ?? array();
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-
+	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
-<?php 
+<?php  print_r($sessionResponse); die;
 if(isset($options['sessionsetting'])){
     $sessionsetting = $options['sessionsetting'];
    }else{
