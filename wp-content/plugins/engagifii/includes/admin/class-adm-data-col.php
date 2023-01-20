@@ -115,7 +115,7 @@ class adminDataColumn extends Engagifii_API{
 			return $dataResponse;
 		
     	
-	
+	}
 
 
 }
