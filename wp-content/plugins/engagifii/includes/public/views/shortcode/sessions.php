@@ -41,7 +41,5 @@ if($sessionsetting==1) {
      
       </ul>
     
-<?php } else{
-  print_r("No sessions");
-}?>
+<?php } ?>
  
