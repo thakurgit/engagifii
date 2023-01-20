@@ -21,7 +21,7 @@ if($sessionsetting==1) {
 
       
    
-          <?php 				print_r($sessionlist);
+          <?php 				//print_r($sessionlist);
 
 		  $i=0;
 		  rsort($sessionResponses);
