@@ -35,6 +35,7 @@ echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settin
 			} else {
 				$sessionoption = 'display:none;';
 			}
+			echo $sessionoption;
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
 			foreach (json_decode($sessionResponse) as $session) {
                     $checked = "";
