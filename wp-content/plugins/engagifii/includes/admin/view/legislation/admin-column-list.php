@@ -15,7 +15,7 @@
     $lbt_visib_session_list   = $options['lbt_visib_session_list']  ?? array();
 	$sessionResponse = $obj->getSessionsData();
 	$sessionResponses = json_decode($sessionResponse['api_response']);
-	rsort($sessionResponses)
+	//rsort($sessionResponses)
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php
