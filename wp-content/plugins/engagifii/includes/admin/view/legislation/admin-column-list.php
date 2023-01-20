@@ -14,8 +14,7 @@
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
-		    <h3>Multiple Sessions</h3>
-<?php 
+		   <?php
 
 	if(is_array ($response->columnList)){
 		echo '<p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
