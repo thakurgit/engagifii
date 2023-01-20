@@ -112,7 +112,7 @@ class adminDataColumn extends Engagifii_API{
 		//print_r("HEllo response<br/>");
 
 		
-			return $dataResponse;
+			return $dataResponse->api_response;
 		
     	
 	}

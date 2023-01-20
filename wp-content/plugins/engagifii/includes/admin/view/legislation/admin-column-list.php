@@ -15,7 +15,13 @@
 	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
-<?php  print_r($sessionResponse); die;
+<?php  
+		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
+			foreach ($sessionResponse as $key => $row) {
+				echo '<li style="width:31%; display:inline-block;" id="'.$row->sessionId.'">'.$row->sessionName.'</li>';
+			}
+		echo '</ul>';
+
 if(isset($options['sessionsetting'])){
     $sessionsetting = $options['sessionsetting'];
    }else{
