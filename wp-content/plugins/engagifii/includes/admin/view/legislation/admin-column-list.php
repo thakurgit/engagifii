@@ -16,7 +16,7 @@
 	$sessionResponse = $obj->getSessionsData();
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
-<?php  //print_r($sessionResponse); 
+<?php  print_r($sessionResponse); 
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
 			foreach (json_decode($sessionResponse) as $session) {
                     $checked = "";
