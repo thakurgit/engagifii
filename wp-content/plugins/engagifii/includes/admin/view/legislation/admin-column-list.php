@@ -19,12 +19,12 @@
 <?php  //print_r($sessionResponse); 
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
 			foreach (json_decode($sessionResponse) as $session) {
-				 if($tag->count > 0){
+				// if($tag->count > 0){
                    // $checked = "";
-                if(in_array($tag->tagId, $lbt_visib_session_list))
-                {
+               // if(in_array($tag->tagId, $lbt_visib_session_list))
+               // {
                    // $checked = " checked";
-                }
+               // }
  		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
 			}
 		echo '</ul>';
