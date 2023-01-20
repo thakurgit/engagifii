@@ -4,7 +4,8 @@ $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);
 $sessionsetting = get_option('ebt_api_settings')['sessionsetting'];
 $sessionlist = get_option('ebt_api_settings')['lbt_visib_session_list']?? array();
-if($sessionsetting==1) {
+print_r(count($sessionlist));
+if($sessionsetting==1 && count($sessionlist)>0) {
 ?>
 <style type="text/css">
   
@@ -17,10 +18,6 @@ if($sessionsetting==1) {
  }
 </style>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
-
-
-      
-   
           <?php 				//print_r($sessionlist);
 
 		  $i=0;
