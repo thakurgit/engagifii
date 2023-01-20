@@ -52,7 +52,6 @@ if(isset($options['sessionsetting'])){
     }
 
 echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
-echo '</div>';		
 }
 ?>
 		
