@@ -14,6 +14,7 @@
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
     $lbt_visib_session_list   = $options['lbt_visib_session_list']  ?? array();
 	$sessionResponse = $obj->getSessionsData();
+	$sessionResponses = json_decode($sessionResponse['api_response']);
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php
@@ -35,7 +36,7 @@ echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settin
 				$sessionoption = 'display:none;';
 			}
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
-			foreach (rsort(json_decode($sessionResponse)) as $session) {
+			foreach (rsort($sessionResponses) as $session) {
                     $checked = "";
                 if(in_array($session->sessionId, $lbt_visib_session_list))
                 {
