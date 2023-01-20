@@ -18,7 +18,7 @@
 <?php  print_r($sessionResponse); 
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; display:block;">';
 			foreach (json_decode($sessionResponse) as $key => $row) {
-				echo '<li style="width:31%; display:inline-block;" id="'.$row->sessionId.'">'.$row->sessionName.'</li>';
+ 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$row->sessionId.'" class="session-'.$row->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$row->sessionId.'><label for="'.$row->sessionId.'">'.$row->sessionName.'</label></li>'		;
 			}
 		echo '</ul>';
 
