@@ -36,9 +36,27 @@
 		$counter++;					  
 	}
 
-	echo '</ul>';				
+	echo '</ul>';		?>		
+    <h3>Sessions Setting</h3>
+<?php 
+if(isset($options['sessionsetting'])){
+    $sessionsetting = $options['sessionsetting'];
+   }else{
+       $sessionsetting = null;
+   }
+
+    $session_setting = '';
+    if($sessionsetting==1)
+    {
+         $session_setting  = 'checked';
+    }
+
+echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <strong>Enable Multiple Sessions</strong><br><i>Note:- By default, multiple session will be off.</i></div>';
+echo '</div>';		
 }
 ?>
+		
+
 <h3>Alternate Bill Title</h3>
 <hr>
 <div style="width:49%; display: inline-block;">

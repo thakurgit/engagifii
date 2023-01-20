@@ -2,7 +2,8 @@
 $obj =  new Engagifii_API();
 $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);
-
+$sessionsetting = get_option('ebt_api_settings')['sessionsetting'];
+if($sessionsetting==1) {
 ?>
 <style type="text/css">
   
@@ -14,7 +15,6 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
 	border-bottom-color:#002474  !important;
  }
 </style>
-<?php if(count($sessionResponses )>1) { ?>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
 
 
@@ -40,6 +40,8 @@ $sessionResponses = json_decode($sessionResponse['api_response']);
          
      
       </ul>
-   <?php } ?> 
-
+    
+<?php } else{
+  print_r("No sessions");
+}?>
  
