@@ -14,7 +14,7 @@
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
-		    <h3>Multiple Sessions</h3>
+		    <h3>Multiple Sessions</h3><hr>
 <?php 
 if(isset($options['sessionsetting'])){
     $sessionsetting = $options['sessionsetting'];
