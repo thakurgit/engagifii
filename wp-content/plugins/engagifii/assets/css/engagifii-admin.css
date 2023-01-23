@@ -114,26 +114,12 @@ margin-bottom: 0;
 .form-switch {
 	padding-left: 2.5em;
 }
-.form-check-input {
-	--bs-form-check-bg: var(--bs-form-control-bg);
-	width: 1em;
-	height: 1em;
-	margin-top: .25em;
-	vertical-align: top;
-	background-color: var(--bs-form-check-bg);
-	background-image: var(--bs-form-check-bg-image);
+
+.form-check .form-check-input {
 	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
-	border: var(--bs-border-width) solid var(--bs-border-color);
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-	-webkit-print-color-adjust: exact;
-	color-adjust: exact;
-	print-color-adjust: exact;
-}
-.form-check .form-check-input {
 	float: left;
 	margin-left: -1.5em;
 }
