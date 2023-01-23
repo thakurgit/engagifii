@@ -120,7 +120,6 @@ margin-bottom: 0;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-	float: left;
 	margin-left: -1.5em;
 }
 .form-switch .form-check-input {

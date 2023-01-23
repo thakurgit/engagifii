@@ -31,7 +31,7 @@ if(isset($options['sessionsetting'])){
          $session_setting  = 'checked';
     }
 echo '<div style="padding-left:7px"> <div class="form-check form-switch">
-<input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><br><i>Note:- By default, multiple session will be off.</i></div>';
+<input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
 		if($session_setting=='checked'){
 				$sessionoption = 'display:block;';
 			} else {
