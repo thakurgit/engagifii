@@ -4,7 +4,7 @@ $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);
 $sessionsetting = get_option('ebt_api_settings')['sessionsetting'];
 $sessionlist = get_option('ebt_api_settings')['lbt_visib_session_list']?? array();
-//if($sessionsetting==1 && count($sessionlist)>0) {
+if($sessionsetting==1 && count($sessionlist)>0) {
 ?>
 <style type="text/css">
   
@@ -41,5 +41,5 @@ $sessionlist = get_option('ebt_api_settings')['lbt_visib_session_list']?? array(
      
       </ul>
     
-<?php //} ?>
+<?php } ?>
  
