@@ -19,7 +19,6 @@ $(document).ready(function(){
 	getCountSelected();
 		$('.session-tab li button').click(function(){
 			sessionId = $(this).attr('id');
-  	     	 $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
 			getCountSelected();
 		});
 	
@@ -36,7 +35,7 @@ function getCountSelected()
       success: function(response) {       
         $('#bill-count').html('(Total '+response.api_response+' bills)');
 		<?php if($sessionsetting==1 && count($sessionlist)>0) {?>
-       	 //$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
+       	 $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
 		<?php } ?>
        	   
          }
