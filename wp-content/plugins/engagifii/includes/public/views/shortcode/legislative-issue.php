@@ -48,7 +48,7 @@ usort($tags, "sort_associative_array");
 				if($tag->count>0){
 					$cevent = 'onclick="filterIssues('.$tag->tagId.')"';
 				} else {
-					$cevent = '';
+					$cevent = 'disabled';
 				}
         ?>
         <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" <?php echo $cevent; ?>>
@@ -98,7 +98,7 @@ function getLegislativeIssues()
 				if(item.count>0){
 					var cevent = 'onclick="filterIssues('+item.tagId+')"';
 				}else {
-					var cevent = '';
+					var cevent = 'disabled';
 				}
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
 				}
