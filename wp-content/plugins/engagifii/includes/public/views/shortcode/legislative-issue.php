@@ -67,6 +67,11 @@ usort($tags, "sort_associative_array");
 
   <script type="text/javascript">
 	var sessionId='';
+  var allissues = <?php echo json_encode( $lbt_visib_legislative_list);  ?>;
+  function toNumber1(value) {
+	 return Number(value);
+		}
+  allissues  = allissues.map(toNumber1);
 	optionhover();
 	$('.session-tab li button').click(function(){
 		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-issues"); 
@@ -89,12 +94,14 @@ function getLegislativeIssues()
 			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
+				if($.inArray(item.tagId, allissues) != -1) {
 				if(item.count>0){
 					var cevent = 'onclick="filterIssues('+item.tagId+')"';
 				}else {
 					var cevent = '';
 				}
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
+				}
 			});			
 			
         	$('.legis-issues').html(html);
