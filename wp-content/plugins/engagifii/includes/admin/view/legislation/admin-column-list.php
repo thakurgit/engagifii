@@ -37,7 +37,7 @@ echo '<div style="padding-left:7px"> <div class="form-check form-switch">
 			} else {
 				$sessionoption = 'display:none;';
 			}
-		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
+		echo count($sessionResponse).'<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
 			foreach ($sessionResponse as $session) {
                     $checked = "";
                 if(in_array($session->sessionId, $lbt_visib_session_list))
