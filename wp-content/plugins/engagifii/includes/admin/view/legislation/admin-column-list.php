@@ -33,7 +33,7 @@ if(isset($options['sessionsetting'])){
 	if(count($sessionResponse)>0){
 	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
 	} else {
-	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="" id="sessionsetting1" value="1" disabled/> <label for="sessionsetting1" class="form-check-label"><strong>Enable Multiple Sessions <span style="color:red"><i>Oops! No sessions available.</i></span></strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="" id="sessionsetting1" value="1" disabled/> <label for="sessionsetting1" class="form-check-label"><strong>Enable Multiple Sessions <span style="color:red"><i>(Oops! No sessions available.)</i></span></strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
 	}
 		if($session_setting=='checked' && count($sessionResponse)>0){
 				$sessionoption = 'display:block;';
