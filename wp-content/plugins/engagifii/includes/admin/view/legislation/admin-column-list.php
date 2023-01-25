@@ -35,7 +35,7 @@ echo '<div style="padding-left:7px"> <div class="form-check form-switch">
 		if($session_setting=='checked' && count($sessionResponse)>0){
 				$sessionoption = 'display:block;';
 			} else {
-				echo '<h5><i>Oops! No sessions available.</i></h5>';
+				echo '<h4 style="color:red"><i>Oops! No sessions available.</i></h4>';
 				$sessionoption = 'display:none;';
 			}
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
