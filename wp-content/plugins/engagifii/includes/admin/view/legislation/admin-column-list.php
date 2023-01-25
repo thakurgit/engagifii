@@ -30,12 +30,14 @@ if(isset($options['sessionsetting'])){
     {
          $session_setting  = 'checked';
     }
-echo '<div style="padding-left:7px"> <div class="form-check form-switch">
-<input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	if(count($sessionResponse)>0){
+	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	} else {
+	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="" id="sessionsetting" value="1" disabled/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions <span style="color:red"><i>Oops! No sessions available.</i></span></strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	}
 		if($session_setting=='checked' && count($sessionResponse)>0){
 				$sessionoption = 'display:block;';
 			} else {
-				echo '<h4 style="color:red"><i>Oops! No sessions available.</i></h4>';
 				$sessionoption = 'display:none;';
 			}
 		echo '<ul class="ebt-grid-column-list" id="sessionList" style="width:100%; '.$sessionoption.'">';
