@@ -57,10 +57,25 @@
 	  		var data = response.api_response;
 			data = JSON.parse(data);
 			var html='';
+      let allZero = true;
+
+      for (let i = 0; i < data.length; i++) {
+       if (data[i].count !== 0) {
+          allZero = false;
+          break;
+        }
+      }
+
+      if (allZero) {
+        htmlValue = "No bill asssigned to tracking level";
+      }
 			$.each(data, function(i, item) {
 				if(item.count>0){
 				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'&sessionId='+sessionId+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><div class="d-flex align-items-center"><p class="text-dark">'+item.title+'</p></div></div></a>';
 			}
+      else{
+        html = htmlValue;
+			  }
 			});			
 			
         	$('.sessions-tracking').html(html);
