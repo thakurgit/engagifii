@@ -74,7 +74,7 @@
 				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'&sessionId='+sessionId+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><div class="d-flex align-items-center"><p class="text-dark">'+item.title+'</p></div></div></a>';
 			}
       else{
-        html = htmlValue;
+        html += htmlValue;
 			  }
 			});			
 			
