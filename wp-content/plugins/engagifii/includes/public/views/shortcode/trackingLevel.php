@@ -67,7 +67,7 @@
       }
       var htmlValue='';
       if (allZero) {
-        html += "No bill asssigned to tracking level";
+        html += "No bill has been assigned to a tracking level for this legislative session.";
       }
 			$.each(data, function(i, item) {
 				if(item.count>0){
