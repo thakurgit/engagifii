@@ -67,16 +67,13 @@
       }
       var htmlValue='';
       if (allZero) {
-        htmlValue = "No bill asssigned to tracking level";
+        html += "No bill asssigned to tracking level";
       }
 			$.each(data, function(i, item) {
 				if(item.count>0){
 				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+'&sessionId='+sessionId+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><div class="d-flex align-items-center"><p class="text-dark">'+item.title+'</p></div></div></a>';
 			}
-      else{
-        html += htmlValue;
-			  }
-			});			
+      });			
 			
         	$('.sessions-tracking').html(html);
 			$(".sessions-tracking .issue-loader").remove();
