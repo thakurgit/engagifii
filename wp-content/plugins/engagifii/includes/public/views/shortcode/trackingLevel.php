@@ -65,7 +65,7 @@
           break;
         }
       }
-      htmlValue='';
+      var htmlValue='';
       if (allZero) {
         htmlValue = "No bill asssigned to tracking level";
       }
