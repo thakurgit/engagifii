@@ -1380,6 +1380,7 @@ function delay(callback, ms) {
 			  number = '000' + number;
 			}
 		   strs = strs.replace(/\d+/, ' '+number);
+		   strs = strs.replace(/  +/g, ' ');
 		  }
 		  console.log(strs);
          if ( table.column(i).search() !== strs ) {
