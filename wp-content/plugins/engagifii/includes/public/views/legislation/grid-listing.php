@@ -1358,12 +1358,27 @@ if(table_key){
   $('#ebtmaintable thead tr th:eq('+table_key+')').each( function (i) {
       var title = $(this).text();
       $(this).html( '<input type="text" placeholder="Eg: HB 0002 or SR 0980" class="form-control form-control-sm search-endorsement" id="bill_number" value="'+billNumber+'"/>' );
- 
+ 	
       $( 'input', this ).on( 'keyup change', function () {
-         if ( table.column(i).search() !== this.value ) {
+		  
+		  var strs = this.value;
+if (/\d/.test(strs)) {
+   var number = strs.match(/\d+/)[0];
+ if (number.length == 3) {
+    number = '0' + number;
+  } else if (number.length == 2) {
+    number = '00' + number;
+  }else (number.length == 1) {
+    number = '000' + number;
+  }
+ strs = strs.replace(/\d+/, ' '+number);
+}
+console.log(strs);
+
+         if ( table.column(i).search() !== strs ) {
             table
             .column(i)
-            .search( this.value )
+            .search( strs )
             .draw();
          }
       });
