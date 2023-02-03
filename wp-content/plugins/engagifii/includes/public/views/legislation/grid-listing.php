@@ -1368,7 +1368,7 @@ if (/\d/.test(strs)) {
     number = '0' + number;
   } else if (number.length == 2) {
     number = '00' + number;
-  }else (number.length == 1) {
+  }else if(number.length == 1) {
     number = '000' + number;
   }
  strs = strs.replace(/\d+/, ' '+number);
