@@ -1380,7 +1380,7 @@ function delay(callback, ms) {
 			  number = '000' + number;
 			}
 		   strs = strs.replace(/\d+/, ' '+number);
-		   strs = strs.replace(/  +/g, ' ');
+		   strs = strs.replace(/  +/g, ' '); 
 		  }
 		  console.log(strs);
          if ( table.column(i).search() !== strs ) {
@@ -1390,7 +1390,7 @@ function delay(callback, ms) {
  	
 	  
    });
-}
+}  
 
 if(title_key){
   $('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
