@@ -201,6 +201,7 @@ public function calendar_mode(){
 
         // print_r("Hello class Calendar"); 
         $options = get_option('ebt_api_settings');
+        $class_visible_column_list = $options['class_visible_column_list'];
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
@@ -774,6 +775,9 @@ public function getCalendarClassName1(){
     $prevYear = date("Y", strtotime('-1 month', strtotime($date)));
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
 
+    $options = get_option('ebt_api_settings');
+    $class_visible_column_list = $options['class_visible_column_list'];
+
 ?>
 
     <main class="calendar-contain row">
@@ -873,15 +877,22 @@ public function getCalendarClassName1(){
                                                         </button>
                                                     </div>
                                                     <div class="modal-body text-left">
+                                                    <?php if(in_array('sessions', $class_visible_column_list)){ ?>
                                                         <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['classTime']; ?></p>
+                                                        <?php }
+                                                        if(in_array('classDuration', $class_visible_column_list)){ ?>
                                                         <p><strong>Duration : </strong><?php echo $filteredItems[$fi]['classDuration']; ?></p>
+                                                        <?php } 
+                                                        if(in_array('objectType', $class_visible_column_list)){ ?>
                                                         <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                        <?php } 
+                                                        if(in_array('credithours', $class_visible_column_list)){ ?>
                                                         <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p>
-                                                        
+                                                        <?php } ?>
                                                     </div>
                                                     <div class="modal-footer">
                                                     <a href="../class-details/?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                                    <?php echo $filteredItems[$fi]['register']; ?>
+                                                    <?php if(in_array('register', $class_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                                     </div>
                                                     </div>
                                                 </div>
@@ -1004,15 +1015,22 @@ public function getCalendarClassName1(){
                                             </button>
                                         </div>
                                         <div class="modal-body" >
+                                        <?php if(in_array('sessions', $class_visible_column_list)){ ?>
                                             <p><strong>Date :</strong> <?php echo $weekfilteredItems[$fi]['classTime']; ?></p>
+                                            <?php }
+                                            if(in_array('classDuration', $class_visible_column_list)){ ?>
                                             <p><strong>Duration : </strong><?php echo $weekfilteredItems[$fi]['classDuration']; ?></p>
-                                            <p><strong>Type :</strong> <?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
+                                            <?php } 
+                                            if(in_array('objectType', $class_visible_column_list)){ ?>
+                                                <p><strong>Type :</strong> <?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
+                                                        <?php } 
+                                                        if(in_array('credithours', $class_visible_column_list)){ ?>
                                             <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p>
-                                            
+                                            <?php } ?>
                                         </div>
                                         <div class="modal-footer">
                                         <a href="../class-details/?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                        <?php echo $weekfilteredItems[$fi]['register']; ?>
+                                        <?php if(in_array('register', $class_visible_column_list)) { echo $weekfilteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
                                     </div>
