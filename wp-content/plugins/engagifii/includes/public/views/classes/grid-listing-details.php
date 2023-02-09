@@ -4,6 +4,8 @@
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+	$class_visible_column_list = $options['class_visible_column_list'];
+	//print_r($class_visible_column_list);
 
 	$obj 			=  new Engagifii_API();
 	$response       =  $obj->getClassDetailsByID($id);
@@ -45,7 +47,7 @@
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
             <p  class="mb-2"> <?php echo $response->sectionName; ?></p>
-            <?php if(is_array($response->classTag) && count($response->classTag)>0) {?>
+            <?php if(is_array($response->classTag) && count($response->classTag)>0 && in_array('classTag', $class_visible_column_list)) {?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s): </span>
                 <span class="pl-1 pr-1 d-none"> <?php echo count($response->classTag);  ?></span>
@@ -78,7 +80,7 @@
             
           </div>
           <?php
-          	if($response->isClassRegistrationAllow){
+          	if($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)){
 
 				if($response->registrationState !== 'Registration Not Setup' && $response->registrationState !== 'Registration Closed' && $response->registrationState!== 'Sold Out' && $response->registrationState !== 'Registration Scheduled' && $response->registrationState !== 'Early Sold Out' && $response->registrationState !== 'Standard Sold Out')
 				{
@@ -131,6 +133,7 @@
                <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
                       <div class="row">
+                      		<?php if(in_array('sessions', $class_visible_column_list)) {?>
                               <div class="col-12 mb-3">
                                   <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
@@ -170,6 +173,7 @@
                               </div>
                               </div>
                               </div>
+                              <?php } ?>
                               <div class="col-md-7 mb-3">
                                   <div class="border rounded shadow-sm h-100">
                                   <div class="panel-title bg-light p-2  border-bottom">
@@ -186,16 +190,16 @@
                                   </div>
                                   <?php
                                       }
-                                      if($response->objectType){
+                                      if($response->objectType && in_array('objectType', $class_visible_column_list)){
                                   ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Class Type:</strong></div>
                                       <div class="col-md-8 col-xl-9"><?php echo $response->objectType; ?></div>
                                   </div>
                                   <?php 
-                                      }
+                                      } 
                                       //print_r(json_encode($response->courseCreditMapping[0]->credits));
-                                      if($response->courseCreditMapping){
+                                      if($response->courseCreditMapping && in_array('credithours', $class_visible_column_list)){
                                         
                                         foreach ($response->courseCreditMapping as $key => $creditHrs){
                                      ?>
@@ -273,7 +277,7 @@
                               </div>
                       </div>
                       <div class="row">
-                          <div class="col-12 mb-3">
+                          <div class="col-12">
                               <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">Contact Persons</h6>
@@ -327,7 +331,8 @@
                                   
                               </div>
                           </div>
-                          <div class="col-12">
+                          <?php if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+                          <div class="col-12 mt-3">
                               <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">Instructor</h6>
@@ -404,6 +409,7 @@
                                   
                               </div>
                           </div>
+                          <?php } ?>
                       </div>
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -412,11 +418,21 @@
                           <thead>
                               <tr>
                                   <th>Class</th>
+                                  <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
                                   <th>Duration</th>
+                                  <?php } 
+                                    if(in_array('objectType', $class_visible_column_list)){ ?>
                                   <th>Class Type</th>
+                                  <?php } 
+								   if(in_array('sessions', $class_visible_column_list)){ ?>
                                   <th>Class Dates</th>
-                                  <th>Instructor</th>
+                                  <?php }
+								   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+                                  	<th>Instructor</th>
+                                  <?php } 
+                                   if(in_array('credithours', $class_visible_column_list)){ ?>
                                  <th>Credit Hours</th>
+                                 <?php } ?>
                                   
                               </tr>
                           </thead>
@@ -443,18 +459,27 @@
                                            ?>
                                            </small>
                                       </td>
+                                      <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
                                       <td><?php echo $value->classDuration.' '.$value->classDurationType; ?></td>
+                                      <?php }
+									   if(in_array('objectType', $class_visible_column_list)){ ?>
                                       <td><?php echo $value->objectType; ?></td>
+                                      <?php }
+									   if(in_array('sessions', $class_visible_column_list)){?>
                                       <td>
                                           <div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_<?php echo $key; ?> " data-placement="left" data-containerid="<?php echo $key; ?>" id="<?php echo $key; ?>">
                                           <img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/Agenda.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->classSessionSettings); ?></span></div><?php echo $classPopover; ?></div>
                                               
                                       </td>
-                                      <td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td>
+                                      <?php }
+									   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+                                      <td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td> 
+									  <?php }
+									  if(in_array('credithours', $class_visible_column_list)){?>
                                       <?php foreach ($response->courseCreditMapping as $key => $credithrs){
                                         ?>
                                       <td><?php echo number_format($credithrs->credits, 2);  ?></td>
-                                      <?php } 
+                                      <?php } } 
                                       ?>
                                   </tr>
                               <?php
