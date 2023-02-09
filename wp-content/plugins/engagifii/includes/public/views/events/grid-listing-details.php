@@ -103,7 +103,7 @@
 		  else{
 			  ?>
 			<div class="mt-auto">				
-			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/signup/overview'; ?>">Register</a></div>  
+			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
 			<?php }
 		  ?>
        </div>
