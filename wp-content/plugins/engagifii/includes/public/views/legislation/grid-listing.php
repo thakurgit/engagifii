@@ -1384,7 +1384,7 @@ if(table_key){
   
   $('#ebtmaintable thead tr th:eq('+table_key+')').each( function (i) {
       var title = $(this).text();
-      $(this).html( '<input type="text" placeholder="Eg: HB 0002 or SR 0980" class="form-control form-control-sm search-endorsement" id="bill_number" value="'+billNumber+'"/>' );
+      $(this).html( '<div class="position-relative"><input type="text" placeholder="Eg: HB 0002 or SR 0980" class="form-control form-control-sm search-endorsement pr-4" id="bill_number" value="'+billNumber+'"/><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
   $( 'input', this ).keyup(delay(function (e) {
 		  var strs = this.value;
 		  if (/\d/.test(strs)) {
@@ -1406,14 +1406,14 @@ if(table_key){
 	}, 500));
  	$( 'input', this ).keyup(function(e){
 	if(this.value.length!=0){
-				$('.clear-search').show();
+				$(this).siblings('.clear-search').show();
 			} else {
-				$('.clear-search').hide();
+				$(this).siblings('.clear-search').hide();
 			} 
  });
-$('th .clear-search').click(function(e){
+$('#bill_number + .clear-search').click(function(e){
 	 $('#bill_number').val('');
-	$('.clear-search').hide();
+	$(this).hide();
 	e.stopPropagation();
 	table.column(i).search('').draw();
  });
@@ -1434,14 +1434,14 @@ if(title_key){
         }, 500));
 		 $( 'input', this ).keyup(function(e){
 	if(this.value.length!=0){
-				$('.clear-search').show();
+				$(this).siblings('.clear-search').show();
 			} else {
-				$('.clear-search').hide();
+				$(this).siblings('.clear-search').hide();
 			} 
  });
-$('th .clear-search').click(function(e){
+$('#searchclass + .clear-search').click(function(e){
 	 $('#searchclass').val('');
-	$('.clear-search').hide();
+	$(this).hide();
 	e.stopPropagation();
 	table.column('1').search('').draw();
  });
