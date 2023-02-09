@@ -1399,7 +1399,7 @@ if(table_key){
 		   strs = strs.replace(/\d+/, ' '+number);
 		   strs = strs.replace(/  +/g, ' '); 
 		  }
-		  console.log(strs);
+		  //console.log(strs);
          if ( table.column(i).search() !== strs ) {
             table.column(i).search( strs ).draw();
          }
