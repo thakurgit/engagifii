@@ -897,6 +897,20 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
+/*$ov=[];
+$aa=[];
+foreach($collection->columnList as $key => $value) {
+	array_push($ov, $value->key);
+	//sponsors shift for AASB
+	if ($value->key == 'sponsors' && $options['lbt_tenant_code']['tenant_code']=='aasb') {
+		array_push($aa, $collection->columnList[array_search('sponsors', $ov)]);
+		array_splice($collection->columnList,array_search('sponsors', $ov),1);
+		array_splice($collection->columnList,1,0,$aa);
+    }
+	
+}
+print_r($ov);echo '</br>';
+print_r($lbt_visib_datacol_list);echo '</br>';*/
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
     <table  id="ebtmaintable" class="table table-bordered border-0 table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
@@ -929,6 +943,8 @@ foreach ($collection->columnList as $key => $row)
         }
 
         $forDatatable[$i]['data'] = $row->key;
+		//unset($forDatatable[9]);
+		
 		$class=strtolower($row->name);
 		
 ?>                       
@@ -1222,7 +1238,7 @@ var table = $('#ebtmaintable').DataTable( {
       "oLanguage": {
          "sLengthMenu": "Show _MENU_ records per page"
       },
-
+		
 
         "serverSide": true,
         "ajax": {
@@ -1265,6 +1281,7 @@ var table = $('#ebtmaintable').DataTable( {
             }
          },        
          "columns":<?php echo (json_encode($forDatatable)); ?>, 
+		 
 		 "columnDefs": [ 
 	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
             { responsivePriority: 1, targets: 'billNumber' },
@@ -1353,11 +1370,6 @@ $('#ebtmaintable')
 var billNumber = '<?php echo $billnumber; ?>';
 var table_key = '<?php echo $bill_number_column_key; ?>';
 var title_key = '<?php echo $bill_title_key; ?>';
-if(table_key){
-  
-  $('#ebtmaintable thead tr th:eq('+table_key+')').each( function (i) {
-      var title = $(this).text();
-      $(this).html( '<input type="text" placeholder="Eg: HB 0002 or SR 0980" class="form-control form-control-sm search-endorsement" id="bill_number" value="'+billNumber+'"/>' );
 function delay(callback, ms) {
   var timer = 0;
   return function() {
@@ -1368,6 +1380,11 @@ function delay(callback, ms) {
     }, ms || 0);
   };
 }
+if(table_key){
+  
+  $('#ebtmaintable thead tr th:eq('+table_key+')').each( function (i) {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Eg: HB 0002 or SR 0980" class="form-control form-control-sm search-endorsement" id="bill_number" value="'+billNumber+'"/>' );
   $( 'input', this ).keyup(delay(function (e) {
 		  var strs = this.value;
 		  if (/\d/.test(strs)) {
@@ -1387,7 +1404,19 @@ function delay(callback, ms) {
             table.column(i).search( strs ).draw();
          }
 	}, 500));
- 	
+ 	$( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#bill_number').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(i).search('').draw();
+ });
 	  
    });
 }  
@@ -1395,19 +1424,35 @@ function delay(callback, ms) {
 if(title_key){
   $('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
         var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement" value=""/>' );
+        $(this).html( '<div class="position-relative"><input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement pr-4" value="" id="searchclass"/><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
  
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column('1')
-                    .search( this.value )
-                    .draw();
+       $( 'input', this ).keyup(delay(function (e) {
+		    var titlesearch = this.value;
+            if ( table.column(i).search() !== titlesearch ) {
+                table.column('1').search( titlesearch ).draw();
             }
-        } );
+        }, 500));
+		 $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#searchclass').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column('1').search('').draw();
+ });
+		
     } );
 }
-
+$(document).ready(function (){    
+    $('#searchclass, #bill_number').on('click', function(e){
+       e.stopPropagation();    
+    });
+	 });
 
 <?php
 if (isset($_REQUEST['bill']))

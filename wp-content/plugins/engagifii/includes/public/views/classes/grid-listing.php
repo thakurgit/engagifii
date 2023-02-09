@@ -147,12 +147,13 @@ ob_start();
         </span>
       </div>
       <div class="col-6 text-right">
-        <span class="clear-all" id="clear-all"> <i class="fal fa-sync d-none"></i>Clear All </span>
+        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i> </span>
       </div>
       </div>
     </div>
     <div class="">
       <input type="hidden" id="isApplyACtive" value="0">
+      <?php if(in_array('sessions', $class_visible_column_list)){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -160,6 +161,7 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
+      <?php } ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none">
@@ -169,7 +171,7 @@ ob_start();
         </div>
       </div>
 <!-- credit Hour filters -->
-
+<?php if(in_array('credithours', $class_visible_column_list)){ ?>
 <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
         <div class="content-area d-none">
@@ -179,6 +181,9 @@ ob_start();
           ?>  
         </div>
       </div>
+      <?php } 
+	  if(in_array('classInstructorsCount', $class_visible_column_list)){
+	  ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructors <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
@@ -190,7 +195,7 @@ ob_start();
           ?>  
         </ul></div>
       </div>
-
+	<?php } ?>
       
       
 
@@ -273,6 +278,7 @@ $filter_content = removeWhitespace($filter_content);
         "ordering":true,
 		"search": {regex: true},
 		"order": [[3, 'asc']],
+		 
         "columnDefs": [ 
           { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
