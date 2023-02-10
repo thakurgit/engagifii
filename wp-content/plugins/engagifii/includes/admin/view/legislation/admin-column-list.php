@@ -95,7 +95,7 @@ array_push($ov, $row->key);
 	}
 
 	echo '</ul>';
-	print_r($options['lbt_col_order']); 	
+	print_r($options['lbt_col_order'][0]); 	
 }
 ?>
 		
