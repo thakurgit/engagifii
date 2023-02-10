@@ -60,22 +60,7 @@ if (isset($_REQUEST['sessionId']))
 $obj = new Engagifii_API();
 $dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
 $collection = json_decode($dataResponse['api_response']);
-$temp_array = array();
-foreach ($collection->columnList as $key => $value) {
- 
-  if($value->key == 'title'){
-    $title_key = $key;
-  }
 
-  if($value->key == 'assignedto')
-  {
-    $temp_array[] = $collection->columnList[$key];
-    unset($collection->columnList[$key]);
-    array_values(array_filter($collection->columnList));         
-  }
-}
-
-array_splice( $collection->columnList, $title_key+1, 0, $temp_array );
 $options = get_option('ebt_api_settings');
 $lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
@@ -897,20 +882,41 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
-/*$ov=[];
-$aa=[];
+
+$filteredColumns=[]; //object array filtered from columnList
+$columnGroup=[]; //array of keys from filtered objects 
+$tempColumn=[];  //temporary object from filtered objects
+$seqColumns=[]; //sequenced object array
+//compare columns with checked columns
 foreach($collection->columnList as $key => $value) {
-	array_push($ov, $value->key);
-	//sponsors shift for AASB
-	if ($value->key == 'sponsors' && $options['lbt_tenant_code']['tenant_code']=='aasb') {
-		array_push($aa, $collection->columnList[array_search('sponsors', $ov)]);
-		array_splice($collection->columnList,array_search('sponsors', $ov),1);
-		array_splice($collection->columnList,1,0,$aa);
-    }
-	
+	if (in_array($value->key, $lbt_visib_datacol_list)){
+		array_push($filteredColumns, $value);
+		array_push($columnGroup, $value->key);	
+	}
 }
-print_r($ov);echo '</br>';
-print_r($lbt_visib_datacol_list);echo '</br>';*/
+//sequence columns with checked columns
+foreach($filteredColumns as $key => $value) {
+		array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
+		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),0,$tempColumn);
+		$tempColumn=[];
+}
+$temp_array = array();
+foreach ($seqColumns as $key => $value) {
+ 
+  if($value->key == 'title'){
+    $title_key = $key;
+  }
+
+  if($value->key == 'assignedto')
+  {
+    $temp_array[] = $seqColumns[$key];
+    unset($seqColumns[$key]);
+    array_values(array_filter($seqColumns));         
+  }
+}
+array_splice( $seqColumns, $title_key+1, 0, $temp_array );
+
+//print_r($seqColumns);echo '</br></br>';
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
     <table  id="ebtmaintable" class="table table-bordered border-0 table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
@@ -922,10 +928,8 @@ $i = 0;
 $sort_key = 1;
 $bill_number_column_key = array_search("billNumber", $lbt_visib_datacol_list);
 $bill_title_key = array_search("title", $lbt_visib_datacol_list);
-foreach ($collection->columnList as $key => $row)
-{
-    if (in_array($row->key, $lbt_visib_datacol_list))
-    {
+foreach ($seqColumns as $key => $row){
+   // if (in_array($row->key, $lbt_visib_datacol_list)){
 
         if ($row->key == 'introducedDate')
         {
@@ -958,7 +962,7 @@ foreach ($collection->columnList as $key => $row)
                   </th>
                 <?php
         $i++;
-    }
+    //}
 }
 ?>
             </tr> 

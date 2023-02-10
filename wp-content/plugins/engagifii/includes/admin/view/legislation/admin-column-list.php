@@ -58,15 +58,23 @@ if(isset($options['sessionsetting'])){
 		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
 		$counter=0;
  
+$ov=[];
+$aa=[];
+foreach ($response->columnList as $key => $row) {
+array_push($ov, $row->key);
+	//sponsors shift for AASB
+	if ($row->key == 'sponsors' && $options['lbt_tenant_code']['tenant_code']=='aasb') {
+		array_push($aa, $response->columnList[array_search('sponsors', $ov)]);
+		array_splice($response->columnList,array_search('sponsors', $ov),1);
+		array_splice($response->columnList,1,0,$aa);
+    }
+}
  		foreach ($response->columnList as $key => $row) {
-
  		$checked = "";
- 		if(in_array($row->key, $lbt_visib_datacol_list))
- 		{
+ 		if(in_array($row->key, $lbt_visib_datacol_list)){
  			$checked .= " checked";
  		}
- 		if($row->key=='title' || $row->key == 'billNumber')
- 		{
+ 		if($row->key=='title' || $row->key == 'billNumber'){
  			$checked .= " checked readonly";
  		}
  		
@@ -75,7 +83,7 @@ if(isset($options['sessionsetting'])){
 		$counter++;					  
 	}
 
-	echo '</ul>';				
+	echo '</ul>';			
 }
 ?>
 		
