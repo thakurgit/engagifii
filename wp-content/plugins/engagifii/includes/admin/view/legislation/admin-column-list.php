@@ -13,6 +13,7 @@
     $lbt_visib_groups_list  = $options['lbt_visib_groups_list'] ?? array();
     $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
     $lbt_visib_session_list   = $options['lbt_visib_session_list']  ?? array();
+	$lbt_col_order   = isset($options['lbt_col_order']) ? $options['lbt_col_order']: array();
 	$sessionResponse = $obj->getSessionsData();
 	$sessionResponse =json_decode($sessionResponse);
 	rsort($sessionResponse);
@@ -83,7 +84,18 @@ array_push($ov, $row->key);
 		$counter++;					  
 	}
 
-	echo '</ul>';			
+	echo '</ul>';	
+	
+	
+	echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul id="sortable">';
+	$counter=1;
+ 		foreach ($response->columnList as $key => $row) {
+ 		echo '<li data-order="'.$counter.'" class="ui-state-default" > <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="" value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
+		$counter++;					  
+	}
+
+	echo '</ul>';
+	print_r($options['lbt_col_order']); 	
 }
 ?>
 		
@@ -237,6 +249,23 @@ $tags = $obj->legislationTagsFilter();
 
     echo '</ul>';       
 ?>
+  <style>
+  #sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+ #sortable li {
+	padding: 1px;
+	/* float: left; */
+	flex: 0 0 32%;
+}
+  </style>
+
+
 </div>
 </div>
 <script type="text/javascript">
@@ -318,4 +347,23 @@ jQuery('#sessionsetting').change(function(){
 		jQuery('#sessionList').hide();
 	}
 });
+var lbt_col_order=[];
+  jQuery( function() {
+    jQuery( "#sortable" ).sortable({
+		 update: function( event, ui ) {
+			 dropped();
+			 }
+		});
+    jQuery( "#sortable" ).disableSelection();
+	function dropped(){
+		lbt_col_order=[];
+		jQuery( "#sortable li" ).each(function(){
+			jQuery(this).attr('data-current-order',jQuery(this).index()+1);
+			lbt_col_order.push(jQuery(this).attr('data-order'));
+			
+		});
+		jQuery('.cls').val(lbt_col_order);;
+		console.log(lbt_col_order);
+	}
+  } );
 </script>

@@ -151,6 +151,7 @@ wp_enqueue_script(
 
 			  wp_enqueue_style( 'wp-color-picker-ebt' );
               wp_enqueue_script( 'custom-admin-engagifii-js-ebt', plugin_dir_url( __FILE__ ) . 'assets/js/custom-admin-engagifii.js', array('wp-color-picker'), $this->version, true );
+              wp_enqueue_script( 'sortable', 'https://code.jquery.com/ui/1.13.2/jquery-ui.js', array('custom-admin-engagifii-js-ebt'), $this->version, true );
               wp_enqueue_style( 'engagifii-admin-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii-admin.css', array(), $this->version, 'all' );
 			}
 	}

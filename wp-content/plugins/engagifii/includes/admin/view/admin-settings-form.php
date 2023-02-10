@@ -249,4 +249,16 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			});
           tid++;  
         }); 
+	jQuery('input[readonly], input[readonly]+label').click(function(){
+		showAlert();
+return false;
+	});
+	function showAlert(){
+		var alertHtml ='<div class="showalert">This item can not be modified.</div>';	
+		jQuery(alertHtml).appendTo('body');
+		setTimeout(function() {
+   			 jQuery('.showalert').fadeOut('fast').remove();
+			 
+		}, 1500); 
+	}
 </script>
