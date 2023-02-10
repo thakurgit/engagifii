@@ -266,7 +266,7 @@ return false;
 	var lbt_col_order=[];
   jQuery( function() {
     jQuery( "#legislationList" ).sortable({
-		items : ':not(.toggleAll)',
+		//items : ':not(.toggleAll)',
 		 update: function( event, ui ) {
 			 dropped();
 			 }
