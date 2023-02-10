@@ -56,8 +56,8 @@ if(isset($options['sessionsetting'])){
 	if(is_array ($response->columnList)){
 		echo '<h3>Columns visibility</h3>
 <hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
-		echo '<ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;">';
-		$counter=0;
+		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;" id="sortable">';
+		$counter=1;
  
 $ov=[];
 $aa=[];
@@ -85,17 +85,8 @@ array_push($ov, $row->key);
 	}
 
 	echo '</ul>';	
-	
-	
-	echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul id="sortable">';
-	$counter=1;
- 		foreach ($response->columnList as $key => $row) {
- 		echo '<li data-order="'.$counter.'" class="ui-state-default" > <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="" value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
-		$counter++;					  
-	}
 
-	echo '</ul>';
-	print_r($options['lbt_col_order'][0]); 	
+	print_r($options['lbt_col_order']); 	
 }
 ?>
 		
@@ -249,21 +240,7 @@ $tags = $obj->legislationTagsFilter();
 
     echo '</ul>';       
 ?>
-  <style>
-  #sortable {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-}
- #sortable li {
-	padding: 1px;
-	/* float: left; */
-	flex: 0 0 32%;
-}
-  </style>
+ 
 
 
 </div>
@@ -363,7 +340,6 @@ var lbt_col_order=[];
 			
 		});
 		jQuery('.cls').val(lbt_col_order);;
-		console.log(lbt_col_order);
 	}
   } );
 </script>
