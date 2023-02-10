@@ -246,6 +246,7 @@ var lbt_col_order=[];
 			 }
 		});
     jQuery( "#legislationList" ).disableSelection();
+	 jQuery('#legislationList').sortable({ items : ':not(.toggleAll)' });
 	function dropped(){
 		lbt_col_order=[];
 		jQuery( "#legislationList li" ).each(function(){
@@ -260,7 +261,7 @@ var lbt_col_order=[];
 
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
-            jQuery(this).prepend('<li><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
+            jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
 			jQuery('#toggleAll_'+tid).change(function(){
 				if(jQuery(this).is(':checked')){
 					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').prop('checked',true);
