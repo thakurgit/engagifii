@@ -266,12 +266,11 @@ return false;
 	var lbt_col_order=[];
   jQuery( function() {
     jQuery( "#legislationList" ).sortable({
+		items : ':not(.toggleAll)',
 		 update: function( event, ui ) {
 			 dropped();
 			 }
 		});
-    jQuery( "#legislationList" ).disableSelection();
-	 jQuery('#legislationList').sortable({ items : ':not(.toggleAll)' });
 	function dropped(){
 		lbt_col_order=[];
 		jQuery( "#legislationList li" ).each(function(){

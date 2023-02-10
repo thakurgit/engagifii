@@ -80,7 +80,7 @@ array_push($ov, $row->key);
  		}
  		
 	 
- 		echo '<li data-order="'.$counter.'" style="width:31%; display:inline-block;"> <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="ebt_api_settings[lbt_visib_datacol_list][]" '.$checked.' value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
+ 		echo '<li  style="width:31%; display:inline-block;" data-order="'.$counter.'"> <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="ebt_api_settings[lbt_visib_datacol_list][]" '.$checked.' value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
 		$counter++;					  
 	}
 
