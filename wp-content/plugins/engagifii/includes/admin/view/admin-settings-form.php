@@ -243,9 +243,9 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
             jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
 			jQuery('#toggleAll_'+tid).change(function(){
 				if(jQuery(this).is(':checked')){
-					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').prop('checked',true);
+					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true);
 				} else {
-					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').prop('checked',false);
+					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',false);
 				}
 			});
           tid++;  
