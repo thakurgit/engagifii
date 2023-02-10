@@ -273,7 +273,7 @@ return false;
 		});
 	function dropped(){
 		lbt_col_order=[];
-		jQuery( "#legislationList li" ).each(function(){
+		jQuery( "#legislationList li:not(.toggleAll)" ).each(function(){
 			jQuery(this).attr('data-current-order',jQuery(this).index()+1);
 			lbt_col_order.push(jQuery(this).attr('data-order'));
 			
