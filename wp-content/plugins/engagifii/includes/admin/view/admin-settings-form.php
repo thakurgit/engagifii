@@ -237,6 +237,27 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			range.selectNodeContents( this );
 			window.getSelection().addRange( range );
 		} );
+		
+var lbt_col_order=[];
+  jQuery( function() {
+    jQuery( "#legislationList" ).sortable({
+		 update: function( event, ui ) {
+			 dropped();
+			 }
+		});
+    jQuery( "#legislationList" ).disableSelection();
+	function dropped(){
+		lbt_col_order=[];
+		jQuery( "#legislationList li" ).each(function(){
+			jQuery(this).attr('data-current-order',jQuery(this).index()+1);
+			lbt_col_order.push(jQuery(this).attr('data-order'));
+			
+		});
+		jQuery('.cls').val(lbt_col_order);;
+	}
+  } );
+
+
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
             jQuery(this).prepend('<li><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');

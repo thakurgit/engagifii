@@ -324,22 +324,4 @@ jQuery('#sessionsetting').change(function(){
 		jQuery('#sessionList').hide();
 	}
 });
-var lbt_col_order=[];
-  jQuery( function() {
-    jQuery( "#legislationList" ).sortable({
-		 update: function( event, ui ) {
-			 dropped();
-			 }
-		});
-    jQuery( "#legislationList" ).disableSelection();
-	function dropped(){
-		lbt_col_order=[];
-		jQuery( "#legislationList li" ).each(function(){
-			jQuery(this).attr('data-current-order',jQuery(this).index()+1);
-			lbt_col_order.push(jQuery(this).attr('data-order'));
-			
-		});
-		jQuery('.cls').val(lbt_col_order);;
-	}
-  } );
 </script>
