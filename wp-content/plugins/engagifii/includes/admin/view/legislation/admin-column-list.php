@@ -56,7 +56,7 @@ if(isset($options['sessionsetting'])){
 	if(is_array ($response->columnList)){
 		echo '<h3>Columns visibility</h3>
 <hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
-		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;" id="sortable">';
+		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;" >';
 		$counter=1;
  
 $ov=[];
@@ -326,15 +326,15 @@ jQuery('#sessionsetting').change(function(){
 });
 var lbt_col_order=[];
   jQuery( function() {
-    jQuery( "#sortable" ).sortable({
+    jQuery( "#legislationList" ).sortable({
 		 update: function( event, ui ) {
 			 dropped();
 			 }
 		});
-    jQuery( "#sortable" ).disableSelection();
+    jQuery( "#legislationList" ).disableSelection();
 	function dropped(){
 		lbt_col_order=[];
-		jQuery( "#sortable li" ).each(function(){
+		jQuery( "#legislationList li" ).each(function(){
 			jQuery(this).attr('data-current-order',jQuery(this).index()+1);
 			lbt_col_order.push(jQuery(this).attr('data-order'));
 			
