@@ -238,6 +238,20 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			window.getSelection().addRange( range );
 		} );
 		
+//change sequence as per dragged sequence on load		
+	var pos = [<?php  print_r($options['lbt_col_order']); ?>];
+	// jQuery( function() {
+var i;
+var hh=[];
+for (i = 0; i < pos.length; ++i) {
+   hh.push(jQuery('#legislationList').children().eq(pos[i]-1).prop('outerHTML') );
+}
+//var sall = jQuery('#legislationList').children().eq(0).prop('outerHTML');
+  jQuery('#legislationList').html(hh);
+  //jQuery(sall).prependTo('#legislationList');
+	// });
+	 
+//toggle all
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
             jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
@@ -250,7 +264,8 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			});
           tid++;  
         }); 
-	jQuery('input[readonly], input[readonly]+label').click(function(){
+//alert on readonly checkbox
+		jQuery('body').on('click', 'input[readonly], input[readonly]+label', function() {
 		showAlert();
 return false;
 	});
@@ -262,7 +277,7 @@ return false;
 			 
 		}, 1500); 
 	}
-	
+//sortable	
 	var lbt_col_order=[];
   jQuery( function() {
     jQuery( "#legislationList" ).sortable({
@@ -274,7 +289,6 @@ return false;
 	function dropped(){
 		lbt_col_order=[];
 		jQuery( "#legislationList li:not(.toggleAll)" ).each(function(){
-			jQuery(this).attr('data-current-order',jQuery(this).index());
 			lbt_col_order.push(jQuery(this).attr('data-order'));
 			
 		});

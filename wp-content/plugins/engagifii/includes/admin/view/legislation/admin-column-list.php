@@ -59,7 +59,7 @@ if(isset($options['sessionsetting'])){
 		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;" >';
 		$counter=1;
  
-$ov=[];
+/*$ov=[];
 $aa=[];
 foreach ($response->columnList as $key => $row) {
 array_push($ov, $row->key);
@@ -69,7 +69,7 @@ array_push($ov, $row->key);
 		array_splice($response->columnList,array_search('sponsors', $ov),1);
 		array_splice($response->columnList,1,0,$aa);
     }
-}
+}*/
  		foreach ($response->columnList as $key => $row) {
  		$checked = "";
  		if(in_array($row->key, $lbt_visib_datacol_list)){
@@ -86,7 +86,8 @@ array_push($ov, $row->key);
 
 	echo '</ul>';	
 
-	print_r($options['lbt_col_order']); 	
+	print_r($options['lbt_col_order']);echo '<br><br>';
+	print_r($lbt_visib_datacol_list);
 }
 ?>
 		

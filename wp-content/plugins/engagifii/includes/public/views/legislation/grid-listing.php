@@ -886,7 +886,7 @@ $dt_class .= 'table-dark ';
 $filteredColumns=[]; //object array filtered from columnList
 $columnGroup=[]; //array of keys from filtered objects 
 $tempColumn=[];  //temporary object from filtered objects
-$seqColumns=[]; //sequenced object array
+$seqColumns=array_fill(0, count($lbt_visib_datacol_list), ''); //sequenced object array
 //compare columns with checked columns
 foreach($collection->columnList as $key => $value) {
 	if (in_array($value->key, $lbt_visib_datacol_list)){
@@ -897,10 +897,10 @@ foreach($collection->columnList as $key => $value) {
 //sequence columns with checked columns
 foreach($filteredColumns as $key => $value) {
 		array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
-		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),0,$tempColumn);
+		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
 		$tempColumn=[];
 }
-$temp_array = array();
+/*$temp_array = array();
 foreach ($seqColumns as $key => $value) {
  
   if($value->key == 'title'){
@@ -914,9 +914,7 @@ foreach ($seqColumns as $key => $value) {
     array_values(array_filter($seqColumns));         
   }
 }
-array_splice( $seqColumns, $title_key+1, 0, $temp_array );
-
-//print_r($seqColumns);echo '</br></br>';
+array_splice( $seqColumns, $title_key+1, 0, $temp_array );*/
 ?>
 <div class="container-fluid engagifii-box engagifii-main-container position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?> ">
     <table  id="ebtmaintable" class="table table-bordered border-0 table-striped   main-list-here legislation <?php echo  $dt_class; ?> " style="width: 100% !important;">
