@@ -86,8 +86,6 @@ array_push($ov, $row->key);
 
 	echo '</ul>';	
 
-	print_r($options['lbt_col_order']);echo '<br><br>';
-	print_r($lbt_visib_datacol_list);
 }
 ?>
 		
