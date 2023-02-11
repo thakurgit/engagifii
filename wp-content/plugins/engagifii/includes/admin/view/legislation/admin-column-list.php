@@ -55,21 +55,10 @@ if(isset($options['sessionsetting'])){
 
 	if(is_array ($response->columnList)){
 		echo '<h3>Columns visibility</h3>
-<hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
+<hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p><small><i><strong>Note: Drag and drop column name for changing its sequence.</strong></i></small>';
 		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list" id="legislationList" style="width:100%; display:block;" >';
 		$counter=1;
- 
-/*$ov=[];
-$aa=[];
-foreach ($response->columnList as $key => $row) {
-array_push($ov, $row->key);
-	//sponsors shift for AASB
-	if ($row->key == 'sponsors' && $options['lbt_tenant_code']['tenant_code']=='aasb') {
-		array_push($aa, $response->columnList[array_search('sponsors', $ov)]);
-		array_splice($response->columnList,array_search('sponsors', $ov),1);
-		array_splice($response->columnList,1,0,$aa);
-    }
-}*/
+
  		foreach ($response->columnList as $key => $row) {
  		$checked = "";
  		if(in_array($row->key, $lbt_visib_datacol_list)){

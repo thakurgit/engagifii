@@ -282,6 +282,7 @@ return false;
   jQuery( function() {
     jQuery( "#legislationList" ).sortable({
 		items : 'li:not(.toggleAll)',
+		 placeholder: "ui-state-highlight",
 		 update: function( event, ui ) {
 			 dropped();
 			 }
