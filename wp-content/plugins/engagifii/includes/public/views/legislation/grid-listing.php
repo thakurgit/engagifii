@@ -900,7 +900,7 @@ foreach($filteredColumns as $key => $value) {
 		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
 		$tempColumn=[];
 }
-print_r($seqColumns);
+print_r($lbt_visib_datacol_list);
 /*$temp_array = array();
 foreach ($seqColumns as $key => $value) {
  
