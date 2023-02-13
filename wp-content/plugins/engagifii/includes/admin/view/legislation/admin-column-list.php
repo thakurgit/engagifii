@@ -15,9 +15,12 @@
     $lbt_visib_session_list   = $options['lbt_visib_session_list']  ?? array();
 	$lbt_col_order   = isset($options['lbt_col_order']) ? $options['lbt_col_order']: array();
 	$sessionResponse = $obj->getSessionsData();
-	$sessionResponse =json_decode($sessionResponse);
+	$sessionResponse =json_decode($sessionResponse) ?? array();
 	rsort($sessionResponse);
-		echo '<div class="engagifii-setting  accordion-content" style="display:none;">'; ?>
+		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
+		if($options['lbt_api_url']=='' || $options['lbt_tenant_code']==''){
+			echo '<b style="color:red"><i>Please check API URL / Tenant code.</i></b>';	
+		} else {?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php
 if(isset($options['sessionsetting'])){
@@ -103,8 +106,8 @@ if(isset($options['sessionsetting'])){
 
 <h3>Tags for filters <span> <input type="text" id="searchTag" onkeyup="searchTags()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
-<?php
-$tags = $obj->legislationTagsFilter();
+<?php $tags = $obj->legislationTagsFilter();
+if($tags){
 		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationTags" style="width:100%; display:block; height:200px; overflow:auto;">';
          $site_url = site_url();
          if($site_url == 'http://engagifiiweb.com')
@@ -136,16 +139,19 @@ $tags = $obj->legislationTagsFilter();
 		
 
 	echo '</ul>';		
+}else{
+echo '<b style="color:red"><i>No data dound!</i></b>';	
+}
 ?>
 
 <h3>Staff members for filters <span> <input type="text" id="searchMember" onkeyup="searchMembers()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php
 $members = $obj->legislationAssignToFilter();
-
 $groups = $obj->legislationGroupsFilter();
 $assignTags = $obj->legislationAssignToTagFilter();
 		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; height:200px; overflow:auto;">';
+		if($members){
 		foreach ($members as  $member) {
 	 		
  		$checked = "";
@@ -164,8 +170,11 @@ $assignTags = $obj->legislationAssignToTagFilter();
         }
  					  
 	}
+		}else {
+			echo '<b style="color:red"><i>No data dound!</i></b>';	
+		}
     echo "<h3>Groups</h3>";
-
+		if($groups){
     foreach ($groups as  $group) {
             
         $checked = "";
@@ -184,8 +193,11 @@ $assignTags = $obj->legislationAssignToTagFilter();
         }
                          
     }
-
+		}else {
+			echo '<b style="color:red"><i>No data dound!</i></b>';	
+		}
     echo "<h3>Tags</h3>";
+		if($assignTags){
     foreach ($assignTags as  $assign) {
             
         $checked = "";
@@ -205,6 +217,9 @@ $assignTags = $obj->legislationAssignToTagFilter();
         }
                          
     }
+		}else {
+			echo '<b style="color:red"><i>No data dound!</i></b>';	
+		}
 	echo '</ul>';		
 ?>
 
@@ -212,6 +227,7 @@ $assignTags = $obj->legislationAssignToTagFilter();
 <hr>
 <?php
 $tags = $obj->legislationTagsFilter();
+if($tags){
         echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationIssue" style="width:100%; display:block; height:200px; overflow:auto;">';
         foreach ($tags as  $tag) {
         
@@ -226,7 +242,12 @@ $tags = $obj->legislationTagsFilter();
        
     }
 
-    echo '</ul>';       
+    echo '</ul>'; 
+}else {
+			echo '<b style="color:red"><i>No data dound!</i></b>';	
+}
+}
+	    
 ?>
  
 

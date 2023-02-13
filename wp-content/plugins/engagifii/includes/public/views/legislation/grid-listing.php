@@ -883,7 +883,7 @@ if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
 
-if(count($lbt_visib_datacol_list)>0){
+if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
@@ -901,8 +901,16 @@ if(count($lbt_visib_datacol_list)>0){
 		  array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
 		  $tempColumn=[];
   }
+  $bill_number_column_key = array_search("billNumber", $lbt_visib_datacol_list);
+  $bill_title_key = array_search("title", $lbt_visib_datacol_list);
 } else {
 	$seqColumns=$collection->columnList;
+	$searchTable=[]; 
+	foreach($seqColumns as $key => $value) {
+	  array_push($searchTable, $value->key);	
+	}
+	$bill_number_column_key = array_search("billNumber", $searchTable);
+	$bill_title_key = array_search("title", $searchTable);
 }
 
 /*$temp_array = array();
@@ -929,8 +937,6 @@ array_splice( $seqColumns, $title_key+1, 0, $temp_array );*/
 $forDatatable = array();
 $i = 0;
 $sort_key = 1;
-$bill_number_column_key = array_search("billNumber", $lbt_visib_datacol_list);
-$bill_title_key = array_search("title", $lbt_visib_datacol_list);
 foreach ($seqColumns as $key => $row){
    // if (in_array($row->key, $lbt_visib_datacol_list)){
 
