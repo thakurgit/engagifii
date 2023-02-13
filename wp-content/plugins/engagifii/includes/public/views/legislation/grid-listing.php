@@ -903,8 +903,9 @@ foreach($filteredColumns as $key => $value) {
 if(count($seqColumns)==0){
 	
 }
+print_r(count($lbt_visib_datacol_list));echo'<br>';
 print_r($seqColumns);echo'<br>';
-print_r(count($seqColumns));
+print_r(count($seqColumns));echo'<br>';
 die;
 
 /*$temp_array = array();
