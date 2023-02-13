@@ -886,7 +886,11 @@ $dt_class .= 'table-dark ';
 $filteredColumns=[]; //object array filtered from columnList
 $columnGroup=[]; //array of keys from filtered objects 
 $tempColumn=[];  //temporary object from filtered objects
+if(count($lbt_visib_datacol_list)>0){
 $seqColumns=array_fill(0, count($lbt_visib_datacol_list), ''); //sequenced object array
+} else {
+$seqColumns=$collection->columnList;
+}
 //compare columns with checked columns
 foreach($collection->columnList as $key => $value) {
 	if (in_array($value->key, $lbt_visib_datacol_list)){
@@ -899,9 +903,6 @@ foreach($filteredColumns as $key => $value) {
 		array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
 		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
 		$tempColumn=[];
-}
-if(count($seqColumns)==0){
-	
 }
 print_r(count($lbt_visib_datacol_list));echo'<br>';
 print_r($seqColumns);echo'<br>';
