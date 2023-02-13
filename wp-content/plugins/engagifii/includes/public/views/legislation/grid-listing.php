@@ -60,7 +60,10 @@ if (isset($_REQUEST['sessionId']))
 $obj = new Engagifii_API();
 $dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
 $collection = json_decode($dataResponse['api_response']);
-
+if(!$collection){
+	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+	return;
+}
 $options = get_option('ebt_api_settings');
 $lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
@@ -70,7 +73,7 @@ $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array(
 
 $trackingResponse = $obj->getTrackingLevels();
 $trackingResponses = json_decode($trackingResponse['api_response']);
-$countResponse = count($trackingResponses);
+//$countResponse = count($trackingResponses);
 $i = 0;
 
 /* House Committee */

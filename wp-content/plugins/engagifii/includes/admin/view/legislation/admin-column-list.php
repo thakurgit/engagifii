@@ -18,8 +18,8 @@
 	$sessionResponse =json_decode($sessionResponse) ?? array();
 	rsort($sessionResponse);
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
-		if($options['lbt_api_url']=='' || $options['lbt_tenant_code']==''){
-			echo '<b style="color:red"><i>Please check API URL / Tenant code.</i></b>';	
+		if($options['lbt_api_url']=='' || $options['lbt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
 		} else {?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php
