@@ -73,7 +73,8 @@ if(isset($options['sessionsetting'])){
 		$counter++;					  
 	}
 
-	echo '</ul>';	
+	echo '</ul>';
+	print_r(count($options['lbt_col_order']));	
 
 }
 ?>
