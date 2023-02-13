@@ -240,12 +240,14 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 		
 //change sequence as per dragged sequence on load		
 	var pos = [<?php  print_r($options['lbt_col_order']); ?>];
-var i;
-var hh=[];
-for (i = 0; i < pos.length; ++i) {
-   hh.push(jQuery('#legislationList').children().eq(pos[i]-1).prop('outerHTML') );
-}
-  jQuery('#legislationList').html(hh);
+	if(pos.length>0){
+	  var i;
+	  var hh=[];
+	  for (i = 0; i < pos.length; ++i) {
+		 hh.push(jQuery('#legislationList').children().eq(pos[i]-1).prop('outerHTML') );
+	  }
+		jQuery('#legislationList').html(hh);
+	}
 	 
 //toggle all
 		var tid =0;

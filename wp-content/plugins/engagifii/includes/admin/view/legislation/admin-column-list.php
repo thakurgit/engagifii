@@ -74,7 +74,6 @@ if(isset($options['sessionsetting'])){
 	}
 
 	echo '</ul>';
-	print_r($options['lbt_col_order']);	
 
 }
 ?>
