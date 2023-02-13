@@ -883,31 +883,27 @@ if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
 
-$filteredColumns=[]; //object array filtered from columnList
-$columnGroup=[]; //array of keys from filtered objects 
-$tempColumn=[];  //temporary object from filtered objects
 if(count($lbt_visib_datacol_list)>0){
-$seqColumns=array_fill(0, count($lbt_visib_datacol_list), ''); //sequenced object array
+  $filteredColumns=[]; //object array filtered from columnList
+  $columnGroup=[]; //array of keys from filtered objects 
+  $tempColumn=[];  //temporary object from filtered objects
+  $seqColumns=array_fill(0, count($lbt_visib_datacol_list), ''); //sequenced object array
+  //compare columns with checked columns
+  foreach($collection->columnList as $key => $value) {
+	  if (in_array($value->key, $lbt_visib_datacol_list)){
+		  array_push($filteredColumns, $value);
+		  array_push($columnGroup, $value->key);	
+	  }
+  }
+  //sequence columns with checked columns
+  foreach($filteredColumns as $key => $value) {
+		  array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
+		  array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
+		  $tempColumn=[];
+  }
 } else {
-$seqColumns=$collection->columnList;
+	$seqColumns=$collection->columnList;
 }
-//compare columns with checked columns
-foreach($collection->columnList as $key => $value) {
-	if (in_array($value->key, $lbt_visib_datacol_list)){
-		array_push($filteredColumns, $value);
-		array_push($columnGroup, $value->key);	
-	}
-}
-//sequence columns with checked columns
-foreach($filteredColumns as $key => $value) {
-		array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
-		array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
-		$tempColumn=[];
-}
-print_r(count($lbt_visib_datacol_list));echo'<br>';
-print_r($seqColumns);echo'<br>';
-print_r(count($seqColumns));echo'<br>';
-die;
 
 /*$temp_array = array();
 foreach ($seqColumns as $key => $value) {
