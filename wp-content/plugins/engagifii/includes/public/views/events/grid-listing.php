@@ -20,6 +20,8 @@ if(isset($attr['calendar'])){
     unset($collection[9]);
     array_values($collection);
     
+    $options = get_option('ebt_api_settings');
+    $events_visible_column_list = $options['events_visible_column_list'];
 //print_r($collection);
     $options = get_option( 'ebt_api_settings' );
     $ebt_visib_datacol_list = $options['events_visible_column_list'];
@@ -94,7 +96,7 @@ ob_start();
     </div>
     <div class="col-sm-12" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
-      
+      <?php if(in_array('eventDates', $events_visible_column_list)) { ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -102,8 +104,8 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
-      <?php
-	   if(array_search('eventType', $ebt_visib_datacol_list)){
+      <?php }
+      if(in_array('eventType', $events_visible_column_list) && array_search('eventType', $ebt_visib_datacol_list)){
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
@@ -118,8 +120,10 @@ ob_start();
       
       <?php
         }
-              
-       //if(array_search('location', $ebt_visib_datacol_list)){
+      
+      
+      if(in_array('city', $events_visible_column_list)) {
+         //if(array_search('location', $ebt_visib_datacol_list)){
           ?>
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
@@ -135,8 +139,8 @@ ob_start();
           
           <?php
           // }
-      
-        if(array_search('tags', $ebt_visib_datacol_list)){
+              }
+    if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
@@ -149,7 +153,9 @@ ob_start();
         </ul></div>
       </div>
       
-    <?php } ?>
+    <?php } 
+    
+    ?>
       
     </div>
           <div class="apply-filter">

@@ -1,5 +1,3 @@
-
-
 <?php
 /*
 *Engagifii abstract class for handling AJAX request
@@ -1085,7 +1083,10 @@ public function getEventsCalendar(){
     $prevMonth = date("m", strtotime('-1 month', strtotime($date)));
     $prevYear = date("Y", strtotime('-1 month', strtotime($date)));
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
-
+    
+    $options = get_option('ebt_api_settings');
+    $events_visible_column_list = $options['events_visible_column_list'];
+    
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
@@ -1200,15 +1201,19 @@ public function getEventsCalendar(){
                                                    </button>
                                                </div>
                                                <div class="modal-body text-left" >
+                                                 <?php if(in_array('eventDates', $events_visible_column_list)){ ?>
                                                    <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
+                                                   <?php }
+                                                   if(in_array('eventType', $events_visible_column_list)){ ?>
                                                    <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
-                                                   <p><strong>Price :</strong> <?php echo '$'.$$filteredItems[$fi]['price']; ?></p>
+                                                   <?php } ?>
+                                                    <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
                                                    <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
                                                    
                                                </div>
                                                <div class="modal-footer">
                                                <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                               <?php echo $filteredItems[$fi]['register']; ?>
+                                               <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                                </div>
                                                </div>
                                            </div>
@@ -1255,15 +1260,19 @@ public function getEventsCalendar(){
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                                    <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
-                                                   <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
-                                                   <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
+                                                   <?php if(in_array('eventDates', $events_visible_column_list)){ ?>
+                                                  <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
+                                                   <?php }
+                                                   if(in_array('eventType', $events_visible_column_list)){ ?>
+                                                  <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
+                                                  <?php } ?>
+                                                  <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
                                                    <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
                                             
                                         </div>
                                         <div class="modal-footer">
                                         <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                        <?php echo $filteredItems[$fi]['register']; ?>
+                                        <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
                                     </div>

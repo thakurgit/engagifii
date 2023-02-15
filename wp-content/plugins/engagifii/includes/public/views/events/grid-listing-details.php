@@ -19,8 +19,9 @@
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
-	
-
+	$options = get_option('ebt_api_settings');
+    $events_visible_column_list = $options['events_visible_column_list'];
+//print_r($events_visible_column_list);
 	$contactPersons = $response->contacts;
 	//print_r($contactPersons);
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
@@ -49,13 +50,16 @@
 	<div class="row">
         <div class="col-md-10 d-flex align-items-center">
             <img class="img-circle img-icon-lg img-fluid mr-3" src="<?php echo $response->imageUrl; ?>" style="max-width:78px;">
+			
         <div>
             <h3 class="mb-0 pb-1"><?php echo $response->name;?> </h3>
+			<?php if(in_array('eventType', $events_visible_column_list)) { ?>
 			<div class="mb-2">
                 <span>Event type: </span>
                 <span class="pl-1 pr-1"> <?php echo $response->eventType;  ?></span>
 </div>
-            <?php if(is_array($response->tags) && count($response->tags)>0) {
+<?php } ?>
+            <?php if(in_array('tags', $events_visible_column_list) && is_array($response->tags) && count($response->tags)>0) {
             ?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s):</span>
@@ -70,6 +74,7 @@
             </div> 
             <?php
             		}
+				
             ?>
         </div>
 
@@ -95,9 +100,10 @@
 		  $event_status = $response->eventStatus;
 		  $registration_state = $response->eventRegistrationState;
 		  $default_RegisterBtn = "";
+		  if(in_array('register', $events_visible_column_list)) {
 		  if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') { ?>
-			<div class="mt-auto">				
-			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $response->eventRegistrationState; ?>"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>
+		  <div class="mt-auto">				
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $response->eventRegistrationState; ?>"><button type="button" id="onlocation12" class="btn btn-primary  px-3 py-1"  disabled >Register</button></span>
 		  </div>
 		  <?php }
 		  else{
@@ -105,6 +111,7 @@
 			<div class="mt-auto">				
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
 			<?php }
+		  }
 		  ?>
        </div>
        </div>
@@ -148,7 +155,7 @@
 		                        </div>
 		                        <?php
 		                        	}
-		                        	if($response->eventType){
+									if(in_array('eventType', $events_visible_column_list) && $response->eventType) {
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Event Type:</div>
@@ -156,7 +163,8 @@
 		                        </div>
 		                        <?php
 		                        	}
-		                        	if($response->startDateTime){
+								
+									if(in_array('eventDates', $events_visible_column_list) && $response->startDateTime) {
 										$defaulget_Date = $response->startDateTime;
 										$convert_Date = strtotime($defaulget_Date);
 										$date = date('M d, Y', $convert_Date);
@@ -180,6 +188,7 @@
 		                        </div>
 		                        <?php
 		                        	}
+								
 		                        	if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
 		                         <div class="summary-content-para-engagiigii row flex-wrap mb-3">
@@ -203,8 +212,7 @@
 			                        </div>
                                    <div class="p-3">
                                    	<?php
-									
-		                    		if(count($response->eventDates)){
+									if(in_array('eventDates', $events_visible_column_list) && count($response->eventDates)){
 		                    			
 		                    			foreach ($response->eventDates as $key => $value) {
 		                    				$position  = $value->position;
@@ -228,7 +236,9 @@
 		                    			</div>
 		                    		<?php
 		                    			}
-		                    		}
+		                    		}else{
+									echo '<h6 class="pb-2 mb-2 border-bottom">It looks like the option to show an event schedule has been disabled. Please contact the admin for assistance. </h6>';
+								}
 		                    		?>
                                    </div>
 		                    	</div>
