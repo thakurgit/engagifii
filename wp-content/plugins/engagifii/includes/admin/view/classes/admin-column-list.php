@@ -26,7 +26,9 @@
 			{
 				$checked .= " checked";
 			}
-			
+			if($row->colName=='sectionname'){
+ 			$checked .= " checked readonly";
+			}
 			if($counter >1 && $counter%3==0)
 			{
 				//echo '</ul>';

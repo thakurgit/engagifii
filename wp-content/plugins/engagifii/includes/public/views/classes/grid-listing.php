@@ -161,7 +161,7 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
-      <?php } ?>
+      <?php } if($classes){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none">
@@ -170,8 +170,8 @@ ob_start();
           </ul>
         </div>
       </div>
-<!-- credit Hour filters -->
-<?php if(in_array('credithours', $class_visible_column_list)){ ?>
+<?php } //credit Hour filters
+ if(in_array('credithours', $class_visible_column_list)){ ?>
 <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
         <div class="content-area d-none">
@@ -238,7 +238,7 @@ $filter_content = removeWhitespace($filter_content);
   var classStates =["Upcoming"];
   <?php if($options['allClasses']==1) { ?>
   	classStates = [];
-  <?php } ?>
+  <?php  } ?>
   
 
   var fv = 0;
@@ -277,8 +277,9 @@ $filter_content = removeWhitespace($filter_content);
         "searching": true,
         "ordering":true,
 		"search": {regex: true},
-		"order": [[3, 'asc']],
-		 
+		<?php if(in_array('sessions', $class_visible_column_list)){ ?>
+		"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
+		 <?php } ?>
         "columnDefs": [ 
           { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
@@ -287,13 +288,15 @@ $filter_content = removeWhitespace($filter_content);
 		  { className: "title-col", "targets": "classes" },
 		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
-		  {'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  <?php if(in_array('sessions', $class_visible_column_list)){ ?>
+		  {'targets': <?php echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
            $(td).attr('data-order', cell ); 
        		 }
     	 }
+		 <?php } ?>
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -469,7 +472,7 @@ $('input[name="createdbetween"]').daterangepicker({
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
     });
-
+<?php  if(in_array('sessions', $class_visible_column_list)) { ?>
 $('input[name="classdates"]').daterangepicker({
    minDate:'<?php echo $class_start_date; ?>',
     maxDate: '<?php echo $class_end_date; ?>',
@@ -484,6 +487,7 @@ $('input[name="classdates"]').daterangepicker({
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
     });
+<?php } ?>
 $( '.cleardate' ).click(function() {
 	if($(this).siblings().attr('id')=='createdbetween'){
 		 $('input[name="createdbetween"]').val('');	
@@ -535,15 +539,17 @@ $('.clear-all').click(function(){
 	 	  minReg = $.trim(regDate[0]);
 		maxReg = $.trim(regDate[1]);
 	  }
+	  <?php if(in_array('sessions', $class_visible_column_list)) { ?>
 	  if($('input[name="classdates"]').val()!=''){
 		var classDate = $('input[name="classdates"]').val().split("-");
 	 	  class_start_date = $.trim(classDate[0]);
 		class_end_date = $.trim(classDate[1]);
 	  }
-      
+      <?php } if(in_array('credithours', $class_visible_column_list)) { ?>
 	  var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
+	   <?php } ?>
       $(".filter-area").toggleClass('d-none');
       table.draw();
 
@@ -609,10 +615,11 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
-      
+      <?php } ?>
           $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -655,8 +662,7 @@ $(document).ready(function(){
 	
 });
 
-</script>
-<script>
+<?php  if(in_array('credithours', $class_visible_column_list)) { ?>
 $(document).ready(function(){
 
 $("#slider-range").slider({
@@ -672,38 +678,6 @@ $("#slider-range").slider({
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
       countFilterData();  
-      // courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
-     // instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-     // var creditFilter = $.map($('input[name="creditFilter[]"]'), function(c){return c.value; });
-     //  var createdDate = $('input[name="createdbetween"]').val();
-
-
-
-      
-         <?php /*?> $.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-		  
-          data:{
-              action:'classcountdata',
-              courses : courses,
-              instructors : instructor,
-              createdDate : createdDate,   
-              //creditHour : [50,60],
-			  minRange:ui.values[ 0 ],
-			  maxRange:ui.values[ 1 ]
-        
-          },
-          success: function(response) {       
-            var element  = document.getElementById("countFilterResult");
-	  $('#apply-filter-data .spinner-border').remove();
-	  $('#apply-filter-data').removeAttr('disabled');
-            if(element)
-            {
-              element.innerHTML = " ("+response.api_response +")";
-            }    
-          }
-        });<?php */?>
 
       }
 
@@ -711,10 +685,5 @@ $("#slider-range").slider({
     $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
        $( "#slider-range" ).slider( "values", 1 ) );
 });
-
-
-
-
-
-
+<?php } ?>
 </script>
