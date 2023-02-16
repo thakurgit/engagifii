@@ -23,10 +23,10 @@ function _prepareClassData1($classStates){
 }
 	$zz =_prepareClassData1($classStates);
      $xxx = $this->submitApiRequest("Public/ClassPagingList",  $zz, "POST", 'classes');
-	 $url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
-	$JSON = file_get_contents($url);
-	 $xx   = json_decode($JSON)->result;
-	// $xx   = json_decode($xxx['api_response'])->result;
+	 //$url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
+	//$JSON = file_get_contents($url);
+	// $xx   = json_decode($JSON)->result;
+	 $xx   = json_decode($xxx['api_response'])->result;
 	// print_r($data);
 	// die;
 ?>
