@@ -71,6 +71,8 @@ $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
+$lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+
 $trackingResponse = $obj->getTrackingLevels();
 $trackingResponses = json_decode($trackingResponse['api_response']);
 //$countResponse = count($trackingResponses);
@@ -141,7 +143,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
             <div class="col-sm-12 tz-areafix">
                <div class="filter-section">
                <!-- Tags -->
-     				
+               <?php  if(in_array('assignedto', $lbt_visible_column_list)) { ?>
                   <div class="filter-list border-bottom">
                      <div class="heading-title py-2 d-flex align-items-center">Assign To <span id="countviewbyassign" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
                      <div class="multiple-select">
@@ -190,9 +192,9 @@ $assignToTags = $obj->legislationAssignToTagFilter();
                         </div>
                      </div>
                   </div>
-
+<?php } ?>
           <!-- Bill Types -->
-     
+  <?php  if(in_array('billType', $lbt_visible_column_list)) { ?>
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Bill Types <span id="countviewbybilltypes" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -215,8 +217,8 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
     </div>
     </div>
-
-
+<?php } ?>
+<?php  if(in_array('houseComittee', $lbt_visible_column_list)) { ?>
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">House Committee <span id="countviewhousecommittee" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -240,11 +242,11 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
     </div>
     </div>
-
+<?php } ?>
 
 
      <!-- Last Action Date  -->
-     
+     <?php  if(in_array('lastActionOn', $lbt_visible_column_list)) { ?> 
      <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Last Action Date  <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select mb-2">
@@ -267,7 +269,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
               </div>
     </div>
     </div>
-
+<?php } ?>
     <!-- Last Action Types -->
      
     <div class="filter-list border-bottom">
@@ -300,6 +302,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
     </div>
 
     <!-- Senate Committee -->
+    <?php  if(in_array('senateCommittees', $lbt_visible_column_list)) { ?> 
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Senate Committee <span id="countviewsenatecommittee" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -323,10 +326,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
     </div>
     </div>
-
+<?php } ?>
 
     <!-- Sponsors -->
-     
+    <?php  if(in_array('sponsors', $lbt_visible_column_list)) { ?> 
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Sponsors <span id="countviewbysponsors" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -348,10 +351,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
     </div>
     </div>
-
+<?php } ?>
 
       <!-- Tags -->
-     
+      <?php  if(in_array('tags', $lbt_visible_column_list)) { ?>   
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Tags <span id="countviewbytags" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -379,10 +382,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
     </div>
     </div>
-
+<?php } ?>
 
     <!-- Tracking Lavels -->
-     
+    <!-- <?php  if(in_array('trackingLevel', $lbt_visible_column_list)) { ?>    -->
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Tracking Levels <span id="countviewbytrackinglevels" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -412,9 +415,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
     </div>
     </div>
+<!-- <?php } ?> -->
 
     <!-- Status types -->
-     
+    <?php  if(in_array('status', $lbt_visible_column_list)) { ?>  
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Status <span id="countviewbystatustypes" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select"> 
@@ -439,6 +443,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
     </div>
     </div>
     </div>
+    <?php } ?>
     </div>
     <div class="col-sm-12 tz-areafix">
     <div class="apply-filter">
@@ -583,7 +588,7 @@ function getcheckedassignValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       if(checkbox.dataset.type == "members")
         assignedto.push(chkval);
@@ -604,7 +609,7 @@ function getCheckedBillTypesValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       billTypes.push(chkval);
     }  
@@ -623,7 +628,7 @@ function getCheckedLastActionTypesValues()
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
 
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       lastActionTypes.push(chkval);
     }  
@@ -642,7 +647,7 @@ function getCheckedTrackingLevelsValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       trackingLevels.push(chkval);
     }  
@@ -659,7 +664,7 @@ function getCheckedStatusTypesValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       statusTypes.push(chkval);
     }  
