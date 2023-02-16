@@ -30,7 +30,7 @@ function _prepareClassData1($classStates){
 	// print_r($data);
 	// die;
 ?>
-<div class="container">
+<div class="container-fluid">
 <table  id="ex" class="table table-bordered border-0 table-striped" style="width: 100% !important;">
       <thead> 
         <tr>        
