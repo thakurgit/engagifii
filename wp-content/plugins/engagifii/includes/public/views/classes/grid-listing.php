@@ -419,6 +419,11 @@ $('th .clear-search').click(function(e){
     $('#searchclass').on('click', function(e){
        e.stopPropagation();    
     });
+$('#searchclass').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
 });
   <?php
 }
