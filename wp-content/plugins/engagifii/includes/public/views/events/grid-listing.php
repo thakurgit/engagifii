@@ -14,6 +14,7 @@ if(isset($attr['calendar'])){
     /* added static column list by vpsc */
     $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
     $collection   = json_decode($dataResponse['api_response']);
+    //print_r($collection);
     unset($collection[0]);
     unset($collection[6]);
     unset($collection[8]);
@@ -52,7 +53,7 @@ if(isset($attr['calendar'])){
 
 <div class="containerEngagii">
 <!-- start filter UI -->
-
+<?php echo do_shortcode('[view_mode search="on" placeholder="Search by Name"]');  ?>
 <?php
   if($calendar_view){
 	  
@@ -261,14 +262,14 @@ $dt_class .= 'table-dark ';
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
 			$('.flt-btn').fadeIn(300);
-      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form').hide();
+      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form, .new-search').hide();
             $('#calendar_filter').hide();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#list').removeClass('btn-primary').addClass('btn-light');
-      $('#calendar_div, #calendar_filter, .calendarsearch-form').show();
+      $('#calendar_div, #calendar_filter, .calendarsearch-form, .new-search').show();
       $('#list_div, #calendarsearch_div, .filter-border').hide();
 			$('.flt-btn').fadeOut(100);
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
@@ -285,20 +286,20 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-	   //"order": [[3, 'asc']],
+	   "order": [[3, 'asc']],
        "columnDefs": [ 
           { "targets": ['tags','register','eventType','city'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
 		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
-		  /*{'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  {'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
            $(td).attr('data-order', cell ); 
        		 }
-    	 }*/
+    	 }
         ],
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -357,7 +358,28 @@ var table = $('#ebtmaintable').DataTable( {
 ?>
 
   $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
+    
+$('.list-search-btn').click(function(e){
+	var ttitle= $('.list-search').val();
+	if(ttitle!=''){
+    text = ttitle;
+		$('#list').trigger('click');	
+		table.column(i).search(text).draw();
+		 $( '#searchclass' ).val($('.list-search').val());
+		$('.clear-search').show();
+     
+	} else {
+		alert("search field can't be empty");	
+	}
+	e.stopPropagation();
+ });
+$('.list-search').on("keydown", function(event) {
+  if(event.which == 13){
+	$('.list-search-btn').trigger('click');  
+  }  
+});
         var title = $(this).text();
+       // alert(title);
         $(this).html( '<div class="position-relative"><label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm search-events pr-4" value=""/> <button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
 		function delay(callback, ms) {
   var timer = 0;
