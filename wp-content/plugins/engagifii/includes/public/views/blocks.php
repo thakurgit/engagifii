@@ -15,7 +15,7 @@
 	<input type="text" name="search"  placeholder="'.$values['placeholder'].'" class="bg-light form-control list-search mr-2" >
 	<button type="submit" class=" btn btn-primary list-search-btn">Search</button>
 	</div>
-    <form action="calendar-search.php" class="calendarsearch-form" method="POST">
+    <!--/*<form action="calendar-search.php" class="calendarsearch-form" method="POST">
 
 <div class="apply-search form-inline d-none">
 	<div class="form-group mr-2 position-relative">
@@ -24,7 +24,7 @@
 </div>
     <input type="submit" value="Search" class="btn btn-primary" id="apply-filter-search-cal" />
 </div>
-</form>
+</form>*/-->
 	
     </div>';
     }

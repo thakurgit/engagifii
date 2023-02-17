@@ -23,7 +23,7 @@ function classdataJS($classStates){
 	// print_r($);
 	// die;
 	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		//$datatableJS=true;
+		$datatableJS=true;
 	}
 	if($datatableJS){
 		//echo json_decode($xxx['api_response'])->totalCount;
@@ -562,7 +562,7 @@ $('.list-search').on("keydown", function(event) {
 });
  
          var title = $(this).text();
-        $(this).html( '<div class="position-relative"><label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm search-endorsement pr-4" value=""/> <button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-transparent rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
 
 function delay(callback, ms) {
   var timer = 0;
@@ -599,7 +599,7 @@ $('th .clear-search').click(function(e){
     } );
 	
 	$(document).ready(function (){    
-    $('#searchclass').on('click', function(e){
+    $('#searchclass, .search-dt span').on('click', function(e){
        e.stopPropagation();    
     });
 $('#searchclass').on("keydown", function(event) {
