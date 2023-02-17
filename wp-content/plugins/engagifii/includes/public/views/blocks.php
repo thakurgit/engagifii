@@ -2,17 +2,17 @@
 	function view_mode( $atts ) {	
 	 $values = shortcode_atts(array(
         'search' => '',
-		'placeholder' =>'Search...'
+		'placeholder' =>''        
     ),$atts); 
 	
 
 	$html = '<div class="container-fluid pb-2"><div class="row">';
 	$more='';
 	if ($values["search"]=='on') {
-		$more = 'col-md-6';
+        $more = 'col-md-6';
     $html .='<div class="col-md-6 col-12">
 	<div class="new-search form-inline ">
-	<input type="text" name="search"  placeholder="search by Class " class="bg-light form-control list-search mr-2" >
+	<input type="text" name="search"  placeholder="'.$values['placeholder'].'" class="bg-light form-control list-search mr-2" >
 	<button type="submit" class=" btn btn-primary list-search-btn">Search</button>
 	</div>
     <form action="calendar-search.php" class="calendarsearch-form" method="POST">
