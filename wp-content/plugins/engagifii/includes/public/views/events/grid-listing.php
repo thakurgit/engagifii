@@ -53,7 +53,8 @@ if(isset($attr['calendar'])){
 
 <div class="containerEngagii">
 <!-- start filter UI -->
-<?php echo do_shortcode('[view_mode search="on" placeholder="Search by Name"]');  ?>
+<?php $placeholder_text = 'Search by event name';
+echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]'); ?>
 <?php
   if($calendar_view){
 	  

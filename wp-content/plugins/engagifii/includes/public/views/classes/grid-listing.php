@@ -230,7 +230,8 @@ function classdataJS($classStates){
     $title_key = -1;
     
 ?>
-   <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Class or Instructor"]');  ?>
+   <?php $placeholder_text = 'Search by class name';
+   echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]');  ?>
 <?php
 
   if($calendar_view){
