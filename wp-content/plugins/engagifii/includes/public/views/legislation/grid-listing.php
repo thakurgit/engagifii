@@ -1445,7 +1445,7 @@ $('#bill_number + .clear-search').click(function(e){
 if(title_key){
   $('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
         var title = $(this).text();
-        $(this).html( '<div class="position-relative"><input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement pr-4" value="" id="searchclass"/><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement pr-4 shadow-nonw" value="" id="searchclass"/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
  
        $( 'input', this ).keyup(delay(function (e) {
 		    var titlesearch = this.value;
@@ -1460,7 +1460,7 @@ if(title_key){
 				$(this).siblings('.clear-search').hide();
 			} 
  });
-$('#searchclass + .clear-search').click(function(e){
+$('#searchclass + div+ .clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$(this).hide();
 	e.stopPropagation();
@@ -1470,9 +1470,14 @@ $('#searchclass + .clear-search').click(function(e){
     } );
 }
 $(document).ready(function (){    
-    $('#searchclass, #bill_number').on('click', function(e){
+    $('#searchclass, #bill_number, .search-dt span').on('click', function(e){
        e.stopPropagation();    
     });
+$('#searchclass, #bill_number').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
 	 });
 
 <?php
