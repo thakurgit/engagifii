@@ -5,8 +5,10 @@
     $response = $obj->getClassColumnData();
     $options = get_option( 'ebt_api_settings' );
     $class_visible_column_list = array();
-    if(isset($options['class_visible_column_list']))
+    if(isset($options['class_visible_column_list'])){
     	$class_visible_column_list = $options['class_visible_column_list'];   
+	}
+	$class_col_order   = isset($options['class_col_order']) ? $options['class_col_order']: array();
 
 //print_r($response);
 	//echo '<br/>';
@@ -15,8 +17,8 @@
     if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
-    	echo '<ul class="ebt-grid-column-list">';
-    	$counter=0;
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[class_col_order]" value="'.$options['class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="classList">';
+    	$counter=1;
 		foreach ($response as $key => $row) {
 			$checked = "";
 
@@ -37,7 +39,7 @@
 			//if($row->colName == "sectionname"){
 			//	echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'"  type="checkbox" name="ebt_api_settings[class_visible_column_list][]" checked   value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 			//}	else{
-				echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+				echo '<li  data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 			//} 
 			//echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[class_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  

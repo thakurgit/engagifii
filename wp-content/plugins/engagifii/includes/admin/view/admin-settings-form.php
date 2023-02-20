@@ -238,16 +238,36 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			window.getSelection().addRange( range );
 		} );
 		
-//change sequence as per dragged sequence on load		
-	var pos = [<?php  print_r($options['lbt_col_order']); ?>];
-	if(pos.length>0){
+//change sequence as per dragged sequence on load	
+	jQuery('.sortable-list').each(function(){
+		var colsList=[];	
+		if(jQuery(this).siblings('.cls').val()!==''){
+		  colsList= (jQuery(this).siblings('.cls').val()).split(',');
+		}
+		console.log(colsList);
+		//if(jQuery(this).attr('id')=='classList'){
+			//colsList = [<?php  //print_r($options['class_col_order']); ?>];
+		//}else if(jQuery(this).attr('id')=='legislationList'){
+			//colsList = [<?php  //print_r($options['lbt_col_order']); ?>];
+		//}
+	if(colsList.length>0){
 	  var i;
-	  var hh=[];
-	  for (i = 0; i < pos.length; ++i) {
-		 hh.push(jQuery('#legislationList').children().eq(pos[i]-1).prop('outerHTML') );
+	  var outerHtml=[];
+	  for (i = 0; i < colsList.length; ++i) {
+		 outerHtml.push(jQuery(this).children().eq(colsList[i]-1).prop('outerHTML') );
 	  }
-		jQuery('#legislationList').html(hh);
-	}
+		jQuery(this).html(outerHtml);
+	  }
+	});
+	/*var legisCols = [<?php  //print_r($options['lbt_col_order']); ?>];
+	if(legisCols.length>0){
+	  var i;
+	  var outerHtml=[];
+	  for (i = 0; i < legisCols.length; ++i) {
+		 outerHtml.push(jQuery('#legislationList').children().eq(legisCols[i]-1).prop('outerHTML') );
+	  }
+		jQuery('#legislationList').html(outerHtml);
+	}*/
 	 
 //toggle all
 		var tid =0;
@@ -276,8 +296,22 @@ return false;
 		}, 1500); 
 	}
 //sortable	
-	var lbt_col_order=[];
   jQuery( function() {
+	  jQuery('.sortable-list').each(function(){
+		jQuery(this).sortable({
+			items : 'li:not(.toggleAll)',
+			 placeholder: "ui-state-highlight",
+			 update: function( event, ui ) {
+				   var col_order=[];
+				  jQuery(this).children("li:not(.toggleAll)" ).each(function(){
+					  col_order.push(jQuery(this).attr('data-order'));
+					  
+				  });
+				  jQuery(this).siblings('.cls').val(col_order);
+				 }
+			});
+	  });
+	/*var lbt_col_order=[];
     jQuery( "#legislationList" ).sortable({
 		items : 'li:not(.toggleAll)',
 		 placeholder: "ui-state-highlight",
@@ -292,6 +326,6 @@ return false;
 			
 		});
 		jQuery('.cls').val(lbt_col_order);;
-	}
+	}*/
   } );
 </script>

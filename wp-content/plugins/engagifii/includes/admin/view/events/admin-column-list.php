@@ -12,12 +12,13 @@
 	{
 	$events_visible_column_list = $options['events_visible_column_list'];   
 	}
+	$event_col_order   = isset($options['event_col_order']) ? $options['event_col_order']: array();
 	//print_r(json_encode($events_visible_column_list));
 		if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
-    	echo '<ul class="ebt-grid-column-list">';
-    	$counter=0;
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[event_col_order]" value="'.$options['event_col_order'].'" /><ul class="ebt-grid-column-list sortable-list">';
+    	$counter=1;
 		foreach ($response as $key => $row) {
 			if(in_array($row->colName, $required_column_array)){
 			//print_r($row->colName)."<br>";
@@ -37,7 +38,7 @@
 				//echo '<ul class="ebt-grid-column-list">'; 			 
 			}			 
 		
-			echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[events_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			echo '<li  data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[events_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 				
 				$counter++;
 		}
