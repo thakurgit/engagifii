@@ -45,9 +45,11 @@ if(isset($attr['calendar'])){
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
 
 ?>
- <?php echo do_shortcode('[view_mode search="on" placeholder="Search by Award Name"]');  ?>
-
+ <?php $placeholder_text = 'Search by award name';
+echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]'); ?>
 <?php
+
+
   if($calendar_view){
 ?>
 
@@ -237,14 +239,14 @@ $dt_class .= 'table-dark ';
 			$('#calendar').removeClass('btn-primary').addClass('btn-light');
             $('#list_div').show();
 			$('.flt-btn').fadeIn(300);
-      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form').hide();
+      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form, .new-search').hide();
            $('#calendar_filter').hide();
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
         })
         $('#calendar').click(function(){
 	   		$(this).addClass('btn-primary').removeClass('btn-light');
 			$('#list').removeClass('btn-primary').addClass('btn-light');
-      $('#calendar_div, #calendar_filter, .calendarsearch-form').show();
+      $('#calendar_div, #calendar_filter, .calendarsearch-form, .new-search').show();
       $('#list_div, #calendarsearch_div, .filter-border').hide();
 			$('.flt-btn').fadeOut(100);
  localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
@@ -318,6 +320,23 @@ var table = $('#ebtmaintable').DataTable( {
 ?>
 
   $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
+    $('.list-search-btn').click(function(e){
+	var ttitle= $('.list-search').val();
+	if(ttitle!=''){
+		$('#list').trigger('click');	
+		table.column(i).search(ttitle).draw();
+		 $( '#searchclass' ).val($('.list-search').val());
+		$('.clear-search').show();
+	} else {
+		alert("search field can't be empty");	
+	}
+	e.stopPropagation();
+ });
+$('.list-search').on("keydown", function(event) {
+  if(event.which == 13){
+	$('.list-search-btn').trigger('click');  
+  }  
+});
         var title = $(this).text();
         $(this).html( '<div class="position-relative"><input id="searchclass" type="text" placeholder="Search endorsement" class="form-control form-control-sm search-endorsement pr-4" value=""/><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
 function delay(callback, ms) {
