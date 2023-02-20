@@ -32,7 +32,12 @@ $dataa=array();
 $k=1;
 $counter = 0; 
 $class_schedule = '';
-
+function registrationEnabled($registrationurl='',$registrationBtn='Register'){
+return '<a style="white-space:nowrap" href="'.$registrationurl.'" class="btn btn-primary px-3 py-1" target="_blank">'.$registrationBtn.'</a>';	
+}
+function registrationDisabled($registrationTitle='',$registrationBtn='Register'){ 
+	return '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registrationTitle.'"><button type="button" id="" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">'.$registrationBtn.'</button></span>';
+}
 foreach ($classdatJS as $key => $value) {
 $nestedData = array();
 $instructorPopOver = '';
@@ -142,7 +147,7 @@ elseif(count($classTag) == 1)
 
 $nestedData['classTag']= implode(" ", $allTags);
 
-if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
+/*if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
 if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
 {
 if($value->locationType->name=="onlocation")
@@ -165,6 +170,29 @@ $nestedData['register']= '<span class="d-inline-block" tabindex="0" data-toggle=
 }
 }else{
 $nestedData['register']= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+}*/
+//Registration button
+if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
+	  if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out'){
+	  if($value->locationType->name=="onlocation")	{ 
+		 	$nestedData['register']= registrationEnabled($value->registrationUrlOnLocation);
+		}
+		elseif($value->locationType->name=="online"){
+			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine);
+		}elseif($value->locationType->name=="onlocationandonline"){
+			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine,'Register Online');
+			$nestedData['register'].= '<div class="mb-2"></div>';
+			$nestedData['register'].= registrationEnabled($value->registrationUrlOnLocation,'Register in person');;
+		}
+		else{
+			$nestedData['register']= registrationDisabled('Class Location not defined');
+		}
+	  }
+	  else{
+	    $nestedData['register']= registrationDisabled($value->registrationState);
+	  }
+}else{
+  		$nestedData['register']= registrationDisabled($value->registrationState);
 }
  $k++;
  $dataa[] = $nestedData;
