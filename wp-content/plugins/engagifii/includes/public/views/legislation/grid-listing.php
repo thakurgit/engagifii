@@ -85,7 +85,6 @@ $houseResponses = json_decode($houseResponse['api_response']);
 /* Senate Committee */
 $senateResponse = $obj->senateCommiittee();
 $senateResponses = json_decode($senateResponse['api_response']);
-
 /* Sponsors */
 $sponsorResponse = $obj->sponsorList();
 $sponsorResponses = json_decode($sponsorResponse['api_response']);
@@ -218,7 +217,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
     </div>
     </div>
 <?php } ?>
-<?php  if(in_array('houseComittee', $lbt_visible_column_list)) { ?>
+<?php  if(in_array('houseCommittees', $lbt_visible_column_list)) { ?>
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">House Committee <span id="countviewhousecommittee" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -233,7 +232,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <li data-title="<?php echo $house->text; ?>" data-id="<?php echo $house->value; ?>">
           <label class="d-none" for="item_id_<?php echo $house->value; ?>">house committee</label>
         <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $house->value; ?>" id="item_id_<?php echo $house->value; ?>" >
-        <?php echo $house->text; ?>
+        <?php echo $house->text.' '.'('.$house->count.')'; ?>
         </li>
         <?php
 } ?>
@@ -317,7 +316,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <li data-title="<?php echo $senate->text; ?>" data-id="<?php echo $senate->value; ?>">
           <label class="d-none" for="item_id_<?php echo $senate->value; ?>">Senate Committee</label>
         <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $senate->value; ?>" id="item_id_<?php echo $senate->value; ?>" >
-        <?php echo $senate->text; ?>
+        <?php echo $senate->text.' '.'('.$senate->count.')'; ?>
         </li>
         <?php
 } ?>
@@ -588,7 +587,8 @@ function getcheckedassignValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox && checkbox.checked == true){      
+	if(checkbox){
+    if (checkbox.checked == true){      
       var chkval = checkbox.value;
       if(checkbox.dataset.type == "members")
         assignedto.push(chkval);
@@ -599,6 +599,7 @@ function getcheckedassignValues()
       if(checkbox.dataset.type == "tags")
         assignTags.push(chkval);
     }  
+	}
   }
 
 }
@@ -609,10 +610,12 @@ function getCheckedBillTypesValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox && checkbox.checked == true){      
+	if(checkbox){
+    if ( checkbox.checked == true){      
       var chkval = checkbox.value;
       billTypes.push(chkval);
     }  
+	}
   }
 }
 
@@ -627,11 +630,12 @@ function getCheckedLastActionTypesValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-
-    if (checkbox && checkbox.checked == true){      
+if(checkbox){
+    if (checkbox.checked == true){      
       var chkval = checkbox.value;
       lastActionTypes.push(chkval);
     }  
+}
   }
 
 }
@@ -647,10 +651,12 @@ function getCheckedTrackingLevelsValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox && checkbox.checked == true){      
+	if(checkbox){
+    if ( checkbox.checked == true){      
       var chkval = checkbox.value;
       trackingLevels.push(chkval);
     }  
+	}
   }
 <?php
   }
@@ -664,10 +670,12 @@ function getCheckedStatusTypesValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']");
-    if (checkbox && checkbox.checked == true){      
+	if(checkbox){
+    if ( checkbox.checked == true){      
       var chkval = checkbox.value;
       statusTypes.push(chkval);
     }  
+	}
   }
 
 }
@@ -890,7 +898,6 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
-
 if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 

@@ -240,7 +240,6 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
     unset($collection[8]);
 
 
-
     $classes = $obj->getAllClassCourses($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);
     $instructor = $obj->classAllInstructors($date);
@@ -286,6 +285,28 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
+
+if($class_visible_column_list && count($class_visible_column_list)>0){
+  $filteredColumns=[]; //object array filtered from columnList
+  $columnGroup=[]; //array of keys from filtered objects 
+  $tempColumn=[];  //temporary object from filtered objects
+  $seqColumns=array_fill(0, count($class_visible_column_list), ''); //sequenced object array
+  //compare columns with checked columns
+  foreach($collection as $key => $value) {
+	  if (in_array($value->colName, $class_visible_column_list)){
+		  array_push($filteredColumns, $value);
+		  array_push($columnGroup, $value->colName);	
+	  }
+  }
+  //sequence columns with checked columns
+  foreach($filteredColumns as $key => $value) {
+		  array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
+		  array_splice($seqColumns,array_search($value->colName, $class_visible_column_list),1,$tempColumn);
+		  $tempColumn=[];
+  }
+} else {
+	$seqColumns=$collection;
+}
 ?>
 <div class="containerEngagii ff" id="list_div" <?php if($calendar_view || $calendar_view_classname){ echo 'style="display:none"'; } ?>>
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -293,10 +314,10 @@ $dt_class .= 'table-dark ';
       <thead> 
         <tr>        
           <?php
-            if(is_array($collection) && count($collection)>0){
+            //if(is_array($seqColumns) && count($seqColumns)>0){
               $i = 0;
-              foreach ($collection as $key => $value) {
-                 if(in_array($value->colName, $class_visible_column_list)){
+              foreach ($seqColumns as $key => $value) {
+                // if(in_array($value->colName, $class_visible_column_list)){
                 
                   if($value->displayName == 'Class Type')
                   {
@@ -321,9 +342,9 @@ $dt_class .= 'table-dark ';
             </th>
                 <?php
                 $i++;
-                }
+                //}
               }
-            }
+            //}
           ?>    
 
         </tr> 
@@ -604,7 +625,7 @@ function delay(callback, ms) {
   $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
             if ( table.column(i).search() !== titlesearch ) {
-				table.column(i).search(titlesearch).draw();
+				table.column('1').search(titlesearch).draw();
             }
 }, 500));
 
@@ -620,7 +641,7 @@ $('th .clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();
-	table.column(i).search('').draw();
+	table.column('1').search('').draw();
  });
 
     } );
