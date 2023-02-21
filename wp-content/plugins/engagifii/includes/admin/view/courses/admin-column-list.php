@@ -6,14 +6,17 @@
     $options = get_option( 'ebt_api_settings' );
     $course_visible_column_list = array();
 
-    if(isset($options['course_visible_column_list']))
+    if(isset($options['course_visible_column_list'])){
     	$course_visible_column_list = $options['course_visible_column_list'];   
+	}
+		$course_col_order   = isset($options['course_col_order']) ? $options['course_col_order']: array();
+
     
     if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
-    	echo '<ul class="ebt-grid-column-list">';
-    	$counter=0;
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[course_col_order]" value="'.$options['course_col_order'].'" /><ul class="ebt-grid-column-list sortable-list">';
+    	$counter=1;
 		foreach ($response as $key => $row) {
 			$checked = "";
 			if(in_array($row->colName, $course_visible_column_list))
@@ -29,7 +32,7 @@
 				//echo '</ul>';
 				//echo '<ul class="ebt-grid-column-list">'; 			 
 			}			 
-			echo '<li> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[course_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[course_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}
     	echo '</ul></div>';				

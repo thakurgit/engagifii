@@ -3631,8 +3631,8 @@ $vars = "";
             $isAsscending = false;
         }
         
-
-        $title = $_POST['columns'][0]['search']['value'];
+		$titleColumn = $_POST['titleColumn'];
+        $title = $_POST['columns'][$titleColumn]['search']['value'];
 
         if (strlen($_POST['search']['value']) > 1) {
             $title = $_POST['search']['value'];

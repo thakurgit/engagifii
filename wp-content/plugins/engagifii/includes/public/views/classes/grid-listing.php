@@ -23,7 +23,7 @@ function classdataJS($classStates){
 	// print_r($);
 	// die;
 	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		$datatableJS=true;
+		//$datatableJS=true;
 	}
 	//datatable JS data
 if($datatableJS){
@@ -463,6 +463,7 @@ $filter_content = removeWhitespace($filter_content);
   var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
   var minReg ='<?php echo $min_date; ?>';
   var maxReg ='<?php echo $max_date; ?>';
+  var titleColumn = '<?php echo $title_key; ?>';
   var classStates =["Upcoming"];
   <?php if($options['allClasses']==1) { ?>
   	classStates = [];
@@ -550,6 +551,7 @@ $filter_content = removeWhitespace($filter_content);
 			d.class_start_date = class_start_date;
 			d.class_end_date = class_end_date;
 			d.classStates=classStates;
+			d.titleColumn = titleColumn;
             }, 
         },
 		 <?php } if($datatableJS){ ?>  
@@ -589,13 +591,12 @@ $filter_content = removeWhitespace($filter_content);
   if($title_key > -1){
 ?>
 
-  $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
-
+  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
 $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){
 		$('#list').trigger('click');	
-		table.column(i).search(ttitle).draw();
+		table.column(titleColumn).search(ttitle).draw();
 		 $( '#searchclass' ).val($('.list-search').val());
 		$('.clear-search').show();
 	} else {
@@ -624,8 +625,8 @@ function delay(callback, ms) {
 }
   $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
-            if ( table.column(i).search() !== titlesearch ) {
-				table.column('1').search(titlesearch).draw();
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
             }
 }, 500));
 
@@ -641,7 +642,7 @@ $('th .clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();
-	table.column('1').search('').draw();
+	table.column(titleColumn).search('').draw();
  });
 
     } );
