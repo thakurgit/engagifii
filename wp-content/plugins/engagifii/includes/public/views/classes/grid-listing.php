@@ -23,7 +23,7 @@ function classdataJS($classStates){
 	// print_r($);
 	// die;
 	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		//$datatableJS=true;
+		$datatableJS=true;
 	}
 	//datatable JS data
 if($datatableJS){
