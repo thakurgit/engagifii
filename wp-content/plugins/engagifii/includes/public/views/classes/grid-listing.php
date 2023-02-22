@@ -38,6 +38,7 @@ return '<a style="white-space:nowrap" href="'.$registrationurl.'" class="btn btn
 function registrationDisabled($registrationTitle='',$registrationBtn='Register'){ 
 	return '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registrationTitle.'"><button type="button" id="" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">'.$registrationBtn.'</button></span>';
 }
+if($classdatJS){	
 foreach ($classdatJS as $key => $value) {
 $nestedData = array();
 $instructorPopOver = '';
@@ -69,6 +70,7 @@ if(count($value->classSessions)){
   $classPopover.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 }
 //class name
+$class_schedule = date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate));
 if(count($value->classSessions)){
   foreach ($value->classSessions as $key => $rowData) {
 	$counter = 0; 
@@ -83,13 +85,15 @@ if(count($value->classSessions)){
 		 $classSessionEndDate = $rowData->sessionDate;
 	}
 	$classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-	$class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+	//$class_schedule = $classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime;
 	$counter = $counter + 1;
   }
-  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';
-}else{
-  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';
+ // $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';
 }
+/*else{
+  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';
+}*/
+  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span><small class="d-block" style="white-space:normal;">'.$class_schedule.'</small></div></div>';
 
 $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
 $nestedData['objectType'] = $value->objectType;
@@ -198,7 +202,7 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
  $dataa[] = $nestedData;
 
 }
-
+}
 }
 	
 	
