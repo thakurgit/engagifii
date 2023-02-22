@@ -150,7 +150,7 @@ if($classTag){
   }
   $nestedData['classTag']= implode(" ", $allTags);
 }else {
-  $nestedData['classTag']='<em class="text-secondary">N/A</em>';
+  $nestedData['classTag']='<em class="opacity-50">N/A</em>';
 }
 //class register button
 if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
