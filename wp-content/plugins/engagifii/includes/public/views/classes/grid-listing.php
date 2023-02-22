@@ -31,7 +31,6 @@ if($datatableJS){
 $dataa=array();
 $k=1;
 $counter = 0; 
-$class_schedule = '';
 function registrationEnabled($registrationurl='',$registrationBtn='Register'){
 return '<a style="white-space:nowrap" href="'.$registrationurl.'" class="btn btn-primary px-3 py-1" target="_blank">'.$registrationBtn.'</a>';	
 }
@@ -42,34 +41,12 @@ if($classdatJS){
 foreach ($classdatJS as $key => $value) {
 $nestedData = array();
 $instructorPopOver = '';
+//class name
 $class_icon = $value->parentCourse->iconReference;
 if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
   $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
 
 }
-//sessions dropdown html
-$classPopover = '';
-if(count($value->classSessions)){
-  $classPopover  =  dd_header('Class Dates');
-  $subItems = "";
-  $li=1;
-  foreach ($value->classSessions as $key => $rowData) {
-	$rowName[$rowData->id] = $rowData->id;
-	$classTime = '';
-	if($rowData->sessionDate){
-	  $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
-	}
-	$class='';
-	if($li%2==1){
-	  $class='bg-light';	
-	}
-	$subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
-	$li++;
-  }
-  $classPopover .= $subItems;
-  $classPopover.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-}
-//class name
 $class_schedule = date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate));
 if(count($value->classSessions)){
   foreach ($value->classSessions as $key => $rowData) {
@@ -94,39 +71,74 @@ if(count($value->classSessions)){
   $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';
 }*/
   $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span><small class="d-block" style="white-space:normal;">'.$class_schedule.'</small></div></div>';
-
+//class duration
 $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
+//class type
 $nestedData['objectType'] = $value->objectType;
 //session dropdown
 if(count($value->classSessions)){
-foreach ($value->classSessions as $key => $rowData) {
-
-$classSessionTime = '';
-if( $counter == 0 ) {         
-	$classSessionStartTime = $rowData->startTime;
-	$classSessionStartDate = $rowData->sessionDate;
-}                  
-if( $counter == count( $value->classSessions ) - 1) {
-	 $classSessionEndTime = $rowData->endTime;
-	 $classSessionEndDate = $rowData->sessionDate;
-}
-//$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
-$classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-$class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
-$counter = $counter + 1;
-}
+  $li=1;
+  $classPopover  =  dd_header('Class Dates');
+  $subItems = "";
+  foreach ($value->classSessions as $key => $rowData) {
+	if( $li == 1 ) {         
+		$classSessionStartDate = $rowData->sessionDate;
+	}                  
+	$rowName[$rowData->id] = $rowData->id;
+	$classTime = '';
+	if($rowData->sessionDate){
+	  $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
+	}
+	$class='';
+	if($li%2==1){
+	  $class='bg-light';	
+	}
+	$subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+	$li++;
+  }
+  $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 $nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
 }else {
 $nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';	
 }
-
-
+//class instructors
 if($value->classInstructorsCount>0){
-$nestedData['classInstructorsCount']= '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
+	
+	
+  $instructorDropdown =  dd_header('Instructors','Search Instructors..');
+  $subItems = "";
+  $li=1;
+  foreach ($value->classInstructors as $key => $rowData) {
+	$rowName[$rowData->id] = $rowData->fullName;
+	
+	if($rowData->thumbnailUrl){
+	  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
+		$instructor_img = $rowData->thumbnailUrl;
+	  }	else	{
+		$instructor_img = $options['ebt_tenant_code']['engagifii_url'].$rowData->thumbnailUrl;
+	  }
+	}	else	{
+	  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+	}
+	$class='';
+	if($li%2==1){
+	  $class='bg-light';	
+	}
+	$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
+	$li++;
+  }
+  $instructorDropdown .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+
+		
+
+	
+	
+	
+$nestedData['classInstructorsCount']= '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorDropdown.'</div>';  
 } else {
 $nestedData['classInstructorsCount']= '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
 }
-
+//class credit hours
 if($value->isCreditTypeSingle =="true"){
 $nestedData['credithours']= number_format($value->courseCreditMapping[0]->credits, 2);//($value->courseCreditMapping[0]->credits);          
 }else{
