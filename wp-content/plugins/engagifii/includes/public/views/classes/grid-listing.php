@@ -85,7 +85,7 @@ if(count($value->classSessions)){
 		 $classSessionEndDate = $rowData->sessionDate;
 	}
 	$classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-	//$class_schedule = $classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime;
+	$class_schedule = $classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime;
 	$counter = $counter + 1;
   }
  // $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';
