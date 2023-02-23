@@ -2,12 +2,14 @@
 	function view_mode( $atts ) {	
 	 $values = shortcode_atts(array(
         'search' => '',
-		'placeholder' =>''        
+		'placeholder' =>'',
+        'module' =>''        
     ),$atts); 
 	
 
 	$html = '<div class="container-fluid pb-2"><div class="row">';
 	$more='';
+    if($values['module']!="endorsement"){
 	if ($values["search"]=='on') {
         $more = 'col-md-6';
     $html .='<div class="col-md-6 col-12">
@@ -40,6 +42,19 @@
         
        
     </div></div></div>';
+}else{
+    $html .='<div class="col-12 '.$more.' text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
+    <div class="flt-btn mr-3 mr-xl-5 " style="display:none">
+        
+        </div>
+    	<div class="btn-group view-m" role="group">
+        		 <button type="button" id="list" class="btn border  btn-primary shadow-none" aria-pressed="false"><i class="fal fa-list mr-2"></i> List</button> 
+                 
+        </div>
+        
+       
+    </div></div></div>';
+}
 
     return $html;
 

@@ -46,7 +46,8 @@ if(isset($attr['calendar'])){
 
 ?>
  <?php $placeholder_text = 'Search by award name';
-echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]'); ?>
+ $module ="endorsement";
+echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'" module="'.$module.'"]'); ?>
 <?php
 
 
@@ -57,7 +58,7 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
   <?php echo do_shortcode('[endorsement-calendar]'); ?>
 </div>
 <?php
-  }
+  } 
 ?>
 <!--div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer">

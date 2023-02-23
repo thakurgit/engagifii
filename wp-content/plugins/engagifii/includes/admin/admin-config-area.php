@@ -71,7 +71,7 @@ class ebtAdminConfigSettings {
 function ebt_api_shortocde_description(){
 	echo "<h3 class='mb-0 bg-grey bordered'>Endorsement Shortcodes </h3>";
 	echo "<div class='engagifii-setting shortcode-list'>";
-	echo "<ul class='list'><li><strong>Endorsement List</strong>: <code>[endorsement-grid-list]</code></li> <li><strong>Endorsement Detail</strong> <code>[endorsement-details Id='endorsement-id']</code></li><li><strong>Endorsement Calendar</strong> <code>[endorsement-calendar]</code></li><li><strong>Endorsement List & Calendar</strong> <code>[endorsement-list-calendar calendar=true]</code></li> </ul>";
+	echo "<ul class='list'><li><strong>Endorsement List</strong>: <code>[endorsement-grid-list]</code></li> <li><strong>Endorsement Detail</strong> <code>[endorsement-details Id='endorsement-id']</code></li> </ul>";
 	echo "</div>";
 
 	echo "<h3 class='mb-0 bg-grey bordered'>Event Shortcodes </h3>";
