@@ -128,7 +128,7 @@ ob_start();
     </div>
     <div class="col-sm-12 ">
       <input type="hidden" id="isApplyACtive" value="0">
-      
+      <?php if(in_array('createdOn', $ebt_visib_datacol_list)){ ?>
       <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Between <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -136,6 +136,7 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
+      <?php } ?>
       <?php
       
         if(array_search('tags', $ebt_visib_datacol_list)){

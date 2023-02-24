@@ -14,6 +14,9 @@
   $endResponse = $api->getEndDetails($endId);
   $endResponses = json_decode($endResponse['api_response']);
 
+  $options = get_option( 'ebt_api_settings' );
+    $ebt_visib_datacol_list = $options['ebt_visib_datacol_list'];
+//print_r($ebt_visib_datacol_list);
   /* Course Curriculam Tab */
   $curriculamResponse = $api->getCurriculam($endId);
   $curriculamResponses = json_decode($curriculamResponse['api_response']);
@@ -49,12 +52,13 @@
         </div>
         <div class="col-md-10 col-xl-9 pt-1 pr-3 pb-1 pl-xl-0">
             <h3 class="no-border m-auto"><?php echo $endResponses->name;?> </h3>
-            <?php if(is_array($endResponses->awardTags) && count($endResponses->awardTags)>0) { ?>
+            <?php if(in_array('tags', $ebt_visib_datacol_list)){
+            if(is_array($endResponses->awardTags) && count($endResponses->awardTags)>0) { ?>
             <div>
                 <span>Tag(s): </span>
                 <span class="pl-1 pr-1"><i class="fa fa-tags"></i> <?php echo count($endResponses->awardTags);  ?></span>
                 <span class="border round-tag p-2 text-capitalize"><?php echo $endResponses->awardTags[0];?></span>
-            </div><?php } ?>
+            </div><?php } }?>
         </div>
         <div class="col-md-2 col-xl-2 position-static">
           <div class="clearfix text-right">
@@ -76,10 +80,11 @@
             ?>
              <!-- <a href="<?php echo site_url();?>/endorsement-grid-view/" class="pl-2 mr-2 text-muted"><i class="fa fa-times"></i></a> -->
           </div>
+          <?php if(in_array('register', $ebt_visib_datacol_list)){ ?>
           <div class="clearfix pt-4 text-right">
             <a class="btn btn-primary " href="<?php echo $tenant_url;  ?>/pages/awards/<?php echo $endId; ?>/signup/overview" target="_blank">Register</a>
           </div>
-          
+          <?php } ?>
 
         </div>
     </div>      
@@ -104,23 +109,23 @@
                             	<div class="card  mb-3 border-bottom">
                                   <div class="card-header p-0">
                                         <h2 class="mb-0">
-                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content1" aria-expanded="false" aria-controls="collapseTwo">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-target="#tab-content1" aria-controls="collapseTwo">
                                             Endorsement Details
-                                            <i class="fal fa-chevron-down"></i>
-                                          </button>
+                                           </button>
                                         </h2>
                                       </div>                                
-                                <div id="tab-content1" class="collapse" data-parent="#accordionExample">
+                                <div id="tab-content1" class="" data-parent="#accordionExample">
                                       <div class="card-body p-3">
                                         <?php
                                         if($endResponses->objectType){
+                                          if(in_array('objectType', $ebt_visib_datacol_list)){
                                       ?>
                                         <div class="summary-content-para-engagiigii row">
                                             <div class="col-sm-2 ">Endorsement Type:</div>
                                             <div class="col-sm-10"><?php echo $endResponses->objectType; ?></div>
                                         </div> 
                                       <?php
-                                          }
+                                          } }
                                            if($endResponses->description){
                                       ?>
                                         <div class="summary-content-para-engagiigii row">
@@ -151,6 +156,7 @@
                                       <?php
                                         }
                                         if($endResponses->validity){
+                                          if(in_array('validity', $ebt_visib_datacol_list)){
                                       ?>
                                       <div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Valid Till:
@@ -161,7 +167,7 @@
                                       </div>
                                       <?php
                                           }
-
+                                        }
                                           if(count($endResponses->skills)>0)
                                           {
                                       ?>
@@ -192,21 +198,22 @@
                             	<div class="card  mb-3 border-bottom">
                                   <div class="card-header p-0">
                                         <h2 class="mb-0">
-                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content2" aria-expanded="false" aria-controls="collapseTwo">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-target="#tab-content2" aria-controls="collapseTwo">
                                             Registration Details & Settings
-                                            <i class="fal fa-chevron-down"></i>
-                                          </button>
+                                            </button>
                                         </h2>
                                       </div>                                
-                                <div id="tab-content2" class="collapse" data-parent="#accordionExample">
+                                <div id="tab-content2" class="" data-parent="#accordionExample">
                                       <div class="card-body p-3">
-<div class="summary-content-para-engagiigii row">
+                                      <?php if(in_array('price', $ebt_visib_datacol_list)){ ?>
+                                    <div class="summary-content-para-engagiigii row">
                                         <div class="col-sm-2">Price:
                                         </div>
                                         <div class="col-sm-10">
                                           $<?php echo $endResponses->price; ?>
                                         </div>
                                     </div>
+                                    <?php } ?>
                                      <?php
                                                 if($endResponses->preRequisiteCourses || $endResponses->preRequisiteAwards){
                                             ?>
@@ -215,6 +222,7 @@
                                         <div class="col-sm-10">
                                           <?php
                                                 if($endResponses->preRequisiteCourses){
+                                                  if(in_array('courseCount', $ebt_visib_datacol_list)){
                                             ?>
                                             <span>Courses</span>
                                             <ul class="list-group">
@@ -224,6 +232,7 @@
                                                 <?php
                                                     }
                                                   }
+                                                }
                                                 ?>
 
                                             
@@ -259,13 +268,12 @@
                             	<div class="card  mb-3 border-bottom">
                                   <div class="card-header p-0">
                                         <h2 class="mb-0">
-                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#tab-content3" aria-expanded="false" aria-controls="collapseTwo">
+                                          <button class="btn btn-link btn-block text-left text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-target="#tab-content3" aria-controls="collapseTwo">
                                             Contact Person
-                                            <i class="fal fa-chevron-down"></i>
-                                          </button>
+                                           </button>
                                         </h2>
                                       </div>                                
-                                <div id="tab-content3" class="collapse" data-parent="#accordionExample">
+                                <div id="tab-content3" class="" data-parent="#accordionExample">
                                 <div class="card-body p-3">
                                     <div class="row">
                                         <?php 
