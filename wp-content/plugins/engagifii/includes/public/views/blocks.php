@@ -44,7 +44,7 @@
     </div></div></div>';
 }else{
     $html .='<div class="col-12 '.$more.' text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
-    <div class="flt-btn mr-3 mr-xl-5 " style="display:none">
+    <div class="flt-btn mr-3 mr-xl-5 " style="display:block">
         
         </div>
     	<div class="btn-group view-m" role="group">
