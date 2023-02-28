@@ -216,11 +216,11 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
     
 
     $collection   = json_decode($dataResponse['api_response']);
+print_r($collection);
     unset($collection[0]);
     unset($collection[1]);
     unset($collection[7]);
     unset($collection[8]);
-
 
     $classes = $obj->getAllClassCourses($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);

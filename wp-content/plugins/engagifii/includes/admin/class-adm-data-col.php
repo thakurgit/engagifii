@@ -90,11 +90,11 @@ class adminDataColumn extends Engagifii_API{
 
 		if(isset($dataResponse['api_response'])){
 			$collection   = json_decode($dataResponse['api_response']);
-			unset($collection[0]);
+/*			unset($collection[0]);
 			unset($collection[1]);
 			unset($collection[7]);
 			unset($collection[8]);
-			return $collection;
+*/			return $collection;
 		}
 		else
 			return array();

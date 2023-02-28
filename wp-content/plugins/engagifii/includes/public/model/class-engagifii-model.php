@@ -2134,6 +2134,7 @@ wp_die();
             }
             
             $event_status = $row->eventStatus;
+			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
             if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {

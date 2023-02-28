@@ -14,16 +14,17 @@ if(isset($attr['calendar'])){
     /* added static column list by vpsc */
     $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
     $collection   = json_decode($dataResponse['api_response']);
-    //print_r($collection);
-    unset($collection[0]);
+    /*unset($collection[0]);
     unset($collection[6]);
     unset($collection[8]);
     unset($collection[9]);
-    array_values($collection);
-    
+    array_values($collection);*/
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
     $ebt_visib_datacol_list = $options['events_visible_column_list'];
+	//print_r($ebt_visib_datacol_list);
+	 //die;
+
 //print_r("-----------------------------------------------------------------<br/>");
    //print_r($ebt_visib_datacol_list);
     /* Get Tags list */
@@ -209,7 +210,6 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
 } else {
 	$seqColumns=$collection;
 }
-
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -221,7 +221,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
         $i=0;
         foreach($seqColumns as $key => $value){
          // print_r($value);
-         // if(in_array($value->colName, $ebt_visib_datacol_list)){
+          //if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
               $forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'eventType')
@@ -303,7 +303,7 @@ var table = $('#ebtmaintable').DataTable( {
 		"order": [[<?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'asc']],
 		 <?php } ?>
        "columnDefs": [ 
-          { "targets": ['tags','register','eventType','city'],
+          { "targets": ['tags','register','eventType','city','eventStatus'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
@@ -374,14 +374,14 @@ var table = $('#ebtmaintable').DataTable( {
   if($title_key > -1){
 ?>
 
-  $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
+  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
     
 $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){
     text = ttitle;
 		$('#list').trigger('click');	
-		table.column(i).search(text).draw();
+		table.column(titleColumn).search(text).draw();
 		 $( '#searchclass' ).val($('.list-search').val());
 		$('.clear-search').show();
      
@@ -396,8 +396,7 @@ $('.list-search').on("keydown", function(event) {
   }  
 });
         var title = $(this).text();
-       // alert(title);
-        $(this).html( '<div class="position-relative"><label class="d-none" for="searchclass">search</label><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm search-events pr-4" value=""/> <button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
 		function delay(callback, ms) {
   var timer = 0;
   return function() {
@@ -451,6 +450,11 @@ $('th .clear-search').click(function(e){
     $('#searchclass').on('click', function(e){
        e.stopPropagation();    
     });
+$('#searchclass').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
 });
   <?php
 }
