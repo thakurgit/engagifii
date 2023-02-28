@@ -23,8 +23,6 @@ if(isset($attr['calendar'])){
     
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-//print_r($collection);
-    $options = get_option( 'ebt_api_settings' );
     $ebt_visib_datacol_list = $options['events_visible_column_list'];
 //print_r("-----------------------------------------------------------------<br/>");
    //print_r($ebt_visib_datacol_list);
@@ -188,6 +186,30 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
+
+
+if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
+  $filteredColumns=[]; //object array filtered from columnList
+  $columnGroup=[]; //array of keys from filtered objects 
+  $tempColumn=[];  //temporary object from filtered objects
+  $seqColumns=array_fill(0, count($ebt_visib_datacol_list), ''); //sequenced object array
+  //compare columns with checked columns
+  foreach($collection as $key => $value) {
+	  if (in_array($value->colName, $ebt_visib_datacol_list)){
+		  array_push($filteredColumns, $value);
+		  array_push($columnGroup, $value->colName);	
+	  }
+  }
+  //sequence columns with checked columns
+  foreach($filteredColumns as $key => $value) {
+		  array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
+		  array_splice($seqColumns,array_search($value->colName, $ebt_visib_datacol_list),1,$tempColumn);
+		  $tempColumn=[];
+  }
+} else {
+	$seqColumns=$collection;
+}
+
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -197,19 +219,9 @@ $dt_class .= 'table-dark ';
         <?php 
         $forDatatable = array();
         $i=0;
-        // foreach ($collection as $key => $value) {
-        //   if($value->colName == "register")
-        //   {
-        //       $temp_array = $collection;
-        //       array_splice($collection, $key, 1);
-        //       array_values(array_filter($collection));
-        //       array_push($collection, $temp_array);
-        //   }
-        // }
-
-        foreach($collection as $key => $value){
+        foreach($seqColumns as $key => $value){
          // print_r($value);
-          if(in_array($value->colName, $ebt_visib_datacol_list)){
+         // if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
               $forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'eventType')
@@ -230,7 +242,7 @@ $dt_class .= 'table-dark ';
             <?php  echo $value->displayName; ?>
             </th>
           <?php $i++; 
-          }
+          //}
         } ?>
       </tr> 
     </thead> 
@@ -255,7 +267,7 @@ $dt_class .= 'table-dark ';
   var startdate = '';
   var enddate     = '';
   var text     = '';
-
+  var titleColumn = '<?php echo $title_key; ?>';
   var fv = 0;
 
   $('#list').click(function(){
@@ -287,20 +299,24 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-	   "order": [[3, 'asc']],
+		<?php if(in_array('eventDates', $ebt_visib_datacol_list)){ ?>
+		"order": [[<?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'asc']],
+		 <?php } ?>
        "columnDefs": [ 
           { "targets": ['tags','register','eventType','city'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
 		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
-		  {'targets': 3, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  <?php if(in_array('eventDates', $ebt_visib_datacol_list)){ ?>
+		  {'targets': <?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
            $(td).attr('data-order', cell ); 
        		 }
     	 }
+		 <?php } ?>
         ],
         "language": {
           processing: '<span>&nbsp;</span>',

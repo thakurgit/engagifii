@@ -1,4 +1,5 @@
 <?php
+
   $datatableJS=false;
     $options  = get_option( 'ebt_api_settings' );
   $classStates =['Upcoming'];
@@ -564,10 +565,12 @@ $filter_content = removeWhitespace($filter_content);
 		 */
 
     }
-		
-		
-		
     });
+	
+	
+
+
+
 <?php
   if($title_key > -1){
 ?>
@@ -745,8 +748,9 @@ $('.clear-all').click(function(){
 			class_end_date     = '<?php echo $class_end_date; ?>';
 			  $(".filter-area").toggleClass('d-none');
             table.draw();
+			
 
-      })
+      });
 
 //filter
     $('#apply-filter-data').click(function(){
@@ -888,14 +892,28 @@ $("#slider-range").slider({
         min: <?php echo (int)$creditFilter['minRange']; ?>,
         max: <?php echo (int)$creditFilter['maxRange']; ?>,
         values: [<?php echo (int)$creditFilter['minRange']; ?>, <?php echo (int)$creditFilter['maxRange']; ?>],
-		step: 5,
+		step: 1,
         
-     stop: function(event, ui ) {
+     slide: function(event, ui ) {
 	    $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
+      },
+     stop: function(event, ui ) {
 		if($('#apply-filter-data .spinner-border').length==0){
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
-      countFilterData();  
+      countFilterData(); 
+	  
+	  
+	  
+	     /* $.fn.dataTable.ext.search.push(
+      function(settings, data, dataIndex) {  
+         return data[5] >=  ui.values[ 0 ] && data[5] <= ui.values[ 1]
+      }
+    )
+  table.draw();*/
+
+
+ 
 
       }
 
