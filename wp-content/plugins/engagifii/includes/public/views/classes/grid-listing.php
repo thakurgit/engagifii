@@ -216,7 +216,6 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
     
 
     $collection   = json_decode($dataResponse['api_response']);
-print_r($collection);
     unset($collection[0]);
     unset($collection[1]);
     unset($collection[7]);

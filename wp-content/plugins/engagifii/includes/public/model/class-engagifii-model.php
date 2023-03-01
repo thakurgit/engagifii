@@ -2029,12 +2029,10 @@ wp_die();
 
     // Events Grid Data
     public function eventsLoadGridData(){
-//print_r("event Grid");
         $postedData = $this->_prepareEventsData();
         //print_r(json_encode($postedData));
 		//die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
-        //print_r($dataResponse);
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
         //$totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
