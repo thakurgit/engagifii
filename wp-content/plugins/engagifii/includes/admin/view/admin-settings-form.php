@@ -296,7 +296,21 @@ return false;
 				  jQuery(this).siblings('.cls').val(col_order);
 				 }
 			});
+		jQuery('<button class="resetposition">Reset columns position</button>').insertAfter(jQuery(this)); 
 	  });
-	
+	  //sortable reset
+	function sorts(a, b) {
+	  return parseInt(a.dataset.order) - parseInt(b.dataset.order);
+	}
+	jQuery('.resetposition').click(function(e){
+  jQuery(this).siblings('ul').find('li.ui-sortable-handle').sort(sorts).each(function() {
+  var elem = jQuery(this);
+  jQuery(elem).appendTo(jQuery(this).parent('ul'));
+});
+jQuery(this).siblings('.cls').val('');
+		e.preventDefault();
+	});
+          
+       
   } );
 </script>
