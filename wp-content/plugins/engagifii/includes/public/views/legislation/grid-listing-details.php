@@ -28,7 +28,7 @@ if(isset($_REQUEST['billId'])){
   $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings      = $options['lbt_title_display_setting'];
 
-
+//print_r($tenant_url);
   /* Bill Detail*/
   $billResponse = $api->getBillDetails($billId);
   $billResponses = json_decode($billResponse['api_response']);
@@ -378,7 +378,7 @@ $siteURL= site_url();
                                                <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Montgomery County Analysis</a></li>
                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
@@ -390,7 +390,7 @@ $siteURL= site_url();
                               {
                             ?>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
-                            <?php  if (count($analysisResponses)>0) {?>
+                            <?php  if (count($analysisResponses)>0 && $tenant_url != 'https://aasb.engagifii.com') {?>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" >Staff Analysis</a></li>
                               <?php } ?>
                           <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
