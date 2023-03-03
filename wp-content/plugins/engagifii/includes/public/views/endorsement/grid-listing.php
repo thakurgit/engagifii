@@ -20,10 +20,11 @@ if(isset($attr['calendar'])){
     unset($collection[9]);
     array_values($collection);
     
-
     $options = get_option( 'ebt_api_settings' );
     $ebt_visib_datacol_list = $options['ebt_visib_datacol_list'];
-
+if($ebt_visib_datacol_list==null){
+ $ebt_visib_datacol_list =[];
+}
    
     /* Get Tags list */
     $payloadData = array();
