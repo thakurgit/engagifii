@@ -1906,8 +1906,9 @@ wp_die();
     public function endorsementLoadGridData(){
         //print_r("Endorsement Grid");
         $postedData = $this->_preparePostData();
+		//print_r(json_encode($postedData));
+	//die;
         $dataResponse = $this->submitApiRequest("Public/AwardListPublic/", $postedData, "POST", 'endorsement');
-
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
@@ -2441,8 +2442,8 @@ wp_die();
             $isAsscending = false;
         }
         
-
-        $title = $_POST['columns'][0]['search']['value'];
+		$titleColumn = $_POST['titleColumn'];
+        $title = $_POST['columns'][$titleColumn]['search']['value'];
 
         if (strlen($_POST['search']['value']) > 1) {
             $title = $_POST['search']['value'];

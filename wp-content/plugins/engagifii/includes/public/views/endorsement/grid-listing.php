@@ -60,46 +60,7 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'" mo
 <?php
   } 
 ?>
-<!--div class="containerEngagii" id="list_div">
-  <div class="container-fluid engagifii-box engagifii-main-cotainer">
-    <table  id="ebtmaintable" class="table table-bordered light-background main-list-here nowrap classes-page" style="width: 100% !important;">
-      <thead> 
-        <tr>        
-          <?php
-            // if(is_array($collection) && count($collection)>0){
-            //   $i = 0;
-            //   foreach ($collection as $key => $value) {
-            //      if(in_array($value->colName, $class_visible_column_list)){
-                
-            //       if($value->displayName == 'Class Type')
-            //       {
-            //          $value->displayName = "Type";
-            //       }
-            //       if($value->colName == 'sessions')
-            //       {
-            //           $value->colName = 'startdate';
-            //       }
 
-            //       if($value->colName == 'sectionname'){
-            //         $title_key = $i;
-            //       }
-            //       $forDatatable[]['data'] = $value->colName;
-                ?>
-              <!--th class="//<?php //echo strtolower($value->displayName); ?> <?php //echo $value->colName; ?>"-->
-            <?php  //echo $value->displayName; ?>
-             </th>
-               <?php
-                 //$i++;
-                // }
-              // }
-            // } 
-          ?>    
-
-        <!-- </tr> 
-      </thead> 
-    </table>
-    <div id="eng-overlay"><span class="spinner"></span></div>
-</div-->  
 
 <?php
 function removeWhitespace($buffer)
@@ -182,6 +143,28 @@ $dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
 if($dt_darktheme==1){
 $dt_class .= 'table-dark ';	
 }
+
+if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
+  $filteredColumns=[]; //object array filtered from columnList
+  $columnGroup=[]; //array of keys from filtered objects 
+  $tempColumn=[];  //temporary object from filtered objects
+  $seqColumns=array_fill(0, count($ebt_visib_datacol_list), ''); //sequenced object array
+  //compare columns with checked columns
+  foreach($collection as $key => $value) {
+	  if (in_array($value->colName, $ebt_visib_datacol_list)){
+		  array_push($filteredColumns, $value);
+		  array_push($columnGroup, $value->colName);	
+	  }
+  }
+  //sequence columns with checked columns
+  foreach($filteredColumns as $key => $value) {
+		  array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
+		  array_splice($seqColumns,array_search($value->colName, $ebt_visib_datacol_list),1,$tempColumn);
+		  $tempColumn=[];
+  }
+} else {
+	$seqColumns=$collection;
+}
 ?>
 <div class="containerEngagii ff" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -191,19 +174,9 @@ $dt_class .= 'table-dark ';
         <?php 
         $forDatatable = array();
         $i=0;
-        // foreach ($collection as $key => $value) {
-        //   if($value->colName == "register")
-        //   {
-        //       $temp_array = $collection;
-        //       array_splice($collection, $key, 1);
-        //       array_values(array_filter($collection));
-        //       array_push($collection, $temp_array);
-        //   }
-        // }
+        
 
-        foreach($collection as $key => $value){
-         // print_r($value);
-          if(in_array($value->colName, $ebt_visib_datacol_list)){
+        foreach($seqColumns as $key => $value){
               $forDatatable[$i]['data'] =$value->colName; 
               $forDatatable[$i]['name'] =$value->colName;
               if($value->displayName == 'Endorsement Type')
@@ -218,7 +191,6 @@ $dt_class .= 'table-dark ';
             <?php  echo $value->displayName; ?>
             </th>
           <?php $i++; 
-          }
         } ?>
       </tr> 
     </thead> 
@@ -233,6 +205,7 @@ $dt_class .= 'table-dark ';
   var tags       = '';
   var createdDate = '';
   var endDate     = '';
+  var titleColumn = '<?php echo $title_key; ?>';
 
   var fv = 0;
 
@@ -263,6 +236,9 @@ var table = $('#ebtmaintable').DataTable( {
        "processing": true,
        "searching": true,
        "ordering":true,
+		<?php if(in_array('name', $ebt_visib_datacol_list)){ ?>
+		"order": [[<?php echo array_search('name',$ebt_visib_datacol_list);?>, 'asc']],
+		 <?php } ?>
        "columnDefs": [ 
           { "targets": ['price','objectType','validity','courseCount','register','tags','createdOn'],
             "orderable": false
@@ -286,6 +262,7 @@ var table = $('#ebtmaintable').DataTable( {
             "data": function(d) {           
               d.tags    = tags; 
               d.createdDate = createdDate;   
+			d.titleColumn = titleColumn;
               
             }, 
         },
@@ -321,12 +298,12 @@ var table = $('#ebtmaintable').DataTable( {
   if($title_key > -1){
 ?>
 
-  $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
+  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
     $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){
 		$('#list').trigger('click');	
-		table.column(i).search(ttitle).draw();
+		table.column(titleColumn).search(ttitle).draw();
 		 $( '#searchclass' ).val($('.list-search').val());
 		$('.clear-search').show();
 	} else {
@@ -340,7 +317,7 @@ $('.list-search').on("keydown", function(event) {
   }  
 });
         var title = $(this).text();
-        $(this).html( '<div class="position-relative"><input id="searchclass" type="text" placeholder="Search endorsement" class="form-control form-control-sm search-endorsement pr-4" value=""/><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:0; top:0px; display:none"><i class="far fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search endorsement" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
 function delay(callback, ms) {
   var timer = 0;
   return function() {
@@ -353,8 +330,8 @@ function delay(callback, ms) {
 }
 $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
-            if ( table.column(i).search() !== titlesearch ) {
-				table.column(i).search(titlesearch).draw();
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
             }
 }, 500));
  $( 'input', this ).keyup(function(e){
@@ -368,13 +345,18 @@ $('.clear-search').click(function(e){
 	 $('#searchclass').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();
-	table.column(i).search('').draw();
+	table.column(titleColumn).search('').draw();
  });
     } );
 	$(document).ready(function (){    
     $('#searchclass').on('click', function(e){
        e.stopPropagation();    
     });
+$('#searchclass').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
 });
   <?php
 }
@@ -389,7 +371,6 @@ $('.clear-search').click(function(e){
 
  
     $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
-        console.log(processing);
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 

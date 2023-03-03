@@ -505,7 +505,15 @@ $filter_content = removeWhitespace($filter_content);
 			  var cell = editor.find("span:first-child").html();
            $(td).attr('data-order', cell ); 
        		 }
-    	 }
+    	 },
+		 /*{'targets': <?php //echo array_search('sectionname',$class_visible_column_list);?>, 
+		  		'createdCell':  function (td, cellData, rowData, row, col) {
+			  var html = $(cellData);
+			  var editor = $("<p>").append(html);
+			  var cell = editor.find("span:first-child a").text().toLowerCase();
+           $(td).attr('data-order', cell.replace(/\s/g, '') ); 
+       		 }
+    	 }*/
 		 <?php } ?>
         ],
         "language": {

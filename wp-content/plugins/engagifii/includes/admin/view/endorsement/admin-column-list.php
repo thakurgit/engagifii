@@ -20,7 +20,7 @@
 			{
 				$checked .= " checked";
 			}
-			if($row->colName=='endorsementName')
+			if($row->colName=='name')
 			{
 				$checked .= " checked readonly";
 			}
