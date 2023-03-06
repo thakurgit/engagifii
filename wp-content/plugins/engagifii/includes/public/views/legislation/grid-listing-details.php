@@ -622,10 +622,13 @@ $siteURL= site_url();
                                             <?php 
                                                 if(!empty($versionResponses)){
                                                 foreach ($versionResponses as $version => $allVersions) { 
-                                                  //$convert_Date = $allVersions->billDraftDateTime;
+                                                  if($allVersions->billDraftDateTime != ""){
                                                   $defaulget_Date = $allVersions->billDraftDateTime;
                                                   $convert_Date = strtotime($defaulget_Date);
                                                   $new_Date = date('M d, Y', $convert_Date);
+                                                  }else{
+                                                    $new_Date ="Date Not Available";
+                                                  }
                                             ?>
                                             <tr>
                                               
