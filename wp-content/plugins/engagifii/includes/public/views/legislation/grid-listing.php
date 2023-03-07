@@ -65,6 +65,7 @@ if(!$collection){
 	return;
 }
 $options = get_option('ebt_api_settings');
+$tenant_url          = $options['lbt_tenant_code']['tenant_code'];
 $lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
@@ -1247,6 +1248,13 @@ function copyDataforApply()
  
 var sort_key = '<?php echo $sort_key ?>';
 var blog_title = "<?php echo _WORKSPACE_; ?>";
+var tenant_code = "<?php echo $tenant_url; ?>";
+if(tenant_code =="aasb"){
+  var order = [[$('th.billNumber').index(), 'asc']];
+}else{
+  var order = [[$('th.title').index(), 'desc']];
+}
+
 var table = $('#ebtmaintable').DataTable( {
     
       "pageLength": 10,
@@ -1256,7 +1264,7 @@ var table = $('#ebtmaintable').DataTable( {
       "searching": true,
 	  "scrollX": false,
       
-      "order": [[$('th.title').index(), 'desc']],
+      "order": order,
       "language": {
          processing: '<span>&nbsp;</span>',
          "emptyTable": "No bill found!",
