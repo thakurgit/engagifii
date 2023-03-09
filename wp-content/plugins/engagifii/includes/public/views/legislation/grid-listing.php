@@ -73,7 +73,7 @@ $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 
 $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
-
+//print_r($lbt_visible_column_list);
 $trackingResponse = $obj->getTrackingLevels();
 $trackingResponses = json_decode($trackingResponse['api_response']);
 //$countResponse = count($trackingResponses);
@@ -270,6 +270,8 @@ $assignToTags = $obj->legislationAssignToTagFilter();
     </div>
     </div>
 <?php } ?>
+
+ 
     <!-- Last Action Types -->
      
     <div class="filter-list border-bottom">
@@ -416,6 +418,32 @@ $assignToTags = $obj->legislationAssignToTagFilter();
     </div>
     </div>
 <!-- <?php } ?> -->
+
+<!-- Introduced Date  -->
+<?php  if(in_array('introducedDate', $lbt_visible_column_list)) { ?> 
+     <div class="filter-list border-bottom">
+      <div class="heading-title py-2 d-flex align-items-center">Introduced Date  <i class="far fa-angle-down ml-auto"> </i></div>
+    <div class="multiple-select mb-2">
+      <div class="row">
+                <div class="col-6">
+                  <label class="date-label" for ="datepicker-start1"> Start Date: </label> 
+                  <div class="date-design position-relative">
+                  <input class="form-control form-control-sm input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-start1">
+                  <i class="fal fa-calendar-alt custom-calendar"> </i>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label class="date-label" for="datepicker-end1"> End Date: </label>
+                  <div class="date-design position-relative">
+                  <input class="form-control form-control-sm input-xs small-css" placeholder="MM/DD/YYYY" type="text" id="datepicker-end1">
+                  <i class="fal fa-calendar-alt custom-calendar"> </i>
+                    </div>
+                </div>
+              </div>
+    </div>
+    </div>
+<?php } ?>
 
     <!-- Status types -->
     <?php  if(in_array('status', $lbt_visible_column_list)) { ?>  
@@ -1032,11 +1060,15 @@ function dateChanged(ev) {
       {
         getUpdatedValues();
       }
+      if ($('#datepicker-start1').val() != '' && $('#datepicker-end1').val() != '') 
+      {
+        getUpdatedValues();
+      }
     
 }
   $(document).ready(function() {
 
-    var startDAta= $( "#datepicker-start" ).daterangepicker({opens: 'left',singleDatePicker: true,autoApply: true}, function(start, end) {
+    var startDAta= $( "#datepicker-start, #datepicker-start1" ).daterangepicker({opens: 'left',singleDatePicker: true,autoApply: true}, function(start, end) {
       
       console.log(end.format('MM/DD/YYYY'));
       startDate = start.format('MM/DD/YYYY');
@@ -1045,15 +1077,15 @@ function dateChanged(ev) {
 
     }); 
   
-   var endData= $( "#datepicker-end" ).daterangepicker({opens: 'left',singleDatePicker: true, autoApply: true} , function(start, end) {
+   var endData= $( "#datepicker-end, #datepicker-end1" ).daterangepicker({opens: 'left',singleDatePicker: true, autoApply: true} , function(start, end) {
       endDate = start.format('MM/DD/YYYY');
       console.log(endDate);
       getUpdatedValues();
 
     });
 
-   $('#datepicker-start').val('');
-   $('#datepicker-end').val('');
+   $('#datepicker-start, #datepicker-start1').val('');
+   $('#datepicker-end, #datepicker-end1').val('');
     
     
    /*$( document).on('click', '.click-filter', function (e) {
