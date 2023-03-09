@@ -17,14 +17,12 @@ function classdataJS($classStates){
 }
 	$classdatJS =classdataJS($classStates);
      $classdatJS = $this->submitApiRequest("Public/ClassPagingList",  $classdatJS, "POST", 'classes');
-	 //$url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
+	// $url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
 	//$JSON = file_get_contents($url);
-	 //$xx   = json_decode($JSON)->result;
+	// $classdatJS   = json_decode($JSON)->result;
 	 $classdatJS   = json_decode($classdatJS['api_response'])->result;
-	// print_r($);
-	// die;
 	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		$datatableJS=true;
+		//$datatableJS=true;
 	}
 	//datatable JS data
 if($datatableJS){
@@ -526,6 +524,7 @@ $filter_content = removeWhitespace($filter_content);
 		<?php if(!$datatableJS){ ?>
         "serverSide": true,
         "ajax": {
+			  
             "url": engagifiiUrl_ajaxurl,
             "type": "POST",
             "data": function(d) {  
@@ -542,6 +541,7 @@ $filter_content = removeWhitespace($filter_content);
 			d.classStates=classStates;
 			d.titleColumn = titleColumn;
             }, 
+			
         },
 		 <?php } if($datatableJS){ ?>  
 		"data": <?php echo json_encode($dataa);  ?>,
@@ -571,9 +571,12 @@ $filter_content = removeWhitespace($filter_content);
 		 });
 		 */
 
-    }
+    },
     });
 	
+    $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
+        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
+    } ).dataTable();
 	
 
 
@@ -660,9 +663,6 @@ $('#searchclass').on("keydown", function(event) {
   $('div.flt-btn').html('<?php echo $filter_content; ?>');
 
 
-    $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
-        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
-    } ).dataTable();
 
     $('.filter-icon').click(function(e){
         e.stopPropagation();
