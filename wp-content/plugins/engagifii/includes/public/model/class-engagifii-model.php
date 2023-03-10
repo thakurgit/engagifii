@@ -2208,6 +2208,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
+		//print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
 
         $collection = json_decode($dataResponse['api_response']);
@@ -2686,6 +2688,8 @@ if (isset($_POST['sessionIds'])) {
         $postData['clientPersonGroups'] = $assignGroups;
         $postData['users'] = $assignTo;
 		$postData['sessionId'] = $sessionId;
+		$postData['introducedStartDate'] = $_POST['startDate'];;
+		$postData['introducedEndDate'] = $_POST['endDate'];;
         
         //echo json_encode($postData); 
 		//die;

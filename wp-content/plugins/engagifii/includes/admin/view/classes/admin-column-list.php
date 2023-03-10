@@ -10,13 +10,12 @@
 	}
 	$class_col_order   = isset($options['class_col_order']) ? $options['class_col_order']: array();
 
-//print_r($response);
-	//echo '<br/>';
-	//print_r($class_visible_column_list);
 
-    if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+		if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
+		} else if(is_array ($response)){
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[class_col_order]" value="'.$options['class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="classList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
@@ -57,8 +56,8 @@
 				 $all_classes  = 'checked';
 			}
 		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" '.$all_classes.'/> <strong>Show All classes</strong><br><i>Note:- By default, only upcoming classes will be shown.</i></div>';
-		echo '</div>';				
     }
+		echo '</div>';				
 ?>
 
 </div>
