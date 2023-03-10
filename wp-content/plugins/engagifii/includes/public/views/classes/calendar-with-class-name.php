@@ -150,7 +150,10 @@ aside .box {
     $instructor = $obj->classAllInstructors($date);
     $classes = $obj->getAllClassCourses($date);
     $options = get_option('ebt_api_settings');
-    $class_visible_column_list = $options['class_visible_column_list'];
+	$class_visible_column_list   =  array();
+	if($options['class_visible_column_list']){
+  	  $class_visible_column_list = $options['class_visible_column_list'];
+	}
   ?>
   
 	

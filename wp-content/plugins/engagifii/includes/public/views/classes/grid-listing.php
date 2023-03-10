@@ -205,13 +205,19 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
     $date           =   date('Y-m-d');
     //print_r($date);
     $options  = get_option( 'ebt_api_settings' );
-    $class_visible_column_list = $options['class_visible_column_list'];
+	$class_visible_column_list   =  array();
+	if($options['class_visible_column_list']){
+  	  $class_visible_column_list = $options['class_visible_column_list'];
+	}
 	 
 //print_r($options['upcomingClasses']);
 	//die;
    // print_r($class_visible_column_list);
     $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
-    
+if(!$dataResponse['api_response']){
+	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+	return;
+}
 
     $collection   = json_decode($dataResponse['api_response']);
     unset($collection[0]);
