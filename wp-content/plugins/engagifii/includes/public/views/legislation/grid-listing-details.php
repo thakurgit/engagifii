@@ -750,7 +750,7 @@ $siteURL= site_url();
                                         </table>
                             </div>
 <!-- public analysis -->
-<div class="collapse macoPanel">
+<div class="collapse macoPanel" id="macoanalysis">
                           
 
                           <div class="bill-detail-summary-tab staff-analysis-editor2">
