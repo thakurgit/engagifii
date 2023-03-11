@@ -14,7 +14,9 @@
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
-			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';
+		} else if(!is_array ($response)){
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code have valid inputs.</i></b>';
 		} else if(is_array ($response)){
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[class_col_order]" value="'.$options['class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="classList">';
     	$counter=1;

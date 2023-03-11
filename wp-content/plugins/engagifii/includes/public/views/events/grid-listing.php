@@ -13,6 +13,12 @@ if(isset($attr['calendar'])){
 
     /* added static column list by vpsc */
     $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+	//print_r($dataResponse);
+	//die;
+if(!$dataResponse['api_response']){
+	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+	return;
+}
     $collection   = json_decode($dataResponse['api_response']);
     /*unset($collection[0]);
     unset($collection[6]);
@@ -21,9 +27,10 @@ if(isset($attr['calendar'])){
     array_values($collection);*/
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-    $ebt_visib_datacol_list = $options['events_visible_column_list'];
-	//print_r($ebt_visib_datacol_list);
-	 //die;
+	$ebt_visib_datacol_list   =  array();
+	if($options['events_visible_column_list']){
+  	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
+	}
 
 //print_r("-----------------------------------------------------------------<br/>");
    //print_r($ebt_visib_datacol_list);
@@ -112,8 +119,10 @@ ob_start();
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
+		  if($eventTypes){
             foreach ($eventTypes as $key => $value) {
               echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+            }
             }
           ?>  
         </ul></div>
@@ -130,9 +139,10 @@ ob_start();
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
             <div class="content-area d-none"><ul class="list-group m-0">
               <?php
+			  if($eventLocations){
                 foreach ($eventLocations as $key => $value) {
-                  //print_r($value);
            echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
+                }
                 }
               ?>  
             </ul></div>
@@ -147,8 +157,10 @@ ob_start();
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
           <?php
+		  if($tags){
             foreach ($tags as $key => $value) {
               echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value->id.'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+            }
             }
           ?>  
         </ul></div>

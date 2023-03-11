@@ -14,9 +14,11 @@
 	}
 	$event_col_order   = isset($options['event_col_order']) ? $options['event_col_order']: array();
 	//print_r(json_encode($events_visible_column_list));
-		if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+		if($options['evt_api_url']=='' || $options['evt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
+		} else if(is_array ($response)){
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[event_col_order]" value="'.$options['event_col_order'].'" /><ul class="ebt-grid-column-list sortable-list">';
     	$counter=1;
 		foreach ($response as $key => $row) {
@@ -56,8 +58,9 @@
 				 $all_events = 'checked';
 			}
 		echo '<span><input type="checkbox" name="ebt_api_settings[allEvents]" id="allEvents" value="1" '.$all_events.'/> <strong>Show All Events</strong></span>
-		<br><i>Note:- By default, only upcoming events will be shown.</i></div>';	
-		
+		<br><i>Note:- By default, only upcoming events will be shown.</i>';	
     }
+		echo '</div>';
+		
 ?>
 </div>

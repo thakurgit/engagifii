@@ -154,7 +154,10 @@ aside .box {
     $date           =   date('Y-m-d');
     $tags = $obj->eventsAllTags($date);
     $options = get_option('ebt_api_settings');
+	$events_visible_column_list   =  array();
+	if($options['events_visible_column_list']){
     $events_visible_column_list = $options['events_visible_column_list'];
+	}
    // print_r($tags);
 
     
