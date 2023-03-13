@@ -1495,7 +1495,7 @@ wp_die();
        // print_r($postedData);
 		//die;
 		$session = $postedData['sessionId'];
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?IsIncludeBDR=$includeBDR&sessionId=".$session,$postedData,"GET", 'legislation');
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
         wp_die();
@@ -2709,7 +2709,7 @@ $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
         $postData['IsIncludeBDR'] = $includeBDR;
-        $postData['tenant'] = $tenant_code;
+        //$postData['tenant'] = $tenant_code;
         
         //echo json_encode($postData); 
 		//die;
