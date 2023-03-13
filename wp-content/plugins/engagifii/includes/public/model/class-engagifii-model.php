@@ -2208,8 +2208,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		//print_r(json_encode($postedData));
-		//die;
+		// print_r(json_encode($postedData));
+		// die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
 
         $collection = json_decode($dataResponse['api_response']);
@@ -2662,6 +2662,17 @@ if (isset($_POST['sessionIds'])) {
             $sessionId = $_POST['sessionIds'];
            
         } 
+
+      //IncludeBDR implementation  
+$options = get_option('ebt_api_settings');
+$lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+$tenant_code          = $options['lbt_tenant_code']['tenant_code'];
+  
+      if($tenant_code == "mlct"){
+            $includeBDR = 'false';          
+      }else{
+        $includeBDR = 'true';
+      }
         $postData = array();
         $postData['introducedDate'] = date('m/d/Y');
         $postData['trackingLevels'] = $trackingLevels;
@@ -2690,6 +2701,8 @@ if (isset($_POST['sessionIds'])) {
 		$postData['sessionId'] = $sessionId;
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
+        $postData['IsIncludeBDR'] = $includeBDR;
+        $postData['tenant'] = $tenant_code;
         
         //echo json_encode($postData); 
 		//die;
@@ -3521,7 +3534,16 @@ $vars = "";
             $sessionId = $_POST['sessionId'];
 
         }
-
+        $options = get_option('ebt_api_settings');
+        $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+        $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
+        
+            if($tenant_code == "mlct"){
+                  $includeBDR = 'false';                 
+            }else{
+              $includeBDR = 'true';
+            }
+//$includeBDR = "false";
         $postData = array();
         $postData['trackingLevels'] = $trackingLevels;
         $postData['title'] = $title;       
@@ -3543,7 +3565,8 @@ $vars = "";
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = 10;
 		$postData['sessionId'] = $sessionId;
-        return $postData;
+        $postData['IsIncludeBDR'] = $includeBDR;
+        return $postData; //add here
     }
 
 
