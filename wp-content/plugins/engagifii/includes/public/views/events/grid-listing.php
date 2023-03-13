@@ -315,7 +315,7 @@ var table = $('#ebtmaintable').DataTable( {
 		"order": [[<?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'asc']],
 		 <?php } ?>
        "columnDefs": [ 
-          { "targets": ['tags','register','eventType','city','eventStatus','eventDates'],
+          { "targets": ['tags','register','eventType','city','eventStatus'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
