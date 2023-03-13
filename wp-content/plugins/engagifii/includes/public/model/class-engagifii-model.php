@@ -3770,6 +3770,8 @@ $vars = "";
             $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
             $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
+           // $postData['eventStartDate'] = $_POST['eventStartDate'];
+            //$postData['eventEndDate'] = $_POST['eventEndDate'];
         return $postData;
     }
 
@@ -3970,8 +3972,10 @@ if(!empty($_POST['minRange']))
         if(!empty($_POST['createdDate']))
         {
             $dateRange = explode("-", $_POST['createdDate']);
-            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+            //$postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+           // $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+            $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
 
         $getCurrentdate = date("Y-m-d");

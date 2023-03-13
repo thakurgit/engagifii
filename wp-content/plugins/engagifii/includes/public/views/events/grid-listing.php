@@ -276,6 +276,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   var tags       = '';
   var types       = '';
   var city       = '';
+ var createdDate = '';
   var startdate = '';
   var enddate     = '';
   var text     = '';
@@ -348,8 +349,9 @@ var table = $('#ebtmaintable').DataTable( {
               d.tags    = tags; 
               d.types    = types; 
               d.locations    = city; 
-              d.eventEndDate = enddate;   
-			  d.eventStartDate = startdate;  
+             // d.eventEndDate = enddate;   
+			 // d.eventStartDate = startdate;  
+			  d.createdDate = createdDate;
 			  d.text = text; 
               
             }, 
@@ -617,8 +619,9 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
         tags : tags,  
         types : types,  
         locations : city,  
-         eventEndDate : enddate,   
-		eventStartDate : startdate   
+         //eventEndDate : enddate,   
+		//eventStartDate : startdate ,
+		createdDate: createdDate, 
     },
     success: function(response) {     
 	//console.log(response); 
