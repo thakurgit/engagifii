@@ -1482,13 +1482,20 @@ wp_die();
         wp_die();
     }
 	
-	 public function legislativeIssues()
+	 public function legislativeIssues() //
     {
+        $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+        $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
         $postedData = $this->_prepareLegislativeIssuesData();
+        if($tenant_code == "mlct"){
+            $includeBDR = 'false';          
+      }else{
+        $includeBDR = 'true';
+      }
        // print_r($postedData);
 		//die;
 		$session = $postedData['sessionId'];
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?IsIncludeBDR=$includeBDR&sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
         wp_die();
