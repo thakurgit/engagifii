@@ -1482,16 +1482,9 @@ wp_die();
         wp_die();
     }
 	
-	 public function legislativeIssues() //
+	 public function legislativeIssues()
     {
-        $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
-        $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
         $postedData = $this->_prepareLegislativeIssuesData();
-        if($tenant_code == "mlct"){
-            $includeBDR = 'false';          
-      }else{
-        $includeBDR = 'true';
-      }
        // print_r($postedData);
 		//die;
 		$session = $postedData['sessionId'];
@@ -2215,8 +2208,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		// print_r(json_encode($postedData));
-		// die;
+		//print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
 
         $collection = json_decode($dataResponse['api_response']);
@@ -2670,16 +2663,7 @@ if (isset($_POST['sessionIds'])) {
            
         } 
 
-      //IncludeBDR implementation  
-$options = get_option('ebt_api_settings');
-$lbt_visible_column_list = $options['lbt_visib_datacol_list'];
-$tenant_code          = $options['lbt_tenant_code']['tenant_code'];
-  
-      if($tenant_code == "mlct"){
-            $includeBDR = 'false';          
-      }else{
-        $includeBDR = 'true';
-      }
+
         $postData = array();
         $postData['introducedDate'] = date('m/d/Y');
         $postData['trackingLevels'] = $trackingLevels;
@@ -2708,8 +2692,6 @@ $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 		$postData['sessionId'] = $sessionId;
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
-        $postData['IsIncludeBDR'] = $includeBDR;
-        //$postData['tenant'] = $tenant_code;
         
         //echo json_encode($postData); 
 		//die;
@@ -3541,16 +3523,7 @@ $vars = "";
             $sessionId = $_POST['sessionId'];
 
         }
-        $options = get_option('ebt_api_settings');
-        $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
-        $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
-        
-            if($tenant_code == "mlct"){
-                  $includeBDR = 'false';                 
-            }else{
-              $includeBDR = 'true';
-            }
-//$includeBDR = "false";
+
         $postData = array();
         $postData['trackingLevels'] = $trackingLevels;
         $postData['title'] = $title;       
@@ -3572,8 +3545,7 @@ $vars = "";
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = 10;
 		$postData['sessionId'] = $sessionId;
-        $postData['IsIncludeBDR'] = $includeBDR;
-        return $postData; //add here
+        return $postData;
     }
 
 
@@ -3770,8 +3742,6 @@ $vars = "";
             $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
             $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
-           // $postData['eventStartDate'] = $_POST['eventStartDate'];
-            //$postData['eventEndDate'] = $_POST['eventEndDate'];
         return $postData;
     }
 
@@ -3972,10 +3942,8 @@ if(!empty($_POST['minRange']))
         if(!empty($_POST['createdDate']))
         {
             $dateRange = explode("-", $_POST['createdDate']);
-            //$postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-           // $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
-            $postData['eventStartDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['eventEndDate'] = date('m-d-Y',strtotime($dateRange[1]));
+            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
         }
 
         $getCurrentdate = date("Y-m-d");
