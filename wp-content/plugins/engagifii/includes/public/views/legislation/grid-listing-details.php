@@ -22,6 +22,8 @@ if(isset($_REQUEST['billId'])){
   }
   $options = get_option('ebt_api_settings');
   $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+  $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
+  //print_r($tenant_code);
 
   //print_r($lbt_visible_column_list);
 
@@ -330,8 +332,8 @@ $siteURL= site_url();
                             }
                             ?> -->
                             <?php 
-                            $site = site_url();
-                            if($site == 'https://engagifiiweb.com/accg') {?>
+                            //$site = site_url();
+                            if($tenant_code == 'accg') {?>
                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                              
@@ -341,7 +343,7 @@ $siteURL= site_url();
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
                               <?php
                                 }
-                                elseif($site == 'https://engagifiiweb.com/baltimorecountymd') {?>
+                                elseif($tenant_code == 'baltimorecountymd') {?>
                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Baltimore City Analysis</a></li>
                                    <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
@@ -351,7 +353,7 @@ $siteURL= site_url();
                                    <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                   <?php
                                     }
-                                    elseif($site == 'https://engagifiiweb.com/princegeorgescountymd') {?>
+                                    elseif($tenant_code == 'princegeorgescountymd') {?>
                                       
                                        <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                                       <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Prince Georges County Analysis</a></li>
@@ -362,7 +364,7 @@ $siteURL= site_url();
                                       <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                       <?php
                                         }
-                                        elseif($site == 'https://engagifiiweb.com/howardcountymd') {?>
+                                        elseif($tenant_code == 'howardcountymd') {?>
                                           
                                           <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Howard County Analysis</a></li>
@@ -373,7 +375,7 @@ $siteURL= site_url();
                                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
                                           <?php
                                             }
-                                            elseif($site == 'https://engagifiiweb.com/mcmd') {?>
+                                            elseif($tenant_code == 'mcmd') {?>
                                               
                                                <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Montgomery County Analysis</a></li>
