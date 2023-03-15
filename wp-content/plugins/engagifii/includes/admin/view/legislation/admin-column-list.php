@@ -51,7 +51,7 @@ if(isset($options['sessionsetting'])){
                 {
                     $checked = " checked";
                 }
- 		echo '<li style="width:31%; display:inline-block;"> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
+ 		echo '<li style=""> <input id="'.$session->sessionId.'" class="session-'.$session->sessionId.'" type="checkbox" name="ebt_api_settings[lbt_visib_session_list][]" '.$checked.' value='.$session->sessionId.'><label for="'.$session->sessionId.'">'.$session->sessionName.'</label></li>'		;
 			}
 		echo '</ul>';
 		
@@ -119,7 +119,7 @@ if($tags){
                 {
                     $checked = " checked";
                 }
-                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_tags_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.'('.$tag->count.') </label><input type="hidden" name="ebt_api_settings[tags_list][]" value="'.$tag->tagId.'"></li>'; 
+                echo '<li style=""> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_tags_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.'('.$tag->count.') </label><input type="hidden" name="ebt_api_settings[tags_list][]" value="'.$tag->tagId.'"></li>'; 
                 }             
             }
          }
@@ -132,7 +132,7 @@ if($tags){
                 {
                     $checked = " checked";
                 }
-                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_tags_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.'('.$tag->count.') </label></li>'; 
+                echo '<li style=""> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_tags_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.'('.$tag->count.') </label></li>'; 
                 }             
             }
          }
@@ -213,7 +213,7 @@ $assignTags = $obj->legislationAssignToTagFilter();
         }
         else
         {
-            echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$assign->value.'" class="'.$assign->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_tags_list][]" '.$checked.' value="'.$assign->value.'"><label for="'.$assign->value.'">'.$assign->text.'</label></li>'       ;
+            echo '<li style=""> <input id="'.$assign->value.'" class="'.$assign->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_tags_list][]" '.$checked.' value="'.$assign->value.'"><label for="'.$assign->value.'">'.$assign->text.'</label></li>'       ;
         }
                          
     }
@@ -237,7 +237,7 @@ if($tags){
                 {
                     $checked .= " checked";
                 }
-                echo '<li style="width:31%; display:inline-block; word-break:break-word;"> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_legislative_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.' ('.$tag->count.') </label></li><input type="hidden" name="ebt_api_settings[legislative_tags_list][]" value="'.$tag->tagId.'"></li>'     ;                 
+                echo '<li style=""> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_legislative_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.' ('.$tag->count.') </label></li>'     ;                 
             }
        
     }

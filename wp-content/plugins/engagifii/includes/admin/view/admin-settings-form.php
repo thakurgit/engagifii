@@ -267,6 +267,13 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 				}
 			});
           tid++;  
+		  //add column number to each list
+		  if(!jQuery(this).is("#sessionList") ) {
+		  jQuery(this).children('li:not(.toggleAll)').each(function() {
+			var label = jQuery(this).find('label').text(); 
+			jQuery(this).find('label').html('<b>'+jQuery(this).index()+'.</b> '+label); 
+		  });
+		}
         }); 
 //alert on readonly checkbox
 		jQuery('body').on('click', 'input[readonly], input[readonly]+label', function() {
@@ -291,7 +298,7 @@ return false;
 				   var col_order=[];
 				  jQuery(this).children("li:not(.toggleAll)" ).each(function(){
 					  col_order.push(jQuery(this).attr('data-order'));
-					  
+					  jQuery(this).find('label b').text(jQuery(this).index()+'.');
 				  });
 				  jQuery(this).siblings('.cls').val(col_order);
 				 }
@@ -309,6 +316,10 @@ return false;
 });
 jQuery(this).siblings('.cls').val('');
 		e.preventDefault();
+  jQuery(this).prev('ul').find('li:not(.toggleAll)').each(function() {
+	  var dataOrder = jQuery(this).attr('data-order');
+  	jQuery(this).find('label b').text(dataOrder+'. ');
+});
 	});
           
        
