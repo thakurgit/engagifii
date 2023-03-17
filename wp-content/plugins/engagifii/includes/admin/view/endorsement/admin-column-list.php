@@ -9,9 +9,11 @@
     	$ebt_visib_datacol_list = $options['ebt_visib_datacol_list'];  
 	}
 	$endorsement_col_order   = isset($options['endorsement_col_order']) ? $options['endorsement_col_order']: array();
-    if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';
+		} else if(is_array ($response)){
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[endorsement_col_order]" value="'.$options['endorsement_col_order'].'" /><ul class="ebt-grid-column-list sortable-list">';
     	$counter=1;
 		foreach ($response as $key => $row) {
@@ -32,7 +34,8 @@
 			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[ebt_visib_datacol_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}
-    	echo '</ul></div>';				
-    }
+    	echo '</ul>';
+	}
+		echo '</div>';				
 ?>
 </div>
