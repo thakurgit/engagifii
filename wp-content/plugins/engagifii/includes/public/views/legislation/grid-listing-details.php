@@ -95,7 +95,6 @@ $publicanalysisResponse = $api->publicAnalysis($billId);
 $publicanalysisResponses= json_decode($publicanalysisResponse['api_response']);
 
 
-
   /* Rollcall Votes */
   $voteResponse = $api->votesrollCall($billId);
   $voteResponses= json_decode($voteResponse['api_response']);
@@ -758,11 +757,21 @@ $siteURL= site_url();
                           <div class="bill-detail-summary-tab staff-analysis-editor2">
                               <div class="col-sm-12">
 
-                                  <?php 
+                                 <?php if(!empty($publicanalysisResponses)){
+                                  $trackingColor = $publicanalysisResponses->publicTrackingLevelColor;
+                                  $trackingLevel = $publicanalysisResponses->publicTrackingLevelText;
+                                  if($trackingColor!='' && $trackingLevel!=''){
+                                  ?>
+                                   <div class="col-sm-8 mb-10"><span  style="font-weight: bold;">MACo Tracking Level: </span>
+                                   <span class="p-1 m-1" style="background-color:<?php echo $trackingColor; ?>"></span>
+                                   <span><?php echo $trackingLevel; ?></span>
+                                  </div>
+                                  </div>
+                                  
+                               <?php } }
 
-                                  if(!empty($publicanalysisResponses)){
-                                    $analysis = $publicanalysisResponses[0];
-
+                                  if(!empty($publicanalysisResponses->clientBillAnalysis)){
+                                  $analysis = $publicanalysisResponses->clientBillAnalysis[0];
                                   //foreach($analysisResponses as $analysis){
 
                                     $new_Date = date('m/d/Y',strtotime($analysis->createdDate));
@@ -793,7 +802,7 @@ $siteURL= site_url();
                                   //echo $date->format('Y-m-d h:i:s A'); 
 
                                   ?>
-                              
+                              <div class="col-sm-12">
                                   <div class="row">
                                       <div class="col-sm-10">
                                           <a href="javascript:void(0)">
@@ -844,7 +853,7 @@ $siteURL= site_url();
                                              ?>
                                 </div>
                                 <?php } else {?>  
-                                    <div class="bill-detail-summary-content no-border"> MACo has not provided an analysis yet.</div>
+                                    <!-- <div class="bill-detail-summary-content no-border"> MACo has not provided an analysis yet.</div> -->
                                 <?php }?>   
 
                               </div>
