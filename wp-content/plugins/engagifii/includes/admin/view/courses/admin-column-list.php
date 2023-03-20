@@ -15,7 +15,7 @@
     if(is_array ($response)){
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
-    	echo '<input type="hidden" class="cls" name="ebt_api_settings[course_col_order]" value="'.$options['course_col_order'].'" /><ul class="ebt-grid-column-list sortable-list">';
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[course_col_order]" value="'.$options['course_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="coursesList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
 			$checked = "";

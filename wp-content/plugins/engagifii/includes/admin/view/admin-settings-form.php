@@ -268,8 +268,8 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			});
           tid++;  
 		  //add column number to each list
-		  if(!jQuery(this).is("#sessionList") ) {
-		  jQuery(this).children('li:not(.toggleAll)').each(function() {
+		  if(jQuery(this).is("#legislationList, #classList, #eventList, #coursesList, #endorsementList")) {
+            jQuery(this).children('li:not(.toggleAll)').each(function() {
 			var label = jQuery(this).find('label').text(); 
 			jQuery(this).find('label').html('<b>'+jQuery(this).index()+'.</b> '+label); 
 		  });
