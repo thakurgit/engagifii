@@ -390,11 +390,10 @@ $siteURL= site_url();
                               else
                               {
                             ?>
-                           
-                            <?php  if (count($analysisResponses)>0 && $tenant_url != 'https://aasb.engagifii.com') {?>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
+                              <?php  if (count($analysisResponses)>0 && $tenant_url != 'https://aasb.engagifii.com') {?>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" >Staff Analysis</a></li>
                               <?php } ?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
                           <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" >History</a></li>
@@ -408,7 +407,7 @@ $siteURL= site_url();
                         </ul>
                         <div class="p-3">
                         <div class="tab-content" id="pills-tabContent">
-                          <div class="tab-pane fade"  role="tabpanel" id="summary">
+                          <div class="tab-pane fade "  role="tabpanel" id="summary">
                               <div class="row">
                                   <div class="col-md-4 order-2">
                                   <div class="border rounded shadow-sm h-100">
@@ -510,7 +509,7 @@ $siteURL= site_url();
                               </div>
                           
                           </div>
-                          <div class="tab-pane fade active show" id="staffanalysis">
+                          <div class="tab-pane fade " id="staffanalysis">
                           
 
                           <div class="bill-detail-summary-tab staff-analysis-editor">
@@ -873,6 +872,15 @@ $siteURL= site_url();
             </div>
         </div>
          <script type="text/javascript">
+          $(document).ready(function() {
+            var tenant = '<?php echo $tenant_code; ?>';
+            if (tenant == 'accg') {
+             $('#staffanalysis').addClass('active show');
+              } else {
+                  $('#summary').addClass('active show');
+              }
+          });
+
           $(document).ready(function() {
             <?php
             if(!isset($_COOKIE['filterids'])){
