@@ -177,7 +177,7 @@ function ebt_tenant_code_render(  ) {
 
     $_inputHtmlHidden ='<input type="hidden" name="ebt_api_settings[ebt_tenant_code][tenant_code]" class="postbox" id="ebt_tenant_code_text" value="'.$code.'">';
 
-    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_tenant_code][engagifii_url]" class="postbox" value="'.$engagifii_url.'" onkeyup="getTenantCode(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$code.'</span>';
+    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_tenant_code][engagifii_url]" class="postbox" value="'.$engagifii_url.'" onkeydown="getTenantCode(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$code.'</span>';
 
       echo $_inputHtml.$_inputHtmlHidden;
 }
@@ -297,7 +297,7 @@ function ebt_tenant_code_render(  ) {
       }
     	
     	$_inputHtmlHidden ='<input type="hidden"  class="postbox"  name="ebt_api_settings[lbt_tenant_code][tenant_code]" id="lbt_tenant_code_text" value="'.$code.'">';
-    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[lbt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" onkeyup="getTenantCode_lbt(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="lbt_tenantcode_preview">'.$code.'</span>';
+    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[lbt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" onkeydown="getTenantCode_lbt(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="lbt_tenantcode_preview">'.$code.'</span>';
       	echo $_inputHtml.$_inputHtmlHidden;
 	}
 
@@ -315,7 +315,7 @@ function ebt_tenant_code_render(  ) {
       }
     	
     	$_inputHtmlHidden ='<input type="hidden"  class="postbox"  name="ebt_api_settings[evt_tenant_code][tenant_code]" id="evt_tenant_code_text" value="'.$code.'">';
-    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[evt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" onkeyup="getTenantCode_evt(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="evt_tenantcode_preview">'.$code.'</span>';
+    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[evt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" onkeydown="getTenantCode_evt(this.value)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="evt_tenantcode_preview">'.$code.'</span>';
       	echo $_inputHtml.$_inputHtmlHidden;
 	}
 
