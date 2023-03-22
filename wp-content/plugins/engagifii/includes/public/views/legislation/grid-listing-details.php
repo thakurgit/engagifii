@@ -333,8 +333,8 @@ $siteURL= site_url();
                             <?php 
                             //$site = site_url();
                             if($tenant_code == 'accg') {?>
-                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark " data-toggle="pill" href="#summary" id="">State Summary</a></li>
                              
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
