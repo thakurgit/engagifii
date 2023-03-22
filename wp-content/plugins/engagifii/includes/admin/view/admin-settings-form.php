@@ -174,21 +174,27 @@
     </div>
 </form> 
 <script type="text/javascript">
-    function getTenantCode(engagifiiUrl)
-    {    		
+    function getTenantCode(engagifiiUrl) {    		
     
     var url = new URL(engagifiiUrl);
     var index = url.hostname.indexOf('.');
     subdomain= url.hostname.substring(0, index);
-    if (typeof subdomain == 'undefined' )
-    {
-    return false;
+    if (typeof subdomain == 'undefined' )  {
+   	 return false;
     }
     jQuery("#ebt_tenantcode_preview").html(subdomain);
     jQuery("#ebt_tenant_code_text").val(subdomain);
 
-   
     }
+	function getTenantCode1(tenantCode) {    		
+	  var tCode = tenantCode;
+    tCode =tCode.replace('https://', '');
+	  tCode =tCode.split('.')[0];
+	 tCode =tCode.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+	  jQuery("#ebt_tenantcode_preview").html(tCode);
+	  jQuery("#ebt_tenant_code_text").val(tCode);
+    }
+	
     function getTenantCode_lbt(engagifiiUrl)
     {    		
     
