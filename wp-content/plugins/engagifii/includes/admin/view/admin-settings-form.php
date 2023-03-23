@@ -186,17 +186,16 @@
     jQuery("#ebt_tenant_code_text").val(subdomain);
 
     }*/
-	function getTenantCode(tenantCode, id) {    		
+	function getTenantCode(tenantCode, current) {    		
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
 	  tCode =tCode.split('.')[0];
 	 tCode =tCode.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
-	  //jQuery("#ebt_tenantcode_preview").html(tCode);
-	  jQuery(this).siblings('span').html(tCode);
-	  jQuery("#ebt_tenant_code_text").val(tCode);
+	  jQuery(current).siblings('span').html(tCode);
+	   jQuery(current).siblings('input').val(tCode);
     }
 	
-    function getTenantCode_lbt(engagifiiUrl)
+  /*  function getTenantCode_lbt(engagifiiUrl)
     {    		
     
     var url = new URL(engagifiiUrl);
@@ -230,7 +229,7 @@
     jQuery("#evt_tenant_code_text").val(subdomain);
 
 
-    }
+    }*/
     
 	
 	jQuery('.accordion-btn').click(function(){
