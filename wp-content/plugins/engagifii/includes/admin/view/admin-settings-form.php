@@ -186,7 +186,7 @@
     jQuery("#ebt_tenant_code_text").val(subdomain);
 
     }*/
-	function getTenantCode(tenantCode) {    		
+	function getTenantCode(tenantCode, id) {    		
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
 	  tCode =tCode.split('.')[0];
