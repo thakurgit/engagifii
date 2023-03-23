@@ -118,7 +118,7 @@ function engagifii_font_family_render(){
     else{
         $current = '';
     }
-?>
+?> 
 	<select name="ebt_api_settings[engagifii_font_family]">
 		<option> </option>
 	   <?php foreach( $fonts as $key => $font ):?>
