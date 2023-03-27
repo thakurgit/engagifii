@@ -3,7 +3,7 @@
   $datatableJS=false;
     $options  = get_option( 'ebt_api_settings' );
   $classStates =['Upcoming'];
-  if($options['allClasses']==1) { 
+  if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { 
   	$classStates = [];
    }
 function classdataJS($classStates){  
@@ -450,7 +450,7 @@ $filter_content = removeWhitespace($filter_content);
   var maxReg ='<?php echo $max_date; ?>';
   var titleColumn = '<?php echo $title_key; ?>';
   var classStates =["Upcoming"];
-  <?php if($options['allClasses']==1) { ?>
+  <?php if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { ?>
   	classStates = [];
   <?php  } ?>
   
