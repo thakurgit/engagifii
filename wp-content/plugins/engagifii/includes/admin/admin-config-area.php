@@ -255,7 +255,7 @@ function ebt_tenant_code_render(  ) {
   						<?php $this->ebt_api_url_render(); ?>
   					</div>
   					<div class="form-group">
-  						<label>Engagifii URL</label>
+  						<label>Tenant Code</label>
   						<?php $this->ebt_tenant_code_render(); ?>
   					</div>
                     <hr>
