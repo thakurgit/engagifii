@@ -265,7 +265,7 @@ function ebt_tenant_code_render(  ) {
   						<?php $this->lbt_api_url_render(); ?>
   					</div>
   					<div class="form-group">
-  						<label>Engagifii URL</label>
+  						<label>Tenant code</label>
   						<?php $this->lbt_tenant_code_render(); ?>
   					</div>
                     <hr>
@@ -275,7 +275,7 @@ function ebt_tenant_code_render(  ) {
   						<?php $this->evt_api_url_render(); ?>
   					</div>
   					<div class="form-group">
-  						<label>Engagifii URL</label>
+  						<label>Tenant code</label>
   						<?php $this->evt_tenant_code_render(); ?>
   					</div>
             </div>
