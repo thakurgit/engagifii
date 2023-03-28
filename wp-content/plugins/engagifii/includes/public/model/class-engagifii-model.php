@@ -199,7 +199,7 @@ public function calendar_mode(){
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-		 $classStates = 0;
+		 $classStates = $options['allClasses'];
         if($classStates==1){
        	 $upcomingClasses = [];	
         }else{
