@@ -194,16 +194,12 @@ public function calendar_mode(){
 
         $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
         $last_date = date("Y-m-d",$last_date_find);
-
-        //print_r($first_date.'-'.$last_date);
-
-        // print_r("Hello class Calendar"); 
         $options = get_option('ebt_api_settings');
         $class_visible_column_list = $options['class_visible_column_list'];
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-		 $classStates = $options['allClasses'];
+		 $classStates = 0;
         if($classStates==1){
        	 $upcomingClasses = [];	
         }else{
@@ -251,73 +247,6 @@ public function calendar_mode(){
                 $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
             }
-        	// if(count($value->classSessions))
-        	// {
-        	// 	foreach ($value->classSessions as $index => $class) {
-        	// 		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
-            //         $data['titleNoLink'] = $value->sectionName;
-		    //         $data['id']    = $value->id;
-		    //         $data['start'] = date('Y-m-d', strtotime($class->sessionDate));
-		    //         $data['end']   = date('Y-m-d', strtotime($class->sessionDate));
-		    //         $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-		    //         $data['objectType'] = $value->objectType;
-		    //         $data['hours']      = number_format($value->courseCreditMapping[0]->credits, 2);//round($value->courseCreditMapping[0]->credits);
-		    //         $data['icon']       = $value->parentCourse->iconReference;
-		    //         $class_schedule = '';
-		    //         if($value->classDuration > 1){
-		    //             $class_schedule = date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate));
-		    //         }
-		    //         else{
-		    //             $class_schedule = date('d M Y', strtotime($value->startDate));
-		    //         }
-
-		    //         $sessionStartTime = date('g:i A',strtotime($value->classSessionSettings[0]->sessionStartTime));
-		    //         $sessionEndTime   = date('g:i A',strtotime($value->classSessionSettings[0]->sessionEndTime));
-
-		    //         $data['classTime']  =  $class_schedule.' at '.$sessionStartTime.' - '.$sessionEndTime;
-		    //         $classTag = $value->classTag;
-		    //         $allTags = array();
-		    //         foreach ($classTag as $index => $tag) {
-		                          
-		    //             $allTags[] = $tag->tagName;
-		    //         }
-
-		    //         $data['classTag'] = $allTags;
-            //         $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
-
-		    //         if($value->isClassRegistrationAllow)
-		    //         {
-		    //             if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-            //             {
-            //                 if($value->locationType->name=="onlocation")
-            //                 {
-            //                     $data['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                                
-            //                 }
-            //                 elseif($value->locationType->name=="online"){
-            //                     $data['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-            //                 }
-            //                 elseif($value->locationType->name=="onlocationandonline")
-            //                 {
-            //                     $data['register'] ='<span id="classlocationButton" style="display: flex;"><a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-right:2px;">Register online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank">Register in person</a></span>';
-            //                 }
-            //                 else{
-            //                     $data['register'] = ' ';
-            //                 }
-
-		    //                 //$data['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/online/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-
-		    //             }
-		    //             else{
-		    //                 $data['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="top" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-		    //             }
-		                
-		    //         }
-		    //         $classData[] = $data; 
-        	// 	}
-        	// }
-        	// else
-        	// {
         		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
 				$data['titleNoLink'] = $value->sectionName;
 	            $data['id']    = $value->id;
