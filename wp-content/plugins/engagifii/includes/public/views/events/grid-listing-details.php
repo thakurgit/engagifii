@@ -175,7 +175,7 @@
 		                        	<div class="col-sm-8"><?php echo $date." at ".$time; ?></div>
 		                        </div>
 		                        <?php
-		                        	}
+		                        	
 		                        	if($response->endDateTime){
 										$defaulget_Date = $response->endDateTime;
 										$convert_Date = strtotime($defaulget_Date);
@@ -188,7 +188,7 @@
 		                        </div>
 		                        <?php
 		                        	}
-								
+								}
 		                        	if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
 		                         <div class="summary-content-para-engagiigii row flex-wrap mb-3">
