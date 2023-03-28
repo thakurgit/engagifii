@@ -4072,7 +4072,7 @@ if(!empty($_POST['minRange']))
                 }
     
                    $data['endorsementTag'] = $allTags;
-                   $data['viewdetails'] = '<a href="'.site_url().'/event-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+                   $data['viewdetails'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                   
                    $default_RegisterBtn = "";
                    if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
