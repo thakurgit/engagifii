@@ -206,8 +206,6 @@ public function calendar_mode(){
             $upcomingClasses = ["Upcoming"];
         }
         $postedData = $this->_classPostCountData();
-		print_r($postedData);
-		die;
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
         $classCount = $dataResponse['api_response'];
 
@@ -3805,8 +3803,8 @@ if(!empty($_POST['minRange']))
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
         $postData['filterBody'] = array('year'=>$year, 'month'=>$month);
-       // print_r(json_encode($postData));
-		//die;
+        print_r(json_encode($postData));
+		die;
         return $postData;
     }
 
