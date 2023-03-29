@@ -3742,9 +3742,10 @@ $vars = "";
         if (strlen($_POST['search']['value']) > 1) {
             $searchValue = $_POST['search']['value'];
         }
-
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-
+		$startPageNum=1;
+		if($_POST['start']) {
+		  $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+		}
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
             if ($value['orderable'] == "true") {
@@ -3803,8 +3804,8 @@ if(!empty($_POST['minRange']))
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
         $postData['filterBody'] = array('year'=>$year, 'month'=>$month);
-//        print_r(json_encode($postData));
-//		die;
+        //print_r(json_encode($postData));
+		//die;
         return $postData;
     }
 

@@ -1,5 +1,4 @@
 <?php
-
   $datatableJS=false;
     $options  = get_option( 'ebt_api_settings' );
   $classStates =['Upcoming'];
