@@ -3803,8 +3803,8 @@ if(!empty($_POST['minRange']))
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
         $postData['filterBody'] = array('year'=>$year, 'month'=>$month);
-        print_r(json_encode($postData));
-		die;
+//        print_r(json_encode($postData));
+//		die;
         return $postData;
     }
 
