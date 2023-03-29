@@ -206,6 +206,8 @@ public function calendar_mode(){
             $upcomingClasses = ["Upcoming"];
         }
         $postedData = $this->_classPostCountData();
+		print_r($postedData);
+		die;
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
         $classCount = $dataResponse['api_response'];
 
@@ -229,17 +231,14 @@ public function calendar_mode(){
            
         }
 		
-        //print_r(json_encode($postData));
+       // print_r(json_encode($postData));
       
-        //echo json_encode($postData);
-       // echo json_encode($postData);
         $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
-//print_r($dataResponse);
         $collection   = json_decode($dataResponse['api_response'])->result;
         $data         = array();
         $classData    = array();
        
-        //print_r(json_encode($dataResponse));
+        //print_r(json_encode($collection));
         foreach ($collection as $key => $value) {
             
             $class_icon = $value->parentCourse->iconReference;
