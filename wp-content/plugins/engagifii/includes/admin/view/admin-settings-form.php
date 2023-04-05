@@ -265,6 +265,14 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
             jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
+			jQuery('#toggleAll_'+tid).each(function(){
+			  if(jQuery(this).parent().siblings('li').find('input[type="checkbox"]').length==jQuery(this).parent().siblings('li').find('input:checked').length) {
+				 jQuery(this).prop('checked',true);
+				  
+			  } else {
+				 jQuery(this).prop('checked',false);
+			  }
+			});
 			jQuery('#toggleAll_'+tid).change(function(){
 				if(jQuery(this).is(':checked')){
 					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true);
