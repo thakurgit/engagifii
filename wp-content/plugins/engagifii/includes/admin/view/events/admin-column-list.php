@@ -1,5 +1,5 @@
 <div class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
-<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events Columns Visibility<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
     $response = $obj->getEventsColumnData();
@@ -17,8 +17,9 @@
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['evt_api_url']=='' || $options['evt_tenant_code']['tenant_code']==''){
-			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';	
 		} else if(is_array ($response)){
+			echo '<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for list views only.</i><hr>'; 
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[event_col_order]" value="'.$options['event_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="eventList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
@@ -57,8 +58,9 @@
 			{
 				 $all_events = 'checked';
 			}
+		echo '<h3>Manage Event Listing</h3><hr>';	
 		echo '<span><input type="checkbox" name="ebt_api_settings[allEvents]" id="allEvents" value="1" '.$all_events.'/> <strong>Show All Events</strong></span>
-		<br><i>Note:- By default, only upcoming events will be shown.</i>';	
+		<br><i>Note: When unchecked, only upcoming events will be displayed.</i>';	
     }
 		echo '</div>';
 		

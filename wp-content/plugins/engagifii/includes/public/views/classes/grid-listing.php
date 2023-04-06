@@ -214,7 +214,7 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
    // print_r($class_visible_column_list);
     $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
 if(!$dataResponse['api_response']){
-	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
 

@@ -8,6 +8,10 @@
   
   $dataResponse = $this->submitApiRequest("Public/CourseColumnList",array(),"GET",'courses');
   $collection   = json_decode($dataResponse['api_response']);
+  if(!$collection){
+    echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
+    return;
+  }
   unset($collection[0]);
   unset($collection[1]);
   unset($collection[5]);

@@ -1,5 +1,5 @@
 <div class="wrap class-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
-<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Columns Visibility<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
     $response = $obj->getClassColumnData();
@@ -14,10 +14,11 @@
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
-			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
 		} else if(!is_array ($response)){
-			echo '<b style="color:red"><i>Please check the API URL and Tenant code have valid inputs.</i></b>';
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
 		} else if(is_array ($response)){
+			echo '<h3>Manage Column Visibility</h3> <i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for list views only.</i><hr>'; 
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[class_col_order]" value="'.$options['class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="classList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
@@ -57,7 +58,8 @@
 			{
 				 $all_classes  = 'checked';
 			}
-		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" '.$all_classes.'/> <strong>Show All classes</strong><br><i>Note:- By default, only upcoming classes will be shown.</i></div>';
+			echo '<h3>Manage Class Listing</h3><hr>';
+		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" '.$all_classes.'/> <strong>Show All classes</strong><br><i>Note: When unchecked, only upcoming classes will be displayed.</i></div>';
     }
 		echo '</div>';				
 ?>

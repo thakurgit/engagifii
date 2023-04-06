@@ -317,7 +317,7 @@ return false;
 				  jQuery(this).siblings('.cls').val(col_order);
 				 }
 			});
-		jQuery('<button class="resetposition">Reset columns position</button>').insertAfter(jQuery(this)); 
+            jQuery('<button class="resetposition" title="Click to reset the columns sequence">Reset columns position</button>').insertAfter(jQuery(this));
 	  });
 	  //sortable reset
 	function sorts(a, b) {

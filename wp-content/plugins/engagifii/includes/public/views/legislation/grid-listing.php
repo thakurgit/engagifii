@@ -61,7 +61,7 @@ $obj = new Engagifii_API();
 $dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
 $collection = json_decode($dataResponse['api_response']);
 if(!$collection){
-	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
 $options = get_option('ebt_api_settings');

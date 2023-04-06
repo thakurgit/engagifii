@@ -1,5 +1,5 @@
 <div class="wrap legislation-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>">
-<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation Columns Visibility<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 
 <?php
 	$obj =  new adminDataColumn();
@@ -19,7 +19,7 @@
 	rsort($sessionResponse);
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
 		if($options['lbt_api_url']=='' || $options['lbt_tenant_code']['tenant_code']==''){
-			echo '<b style="color:red"><i>Please check the API URL and Tenant code if they are not left blank.</i></b>';	
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';	
 		} else {?>
 		    <h3>Multiple Sessions</h3><hr>
 <?php
@@ -35,9 +35,9 @@ if(isset($options['sessionsetting'])){
          $session_setting  = 'checked';
     }
 	if(count($sessionResponse)>0){
-	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="ebt_api_settings[sessionsetting]" id="sessionsetting" value="1" '.$session_setting.'/> <label for="sessionsetting" class="form-check-label"><strong>Enable Multiple Sessions</strong></label></div><i>Note: By default, multiple session will be off.</i></div>';
 	} else {
-	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="" id="sessionsetting1" value="1" disabled/> <label for="sessionsetting1" class="form-check-label"><strong>Enable Multiple Sessions <span style="color:red"><i>(Oops! No sessions available.)</i></span></strong></label></div><i>Note:- By default, multiple session will be off.</i></div>';
+	  echo '<div style="padding-left:7px"> <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="" id="sessionsetting1" value="1" disabled/> <label for="sessionsetting1" class="form-check-label"><strong>Enable Multiple Sessions <span style="color:red"><i>(Oops! No sessions available.)</i></span></strong></label></div><i>Note: By default, multiple session will be off.</i></div>';
 	}
 		if($session_setting=='checked' && count($sessionResponse)>0){
 				$sessionoption = 'display:block;';
@@ -57,8 +57,8 @@ if(isset($options['sessionsetting'])){
 		
 
 	if(is_array ($response->columnList)){
-		echo '<h3>Columns visibility</h3>
-<hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p><small><i><strong>Note: Drag and drop column name for changing its sequence.</strong></i></small>';
+		echo '<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for list views only.</i>
+<hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="legislationList" style="width:100%; display:block;" >';
 		$counter=1;
 
