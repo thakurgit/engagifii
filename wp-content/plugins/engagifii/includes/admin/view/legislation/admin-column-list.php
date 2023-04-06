@@ -107,7 +107,6 @@ if(isset($options['sessionsetting'])){
 <h3>Tags for filters <span> <input type="text" id="searchTag" onkeyup="searchTags()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php $tags = $obj->legislationTagsFilter();
-print_r($tags);
 if($tags){
 		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationTags" style="width:100%; display:block; height:200px; overflow:auto;">';
          $site_url = site_url();
@@ -124,8 +123,7 @@ if($tags){
                 }             
             }
          }
-         else
-         {
+         else {
             foreach ($tags as  $tag) {
                 if($tag->count > 0){
                     $checked = "";
