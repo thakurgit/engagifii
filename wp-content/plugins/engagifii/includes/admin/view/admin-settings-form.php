@@ -283,8 +283,6 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
           tid++;  
 			//jQuery(this).find('li:not(.toggleAll)').each(function(){
 			 jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').change(function(){
-				console.log(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input[type="checkbox"]').length);
-				  console.log(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input:checked').length);
 				if(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input[type="checkbox"]').length==jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input:checked').length) {
 				   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',true);
 				} else {
