@@ -2,10 +2,11 @@
 /**
  * Plugin Name: Engagifii Module
  * Description: Engagifii API to fetch blling details, courses and classes
- * Version: 1.0.0
+ * Version: 1.2.0
+ * Date: 12-04-2023
  * Author: Engagifii
  * Requires at least: 4.4
- * Tested up to: 5.3
+ * Tested up to: 6.2
  *
  * Text Domain: engagifii
  *
