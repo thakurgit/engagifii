@@ -264,42 +264,44 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 //toggle all
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
-            jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
-			jQuery('#toggleAll_'+tid).each(function(){
-			  if(jQuery(this).parent().siblings('li').find('input[type="checkbox"]').length==jQuery(this).parent().siblings('li').find('input:checked').length) {
-				 jQuery(this).prop('checked',true);
-				  
-			  } else {
-				 jQuery(this).prop('checked',false);
-			  }
-			});
-			jQuery('#toggleAll_'+tid).change(function(){
-				if(jQuery(this).is(':checked')){
-					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true);
-				} else {
-					jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',false);
-				}
-			});
-          tid++;  
-			//jQuery(this).find('li:not(.toggleAll)').each(function(){
-			 jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').change(function(){
-				if(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input[type="checkbox"]').length==jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input:checked').length) {
-				   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',true);
-				} else {
+    if(jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').length > 0) {
+        jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
+		jQuery('#toggleAll_'+tid).each(function(){
+		  if(jQuery(this).parent().siblings('li').find('input[type="checkbox"]').length==jQuery(this).parent().siblings('li').find('input:checked').length) {
+			 jQuery(this).prop('checked',true);
+			  
+		  } else {
+			 jQuery(this).prop('checked',false);
+		  }
+		});
+		jQuery('#toggleAll_'+tid).change(function(){
+			if(jQuery(this).is(':checked')){
+				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true);
+			} else {
+				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',false);
+			}
+		});
+      tid++;  
+		//jQuery(this).find('li:not(.toggleAll)').each(function(){
+		 jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').change(function(){
+			if(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input[type="checkbox"]').length==jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input:checked').length) {
+			   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',true);
+			} else {
 
-				   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',false);
-				}
-				  
-			  });
-			//});
-		  //add column number to each list
-		  if(jQuery(this).is("#legislationList, #classList, #eventList, #coursesList, #endorsementList")) {
-            jQuery(this).children('li:not(.toggleAll)').each(function() {
-			var label = jQuery(this).find('label').text(); 
-			jQuery(this).find('label').html('<b>'+jQuery(this).index()+'.</b> '+label); 
+			   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',false);
+			}
+			  
 		  });
-		}
-        }); 
+		//});
+	  //add column number to each list
+	  if(jQuery(this).is("#legislationList, #classList, #eventList, #coursesList, #endorsementList")) {
+        jQuery(this).children('li:not(.toggleAll)').each(function() {
+		var label = jQuery(this).find('label').text(); 
+		jQuery(this).find('label').html('<b>'+jQuery(this).index()+'.</b> '+label); 
+	  });
+	}
+    }
+});
 //alert on readonly checkbox
 		jQuery('body').on('click', 'input[readonly], input[readonly]+label', function() {
 		showAlert();
