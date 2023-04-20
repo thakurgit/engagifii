@@ -1660,110 +1660,6 @@ wp_die();
 
     }
 
-    /*class calemdar grid search */
-    // public function classSearchLoadGridData(){
-    //     $postedData  = $this->_prepareClassData();
-    //     $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postedData, "POST", 'classes');
-        
-    //     $collection   = json_decode($dataResponse['api_response'])->result;
-    //     $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-    //     $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
-    //     $data         = array();
-
-    //     $options = get_option('ebt_api_settings');
-    //     $endorsement_api_url = $options['ebt_api_url'];
-    //     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-        
-    //      foreach ($collection as $key => $value) {
-            
-    //         #nested data
-    //         $nestedData = array();
-    //         $instructorPopOver = '';
-    //         $classPopover      = '';
-
-    //         if(count($value->classInstructors))
-    //            // $instructorPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
-
-    //         if(count($value->classSessions))
-    //          //   $classPopover  = $this->_popOverClassData($key, $value->classSessions);
-    //         ## row data
-    //         $class_schedule = '';
-    //         if($value->classDuration > 1)
-    //         {
-    //             $class_schedule = '<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' - '.date('d M Y', strtotime($value->endDate)).'</span>';
-    //         }
-    //         $nestedData['sectionname'] = '<div class="d-flex"><div class="col-2 col-sm-2 m-auto p-0"><img alt="'.$value->sectionName.'" src="'.$value->parentCourse->iconReference.'" class="img-responsive img-icon-lg p-0"></div><div class="Col-10 col-sm-10 m-auto p-3"><span><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<br/><span style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).'</span></div></div>';
-    //         $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-    //        // $nestedData['objectType'] = $value->objectType;
-
-    //         // $nestedData['startdate'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover;
-
-    //        // $nestedData['classInstructorsCount'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver;  
-    //        // $nestedData['credithours'] = $value->parentCourse->creditHours;          
-           
-    //         $classTag = $value->classTag;
-    //         $allTags = array();
-    //         foreach ($classTag as $index => $tag) {
-                
-    //                 if(count($classTag) > 1 && $index == 0)
-    //                 {   
-    //                     $tagPopover =  $this->_popOverTagData($key, $value->classTag);
-
-    //                        $tagCount   = count($classTag) - 1;
-    //                 $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$tag->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
-    //                 }
-    //                 elseif(count($classTag) == 1)
-    //                     $allTags[] = $tag->tagName;
-    //         }
-
-    //         $nestedData['classTag'] = implode(" ", $allTags);
-    //         if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
-    //         {
-    //           if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-    //           {
-    //                if($value->locationType->name=="onlocation")
-    //                   { 
-    //                   $nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-    //                   //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-    //                   }
-    //                   elseif($value->locationType->name=="online"){
-    //                     //  $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-    //                   }
-    //                   elseif($value->locationType->name=="onlocationandonline"){
-    //                  // $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register Online</a><br/><a href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" style="margin-top:1px; margin-bottom:1px; font-size:11px;">Register in person</a>';
-    //                   }
-    //               else{
-    //                  // $nestedData['register'] = ' ';
-    //               }
-    //           }
-    //           else{
-    //          // $nestedData['register'] = ' ';
-    //           }
-    //       }else{
-    //        // $nestedData['register'] = ' ';
-    //         //$data[] = $nestedData;    
-    //       }
-    //       $data[] = $nestedData;
-    //   }
-        
-       
-    //     $draw           = $_POST['draw'];
-    //     $start          = $_POST['start']; //0, 5
-    //     $length         = $_POST['length']; //5, 10 per page.
-
-    //     $json_data = array(
-    //         "draw" => intval($draw),
-    //         "recordsTotal" => intval($totalcount),
-    //         "recordsFiltered" => intval($totalcount),
-    //         "data" => $data,
-    //     );
-
-    //     echo json_encode($json_data);
-    //     wp_die();
-
-
-    // }
-
     /* Class calendar search grid end here*/
     public function courseLoadGridData(){
         $postedData = $this->_prepareCoursePostData();
@@ -1830,11 +1726,8 @@ wp_die();
 
 
     public function endorsementLoadGridData(){
-        //print_r("Endorsement Grid");
         $postedData = $this->_preparePostData();
-		//print_r(json_encode($postedData));
-	//die;
-        $dataResponse = $this->submitApiRequest("Public/AwardListPublic/", $postedData, "POST", 'endorsement');
+		$dataResponse = $this->submitApiRequest("Public/AwardListPublic/", $postedData, "POST", 'endorsement');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
@@ -1957,13 +1850,10 @@ wp_die();
     // Events Grid Data
     public function eventsLoadGridData(){
         $postedData = $this->_prepareEventsData();
-        //print_r(json_encode($postedData));
-		//die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
-        //$totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
-
+        
         header("Content-Type: application/json");
         $request = $_GET;
 
@@ -1981,10 +1871,7 @@ wp_die();
             $contactPopOver = '';
            $locationPopOver      = '';
 
-        //    if(count($value->contact))
-        //        $contactPopOver = $this->_popOverInstructorData($key, $value->classInstructors);
-
-            if(count($row->eventDates)) {
+           if(count($row->eventDates)) {
                 $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
 			}
             $locationCount = 0 ;
@@ -1994,7 +1881,7 @@ wp_die();
                     $locationCount = $locationCount+1;
                 }
             }
-            //print_r($locationPopOver);
+           
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
@@ -2027,7 +1914,7 @@ wp_die();
                 $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
 
             }
-            //$nestedData['city'] = $row->eventDates;
+            
             if($locationCount>0){
                 $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
 
@@ -2035,8 +1922,7 @@ wp_die();
             else{
             $nestedData['city'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
-            $nestedData['startDateTime'] = $row->startDateTime;//'<div class="d-flex" style="justify-content:center;"><div class="text-center"><img src="'.$instructor_img.'" class="img-icon-lg" alt="instructor-img"></div><div class="text-center"><a href="#" class="m-auto text-break"> '.$row->createdBy->name.'</a><p class="lead">'.$new_Date.'</p></div></div>';
-            // $nestedData['contacts'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$contactPopOver.'</div>';  
+            $nestedData['startDateTime'] = $row->startDateTime;
             if($row->startDateTime){
                 $default_Date = $row->startDateTime;
                 $convert_Date = strtotime($default_Date);
@@ -2095,9 +1981,7 @@ wp_die();
                         
                         $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
                          $tagCount   = count($default_Tags) - 1;
-                   // $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$value->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
-					
-					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+       			$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
 					
                     }
                     elseif(count($default_Tags) == 1)
@@ -2134,12 +2018,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		//print_r(json_encode($postedData));
-		//die;
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
-
+		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
-        
         header("Content-Type: application/json");
         $request = $_GET;
 
@@ -2439,9 +2319,6 @@ wp_die();
         }
 
         $getCurrentdate = date("Y-m-d");
-        //$postData['selectedDate'] = $getCurrentdate;
-
-       // echo json_encode($postData);
         return $postData;
     }
     
@@ -2454,9 +2331,6 @@ wp_die();
         }
 
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-       
-
-        //$searchText = $_POST['search']['value'];
         $searchText = $_POST['tzdatasearch'];
         $columnsData = [];
         $columnsD = [];
@@ -2494,15 +2368,11 @@ wp_die();
             $sponso_ = @explode(",", $_POST['sponsorsList']);
             $sponsors = $sponso_;
         }
-        //$jsonSponsors = json_encode($sponsors) ;
         $jsonSponsors = ($sponsors);
-        //print_r(($jsonSponsors));exit("dfsdf");
-
         $datepickerstart = null;
         $datepickerend = null;
         if (isset($_POST['startDate']) && !empty($_POST['startDate'])) {
             $datepickerstart = date('m-d-Y', strtotime($_POST['startDate']));
-
         }
 
         if (isset($_POST['endDate']) && !empty($_POST['endDate'])) {
@@ -2522,19 +2392,13 @@ wp_die();
         $assignTag  = array();
 
         if (isset($_POST['isapplyactive']) && !empty($_POST['isapplyactive'])) {
-
-            
-            
         if (isset($_POST['trackingLevels']) && !empty($_POST['trackingLevels'])) {
-            //$trackingLevels = @explode(",", $_POST['trackingLevels']);
-            $trackingLevels = $_POST['trackingLevels'];
-           
+            $trackingLevels = $_POST['trackingLevels'];           
         }     
         
         
         if (isset($_POST['sponsors']) && !empty($_POST['sponsors'])) {
-           // exit("ddd");
-            $sponsors22 =  $_POST['sponsors'];
+              $sponsors22 =  $_POST['sponsors'];
            
         }
         
@@ -2579,10 +2443,7 @@ wp_die();
             $statusTypes = $_POST['statusTypes'];
            
         } 
-		 
-             
-
-        }        
+		  }        
          
 if (isset($_POST['sessionIds'])) {
             $sessionId = $_POST['sessionIds'];
@@ -2618,9 +2479,6 @@ if (isset($_POST['sessionIds'])) {
 		$postData['sessionId'] = $sessionId;
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
-        
-        //echo json_encode($postData); 
-		//die;
         return $postData;
     }
 
@@ -2635,8 +2493,6 @@ if (isset($_POST['sessionIds'])) {
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '</select>';
-        //$searchName = json_encode(array_values($rowName));
-
         $vars = "<script>
                     $(function() {
                         tag_leg_{$id} = $('#tag_leg_{$id}').select2({
@@ -2684,29 +2540,7 @@ if (isset($_POST['sessionIds'])) {
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-        //$searchName = json_encode(array_values($rowName));
-
-        /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                  $(document).ready(function(){
-  $('.search-dropdown').on('keyup', function() {
-    var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('a').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-	  if($(this).parent().siblings('a:visible').length<1){
-		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
-	  } else {
-		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
-	  }
-  });
-});  
-                </script>";*/
-		$vars = "";
+        $vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -2721,7 +2555,7 @@ if (isset($_POST['sessionIds'])) {
         $rowName = array();
         $popOverHtml .= '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="assign_' . $id . '">';
         $subItems = "";
-        //s($assignedto);
+       
         foreach ($assignedto as $key => $rowData) {
             
             $rowName[$rowData->id] = $key;
@@ -2760,43 +2594,20 @@ if (isset($_POST['sessionIds'])) {
     }
     private function _popOverAssignHtml1($id, $assignedto){
         $rowName = array();
-       // $popOverHtml .= '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="assign_' . $id . '">';
         $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Assigned To</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown assign_' . $id . '" placeholder="Search assigned to.."/></div>';
         $subItems = "";
         $li=1;
-        //s($assignedto);
-        foreach ($assignedto as $key => $rowData) {
-            
-            $rowName[$rowData->id] = $key;
-
-            $class='';
+       foreach ($assignedto as $key => $rowData) {
+           $rowName[$rowData->id] = $key;
+           $class='';
             if($li%2==1){
 			$class='bg-light';	
 			}
-           // $subItems .= ' <option value="' . $rowData . '" data-capital="' .$rowData . '" >' . $rowData . '</option>';
-            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><span>' . $rowData .  '</span></li>';
+           $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><span>' . $rowData .  '</span></li>';
 			$li++;
         }
-
-      //  $popOverHtml.= '</select>';
-        $popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+$popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
-
-        /*$vars = "<script>
-                    $(function() {
-                        assign_{$id} = $('#assign_{$id}').select2({
-                            templateResult: function(item) {
-                                return format(item,  false);
-                            }
-                        });
-
-                        $(document).on('click', '.assign_{$id}', function () {
-                            assign_{$id}.select2('open');
-                            setTimeout(function(){ __addExtraDiv('Assigned To')},100);
-                        });
-                    });
-                </script>";*/
-
 		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
@@ -2901,7 +2712,6 @@ if (isset($_POST['sessionIds'])) {
         $rowName = array();
         $popOverHtml .= '<span id="span_' . $personseGroupId . '"  style="opacity:0;height:0;display:block;"> <select class="form-control abcdfed" id="searchbox_' . $personseGroupId . '">';
         $subItems = "";
-        //array_shift($persondata);
         foreach ($persondata as $key => $rowData) {
             
             $rowName[$rowData->id] = $rowData->name;
@@ -2977,27 +2787,7 @@ if (isset($_POST['sessionIds'])) {
         $popOverHtml .= $subItems.'<span class="span_' . $personseGroupId . ' px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
-        /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                  $(document).ready(function(){
-  $('.sd_{$personseGroupId}').on('keyup', function() {
-    var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('li').filter(function() {
-      $(this).toggle($(this).find('span').text().toLowerCase().indexOf(value) > -1);
-    });
-	  if($(this).parent().siblings('li:visible').length<1){
-		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
-	  } else {
-		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
-	  }
-  });
-});  
-                </script>";*/
-		$vars = "";
+        $vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -3010,7 +2800,6 @@ if (isset($_POST['sessionIds'])) {
     }
 
     private function _popOverClassData($id, $classData){
-        //print_r($classData);
         $rowName = array();
         $popOverHtml .= '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="classbox_' . $id . '">';
         $subItems = "";
@@ -3057,9 +2846,7 @@ if (isset($_POST['sessionIds'])) {
 
 
     private function _popOverClassData1($id, $classData){
-        //print_r($classData);
         $rowName = array();
-        //$popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
         $popOverHtml .= dd_header('Class Dates');
         $subItems = "";
         $li=1;
@@ -3082,15 +2869,7 @@ if (isset($_POST['sessionIds'])) {
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
 
-        /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                    
-                </script>";*/
-		$vars = "";
+        $vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -3104,7 +2883,6 @@ if (isset($_POST['sessionIds'])) {
 //Popover events class data
 
 private function _popOverEventsData($id, $eventsData){
-    //print_r($classData);
     $rowName = array();
     $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Class Dates</h6>';
     $subItems = "";
@@ -3128,14 +2906,6 @@ private function _popOverEventsData($id, $eventsData){
     $popOverHtml.= '</div>';
     $searchName = json_encode(array_values($rowName));
 
-    /*$vars = "<script>
-                $('.td-dropdown').mCustomScrollbar({
-          scrollButtons:{enable:true},
-                theme:'minimal-dark',
-                 scrollbarPosition:'outside'
-                 });
-                
-            </script>";*/
     $vars = "";
     $popOverHtml .= '</ul></span>';
     $popOverHtml .= '</div>';
@@ -3149,18 +2919,10 @@ private function _popOverEventsData($id, $eventsData){
 
 	//Events Date popover 
 	public function _popOverLocationData($id, $locationData){
-		//$options = get_option('evt_api_settings');
-	 // $events_api_url = $options['evt_api_url'];
-	 // $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
-
-		   
-
-
-	  $rowName = array();
+		$rowName = array();
      
  $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Locations.."/></div>';
-	 // $popOverHtml = '<span id="span_' . $id . '"  style=""> <select class="form-control" id="searchbox_' . $id . '">';
-	  $subItems = "";
+	 $subItems = "";
 $li=1;
 	  foreach ($locationData as $key => $rowData) {
 		  
@@ -3169,8 +2931,7 @@ $li=1;
             if($li%2==1){
 			$class='bg-light';	
 			}
-		  //$subItems .= ' <option value="' . $rowData->city . '" data-capital="' . $rowData->city . '"  >' . $rowData->city . '</option>'; 
-          if($rowData->city){
+		  if($rowData->city){
 		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->city . '</li>';
           }
 		  $li++;
@@ -3257,28 +3018,7 @@ $li=1;
         $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
         $searchName = json_encode(array_values($rowName));
-
-        /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                  $(document).ready(function(){
-  $('.search-dropdown').on('keyup', function() {
-    var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('li').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-	  if($(this).parent().siblings('li:visible').length<1){
-		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
-	  } else {
-		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
-	  }
-  });
-});  
-                </script>";*/
-$vars = "";
+        $vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -3588,27 +3328,16 @@ $vars = "";
         {
             $postData['filterBody']['instructors'] = $_POST['instructors'];
         }
-        // if(!empty($_POST['minReg'])){
-           // $dateRange = explode("-", $_POST['createdDate']);
-           // $postData['filterBody']['registrationDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-           // $postData['filterBody']['registrationDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
             $postData['filterBody']['registrationDateRange']['startDate'] = $_POST['minReg'];
             $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
             $postData['filterBody']['createdDateRange']['startDate'] = $_POST['class_start_date'];
             $postData['filterBody']['createdDateRange']['endDate'] =$_POST['class_end_date'];
             $postData['filterBody']['classStates'] =$_POST['classStates'];
-        //}
-		//if(!empty($_POST['creditHour']))
-        //{
             $postData['filterBody']['creditHour']['min'] = $_POST['minRange'];
             $postData['filterBody']['creditHour']['max'] = $_POST['maxRange'];
-        //}
-		
         return $postData;
     }
     public function _prepareEventsData(){
-
-        //$upcomingEvents = 'false';
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
         if($allEvents==1){
         $allEvents = 'false';	
@@ -3804,8 +3533,6 @@ if(!empty($_POST['minRange']))
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
         $postData['filterBody'] = array('year'=>$year, 'month'=>$month);
-        //print_r(json_encode($postData));
-		//die;
         return $postData;
     }
 
@@ -3875,7 +3602,6 @@ if(!empty($_POST['minRange']))
 
         $getCurrentdate = date("Y-m-d");
         $postData['selectedDate'] = $getCurrentdate;
-        //echo json_encode($postData);
         return $postData;
     }
  
@@ -3906,9 +3632,7 @@ if(!empty($_POST['minRange']))
     $postedData = $this->_preparePostCountData();
        
     $dataResponse = $this->submitApiRequest("Public/Award/PublicFilteredRecordCount", $postedData, "POST", 'endorsement');
-       //$dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
        $classCount = $dataResponse['api_response'];
-        //print_r($classCount);
        $postData = array();    
        $postData['itemCount'] = $classCount;
        $postData['sortBy'] = 'sectionname';
@@ -3930,7 +3654,6 @@ if(!empty($_POST['minRange']))
        $collection   = json_decode($dataResponse['api_response'])->result;
        $data         = array();
        $endorsmentData    = array();
-       //print_r($collection); 
        foreach ($collection as $key => $value) {
                $data['title'] = '<a href="'.site_url().'/endorsement-detail/?endId='.$value->id.'">'.$value->name.'</a>';
                $data['id']    = $value->id;
@@ -3939,7 +3662,6 @@ if(!empty($_POST['minRange']))
                $data['name'] = $value->name;
                $data['price'] = $value->price;
                $data['createdOn'] = date('Y-m-d', strtotime($value->createdOn));
-               //$data['hours']      = $value->parentCourse->creditHours;
                $data['icon']       = $value->icon;
                $data['validity'] = $value->validity;
                 $data['createdBy'] = $value->createdBy->name;
@@ -3984,12 +3706,8 @@ if(!empty($_POST['minRange']))
             $allEvents = 'true';
         }
         $postedData = $this->_eventsPostCountData();
-       //print_r(json_encode($postedData));
-        $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
+       $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
         $classCount = $dataResponse['api_response'];
-        //print_r('<br>');
-        //print_r($dataResponse);
-        
         $postData = array();    
         $postData['itemCount'] = $classCount;
         $postData['sortBy'] = 'sectionname';
@@ -4006,15 +3724,10 @@ if(!empty($_POST['minRange']))
             $postData['instructors'] = $_POST['instructors'];
         }
         $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
-        //$postedData = json_encode($postData);
-       //print_r(json_encode($postData));
-           $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
-           
-      //print_r(json_encode($dataResponse));
-           $collection   = json_decode($dataResponse['api_response'])->collection;
+        $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
+        $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
            $endorsmentData    = array();
-           //print_r(json_encode($collection)); 
            foreach ($collection as $key => $value) {
             $event_status = $value->eventStatus;
             $registration_state = preg_replace('/(?<!\ )[A-Z]/', ' $0', $value->eventRegistrationState);//$value->eventRegistrationState;
@@ -4225,10 +3938,6 @@ public function getCalendar(){
             <?php
                 $dayCount = 1;
                 $classdata = $this->classCalendar();
-                //echo "Hello Class Data";
-
-                //print_r(json_encode($classdata));
-
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -4241,8 +3950,6 @@ public function getCalendar(){
                             return $currentDate >= $item['start'] && $currentDate <= $item['end'];
                         });
                        sort($filteredItems);
-                       //print_r($filteredItems);
-                      
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
@@ -4366,14 +4073,6 @@ wp_die();
 }
 
 
-/*For Class List as google calendar on search */
-
-public function calendarSearch(){
-    alert("hello Calendar search");
-}
-
-/*Calendar search ends here*/
-
 //Display Calendar layout data for Endorsement : Added by Guru 
 
 public function getEndorsementCalendar(){
@@ -4422,8 +4121,6 @@ public function getEndorsementCalendar(){
             <?php
                 $dayCount = 1;
                 $endorsementdata = $this->endorsementCalendar();
-                //echo "Hello Endorsement here";
-                //print_r($endorsementdata); 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -4433,14 +4130,9 @@ public function getEndorsementCalendar(){
                         // Get number of events based on the current date
                         
                         $filteredItems = array_filter($endorsementdata, function($item) use ($currentDate) {
-                            //print_r($item); 
-                           // return $currentDate >= $item['start'] && $currentDate <= $item['end'];
-                           //$currentDate ==$item['createdOn'];
-                           //print_r($currentDate);
-                            return $currentDate >=$item['createdOn'] && $currentDate <=$item['createdOn'] ;
+                           return $currentDate >=$item['createdOn'] && $currentDate <=$item['createdOn'] ;
                         });
                        sort($filteredItems);
-//print_r(count($filteredItems));
                         // Define date cell color
                         if(count($filteredItems) > 0){
 							$today='';

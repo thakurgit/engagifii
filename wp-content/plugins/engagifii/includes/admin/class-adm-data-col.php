@@ -39,7 +39,6 @@ class adminDataColumn extends Engagifii_API{
 			 $dataResponse = $this->submitApiRequest("legislative/public-bills/column-list",$postedData,"GET",'legislation');
 			 if(isset($dataResponse['api_response'])){
 					 $collection = json_decode($dataResponse['api_response']);
-			 	//echo "<pre>"; print_r($collection); echo "</pre>";
 			 	return $collection; 	
 			 }else
 			  return array();
@@ -75,26 +74,16 @@ class adminDataColumn extends Engagifii_API{
 			return $collection;
 		}
 		else
-			return array();
-		
-    	
+			return array();    	
 	}
 
 
 	public function getEventsColumnData(){
 
 		$dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
-		//print_r("HEllo response<br/>");
-		//print_r($dataResponse);
-		//print_r("HEllo response<br/>");
-
 		if(isset($dataResponse['api_response'])){
 			$collection   = json_decode($dataResponse['api_response']);
-/*			unset($collection[0]);
-			unset($collection[1]);
-			unset($collection[7]);
-			unset($collection[8]);
-*/			return $collection;
+		return $collection;
 		}
 		else
 			return array();
@@ -106,17 +95,7 @@ class adminDataColumn extends Engagifii_API{
 		$postData = array();
  	   $apiUrl = 'legislative/public-bills/sessions/';	
 		$dataResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
-		//print_r("HEllo response<br/>");
-		//print_r($dataResponse);
-		//die;
-		//print_r("HEllo response<br/>");
-
-		
-			return $dataResponse['api_response'];
-		
-    	
+		return $dataResponse['api_response'];
 	}
-
-
 }
 return new adminDataColumn();

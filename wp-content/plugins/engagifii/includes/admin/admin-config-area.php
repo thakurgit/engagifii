@@ -328,10 +328,6 @@ function ebt_tenant_code_render(  ) {
     		return;
   		}
 		include_once( __DIR__.'/view/admin-settings-form.php' );
-		//if($tab === 'customizer'){
-		//include_once( __DIR__.'/view/customizer.php' );
-		//}
-	 
 	}
 }
 

@@ -14,8 +14,7 @@
     {
     	 $chkd  = ' checked';
     }
-	//print_r($dt_responsive);
-	//print_r($chkd);
+	
 	 ?>
           <span>Enable table responsive</span>
           <span><input type="checkbox" name="ebt_api_settings[dt_responsive]" id="dt-responsive" value="1" <?php echo $chkd; ?>></span>

@@ -9,25 +9,20 @@
 		?>
     <?php
         $options = get_option( 'ebt_api_settings' );
-       // print_r($options);
-        
+            
         if(isset($options['engagifii_apply_css_ebt'])){
             $engagifii_apply_css_ebt = $options['engagifii_apply_css_ebt'];
             }else{
            		$engagifii_apply_css_ebt = 0;
            	}
-        
-            $checkedHtml  = ' style="display:none"';
-           // if($engagifii_apply_css_ebt==1 && $tab === null)
-			if( $tab === null)
+           $checkedHtml  = ' style="display:none"';
+      if( $tab === null)
             {
             	$checkedHtml  = ' style="display:block"';
             }
             include( plugin_dir_path( __FILE__ ) . '/admin-fonts-sie.php');
             include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
             $options = get_option( 'ebt_api_settings' );
-
-
         ?>
     <div class="wrap tab-content ff">
     <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
@@ -35,8 +30,7 @@
         <tr>
         	<td colspan="4"><h3>Table Header</h3><hr></td>
         </tr>
-            <tr>
-                
+            <tr>                
                 <td><h4>Table Heading Background</h4>
                 <?php
                        $ebt_table_bg = @$options['ebt_table_bg_color'];
@@ -69,16 +63,6 @@
                           echo $_inputHtml;
                     	 ?>
                 </td>
-                
-                <?php /*?><th>Font Family</th>
-                <td>
-                    <select name="ebt_api_settings[engagifii_font_family]" id="font-family-tz">
-                        <option> </option>
-                        <?php foreach( $fonts as $key => $font ):?>
-                        <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td><?php */?>
             </tr>
               <tr>
         	<td colspan="4"><h3>Table Body</h3><hr></td>
@@ -153,11 +137,7 @@
                     ?>
               </td>
         </tr>
-        
-
-        </table>
-        
-       
+        </table>       
     </div>
     </div>
         
@@ -174,19 +154,7 @@
     </div>
 </form> 
 <script type="text/javascript">
-   /* function getTenantCode(engagifiiUrl) {    		
-    
-    var url = new URL(engagifiiUrl);
-    var index = url.hostname.indexOf('.');
-    subdomain= url.hostname.substring(0, index);
-    if (typeof subdomain == 'undefined' )  {
-   	 return false;
-    }
-    jQuery("#ebt_tenantcode_preview").html(subdomain);
-    jQuery("#ebt_tenant_code_text").val(subdomain);
-
-    }*/
-	function getTenantCode(tenantCode, current) {    		
+  function getTenantCode(tenantCode, current) {    		
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
 	  tCode =tCode.split('.')[0];
@@ -195,44 +163,7 @@
 	   jQuery(current).siblings('input').val(tCode);
     }
 	
-  /*  function getTenantCode_lbt(engagifiiUrl)
-    {    		
-    
-    var url = new URL(engagifiiUrl);
-    var index = url.hostname.indexOf('.');
-    subdomain= url.hostname.substring(0, index);
-    if (typeof subdomain == 'undefined' )
-    {
-    return false;
-    }
-   
-
-    jQuery("#lbt_tenantcode_preview").html(subdomain);
-    jQuery("#lbt_tenant_code_text").val(subdomain);
-
-
-
-
-    }
-    function getTenantCode_evt(engagifiiUrl)
-    {    		
-    
-    var url = new URL(engagifiiUrl);
-    var index = url.hostname.indexOf('.');
-    subdomain= url.hostname.substring(0, index);
-    if (typeof subdomain == 'undefined' )
-    {
-    return false;
-    }
-   
-    jQuery("#evt_tenantcode_preview").html(subdomain);
-    jQuery("#evt_tenant_code_text").val(subdomain);
-
-
-    }*/
-    
-	
-	jQuery('.accordion-btn').click(function(){
+  jQuery('.accordion-btn').click(function(){
 		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
 		
 		
@@ -292,8 +223,7 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			}
 			  
 		  });
-		//});
-	  //add column number to each list
+		//add column number to each list
 	  if(jQuery(this).is("#legislationList, #classList, #eventList, #coursesList, #endorsementList")) {
         jQuery(this).children('li:not(.toggleAll)').each(function() {
 		var label = jQuery(this).find('label').text(); 

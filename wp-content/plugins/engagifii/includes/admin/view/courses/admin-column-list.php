@@ -28,11 +28,7 @@
 			{
 				$checked .= " checked readonly";
 			}
-			if($counter >1 && $counter%3==0)
-			{
-				//echo '</ul>';
-				//echo '<ul class="ebt-grid-column-list">'; 			 
-			}			 
+			
 			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[course_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}

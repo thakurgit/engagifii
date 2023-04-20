@@ -19,18 +19,10 @@ class Engagifii_API{
 	*/
 	protected function submitApiRequest($requestUrl,$requestData,$requestType="POST", $module)
 	{
-		//requestUrl ='https://engagifii-preview4-event.azurewebsites.net/api/1.0/';
-		//print_r(json_encode($requestData));
-		//echo "hello <br/>";
-	//print_r($requestUrl."<br/>");
-		//print_r($module);
 		$options = get_option( 'ebt_api_settings' );
-		//print_r($options);
 		$prepareApiResponse = array();
 		$authentication = '';
 		$ebt_api_url ='';
-		//$requestUrl= '';
-
 		if(is_array($options) && !empty($options))
 		{
 			
@@ -45,24 +37,13 @@ class Engagifii_API{
 			else if($module == 'endorsement' || $module == 'courses' || $module == 'classes'){
 				$ebt_api_url = $options['ebt_api_url'];
 				$ebt_tenant_code = $options['ebt_tenant_code'];
-
-				//print_r($apiurl."<br/>");
 			}
 			else if($module == 'event'){
-				//print_r("hello Event");
 				$ebt_api_url = $options['evt_api_url'];//"https://engagifii-preview4-event.azurewebsites.net/api/1.0";
 				$ebt_tenant_code = $options['evt_tenant_code'];
 				$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE2Mjk3ODAxOTksImV4cCI6MTYyOTc4NzM5OSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNmY4OGY3NWUtYTAxYi00ZjhjLTg5NzktZTM5NzE3MWNkMzc2IiwiYXV0aF90aW1lIjoxNjI5NzgwMTk4LCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IjcwZmNiZTZiLTVjOTQtNDg5Ny1iNzQ0LTRkNGQ3MDViYjZhNyIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIiwiZW1haWwiOiJhYmlnYWlsLnNAeW9wbWFpbC5jb20iLCJsYXN0LWxvZ2luIjoiOC8yMy8yMDIxIDU6NDI6MzMgQU0iLCJjdXJyZW50LWxvZ2luIjoiOC8yNC8yMDIxIDQ6NDM6MTggQU0iLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJVc2Vyc0FQSSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiXSwiYW1yIjpbInB3ZCJdfQ.CtxM88_2rFKBrHzoMwpYTiFAmCJeUBw0O4yzyOMTzJ8AuWoEtsn_uUmM9nnPo_I4P4rAz0UQaEAksuReLJBVelulDfe-gxHsn6f3WFiogKso4FjvaxTCPI61hkOYJI30_nJ9IGd6nBRVbBAhIyA8eGtyliJiLYrCfTAI70dIANooO71Y4X_0WYIFmw1auiio23Au-2xdSAZGBbv7rD_e1LQBoE6w2y7W1EQAkjIzsQpMsvE6V3YYQPdFhrrP7Y4bv4oQyUTFgsAI0AqBb5xiOgbFUPxDNd1t4JSYpoE2WNjIwiL7uoHO95K6QD5bpv546qrYi81uLMDRo83t6-gpDw';
-				//$requestUrl = "public/EventColumnList";
-				//print_r($ebt_api_url);
-				//print_r($ebt_tenant_code);
-			}
-			
-			//print_r($ebt_api_url."/".$requestUrl."<br/>");
-
-			
+				}
 			$tenant_code = $ebt_tenant_code ['tenant_code'];
-			
 			$curl = curl_init();
 			curl_setopt_array($curl, array(  
 
@@ -80,8 +61,6 @@ class Engagifii_API{
 				),
 
 			));
-
-			//print_r($curl);
 
 			$response = curl_exec($curl);
 
@@ -228,14 +207,8 @@ public function _popOverSpeakerData3($id, $instructorData){
 	$options = get_option('ebt_api_settings');
   $endorsement_api_url = $options['ebt_api_url'];
   $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-
-	   
-
-
   $rowName = array();
-
- // $popOverHtml = '<span id="span_' . $id . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="searchbox_' . $id . '">';
-		$popOverHtml =  dd_header('Speakers','Search speakers..');
+  $popOverHtml =  dd_header('Speakers','Search speakers..');
   $subItems = "";
 
   foreach ($instructorData as $key => $rowData) {
@@ -266,33 +239,12 @@ public function _popOverSpeakerData3($id, $instructorData){
 			}
 			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
 			$li++;
-	 // $subItems .= ' <option value="' . $rowData->fullName . '" data-capital="' . $rowData->fullName . '"  >' . $rowData->fullName . '</option>';
   }
 
   $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 
-  /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                  $(document).ready(function(){
-  $('.search-dropdown').on('keyup', function() {
-    var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('li').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-	  if($(this).parent().siblings('li:visible').length<1){
-		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
-	  } else {
-		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
-	  }
-  });
-});  
-                </script>";*/
-		$vars = "";
+  $vars = "";
 
   $popOverHtml .= '</ul></span>';
   $popOverHtml .= '</div>';
@@ -304,24 +256,12 @@ public function _popOverSpeakerData3($id, $instructorData){
   return $popOverHtml . $vars;
 
 }
-
-
 //Events Speaker data ends
-
-
-	// 
-
 	  public function _popOverInstructorData1($id, $instructorData){
 	  	$options = get_option('ebt_api_settings');
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-
-         	
-
-
         $rowName = array();
-
-       // $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Instructors</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Instructors.."/></div>';
 		$popOverHtml =  dd_header('Instructors','Search Instructors..');
         $subItems = "";
 		$li=1;
@@ -357,27 +297,7 @@ public function _popOverSpeakerData3($id, $instructorData){
         $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 
-        /*$vars = "<script>
-					$('.td-dropdown').mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:'minimal-dark',
-		 			scrollbarPosition:'outside'
-		 			});
-                  $(document).ready(function(){
-  $('.search-dropdown').on('keyup', function() {
-    var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('li').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-	  if($(this).parent().siblings('li:visible').length<1){
-		  $(this).parent().siblings('span').addClass('d-block').removeClass('d-none');
-	  } else {
-		  $(this).parent().siblings('span').addClass('d-none').removeClass('d-block');
-	  }
-  });
-});  
-                </script>";*/
-		$vars = "";
+      	$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
 
@@ -407,9 +327,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '</select>';
-        //$searchName = json_encode(array_values($rowName));
-
-        $vars = "<script>
+         $vars = "<script>
                     $(function() {
                         class_{$id} = $('#classbox_{$id}').select2({
                             templateResult: function(item) {
@@ -456,22 +374,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-        //$searchName = json_encode(array_values($rowName));
-
-       /* $vars = "<script>
-                    $(function() {
-                        class_{$id} = $('#classbox_{$id}').select2({
-                            templateResult: function(item) {
-                                return format(item,  false);
-                            }
-                        });
-
-                        $(document).on('click', '.class_{$id}', function () {
-                            class_{$id}.select2('open');
-                            setTimeout(function(){ __addExtraDiv('Classes')},100);
-                        });
-                    });
-                </script>";*/
+        
 		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
@@ -501,8 +404,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '</select>';
-        //$searchName = json_encode(array_values($rowName));
-
+        
         $vars = "<script>
                     $(function() {
                         class_{$courseid} = $('#classbox_{$courseid}').select2({
@@ -550,23 +452,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 
         $popOverHtml .= $subItems;
         $popOverHtml.= '</div>';
-        //$searchName = json_encode(array_values($rowName));
-
-        /*$vars = "<script>
-                    $(function() {
-                        class_{$courseid} = $('#classbox_{$courseid}').select2({
-                            templateResult: function(item) {
-                                return format(item,  false);
-                            }
-                        });
-
-                        $(document).on('click', '.class_{$courseid}', function () {
-                            class_{$courseid}.select2('open');
-                            setTimeout(function(){ __addExtraDiv('Associated Classes')},100);
-                        });
-                    });
-                </script>";*/
-				
+        
 		$vars = "";
         $popOverHtml .= '</ul></span>';
         $popOverHtml .= '</div>';
@@ -895,11 +781,8 @@ public function getEventDetailsByID($id)
 	$postData = array();
 	$responseArray = array();
 	$apiUrl = 'Public/'.$id;
-	//print_r($apiUrl);
-	//print_r($postData);
 	$response= $this->submitApiRequest($apiUrl,$postData, 'GET', 'event');
 	$responseArray = json_decode($response['api_response']);
-	//print_r($responseArray);
 	return $responseArray;
 
 }
@@ -917,7 +800,6 @@ public function getEventDetailsByID($id)
 		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'document');
 		$section_id = json_decode($response['api_response']);
 		$responseArray = $this->getDocumentDetails($section_id);
-		//print_r($responseArray); die;
 		return $responseArray;
 		
 	}
@@ -981,10 +863,8 @@ public function getEventDetailsByID($id)
 		$postData = array();
 		$responseArray = array();
 		$apiUrl = 'Public/getClassById/'.$id;
-		//print_r($postData);
 		$response= $this->submitApiRequest($apiUrl,$postData, 'GET', 'classes');
 		$responseArray = json_decode($response['api_response']);
-		//print_r($responseArray);
 		return $responseArray;
 	}
 
