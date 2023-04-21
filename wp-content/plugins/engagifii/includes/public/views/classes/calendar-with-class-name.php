@@ -179,12 +179,7 @@ $(document).ready(function() {
         var fv = 0;
         var day = '';
         var calendar_view = 'month';
-        /*$('.filter-icon-cal').click(function(e){
-        e.stopPropagation();
-        $('.filter-border-cal').show();
-        $('.filter-area-cal').toggleClass('d-none');
-        
-    });*/
+       
         function getCalendarClassName(target_div, year, month, day){
             $.ajax({
                 type:'POST',
@@ -304,22 +299,7 @@ $(document).ready(function() {
            $('[data-toggle="tooltip"]').tooltip() ;  
         }
 		
-		
-
-        /*$('.clear-all-cal').click(function(){
-            $('input[type=checkbox]').prop('checked',false);
-            $('#countFilterResultCal').html(' ');
-            fv = 0;
-          $('.filter-icon-cal').removeClass('active');  
-
-            courses = '';
-            instructor = '';
-            getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), '');
-
-
-      });*/
-
-        $(document).on({
+		  $(document).on({
     		ajaxStart: function(){
 				$("#calendar_div").prepend('<div class="loader"><span class="spinner"></span></div>');
     		},
@@ -394,85 +374,7 @@ $(document).on('click', '.class-pop', function (e) {
   e.stopPropagation();
 });
 
-         /*$('#apply-filter-data-cal').click(function(){
-            courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
-            instructor = $.map($('input[name="courseInstrutorCal[]"]:checked'), function(c){return c.value; });
-            
-            $(".filter-area-cal").toggleClass('d-none');
-            getCalendarClassName('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), day);
-
-        });*/
-
-        // Calendar search //
-        // $('#apply-filter-search-cal').click(function(e){
-        //    e.preventDefault(); 
-        //   var search = $('#calendar-search').val();
-        //   $("#search-demo").val(search);  
-        //     alert(search);
-        //     $('#calendar_div').hide();
-        //     $('#calendar_filter').hide();
-        //     $("#calendarsearch_div").show();
-        // });
-
-        //Calendar search ends here
-        /*$('.heading-title').click(function(){$(this).next('.content-area-cal').toggleClass('d-none')});
-        $(document).on('click', function (e) {
-            var container = $(".filter-border-cal");
-            // If the target of the click isn't the container
-            //console.log(e.target.className);
-            if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-              container.hide();
-              $('.filter-area-cal').addClass('d-none');
-            }
-        });
-
-      	$('.filter-list-cal input[type=checkbox]').change(function(){
-        	countFilterDataCal();
-      	});
-    	function countFilterDataCal()
-    	{
-
-      		var courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
-      		var instructor = $.map($('input[name="courseInstrutorCal[]"]:checked'), function(c){return c.value; });
-          	$.ajax({
-          		type : "post",
-          		url: engagifiiUrl_ajaxurl,
-          		data:{
-              		action:'classcountdata',
-              		courses : courses,
-              		instructors : instructor,  
-          		},
-          		success: function(response) {       
-            		var element  = document.getElementById("countFilterResultCal");
-            		if(element)
-            		{
-              			element.innerHTML = " ("+response.api_response +")";
-            		}    
-          		}
-        	});
-      	}
-
-       	$("#apply-filter-data-cal").click(function () {
- 			$('.filter-list-cal').each(function() {
-   				if ($(this).find('input[type=checkbox]').is(':checked')) {
-    				$(this).addClass('checked');
-   				} else {
-    				$(this).removeClass('checked');
-   				}
-  			});
-  			fv = $('.filter-list-cal.checked').length;
-  			if(fv>0){
-  				$('.filter-icon-cal').addClass('active'); 
-  				$('.filter-icon-cal span').text(fv); 
-  			} else {
-  				$('.filter-icon-cal').removeClass('active');  
-  			}
- 		});*/
-
-    
-
-   
-
+        
     </script>
 
   

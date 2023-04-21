@@ -334,33 +334,7 @@ public function getCalendarClassName(){
 
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
-        <?php /*?><div class="title-bar col-12 bg-light p-3 border rounded">
-            <div class="row align-items-center">
-            <div class="title-bar__month col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pr-0">
-                <div class="input-group input-group-sm mb-2 mb-md-0">
-        <div class="input-group-prepend">
-          <div class="input-group-text bg-white rounded-left"><i class="fal fa-calendar-alt"></i></div>
-        </div>
-                <select class="month-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getMonthList($dateMonth); ?>
-                </select>
-                </div>
-            </div>
-            <div class="title-bar__year col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pl-0">
-                <select class="year-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getYearList($dateYear); ?>
-                </select>
-            </div>
-            <div class="col-12 col-md-6 col-lg-8 text-center text-md-right text-uppercase">
-                <div class="btn-group btn-group-sm calendar-view" role="group" >
-                  <button type="button" id="month" class="btn bg-white border shadow-none" aria-pressed="false">Monthly</button>
-                  <button type="button" id="week" class="btn bg-white border shadow-none" aria-pressed="false">Weekly</button>
-                  <button type="button" id="day" class="btn bg-white border shadow-none" aria-pressed="false">Daily</button>
-                </div>
-            </div>
-        </div>
-            
-        </div><?php */?>
+        
         <div class="col-12 pt-2">
             <div class="row ">
         <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
@@ -385,15 +359,10 @@ public function getCalendarClassName(){
             <?php
                 $dayCount = 1;
                 $classdata = $this->classCalendar();
-                //echo "Hello Class Data";
-
-                //print_r(json_encode($classdata));
-
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
-                        // Current date
-                        $currentDate = $dateYear.'-'.$dateMonth.'-'.str_pad($dayCount, 2, '0', STR_PAD_LEFT);; 
+                    $currentDate = $dateYear.'-'.$dateMonth.'-'.str_pad($dayCount, 2, '0', STR_PAD_LEFT);; 
 
                         // Get number of events based on the current date
                         
@@ -401,13 +370,7 @@ public function getCalendarClassName(){
                             return $currentDate >= $item['start'] && $currentDate <= $item['end'];
                         });
                        sort($filteredItems);
-                      //print_r(json_encode($filteredItems));
-                       //$test = json_encode($filteredItems);
-                      //print_r($filteredItems[0]['title']);
-                      
-
-
-                        // Define date cell color
+                       // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
                                 <div class=" calendar__day border-right event col flex-column d-flex p-0 today bg-light"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
@@ -417,26 +380,20 @@ public function getCalendarClassName(){
                                         for($fi=0; $fi<count($filteredItems); $fi++){
                                        
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                           // $test = substr($test,0,20);
-                                           //echo $test.'...'; 
-										  // if($fi<2) {
-											   
-										   
-                                           echo '<div class="classNames">';
+                                            echo '<div class="classNames">';
                                            ?>
                                         <a class="calendar-class badge badge-dark" data-toggle="modal" data-target="#exampleModal<?php echo $filteredItems[$fi]['id']; ?>" href="" style="font-size:11px;" ><?php  echo $test; ?>...</a>                                    
                                                 <?php
                                         
                                         echo "</div>";
-										//}
-                                        }
+										}
                                     } ?>
                                     </span>
                                 </div>
                                 <?php  for($fi=0; $fi<count($filteredItems); $fi++){
                                        
                                             $test = $filteredItems[$fi]['titleNoLink'];
-                                            //$test = substr($test,0,20);
+                                            
                                            ?>
                                              <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal<?php echo $filteredItems[$fi]['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -567,8 +524,6 @@ public function getCalendarClassName(){
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
                     $week_end_date = date("Y-m-d",strtotime($week_end_date.' +1 day'));
                     $week_array = $this->date_range($week_start_date, $week_end_date);
-//print_r($week_start_date.' - '.$week_end_date);
-
             ?>
              <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' - 7 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2">Prev</span></a>
                 
@@ -731,8 +686,6 @@ public function getCalendarClassName1(){
             <?php
                 $dayCount = 1;
                 $classdata = $this->classCalendar();
-                
-//print_r(json_encode($classdata));
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -745,13 +698,7 @@ public function getCalendarClassName1(){
                             return $currentDate >= $item['start'] && $currentDate <= $item['end'];
                         });
                        sort($filteredItems);
-                      //print_r(json_encode($filteredItems));
-                       //$test = json_encode($filteredItems);
-                      //print_r($filteredItems[0]['title']);
-                      
-
-
-                        // Define date cell color
+                      // Define date cell color
                         if(count($filteredItems) > 0){
 							$today='';
 							if(strtotime($currentDate) == strtotime(date("Y-m-d"))){
@@ -1016,33 +963,7 @@ public function getEventsCalendar(){
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
-       <?php /*?> <div class="title-bar col-12 bg-light p-3 border rounded">
-            <div class="row align-items-center">
-            <div class="title-bar__month col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pr-0">
-                <div class="input-group input-group-sm mb-2 mb-md-0">
-        <div class="input-group-prepend">
-          <div class="input-group-text bg-white rounded-left"><i class="fal fa-calendar-alt"></i></div>
-        </div>
-                <select class="month-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getMonthList($dateMonth); ?>
-                </select>
-                </div>
-            </div>
-            <div class="title-bar__year col-6 col-md-3 col-lg-2 mb-3 mb-md-0 pl-0">
-                <select class="year-dropdown custom-select-sm custom-select rounded-0">
-                    <?php echo $this->getYearList($dateYear); ?>
-                </select>
-            </div>
-            <div class="col-12 col-md-6 col-lg-8 text-center text-md-right text-uppercase">
-                <div class="btn-group btn-group-sm calendar-view" role="group" >
-                  <button type="button" id="month" class="btn bg-white border shadow-none" aria-pressed="false">Monthly</button>
-                  <button type="button" id="week" class="btn bg-white border shadow-none" aria-pressed="false">Weekly</button>
-                  <button type="button" id="day" class="btn bg-white border shadow-none" aria-pressed="false">Daily</button>
-                </div>
-            </div>
-        </div>
-            
-        </div><?php */?>
+       
         <div class="col-12 pt-4">
             <div class="row ">
         <aside class="calendar__sidebar col-md-3 order-2 border  pb-4 class-background" id="event_list">
@@ -1067,8 +988,6 @@ public function getEventsCalendar(){
             <?php
                 $dayCount = 1;
                 $eventsdata = $this->eventsCalendar();
-                //echo "Hello events here";
-               //print_r(json_encode($eventsdata)); 
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
@@ -1078,14 +997,10 @@ public function getEventsCalendar(){
                         // Get number of events based on the current date
                         
                         $filteredItems = array_filter($eventsdata, function($item) use ($currentDate) {
-                            //print_r($item); 
-                           // return $currentDate >= $item['start'] && $currentDate <= $item['end'];
-                           //$currentDate ==$item['createdOn'];
-                           //print_r($currentDate);
-                            return $currentDate >=$item['start'] && $currentDate <=$item['start'] ;
+                           return $currentDate >=$item['start'] && $currentDate <=$item['start'] ;
                         });
                        sort($filteredItems);
-//print_r($filteredItems);
+
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
@@ -1093,9 +1008,7 @@ public function getEventsCalendar(){
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                                     <?php if(count($filteredItems) > 0){
-                                        //echo count($filteredItems).' Event'; if(count($filteredItems) >1) {echo "s"; }
-                                        for($fi=0; $fi<count($filteredItems); $fi++){
-                                       
+                                         for($fi=0; $fi<count($filteredItems); $fi++){
                                             $test = $filteredItems[$fi]['name'];
                                             $test = substr($test,0,20);
                                            //echo $test.'...'; 
@@ -1105,7 +1018,7 @@ public function getEventsCalendar(){
                                                 <?php
                                         
                                            if(count($filteredItems) >1) {$test; } 
-                                         //if(count($filteredItems) >1) { }
+                                         
                                         echo "</div>";
                                         }
                                     } ?>
