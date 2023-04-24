@@ -66,30 +66,6 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 
 <style>
 <?php if(isset($activate_css)){?>
-/*@import url(https://fonts.googleapis.com/css?family=Arvo);
-@import url(https://fonts.googleapis.com/css?family=Heebo);
-@import url(https://fonts.googleapis.com/css?family=Cabin);
-@import url(https://fonts.googleapis.com/css?family=Courier+Prime);
-@import url('https://fonts.googleapis.com/css?family=Concert+One');
-@import url(https://fonts.googleapis.com/css?family=Lato);
-@import url(https://fonts.googleapis.com/css?family=Lobster);
-@import url('https://fonts.googleapis.com/css?family=Lora');
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
-@import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
-@import url(https://fonts.googleapis.com/css?family=Oswald);
-@import url(https://fonts.googleapis.com/css?family=Poppins);
-@import url(https://fonts.googleapis.com/css?family=Playfair+Display);
-@import url('https://fonts.googleapis.com/css?family=PT+Sans');
-@import url('https://fonts.googleapis.com/css?family=Prompt');
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url(https://fonts.googleapis.com/css?family=Rubik);
-@import url(https://fonts.googleapis.com/css?family=Raleway);
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-@import url('https://fonts.googleapis.com/css?family=Slabo+27px');
-@import url(https://fonts.googleapis.com/css?family=Ubuntu);
-*/
 
 
 #ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt, .filter-top-bg{ 
