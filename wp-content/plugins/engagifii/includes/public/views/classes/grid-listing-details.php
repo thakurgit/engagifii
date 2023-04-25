@@ -356,7 +356,7 @@
                                                       else if($value->imageThumbUrl)
                                                       {
                                                   ?>
-                                                         <?php echo $tenant_url; ?><img style="max-width:90px; flex: 0 0 90px" src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class="rounded-circle mr-3">
+                                                           <img style="max-width:90px; flex: 0 0 90px" src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class="rounded-circle mr-3">
                                                   <?php		
                                                       }else{
                                                   ?>
