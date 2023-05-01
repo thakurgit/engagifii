@@ -23,17 +23,33 @@ class ebtAdminConfigSettings {
 		add_action('engagifiiCustomizer', array($this,'engagifii_Customizer'));		
  	}
 
- 	function show_datatable_column()
- 	{
+ 	// function show_datatable_column()
+ 	// {
 		
- 		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-		include_once( __DIR__.'/view/endorsement/admin-column-list.php' );
-    include_once( __DIR__.'/view/courses/admin-column-list.php' );
-    include_once( __DIR__.'/view/classes/admin-column-list.php' );
+ 	// 	$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+	// 	include_once( __DIR__.'/view/endorsement/admin-column-list.php' );
+    // include_once( __DIR__.'/view/courses/admin-column-list.php' );
+    // include_once( __DIR__.'/view/classes/admin-column-list.php' );
 
-	include_once( __DIR__.'/view/events/admin-column-list.php' );
-		include_once( __DIR__.'/view/legislation/admin-column-list.php' );
- 	}
+	// include_once( __DIR__.'/view/events/admin-column-list.php' );
+	// 	include_once( __DIR__.'/view/legislation/admin-column-list.php' );
+ 	// }
+     function show_datatable_column() {
+        $tab = $_GET['tab'] ?? null;
+        
+        $views = [
+          'endorsement/admin-column-list.php',
+          'courses/admin-column-list.php',
+          'classes/admin-column-list.php',
+          'events/admin-column-list.php',
+          'legislation/admin-column-list.php'
+        ];
+      
+        foreach ($views as $view) {
+          include_once(__DIR__ . '/view/' . $view);
+        }
+      }
+      
 	function engagifii_Customizer()
  	{
 		
@@ -49,57 +65,174 @@ class ebtAdminConfigSettings {
 				add_submenu_page( 'engagifii-module-api', 'Customizer', 'Customizer', 'manage_options', $parent.'&tab=customizer',  $callback = '');
 	}
 
-	function ebt_api_settings_init(  ) {
+	// function ebt_api_settings_init(  ) {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-    		return;
-  		}
+	// 	if ( ! current_user_can( 'manage_options' ) ) {
+    // 		return;
+  	// 	}
 
-  		register_setting('engagifiiPlugin', 'ebt_api_settings');
-  		add_settings_section(
-		'ebt_api_ebtPlugin_section',
-		__( '<div class="center"> <img class="w-25" src="' . ENGAGIFII_ASSETS_URL . '/images/engagifii-logo.png' . '"></div><h1 class="center">  Engagifii Settings </h1>', 'engagifii-api' ),
-		array($this,'ebt_api_settings_section_callback'),
-		'engagifiiPlugin'
-		);
-	}
+  	// 	register_setting('engagifiiPlugin', 'ebt_api_settings');
+  	// 	add_settings_section(
+	// 	'ebt_api_ebtPlugin_section',
+	// 	__( '<div class="center"> <img class="w-25" src="' . ENGAGIFII_ASSETS_URL . '/images/engagifii-logo.png' . '"></div><h1 class="center">  Engagifii Settings </h1>', 'engagifii-api' ),
+	// 	array($this,'ebt_api_settings_section_callback'),
+	// 	'engagifiiPlugin'
+	// 	);
+	// }
+    function ebt_api_settings_init() {
+        if (!current_user_can('manage_options')) {
+          return;
+        }
+      
+        register_setting('engagifiiPlugin', 'ebt_api_settings');
+      
+        add_settings_section(
+          'ebt_api_ebtPlugin_section',
+          sprintf('<div class="center"> <img class="w-25" src="%s/images/engagifii-logo.png"></div><h1 class="center"> Engagifii Settings </h1>', ENGAGIFII_ASSETS_URL),
+          array($this, 'ebt_api_settings_section_callback'),
+          'engagifiiPlugin'
+        );
+      }
+      
 
 
 
 /* List Page */
 
-function ebt_api_shortocde_description(){
-	echo "<h3 class='mb-0 bg-grey bordered'>Endorsement Shortcodes </h3>";
-	echo "<div class='engagifii-setting shortcode-list'>";
-	echo "<ul class='list'><li><strong>Endorsement List</strong>: <code>[endorsement-grid-list]</code></li> <li><strong>Endorsement Detail</strong> <code>[endorsement-details Id='endorsement-id']</code></li> </ul>";
-	echo "</div>";
+function ebt_api_shortocde_description() {
+    $shortcodes = array(
+        array(
+            'title' => 'Endorsement Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Endorsement List',
+                    'shortcode'   => '[endorsement-grid-list]'
+                ),
+                array(
+                    'name'        => 'Endorsement Detail',
+                    'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
+                )
+            )
+        ),
+        array(
+            'title' => 'Event Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Event List',
+                    'shortcode'   => '[event-list]'
+                ),
+                array(
+                    'name'        => 'Event Detail',
+                    'shortcode'   => '[events-details Id=\'event-id\']'
+                ),
+                array(
+                    'name'        => 'Event Calendar',
+                    'shortcode'   => '[events-calendar]'
+                ),
+                array(
+                    'name'        => 'Event List & Calendar',
+                    'shortcode'   => '[events-list-calendar calendar=true]'
+                )
+            )
+        ),
+        array(
+            'title' => 'Legislation Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Legislation List',
+                    'shortcode'   => '[legislation-list]'
+                ),
+                array(
+                    'name'        => 'Legislation Details',
+                    'shortcode'   => '[legislation-details Id=\'bill-id\']'
+                ),
+                array(
+                    'name'        => 'Last Action Type',
+                    'shortcode'   => '[legislation-lastaction]'
+                ),
+                array(
+                    'name'        => 'Tracking Levels',
+                    'shortcode'   => '[legislation-tracking]'
+                ),
+                array(
+                    'name'        => 'Staff Members',
+                    'shortcode'   => '[legislation-staffmember]'
+                ),
+                array(
+                    'name'        => 'Bill Tags',
+                    'shortcode'   => '[legislation-tags]'
+                ),
+                array(
+                    'name'        => 'Search By Bill Number',
+                    'shortcode'   => '[legislation-search-billnumber]'
+                ),
+                array(
+                    'name'        => 'Total bills count',
+                    'shortcode'   => '[bill-count]'
+                )
+            )
+        ),
+        array(
+            'title' => 'Courses Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Course List',
+                    'shortcode'   => '[courses-list]'
+                ),
+                array(
+                    'name'        => 'Course Details',
+                    'shortcode'   => '[course-details Id=\'course-id\']'
+                ),
+            )
+        ),
+        array(
+            'title' => 'Class Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Class List',
+                    'shortcode'   => '[classes-list]'
+                ),
+                array(
+                    'name'        => 'Class Details',
+                    'shortcode'   => '[class-details Id=\'class-id\']'
+                ),
+                array(
+                    'name'        => 'Class Calendar',
+                    'shortcode'   => '[class-calendar]'
+                ),
+                array(
+                    'name'        => 'Class List & Calendar',
+                    'shortcode'   => '[classes-list-calendar calendar=true]'
+                ),
+                array(
+                    'name'        => 'Class List & Calendar (With Class Name)',
+                    'shortcode'   => '[classes-list-calendar-class-name calendarclassname=true]'
+                ),
+                array(
+                    'name'        => 'Class Calendar (With Class Name)',
+                    'shortcode'   => '[class-calendar-class-name]'
+                )
+            )
+        )
+    );
 
-	echo "<h3 class='mb-0 bg-grey bordered'>Event Shortcodes </h3>";
-	echo "<div class='engagifii-setting shortcode-list'>";
-	echo "<ul class='list'><li><strong>Event List</strong> <code>[event-list]</code></li> <li><strong>Event Detail</strong> <code>[events-details Id='event-id']</code></li><li><strong>Event Calendar</strong> <code>[events-calendar]</code></li><li><strong>Event List & Calendar</strong> <code>[events-list-calendar calendar=true]</code></li> </ul>";
-	echo "</div>";
+    echo '<div class="engagifii-setting shortcode-list">';
 
-	echo "<h3 class='mb-0 bg-grey bordered'>Legislation Shortcodes </h3>";
-	echo "<div class='engagifii-setting shortcode-list'>";
-	echo "<ul class='list'><li><strong>Legislation List</strong> <code>[legislation-list]</code></li><li><strong>Legislation Details</strong> <code>[legislation-details Id='bill-id']</code></li><li><hr><h4> Filters Shortcode:</h4> </li><li><strong>Last Action Type</strong> <code>[legislation-lastaction]</code></li><li><strong>Tracking Levels</strong> <code>[legislation-tracking]</code></li><li><strong>Staff Members</strong> <code>[legislation-staffmember]</code></li><li><strong>Bill Tags</strong> <code>[legislation-tags]</code></li><li><strong>Search By Bill Number</strong> <code>[legislation-search-billnumber]</code></li><li><strong>Total bills count</strong> <code>[bill-count]</code></li></ul></div>";
+    foreach ($shortcodes as $shortcode) {
+        echo "<h3 class='mb-0 bg-grey bordered'>{$shortcode['title']}</h3>";
+        echo "<ul class='list'>";
 
-  echo "<h3 class='mb-0 bg-grey bordered'>Courses Shortcodes </h3>";
-  echo "<div class='engagifii-setting shortcode-list'>";
-  echo "<ul class='list'><li><strong>Course List</strong> <code>[courses-list]</code></li><li><strong>Course Details</strong> <code>[course-details Id='course-id']</code></li></ul></div>";
+        foreach ($shortcode['list'] as $item) {
+            echo "<li><strong>{$item['name']}</strong>: <code>{$item['shortcode']}</code></li>";
+        }
 
-   echo "<h3 class='mb-0 bg-grey bordered'>Class Shortcodes </h3>";
-  echo "<div class='engagifii-setting shortcode-list'>";
-  echo "<ul class='list'><li><strong>Class List</strong> <code>[classes-list]</code></li><li><strong>Class Details</strong> <code>[class-details Id='class-id']</code></li><li><strong>Class Calendar</strong> <code>[class-calendar]</code></li><li><strong>Class List & Calendar</strong> <code>[classes-list-calendar calendar=true]</code></li>
-  <li><strong>Class List & Calendar (With Class Name)</strong> <code> [classes-list-calendar-class-name calendarclassname=true]</code></li> 
-  <li> <strong>Class Calendar (With Class Name)</strong> <code> [class-calendar-class-name]</code></li> 
-  </ul>";
+        echo "</ul>";
+    }
 
-	echo "<hr>";
+    echo "<hr>";
 
-	
-
-	echo "<ul><li>Create a <a href='post-new.php?post_type=page' target='_blank'>page</a> or <a href='post-new.php' target='_blank'>Post</a> or use existing pages/posts</li><li>Place the shortcode where you want to display data</li></ul>";
-	echo '</div>';
+    echo "<ul><li>Create a <a href='post-new.php?post_type=page' target='_blank'>page</a> or <a href='post-new.php' target='_blank'>Post</a> or use existing pages/posts</li><li>Place the shortcode where you want to display data</li></ul>";
+    echo '</div>';
 }
 
 function ebt_api_url_setings(){
