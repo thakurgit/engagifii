@@ -6,7 +6,7 @@
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
 	if (str_contains($tenant_url, 'http')) {
 	} else {
-		$tenant_url = 'https://'.$tenant_url.'.engagifii.com/';
+		$tenant_url = 'https://'.$tenant_url.'.engagifii.com';
 	}
 	$class_visible_column_list = $options['class_visible_column_list'];
 	//print_r($class_visible_column_list);
