@@ -10,97 +10,136 @@ class abstractModelEngagifii extends Engagifii_API
 {
     protected $dbObj;
 
-    public function __construct()
-    {
-        global $wpdb;
-        $this->dbObj = $wpdb;
-        add_action('wp_ajax_nopriv_endorsement', array($this, 'endorsementLoadGridData'));
-        add_action('wp_ajax_endorsement', array($this, 'endorsementLoadGridData'));
+    // public function __construct()
+    // {
+    //     global $wpdb;
+    //     $this->dbObj = $wpdb;
+    //     add_action('wp_ajax_nopriv_endorsement', array($this, 'endorsementLoadGridData'));
+    //     add_action('wp_ajax_endorsement', array($this, 'endorsementLoadGridData'));
 
-        add_action('wp_ajax_nopriv_legislation', array($this, 'legislationLoadGridData'));
-        add_action('wp_ajax_legislation', array($this, 'legislationLoadGridData'));
+    //     add_action('wp_ajax_nopriv_legislation', array($this, 'legislationLoadGridData'));
+    //     add_action('wp_ajax_legislation', array($this, 'legislationLoadGridData'));
 
-        add_action('wp_ajax_nopriv_courses', array($this, 'courseLoadGridData'));
-        add_action('wp_ajax_courses', array($this, 'courseLoadGridData'));
+    //     add_action('wp_ajax_nopriv_courses', array($this, 'courseLoadGridData'));
+    //     add_action('wp_ajax_courses', array($this, 'courseLoadGridData'));
 
-        add_action('wp_ajax_nopriv_classes', array($this, 'classLoadGridData'));
-        add_action('wp_ajax_classes', array($this, 'classLoadGridData')); //classSearchLoadGridData
+    //     add_action('wp_ajax_nopriv_classes', array($this, 'classLoadGridData'));
+    //     add_action('wp_ajax_classes', array($this, 'classLoadGridData')); //classSearchLoadGridData
 
-        //class calendar search
-        add_action('wp_ajax_nopriv_classsearch', array($this, 'classSearchLoadGridData'));
-        add_action('wp_ajax_classsearch', array($this, 'classSearchLoadGridData'));
+    //     //class calendar search
+    //     add_action('wp_ajax_nopriv_classsearch', array($this, 'classSearchLoadGridData'));
+    //     add_action('wp_ajax_classsearch', array($this, 'classSearchLoadGridData'));
 
-        //Load Events data
-        add_action('wp_ajax_nopriv_events', array($this, 'eventsLoadGridData'));
-        add_action('wp_ajax_events', array($this, 'eventsLoadGridData'));
+    //     //Load Events data
+    //     add_action('wp_ajax_nopriv_events', array($this, 'eventsLoadGridData'));
+    //     add_action('wp_ajax_events', array($this, 'eventsLoadGridData'));
 
-        add_action('wp_ajax_nopriv_eventfiltercountdata', array($this, 'eventCountFilterData'));
-        add_action('wp_ajax_eventfiltercountdata', array($this, 'eventCountFilterData'));
-        // end
-
-
-        add_action('wp_ajax_nopriv_filtercountdata', array($this, 'countFilterData'));
-        add_action('wp_ajax_filtercountdata', array($this, 'countFilterData'));
-
-        add_action('wp_ajax_nopriv_coursecountdata', array($this, 'courseCountFilterData'));
-        add_action('wp_ajax_coursecountdata', array($this, 'courseCountFilterData'));
-
-        add_action('wp_ajax_nopriv_classcountdata', array($this, 'classCountFilterData'));
-        add_action('wp_ajax_classcountdata', array($this, 'classCountFilterData'));
-
-        add_action('wp_ajax_nopriv_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
-        add_action('wp_ajax_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
+    //     add_action('wp_ajax_nopriv_eventfiltercountdata', array($this, 'eventCountFilterData'));
+    //     add_action('wp_ajax_eventfiltercountdata', array($this, 'eventCountFilterData'));
+    //     // end
 
 
+    //     add_action('wp_ajax_nopriv_filtercountdata', array($this, 'countFilterData'));
+    //     add_action('wp_ajax_filtercountdata', array($this, 'countFilterData'));
 
-        add_action('wp_ajax_nopriv_legislativeissuedata', array($this, 'legislativeIssues'));
-        add_action('wp_ajax_legislativeissuedata', array($this, 'legislativeIssues'));
+    //     add_action('wp_ajax_nopriv_coursecountdata', array($this, 'courseCountFilterData'));
+    //     add_action('wp_ajax_coursecountdata', array($this, 'courseCountFilterData'));
 
-        add_action('wp_ajax_nopriv_trackingleveldata', array($this, 'trackingLevels'));
-        add_action('wp_ajax_trackingleveldata', array($this, 'trackingLevels'));
+    //     add_action('wp_ajax_nopriv_classcountdata', array($this, 'classCountFilterData'));
+    //     add_action('wp_ajax_classcountdata', array($this, 'classCountFilterData'));
 
-        add_action('wp_ajax_nopriv_legislativestaffmembers', array($this, 'staffMembers'));
-        add_action('wp_ajax_legislativestaffmembers', array($this, 'staffMembers'));
-
-        add_action('wp_ajax_nopriv_legislativeactionsdata', array($this, 'lastActions'));
-        add_action('wp_ajax_legislativeactionsdata', array($this, 'lastActions'));
+    //     add_action('wp_ajax_nopriv_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
+    //     add_action('wp_ajax_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
 
 
 
+    //     add_action('wp_ajax_nopriv_legislativeissuedata', array($this, 'legislativeIssues'));
+    //     add_action('wp_ajax_legislativeissuedata', array($this, 'legislativeIssues'));
+
+    //     add_action('wp_ajax_nopriv_trackingleveldata', array($this, 'trackingLevels'));
+    //     add_action('wp_ajax_trackingleveldata', array($this, 'trackingLevels'));
+
+    //     add_action('wp_ajax_nopriv_legislativestaffmembers', array($this, 'staffMembers'));
+    //     add_action('wp_ajax_legislativestaffmembers', array($this, 'staffMembers'));
+
+    //     add_action('wp_ajax_nopriv_legislativeactionsdata', array($this, 'lastActions'));
+    //     add_action('wp_ajax_legislativeactionsdata', array($this, 'lastActions'));
 
 
-        add_action('wp_ajax_nopriv_getbillids', array($this, 'legislationbillids'));
-        add_action('wp_ajax_getbillids', array($this, 'legislationbillids'));
-
-        add_action('wp_ajax_nopriv_calendar', array($this, 'classCalendar'));
-        add_action('wp_ajax_calendar', array($this, 'classCalendar'));
-
-        add_action('wp_ajax_nopriv_getcalendar', array($this, 'getCalendar'));
-        add_action('wp_ajax_getcalendar', array($this, 'getCalendar')); 
-
-        add_action('wp_ajax_nopriv_getcalendarclassname', array($this, 'getcalendarclassname1'));
-        add_action('wp_ajax_getcalendarclassname', array($this, 'getcalendarclassname1'));
-
-        //Added by guru
-
-        add_action('wp_ajax_nopriv_calendar', array($this, 'endorsementCalendar'));
-        add_action('wp_ajax_calendar', array($this, 'endorsementCalendar'));
-
-        add_action('wp_ajax_nopriv_getendorsementcalendar', array($this, 'getendorsementCalendar'));
-        add_action('wp_ajax_getendorsementcalendar', array($this, 'getendorsementCalendar'));
 
 
-        add_action('wp_ajax_nopriv_eventscalendar', array($this, 'eventsCalendar'));
-        add_action('wp_ajax_eventscalendar', array($this, 'eventsCalendar'));
 
-        add_action('wp_ajax_nopriv_geteventscalendar', array($this, 'geteventsCalendar'));
-        add_action('wp_ajax_geteventscalendar', array($this, 'geteventsCalendar'));
+    //     add_action('wp_ajax_nopriv_getbillids', array($this, 'legislationbillids'));
+    //     add_action('wp_ajax_getbillids', array($this, 'legislationbillids'));
+
+    //     add_action('wp_ajax_nopriv_calendar', array($this, 'classCalendar'));
+    //     add_action('wp_ajax_calendar', array($this, 'classCalendar'));
+
+    //     add_action('wp_ajax_nopriv_getcalendar', array($this, 'getCalendar'));
+    //     add_action('wp_ajax_getcalendar', array($this, 'getCalendar')); 
+
+    //     add_action('wp_ajax_nopriv_getcalendarclassname', array($this, 'getcalendarclassname1'));
+    //     add_action('wp_ajax_getcalendarclassname', array($this, 'getcalendarclassname1'));
+
+    //     //Added by guru
+
+    //     add_action('wp_ajax_nopriv_calendar', array($this, 'endorsementCalendar'));
+    //     add_action('wp_ajax_calendar', array($this, 'endorsementCalendar'));
+
+    //     add_action('wp_ajax_nopriv_getendorsementcalendar', array($this, 'getendorsementCalendar'));
+    //     add_action('wp_ajax_getendorsementcalendar', array($this, 'getendorsementCalendar'));
 
 
-        //end here
+    //     add_action('wp_ajax_nopriv_eventscalendar', array($this, 'eventsCalendar'));
+    //     add_action('wp_ajax_eventscalendar', array($this, 'eventsCalendar'));
+
+    //     add_action('wp_ajax_nopriv_geteventscalendar', array($this, 'geteventsCalendar'));
+    //     add_action('wp_ajax_geteventscalendar', array($this, 'geteventsCalendar'));
+
+
+    //     //end here
 
         
+    // }
+    public function __construct()
+{
+    global $wpdb;
+    $this->dbObj = $wpdb;
+
+    $ajax_actions = [
+        ['endorsement', 'endorsementLoadGridData'],
+        ['legislation', 'legislationLoadGridData'],
+        ['courses', 'courseLoadGridData'],
+        ['classes', 'classLoadGridData'],
+        ['classsearch', 'classSearchLoadGridData'],
+        ['events', 'eventsLoadGridData'],
+        ['eventfiltercountdata', 'eventCountFilterData'],
+        ['filtercountdata', 'countFilterData'],
+        ['coursecountdata', 'courseCountFilterData'],
+        ['classcountdata', 'classCountFilterData'],
+        ['legislationfiltercountdata', 'countLegislationFilterData'],
+        ['legislativeissuedata', 'legislativeIssues'],
+        ['trackingleveldata', 'trackingLevels'],
+        ['legislativestaffmembers', 'staffMembers'],
+        ['legislativeactionsdata', 'lastActions'],
+        ['getbillids', 'legislationbillids'],
+        ['calendar', 'classCalendar'],
+        ['getcalendar', 'getCalendar'],
+        ['getcalendarclassname', 'getcalendarclassname1'],
+        //Added by guru
+        ['endorsement', 'endorsementCalendar'],
+        ['getendorsementcalendar', 'getendorsementCalendar'],
+        ['eventscalendar', 'eventsCalendar'],
+        ['geteventscalendar', 'geteventsCalendar']
+        //end here
+    ];
+
+    foreach ($ajax_actions as $action) {
+        add_action('wp_ajax_nopriv_' . $action[0], [$this, $action[1]]);
+        add_action('wp_ajax_' . $action[0], [$this, $action[1]]);
     }
+}
+
 /*
  * Generate months options list for select box
  */
