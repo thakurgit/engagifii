@@ -61,9 +61,9 @@ class Engagifii_API{
 				),
 
 			));
-
-			$response = curl_exec($curl);
-
+			if($tenant_code!=""){
+							$response = curl_exec($curl);
+				}
 			$err = curl_error($curl);
 			curl_close($curl);
 			if ($err) {
