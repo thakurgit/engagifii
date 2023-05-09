@@ -10,20 +10,19 @@
 		$postData['pagesize'] = 10;
 		$postData['eventId']              = $id;
 		$postData['sortBy']        = 'StartDateTime';
-	//print_r(json_encode($response));
-	//print_r(count($response->eventClasses));
+	
 	$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
-	//print_r($collections);
+	
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
 	$options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-//print_r($events_visible_column_list);
+
 	$contactPersons = $response->contacts;
-	//print_r($contactPersons);
+	
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
   $class_key = array_search ($_GET['courseId'], $class_array);
   $class_count = count($class_array)-1;
