@@ -1802,6 +1802,7 @@ wp_die();
     // Events Grid Data
     public function eventsLoadGridData(){
         $postedData = $this->_prepareEventsData();
+        //print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
@@ -1874,7 +1875,7 @@ wp_die();
             else{
             $nestedData['city'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
-            $nestedData['startDateTime'] = $row->startDateTime;
+            $nestedData['eventDates'] = $row->startDateTime; //eventDates
             if($row->startDateTime){
                 $default_Date = $row->startDateTime;
                 $convert_Date = strtotime($default_Date);
@@ -1887,7 +1888,7 @@ wp_die();
                 $enddate = date('M d, Y', $convert_Date);
                 $endtime = date('h:i A', $convert_Date);
             }
-            $nestedData['eventDates'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
+            $nestedData['startDateTime'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
             
             $default_Courses = $row->courses;
             if ($default_Courses) {
@@ -1897,6 +1898,7 @@ wp_die();
             }
             
             $event_status = $row->eventStatus;
+            $event_status = preg_replace('/(?<!\ )[A-Z]/', ' $0', $event_status);
 			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";

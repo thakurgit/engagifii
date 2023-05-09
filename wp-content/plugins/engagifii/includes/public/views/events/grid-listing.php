@@ -20,11 +20,6 @@ if(!$dataResponse['api_response']){
 	return;
 }
     $collection   = json_decode($dataResponse['api_response']);
-    /*unset($collection[0]);
-    unset($collection[6]);
-    unset($collection[8]);
-    unset($collection[9]);
-    array_values($collection);*/
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
 	$ebt_visib_datacol_list   =  array();
@@ -32,8 +27,6 @@ if(!$dataResponse['api_response']){
   	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
 	}
 
-//print_r("-----------------------------------------------------------------<br/>");
-   //print_r($ebt_visib_datacol_list);
     /* Get Tags list */
     $payloadData = array();
     $getCurrentdate = date("Y-m-d");
@@ -51,10 +44,10 @@ if(!$dataResponse['api_response']){
     $eventTypes = $obj->eventTypes($date);
     $eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
-    $dateRange  = $obj->awardDateFilter($date);
+    $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
-
+    
 ?>
 
 <div class="containerEngagii">
@@ -243,6 +236,9 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
               if($value->colName == 'city'){
                 $value->displayName = "Location";
               }
+              if($value->colName == 'startDateTime'){
+                $value->displayName = "Event Schedule";
+              }
               if($value->colName == 'name'){
 				  $value->displayName = "event_name";
                 $title_key = $i;
@@ -312,8 +308,8 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-		<?php if(in_array('eventDates', $ebt_visib_datacol_list)){ ?>
-		"order": [[<?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'asc']],
+		<?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
+		"order": [[<?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'asc']],
 		 <?php } ?>
        "columnDefs": [ 
           { "targets": ['tags','register','eventType','city','eventStatus'],
@@ -321,8 +317,8 @@ var table = $('#ebtmaintable').DataTable( {
           },
 		  { className: "title-col", "targets": "name" },
 		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
-		  <?php if(in_array('eventDates', $ebt_visib_datacol_list)){ ?>
-		  {'targets': <?php echo array_search('eventDates',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  <?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
+		  {'targets': <?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();

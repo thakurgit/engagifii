@@ -637,6 +637,17 @@ public function _popOverSpeakerData3($id, $instructorData){
 		return $responseArray;
 	}
 
+	public function eventDateFilter($date){
+//alert($date);
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'event/GetMinMaxEventDate/'.$date;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+	//event/GetMinMaxEventDate
+
 	/*Get all Award Tags */
 	public function awardAllTags($date){
 
