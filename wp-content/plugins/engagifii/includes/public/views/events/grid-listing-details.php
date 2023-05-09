@@ -164,7 +164,7 @@
 		                        <?php
 		                        	}
 								
-									if(in_array('eventDates', $events_visible_column_list) && $response->startDateTime) {
+									if(in_array('startDateTime', $events_visible_column_list) && $response->startDateTime) {
 										$defaulget_Date = $response->startDateTime;
 										$convert_Date = strtotime($defaulget_Date);
 										$date = date('M d, Y', $convert_Date);
@@ -212,7 +212,7 @@
 			                        </div>
                                    <div class="p-3">
                                    	<?php
-									if(in_array('eventDates', $events_visible_column_list) && count($response->eventDates)){
+									if(in_array('startDateTime', $events_visible_column_list) && count($response->eventDates)){
 		                    			
 		                    			foreach ($response->eventDates as $key => $value) {
 		                    				$position  = $value->position;
