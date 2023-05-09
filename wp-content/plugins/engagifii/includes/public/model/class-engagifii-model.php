@@ -1902,7 +1902,7 @@ wp_die();
 			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
-            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
+            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted') {
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->eventRegistrationState);
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }

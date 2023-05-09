@@ -97,7 +97,7 @@ ob_start();
     </div>
     <div class="col-sm-12" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('eventDates', $events_visible_column_list)) { ?>
+      <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
