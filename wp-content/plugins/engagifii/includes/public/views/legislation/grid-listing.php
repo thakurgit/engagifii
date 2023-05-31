@@ -115,7 +115,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 
 <div class="container-fluid pb-4">
 <span class="total-bill-text"></span>
-<p class="lead text-center"><span class="bill-count"></span></p>
+<p class="lead text-center"><span class="bill-count"></span>&nbsp;<?php if($tenant_url =="aasb") { ?>
+<span class="export-report"><a href="https://aasb.engagifii.com/public/lbt-report/7550/pdf/export" target="_blank">Export PDF </a></span>
+<?php } ?></p>
+
 <div class="row rowEngagii tz-Engagii-flex">
 <div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end">
    <div class="one-coloumnsEngagii"> 
