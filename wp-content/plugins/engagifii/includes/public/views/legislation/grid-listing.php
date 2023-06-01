@@ -120,12 +120,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 <div class="row rowEngagii tz-Engagii-flex">
         <div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end">
 <!-- Show Print Tracked Bill Button only if Tenant Code = AASB -->     
-<?php if($tenant_url =="aasb") { ?><span class="col-12 text-lg-left" style="padding-left:5rem !important"><button class="export-report text-lg-left py-1" >
-    <a href="https://aasb.engagifii.com/public/lbt-report/7550/pdf/export" target="_blank" style="color:inherit; font-weight:100;">
-        <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/pdf-icon.png" width=20 height=20 alt="PDF Icon" class="pdf-icon">
-        Print tracked bills
-    </a>
-</button> </span><?php } ?>
+<?php if($tenant_url =="aasb") { ?><span class="col-12 text-lg-left" style="padding-left:5rem !important"><a href="https://aasb.engagifii.com/public/lbt-report/7550/pdf/export" target="_blank" style="font-weight: 100;">
+    <!-- <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/pdf-icon.png" width="20" height="20" alt="PDF Icon" class="pdf-icon"> -->
+    Print tracked bills
+</a> </span><?php } ?>
 <!-- End here -->
    <div class="one-coloumnsEngagii"> 
       <input type="hidden" name="enga_custom_multi_filter" id="enga_custom_multi_filter" value="">
