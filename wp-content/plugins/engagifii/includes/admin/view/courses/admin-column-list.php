@@ -35,5 +35,6 @@
     	echo '</ul></div>';				
     }
 ?>
+<!--course column closing div-->
 </div>
 <!--course column end-->
