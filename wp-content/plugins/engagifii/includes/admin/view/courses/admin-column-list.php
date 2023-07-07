@@ -36,3 +36,4 @@
     }
 ?>
 </div>
+<!--course column end-->
