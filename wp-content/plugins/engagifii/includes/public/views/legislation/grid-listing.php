@@ -856,12 +856,12 @@ function clearAll()
         setTimeout(function(){
           startDate=null;
           endDate=null;
+ $(".tz-selectAll").prop('checked', false);
   $("#isapplyactive").val(0);
   $("#datepicker-start").val("");
   $("#datepicker-end").val("");
  $("#apply-filter-data").trigger("click");
  $(".filter-border").hide();
- $(".tz-selectAll").prop('checked', false);
 },200);
    
 }
@@ -1270,12 +1270,12 @@ function copyDataforApply()
    var assignTags_unq  = assignTags.filter(onlyUnique);
    var assignGroups_unq = assignGroups.filter(onlyUnique);
 
-   appl_trackingLevels=trackingLevels_Unq;
+   appl_trackingLevels=trackingLevels_Unq.filter(elm => elm);
    appl_sponsors=sponsors_Unq;
    appl_houseCommittees=houseCommittees_Unq;
    appl_senateCommittees=senateCommittees_Unq;
    appl_lastActionTypes=lastActionTypes_Unq;
-   appl_billTypes=billTypes_Unq;
+   appl_billTypes=billTypes_Unq.filter(elm => elm);
    appl_statusTypes=statusTypes_Unq;
    appl_tags  = tags_Unq;
    startDate=startDate;
