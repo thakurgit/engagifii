@@ -861,6 +861,7 @@ function clearAll()
   $("#datepicker-end").val("");
  $("#apply-filter-data").trigger("click");
  $(".filter-border").hide();
+ $(".tz-selectAll").prop('checked', false);
 },200);
    
 }
@@ -1599,5 +1600,32 @@ $("#apply-filter-data").click(function () {
 if (window.location.href.indexOf("sessionId") > -1){
 	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
 }
+
+$(document).ready(function () {
+	$(".tz-dropdown-filter").each(function () {
+	$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
+});
+$(".tz-selectAll").change(function () {
+	if($(this).is(':checked')){
+		//$(this).parent().siblings().addClass('liactive deftzselected');
+		//$(this).parent().siblings().find('input').prop('checked',true);
+		$(this).parent().siblings().each(function(){
+		  if(!$(this).find('input').is(':checked')){
+			$(this).trigger('click');
+		  }
+		});
+	}else{
+		//$(this).parent().siblings().trigger('click');
+		//$(this).parent().siblings().removeClass('liactive deftzselected');
+		//$(this).parent().siblings().find('input').prop('checked',false);
+		$(this).parent().siblings().each(function(){
+		  if($(this).find('input').is(':checked')){
+			$(this).trigger('click');
+		  }
+		});
+	}
+});
+});
+
 </script>      
 </div>
