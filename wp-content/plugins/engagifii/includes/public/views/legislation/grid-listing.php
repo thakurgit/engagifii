@@ -1276,7 +1276,7 @@ function copyDataforApply()
    appl_senateCommittees=senateCommittees_Unq;
    appl_lastActionTypes=lastActionTypes_Unq;
    appl_billTypes=billTypes_Unq.filter(elm => elm);
-   appl_statusTypes=statusTypes_Unq;
+   appl_statusTypes=statusTypes_Unq.filter(elm => elm);
    appl_tags  = tags_Unq;
    startDate=startDate;
    endDate=endDate;
