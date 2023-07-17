@@ -1271,16 +1271,16 @@ function copyDataforApply()
    var assignGroups_unq = assignGroups.filter(onlyUnique);
 
    appl_trackingLevels=trackingLevels_Unq.filter(elm => elm);
-   appl_sponsors=sponsors_Unq;
-   appl_houseCommittees=houseCommittees_Unq;
-   appl_senateCommittees=senateCommittees_Unq;
-   appl_lastActionTypes=lastActionTypes_Unq;
+   appl_sponsors=sponsors_Unq.filter(elm => elm);
+   appl_houseCommittees=houseCommittees_Unq.filter(elm => elm);
+   appl_senateCommittees=senateCommittees_Unq.filter(elm => elm);
+   appl_lastActionTypes=lastActionTypes_Unq.filter(elm => elm);
    appl_billTypes=billTypes_Unq.filter(elm => elm);
    appl_statusTypes=statusTypes_Unq.filter(elm => elm);
-   appl_tags  = tags_Unq;
+   appl_tags  = tags_Unq.filter(elm => elm);
    startDate=startDate;
    endDate=endDate;
-   appl_assignto = assignedto_unq;
+   appl_assignto = assignedto_unq.filter(elm => elm);
    appl_assignTags = assignTags_unq;
    appl_assignGroups = assignGroups_unq;
 }
