@@ -74,7 +74,6 @@ var pluginFilterData = (function () {
         }
        // console.log(settings.countSelected);
         updateCountView();
-
     }
 
 

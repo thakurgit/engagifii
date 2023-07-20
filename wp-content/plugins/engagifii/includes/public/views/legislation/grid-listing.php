@@ -809,6 +809,7 @@ if (window.location.href.indexOf("sessionId") > -1){
         tzdatasearch +=eltzdatasearch.value;
     }
   var trackingLevels_Unq = trackingLevels.filter( onlyUnique );
+  trackingLevels_Unq = trackingLevels.filter(elm => elm);
   $.ajax({
       type : "post",
       url: engagifiiUrl_ajaxurl,
@@ -878,7 +879,7 @@ document.getElementById("clear-all").addEventListener("click",function(){
 
 var engSelectedItesm = {};
      $(function() {
-      getCountSelected();
+      //getCountSelected();
 
 
 var searchbyhousecommittee =  new pluginFilterData();
