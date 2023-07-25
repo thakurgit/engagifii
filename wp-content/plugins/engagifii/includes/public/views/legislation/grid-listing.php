@@ -878,8 +878,8 @@ document.getElementById("clear-all").addEventListener("click",function(){
 
 
 var engSelectedItesm = {};
-    /* $(function() {
-      getCountSelected();
+     $(function() {
+      //getCountSelected();
 
 
 var searchbyhousecommittee =  new pluginFilterData();
@@ -909,7 +909,7 @@ searchbytrackinglevels.applySearch({searchelement:"searchbytrackinglevels",items
 var searchbystatustypes =  new pluginFilterData();
 searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselectedclass:"liactive" , countView:"countviewbystatustypes", clickCallback:getUpdatedValues});  
 
-      });*/
+      });
      // Extra Div for Tracking
 
 
