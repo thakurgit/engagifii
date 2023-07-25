@@ -879,7 +879,7 @@ document.getElementById("clear-all").addEventListener("click",function(){
 
 var engSelectedItesm = {};
      $(function() {
-      getCountSelected();
+      //getCountSelected();
 
 
 var searchbyhousecommittee =  new pluginFilterData();
