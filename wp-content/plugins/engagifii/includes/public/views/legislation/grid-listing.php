@@ -737,7 +737,7 @@ function getUpdatedValues(isBlockChecked)
     getCheckedStatusTypesValues();
   },200);
   setTimeout(function () {
-   // getCountSelected();
+    getCountSelected();
   },300);
 }
 function onlyUnique(value, index, self) { 
