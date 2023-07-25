@@ -1613,6 +1613,10 @@ $(".tz-selectAll").change(function () {
 		$(this).parent().siblings().each(function(){
 		  if(!$(this).find('input').is(':checked')){
 			$(this).trigger('click');
+			$(this).find('input').click(function(e){
+				console.log('xxx');
+				e.stopPropagation();
+			});
 		  }
 		});
 	}else{
