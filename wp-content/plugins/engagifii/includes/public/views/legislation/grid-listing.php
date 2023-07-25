@@ -737,7 +737,7 @@ function getUpdatedValues(isBlockChecked)
     getCheckedStatusTypesValues();
   },200);
   setTimeout(function () {
-    //getCountSelected();
+    getCountSelected();
   },300);
 }
 function onlyUnique(value, index, self) { 
@@ -1615,8 +1615,7 @@ $(".tz-selectAll").change(function () {
 			$(this).trigger('click');
 		  }
 		});
-	}
-	else{
+	}else{
 		//$(this).parent().siblings().trigger('click');
 		//$(this).parent().siblings().removeClass('liactive deftzselected');
 		//$(this).parent().siblings().find('input').prop('checked',false);
@@ -1626,7 +1625,6 @@ $(".tz-selectAll").change(function () {
 		  }
 		});
 	}
-	getCountSelected();
 });
 });
 
