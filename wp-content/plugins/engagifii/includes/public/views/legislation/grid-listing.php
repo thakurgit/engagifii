@@ -737,7 +737,7 @@ function getUpdatedValues(isBlockChecked)
     getCheckedStatusTypesValues();
   },200);
   setTimeout(function () {
-    getCountSelected();
+   // getCountSelected();
   },300);
 }
 function onlyUnique(value, index, self) { 
@@ -879,7 +879,7 @@ document.getElementById("clear-all").addEventListener("click",function(){
 
 var engSelectedItesm = {};
      $(function() {
-      //getCountSelected();
+      getCountSelected();
 
 
 var searchbyhousecommittee =  new pluginFilterData();
