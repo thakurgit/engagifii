@@ -1610,11 +1610,10 @@ $(".tz-selectAll").change(function () {
 	if($(this).is(':checked')){
 		//$(this).parent().siblings().addClass('liactive deftzselected');
 		//$(this).parent().siblings().find('input').prop('checked',true);
-		$(this).parent().siblings().each(function(e){
+		$(this).parent().siblings().each(function(){
 		  if(!$(this).find('input').is(':checked')){
 			$(this).trigger('click');
 		  }
-		  e.stopPropagation();
 		});
 	}else{
 		//$(this).parent().siblings().trigger('click');
@@ -1624,7 +1623,6 @@ $(".tz-selectAll").change(function () {
 		  if($(this).find('input').is(':checked')){
 			$(this).trigger('click');
 		  }
-		  e.stopPropagation();
 		});
 	}
 });
