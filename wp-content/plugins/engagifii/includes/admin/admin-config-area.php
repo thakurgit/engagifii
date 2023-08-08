@@ -58,12 +58,12 @@ class ebtAdminConfigSettings {
  	}
 
 	function ebt_api_add_admin_menu() {
-				add_menu_page( 'My Engagifii Profile', 'My Engagifii Profile', 'manage_options', 'engagifii-profile', array($this,'engagifii_profile_view'),'dashicons-admin-users', 4 );
 				add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
 				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
 				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Customizer', 'Customizer', 'manage_options', $parent.'&tab=customizer',  $callback = '');
+				add_submenu_page( 'engagifii-module-api', 'My Profile', 'My Engagifii Profile', 'manage_options', $parent.'&tab=my-profile',  $callback = '');
 	}
 
 	// function ebt_api_settings_init(  ) {
@@ -461,13 +461,8 @@ function ebt_tenant_code_render(  ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
     		return;
   		}
+		
 		include_once( __DIR__.'/view/admin-settings-form.php' );
-	}
-	function engagifii_profile_view(  ) {	
-		if ( ! current_user_can( 'manage_options' ) ) {
-    		return;
-  		}
-		include_once( __DIR__.'/view/engagifii-profile.php' );
 	}
 }
 
