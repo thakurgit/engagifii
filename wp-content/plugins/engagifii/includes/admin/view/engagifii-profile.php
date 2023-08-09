@@ -118,7 +118,7 @@ Atlanta, GA 30303</p>
         	<div class="col-md-4">
             	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
               <div class="card-body">
-              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Lorem ipsum</span> 
                 </p>
                 <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
                 
@@ -132,7 +132,7 @@ Atlanta, GA 30303</p>
         	<div class="col-md-4">
             	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
               <div class="card-body">
-              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Lorem ipsum</span> 
                 </p>
                 <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
                 
