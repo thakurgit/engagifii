@@ -97,6 +97,53 @@ Atlanta, GA 30303</p>
         	<div class="col-md-6"></div>
         </div>	
     </div>
+    <div class="container-fluid  bg-light border pt-2 pb-1">
+    	<h5>Organisation</h5>
+    </div>
+    <div class="container-fluid mb-4 border py-3">
+    	<div class="row">
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;">Department: Other</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;"><strong>Department:</strong> Other</p>
+                <p style="font-size: .77rem;"><strong>Position:</strong> Director of Property & Liability Insurance Programs</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;">Department: Other</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        </div>	
+    </div>
     </section>
 <section class="temp2 pe-3"  style="background-color: #eee; display:none">
   <div class="container py-5">
