@@ -2,56 +2,7 @@
   <!-- Bootstrap CSS CDN link -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
 <style>
-  body{margin-top:20px;
-background: #f5f5f5;
-}
-.theme-bg-white {
-    background-color: #fff !important;
-}
-.ui-w-100 {
-    width: 100px !important;
-    height: auto;
-}
-.ui-w-40 {
-    width: 40px !important;
-    height: auto;
-}
-.row-bordered>.col::before, .row-bordered>[class^="col-"]::before, .row-bordered>[class*=" col-"]::before, .row-bordered>[class^="col "]::before, .row-bordered>[class*=" col "]::before, .row-bordered>[class$=" col"]::before, .row-bordered>[class="col"]::before {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: -1px;
-    left: 0;
-    display: block;
-    height: 0;
-    border-top: 1px solid rgba(24,28,33,0.06);
-}
-.row-bordered>.col::after, .row-bordered>[class^="col-"]::after, .row-bordered>[class*=" col-"]::after, .row-bordered>[class^="col "]::after, .row-bordered>[class*=" col "]::after, .row-bordered>[class$=" col"]::after, .row-bordered>[class="col"]::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -1px;
-    display: block;
-    width: 0;
-    border-left: 1px solid rgba(24,28,33,0.06);
-}
-
-.ui-bg-cover {
-    background-color: rgba(0,0,0,0);
-    background-position: center center;
-    background-size: cover;
-}
-
-.ui-square {
-    padding-top: 100% !important;
-}
-.ui-square, .ui-rect, .ui-rect-30, .ui-rect-60, .ui-rect-67, .ui-rect-75 {
-    position: relative !important;
-    display: block !important;
-    padding-top: 100% !important;
-    width: 100% !important;
-}
+  
 </style>
 <?php
  ?>
@@ -201,7 +152,7 @@ Atlanta, GA 30303</p>
 <!-- Content -->
 
   <!-- Header -->
-  <div class="container-fluid bg-white mb-4 py-5">
+  <div class="container-fluid bg-light border mb-4 py-5">
   <div class="row justify-content-center">
   	<div class="col-md-7">
     	<div class="d-flex">
