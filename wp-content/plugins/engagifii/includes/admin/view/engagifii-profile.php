@@ -22,7 +22,7 @@
     	
     </div>
  </div>
- <section class="temp1 pe-3">
+ <section class="temp2 pe-3">
  <div class="bg-light py-4 border-start border-4 border-primary mb-4">
  	<div class="container-fluid ">
     	<div class="d-flex">
@@ -147,7 +147,7 @@ Atlanta, GA 30303</p>
         </div>	
     </div>
     </section>
-<section class="temp2 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+<section class="temp1 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
 
 <!-- Content -->
 
