@@ -5,7 +5,8 @@
   
 </style>
 <?php
- ?>
+ $site_url = site_url();
+?>
  <div class="pe-3 mb-3">
  	<div class="container-fluid  ">
     	<div class="row justify-content-end text-secondary small">
@@ -158,24 +159,23 @@ Atlanta, GA 30303</p>
     	<div class="d-flex">
         	<div class="flex-shrink-0">
   	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
-    	<img src="http://www.accg.org/Staff%20Photos/Abercrombie_Ashley.jpg" alt="..." class="img-fluid">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
     </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
   </div>
   <div class="flex-grow-1 ms-3">
-  	<h4 class="font-weight-bold mb-4">Nellie Maxwell</h4>
+  	<h4 class="font-weight-bold mb-4">Ms. Heather Dunn</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>HDFY3418</p>
   
           <div class="text-muted mb-4">
-            Lorem ipsum dolor sit amet, nibh suavitate qualisque ut nam. Ad harum primis electram duo, porro principes ei has.
+            Status: <strong style="color:green;">Active</strong>
           </div>
   
-          <a href="javascript:void(0)" class="d-inline-block text-body">
-            <strong>234</strong>
-            <span class="text-muted">followers</span>
-          </a>
-          <a href="javascript:void(0)" class="d-inline-block text-body ms-3">
-            <strong>111</strong>
-            <span class="text-muted">following</span>
-          </a>
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
   </div>
         </div>
     </div>
@@ -200,7 +200,7 @@ Atlanta, GA 30303</p>
           <div class="row mb-2">
             <div class="col-md-3 text-muted">Country:</div>
             <div class="col-md-9">
-              <a href="javascript:void(0)" class="text-body">Canada</a>
+              <a href="javascript:void(0)" class="text-body">United States</a>
             </div>
           </div>
 
@@ -216,34 +216,27 @@ Atlanta, GA 30303</p>
           <div class="row mb-2">
             <div class="col-md-3 text-muted">Phone:</div>
             <div class="col-md-9">
-              +0 (123) 456 7891
+            (717) 386-1904
             </div>
           </div>
 
-          <h6 class="my-3">Interests</h6>
+          <h6 class="my-3">Price List</h6>
 
           <div class="row mb-2">
-            <div class="col-md-3 text-muted">Favorite music:</div>
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
             <div class="col-md-9">
               <a href="javascript:void(0)" class="text-body">Rock</a>,
               <a href="javascript:void(0)" class="text-body">Alternative</a>,
               <a href="javascript:void(0)" class="text-body">Electro</a>,
               <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
               <a href="javascript:void(0)" class="text-body">Dance</a>
-            </div>
+            </div> -->
           </div>
 
-          <div class="row">
-            <div class="col-md-3 text-muted">Favorite movies:</div>
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
             <div class="col-md-9">
-              <a href="javascript:void(0)" class="text-body">The Green Mile</a>,
-              <a href="javascript:void(0)" class="text-body">Pulp Fiction</a>,
-              <a href="javascript:void(0)" class="text-body">Back to the Future</a>,
-              <a href="javascript:void(0)" class="text-body">WALL·E</a>,
-              <a href="javascript:void(0)" class="text-body">Django Unchained</a>,
-              <a href="javascript:void(0)" class="text-body">The Truman Show</a>,
-              <a href="javascript:void(0)" class="text-body">Home Alone</a>,
-              <a href="javascript:void(0)" class="text-body">Seven Pounds</a>
+            Current
             </div>
           </div>
 
@@ -274,7 +267,7 @@ Atlanta, GA 30303</p>
       <!-- Side info -->
       <div class="card mb-4 px-2 mw-100">
         <div class="card-body">
-          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Follow</a>
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
           &nbsp;
           <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
             <span class="ion ion-md-mail"></span>
@@ -283,12 +276,15 @@ Atlanta, GA 30303</p>
         <hr class="border-light m-0">
         <div class="card-body">
           <p class="mb-2">
-            <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> UI/UX Designer</p>
-          <p class="mb-2">
-            <i class="ion ion-ios-navigate ui-w-30 text-center text-lighter"></i> London, United Kingdom</p>
-          <p class="mb-0">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 1295 Kuhn Rd
+1295 Kuhn Road, <br>Cumberland County
+Boiling Springs, <br>PA 17007
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
             <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
-            <a href="javascript:void(0)" class="text-body">website.com</a>
+            <a href="javascript:void(0)" class="text-body">hdunn@cvschools.org</a>
           </p>
         </div>
         <hr class="border-light m-0">
@@ -308,31 +304,24 @@ Atlanta, GA 30303</p>
 
       <!-- Skills -->
       <div class="card mb-4 px-2 mw-100">
-        <div class="card-header">Skills</div>
+        <div class="card-header">Organization</div>
         <div class="card-body">
 
-          <div class="mb-1">HTML - <small class="text-muted">80%</small></div>
-          <div class="progress mb-3" style="height: 4px;">
-            <div class="progress-bar bg-secondary" style="width: 80%;"></div>
-          </div>
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
 
-          <div class="mb-1">CSS - <small class="text-muted">95%</small></div>
-          <div class="progress mb-3" style="height: 4px;">
-            <div class="progress-bar bg-success" style="width: 95%;"></div>
-          </div>
+          <div class="mb-1">Department - <small class="text-muted">School Board</small></div>
+          
 
-          <div class="mb-1">Javascript - <small class="text-muted">90%</small></div>
-          <div class="progress mb-3" style="height: 4px;">
-            <div class="progress-bar bg-warning" style="width: 90%;"></div>
-          </div>
+          <div class="mb-1">Position - <small class="text-muted">Board Chair</small></div>
+         
 
-          <div class="mb-1">UI/UX - <small class="text-muted">80%</small></div>
-          <div class="progress" style="height: 4px;">
-            <div class="progress-bar bg-danger" style="width: 80%;"></div>
-          </div>
+          <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div>
+         
 
         </div>
-        <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
       </div>
       <!-- / Skills -->
 
