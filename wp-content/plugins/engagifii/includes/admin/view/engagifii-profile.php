@@ -148,7 +148,7 @@ Atlanta, GA 30303</p>
         </div>	
     </div>
     </section>
-<section class="temp1 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+<section class="temp4 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
 
 <!-- Content -->
 
@@ -241,7 +241,7 @@ Atlanta, GA 30303</p>
           </div>
 
         </div>
-        <div class="card-footer text-center p-0">
+        <!-- <div class="card-footer text-center p-0">
           <div class="row no-gutters row-bordered row-border-light">
             <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
               <div class="font-weight-bold">24</div>
@@ -256,7 +256,7 @@ Atlanta, GA 30303</p>
               <div class="text-muted small">photos</div>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- / Info -->
 
@@ -288,7 +288,7 @@ United States<br>
           </p>
         </div>
         <hr class="border-light m-0">
-        <div class="card-body">
+        <!-- <div class="card-body">
           <a href="javascript:void(0)" class="d-block text-body mb-2">
             <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
           </a>
@@ -298,7 +298,7 @@ United States<br>
           <a href="javascript:void(0)" class="d-block text-body mb-0">
             <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
           </a>
-        </div>
+        </div> -->
       </div>
       <!-- / Side info -->
 
@@ -336,6 +336,385 @@ United States<br>
 
 </div>
 </section>
+<!-- 2nd Profile -->
+<section class="temp1 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+
+<!-- Content -->
+
+  <!-- Header -->
+  <div class="container-fluid bg-light border mb-4 py-5">
+  <div class="row justify-content-center">
+  	<div class="col-md-7">
+    	<div class="d-flex">
+        	<div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
+    </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
+  </div>
+  <div class="flex-grow-1 ms-3">
+  	<h4 class="font-weight-bold mb-4">David Christopher</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>DCTP1526</p>
+  
+          <div class="text-muted mb-4">
+            Status: <strong style="color:green;">Active</strong>
+          </div>
+  
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
+  </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  <!-- Header -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
+      <!-- Info -->
+      <div class="card mb-4 px-3 mw-100">
+        <div class="card-body">
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Birthday:</div>
+            <div class="col-md-9">
+              May 3, 1995
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Country:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">United States</a>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Languages:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">English</a>
+            </div>
+          </div>
+
+          <h6 class="my-3">Contacts</h6>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Phone:</div>
+            <div class="col-md-9">
+            (717) 506-3301
+            </div>
+          </div>
+
+          <h6 class="my-3">Price List</h6>
+
+          <div class="row mb-2">
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">Rock</a>,
+              <a href="javascript:void(0)" class="text-body">Alternative</a>,
+              <a href="javascript:void(0)" class="text-body">Electro</a>,
+              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
+              <a href="javascript:void(0)" class="text-body">Dance</a>
+            </div> -->
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
+            <div class="col-md-9">
+            Current
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="card-footer text-center p-0">
+          <div class="row no-gutters row-bordered row-border-light">
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">24</div>
+              <div class="text-muted small">posts</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">51</div>
+              <div class="text-muted small">videos</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">215</div>
+              <div class="text-muted small">photos</div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+      <!-- / Info -->
+
+      
+    </div>
+    <div class="col-4">
+
+      <!-- Side info -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-body">
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
+          &nbsp;
+          <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
+            <span class="ion ion-md-mail"></span>
+          </a>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <p class="mb-2">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 6746 Carlisle Pike, 
+           <br>Cumberland County, <br>Mechanicsburg, PA 17050 <br>
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
+            <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
+            <a href="javascript:void(0)" class="text-body">dchristopher@cvschools.org</a>
+          </p>
+        </div>
+        <hr class="border-light m-0">
+        <!-- <div class="card-body">
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-facebook ui-w-30 text-center text-facebook"></i> nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-0">
+            <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
+          </a>
+        </div> -->
+      </div>
+      <!-- / Side info -->
+
+      <!-- Skills -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-header">Organization</div>
+        <div class="card-body">
+
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
+
+          <div class="mb-1">Department - <small class="text-muted">District Administration</small></div>
+          
+
+          <div class="mb-1">Position - <small class="text-muted">Superintendent</small></div>
+         
+
+          <!-- <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div> -->
+         
+
+        </div>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
+      </div>
+      <!-- / Skills -->
+
+      
+    </div>
+  </div>
+
+</div>
+<!-- / Content -->
+
+
+
+</div>
+</section>
+
+<!--3rd profile-->
+<section class="temp5 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+
+<!-- Content -->
+
+  <!-- Header -->
+  <div class="container-fluid bg-light border mb-4 py-5">
+  <div class="row justify-content-center">
+  	<div class="col-md-7">
+    	<div class="d-flex">
+        	<div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
+    </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
+  </div>
+  <div class="flex-grow-1 ms-3">
+  	<h4 class="font-weight-bold mb-4">Mr. Jevon Ford</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>JFXQ2629</p>
+  
+          <div class="text-muted mb-4">
+            Status: <strong style="color:green;">Active</strong>
+          </div>
+  
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
+  </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  <!-- Header -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
+      <!-- Info -->
+      <div class="card mb-4 px-3 mw-100">
+        <div class="card-body">
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Birthday:</div>
+            <div class="col-md-9">
+              May 3, 1995
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Country:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">United States</a>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Languages:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">English</a>
+            </div>
+          </div>
+
+          <h6 class="my-3">Contacts</h6>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Phone:</div>
+            <div class="col-md-9">
+            (717) 691-1427
+            </div>
+          </div>
+
+          <h6 class="my-3">Price List</h6>
+
+          <div class="row mb-2">
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">Rock</a>,
+              <a href="javascript:void(0)" class="text-body">Alternative</a>,
+              <a href="javascript:void(0)" class="text-body">Electro</a>,
+              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
+              <a href="javascript:void(0)" class="text-body">Dance</a>
+            </div> -->
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
+            <div class="col-md-9">
+            Current
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="card-footer text-center p-0">
+          <div class="row no-gutters row-bordered row-border-light">
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">24</div>
+              <div class="text-muted small">posts</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">51</div>
+              <div class="text-muted small">videos</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">215</div>
+              <div class="text-muted small">photos</div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+      <!-- / Info -->
+
+      
+    </div>
+    <div class="col-4">
+
+      <!-- Side info -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-body">
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
+          &nbsp;
+          <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
+            <span class="ion ion-md-mail"></span>
+          </a>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <p class="mb-2">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 3 Sycamore Drive, 
+           <br>Cumberland County, <br>Mechanicsburg, PA 17050 <br>
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
+            <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
+            <a href="javascript:void(0)" class="text-body">jtford1978@gmail.com</a>
+          </p>
+        </div>
+        <hr class="border-light m-0">
+        <!-- <div class="card-body">
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-facebook ui-w-30 text-center text-facebook"></i> nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-0">
+            <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
+          </a>
+        </div> -->
+      </div>
+      <!-- / Side info -->
+
+      <!-- Skills -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-header">Organization</div>
+        <div class="card-body">
+
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
+
+          <div class="mb-1">Department - <small class="text-muted">School Board</small></div>
+          
+
+          <div class="mb-1">Position - <small class="text-muted">Board Member</small></div> 
+         
+          <div class="mb-1">PSBA Liaison - <small class="text-muted">No</small></div>
+          <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div>
+         
+
+        </div>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
+      </div>
+      <!-- / Skills -->
+
+      
+    </div>
+  </div>
+
+</div>
+<!-- / Content -->
+
+
+
+</div>
+</section>
+
+<!-- 3rd end -->
 	<section class="temp3 pe-3"  style="background-color: #eee; display:none">
   <div class="container py-5">
     <div class="row">
