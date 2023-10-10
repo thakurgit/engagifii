@@ -1,4 +1,5 @@
 <?php
+$apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officials-all-tabs-list/people';
  $peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
 	$pJSON = file_get_contents($peopleurl);
 	 $peopleDATA   = json_decode($pJSON);
@@ -81,7 +82,7 @@
                             	<?php //if($key=='countyDeligationList'){
 									//print_r($value->countyOfficals);
 									 foreach ($value->countyOfficals as $key => $values) { ?>
-                                 	 <div class="col-md-6 col-lg-4 mb-3 >
+                                 	 <div class="col-md-6 col-lg-4 mb-3 ">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
