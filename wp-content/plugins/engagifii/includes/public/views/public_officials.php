@@ -46,7 +46,12 @@
                         		<img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
                         </div>
                         <div>
-                	<?php echo $value->legalName; ?>
+                	<?php echo $value->legalName; ?><br>
+                    (<?php echo $value->officialNameLabel ; ?>)<br>
+                    <?php echo $value->legislativeRole; ?><br>
+                    <?php echo $value->districtCode; ?><br>
+                    <?php echo $value->residence; ?><br>
+                    <?php echo $value->party; ?>
                         </div>
                     </div>
                 </div>
