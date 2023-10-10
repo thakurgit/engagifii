@@ -78,9 +78,9 @@
                         <div id="collapse<?php echo $value->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="row">
-                            	<?php if($key=='countyDeligationList'){
-									 foreach ($value->countyOfficals as $key => $values) { ?>
-                                 	 <div class="col-md-6 col-lg-4 mb-3">
+                            	<?php //if($key=='countyDeligationList'){
+									// foreach ($value->countyOfficals as $key => $values) { ?>
+                                 	 <div class="col-md-6 col-lg-4 mb-3 d-none">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
@@ -97,9 +97,9 @@
                                       </div>
                                   </div>
                               </div>
-                                	<?php }
-								}
-								if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
+                                	<?php //}
+								//}
+								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
 									foreach ($value->committeeOfficals as $key => $values) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
 									<?php }
-								}?>	
+								//}?>	
                             </div>
                           </div>
                         </div>
