@@ -70,7 +70,7 @@
 					  <div class="card">
                         <div class="card-header" id="heading<?php echo $value->id; ?>">
                           <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
                               <?php echo $value->name; ?>
                             </button>
                           </h2>
