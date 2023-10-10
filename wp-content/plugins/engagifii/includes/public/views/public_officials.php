@@ -38,7 +38,7 @@
       	<div class="row">
         	<div class="col-md-4 col-lg-3 mb-3">
             	<div class="border rounded-2 p-2">
-                	<?php echo $value->legalName; ?>
+                	<?php print_r($value); echo $value->legalName; ?>
                 </div>
             </div>
         </div>
