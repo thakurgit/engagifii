@@ -33,14 +33,18 @@
 			$class=''; 
 			if($k==1){
 				$class =' show active';
-			}?>
+			}
+			$list = $value;
+			?>
       <div class="tab-pane fade border bg-light rounded-2 p-4 <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
+        	<?php foreach ($list as $key => $value) { ?>
         	<div class="col-md-4 col-lg-3 mb-3">
             	<div class="border rounded-2 p-2">
-                	<?php print_r($value); echo $value->legalName; ?>
+                	<?php echo $value->legalName; ?>
                 </div>
             </div>
+            <?php } ?>
         </div>
       </div>
       <?php $k++; } ?>
