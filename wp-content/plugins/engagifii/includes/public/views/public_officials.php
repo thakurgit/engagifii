@@ -98,8 +98,7 @@
                                   </div>
                               </div>
                                 	<?php }
-								}else {
-									print_r('bbb');
+								}elseif($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
 									foreach ($value->committeeOfficals as $key => $value) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
