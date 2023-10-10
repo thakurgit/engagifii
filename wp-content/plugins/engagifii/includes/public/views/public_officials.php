@@ -64,7 +64,7 @@
 			?>
       <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
-        	<?php if($key=='stateSenateCommittees'){ 
+        	<?php if($key=='stateSenateCommittees' || $key=='stateHouseCommittees'){ 
 				echo '<div class="accordion col-12" id="accordionExample">';
 				foreach ($list as $key => $value) { ?>
 					  <div class="card">
