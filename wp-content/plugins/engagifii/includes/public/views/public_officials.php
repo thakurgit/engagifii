@@ -79,20 +79,20 @@
                           <div class="card-body">
                             <div class="row">
                             	<?php if($key=='countyDeligationList'){
-									 foreach ($value->countyOfficals as $key => $value) { ?>
+									 foreach ($value->countyOfficals as $key => $values) { ?>
                                  	 <div class="col-md-6 col-lg-4 mb-3">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                  <img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
+                                                  <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
                                           </div>
                                           <div>
-                                      <?php echo $value->legalName; ?><br>
-                                      (<?php echo $value->officialNameLabel ; ?>)<br>
-                                      <?php echo $value->legislativeRole; ?><br>
-                                      <?php echo $value->districtCode; ?><br>
-                                      <?php echo $value->residence; ?><br>
-                                      <?php echo $value->party; ?>
+                                      <?php echo $values->legalName; ?><br>
+                                      (<?php echo $values->officialNameLabel ; ?>)<br>
+                                      <?php echo $values->legislativeRole; ?><br>
+                                      <?php echo $values->districtCode; ?><br>
+                                      <?php echo $values->residence; ?><br>
+                                      <?php echo $values->party; ?>
                                           </div>
                                       </div>
                                   </div>
@@ -100,20 +100,20 @@
                                 	<?php }
 								}
 								if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
-									foreach ($value->committeeOfficals as $key => $value) { ?>
+									foreach ($value->committeeOfficals as $key => $values) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
                                             <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                    <img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
+                                                    <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
                                             </div>
                                             <div>
-                                        <?php echo $value->legalName; ?><br>
-                                        (<?php echo $value->officialNameLabel ; ?>)<br>
-                                        <?php echo $value->legislativeRole; ?><br>
-                                        <?php echo $value->districtCode; ?><br>
-                                        <?php echo $value->residence; ?><br>
-                                        <?php echo $value->party; ?>
+                                        <?php echo $values->legalName; ?><br>
+                                        (<?php echo $values->officialNameLabel ; ?>)<br>
+                                        <?php echo $values->legislativeRole; ?><br>
+                                        <?php echo $values->districtCode; ?><br>
+                                        <?php echo $values->residence; ?><br>
+                                        <?php echo $values->party; ?>
                                             </div>
                                         </div>
                                     </div>
