@@ -100,7 +100,7 @@
                                 	<?php //}
 								//}
 								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
-									foreach ($value->committeeOfficals as $key => $values) { ?>
+									foreach ($value->committeeOfficals as $key => $values || $value->countyOfficals as $key => $values) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
