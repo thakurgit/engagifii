@@ -33,6 +33,9 @@
       <div class="tab-content" id="nav-tabContent">
       <?php $k=1; 
 	  	foreach ($peopleDATA as $key => $value) {
+			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
+				continue;	
+			}
 			$class=''; 
 			if($k==1){
 				$class =' show active';
