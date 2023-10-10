@@ -3,6 +3,7 @@
 	$pJSON = file_get_contents($peopleurl);
 	 $peopleDATA   = json_decode($pJSON);
 	print_r($response);
+	echo 'abv';
 ?>
 <style type="text/css">
   
