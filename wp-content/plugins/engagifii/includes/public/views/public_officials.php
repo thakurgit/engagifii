@@ -69,10 +69,10 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 				echo '<div class="accordion col-12" id="accordionExample">';
 				foreach ($list as $key => $value) { ?>
 					  <div class="card">
-                        <div class="card-header" id="heading<?php echo $value->id; ?>">
+                        <div class="card-header px-0" id="heading<?php echo $value->id; ?>">
                           <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
-                              <?php echo $value->name; ?>
+                              <i class="fal fa-plus mr-3"></i><?php echo $value->name; ?>
                             </button>
                           </h2>
                         </div>
