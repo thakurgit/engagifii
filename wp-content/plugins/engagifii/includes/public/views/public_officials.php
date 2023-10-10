@@ -22,29 +22,31 @@
 				continue;	
 			}
 			if($key=='stateSenateMemberList'){
-				$key='State Senate';
+				$name='State Senate';
 			}
-			if($key=='stateHouseMemberList'){
-				$key='State House';
+			elseif($key=='stateHouseMemberList'){
+				$name='State House';
 			}
-			if($key=='stateSenateCommittees'){
-				$key='State Senate Committees';
+			elseif($key=='stateSenateCommittees'){
+				$name='State Senate Committees';
 			}
-			if($key=='stateHouseCommittees'){
-				$key='State House Committees';
+			elseif($key=='stateHouseCommittees'){
+				$name='State House Committees';
 			}
-			if($key=='countyDeligationList'){
-				$key='County Delegations';
+			elseif($key=='countyDeligationList'){
+				$name='County Delegations';
 			}
-			if($key=='congressionalDelegationMemberList'){
-				$key='Congressional Delegations';
+			elseif($key=='congressionalDelegationMemberList'){
+				$name='Congressional Delegations';
+			}else{
+				$name=$Key;
 			}
 			$class=''; 
 			if($i==1){
 				$class =' active';
 			}
     echo '<li class="nav-item mx-2" role="presentation">
-    <button class="nav-link bg-transparent border-0 rounded-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$key.' <b>('.count($value).')</b></button></li>';
+    <button class="nav-link bg-transparent border-0 rounded-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
  $i++; }
 	  ?>   		
       </ul>
