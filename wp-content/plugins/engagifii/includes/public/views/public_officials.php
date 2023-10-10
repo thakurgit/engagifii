@@ -19,7 +19,7 @@
       <?php $i=1; 
 	  	foreach ($peopleDATA as $key => $value) {
 			if($key=='relatedOfficials'){
-				return;	
+				continue;	
 			}
 			$class=''; 
 			if($i==1){
