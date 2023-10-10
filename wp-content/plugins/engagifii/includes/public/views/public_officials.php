@@ -64,13 +64,29 @@
 			?>
       <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
-        	<?php if($key=='stateSenateCommittees'){
-				foreach ($list as $key => $value) {
-					echo $value->name;	
-				}
-			 } else { ?>
-        	<?php foreach ($list as $key => $value) { ?>
-        	<div class="col-md-6 col-lg-4 mb-3">
+        	<?php if($key=='stateSenateCommittees'){ 
+				echo '<div class="accordion" id="accordionExample">';
+				foreach ($list as $key => $value) { ?>
+					  <div class="card">
+                        <div class="card-header" id="heading<?php echo $value->id; ?>">
+                          <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
+                              <?php echo $value->name; ?>
+                            </button>
+                          </h2>
+                        </div>
+                    
+                        <div id="collapse<?php echo $value->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <div class="card-body">
+                            Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+                          </div>
+                        </div>
+                      </div>
+				<?php }
+				echo '</div>';
+			 } else {
+        		foreach ($list as $key => $value) { ?>
+        		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
                 	<div class="d-flex">
                     	<div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
@@ -87,8 +103,8 @@
                     </div>
                 </div>
             </div>
-            <?php }
-			 }?>
+           	 <?php }
+			 } ?>
         </div>
       </div>
       <?php $k++; } ?>
