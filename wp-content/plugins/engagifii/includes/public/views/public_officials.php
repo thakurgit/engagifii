@@ -16,8 +16,9 @@
  }
 </style>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
-      <?php $i=1; $class='';
+      <?php $i=1; 
 	  	foreach ($peopleDATA as $key => $value) {
+			$class=''; 
 			if($i==1){
 				$class =' active';
 			}
