@@ -2,8 +2,10 @@
  $peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
 	$pJSON = file_get_contents($peopleurl);
 	 $peopleDATA   = json_decode($pJSON);
-	print_r($peopleDATA);
-	
+	//print_r($peopleDATA);
+	foreach ($peopleDATA as $key => $value) {
+     print_r($key);
+ }
 ?>
 <style type="text/css">
   
