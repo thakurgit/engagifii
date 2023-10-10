@@ -79,10 +79,9 @@
                           <div class="card-body">
                             <div class="row">
                             	<?php //if($key=='countyDeligationList'){
-									print_r($key);
-									print_r($value->countyOfficals);
+									//print_r($value->countyOfficals);
 									 foreach ($value->countyOfficals as $key => $values) { ?>
-                                 	 <div class="col-md-6 col-lg-4 mb-3 d-none">
+                                 	 <div class="col-md-6 col-lg-4 mb-3 >
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
