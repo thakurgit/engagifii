@@ -79,7 +79,7 @@
                           <div class="card-body">
                             <div class="row">
                             	<?php //if($key=='countyDeligationList'){
-									// foreach ($value->countyOfficals as $key => $values) { ?>
+									 foreach ($value->countyOfficals as $key => $values) { ?>
                                  	 <div class="col-md-6 col-lg-4 mb-3 d-none">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
@@ -97,7 +97,7 @@
                                       </div>
                                   </div>
                               </div>
-                                	<?php //}
+                                	<?php }
 								//}
 								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
 									foreach ($value->committeeOfficals as $key => $values) { ?>
