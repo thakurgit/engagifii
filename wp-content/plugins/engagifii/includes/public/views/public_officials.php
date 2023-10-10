@@ -21,6 +21,9 @@
 			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
 				continue;	
 			}
+			if($key=='stateSenateMemberList'){
+				$key='State Senate';
+			}
 			$class=''; 
 			if($i==1){
 				$class =' active';
