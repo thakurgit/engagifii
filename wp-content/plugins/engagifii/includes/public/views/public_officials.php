@@ -65,7 +65,7 @@
       <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
         	<?php if($key=='stateSenateCommittees'){ 
-				echo '<div class="accordion" id="accordionExample">';
+				echo '<div class="accordion col-12" id="accordionExample">';
 				foreach ($list as $key => $value) { ?>
 					  <div class="card">
                         <div class="card-header" id="heading<?php echo $value->id; ?>">
@@ -78,7 +78,27 @@
                     
                         <div id="collapse<?php echo $value->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                           <div class="card-body">
-                            Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+                            <div class="row">
+                            	<?php foreach ($value->committeeOfficals as $key => $value) { ?>
+                                  <div class="col-md-6 col-lg-4 mb-3">
+                                  <div class="border bg-light rounded-2 p-3">
+                                      <div class="d-flex">
+                                          <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
+                                                  <img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
+                                          </div>
+                                          <div>
+                                      <?php echo $value->legalName; ?><br>
+                                      (<?php echo $value->officialNameLabel ; ?>)<br>
+                                      <?php echo $value->legislativeRole; ?><br>
+                                      <?php echo $value->districtCode; ?><br>
+                                      <?php echo $value->residence; ?><br>
+                                      <?php echo $value->party; ?>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                                <?php } ?>	
+                            </div>
                           </div>
                         </div>
                       </div>
