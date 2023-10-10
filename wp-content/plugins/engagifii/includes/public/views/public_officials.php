@@ -1,3 +1,9 @@
+<?php
+ $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/official.txt';
+	$pJSON = file_get_contents($peopleurl);
+	 $peopleDATA   = json_decode($pJSON);
+	print_r($response);
+?>
 <style type="text/css">
   
  .session-tab button {
@@ -31,3 +37,8 @@
        
      
       </ul>
+      <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade border bg-light rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
+      
+      </div>
+      </div>
