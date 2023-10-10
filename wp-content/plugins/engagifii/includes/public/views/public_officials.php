@@ -1,9 +1,9 @@
 <?php
- $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/official.txt';
+ $peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
 	$pJSON = file_get_contents($peopleurl);
 	 $peopleDATA   = json_decode($pJSON);
-	print_r($response);
-	echo 'abv';
+	print_r($peopleDATA);
+	
 ?>
 <style type="text/css">
   
