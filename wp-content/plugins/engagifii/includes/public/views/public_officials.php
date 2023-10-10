@@ -24,6 +24,21 @@
 			if($key=='stateSenateMemberList'){
 				$key='State Senate';
 			}
+			if($key=='stateHouseMemberList'){
+				$key='State House';
+			}
+			if($key=='stateSenateCommittees'){
+				$key='State Senate Committees';
+			}
+			if($key=='stateHouseCommittees'){
+				$key='State House Committees';
+			}
+			if($key=='countyDeligationList'){
+				$key='County Delegations';
+			}
+			if($key=='congressionalDelegationMemberList'){
+				$key='Congressional Delegations';
+			}
 			$class=''; 
 			if($i==1){
 				$class =' active';
