@@ -64,6 +64,11 @@
 			?>
       <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
+        	<?php if($key=='stateSenateCommittees'){
+				foreach ($list as $key => $value) {
+					echo $value->name;	
+				}
+			 } else { ?>
         	<?php foreach ($list as $key => $value) { ?>
         	<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
@@ -82,7 +87,8 @@
                     </div>
                 </div>
             </div>
-            <?php } ?>
+            <?php }
+			 }?>
         </div>
       </div>
       <?php $k++; } ?>
