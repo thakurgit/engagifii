@@ -18,12 +18,15 @@
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($peopleDATA as $key => $value) {
+			if($key=='relatedOfficials'){
+				return;	
+			}
 			$class=''; 
 			if($i==1){
 				$class =' active';
 			}
     echo '<li class="nav-item mx-2" role="presentation">
-    <button class="nav-link bg-transparent border-0 rounded-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$key.'('.count($value).')</button></li>';
+    <button class="nav-link bg-transparent border-0 rounded-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$key.'<b>('.count($value).')</b></button></li>';
  $i++; }
 	  ?>   		
       </ul>
