@@ -41,7 +41,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
     <div class="p-3">
     	<?php echo $response->bio; ?>
     </div>
-    <h5 class="bg-light py-2 px-3 border-bottom">Counties</h5>
+    <h5 class="bg-light py-2 px-3 border-bottom border-top">Counties</h5>
     <div class="p-3">
     	<ul class="list-group list-group-flush">	
 			<?php foreach ($response->counties as $key => $value) {
@@ -49,11 +49,15 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
             } ?>
 		</ul>
     </div>
-    <h5 class="bg-light py-2 px-3 border-bottom">Address</h5>
+    <h5 class="bg-light py-2 px-3 border-bottom border-top">Address</h5>
     <div class="p-3">
 			<?php foreach ($response->address as $key => $value) {
-                echo '<h6>'.$value->addressType.'</h6><p>'.$value->addressLine1.' '.$value->addressLine2.'</p><hr>';	
+                echo '<h6 class="mb-1">'.$value->addressType.'</h6><p>'.$value->addressLine1.' '.$value->addressLine2.'</p><hr>';	
             } ?>
+    </div>
+    <h5 class="bg-light py-2 px-3 border-bottom border-top">Contact Details</h5>
+    <div class="p-3">
+    	
     </div>
     </div>
 </div>
