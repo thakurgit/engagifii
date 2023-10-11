@@ -10,7 +10,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 <div class="container-fluid  mb-4">
 	<div class="bg-light border p-4">
 	<div class="d-flex">
-    	<div class="rounded-circle overflow-hidden mr-4" style="width:100px; height:100px">
+    	<div class="rounded-circle overflow-hidden mr-4" style="max-width:100px; flex:0 0 100px; height:100px">
         	<img src="<?php echo $response->profilePic; ?>" alt="" class="img-fluid">
         </div>
         <div>
