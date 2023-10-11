@@ -3,7 +3,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
  $peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official_detail.txt';
 	$pJSON = file_get_contents($peopleurl);
 	 $response   = json_decode($pJSON);
-	print_r($response);
+	//print_r($response);
 	
 	
 ?>
@@ -14,6 +14,15 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
         </div>
         <div>
         	<h4><?php echo $response->firstName.' '.$response->middleName.' '.$response->lastName; ?> (<?php echo $response->officialNameLabel; ?>)</h4>
+            <div class="row">
+            	<div class="col-3"><strong>District: </strong><?php echo $response->districtCode; ?></div>
+            	<div class="col-3"><strong>City of Residence: </strong><?php echo $response->residence; ?></div>
+            	<div class="col-3"><strong>Role: </strong><?php echo $response->role; ?></div>
+            	<div class="col-3"><strong>Party: </strong><?php echo $response->party; ?></div>
+            	<div class="col-3"><strong>County: </strong><?php echo $response->counties[0]->countyName; ?>
+                	
+                </div>
+            </div>
         </div>
     </div>
 </div>
