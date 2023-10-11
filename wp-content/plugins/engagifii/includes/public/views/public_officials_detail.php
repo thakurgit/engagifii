@@ -49,5 +49,11 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
             } ?>
 		</ul>
     </div>
+    <h5 class="bg-light py-2 px-3 border-bottom">Address</h5>
+    <div class="p-3">
+			<?php foreach ($response->address as $key => $value) {
+                echo '<h6>'.$value->addressType.'</h6><p>'.$value->addressLine1.' '.$value->addressLine2.'</p><hr>';	
+            } ?>
+    </div>
     </div>
 </div>
