@@ -57,7 +57,27 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
     </div>
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Contact Details</h5>
     <div class="p-3">
-    	
+    	<div class="row">
+        	<div class="col-md-3 mb-3">
+            	<h6 class="mb-1">Email</h6>
+                <a href="mailto:<?php echo $response->email; ?>"><?php echo $response->email; ?></a>
+            </div>
+            <?php foreach ($response->phones as $key => $value) {
+                echo '<div class="col-md-3 mb-3"><h6 class="mb-1">'.$value->type.'</h6>'.$value->number.'</div>';	
+            } ?>
+        	<div class="col-md-3 mb-3">
+            	<h6 class="mb-1">Facebook</h6>
+                <a href="<?php echo $response->facebookUrl; ?>"><?php echo $response->facebookUrl; ?></a>
+            </div>
+        	<div class="col-md-3 mb-3">
+            	<h6 class="mb-1">LinkedIn</h6>
+                <a href="<?php echo $response->twitterUrl; ?>"><?php echo $response->twitterUrl; ?></a>
+            </div>
+        	<div class="col-md-3 mb-3">
+            	<h6 class="mb-1">Twitter</h6>
+                <a href="<?php echo $response->linkedInUrl; ?>"><?php echo $response->linkedInUrl; ?></a>
+            </div>
+        </div>
     </div>
     </div>
 </div>
