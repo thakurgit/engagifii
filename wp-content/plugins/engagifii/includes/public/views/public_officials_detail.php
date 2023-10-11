@@ -37,10 +37,17 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 </div>
 <div class="container-fluid">
 	<div class="border">
-	<h5 class="bg-light py-1">Biography</h5>
+	<h5 class="bg-light py-2 px-3 border-bottom">Biography</h5>
     <div class="p-3">
     	<?php echo $response->bio; ?>
     </div>
-    <h5 class="bg-light py-1">Counties</h5>
+    <h5 class="bg-light py-2 px-3 border-bottom">Counties</h5>
+    <div class="p-3">
+    	<ul class="list-group list-group-flush">	
+			<?php foreach ($response->counties as $key => $value) {
+                echo '<li class="list-group-item py-2">'.$value->countyName.'</li>';	
+            } ?>
+		</ul>
+    </div>
     </div>
 </div>
