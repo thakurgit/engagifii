@@ -7,7 +7,8 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 	
 	
 ?>
-<div class="container-fluid bg-light border p-4">
+<div class="container-fluid  mb-4">
+	<div class="bg-light border p-4">
 	<div class="d-flex">
     	<div class="rounded-circle overflow-hidden mr-4" style="width:100px; height:100px">
         	<img src="<?php echo $response->profilePic; ?>" alt="" class="img-fluid">
@@ -32,8 +33,10 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
             </div>
         </div>
     </div>
+    </div>
 </div>
 <div class="container-fluid">
+	<div class="border"></div>
 	<h5 class="bg-light py-1">Biography</h5>
     <div class="p-3">
     	<?php echo $response->bio; ?>
