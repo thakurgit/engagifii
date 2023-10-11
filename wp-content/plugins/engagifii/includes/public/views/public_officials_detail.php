@@ -33,3 +33,10 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
         </div>
     </div>
 </div>
+<div class="container-fluid">
+	<h5 class="bg-light py-1">Biography</h5>
+    <div class="p-3">
+    	<?php echo $response->bio; ?>
+    </div>
+    <h5 class="bg-light py-1">Counties</h5>
+</div>
