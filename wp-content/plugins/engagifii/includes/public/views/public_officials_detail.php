@@ -21,7 +21,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
             	<div class="col-auto pr-lg-5"><strong>Party: </strong><?php echo $response->party; ?></div>
             	<div class="col-auto pr-lg-5"><strong>County: </strong><?php echo $response->counties[0]->countyName; 
 					if(count($response->counties) > 1){
-						echo ' <span class="dropdown dropright"><a type="button" data-toggle="dropdown">+'.count($response->counties) - 1 .' more</a><div class="dropdown-menu py-0"><ul class="list-group list-group-flush">';	
+						echo ' <span class="dropdown dropright"><a type="button" data-toggle="dropdown">+'.(count($response->counties)-1) .' more</a><div class="dropdown-menu py-0"><ul class="list-group list-group-flush">';	
 						foreach ($response->counties as $key => $value) {
 							echo '<li class="list-group-item px-2 py-1">'.$value->countyName.'</li>';	
 						}
