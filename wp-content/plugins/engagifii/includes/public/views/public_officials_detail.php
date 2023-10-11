@@ -7,13 +7,13 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 	
 	
 ?>
-<div class="container-fluid bg-light border">
+<div class="container-fluid bg-light border p-4">
 	<div class="d-flex">
     	<div class="rounded-circle overflow-hidden mr-4" style="width:100px; height:100px">
         	<img src="<?php echo $response->profilePic; ?>" alt="" class="img-fluid">
         </div>
         <div>
-        	<h3><?php echo $response->firstName.' '.$response->middleName.' '.$response->lastName; ?></h3>
+        	<h4><?php echo $response->firstName.' '.$response->middleName.' '.$response->lastName; ?> (<?php echo $response->officialNameLabel; ?>)</h4>
         </div>
     </div>
 </div>
