@@ -22,7 +22,13 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 <div class="container-fluid mb-4">
 <div class="row">
 	<div class="col-md-4">
+    	<div class="positin-relative input-group">
       <input type="text" placeholder="Search Public Official..." class="form-control search-official">
+      <div class="input-group-append">
+      <div class="input-group-text"><i class="fal fa-search"></i></div>
+    </div>
+
+      </div>
     </div>
 </div>
 </div>
@@ -197,8 +203,8 @@ replaceText();
 } else{
 	 jQuery(".tab-pane .col-md-6").removeClass('d-none');
 	 jQuery(".mark").each(function() {
-    jQuery(this).replaceWith(this.childNodes);
-  });	
+   		 jQuery(this).replaceWith(this.childNodes);
+ 	 });	
 }
 
 		 
