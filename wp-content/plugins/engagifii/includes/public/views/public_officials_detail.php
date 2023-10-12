@@ -1,4 +1,9 @@
 <?php
+$detailUrl = site_url();
+$parts = parse_url($detailUrl);
+parse_str($parts['query'], $query);
+print_r($parts);
+$peopleId = $query['id'];
 $tenant_code = "gsba";
 $peopleId='1414';
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1/legislative/public-bills/official-detail/'.$peopleId;
