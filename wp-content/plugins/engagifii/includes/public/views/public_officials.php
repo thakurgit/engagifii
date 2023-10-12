@@ -17,7 +17,7 @@ curl_setopt_array($curl, array(
   CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_POST => true,  // Set request type to POST
-  CURLOPT_POSTFIELDS => json_encode($payload),  // Set the payload data
+  CURLOPT_POSTFIELDS => $payload,  // Set the payload data
   CURLOPT_HTTPHEADER => array(
     "cache-control: no-cache",
     "content-type: application/json",   
