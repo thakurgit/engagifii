@@ -45,7 +45,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
     <div class="p-3">
     	<ul class="list-group list-group-flush">	
 			<?php foreach ($response->counties as $key => $value) {
-                echo '<li class="list-group-item py-2">'.$value->countyName.'</li>';	
+                echo '<li class="list-group-item py-2 px-0">'.$value->countyName.'</li>';	
             } ?>
 		</ul>
     </div>
