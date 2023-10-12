@@ -1,17 +1,9 @@
 <?php
 if (isset($_GET['id'])) {
     $paramValue = $_GET['id'];
-    echo "Value of 'param' parameter: " . $paramValue;
-} else {
-    echo "No 'param' parameter found in the URL.";
-}
-$detailUrl = site_url();
-$parts = parse_url($detailUrl);
-parse_str($parts['query'], $query);
-print_r($parts);
-$peopleId = $query['id'];
+   // echo "Value of 'param' parameter: " . $paramValue;
+} 
 $tenant_code = "gsba";
-$peopleId='1414';
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1/legislative/public-bills/official-detail/'.$paramValue;
 $curl = curl_init();
 // Append any necessary query parameters to the URL
