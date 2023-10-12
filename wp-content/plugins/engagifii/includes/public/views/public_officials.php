@@ -1,5 +1,5 @@
 <?php
-$tenant_code = "psba";
+$tenant_code = "gsba";
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
 $curl = curl_init();
 // Append any necessary query parameters to the URL
@@ -13,6 +13,8 @@ if (!empty($queryString)) {
 curl_setopt_array($curl, array(  
   CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST => true,  // Set request type to POST
+  //CURLOPT_POSTFIELDS => json_encode($payload),  // Set the payload data
   CURLOPT_HTTPHEADER => array(
     "cache-control: no-cache",
     "content-type: application/json",   
