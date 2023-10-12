@@ -53,7 +53,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 			if($i==1){
 				$class =' active';
 			}
-    echo '<li class="nav-item mr-3" role="presentation">
+    echo '<li class="nav-item mr-4" role="presentation">
     <button class="nav-link bg-transparent border-0 rounded-0 px-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
  $i++; }
 	  ?>   		
