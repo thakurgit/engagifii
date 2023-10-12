@@ -1,9 +1,36 @@
 <?php
-$apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officials-all-tabs-list/people';
- $peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
-	$pJSON = file_get_contents($peopleurl);
-	 $peopleDATA   = json_decode($pJSON);
-	//print_r($peopleDATA);
+$tenant_code = "psba";
+$url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
+$curl = curl_init();
+// Append any necessary query parameters to the URL
+$queryParameters = array(
+    // Add your query parameters here
+);
+$queryString = http_build_query($queryParameters);
+if (!empty($queryString)) {
+    $url .= '?' . $queryString;
+}
+curl_setopt_array($curl, array(  
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",   
+    "tenant-code:".$tenant_code, 
+   
+  ),
+));
+$response = curl_exec($curl);
+$response = json_decode($response);
+// Close the cURL session
+curl_close($curl);
+
+
+
+ //$peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
+	//$pJSON = file_get_contents($peopleurl);
+	// $peopleDATA   = json_decode($pJSON);
+	print_r($response);
 	
 ?>
 <style type="text/css">
