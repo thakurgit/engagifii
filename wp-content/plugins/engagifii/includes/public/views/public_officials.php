@@ -136,7 +136,7 @@ curl_close($curl);
                                                   <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
                                           </div>
                                           <div>
-                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value->id; ?>"><?php echo $values->legalName; ?></a><br>
+                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values->id; ?>"><?php echo $values->legalName; ?></a><br>
                                       (<?php echo $values->officialNameLabel ; ?>)<br>
                                       <?php echo $values->legislativeRole; ?><br>
                                       <?php echo $values->districtCode; ?><br>
