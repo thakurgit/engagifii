@@ -193,6 +193,8 @@ jQuery(".search-official").on("keyup", function() {
       //$(this).parents('.col-md-6').toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
 
+} else{
+	 jQuery(".tab-pane .col-md-6").removeClass('d-none');	
 }
 
 		 
