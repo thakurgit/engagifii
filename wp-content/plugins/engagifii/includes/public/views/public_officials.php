@@ -10,7 +10,7 @@ $queryString = http_build_query($queryParameters);
 if (!empty($queryString)) {
     $url .= '?' . $queryString;
 }
-$payload='';
+$payload='{}';
 curl_setopt_array($curl, array(  
   CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
