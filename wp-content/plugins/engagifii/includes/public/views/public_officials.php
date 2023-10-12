@@ -164,15 +164,14 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 	  
 	function replaceText() {
 
-    jQuery("#search-faq").find(".highlight").removeClass("highlight");
 
-    var searchword = jQuery("#search-faq").val();
+    var searchword = jQuery(".search-official").val();
 
     var custfilter = new RegExp(searchword, "ig");
     var repstr = "<span class='mark px-0'>" + searchword + "</span>";
 
     if (searchword != "") {
-        jQuery('.search-dropdown .dropdown-item').each(function() {
+        jQuery('.tab-pane .col-md-6 div').each(function() {
             jQuery(this).html(jQuery(this).html().replace(custfilter, repstr));
         })
     }
@@ -190,9 +189,8 @@ jQuery(".search-official").on("keyup", function() {
 		} else {
 			jQuery(this).parents('.col-md-6').addClass('d-none');	
 		}
-      //$(this).parents('.col-md-6').toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
-
+replaceText();
 } else{
 	 jQuery(".tab-pane .col-md-6").removeClass('d-none');	
 }
