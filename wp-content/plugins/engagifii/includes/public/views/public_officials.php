@@ -29,6 +29,7 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
     </div>
 
       </div>
+      <span class="help-text text-black-50" style="font-size:12px; opacity:0.6">Please type more than 3 letter to search </span>
     </div>
 </div>
 </div>
