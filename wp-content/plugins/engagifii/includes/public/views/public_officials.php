@@ -22,10 +22,10 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 <div class="container-fluid mb-4">
 <div class="row">
 	<div class="col-md-4">
-    	<div class="positin-relative input-group">
-      <input type="text" placeholder="Search Public Official..." class="form-control search-official">
+    	<div class="position-relative input-group">
+      <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark">
       <div class="input-group-append">
-      <div class="input-group-text"><i class="fal fa-search"></i></div>
+      <div class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></div>
     </div>
 
       </div>
