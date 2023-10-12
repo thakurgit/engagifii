@@ -16,10 +16,10 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 	border-bottom-color:#002474  !important;
  }
 </style>
-<div class="container-fluid">
+<div class="container-fluid mb-4">
 <div class="row">
 	<div class="col-md-4">
-      <input type="text" placeholder="Search Public Official..." class="form-control">
+      <input type="text" placeholder="Search Public Official..." class="form-control search-official">
     </div>
 </div>
 </div>
@@ -160,3 +160,45 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
       </div>
       <?php $k++; } ?>
       </div>
+      <script>
+	  
+	function replaceText() {
+
+    jQuery("#search-faq").find(".highlight").removeClass("highlight");
+
+    var searchword = jQuery("#search-faq").val();
+
+    var custfilter = new RegExp(searchword, "ig");
+    var repstr = "<span class='mark px-0'>" + searchword + "</span>";
+
+    if (searchword != "") {
+        jQuery('.search-dropdown .dropdown-item').each(function() {
+            jQuery(this).html(jQuery(this).html().replace(custfilter, repstr));
+        })
+    }
+}
+
+jQuery(".search-official").on("keyup", function() {
+    var value = jQuery(this).val().toLowerCase();
+         var val = value.trim();
+         val = val.replace(/\s+/g, '');
+		 
+	if(val.length > 3) { //for checking 3 characters
+   	 jQuery(".tab-pane .col-md-6 div").filter(function() {
+		if(jQuery(this).text().toLowerCase().indexOf(value) > -1) {
+			jQuery(this).parents('.col-md-6').removeClass('d-none');	
+		} else {
+			jQuery(this).parents('.col-md-6').addClass('d-none');	
+		}
+      //$(this).parents('.col-md-6').toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+
+}
+
+		 
+		
+
+  });
+  
+
+	  </script>
