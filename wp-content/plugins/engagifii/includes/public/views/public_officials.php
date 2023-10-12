@@ -185,8 +185,8 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
         })
     }
 }
-
-jQuery(".search-official").on("keyup", function() {
+jQuery(".search-official").keypress(function (event) {
+	if (event.keyCode === 13) {
     var value = jQuery(this).val().toLowerCase();
          var val = value.trim();
          val = val.replace(/\s+/g, '');
@@ -206,10 +206,7 @@ replaceText();
    		 jQuery(this).replaceWith(this.childNodes);
  	 });	
 }
-
-		 
-		
-
+	}
   });
   
 
