@@ -26,7 +26,7 @@ curl_setopt_array($curl, array(
   ),
 ));
 $response = curl_exec($curl);
-$response = json_decode($response);
+$peopleDATA = json_decode($response);
 // Close the cURL session
 curl_close($curl);
 
@@ -35,7 +35,7 @@ curl_close($curl);
  //$peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
 	//$pJSON = file_get_contents($peopleurl);
 	// $peopleDATA   = json_decode($pJSON);
-	print_r($response);
+	//print_r($response);
 	
 ?>
 <style type="text/css">
