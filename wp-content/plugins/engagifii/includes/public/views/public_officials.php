@@ -15,6 +15,9 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
   .session-tab button.active{
 	border-bottom-color:#002474  !important;
  }
+ mark, .mark {
+	background-color: #F9D276;
+}
 </style>
 <div class="container-fluid mb-4">
 <div class="row">
@@ -192,7 +195,10 @@ jQuery(".search-official").on("keyup", function() {
     });
 replaceText();
 } else{
-	 jQuery(".tab-pane .col-md-6").removeClass('d-none');	
+	 jQuery(".tab-pane .col-md-6").removeClass('d-none');
+	 jQuery(".mark").each(function() {
+    jQuery(this).replaceWith(this.childNodes);
+  });	
 }
 
 		 
