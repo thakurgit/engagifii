@@ -16,6 +16,13 @@ $apiurl = 'https://builtin-crm.azurewebsites.net/api/v1/Advocacy/elected/officia
 	border-bottom-color:#002474  !important;
  }
 </style>
+<div class="container-fluid">
+<div class="row">
+	<div class="col-md-4">
+      <input type="text" placeholder="search Public Official..." class="form-control">
+    </div>
+</div>
+</div>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($peopleDATA as $key => $value) {
