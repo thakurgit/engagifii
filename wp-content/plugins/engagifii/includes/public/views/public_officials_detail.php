@@ -96,18 +96,22 @@ curl_close($curl);
             <?php foreach ($response->phones as $key => $value) {
                 echo '<div class="col-md-3 mb-3"><h6 class="mb-1">'.$value->type.'</h6>'.$value->number.'</div>';	
             } ?>
+            <?php if($response->facebookUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">Facebook</h6>
                 <a href="<?php echo $response->facebookUrl; ?>"><?php echo $response->facebookUrl; ?></a>
             </div>
+            <?php } if($response->twitterUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">Twitter</h6>
                 <a href="<?php echo $response->twitterUrl; ?>"><?php echo $response->twitterUrl; ?></a>
             </div>
+            <?php } if($response->linkedInUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">LinkedIn</h6>
                 <a href="<?php echo $response->linkedInUrl; ?>"><?php echo $response->linkedInUrl; ?></a>
             </div>
+            <?php } ?>
         </div>
     </div>
     </div>
