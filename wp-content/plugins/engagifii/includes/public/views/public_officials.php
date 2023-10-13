@@ -60,7 +60,6 @@ curl_close($curl);
     </div>
 
       </div>
-      <span class="help-text text-black-50" style="font-size:12px; opacity:0.6">Please type more than 3 letter to search </span>
     </div>
 </div>
 </div>
@@ -218,13 +217,13 @@ curl_close($curl);
     }
 }
 jQuery(".search-official").on("keypress", function() {
-	if (event.keyCode === 13) {
+	if (event.keyCode === 13 && jQuery(this).val()!='') {
 		
 		
 		 var  officialPayload=[];
 		 var searchOfficial='';
 				 searchOfficial = {
-			"searchText": "Ben",
+			"searchText": jQuery(this).val();
 		 };
 			officialPayload.push( searchOfficial ); 
 			 officialPayload = JSON.stringify(officialPayload[0]); 
