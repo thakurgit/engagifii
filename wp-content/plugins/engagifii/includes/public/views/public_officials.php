@@ -11,9 +11,7 @@ $queryString = http_build_query($queryParameters);
 if (!empty($queryString)) {
     $url .= '?' . $queryString;
 }
-$payload='{
-	 "searchText": "Ben"
-	}';
+$payload='{}';
 curl_setopt_array($curl, array(  
   CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
@@ -219,9 +217,46 @@ curl_close($curl);
         })
     }
 }
-jQuery(".search-official").on("keyup", function() {
-	//if (event.keyCode === 13) {
-    var value = jQuery(this).val().toLowerCase();
+jQuery(".search-official").on("keypress", function() {
+	if (event.keyCode === 13) {
+		
+		
+		 var  officialPayload=[];
+		 var searchOfficial='';
+				 searchOfficial = {
+			"searchText": "Ben",
+		 };
+			officialPayload.push( searchOfficial ); 
+			 officialPayload = JSON.stringify(officialPayload[0] ); 
+		const options = {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json'
+				},
+				body: officialPayload
+			  };
+			  
+			  const apiUrl ='https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
+			  fetch(apiUrl,options)
+				.then(response => {
+				  if (!response.ok) {
+					throw new Error('Network response was not ok');
+				  }
+				  return response.json();
+				})
+				.then(data => {
+				  console.log('API response data:', data);
+			   		
+						  
+						})
+				.catch(error => {
+				  console.error('There has been a problem with your fetch operation:', error);
+				});
+		
+		
+		
+		
+   /* var value = jQuery(this).val().toLowerCase();
          var val = value.trim();
          val = val.replace(/\s+/g, '');
 		 
@@ -239,8 +274,8 @@ replaceText();
 	 jQuery(".mark").each(function() {
    		 jQuery(this).replaceWith(this.childNodes);
  	 });	
-}
-	//}
+}*/
+	}
   });
   
 
