@@ -227,7 +227,8 @@ jQuery(".search-official").on("keypress", function() {
 			"searchText": "Ben",
 		 };
 			officialPayload.push( searchOfficial ); 
-			// officialPayload = JSON.stringify(officialPayload); 
+			 officialPayload = JSON.stringify(officialPayload[0]); 
+			 console.log();
 		const options = {
 				method: 'POST',
 				headers: {
