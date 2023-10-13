@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <script>
 	  
-	function replaceText() {
+	/*function replaceText() {
 
 
     var searchword = jQuery(".search-official").val();
@@ -289,7 +289,7 @@ replaceText();
  	 });	
 }*/
 	}
-  });
+  });*/
   
 
 	  </script>
