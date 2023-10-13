@@ -11,6 +11,7 @@ $queryString = http_build_query($queryParameters);
 if (!empty($queryString)) {
     $url .= '?' . $queryString;
 }
+function searchOfficial($tenant_code, $url){
 $payload='{}';
 curl_setopt_array($curl, array(  
   CURLOPT_URL => $url,
@@ -28,7 +29,16 @@ $response = curl_exec($curl);
 $peopleDATA = json_decode($response);
 // Close the cURL session
 curl_close($curl);
+return $peopleDATA;
+}
+$peopleDATA = searchOfficial($tenant_code, $url); 
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle the search request and update $peopleDATA
+    $searchText = isset($_POST['searchText']) ? $_POST['searchText'] : '';
+    $payload = json_encode(['searchText' => $searchText]);
+	$peopleDATA = searchOfficial($tenant_code, $url);
+}
 
 
  //$peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
@@ -53,13 +63,14 @@ curl_close($curl);
 <div class="container-fluid mb-4">
 <div class="row">
 	<div class="col-md-4">
+    <form action="" method="POST">
     	<div class="position-relative input-group">
-      <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark">
+      <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText"/>
       <div class="input-group-append">
       <div class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></div>
     </div>
-
       </div>
+</form>
     </div>
 </div>
 </div>
@@ -216,7 +227,7 @@ curl_close($curl);
         })
     }
 }
-jQuery(".search-official").on("keypress", function() {
+jQuery(".search-official1").on("keypress", function() {
 	if (event.keyCode === 13 && jQuery(this).val()!='') {
 		
 		
@@ -247,6 +258,7 @@ jQuery(".search-official").on("keypress", function() {
 				})
 				.then(data => {
 				  console.log('API response data:', data);
+				  
 			   		
 						  
 						})
