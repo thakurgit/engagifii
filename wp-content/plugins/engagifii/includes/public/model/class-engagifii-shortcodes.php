@@ -62,6 +62,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'events-calendar-search' => 'events_calendar_search',
 			'endorsement-calendar-search' => 'endorsement_calendar_search',
 			'public-officials' => 'public_officials',
+			'public-officials-detail' => 'public_officials_detail',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -74,6 +75,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	public function public_officials(){
 		ob_start();
 		include $this->basePath.'includes/public/views/public_officials.php';
+		return ob_get_clean();
+	}	
+	public function public_officials_detail(){
+		ob_start();
+		include $this->basePath.'includes/public/views/public_officials_detail.php';
 		return ob_get_clean();
 	}	
 	public function endorsement_grid_view(){
