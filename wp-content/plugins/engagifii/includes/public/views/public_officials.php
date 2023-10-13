@@ -1,6 +1,7 @@
 <?php
 //tenant GSBA spec
 $tenant_code = "gsba";
+
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
 $curl = curl_init();
 // Append any necessary query parameters to the URL
@@ -11,6 +12,7 @@ $queryString = http_build_query($queryParameters);
 if (!empty($queryString)) {
     $url .= '?' . $queryString;
 }
+<<<<<<< HEAD
 function searchOfficial($tenant_code, $url){
 $payload='{}';
 curl_setopt_array($curl, array(  
@@ -45,7 +47,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//$pJSON = file_get_contents($peopleurl);
 	// $peopleDATA   = json_decode($pJSON);
 	//print_r($peopleDATA);
+=======
+
+function fetchData($url, $tenant_code, $payload)
+{
+	$peopleDATA = '';
+	$curl = curl_init();
+>>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
 	
+	curl_setopt_array($curl, array(  
+	  CURLOPT_URL => $url,
+	  CURLOPT_RETURNTRANSFER => true,
+	  CURLOPT_POST => true,  // Set request type to POST
+	  CURLOPT_POSTFIELDS => $payload,  // Set the payload data
+	  CURLOPT_HTTPHEADER => array(
+		"cache-control: no-cache",
+		"content-type: application/json",   
+		"tenant-code:".$tenant_code, 
+	   
+	  ),
+	));
+	$response = curl_exec($curl);
+	$peopleDATA = json_decode($response);
+	// Close the cURL session
+	curl_close($curl);
+	return $peopleDATA;
+}
+$payload='{}';
+$peopleDATA = fetchData($url, $tenant_code, $payload);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	
+    // Handle the search request and update $peopleDATA
+    $searchText = isset($_POST['searchText']) ? $_POST['searchText'] : '';
+    $payload = json_encode(['searchText' => $searchText]);
+	
+	$peopleDATA = fetchData($url, $tenant_code,$payload);
+    //print_r($peopleDATA);
+}
+
 ?>
 <style type="text/css">
   
@@ -65,10 +105,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<div class="col-md-4">
     <form action="" method="POST">
     	<div class="position-relative input-group">
+<<<<<<< HEAD
       <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText"/>
       <div class="input-group-append">
       <div class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></div>
     </div>
+=======
+		<form method="post" action="">
+                    <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
+                    <div class="input-group-append">
+                        <button type="submit" class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></button>
+                    </div>
+                </form>
+
+>>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
       </div>
 </form>
     </div>
@@ -211,6 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <?php $k++; } ?>
       </div>
+<<<<<<< HEAD
       <script>
 	  
 	/*function replaceText() {
@@ -293,3 +344,6 @@ replaceText();
   
 
 	  </script>
+=======
+      
+>>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
