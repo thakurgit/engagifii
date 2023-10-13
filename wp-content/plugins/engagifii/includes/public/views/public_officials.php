@@ -32,7 +32,7 @@ curl_close($curl);
 return $peopleDATA;
 }
 $peopleDATA = searchOfficial($tenant_code, $url); 
-
+print_r($peopleDATA);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle the search request and update $peopleDATA
     $searchText = isset($_POST['searchText']) ? $_POST['searchText'] : '';
