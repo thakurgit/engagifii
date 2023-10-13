@@ -287,7 +287,7 @@ replaceText();
 	 jQuery(".mark").each(function() {
    		 jQuery(this).replaceWith(this.childNodes);
  	 });	
-}*/
+}
 	}
   });*/
   
