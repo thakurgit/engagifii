@@ -12,48 +12,11 @@ $queryString = http_build_query($queryParameters);
 if (!empty($queryString)) {
     $url .= '?' . $queryString;
 }
-<<<<<<< HEAD
-function searchOfficial($tenant_code, $url){
-$payload='{}';
-curl_setopt_array($curl, array(  
-  CURLOPT_URL => $url,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_POST => true,  // Set request type to POST
-  CURLOPT_POSTFIELDS => $payload,  // Set the payload data
-  CURLOPT_HTTPHEADER => array(
-    "cache-control: no-cache",
-    "content-type: application/json",   
-    "tenant-code:".$tenant_code, 
-   
-  ),
-));
-$response = curl_exec($curl);
-$peopleDATA = json_decode($response);
-// Close the cURL session
-curl_close($curl);
-return $peopleDATA;
-}
-$peopleDATA = searchOfficial($tenant_code, $url); 
-print_r($peopleDATA);
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Handle the search request and update $peopleDATA
-    $searchText = isset($_POST['searchText']) ? $_POST['searchText'] : '';
-    $payload = json_encode(['searchText' => $searchText]);
-	$peopleDATA = searchOfficial($tenant_code, $url);
-}
-
-
- //$peopleurl = 'https://engagifiwebstg.wpengine.com/gsba/wp-content/plugins/wp-front-end-profile/views/official.txt';
-	//$pJSON = file_get_contents($peopleurl);
-	// $peopleDATA   = json_decode($pJSON);
-	//print_r($peopleDATA);
-=======
 
 function fetchData($url, $tenant_code, $payload)
 {
 	$peopleDATA = '';
 	$curl = curl_init();
->>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
 	
 	curl_setopt_array($curl, array(  
 	  CURLOPT_URL => $url,
@@ -103,14 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container-fluid mb-4">
 <div class="row">
 	<div class="col-md-4">
-    <form action="" method="POST">
     	<div class="position-relative input-group">
-<<<<<<< HEAD
-      <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText"/>
-      <div class="input-group-append">
-      <div class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></div>
-    </div>
-=======
 		<form method="post" action="">
                     <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
                     <div class="input-group-append">
@@ -118,9 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </form>
 
->>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
       </div>
-</form>
     </div>
 </div>
 </div>
@@ -261,89 +215,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <?php $k++; } ?>
       </div>
-<<<<<<< HEAD
-      <script>
-	  
-	/*function replaceText() {
-
-
-    var searchword = jQuery(".search-official").val();
-
-    var custfilter = new RegExp(searchword, "ig");
-    var repstr = "<span class='mark px-0'>" + searchword + "</span>";
-
-    if (searchword != "") {
-        jQuery('.tab-pane .col-md-6 div').each(function() {
-            jQuery(this).html(jQuery(this).html().replace(custfilter, repstr));
-        })
-    }
-}
-jQuery(".search-official1").on("keypress", function() {
-	if (event.keyCode === 13 && jQuery(this).val()!='') {
-		
-		
-		 var  officialPayload=[];
-		 var searchOfficial='';
-				 searchOfficial = {
-			"searchText": jQuery(this).val();
-		 };
-			officialPayload.push( searchOfficial ); 
-			 officialPayload = JSON.stringify(officialPayload[0]); 
-			 console.log();
-		const options = {
-				method: 'POST',
-				headers: {
-				  'Content-Type': 'application/json',
-				  'tenant-code':'<?php echo $tenant_code; ?>'
-				},
-				body: officialPayload
-			  };
-			  
-			  const apiUrl ='https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
-			  fetch(apiUrl,options)
-				.then(response => {
-				  if (!response.ok) {
-					throw new Error('Network response was not ok');
-				  }
-				  return response.json();
-				})
-				.then(data => {
-				  console.log('API response data:', data);
-				  
-			   		
-						  
-						})
-				.catch(error => {
-				  console.error('There has been a problem with your fetch operation:', error);
-				});
-		
-		
-		
-		
-   /* var value = jQuery(this).val().toLowerCase();
-         var val = value.trim();
-         val = val.replace(/\s+/g, '');
-		 
-	if(val.length > 3) { //for checking 3 characters
-   	 jQuery(".tab-pane .col-md-6 div").filter(function() {
-		if(jQuery(this).text().toLowerCase().indexOf(value) > -1) {
-			jQuery(this).parents('.col-md-6').removeClass('d-none');	
-		} else {
-			jQuery(this).parents('.col-md-6').addClass('d-none');	
-		}
-    });
-replaceText();
-} else{
-	 jQuery(".tab-pane .col-md-6").removeClass('d-none');
-	 jQuery(".mark").each(function() {
-   		 jQuery(this).replaceWith(this.childNodes);
- 	 });	
-}
-	}
-  });*/
-  
-
-	  </script>
-=======
-      
->>>>>>> 1b6ece719c78dd102f6d3cca5a1d5c07144f24bd
+     
