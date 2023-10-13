@@ -65,16 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </style>
 <div class="container-fluid mb-4">
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-4"><form method="post" action="">
     	<div class="position-relative input-group">
-		<form method="post" action="">
+		
                     <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
                     <div class="input-group-append">
                         <button type="submit" class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></button>
                     </div>
-                </form>
+               
 
-      </div>
+      </div> </form>
     </div>
 </div>
 </div>
@@ -215,4 +215,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <?php $k++; } ?>
       </div>
-     
+       <script>
+	  
+	/*function replaceText() {
+
+
+    var searchword = jQuery(".search-official").val();
+
+    var custfilter = new RegExp(searchword, "ig");
+    var repstr = "<span class='mark px-0'>" + searchword + "</span>";
+
+    if (searchword != "") {
+        jQuery('.tab-pane .col-md-6 div').each(function() {
+            jQuery(this).html(jQuery(this).html().replace(custfilter, repstr));
+        })
+    }
+}
+jQuery(".search-official1").on("keypress", function() {
+	if (event.keyCode === 13 && jQuery(this).val()!='') {
+		
+		
+		 var  officialPayload=[];
+		 var searchOfficial='';
+				 searchOfficial = {
+			"searchText": jQuery(this).val();
+		 };
+			officialPayload.push( searchOfficial ); 
+			 officialPayload = JSON.stringify(officialPayload[0]); 
+			 console.log();
+		const options = {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json',
+				  'tenant-code':''
+				},
+				body: officialPayload
+			  };
+			  
+			  const apiUrl ='https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
+			  fetch(apiUrl,options)
+				.then(response => {
+				  if (!response.ok) {
+					throw new Error('Network response was not ok');
+				  }
+				  return response.json();
+				})
+				.then(data => {
+				  console.log('API response data:', data);
+				  
+			   		
+						  
+						})
+				.catch(error => {
+				  console.error('There has been a problem with your fetch operation:', error);
+				});
+		
+		
+		
+		
+   /* var value = jQuery(this).val().toLowerCase();
+         var val = value.trim();
+         val = val.replace(/\s+/g, '');
+		 
+	if(val.length > 3) { //for checking 3 characters
+   	 jQuery(".tab-pane .col-md-6 div").filter(function() {
+		if(jQuery(this).text().toLowerCase().indexOf(value) > -1) {
+			jQuery(this).parents('.col-md-6').removeClass('d-none');	
+		} else {
+			jQuery(this).parents('.col-md-6').addClass('d-none');	
+		}
+    });
+replaceText();
+} else{
+	 jQuery(".tab-pane .col-md-6").removeClass('d-none');
+	 jQuery(".mark").each(function() {
+   		 jQuery(this).replaceWith(this.childNodes);
+ 	 });	
+}
+	}
+  });*/
+  
+
+	  </script>
