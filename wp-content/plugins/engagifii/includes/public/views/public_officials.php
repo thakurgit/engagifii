@@ -232,7 +232,8 @@ jQuery(".search-official").on("keypress", function() {
 		const options = {
 				method: 'POST',
 				headers: {
-				  'Content-Type': 'application/json'
+				  'Content-Type': 'application/json',
+				  'tenant-code':'<?php echo $tenant_code; ?>'
 				},
 				body: officialPayload
 			  };
