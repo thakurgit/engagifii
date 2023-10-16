@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	const data =   response.api_response; 
-			const data = JSON.parse(JSON.stringify(data))
+			data = JSON.parse(JSON.stringify(data))
 			let populationArr = Object.entries(data); 
 			console.log(data); 
 			console.log(populationArr); 
