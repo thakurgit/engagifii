@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo '</div>';
 			 } else {
         		foreach ($list as $key => $value) {
-					print_r($value->legalName); ?>
+					print_r($value); ?>
         		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
                 	<div class="d-flex">
