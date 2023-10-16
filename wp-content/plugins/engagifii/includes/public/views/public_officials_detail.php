@@ -39,7 +39,7 @@ curl_close($curl);
 	
 ?>
 <div class="container-fluid mb-3">
-<a href="<?php echo site_url(); ?>/public-officials"><i class="fal fa-arrow-right mr-2"></i>Go Back</a>
+<a href="<?php echo site_url(); ?>/public-officials"><i class="fal fa-arrow-left mr-2"></i>Go Back</a>
 </div>
 <div class="container-fluid  mb-4">
 	<div class="bg-light border p-4">
