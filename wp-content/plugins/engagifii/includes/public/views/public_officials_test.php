@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
           },
           success: function(response) { 
-		  	const data =   JSON.parse(response.api_response);  
+		  	var data =   JSON.parse(response.api_response);  
 			console.log(data); 
 			var count1=[];
 			data.forEach(function(value, index) {
