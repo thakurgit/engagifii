@@ -131,6 +131,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['getendorsementcalendar', 'getendorsementCalendar'],
         ['eventscalendar', 'eventsCalendar'],
         ['geteventscalendar', 'geteventsCalendar']
+        ['publicOffical', 'publicOfficalData']
         //end here
     ];
 
@@ -1359,6 +1360,17 @@ wp_die();
         echo json_encode($dataResponse);
         wp_die();
     }
+	
+	    public function publicOfficalData(){
+        $postedData = $this->_publicOfficialSearch();
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", json_decode($postedData), "POST", 'legislation');
+        header("Content-Type: application/json");   
+        echo json_encode($dataResponse);
+		//print_r(json_encode($dataResponse));
+		//die;
+        wp_die();
+    }
+
 	
 	 public function legislativeIssues()
     {
