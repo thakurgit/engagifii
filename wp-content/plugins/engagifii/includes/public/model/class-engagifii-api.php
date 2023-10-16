@@ -19,9 +19,6 @@ class Engagifii_API{
 	*/
 	protected function submitApiRequest($requestUrl,$requestData,$requestType="POST", $module)
 	{
-		print_r($requestUrl);
-		print_r($requestData);
-		print_r($requestType);
 		$options = get_option( 'ebt_api_settings' );
 		$prepareApiResponse = array();
 		$authentication = '';
@@ -643,12 +640,12 @@ public function _popOverSpeakerData3($id, $instructorData){
 //public official API
 	public function publicOfficial(){
 
-		$postData=array();
+		$postData={};
 		$responseArray = array();
 		$apiUrl = 'legislative/public-bills/elected/officials-all-tabs-list';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'legislation');
-		//$responseArray = json_decode($response['api_response'], true);
-		return $apiUrl;
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
 		
 	}
 
