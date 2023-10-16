@@ -332,5 +332,222 @@ replaceText();
 	}
   });*/
   
-
+var xxx= '{
+    "stateSenateMemberList": [{
+        "id": 1414,
+        "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+        "legalName": "Ben Watson",
+        "districtCode": "GA001",
+        "residence": "Isle of Hope, GA",
+        "legislativeRole": "State Senator",
+        "party": "Republican Party",
+        "chamberType": "State Senate",
+        "pid": "gass01",
+        "officialNameLabel": "R-SS-01",
+        "firstName": "Ben",
+        "lastName": "Watson"
+    }],
+    "stateHouseMemberList": [],
+    "stateSenateCommittees": [{
+        "id": 25418,
+        "name": "Administrative Affairs",
+        "committeeOfficals": [{
+            "position": "Member",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+          
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 15343,
+        "name": "Appropriations",
+        "committeeOfficals": [{
+            "position": "Member",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 24690,
+        "name": "Economic Development and Tourism",
+        "committeeOfficals": [{
+            "position": "Ex-Officio",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 15366,
+        "name": "Health and Human Services",
+        "committeeOfficals": [{
+            "position": "Chairman",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 15371,
+        "name": "Judiciary",
+        "committeeOfficals": [{
+            "position": "Member",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 15383,
+        "name": "Rules",
+        "committeeOfficals": [{
+            "position": "Member",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 23172,
+        "name": "Subcommittee on Economic Development",
+        "committeeOfficals": [{
+            "position": "Member",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": 23175,
+        "name": "Subcommittee on Health and Human Development",
+        "committeeOfficals": [{
+            "position": "Chairman",
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }],
+    "stateHouseCommittees": [],
+    "countyDeligationList": [{
+        "id": "13029",
+        "name": "Bryan County",
+        "countyOfficals": [{
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": "13051",
+        "name": "Chatham County",
+        "countyOfficals": [{
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }, {
+        "id": "13179",
+        "name": "Liberty County",
+        "countyOfficals": [{
+            "id": 1414,
+            "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
+            "legalName": "Ben Watson",
+            "districtCode": "GA001",
+            "residence": "Isle of Hope, GA",
+            "legislativeRole": "State Senator",
+            "party": "Republican Party",
+            "chamberType": "State Senate",
+            "pid": "gass01",
+            "officialNameLabel": "R-SS-01",
+            "firstName": "Ben",
+            "lastName": "Watson"
+        }]
+    }],
+    "congressionalDelegationMemberList": []
+}
+';
 	  </script>
