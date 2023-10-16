@@ -243,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			console.log(data); 
 			var count1=[];
 			for (const [key, value] of Object.entries(data)) {
-			  console.log(test[key].length);
+			  console.log(data[key].length);
 			}
 			console.log(count1);
 			jQuery('#pills-tab li').each(function(){
