@@ -239,12 +239,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
           },
           success: function(response) { 
-		  	var data =   JSON.parse(response.api_response);  
+		  	var data =   response.api_response;  
 			console.log(data); 
 			var count1=[];
-			data.forEach(function(value, index) {
-			  //console.log(value);
-			});
+			
 			console.log(count1);
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
