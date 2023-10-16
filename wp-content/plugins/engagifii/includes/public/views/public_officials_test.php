@@ -239,19 +239,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
           },
           success: function(response) { 
-		  	var data =   response.api_response; 
-			$publicOfficial = data;
-			console.log($publicOfficial); 
-			/*console.log(data); 
+		  	const data =   response.api_response;  
+			console.log(data); 
 			var count1=[];
 			for (const [key, value] of Object.entries(data)) {
-				console.log(key, value);
-			  }
+			  console.log(test[key].length);
+			}
 			console.log(count1);
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
-*/		  }
+		  }
         });
       }
 
