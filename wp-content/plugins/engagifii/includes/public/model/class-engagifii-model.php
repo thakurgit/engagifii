@@ -1373,7 +1373,9 @@ wp_die();
     public function _publicOfficialSearch(){
         $postData = array();
         $postData['searchText'] = $_POST['searchText'];      
-        return $postData;
+        //return $postData;
+		print_r($postData);
+		die;
     }
 	
 	 public function legislativeIssues()
