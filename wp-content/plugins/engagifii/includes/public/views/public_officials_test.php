@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				count1.push(data[key].length);
                 //console.log(data[key].length);
             });
-			console.log(count);
+			console.log(count1);
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
