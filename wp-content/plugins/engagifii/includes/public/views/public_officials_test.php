@@ -242,8 +242,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		  	const data =   JSON.parse(JSON.stringify(response.api_response));  
 			console.log(data); 
 			var count1=[];
-			for (const [key, value] of Object.entries(data)) {
-			  console.log(data[key].length);
+			data.forEach(function(value, index) {
+			  console.log(value);
 			}
 			console.log(count1);
 			jQuery('#pills-tab li').each(function(){
