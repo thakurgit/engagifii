@@ -241,14 +241,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           success: function(response) { 
 		  	var data =   response.api_response;  
 			console.log(data); 
-			var count=[];
+			var count1=[];
 			Object.keys(data).forEach(function (key) {
-				count.push(data[key].length);
+				count1.push(data[key].length);
                 //console.log(data[key].length);
             });
-			//console.log(count);
+			console.log(count);
 			jQuery('#pills-tab li').each(function(){
-				jQuery(this).find('button b').text('('+count[jQuery(this).index()]+')');	
+				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
 		  }
         });
