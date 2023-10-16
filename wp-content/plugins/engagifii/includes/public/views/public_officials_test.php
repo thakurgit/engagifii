@@ -239,10 +239,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
           },
           success: function(response) { 
-		  	var data1 =   response.api_response;   
+		  	var data =   response.api_response;   
 			var count=[];
-			Object.keys(data1).forEach(function (key) {
-				count.push(data1[key].length);
+			Object.keys(data).forEach(function (key) {
+				count.push(data[key].length);
                 console.log(data[key].length);
             });
 			console.log(count);
