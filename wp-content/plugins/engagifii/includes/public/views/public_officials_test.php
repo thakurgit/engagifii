@@ -51,9 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$peopleDATA = fetchData($url, $tenant_code,$payload);
     //print_r($peopleDATA);
 }*/
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-print_r('lhgjgkgmhlgj');	
-}
 ?>
 <style type="text/css">
   
@@ -241,8 +238,9 @@ print_r('lhgjgkgmhlgj');
 			  searchText:searchOfficial
         
           },
-          success: function(response) {       
-            console.log(response.api_response);
+          success: function(response) { 
+		  	var data =   response.api_response;    
+            console.log(JSON.parse(JSON.stringify(data)));
 		  }
         });
       }
