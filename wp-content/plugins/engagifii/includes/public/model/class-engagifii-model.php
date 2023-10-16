@@ -1371,7 +1371,7 @@ wp_die();
     }
     public function _publicOfficialSearch(){
         $postData = array();
-        $postData['searchText'] = $_POST['searchText'];      
+        $postData['name'] = $_POST['searchText'];      
         return $postData;
     }
 	
