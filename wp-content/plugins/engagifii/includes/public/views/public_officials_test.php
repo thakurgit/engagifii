@@ -219,8 +219,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php $k++; } ?>
       </div>
        <script>
+	   var searchOfficial='';
 	   jQuery('form button').click(function(e){
-		 publicOfficial();
+		   if(jQuery('.search-official').val()!=''){
+			   searchOfficial = jQuery('.search-official').val();
+			 publicOfficial();
+		   }else{
+			alert('Search field should not be blank');   
+		   }
 		 e.preventDefault();
 	   });
 	    function publicOfficial()  {
@@ -230,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'publicofficialdata',
-			  searchText:'Ben'
+			  searchText:searchOfficial
         
           },
           success: function(response) {       

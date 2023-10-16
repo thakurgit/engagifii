@@ -1367,7 +1367,6 @@ wp_die();
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
 		//print_r(json_encode($postedData));
-		//die;
         wp_die();
     }
     public function _publicOfficialSearch(){
