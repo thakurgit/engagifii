@@ -1363,9 +1363,9 @@ wp_die();
 	
 	    public function publicOfficalsearchData(){
         $postedData = $this->_publicOfficialSearch();
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", json_decode($postedData), "POST", 'legislation');
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
         header("Content-Type: application/json");   
-        //echo json_encode($dataResponse);
+        echo json_encode($dataResponse);
 		print_r(json_encode($postedData));
 		die;
         wp_die();
