@@ -130,7 +130,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['endorsement', 'endorsementCalendar'],
         ['getendorsementcalendar', 'getendorsementCalendar'],
         ['eventscalendar', 'eventsCalendar'],
-        ['geteventscalendar', 'geteventsCalendar']
+        ['geteventscalendar', 'geteventsCalendar'],
         ['publicOffical', 'publicOfficalData']
         //end here
     ];
