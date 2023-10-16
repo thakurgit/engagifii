@@ -51,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$peopleDATA = fetchData($url, $tenant_code,$payload);
     //print_r($peopleDATA);
 }*/
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+print_r('lhgjgkgmhlgj');	
+}
 ?>
 <style type="text/css">
   
