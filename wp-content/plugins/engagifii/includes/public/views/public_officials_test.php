@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
                     <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
                     <div class="input-group-append">
+                    <button type="button" class="search-close position-absolute btn" style="right:30px; top:0; display:none; z-index:99"><i class="fal fa-times"></i></button>
                         <button type="submit" class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></button>
                     </div>
                
@@ -218,7 +219,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php $k++; } ?>
       </div>
        <script>
+	   jQuery(document).ready(function(){
+		 jQuery('.search-official').val('');  
+	   });
 	   var searchOfficial='';
+	   jQuery('.search-official').keyup(function(){
+			if(jQuery('.search-official').val()!=''){
+				jQuery('.search-close').show();	
+			}else{
+			  jQuery('.search-close').hide();		
+			}
+	   });
 	   jQuery('form button').click(function(e){
 		   if(jQuery('.search-official').val()!=''){
 			   searchOfficial = jQuery('.search-official').val();
@@ -228,6 +239,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		   }
 		 e.preventDefault();
 	   });
+	    jQuery('.search-close').click(function(){
+			 jQuery('.search-official').val(''); 
+			jQuery(this).hide();
+			searchOfficial = '';
+			 publicOfficial();	
+		});
 	    function publicOfficial()  {
 
           $.ajax({
@@ -250,6 +267,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
+			var keyss=[];
+			for (let key in data) { 
+				var html='';
+			  let value;
+			  value = data[key];
+			   //console.log(key);
+			  //console.log(value); 
+			  keyss.push(key);
+			   var index = keyss.indexOf(key);
+			   if(key=='stateSenateCommittees' || key=='stateHouseCommittees'){
+				  for (let key in value) {
+					htmlData=value[key]; 
+					var htmlinner='';
+					var innerValue = htmlData['committeeOfficals'];
+				
+					for (let key in innerValue) {
+						htmlinnerdata=innerValue[key];
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+					}
+					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.accordion').html(html);	
+			   } else if(key=='countyDeligationList'){
+				 	for (let key in value) {
+					htmlData=value[key]; 
+					var htmlinner='';
+					var innerValue = htmlData['countyOfficals'];
+					for (let key in innerValue) {
+						htmlinnerdata=innerValue[key];
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+					}
+					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.accordion').html(html);  
+			   } else {
+				  for (let key in value) {
+					htmlData=value[key]; 
+					html+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlData['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlData['id']+'">'+htmlData['legalName']+'</a><br>('+htmlData['officialNameLabel']+')<br>'+htmlData['legislativeRole']+'<br>'+htmlData['districtCode']+'<br>'+htmlData['residence']+'<br>'+htmlData['party']+'</div></div></div> </div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.row').html(html);	
+			   }
+	   
+		  } 
 		  }
         });
       }
