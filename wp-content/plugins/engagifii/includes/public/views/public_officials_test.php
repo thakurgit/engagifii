@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	var data =   response.api_response;   
-			
+			console.log(data);
 		  }
         });
       }
