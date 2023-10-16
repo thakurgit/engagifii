@@ -116,8 +116,15 @@ $assignToTags = $obj->legislationAssignToTagFilter();
 <div class="container-fluid pb-4">
 <span class="total-bill-text"></span>
 <p class="lead text-center"><span class="bill-count"></span></p>
+
 <div class="row rowEngagii tz-Engagii-flex">
-<div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end">
+        <div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end">
+<!-- Show Print Tracked Bill Button only if Tenant Code = AASB -->     
+<?php if($tenant_url =="aasb") { ?><span class="col-12 text-lg-left" style="padding-left:5rem !important"><a href="https://aasb.engagifii.com/public/lbt-report/7550/pdf/export" target="_blank" style="font-weight: 100;">
+    <!-- <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/pdf-icon.png" width="20" height="20" alt="PDF Icon" class="pdf-icon"> -->
+    Print tracked bills
+</a> </span><?php } ?>
+<!-- End here -->
    <div class="one-coloumnsEngagii"> 
       <input type="hidden" name="enga_custom_multi_filter" id="enga_custom_multi_filter" value="">
       <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
@@ -802,6 +809,7 @@ if (window.location.href.indexOf("sessionId") > -1){
         tzdatasearch +=eltzdatasearch.value;
     }
   var trackingLevels_Unq = trackingLevels.filter( onlyUnique );
+  trackingLevels_Unq = trackingLevels.filter(elm => elm);
   $.ajax({
       type : "post",
       url: engagifiiUrl_ajaxurl,
@@ -849,6 +857,7 @@ function clearAll()
         setTimeout(function(){
           startDate=null;
           endDate=null;
+ $(".tz-selectAll").prop('checked', false);
   $("#isapplyactive").val(0);
   $("#datepicker-start").val("");
   $("#datepicker-end").val("");
@@ -1262,17 +1271,17 @@ function copyDataforApply()
    var assignTags_unq  = assignTags.filter(onlyUnique);
    var assignGroups_unq = assignGroups.filter(onlyUnique);
 
-   appl_trackingLevels=trackingLevels_Unq;
-   appl_sponsors=sponsors_Unq;
-   appl_houseCommittees=houseCommittees_Unq;
-   appl_senateCommittees=senateCommittees_Unq;
-   appl_lastActionTypes=lastActionTypes_Unq;
-   appl_billTypes=billTypes_Unq;
-   appl_statusTypes=statusTypes_Unq;
-   appl_tags  = tags_Unq;
+   appl_trackingLevels=trackingLevels_Unq.filter(elm => elm);
+   appl_sponsors=sponsors_Unq.filter(elm => elm);
+   appl_houseCommittees=houseCommittees_Unq.filter(elm => elm);
+   appl_senateCommittees=senateCommittees_Unq.filter(elm => elm);
+   appl_lastActionTypes=lastActionTypes_Unq.filter(elm => elm);
+   appl_billTypes=billTypes_Unq.filter(elm => elm);
+   appl_statusTypes=statusTypes_Unq.filter(elm => elm);
+   appl_tags  = tags_Unq.filter(elm => elm);
    startDate=startDate;
    endDate=endDate;
-   appl_assignto = assignedto_unq;
+   appl_assignto = assignedto_unq.filter(elm => elm);
    appl_assignTags = assignTags_unq;
    appl_assignGroups = assignGroups_unq;
 }
@@ -1592,5 +1601,32 @@ $("#apply-filter-data").click(function () {
 if (window.location.href.indexOf("sessionId") > -1){
 	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
 }
+
+$(document).ready(function () {
+	$(".tz-dropdown-filter").each(function () {
+	$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
+});
+$(".tz-selectAll").change(function () {
+	if($(this).is(':checked')){
+		//$(this).parent().siblings().addClass('liactive deftzselected');
+		//$(this).parent().siblings().find('input').prop('checked',true);
+		$(this).parent().siblings().each(function(){
+		  if(!$(this).find('input').is(':checked')){
+			$(this).trigger('click');
+		  }
+		});
+	}else{
+		//$(this).parent().siblings().trigger('click');
+		//$(this).parent().siblings().removeClass('liactive deftzselected');
+		//$(this).parent().siblings().find('input').prop('checked',false);
+		$(this).parent().siblings().each(function(){
+		  if($(this).find('input').is(':checked')){
+			$(this).trigger('click');
+		  }
+		});
+	}
+});
+});
+
 </script>      
 </div>

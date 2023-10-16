@@ -32,7 +32,9 @@
 			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[course_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 	    	$counter++;	  
     	}
-    	echo '</ul></div>';				
+    	echo '</ul>';				
     }
+    	echo '</div>';				
 ?>
 </div>
+<!--course column end-->

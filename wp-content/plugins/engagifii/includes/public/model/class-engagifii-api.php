@@ -61,9 +61,9 @@ class Engagifii_API{
 				),
 
 			));
-
-			$response = curl_exec($curl);
-
+			if($tenant_code!=""){
+							$response = curl_exec($curl);
+				}
 			$err = curl_error($curl);
 			curl_close($curl);
 			if ($err) {
@@ -636,6 +636,17 @@ public function _popOverSpeakerData3($id, $instructorData){
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
+
+	public function eventDateFilter($date){
+//alert($date);
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'event/GetMinMaxEventDate/'.$date;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+	//event/GetMinMaxEventDate
 
 	/*Get all Award Tags */
 	public function awardAllTags($date){

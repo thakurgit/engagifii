@@ -4,7 +4,7 @@
     $obj =  new adminDataColumn();
     $response = $obj->getEventsColumnData();
     $options = get_option( 'ebt_api_settings' );
-	$required_column_array = ['name', 'city', 'tags', 'eventClasses', 'register', 'eventStatus', 'eventType', 'eventDates'];
+	$required_column_array = ['name', 'city', 'tags', 'eventClasses', 'register', 'eventStatus', 'eventType', 'startDateTime'];
 	//print_r(json_encode($response));
 	
     $events_visible_column_list = array();
@@ -25,7 +25,9 @@
 		foreach ($response as $key => $row) {
 			if(in_array($row->colName, $required_column_array)){
 			//print_r($row->colName)."<br>";
-
+			if($row->colName == 'startDateTime')
+			{            $row->displayName = "Event Schedule";
+			}
 			$checked = "";
 			if(in_array($row->colName, $events_visible_column_list))
 			{
