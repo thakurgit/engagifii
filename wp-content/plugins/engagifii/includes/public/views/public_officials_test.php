@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
                                             <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                    <<img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
+                                                    <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
                                             </div>
                                             <div>
                                          <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
