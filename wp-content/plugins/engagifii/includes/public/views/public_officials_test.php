@@ -240,8 +240,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	const data =   response.api_response; 
-			let populationArr = Object.entries(JSON.parse(JSON.stringify(data))); 
-			console.log(JSON.parse(JSON.stringify(data))); 
+			const data = JSON.parse(JSON.stringify(data))
+			let populationArr = Object.entries(data); 
+			console.log(data); 
 			console.log(populationArr); 
 			var count1=[];
 			for (array of populationArr){
