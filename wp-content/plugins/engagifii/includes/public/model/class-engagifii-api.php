@@ -637,6 +637,17 @@ public function _popOverSpeakerData3($id, $instructorData){
 		return $responseArray;
 	}
 
+//public official API
+	public function publicOfficial(){
+
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/elected/officials-all-tabs-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+
 	public function eventDateFilter($date){
 //alert($date);
 		$postData=array();
