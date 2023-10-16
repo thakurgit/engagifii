@@ -240,7 +240,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	var data =   response.api_response;   
-			console.log(data);
+			var count=[];
+			Object.keys(data).forEach(function (key) {
+				count.push(data[key].length);
+                console.log(data[key].length);
+            });
+			jQuery('#pills-tab li').each(function(){
+				jQuery(this).find('button b').text('('+count[jQuery(this).index()]+')');	
+			});
 		  }
         });
       }
