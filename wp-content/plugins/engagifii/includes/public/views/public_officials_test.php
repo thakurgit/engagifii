@@ -202,12 +202,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         		<img src="<?php echo $value['profilePic']; ?>" alt="" class="img-fluid">
                         </div>
                         <div>
-                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value->id; ?>"><?php echo $value->legalName; ?></a><br>
-                    (<?php echo $value->officialNameLabel ; ?>)<br>
-                    <?php echo $value->legislativeRole; ?><br>
-                    <?php echo $value->districtCode; ?><br>
-                    <?php echo $value->residence; ?><br>
-                    <?php echo $value->party; ?>
+                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value['id']; ?>"><?php echo $value['legalName']; ?></a><br>
+                    (<?php echo $value['officialNameLabel'] ; ?>)<br>
+                    <?php echo $value['legislativeRole']; ?><br>
+                    <?php echo $value['districtCode']; ?><br>
+                    <?php echo $value['residence']; ?><br>
+                    <?php echo $value['party']; ?>
                         </div>
                     </div>
                 </div>
