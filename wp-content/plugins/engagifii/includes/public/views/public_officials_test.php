@@ -1,7 +1,8 @@
 <?php
     $obj      =  new Engagifii_API();
-    $publicOfficial = $obj->publicOfficial();
-	$publicOfficial = json_encode($publicOfficial);
+    $publicOfficialdata = $obj->publicOfficial();
+	$publicOfficial = json_encode($publicOfficialdata);
+	print_r($publicOfficial);
 
 $options = get_option('ebt_api_settings');
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
