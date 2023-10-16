@@ -240,7 +240,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	var data =   response.api_response;    
-            console.log(JSON.parse(JSON.stringify(data)));
+            data.forEach(function(value, index) {
+				console.log(value['id']);
+			});
 		  }
         });
       }
