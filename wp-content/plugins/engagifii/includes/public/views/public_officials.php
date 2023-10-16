@@ -1,5 +1,7 @@
 <?php
-//tenant GSBA spec
+$options = get_option('ebt_api_settings');
+$tenant_url          = $options['lbt_tenant_code']['tenant_code'];
+print_r($tenant_url);
 $tenant_code = "gsba";
 
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
@@ -216,6 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php $k++; } ?>
       </div>
        <script>
+	
 	  
 	/*function replaceText() {
 
