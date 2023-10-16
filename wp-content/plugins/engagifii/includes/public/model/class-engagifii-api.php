@@ -640,7 +640,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 //public official API
 	public function publicOfficial(){
 
-		$postData={};
+		$postData='{}';
 		$responseArray = array();
 		$apiUrl = 'legislative/public-bills/elected/officials-all-tabs-list';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'legislation');
