@@ -3,7 +3,8 @@ if (isset($_GET['id'])) {
     $paramValue = $_GET['id'];
    // echo "Value of 'param' parameter: " . $paramValue;
 } 
-$tenant_code = "gsba";
+$options = get_option('ebt_api_settings');
+$tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1/legislative/public-bills/official-detail/'.$paramValue;
 $curl = curl_init();
 // Append any necessary query parameters to the URL
