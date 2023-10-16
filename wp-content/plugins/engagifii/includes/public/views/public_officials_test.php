@@ -2,10 +2,10 @@
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
 
-$options = get_option('ebt_api_settings');
+/*$options = get_option('ebt_api_settings');
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 
-/*$url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
+$url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
 $curl = curl_init();
 // Append any necessary query parameters to the URL
 $queryParameters = array(
