@@ -1,6 +1,7 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
+	print_r($publicOfficial);
 
 $options = get_option('ebt_api_settings');
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
@@ -195,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo '</div>';
 			 } else {
         		foreach ($list as $key => $value) {
-					$value = json_encode($value);
+					
 					 ?>
         		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
