@@ -241,12 +241,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           success: function(response) { 
 		  	const data =   response.api_response; 
 			let populationArr = Object.entries(data); 
-			console.log(data); 
+			console.log(populationArr); 
 			var count1=[];
 			for (array of populationArr){
-			  count1.push(array[1].length);
+			  //count1.push(array[1].length);
 			} 
-			console.log(count1);
+			//console.log(count1);
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
