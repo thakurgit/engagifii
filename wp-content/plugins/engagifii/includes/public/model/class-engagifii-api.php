@@ -655,7 +655,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 		$responseArray = array();
 		$apiUrl = 'event/GetMinMaxEventDate/'.$date;
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
-		//$responseArray = json_decode($response['api_response'], true);
+		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
 	//event/GetMinMaxEventDate
