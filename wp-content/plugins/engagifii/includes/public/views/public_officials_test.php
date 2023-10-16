@@ -243,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			console.log(data); 
 			//var count=[];
 			//Object.keys(data).forEach(function (key) {
-				count.push(data[key].length);
+				//count.push(data[key].length);
                 //console.log(data[key].length);
             //});
 			//console.log(count);
