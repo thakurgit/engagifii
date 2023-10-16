@@ -1370,7 +1370,11 @@ wp_die();
 		//die;
         wp_die();
     }
-
+    public function _publicOfficialSearch(){
+        $postData = array();
+        $postData['searchText'] = $_POST['searchText'];      
+        return $postData;
+    }
 	
 	 public function legislativeIssues()
     {

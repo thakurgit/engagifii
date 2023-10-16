@@ -219,7 +219,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php $k++; } ?>
       </div>
        <script>
-	
+	   jQuery('form button').click(function(e){
+		 publicOfficial();
+		 e.preventDefault();
+	   });
+	    function publicOfficial()  {
+
+          $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'publicofficialdata',
+			  searchText:'Ben'
+        
+          },
+          success: function(response) {       
+            console.log(response.api_response);
+		  }
+        });
+      }
+
 	  
 	/*function replaceText() {
 
