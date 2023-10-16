@@ -1,4 +1,11 @@
 <?php
+    $obj      =  new Engagifii_API();
+    $date           =   date('Y-m-d');
+    $instructor = $obj->classAllInstructors($date);
+	print_r($instructor);
+
+
+
 $options = get_option('ebt_api_settings');
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 
