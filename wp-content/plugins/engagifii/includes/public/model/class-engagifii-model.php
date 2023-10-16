@@ -1366,8 +1366,8 @@ wp_die();
         $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
-		print_r(json_encode($postedData));
-		die;
+		//print_r(json_encode($postedData));
+		//die;
         wp_die();
     }
     public function _publicOfficialSearch(){
