@@ -194,21 +194,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php }
 				echo '</div>';
 			 } else {
-        		foreach ($list as $key => $value) {
-					print_r($value); ?>
+        		foreach ($list as $key => $valued) {
+					print_r($valued); ?>
         		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
                 	<div class="d-flex">
                     	<div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                        		<img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
+                        		<img src="<?php echo $valued->profilePic; ?>" alt="" class="img-fluid">
                         </div>
                         <div>
-                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value->id; ?>"><?php echo $value->legalName; ?></a><br>
-                    (<?php echo $value->officialNameLabel ; ?>)<br>
-                    <?php echo $value->legislativeRole; ?><br>
-                    <?php echo $value->districtCode; ?><br>
-                    <?php echo $value->residence; ?><br>
-                    <?php echo $value->party; ?>
+                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $valued->id; ?>"><?php echo $valued->legalName; ?></a><br>
+                    (<?php echo $valued->officialNameLabel ; ?>)<br>
+                    <?php echo $valued->legislativeRole; ?><br>
+                    <?php echo $valued->districtCode; ?><br>
+                    <?php echo $valued->residence; ?><br>
+                    <?php echo $valued->party; ?>
                         </div>
                     </div>
                 </div>
