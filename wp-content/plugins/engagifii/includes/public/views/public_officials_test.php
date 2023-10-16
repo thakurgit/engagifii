@@ -332,7 +332,7 @@ replaceText();
 	}
   });*/
   
-var xxx= '{
+var xxx= {
     "stateSenateMemberList": [{
         "id": 1414,
         "profilePic": "https://ssresource.azureedge.net/qaresources/publicoff/291293.jpg",
@@ -549,5 +549,5 @@ var xxx= '{
     }],
     "congressionalDelegationMemberList": []
 }
-';
+;
 	  </script>
