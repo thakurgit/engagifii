@@ -239,16 +239,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
           },
           success: function(response) { 
-		  	var data =   response.api_response; 
-			data = JSON.parse(JSON.stringify(data))
-			let populationArr = Object.entries(data); 
+		  	var data =   response; 
 			console.log(data); 
-			console.log(populationArr); 
 			var count1=[];
-			for (array of populationArr){
-			  //count1.push(array[1].length);
-			} 
-			//console.log(count1);
+			  const keys = Object.keys(data);
+			  for (const key of keys) {
+				const count = data[key].length;
+				count1.push(`${count}`);
+			  }
 			jQuery('#pills-tab li').each(function(){
 				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
 			});
