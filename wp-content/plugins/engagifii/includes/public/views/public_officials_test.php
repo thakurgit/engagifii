@@ -240,10 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	var data =   response.api_response;   
-			const keys = Object.keys(data); 
-			keys.forEach((key, index) => {
-				console.log(key);
-			});
+			
 		  }
         });
       }
