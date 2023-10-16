@@ -1,7 +1,6 @@
 <?php
     $obj      =  new Engagifii_API();
-    $publicOfficialdata = $obj->publicOfficial();
-	$publicOfficial = json_encode($publicOfficialdata);
+    $publicOfficial = $obj->publicOfficial();
 	print_r($publicOfficial);
 
 $options = get_option('ebt_api_settings');
