@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if($k==1){
 				$class =' show active';
 			}
-			$list = $value;
+			$list = json_encode($value);
 			?>
       <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
       	<div class="row">
@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo '</div>';
 			 } else {
         		foreach ($list as $key => $value) {
-					print_r($value['id']); ?>
+					 ?>
         		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
                 	<div class="d-flex">
