@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="row">
                             	<?php //if($key=='countyDeligationList'){
 									//print_r($value->countyOfficals);
-									 foreach ($value->countyOfficals as $key => $values) { ?>
+									 foreach ($value['countyOfficals'] as $key => $values) { ?>
                                  	 <div class="col-md-6 col-lg-4 mb-3 ">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 	<?php }
 								//}
 								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
-									foreach ($value->committeeOfficals as $key => $values) { ?>
+									foreach ($value['committeeOfficals'] as $key => $values) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
