@@ -19,6 +19,9 @@ class Engagifii_API{
 	*/
 	protected function submitApiRequest($requestUrl,$requestData,$requestType="POST", $module)
 	{
+		print_r($requestUrl);
+		print_r($requestData);
+		print_r($requestType);
 		$options = get_option( 'ebt_api_settings' );
 		$prepareApiResponse = array();
 		$authentication = '';
