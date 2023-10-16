@@ -1,8 +1,8 @@
 <?php
     $obj      =  new Engagifii_API();
-    $date           =   date('Y-m-d');
-    $instructor = $obj->classAllInstructors($date);
-	print_r($instructor);
+    $publicOfficial = $obj->publicOfficial();
+	print_r($publicOfficial);
+	die;
 
 
 
