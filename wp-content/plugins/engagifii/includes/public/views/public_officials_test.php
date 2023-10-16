@@ -134,14 +134,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo '<div class="accordion col-12" id="accordionExample">';
 				foreach ($list as $key => $value) { ?>
 					  <div class="card">
-                        <div class="card-header px-0" id="heading<?php echo $value->id; ?>">
+                        <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
                           <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
-                              <i class="fal fa-plus mr-3"></i><?php echo $value->name; ?>
+                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?>
                             </button>
                           </h2>
                         </div>
-                        <div id="collapse<?php echo $value->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="row">
                             	<?php //if($key=='countyDeligationList'){
@@ -151,15 +151,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                  <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
+                                                  <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
                                           </div>
                                           <div>
-                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values->id; ?>"><?php echo $values->legalName; ?></a><br>
-                                      (<?php echo $values->officialNameLabel ; ?>)<br>
-                                      <?php echo $values->legislativeRole; ?><br>
-                                      <?php echo $values->districtCode; ?><br>
-                                      <?php echo $values->residence; ?><br>
-                                      <?php echo $values->party; ?>
+                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
+                                      (<?php echo $values['officialNameLabel'] ; ?>)<br>
+                                      <?php echo $values['legislativeRole']; ?><br>
+                                      <?php echo $values['districtCode']; ?><br>
+                                      <?php echo $values['residence']; ?><br>
+                                      <?php echo $values['party']; ?>
                                           </div>
                                       </div>
                                   </div>
@@ -172,15 +172,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
                                             <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                    <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
+                                                    <<img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
                                             </div>
                                             <div>
-                                         <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values->id; ?>"><?php echo $values->legalName; ?></a><br>
-                                        (<?php echo $values->officialNameLabel ; ?>)<br>
-                                        <?php echo $values->legislativeRole; ?><br>
-                                        <?php echo $values->districtCode; ?><br>
-                                        <?php echo $values->residence; ?><br>
-                                        <?php echo $values->party; ?>
+                                         <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
+                                        (<?php echo $values['officialNameLabel'] ; ?>)<br>
+                                      <?php echo $values['legislativeRole']; ?><br>
+                                      <?php echo $values['districtCode']; ?><br>
+                                      <?php echo $values['residence']; ?><br>
+                                      <?php echo $values['party']; ?>
                                             </div>
                                         </div>
                                     </div>
