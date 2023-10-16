@@ -91,7 +91,7 @@ curl_close($curl);
     	<div class="row">
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">Email</h6>
-                <a href="mailto:<?php echo $response->email; ?>"><?php echo $response->email; ?></a>
+                <a style="word-wrap:break-word" href="mailto:<?php echo $response->email; ?>"><?php echo $response->email; ?></a>
             </div>
             <?php foreach ($response->phones as $key => $value) {
                 echo '<div class="col-md-3 mb-3"><h6 class="mb-1">'.$value->type.'</h6>'.$value->number.'</div>';	
@@ -99,17 +99,17 @@ curl_close($curl);
             <?php if($response->facebookUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">Facebook</h6>
-                <a href="<?php echo $response->facebookUrl; ?>"><?php echo $response->facebookUrl; ?></a>
+                <a  style="word-wrap:break-word" href="<?php echo $response->facebookUrl; ?>"><?php echo $response->facebookUrl; ?></a>
             </div>
             <?php } if($response->twitterUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">Twitter</h6>
-                <a href="<?php echo $response->twitterUrl; ?>"><?php echo $response->twitterUrl; ?></a>
+                <a style="word-wrap:break-word" href="<?php echo $response->twitterUrl; ?>"><?php echo $response->twitterUrl; ?></a>
             </div>
             <?php } if($response->linkedInUrl){ ?>
         	<div class="col-md-3 mb-3">
             	<h6 class="mb-1">LinkedIn</h6>
-                <a href="<?php echo $response->linkedInUrl; ?>"><?php echo $response->linkedInUrl; ?></a>
+                <a style="word-wrap:break-word" href="<?php echo $response->linkedInUrl; ?>"><?php echo $response->linkedInUrl; ?></a>
             </div>
             <?php } ?>
         </div>
