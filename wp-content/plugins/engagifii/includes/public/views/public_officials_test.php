@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			  jQuery('.search-close').hide();		
 			}
 	   });
-	   jQuery('form button').click(function(e){
+	   jQuery('form button[type="submit"]').click(function(e){
 		   if(jQuery('.search-official').val()!=''){
 			   searchOfficial = jQuery('.search-official').val();
 			 publicOfficial();
@@ -239,11 +239,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		   }
 		 e.preventDefault();
 	   });
-	    jQuery('.search-close').click(function(){
+	    jQuery('.search-close').click(function(e){
 			 jQuery('.search-official').val(''); 
 			jQuery(this).hide();
 			searchOfficial = '';
 			 publicOfficial();	
+			 e.stopPropagation();
 		});
 	    function publicOfficial()  {
 
@@ -258,15 +259,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           success: function(response) { 
 		  	var data =   response; 
 			console.log(data); 
-			var count1=[];
-			  const keys = Object.keys(data);
-			  for (const key of keys) {
-				const count = data[key].length;
-				count1.push(`${count}`);
-			  }
+			
+			var tabsCount=[];
+			for (var keys in data) {
+				tabsCount.push(data[keys].length);
+			}
 			jQuery('#pills-tab li').each(function(){
-				jQuery(this).find('button b').text('('+count1[jQuery(this).index()]+')');	
+				jQuery(this).find('button b').text('('+tabsCount[jQuery(this).index()]+')');	
 			});
+
 			var keyss=[];
 			for (let key in data) { 
 				var html='';

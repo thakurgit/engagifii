@@ -1,5 +1,8 @@
 <?php
-$options = get_option('ebt_api_settings');
+    $obj      =  new Engagifii_API();
+    $publicOfficial = $obj->publicOfficial();
+
+/*$options = get_option('ebt_api_settings');
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 
 $url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
@@ -47,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	$peopleDATA = fetchData($url, $tenant_code,$payload);
     //print_r($peopleDATA);
-}
+}*/
 ?>
 <style type="text/css">
   
@@ -69,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
                     <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
                     <div class="input-group-append">
+                    <button type="button" class="search-close position-absolute btn" style="right:30px; top:0; display:none; z-index:99"><i class="fal fa-times"></i></button>
                         <button type="submit" class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></button>
                     </div>
                
@@ -79,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
       <?php $i=1; 
-	  	foreach ($peopleDATA as $key => $value) {
+	  	foreach ($publicOfficial as $key => $value) {
 			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
 				continue;	
 			}
@@ -114,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
       <div class="tab-content" id="nav-tabContent">
       <?php $k=1; 
-	  	foreach ($peopleDATA as $key => $value) {
+	  	foreach ($publicOfficial as $key => $value) {
 			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
 				continue;	
 			}
@@ -130,32 +134,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				echo '<div class="accordion col-12" id="accordionExample">';
 				foreach ($list as $key => $value) { ?>
 					  <div class="card">
-                        <div class="card-header px-0" id="heading<?php echo $value->id; ?>">
+                        <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
                           <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value->id; ?>" aria-expanded="true" aria-controls="collapseOne">
-                              <i class="fal fa-plus mr-3"></i><?php echo $value->name; ?>
+                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
+                              <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?>
                             </button>
                           </h2>
                         </div>
-                        <div id="collapse<?php echo $value->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="row">
                             	<?php //if($key=='countyDeligationList'){
 									//print_r($value->countyOfficals);
-									 foreach ($value->countyOfficals as $key => $values) { ?>
+									 foreach ($value['countyOfficals'] as $key => $values) { ?>
                                  	 <div class="col-md-6 col-lg-4 mb-3 ">
                                   <div class="border bg-light rounded-2 p-3">
                                       <div class="d-flex">
                                           <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                  <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
+                                                  <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
                                           </div>
                                           <div>
-                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values->id; ?>"><?php echo $values->legalName; ?></a><br>
-                                      (<?php echo $values->officialNameLabel ; ?>)<br>
-                                      <?php echo $values->legislativeRole; ?><br>
-                                      <?php echo $values->districtCode; ?><br>
-                                      <?php echo $values->residence; ?><br>
-                                      <?php echo $values->party; ?>
+                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
+                                      (<?php echo $values['officialNameLabel'] ; ?>)<br>
+                                      <?php echo $values['legislativeRole']; ?><br>
+                                      <?php echo $values['districtCode']; ?><br>
+                                      <?php echo $values['residence']; ?><br>
+                                      <?php echo $values['party']; ?>
                                           </div>
                                       </div>
                                   </div>
@@ -163,20 +167,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 	<?php }
 								//}
 								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
-									foreach ($value->committeeOfficals as $key => $values) { ?>
+									foreach ($value['committeeOfficals'] as $key => $values) { ?>
                                        <div class="col-md-6 col-lg-4 mb-3">
                                     <div class="border bg-light rounded-2 p-3">
                                         <div class="d-flex">
                                             <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                    <img src="<?php echo $values->profilePic; ?>" alt="" class="img-fluid">
+                                                    <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
                                             </div>
                                             <div>
-                                         <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values->id; ?>"><?php echo $values->legalName; ?></a><br>
-                                        (<?php echo $values->officialNameLabel ; ?>)<br>
-                                        <?php echo $values->legislativeRole; ?><br>
-                                        <?php echo $values->districtCode; ?><br>
-                                        <?php echo $values->residence; ?><br>
-                                        <?php echo $values->party; ?>
+                                         <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
+                                        (<?php echo $values['officialNameLabel'] ; ?>)<br>
+                                      <?php echo $values['legislativeRole']; ?><br>
+                                      <?php echo $values['districtCode']; ?><br>
+                                      <?php echo $values['residence']; ?><br>
+                                      <?php echo $values['party']; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -190,20 +194,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php }
 				echo '</div>';
 			 } else {
-        		foreach ($list as $key => $value) { ?>
+        		foreach ($list as $key => $value) {?>
         		<div class="col-md-6 col-lg-4 mb-3">
             	<div class="border bg-light rounded-2 p-3">
                 	<div class="d-flex">
                     	<div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                        		<img src="<?php echo $value->profilePic; ?>" alt="" class="img-fluid">
+                        		<img src="<?php echo $value['profilePic']; ?>" alt="" class="img-fluid">
                         </div>
                         <div>
-                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value->id; ?>"><?php echo $value->legalName; ?></a><br>
-                    (<?php echo $value->officialNameLabel ; ?>)<br>
-                    <?php echo $value->legislativeRole; ?><br>
-                    <?php echo $value->districtCode; ?><br>
-                    <?php echo $value->residence; ?><br>
-                    <?php echo $value->party; ?>
+                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value['id']; ?>"><?php echo $value['legalName']; ?></a><br>
+                    (<?php echo $value['officialNameLabel'] ; ?>)<br>
+                    <?php echo $value['legislativeRole']; ?><br>
+                    <?php echo $value['districtCode']; ?><br>
+                    <?php echo $value['residence']; ?><br>
+                    <?php echo $value['party']; ?>
                         </div>
                     </div>
                 </div>
@@ -215,7 +219,105 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php $k++; } ?>
       </div>
        <script>
-	
+	   jQuery(document).ready(function(){
+		 jQuery('.search-official').val('');  
+	   });
+	   var searchOfficial='';
+	   jQuery('.search-official').keyup(function(){
+			if(jQuery('.search-official').val()!=''){
+				jQuery('.search-close').show();	
+			}else{
+			  jQuery('.search-close').hide();		
+			}
+	   });
+	   jQuery('form button[type="submit"]').click(function(e){
+		   if(jQuery('.search-official').val()!=''){
+			   searchOfficial = jQuery('.search-official').val();
+			 publicOfficial();
+		   }else{
+			alert('Search field should not be blank');   
+		   }
+		 e.preventDefault();
+	   });
+	    jQuery('.search-close').click(function(e){
+			 jQuery('.search-official').val(''); 
+			jQuery(this).hide();
+			searchOfficial = '';
+			 publicOfficial();	
+			 e.stopPropagation();
+		});
+	    function publicOfficial()  {
+
+          $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'publicofficialdata',
+			  searchText:searchOfficial
+        
+          },
+          success: function(response) { 
+		  	var data =   response; 
+			console.log(data); 
+			
+			var tabsCount=[];
+			for (var keys in data) {
+				tabsCount.push(data[keys].length);
+			}
+			jQuery('#pills-tab li').each(function(){
+				jQuery(this).find('button b').text('('+tabsCount[jQuery(this).index()]+')');	
+			});
+
+			var keyss=[];
+			for (let key in data) { 
+				var html='';
+			  let value;
+			  value = data[key];
+			   //console.log(key);
+			  //console.log(value); 
+			  keyss.push(key);
+			   var index = keyss.indexOf(key);
+			   if(key=='stateSenateCommittees' || key=='stateHouseCommittees'){
+				  for (let key in value) {
+					htmlData=value[key]; 
+					var htmlinner='';
+					var innerValue = htmlData['committeeOfficals'];
+				
+					for (let key in innerValue) {
+						htmlinnerdata=innerValue[key];
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+					}
+					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.accordion').html(html);	
+			   } else if(key=='countyDeligationList'){
+				 	for (let key in value) {
+					htmlData=value[key]; 
+					var htmlinner='';
+					var innerValue = htmlData['countyOfficals'];
+					for (let key in innerValue) {
+						htmlinnerdata=innerValue[key];
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+					}
+					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.accordion').html(html);  
+			   } else {
+				  for (let key in value) {
+					htmlData=value[key]; 
+					html+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlData['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlData['id']+'">'+htmlData['legalName']+'</a><br>('+htmlData['officialNameLabel']+')<br>'+htmlData['legislativeRole']+'<br>'+htmlData['districtCode']+'<br>'+htmlData['residence']+'<br>'+htmlData['party']+'</div></div></div> </div>';
+				  }
+				  //console.log(html);
+					jQuery('.tab-pane').eq(index).find('.row').html(html);	
+			   }
+	   
+		  } 
+		  }
+        });
+      }
+
 	  
 	/*function replaceText() {
 
@@ -295,5 +397,4 @@ replaceText();
 	}
   });*/
   
-
 	  </script>
