@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 </div>
+	<div class="position-relative">
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($publicOfficial as $key => $value) {
@@ -218,6 +219,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <?php $k++; } ?>
       </div>
+     <div class="loaders position-absolute w-100 h-100 text-center pt-5" style="left:0; top:0;  background:rgba(255,255,255,0.8); display:none"><div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div></div>
+      </div>
        <script>
 	   jQuery(document).ready(function(){
 		 jQuery('.search-official').val('');  
@@ -232,6 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	   });
 	   jQuery('form button[type="submit"]').click(function(e){
 		   if(jQuery('.search-official').val()!=''){
+			   jQuery('.loaders').show();
 			   searchOfficial = jQuery('.search-official').val();
 			 publicOfficial();
 		   }else{
@@ -240,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		 e.preventDefault();
 	   });
 	    jQuery('.search-close').click(function(e){
+			jQuery('.loaders').show();
 			 jQuery('.search-official').val(''); 
 			jQuery(this).hide();
 			searchOfficial = '';
@@ -258,6 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           },
           success: function(response) { 
 		  	var data =   response; 
+			
 			console.log(data); 
 			
 			var tabsCount=[];
@@ -314,6 +322,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			   }
 	   
 		  } 
+		  jQuery('.loaders').hide();
 		  }
         });
       }
