@@ -285,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				
 					for (let key in innerValue) {
 						htmlinnerdata=innerValue[key];
-						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
 					}
 					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
 				  }
@@ -298,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					var innerValue = htmlData['countyOfficals'];
 					for (let key in innerValue) {
 						htmlinnerdata=innerValue[key];
-						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
+						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
 					}
 					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
 				  }
@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			   } else {
 				  for (let key in value) {
 					htmlData=value[key]; 
-					html+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlData['profilePic']+'" alt="" class="img-fluid"></div><div><a href="http://localhost/engagifiwebstg/public-official-detail/?id='+htmlData['id']+'">'+htmlData['legalName']+'</a><br>('+htmlData['officialNameLabel']+')<br>'+htmlData['legislativeRole']+'<br>'+htmlData['districtCode']+'<br>'+htmlData['residence']+'<br>'+htmlData['party']+'</div></div></div> </div>';
+					html+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlData['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlData['id']+'">'+htmlData['legalName']+'</a><br>('+htmlData['officialNameLabel']+')<br>'+htmlData['legislativeRole']+'<br>'+htmlData['districtCode']+'<br>'+htmlData['residence']+'<br>'+htmlData['party']+'</div></div></div> </div>';
 				  }
 				  //console.log(html);
 					jQuery('.tab-pane').eq(index).find('.row').html(html);	
