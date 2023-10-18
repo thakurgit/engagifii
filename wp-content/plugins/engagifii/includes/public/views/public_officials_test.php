@@ -1,7 +1,7 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
-	file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', 'abc');
+	file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', $publicOfficial);
 	$siteURL= site_url();
     $title_key = -1;
     
