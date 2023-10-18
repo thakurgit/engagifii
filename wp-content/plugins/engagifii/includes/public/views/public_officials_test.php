@@ -1,7 +1,8 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
-	file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', $publicOfficial);
+	//print_r(json_decode($publicOfficial['stateSenateMemberList']));
+	//file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', $publicOfficial);
 	$siteURL= site_url();
     $title_key = -1;
     
@@ -17,76 +18,8 @@ foreach ($seqColumns as $key => $value) {
 	$tableHeader.='<th class="'.str_replace(' ', '', strtolower($value)).'Col">'.$value.'</th>';
   $i++;
 }
-          
-function tabDataArray($publicOfficial, $tabName){
-$tabDataArray= $publicOfficial[$tabName];
-$tabData=array();
-foreach ($tabDataArray as $key => $value) {
-	$siteURL= site_url();
-	$nestedData = array();
-	$nestedData['name']='<div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; width:40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div>';
-	//counties
-	$countiesList = $value['counties'];
-$allCounties = array();
-if($countiesList){
-  if(count($countiesList)>1){
-	$countyPopover = dd_header('Associated Counties','Search counties..');
-	$subItems = "";
-	$li=1;
-	foreach ($countiesList as $index => $county) {
-	  $class='';
-	  if($li%2==1){
-		$class='bg-light';	
-	  }
-	  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $county .  '</li>';
-	  $li++;
-	}
-	$countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
-  }else if(count($countiesList)==1){
-	$allCounties[] = $county;
-  }
-  $nestedData['counties']= implode(" ", $allCounties);
-}else {
-  $nestedData['counties']='<em class="opacity-50">N/A</em>';
-}
-	$nestedData['cityofresidence']=$value['residence'];
-	$nestedData['district']=$value['districtCode'];
-	//committies
-	$committeesList=$value['committees'];
-$allCommittees = array();
-if($committeesList){
-  if(count($committeesList)>1){
-	$committeesPopover = dd_header('Associated Committies','Search committies..');
-	$subItems = "";
-	$li=1;
-	foreach ($committeesList as $index => $committee) {
-	  $class='';
-	  if($li%2==1){
-		$class='bg-light';	
-	  }
-	  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $committee .  '</li>';
-	  $li++;
-	}
-	$committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
-  }else if(count($committeesList)==1){
-	$allCommittees[] = $committee;
-  }
-  $nestedData['committees']= implode(" ", $allCommittees);
-}else {
-  $nestedData['committees']='<em class="opacity-50">N/A</em>';
-}
-	$nestedData['party']=$value['party'];
-	$nestedData['role']=$value['legislativeRole'];
- $tabData[] = $nestedData;
-}
-return $tabData;
-//print_r( $tabData);
-}
 
 
-//$tabDataArray= $publicOfficial['stateSenateMemberList'];
 ?>
 <style type="text/css">
   
@@ -136,9 +69,6 @@ return $tabData;
        <div class="tab-content" id="nav-tabContent">
       <?php $k=1; 
 	  	foreach ($publicOfficial as $key => $value) {
-			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
-				continue;	
-			}
 			$class=''; 
 			if($k==1){
 				$class =' show active';
@@ -152,7 +82,73 @@ return $tabData;
         	<?php echo $tableHeader; ?>        
         </tr> 
       </thead>
-      
+      <tbody>
+      	<?php $tabDataArray= $publicOfficial[$key];
+			foreach ($tabDataArray as $key => $value) { 
+			echo '<tr>';
+			//name
+		   echo '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; width:40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
+             //counties 
+			 	$countiesList = $value['counties'];
+				$allCounties = array();
+				if($countiesList){
+				  if(count($countiesList)>1){
+					$countyPopover = dd_header('Associated Counties','Search counties..');
+					$subItems = "";
+					$li=1;
+					foreach ($countiesList as $index => $county) {
+					  $class='';
+					  if($li%2==1){
+						$class='bg-light';	
+					  }
+					  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $county .  '</li>';
+					  $li++;
+					}
+					$countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					$allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
+				  }else if(count($countiesList)==1){
+					$allCounties[] = $county;
+				  }
+				  $tdcounties= implode(" ", $allCounties);
+				}else {
+				  $tdcounties='<em class="opacity-50">N/A</em>';
+				}
+  			echo '<td>'.$tdcounties.'</td>';
+			//residence
+			echo '<td>'.$value['residence'].'</td>';
+			echo '<td>'.$value['districtCode'].'</td>';
+	//committies
+	$committeesList=$value['committees'];
+$allCommittees = array();
+if($committeesList){
+  if(count($committeesList)>1){
+	$committeesPopover = dd_header('Associated Committies','Search committies..');
+	$subItems = "";
+	$li=1;
+	foreach ($committeesList as $index => $committee) {
+	  $class='';
+	  if($li%2==1){
+		$class='bg-light';	
+	  }
+	  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $committee .  '</li>';
+	  $li++;
+	}
+	$committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+	$allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
+  }else if(count($committeesList)==1){
+	$allCommittees[] = $committee;
+  }
+  $tdcommittees= implode(" ", $allCommittees);
+}else {
+  $tdcommittees='<em class="opacity-50">N/A</em>';
+}
+			echo '<td>'.$tdcommittees.'</td>';
+			echo '<td>'.$value['party'].'</td>';
+			echo '<td>'.$value['legislativeRole'].'</td>';
+			echo '</tr>';
+			 }
+		 ?>
+      </tbody>
     </table>
 </div>
       <?php $k++; } ?>
@@ -205,7 +201,11 @@ return $tabData;
 			  "oLanguage": {
 				  "sLengthMenu": "Show _MENU_ records per page"
 			  },
-			  "data": <?php echo json_encode(tabDataArray($publicOfficial,'stateSenateMemberList'));  ?>,
+			  //"ajax": {
+				 // url: '<?php //echo ENGAGIFII_ASSETS_URL.'/po.txt'; ?>',
+				 // dataSrc: ''
+			  //},
+			 // "data": <?php //echo json_encode(tabDataArray($publicOfficial,'stateSenateMemberList'));  ?>,
 			  createdRow: function (row, data, index) { 
 				   //$(row).addClass( 'bg-white' );
 			  },  
