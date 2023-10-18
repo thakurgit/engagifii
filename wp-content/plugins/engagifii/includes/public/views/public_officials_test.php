@@ -1,13 +1,13 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
-	$tabDataArray= $publicOfficial['stateSenateMemberList'];
-	 //print_r($tabData);
 	$siteURL= site_url();
     $title_key = -1;
-    $forDatatable   =   array();
+    
 $seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
 
+function tabDataArray($publicOfficial, $tabName){
+$tabDataArray= $publicOfficial[$tabName];
 $tabData=array();
 foreach ($tabDataArray as $key => $value) {
 	$nestedData = array();
@@ -17,7 +17,7 @@ foreach ($tabDataArray as $key => $value) {
 $allCounties = array();
 if($countiesList){
   if(count($countiesList)>1){
-	$countyPopover = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2 shadow" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Counties</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search counties.."/></div>';
+	$countyPopover = dd_header('Associated Counties','Search counties..');
 	$subItems = "";
 	$li=1;
 	foreach ($countiesList as $index => $county) {
@@ -44,7 +44,7 @@ if($countiesList){
 $allCommittees = array();
 if($committeesList){
   if(count($committeesList)>1){
-	$committeesPopover = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2 shadow" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Committies</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search committies.."/></div>';
+	$committeesPopover = dd_header('Associated Committies','Search committies..');
 	$subItems = "";
 	$li=1;
 	foreach ($committeesList as $index => $committee) {
@@ -68,6 +68,12 @@ if($committeesList){
 	$nestedData['role']=$value['legislativeRole'];
  $tabData[] = $nestedData;
 }
+return $tabData;
+//print_r( $tabData);
+}
+
+
+//$tabDataArray= $publicOfficial['stateSenateMemberList'];
 ?>
 <style type="text/css">
   
@@ -126,17 +132,13 @@ if($committeesList){
 			}
 			$list = $value;
 			?>
-<div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
-
-</div>
-      <?php $k++; } ?>
-       </div>
-<div class="container-fluid mb-4">
- <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here classes-page " style="width: 100% !important;">
+<div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel">
+	<table id="ebtmaintable"  data-tab="<?php echo $key;?>"  class="tabData table table-bordered border-0 table-striped" style="width: 100% !important;">
       <thead> 
         <tr> 
         	<?php
               $i = 0;
+			  $forDatatable   =   array();
               foreach ($seqColumns as $key => $value) {
                   if($value == 'Name'){
                     $title_key = $i;
@@ -153,95 +155,77 @@ if($committeesList){
       
     </table>
 </div>
+      <?php $k++; } ?>
+       </div>
+<div class="container-fluid mb-4">
+ 
+ 
+</div>
 	
        <script>
   var titleColumn = '<?php echo $title_key; ?>';
-  var table = $('#ebtmaintable').DataTable( {
-        "pageLength": '10',
-        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-        "bInfo":false,
-        "processing": true,
-        "searching": true,
-        "ordering":true,
-		"search": {regex: true},
-		<?php if(in_array('Name', $seqColumns)){ ?>
-		"order": [[<?php echo array_search('Name',$seqColumns);?>, 'asc']],
-		 <?php } ?>
-        "columnDefs": [ 
-          { "targets": ['countiesCol','committeesCol'],
-            "orderable": false
-          },
-          { width: 200, targets: <?php echo array_search('Name',$seqColumns);?> },
-		  { className: "title-col", "targets": "classes" },
-		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
-		  { responsivePriority: 1, targets: 'sectionname' },
-		  <?php //if(in_array('sessions', $class_visible_column_list)){ ?>
-		  /*{'targets': <?php //echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
-			  var html = $(cellData);
-			  var editor = $("<p>").append(html);
-			  var cell = editor.find("span:first-child").html();
-           $(td).attr('data-order', cell ); 
-       		 }
-    	 },*/
-		 <?php //} ?>
-        ],
-        "language": {
-          processing: '<span>&nbsp;</span>',
-          "emptyTable": '-'
-        },
-        "oLanguage": {
-            "sLengthMenu": "Show _MENU_ records per page"
-        },
-       /* "serverSide": true,
-        "ajax": {
-			  
-            "url": engagifiiUrl_ajaxurl,
-            "type": "POST",
-            "data": function(d) {  
-              d.action='publicOfficial'; 
-              d.name = name;
-			d.titleColumn = titleColumn;
-            }, 
-			
-        },*/
-		"data": <?php echo json_encode($tabData);  ?>,
-        createdRow: function (row, data, index) { 
-             //$(row).addClass( 'bg-white' );
-        },  
-        "columns":<?php echo (json_encode($forDatatable)); ?>,
-         "drawCallback": function( settings ) {
-			 
-			 dt_dropdown();
-			 <?php //if($dt_respnsive==''){ ?>
-           dt_scroll();
+  
+  $('table').each(function(){
+  var tabname='';
+	 	tabname = $(this).attr('data-tab'); 
+  });
+ var table = new DataTable('table.tabData', {
+			  "pageLength": '10',
+			  "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+			  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+			  "bInfo":false,
+			  "processing": true,
+			  "searching": true,
+			  "ordering":true,
+			  "search": {regex: true},
+			  <?php if(in_array('Name', $seqColumns)){ ?>
+			  "order": [[<?php echo array_search('Name',$seqColumns);?>, 'asc']],
+			   <?php } ?>
+			  "columnDefs": [ 
+				{ "targets": ['countiesCol','committeesCol'],
+				  "orderable": false
+				},
+				{ width: 200, targets: <?php echo array_search('Name',$seqColumns);?> },
+				{ className: "text-center", "targets": ["startdate","instructors"] },
+				{ responsivePriority: 1, targets: 'sectionname' },
+				<?php //if(in_array('sessions', $class_visible_column_list)){ ?>
+				/*{'targets': <?php //echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+					var html = $(cellData);
+					var editor = $("<p>").append(html);
+					var cell = editor.find("span:first-child").html();
+				 $(td).attr('data-order', cell ); 
+				   }
+			   },*/
 			   <?php //} ?>
-			   $('[data-toggle="tooltip"]').tooltip() ;
-         },
-		 
-		  "initComplete": function(settings, json) {
-			  $('#eng-overlay').css( 'display', 'none' );
-		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
-		 */
-
-    },
-    });
-	
-    $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
-        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
-    } ).dataTable();
-	   
+			  ],
+			  "language": {
+				processing: '<span>&nbsp;</span>',
+				"emptyTable": '-'
+			  },
+			  "oLanguage": {
+				  "sLengthMenu": "Show _MENU_ records per page"
+			  },
+			  "data": <?php echo json_encode(tabDataArray($publicOfficial,'stateSenateMemberList'));  ?>,
+			  createdRow: function (row, data, index) { 
+				   //$(row).addClass( 'bg-white' );
+			  },  
+			  "columns":<?php echo (json_encode($forDatatable)); ?>,
+			   "drawCallback": function( settings ) {
+				   
+				   dt_dropdown();
+				   <?php //if($dt_respnsive==''){ ?>
+				 dt_scroll();
+					 <?php //} ?>
+					 $('[data-toggle="tooltip"]').tooltip() ;
+			   },
+			   
+				"initComplete": function(settings, json) {
+					$('#eng-overlay').css( 'display', 'none' );
+		  },
+		  });
 <?php
   if($title_key > -1){
 ?>
-
   $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) { 
          var title = $(this).text();
         $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search Public official.." class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
