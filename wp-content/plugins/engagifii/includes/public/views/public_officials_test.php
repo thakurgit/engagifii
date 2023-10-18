@@ -1,15 +1,28 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
+	file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', 'abc');
 	$siteURL= site_url();
     $title_key = -1;
     
 $seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
-
+$forDatatable   =   array();
+$tableHeader='';
+$i = 0;
+foreach ($seqColumns as $key => $value) {
+	if($value == 'Name'){
+	  $title_key = $i;
+	}
+	$forDatatable[]['data'] = str_replace(' ', '', strtolower($value));
+	$tableHeader.='<th class="'.str_replace(' ', '', strtolower($value)).'Col">'.$value.'</th>';
+  $i++;
+}
+          
 function tabDataArray($publicOfficial, $tabName){
 $tabDataArray= $publicOfficial[$tabName];
 $tabData=array();
 foreach ($tabDataArray as $key => $value) {
+	$siteURL= site_url();
 	$nestedData = array();
 	$nestedData['name']='<div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; width:40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div>';
 	//counties
@@ -29,7 +42,7 @@ if($countiesList){
 	  $li++;
 	}
 	$countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList{0}.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
+	$allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
   }else if(count($countiesList)==1){
 	$allCounties[] = $county;
   }
@@ -56,7 +69,7 @@ if($committeesList){
 	  $li++;
 	}
 	$committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList{0}.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
+	$allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
   }else if(count($committeesList)==1){
 	$allCommittees[] = $committee;
   }
@@ -136,20 +149,7 @@ return $tabData;
 	<table id="ebtmaintable"  data-tab="<?php echo $key;?>"  class="tabData table table-bordered border-0 table-striped" style="width: 100% !important;">
       <thead> 
         <tr> 
-        	<?php
-              $i = 0;
-			  $forDatatable   =   array();
-              foreach ($seqColumns as $key => $value) {
-                  if($value == 'Name'){
-                    $title_key = $i;
-                  }
-                  $forDatatable[]['data'] = str_replace(' ', '', strtolower($value));
-                ?>
-                  <th class="<?php echo str_replace(' ', '', strtolower($value)); ?>Col"><?php  echo $value; ?></th>
-                <?php
-                $i++;
-              }
-          ?>        
+        	<?php echo $tableHeader; ?>        
         </tr> 
       </thead>
       
