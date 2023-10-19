@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package     Engagifii/Classes
  * @category    Class
  * @author      Engagifii
- */
+ */ 
 class Engagifii_Shortcodes extends abstractModelEngagifii{
 		/**
 	 * Init shortcode

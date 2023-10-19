@@ -1,4 +1,4 @@
-<style>
+<style> 
 @media screen and (min-width: 55em) {
   .calendar-contain {
     margin: auto;

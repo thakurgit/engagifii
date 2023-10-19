@@ -1,4 +1,4 @@
-<style>
+<style> 
  .tabbs {
      display: flex;
      padding-bottom: 40px;
