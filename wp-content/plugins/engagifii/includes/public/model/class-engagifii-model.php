@@ -1000,7 +1000,7 @@ public function getEventsCalendar(){
     
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-    
+    print_r($events_visible_column_list);
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
@@ -1081,7 +1081,7 @@ public function getEventsCalendar(){
                                                    </button>
                                                </div>
                                                <div class="modal-body text-left" >
-                                                 <?php if(in_array('eventDates', $events_visible_column_list)){ ?>
+                                                 <?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
                                                    <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
                                                    <?php }
                                                    if(in_array('eventType', $events_visible_column_list)){ ?>
@@ -1140,7 +1140,7 @@ public function getEventsCalendar(){
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                                   <?php if(in_array('eventDates', $events_visible_column_list)){ ?>
+                                                   <?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
                                                   <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
                                                    <?php }
                                                    if(in_array('eventType', $events_visible_column_list)){ ?>
@@ -1264,9 +1264,9 @@ public function getEventsCalendar(){
                                                    </button>
                                                </div>
                                                <div class="modal-body text-left" >
-                                                   <p><strong>Date :</strong> <?php echo $weekfilteredItems[$fi]['schedule']; ?></p>
+                                                   <p><strong>Dates :</strong> <?php echo $weekfilteredItems[$fi]['schedule']; ?></p>
                                                    <p><strong>Type : </strong><?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
-                                                   <p><strong>Price :</strong> <?php echo '$'.$weekfilteredItems[$fi]['price']; ?></p>
+                                                   <p><strong>Prices :</strong> <?php echo '$'.$weekfilteredItems[$fi]['price']; ?></p>
                                                    <!-- <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p> -->
                                                    
                                                </div>

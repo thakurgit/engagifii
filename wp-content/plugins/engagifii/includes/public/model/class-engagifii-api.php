@@ -545,6 +545,25 @@ public function _popOverSpeakerData3($id, $instructorData){
 	return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
 	}
 
+/*Legislative Reports API */
+	
+public function legislativeReports()
+{
+$postData = array();
+$apiUrl = 'legislative/bills/report/public-dashboard/getAllReportType/';
+return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
+}
+
+/*Legislative Reports API */
+
+public function reportlist($id)
+{
+$postData = array();
+$apiUrl = 'legislative/bills/report/public-dashboard/getReportByReportTypeId/'.$id;
+//return $apiUrl;
+return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
+}
+
 
 	/* Last Action Type  Api */
 

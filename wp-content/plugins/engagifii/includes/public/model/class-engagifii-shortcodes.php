@@ -64,6 +64,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'public-officials' => 'public_officials',
 			'public-officials-detail' => 'public_officials_detail',
 			'public-officials-test' => 'public_officials_test',
+			'legislative-reports' => 'legislative_reports',
+			'report-list' => 'report_list'
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -330,6 +332,23 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		return ob_get_clean();
 	}
 	//ends here
+
+	//Added for legislative reports
+	public function legislative_reports(){
+		ob_start();
+		include $this->basePath.'includes/public/views/shortcode/legislative-reports.php';
+		return ob_get_clean();
+	}
+	//ends here
+
+	//Added for legislative reports List
+	public function report_list(){
+		ob_start();
+		include $this->basePath.'includes/public/views/shortcode/reports-list.php';
+		return ob_get_clean();
+	}
+	//ends here
+
 
 	public function course_count(){
 		ob_start();
