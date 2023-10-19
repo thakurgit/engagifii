@@ -82,7 +82,7 @@ foreach ($seqColumns as $key => $value) {
 		if($key=='countyDeligationList'){
 			$listArray = 'countyOfficals';	
 		}
-		echo '<div class="accordion" id="accordionExample">';
+		echo '<div class="accordion" id="accordionExample-'.$k.'">';
 		foreach ($tabDataArray as $key => $value) {  ?>
           <div class="card">
             <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
@@ -92,7 +92,7 @@ foreach ($seqColumns as $key => $value) {
                 </button>
               </h2>
             </div>
-            <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample-<?php echo $k; ?>">
               <div class="card-body">
                 <table id="ebtmaintable"  class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;">
                   <thead> 
@@ -256,9 +256,16 @@ foreach ($seqColumns as $key => $value) {
        </div>
        <script>
   var titleColumn = '<?php echo $title_key; ?>';
-  
- var table = $('table.tabData').DataTable({
-			  "pageLength": '5',
+  $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
+	var current = $('.tab-pane:eq('+$(e.target).parent('li').index()+') table');
+	  var old = $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+') table');
+	  current.DataTable();
+	  var oldTable = old.DataTable();
+	  oldTable.destroy();
+     // $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+   });
+ var table = $('table.tabData1').DataTable({
+			  "pageLength": '10',
 			  "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 			  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
 			  "bInfo":false,
