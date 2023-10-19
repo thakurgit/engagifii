@@ -132,7 +132,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['eventscalendar', 'eventsCalendar'],
         ['geteventscalendar', 'geteventsCalendar'],
         ['publicofficialdata', 'publicOfficalsearchData'],
-        ['publicOfficial', 'publicOfficialLoadData'],
+       // ['publicOfficial', 'publicOfficialLoadData'],
         //end here
     ];
 
@@ -2202,7 +2202,7 @@ wp_die();
     }
 
 //Public official Datatable
-   public function publicOfficialLoadData(){
+ /*  public function publicOfficialLoadData(){
         $siteURL= site_url();
         
         $postedData  = $this->_preparePublicOfficialData();
@@ -2229,127 +2229,7 @@ wp_die();
 			$nestedData['committies']='aa';
 			$nestedData['party']=$value->party;
 			$nestedData['role']=$value->legislativeRole;
-            /*$instructorPopOver = '';
-            $classPopover      = '';
-
-            $class_icon = $value->parentCourse->iconReference;
-            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
-                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
-                
-            }
-
-            if(count($value->classInstructors)){
-                $instructorPopOver = $this->_popOverInstructorData1($key, $value->classInstructors);
-			}
-            if(count($value->classSessions)){
-                $classPopover  = $this->_popOverClassData1($key, $value->classSessions);
-                
-			}
-
-            
-
-            ## row data
-            $class_schedule = '';
-            $counter = 0; 
-            if(count($value->classSessions))
-            {
-                foreach ($value->classSessions as $key => $rowData) {
-            
-                    $classSessionTime = '';
-                    if( $counter == 0 ) {         
-                        $classSessionStartTime = $rowData->startTime;
-                        $classSessionStartDate = $rowData->sessionDate;
-                    }                  
-                    if( $counter == count( $value->classSessions ) - 1) {
-                         $classSessionEndTime = $rowData->endTime;
-                         $classSessionEndDate = $rowData->sessionDate;
-                    }
-                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
-                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
-                    $counter = $counter + 1;
-                }
-                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
-            }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
-            }
-            $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-            $nestedData['objectType'] = $value->objectType;
-			
-            $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
-
-			if(count($value->classSessions)){
-				 foreach ($value->classSessions as $key => $rowData) {
-            
-                    $classSessionTime = '';
-                    if( $counter == 0 ) {         
-                        $classSessionStartTime = $rowData->startTime;
-                        $classSessionStartDate = $rowData->sessionDate;
-                    }                  
-                    if( $counter == count( $value->classSessions ) - 1) {
-                         $classSessionEndTime = $rowData->endTime;
-                         $classSessionEndDate = $rowData->sessionDate;
-                    }
-                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
-                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
-                    $counter = $counter + 1;
-                }
-            	 $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
-			}
-			
-			$nestedData['classInstructorsCount']='<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
-			if($value->classInstructorsCount>0){
-				$nestedData['classInstructorsCount'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
-			}
-            if($value->isCreditTypeSingle =="true"){
-            $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);//($value->courseCreditMapping[0]->credits);          
-            }else{
-                $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);      
-            }
-            $classTag = $value->classTag;
-            $allTags = array();
-            foreach ($classTag as $index => $tag) {
-                
-                    if(count($classTag) > 1 && $index == 0)
-                    {   
-                        $tagPopover =  $this->_popOverTagData1($key, $value->classTag);
-
-                           $tagCount   = count($classTag) - 1;
-                    
-					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
-                    }
-                    elseif(count($classTag) == 1)
-                        $allTags[] = $tag->tagName;
-            }
-
-            $nestedData['classTag'] = implode(" ", $allTags);
-            if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
-            {
-              if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-              {
-                   if($value->locationType->name=="onlocation")
-                      { 
-                      $nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      }
-                      elseif($value->locationType->name=="online"){
-                          $nestedData['register'] = '<a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      }
-                      elseif($value->locationType->name=="onlocationandonline"){
-                      $nestedData['register'] = '<a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
-                      }
-                  else{
-                      $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-                  }
-              }
-              else{
-              $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-              }
-          }else{
-            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-            //$data[] = $nestedData;    
-          }*/
+           
           $data[] = $nestedData;
       }
         
@@ -2369,8 +2249,8 @@ wp_die();
         wp_die();
 
 
-    }
-    public function _preparePublicOfficialData(){
+    }*/
+  /*  public function _preparePublicOfficialData(){
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
             if ($value['orderable'] == "true") {
@@ -2404,7 +2284,7 @@ wp_die();
         $postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['name'] = $_POST['name'];
         return $postData;
-    }
+    }*/
     private function _preparePostData()
     {
 

@@ -1,8 +1,8 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
-	//print_r(json_decode($publicOfficial['stateSenateMemberList']));
-	//file_put_contents(ENGAGIFII_ASSETS_URL.'/po.txt', $publicOfficial);
+	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
+	//print_r($publicOfficial);
 	$siteURL= site_url();
     $title_key = -1;
     
@@ -73,9 +73,20 @@ foreach ($seqColumns as $key => $value) {
 			if($k==1){
 				$class =' show active';
 			}
-			$list = $value;
+			$tabDataArray= $publicOfficial[$key];
 			?>
 <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel">
+	<?php 
+	if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){
+		echo '<div class="accordion" id="accordionExample">';
+	}
+		//foreach ($tabDataArray as $key => $value) { 
+		//}
+	 ?>
+
+
+
+
 	<table id="ebtmaintable"  class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;">
       <thead> 
         <tr> 
@@ -83,11 +94,11 @@ foreach ($seqColumns as $key => $value) {
         </tr> 
       </thead>
       <tbody>
-      	<?php $tabDataArray= $publicOfficial[$key];
+      	<?php 
 			foreach ($tabDataArray as $key => $value) { 
 			echo '<tr>';
 			//name
-		   echo '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; width:40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
+		   echo '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
              //counties 
 			 	$countiesList = $value['counties'];
 				$allCounties = array();
@@ -150,7 +161,12 @@ if($committeesList){
 		 ?>
       </tbody>
     </table>
-</div>
+	<?php 
+	if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){
+		echo '</div><!--accordion close-->';
+	} 
+	?>
+</div><!--tab pane close-->
       <?php $k++; } ?>
        </div>
        <script>
@@ -205,7 +221,7 @@ if($committeesList){
 				   
 				   dt_dropdown();
 				   <?php //if($dt_respnsive==''){ ?>
-				 dt_scroll();
+				 //dt_scroll();
 					 <?php //} ?>
 					 $('[data-toggle="tooltip"]').tooltip() ;
 			   },
