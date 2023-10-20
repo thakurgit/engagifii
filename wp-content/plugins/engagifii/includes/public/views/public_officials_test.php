@@ -1,6 +1,20 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
+	if(!$publicOfficial){
+		echo'<h5 class="text-center pt-5">Data not available</h5>';
+		return;	
+	}
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	$residence = $obj->poResidence();
+	foreach ($residence as $key => $value) {
+	//print_r($value['text']);
+	}
 	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
 	//print_r($publicOfficial);
 	$siteURL= site_url();
@@ -29,6 +43,9 @@ foreach ($seqColumns as $key => $value) {
 	background-color:#002474  !important;
  }
 </style>
+<div class="container-fluid">
+	
+</div>
  <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($publicOfficial as $key => $value) {

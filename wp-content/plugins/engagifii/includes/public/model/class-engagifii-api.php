@@ -665,7 +665,60 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
-		
+	}
+//public official residence API
+	public function poResidence(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/residence-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+//public official district API
+	public function poDistrict(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/districtname-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+//public official party API
+	public function poParty(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/political-party';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+//public official role API
+	public function poRole(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/legislative-role';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+//public official committee API
+	public function poComittee(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/committee-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
+	}
+//public official county API
+	public function poCounty(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/county-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		return $responseArray;
 	}
 
 	public function eventDateFilter($date){
