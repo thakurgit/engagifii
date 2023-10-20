@@ -89,8 +89,7 @@ foreach ($seqColumns as $key => $value) {
                     </h2>
                   </div>
             <div data-count="<?php echo $tabCount; ?>" id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample-<?php echo $k; ?>">
-              <div class="card-body">
-              </div>
+              <div class="card-body"></div>
               </div>
                 </div>	
 			<?php $tabCount++;}
@@ -120,9 +119,10 @@ foreach ($seqColumns as $key => $value) {
    });
    $('.card >div+div').on('shown.bs.collapse', function (e) {
 	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
-	  // $('.tab-pane.active .card:eq('+$(e.relatedTarget).parent('li').index()+')').html(''); 
-		//alert($(e.target).attr('id'));
-		ajaxDT();
+	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
+		if($('.card-body',this).is(':empty')){
+		  ajaxDT();
+		}
 	}) ;
    function ajaxDT(){
 	   $.ajax({
@@ -140,7 +140,7 @@ foreach ($seqColumns as $key => $value) {
 			}else{
 			  $('.tab-pane.active').html(data);
 			}
-			initDT();
+			//initDT();
 		  }
         });
    }

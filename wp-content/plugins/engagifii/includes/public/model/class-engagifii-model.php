@@ -2216,8 +2216,11 @@ foreach ($seqColumns as $key => $value) {
 		//die;
          $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", json_decode($postedData), "POST", 'legislation');
        	if($postedTab=='stateSenateCommittees' || $postedTab=='stateHouseCommittees' || $postedTab=='countyDeligationList'){
-			
-	   	 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals'];
+			if($postedTab=='countyDeligationList'){
+			   $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['countyOfficals'];
+			}else{
+			 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals'];
+			}
 		 //print_r(json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals']);
 		 //die;
 		}else{
