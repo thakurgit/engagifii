@@ -103,17 +103,29 @@ foreach ($seqColumns as $key => $value) {
   var titleColumn = '<?php echo $title_key; ?>';
   var table='';
   var tab='';
+  var prvtab='';
   var tabCount='';
 	  tab = $('.tab-pane.active').attr('data-tab');
 		ajaxDT();  
   
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
+	   prvtab = $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').attr('data-tab');
+		  $('.card-body').html(''); 
+		  $('.tab-pane .card .show').collapse('hide') ;
 	  if(tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList'){
+		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
+				
+		}
+		else{
+		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');  
+		}
+	  }
+	  else{
+		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
+		}else{
 		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
-		
-	  }else{
-		$('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');  
+		}
 	 	 ajaxDT();
 	  }
    });
@@ -140,7 +152,7 @@ foreach ($seqColumns as $key => $value) {
 			}else{
 			  $('.tab-pane.active').html(data);
 			}
-			//initDT();
+			initDT();
 		  }
         });
    }
