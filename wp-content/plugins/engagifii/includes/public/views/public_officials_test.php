@@ -78,6 +78,7 @@ foreach ($seqColumns as $key => $value) {
 <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" data-tab="<?php echo $key; ?>">
 		<?php if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){ 
 			echo '<div class="accordion" id="accordionExample-'.$k.'">';
+				$tabCount='0';
 				foreach ($tabDataArray as $key => $value) { ?>
 				<div class="card">
                   <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
@@ -87,12 +88,12 @@ foreach ($seqColumns as $key => $value) {
                       </button>
                     </h2>
                   </div>
-            <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample-<?php echo $k; ?>">
+            <div data-count="<?php echo $tabCount; ?>" id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample-<?php echo $k; ?>">
               <div class="card-body">
               </div>
               </div>
                 </div>	
-			<?php }
+			<?php $tabCount++;}
 			echo '</div>';
 		} ?>
 </div><!--tab pane close-->
@@ -103,6 +104,7 @@ foreach ($seqColumns as $key => $value) {
   var titleColumn = '<?php echo $title_key; ?>';
   var table='';
   var tab='';
+  var tabCount='';
 	  tab = $('.tab-pane.active').attr('data-tab');
 		ajaxDT();  
   
@@ -116,17 +118,28 @@ foreach ($seqColumns as $key => $value) {
 	 	 ajaxDT();
 	  }
    });
+   $('.card >div+div').on('shown.bs.collapse', function (e) {
+	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
+	  // $('.tab-pane.active .card:eq('+$(e.relatedTarget).parent('li').index()+')').html(''); 
+		//alert($(e.target).attr('id'));
+		ajaxDT();
+	}) ;
    function ajaxDT(){
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'publicOfficial',
-			  tab:tab
+			  tab:tab,
+			  tabCount:tabCount
           },
           success: function(response) { 
 		  	var data =   response; 
-			$('.tab-pane.active').html(data);
+			if(tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList'){
+			  $('.tab-pane.active .card .show .card-body').html(data);
+			}else{
+			  $('.tab-pane.active').html(data);
+			}
 			initDT();
 		  }
         });

@@ -2211,11 +2211,18 @@ foreach ($seqColumns as $key => $value) {
         $siteURL= site_url();
         $postedData  = '{}';
         $postedTab  = $_POST['tab'];
+		$postedTabCount  = $_POST['tabCount'];
 		//print_r(json_encode($postedTab));
 		//die;
          $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", json_decode($postedData), "POST", 'legislation');
-       	
-	    $collection   = json_decode($dataResponse['api_response'], true)[$postedTab];
+       	if($postedTab=='stateSenateCommittees' || $postedTab=='stateHouseCommittees' || $postedTab=='countyDeligationList'){
+			
+	   	 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals'];
+		 //print_r(json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals']);
+		 //die;
+		}else{
+	   	 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab];
+		}
 		 //print_r(json_decode($dataResponse['api_response'], true)[$postedTab['tab']]);
 		 //die;
         $totalcount   = count($collection);
