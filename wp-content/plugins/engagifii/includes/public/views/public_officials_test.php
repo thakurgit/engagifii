@@ -79,12 +79,20 @@ foreach ($seqColumns as $key => $value) {
 		<?php if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){ 
 			echo '<div class="accordion" id="accordionExample-'.$k.'">';
 				$tabCount='0';
-				foreach ($tabDataArray as $key => $value) { ?>
+				$count='';
+				foreach ($tabDataArray as $keys => $value) { 
+				
+				  if($key=='countyDeligationList'){
+					 $count=count($value['countyOfficals']);
+				  }else{
+					$count=count($value['committeeOfficals']);
+				  }
+				?>
 				<div class="card">
                   <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
-                        <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?>
+                      <button class="btn btn-link btn-block text-left py-0 d-flex align-items-center" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?><span class="text-dark ml-auto"><?php echo $count;?> Public Officials</span>
                       </button>
                     </h2>
                   </div>
