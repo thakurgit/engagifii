@@ -6,15 +6,11 @@
 		return;	
 	}
 	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	$residence = $obj->poResidence();
-	foreach ($residence as $key => $value) {
-	//print_r($value['text']);
-	}
+	$district = $obj->poDistrict();
+	$party = $obj->poParty();
+	$role = $obj->poRole();
+	$committee = $obj->poComittee();
+	$counties = $obj->poCounty();
 	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
 	//print_r($publicOfficial);
 	$siteURL= site_url();
@@ -44,7 +40,7 @@ foreach ($seqColumns as $key => $value) {
  }
 </style>
 <div class="container-fluid">
-	
+		
 </div>
  <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
