@@ -24,17 +24,12 @@ foreach ($seqColumns as $key => $value) {
 <style type="text/css">
   
  .session-tab button {
-	border-bottom:3px solid transparent !important;
-	color:#333 !important;
  }
   .session-tab button.active{
-	border-bottom-color:#002474  !important;
+	background-color:#002474  !important;
  }
- mark, .mark {
-	background-color: #F9D276;
-}
 </style>
- <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
+ <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($publicOfficial as $key => $value) {
 			if($key=='stateSenateMemberList'){
@@ -61,8 +56,8 @@ foreach ($seqColumns as $key => $value) {
 			if($i==1){
 				$class =' active';
 			}
-    echo '<li class="nav-item mr-4" role="presentation">
-    <button class="nav-link bg-transparent border-0 rounded-0 px-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
+    echo '<li class="nav-item mr-3 mb-3" role="presentation">
+    <button class="border-dark nav-link bg-transparent'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
  $i++; }
 	  ?>   		
       </ul>
