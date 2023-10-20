@@ -116,7 +116,6 @@ foreach ($seqColumns as $key => $value) {
 		  $('.tab-pane .card .show').collapse('hide') ;
 	  if(tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList'){
 		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
-				
 		}
 		else{
 		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');  
@@ -132,11 +131,10 @@ foreach ($seqColumns as $key => $value) {
 	  }
    });
    $('.card >div+div').on('shown.bs.collapse', function (e) {
-	     $(this).append('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
-
 	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
 	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
 		if($('.card-body',this).is(':empty')){
+	     $(this).append('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
 		  ajaxDT();
 		}
 	}) ;
