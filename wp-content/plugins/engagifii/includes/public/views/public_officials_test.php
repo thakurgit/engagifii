@@ -106,8 +106,9 @@ foreach ($seqColumns as $key => $value) {
   var prvtab='';
   var tabCount='';
 	  tab = $('.tab-pane.active').attr('data-tab');
+	  $('.tab-pane.active')
 		ajaxDT();  
-  
+  $('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
 	   prvtab = $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').attr('data-tab');
@@ -122,6 +123,7 @@ foreach ($seqColumns as $key => $value) {
 		}
 	  }
 	  else{
+		  $('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
 		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
 		}else{
 		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
@@ -130,6 +132,8 @@ foreach ($seqColumns as $key => $value) {
 	  }
    });
    $('.card >div+div').on('shown.bs.collapse', function (e) {
+	     $(this).append('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
+
 	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
 	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
 		if($('.card-body',this).is(':empty')){
@@ -137,6 +141,7 @@ foreach ($seqColumns as $key => $value) {
 		}
 	}) ;
    function ajaxDT(){
+	   
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -152,6 +157,7 @@ foreach ($seqColumns as $key => $value) {
 			}else{
 			  $('.tab-pane.active').html(data);
 			}
+			$('.loaders').remove();
 			initDT();
 		  }
         });
@@ -213,14 +219,12 @@ foreach ($seqColumns as $key => $value) {
 				   
 					"initComplete": function(settings, json) {
 					   tableEvents();
-						$('#eng-overlay').css( 'display', 'none' );
 			  },
 			  });
    }
 <?php
   if($title_key > -1){
 ?>
-  //$('table').each( function (i) { 
   function tableEvents(){
   $('.dataTables_wrapper table').find('thead tr th:eq('+titleColumn+')').each( function (i) { 
          var title = $(this).text();
@@ -269,17 +273,6 @@ $('#searchclass').on("keydown", function(event) {
 });
   }
 	
-//});
-	/*$(document).ready(function (){    
-    $('#searchclass, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchclass').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-});*/
   <?php
 }
   ?>
