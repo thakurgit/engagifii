@@ -2219,10 +2219,8 @@ foreach ($seqColumns as $key => $value) {
 			if($postedTab=='countyDeligationList'){
 			   $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['countyOfficals'];
 			}else{
-			 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals'];
+				$collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals'];
 			}
-		 //print_r(json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['committeeOfficals']);
-		 //die;
 		}else{
 	   	 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab];
 		}
@@ -2255,7 +2253,7 @@ foreach ($seqColumns as $key => $value) {
                                 $countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
                                 $allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
                               }else if(count($countiesList)==1){
-                                $allCounties[] = $county;
+                                $allCounties[] = $countiesList[0];
                               }
                               $tdcounties= implode(" ", $allCounties);
                             }else {
@@ -2284,7 +2282,7 @@ foreach ($seqColumns as $key => $value) {
                 $committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
                 $allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
               }else if(count($committeesList)==1){
-                $allCommittees[] = $committee;
+                $allCommittees[] = $committeesList[0];
               }
               $tdcommittees= implode(" ", $allCommittees);
             }else {
