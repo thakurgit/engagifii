@@ -70,13 +70,13 @@ foreach ($seqColumns as $key => $value) {
       <?php $k=1; 
 	  	foreach ($publicOfficial as $key => $value) {
 			$class=''; 
-			if($k==1){
+			if($k==1 ){
 				$class =' show active';
 			}
 			$tabDataArray= $publicOfficial[$key];
 			?>
 <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel">
-	<?php 
+	<?php  if($k==1){
 	if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){
 		$listArray = 'committeeOfficals';
 		if($key=='countyDeligationList'){
@@ -248,7 +248,7 @@ foreach ($seqColumns as $key => $value) {
                      ?>
                   </tbody>
                 </table>
-	<?php }
+	<?php } }
 	 ?>
 </div><!--tab pane close-->
       <?php $k++; 
@@ -259,78 +259,15 @@ foreach ($seqColumns as $key => $value) {
   var currentHtml='';
   var table='';
   $(document).ready( function () {
-	currentHtml = $('.tab-pane.active table')[0].outerHTML;  
-   table=$('.tab-pane.active table ').DataTable({
-			  "pageLength": '10',
-			  "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-			  //"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-			  "dom": 't<"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-			  "bInfo":false,
-			  "processing": true,
-			  "searching": true,
-			  "ordering":true,
-			  "search": {regex: true},
-			  <?php if(in_array('Name', $seqColumns)){ ?>
-			  "order": [[<?php echo array_search('Name',$seqColumns);?>, 'asc']],
-			   <?php } ?>
-			  "columnDefs": [ 
-				{ "targets": ['countiesCol','committeesCol'],
-				  "orderable": false
-				},
-				{ width: 200, targets: <?php echo array_search('Name',$seqColumns);?> },
-				{ className: "text-center", "targets": ["startdate","instructors"] },
-				{ responsivePriority: 1, targets: 'sectionname' },
-				<?php //if(in_array('sessions', $class_visible_column_list)){ ?>
-				/*{'targets': <?php //echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
-					var html = $(cellData);
-					var editor = $("<p>").append(html);
-					var cell = editor.find("span:first-child").html();
-				 $(td).attr('data-order', cell ); 
-				   }
-			   },*/
-			   <?php //} ?>
-			  ],
-			  "language": {
-				processing: '<span>&nbsp;</span>',
-				"emptyTable": '-'
-			  },
-			  "oLanguage": {
-				  "sLengthMenu": "Show _MENU_ records per page"
-			  },
-			  //"ajax": {
-				 // url: '<?php //echo ENGAGIFII_ASSETS_URL.'/po.txt'; ?>',
-				 // dataSrc: ''
-			  //},
-			 // "data": <?php //echo json_encode(tabDataArray($publicOfficial,'stateSenateMemberList'));  ?>,
-			  createdRow: function (row, data, index) { 
-				   //$(row).addClass( 'bg-white' );
-			  },  
-			  "columns":<?php echo (json_encode($forDatatable)); ?>,
-			   "drawCallback": function( settings ) {
-				   
-				   dt_dropdown();
-				   ccc();
-				   <?php //if($dt_respnsive==''){ ?>
-				 //dt_scroll();
-					 <?php //} ?>
-					 $('[data-toggle="tooltip"]').tooltip() ;
-			   },
-			   
-				"initComplete": function(settings, json) {
-					$('#eng-overlay').css( 'display', 'none' );
-		  },
-		  });
+	//currentHtml = $('.tab-pane.active table')[0].outerHTML;  
   });
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
-	 // var old = $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+') table');
-	  //$('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html(currentHtml);
-		$('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html(currentHtml);  
-	currentHtml = $('.tab-pane:eq('+$(e.target).parent('li').index()+') table')[0].outerHTML;
-//	console.log(currentHtml);
+		//$('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html(currentHtml);  
+	//currentHtml = $('.tab-pane:eq('+$(e.target).parent('li').index()+') table')[0].outerHTML;
 	var currentTable = $('.tab-pane:eq('+$(e.target).parent('li').index()+') table');
 	  table=currentTable.DataTable({
-			  "pageLength": '10',
-			  "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+			  //"pageLength": '10',
+			  //"lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 			  //"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
 			  "dom": 't<"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
 			  "bInfo":false,
@@ -377,7 +314,7 @@ foreach ($seqColumns as $key => $value) {
 			   "drawCallback": function( settings ) {
 				   
 				   dt_dropdown();
-				  // ccc();
+				  // 
 				   <?php //if($dt_respnsive==''){ ?>
 				 //dt_scroll();
 					 <?php //} ?>
@@ -385,20 +322,15 @@ foreach ($seqColumns as $key => $value) {
 			   },
 			   
 				"initComplete": function(settings, json) {
+					ccc();
 					$('#eng-overlay').css( 'display', 'none' );
 		  },
 		  });
 		  
-	  /*var oldTable = old.DataTable({
-		  "paging": false,
-		  "searching": false,
-		  "lengthChange": false,
-		  });
-	  oldTable.destroy();*/
    });
- var table1 = $('table.tabData1').DataTable({
-			  "pageLength": '10',
-			  "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+  table = $('table.tabData').DataTable({
+			  //"pageLength": '10',
+			 // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 			  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
 			  "bInfo":false,
 			  "processing": true,
@@ -440,10 +372,10 @@ foreach ($seqColumns as $key => $value) {
 			  createdRow: function (row, data, index) { 
 				   //$(row).addClass( 'bg-white' );
 			  },  
-			  "columns":<?php echo (json_encode($forDatatable)); ?>,
+			  //"columns":<?php //echo (json_encode($forDatatable)); ?>,
 			   "drawCallback": function( settings ) {
-				   
 				   dt_dropdown();
+				  // ccc();
 				   <?php //if($dt_respnsive==''){ ?>
 				 //dt_scroll();
 					 <?php //} ?>
@@ -451,6 +383,7 @@ foreach ($seqColumns as $key => $value) {
 			   },
 			   
 				"initComplete": function(settings, json) {
+				   ccc();
 					$('#eng-overlay').css( 'display', 'none' );
 		  },
 		  });
@@ -507,7 +440,7 @@ $('#searchclass').on("keydown", function(event) {
   }
 	
 //});
-	$(document).ready(function (){    
+	/*$(document).ready(function (){    
     $('#searchclass, .search-dt span').on('click', function(e){
        e.stopPropagation();    
     });
@@ -516,7 +449,7 @@ $('#searchclass').on("keydown", function(event) {
        return false;   
   }  
 });
-});
+});*/
   <?php
 }
   ?>
