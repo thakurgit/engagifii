@@ -133,6 +133,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['geteventscalendar', 'geteventsCalendar'],
         ['publicofficialdata', 'publicOfficalsearchData'],
         ['publicOfficial', 'publicOfficialLoadData'],
+        ['publicOfficialFilter', 'publicOfficialFilterData'],
         //end here
     ];
 
@@ -1374,6 +1375,26 @@ wp_die();
     public function _publicOfficialSearch(){
         $postData = array();
         $postData['name'] = $_POST['searchText'];      
+        return $postData;
+    }
+
+
+	    public function publicOfficialFilterData(){
+        $postedData = $this->_publicOfficialFilter();
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
+        header("Content-Type: application/json");   
+        echo $dataResponse['api_response'];
+		//print_r($dataResponse);
+		//die;
+        wp_die();
+    }
+    public function _publicOfficialFilter(){
+        $postData = array();
+        $postData['cityofResidence'] = $_POST['cityofResidence'];      
+        $postData['committee'] = $_POST['committee'];      
+        $postData['politicalParty'] = $_POST['politicalParty'];      
+        $postData['role'] = $_POST['role'];      
+        $postData['county'] = $_POST['county'];      
         return $postData;
     }
 	

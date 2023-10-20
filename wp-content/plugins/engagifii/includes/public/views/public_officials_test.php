@@ -32,15 +32,26 @@ foreach ($seqColumns as $key => $value) {
 
 ?>
 <style type="text/css">
-  
- .session-tab button {
- }
   .session-tab button.active{
 	background-color:#002474  !important;
  }
 </style>
 <div class="container-fluid">
-		
+	<ul class="list-group res-list" style="overflow:auto; height:400px">
+    <?php
+	foreach ($residence as $key => $value) {
+		echo '<li class="list-group-item"><div class="form-check">
+  <input class="form-check-input" type="checkbox" value="'.$value['text'].'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['text'])).'">
+  <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['text'])).'">
+    '.$value['text'].'
+  </label>
+</div>
+</li>';	
+	}
+	?>
+   
+</ul>
+<button class="filter_submit btn btn-primary" type="submit">Submit</button>	
 </div>
  <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
@@ -117,10 +128,8 @@ foreach ($seqColumns as $key => $value) {
        </div>
        <script>
   var titleColumn = '<?php echo $title_key; ?>';
-  var table='';
-  var tab='';
-  var prvtab='';
-  var tabCount='';
+  var table,tab,prvtab,tabCount='';
+  var residence=[],committee=[],party=[],role=[],county=[],states=[];
 	  tab = $('.tab-pane.active').attr('data-tab');
 	  $('.tab-pane.active')
 		ajaxDT();  
@@ -162,7 +171,13 @@ foreach ($seqColumns as $key => $value) {
           data:{
               action:'publicOfficial',
 			  tab:tab,
-			  tabCount:tabCount
+			  tabCount:tabCount,
+			  cityofResidence:residence,
+			  committee:committee,
+			  politicalParty:party,
+			  role:role,
+			  county:county,
+			  states:states
           },
           success: function(response) { 
 		  	var data =   response; 
@@ -290,7 +305,34 @@ $('#searchclass').on("keydown", function(event) {
   <?php
 }
   ?>
-
+$('.filter_submit').on('click', function(){
+	residence=[];
+	$('.res-list input').each(function(){
+		if ($(this).is(':checked')) {
+			residence.push($(this).val());	
+		}
+	});
+	  residence = residence.filter(function(elem, index, self) {
+      return index === self.indexOf(elem);
+  });
+	console.log(residence);
+	$.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'publicOfficialFilter',
+			  cityofResidence:residence,
+			  committee:committee,
+			  politicalParty:party,
+			  role:role,
+			  county:county,
+			  states:states
+          },
+          success: function(response) { 
+		  	var data =   response; 
+		  }
+        });
+});
 
 	  
 
