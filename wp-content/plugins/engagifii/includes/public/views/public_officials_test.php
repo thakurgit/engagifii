@@ -84,7 +84,7 @@ foreach ($seqColumns as $key => $value) {
 				  }
 				?>
 				<div class="card">
-                  <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
+                  <div class="card-header px-0 <?php if($tabCount % 2 == 1){echo 'bg-white';}?>" id="heading<?php echo $value['id']; ?>">
                     <h2 class="mb-0">
                       <button class="btn btn-link btn-block text-left py-0 d-flex align-items-center" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
                         <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?><span class="text-dark ml-auto"><?php echo $count;?> Public Officials</span>
