@@ -11,6 +11,8 @@
 	$role = $obj->poRole();
 	$committee = $obj->poComittee();
 	$counties = $obj->poCounty();
+	$filterParam = ['City of Residence', 'Committies','Counties','District','Political Party', 'Role', ];
+	$filterAPI = [$residence, $committee,$counties,$district,$party, $role ];
 	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
 	//print_r($publicOfficial);
 	$siteURL= site_url();
@@ -32,28 +34,26 @@ foreach ($seqColumns as $key => $value) {
 
 ?>
 <style type="text/css">
-  .session-tab button.active{
+  .session-tab button.active, .filter-top-bg{
 	background-color:#002474  !important;
  }
+ .filter-toggle {
+	width: 40px;
+	height: 40px; 
+	color:#002474  !important;
+ }
+ .po-filter.show > .filter-toggle, .po-filter.ft-selected > .filter-toggle{
+	background-color:#002474  !important;
+	color:#fff  !important;
+ }
+ .po-filter .dropdown-menu {
+	width: 300px; 
+ }
+ .po-filter label {
+	font-size: 15px; 
+ }
 </style>
-<div class="container-fluid">
-	<ul class="list-group res-list" style="overflow:auto; height:400px">
-    <?php
-	foreach ($residence as $key => $value) {
-		echo '<li class="list-group-item"><div class="form-check">
-  <input class="form-check-input" type="checkbox" value="'.$value['text'].'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['text'])).'">
-  <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['text'])).'">
-    '.$value['text'].'
-  </label>
-</div>
-</li>';	
-	}
-	?>
-   
-</ul>
-<button class="filter_submit btn btn-primary" type="submit">Submit</button>	
-</div>
- <ul class="nav nav-pills mb-3 justify-content-center session-tab" id="pills-tab" role="tablist">
+ <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($publicOfficial as $key => $value) {
 			if($key=='stateSenateMemberList'){
@@ -95,33 +95,6 @@ foreach ($seqColumns as $key => $value) {
 			$tabDataArray= $publicOfficial[$key];
 			?>
 <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" data-tab="<?php echo $key; ?>">
-		<?php if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){ 
-			echo '<div class="accordion" id="accordionExample-'.$k.'">';
-				$tabCount='0';
-				$count='';
-				foreach ($tabDataArray as $keys => $value) { 
-				
-				  if($key=='countyDeligationList'){
-					 $count=count($value['countyOfficals']);
-				  }else{
-					$count=count($value['committeeOfficals']);
-				  }
-				?>
-				<div class="card">
-                  <div class="card-header px-0 <?php if($tabCount % 2 == 1){echo 'bg-white';}?>" id="heading<?php echo $value['id']; ?>">
-                    <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left py-0 d-flex align-items-center" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
-                        <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?><span class="text-dark ml-auto"><?php echo $count;?> Public Officials</span>
-                      </button>
-                    </h2>
-                  </div>
-            <div data-count="<?php echo $tabCount; ?>" id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample-<?php echo $k; ?>">
-              <div class="card-body"></div>
-              </div>
-                </div>	
-			<?php $tabCount++;}
-			echo '</div>';
-		} ?>
 </div><!--tab pane close-->
       <?php $k++; 
 	  } ?>
@@ -131,40 +104,26 @@ foreach ($seqColumns as $key => $value) {
   var table,tab,prvtab,tabCount='';
   var residence=[],committee=[],party=[],role=[],county=[],states=[];
 	  tab = $('.tab-pane.active').attr('data-tab');
-	  $('.tab-pane.active')
 		ajaxDT();  
-  $('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
-	   prvtab = $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').attr('data-tab');
-		  $('.card-body').html(''); 
-		  $('.tab-pane .card .show').collapse('hide') ;
-	  if(tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList'){
-		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
-		}
-		else{
-		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');  
-		}
-	  }
-	  else{
-		  $('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
-		if(prvtab=='stateSenateCommittees'||prvtab=='stateHouseCommittees'||prvtab=='countyDeligationList'){
-		}else{
-		  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
-		}
-	 	 ajaxDT();
-	  }
+	   tabCount='';
+	  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
+	  ajaxDT();
    });
-   $('.card >div+div').on('shown.bs.collapse', function (e) {
+   $('body').on('shown.bs.collapse','.card >div+div', function (e) {
 	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
 	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
-		if($('.card-body',this).is(':empty')){
-	     $(this).append('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'); 
+		if($('.card-body table',this).length==0){
 		  ajaxDT();
 		}
 	}) ;
    function ajaxDT(){
-	   
+	   if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList')&& tabCount!=''){
+			$('.active .show .card-body').html('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');  	 
+			}else{
+			$('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');   
+	   }
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -181,7 +140,7 @@ foreach ($seqColumns as $key => $value) {
           },
           success: function(response) { 
 		  	var data =   response; 
-			if(tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList'){
+			if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList') && tabCount!=''){
 			  $('.tab-pane.active .card .show .card-body').html(data);
 			}else{
 			  $('.tab-pane.active').html(data);
@@ -211,15 +170,6 @@ foreach ($seqColumns as $key => $value) {
 					{ width: 200, targets: <?php echo array_search('Name',$seqColumns);?> },
 					{ className: "text-center", "targets": ["startdate","instructors"] },
 					{ responsivePriority: 1, targets: 'sectionname' },
-					<?php //if(in_array('sessions', $class_visible_column_list)){ ?>
-					/*{'targets': <?php //echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
-						var html = $(cellData);
-						var editor = $("<p>").append(html);
-						var cell = editor.find("span:first-child").html();
-					 $(td).attr('data-order', cell ); 
-					   }
-				   },*/
-				   <?php //} ?>
 				  ],
 				  "language": {
 					processing: '<span>&nbsp;</span>',
@@ -228,21 +178,12 @@ foreach ($seqColumns as $key => $value) {
 				  "oLanguage": {
 					  "sLengthMenu": "Show _MENU_ records per page"
 				  },
-				  //"ajax": {
-					 // url: '<?php //echo ENGAGIFII_ASSETS_URL.'/po.txt'; ?>',
-					 // dataSrc: ''
-				  //},
-				 // "data": <?php //echo json_encode(tabDataArray($publicOfficial,'stateSenateMemberList'));  ?>,
 				  createdRow: function (row, data, index) { 
 					   //$(row).addClass( 'bg-white' );
 				  },  
 				  //"columns":<?php //echo (json_encode($forDatatable)); ?>,
 				   "drawCallback": function( settings ) {
 					   dt_dropdown();
-					  // tableEvents();
-					   <?php //if($dt_respnsive==''){ ?>
-					 //dt_scroll();
-						 <?php //} ?>
 						 $('[data-toggle="tooltip"]').tooltip() ;
 				   },
 				   
@@ -275,8 +216,6 @@ function delay(callback, ms) {
 				table.columns(titleColumn).search(titlesearch).draw();
             }
 }, 500));
-
-
  $( 'input', this ).keyup(function(e){
 	if(this.value.length!=0){
 				$(this).parents('th').find('.clear-search').show();
@@ -305,36 +244,111 @@ $('#searchclass').on("keydown", function(event) {
   <?php
 }
   ?>
-$('.filter_submit').on('click', function(){
-	residence=[];
-	$('.res-list input').each(function(){
-		if ($(this).is(':checked')) {
-			residence.push($(this).val());	
-		}
-	});
-	  residence = residence.filter(function(elem, index, self) {
-      return index === self.indexOf(elem);
-  });
-	console.log(residence);
-	$.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-          data:{
-              action:'publicOfficialFilter',
-			  cityofResidence:residence,
-			  committee:committee,
-			  politicalParty:party,
-			  role:role,
-			  county:county,
-			  states:states
-          },
-          success: function(response) { 
-		  	var data =   response; 
-		  }
-        });
+  $(document).on('click', '.po-filter .dropdown-menu', function (e) {
+  e.stopPropagation();
 });
-
-	  
-
-  
+function ajaxFilter(){
+	$('.filter_submit').text('Loading...').append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>').attr('disabled',''); 
+	if($(".po-filter input:checkbox:checked").length > 0){
+		$('.po-filter').addClass('ft-selected');
+		if($('.filter-toggle span').length==0){
+		  $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
+		}else{
+		  $('.filter-toggle span').text($('.ft-active').length);
+		}
+	}else{
+		$('.po-filter').removeClass('ft-selected');	
+		$('.filter-toggle span').remove();
+	}
+	$.ajax({
+			  type : "post",
+			  url: engagifiiUrl_ajaxurl,
+			  data:{
+				  action:'publicOfficialCount',
+				  cityofResidence:residence,
+				  committee:committee,
+				  politicalParty:party,
+				  role:role,
+				  county:county,
+				  states:states
+			  },
+			  success: function(response) { 
+				$('#pills-tab li').each(function(){
+					var idx = $(this).index();	
+					$('button  b',this).text('('+response[idx]+')');
+				});
+				$('.filter_submit').text('Apply').removeAttr("disabled").find('span').remove();
+			  }
+			});	
+	ajaxDT();
+}
+$('.filter_submit').on('click', function(){
+tabCount='';
+  residence=[];committee=[];party=[];role=[];county=[];states=[];
+	$('.po-filter ul').each(function(){
+	  $('input',this).each(function(){
+		  if ($(this).is(':checked')) {
+			  if($(this).parents('.border-bottom').attr('data-filter')=='cityofresidence'){
+				residence.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='committies'){
+				committee.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='counties'){
+				county.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='district'){
+				states.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='politicalparty'){
+				party.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='role'){
+				role.push($(this).val());	
+			  }
+		  }
+	  });
+	});
+		residence = residence.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		committee = committee.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		county = county.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		states = states.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		party = party.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		role = role.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		ajaxFilter();
+});
+$('.po-filter ul').each(function(){
+	$('input',this).prop('checked', false);
+   var ftSelected=0;
+	$('input',this).change(function(){
+		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
+	  if(ftSelected>0){
+		$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('('+ftSelected+')');  
+	  }else{
+		$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');  
+	  }
+});
+});
+$('#clear-all').on('click', function(){
+tabCount='';
+  residence=[];committee=[];party=[];role=[];county=[];states=[];
+	$('.po-filter input').each(function(){
+	  $(this).prop('checked', false);
+	});
+	$('.ft-active').removeClass('ft-active');
+  ajaxFilter();
+	$('.ft-counter').text('');
+});
 	  </script>

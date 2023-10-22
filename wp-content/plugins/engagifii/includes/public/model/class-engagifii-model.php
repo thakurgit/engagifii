@@ -131,9 +131,9 @@ class abstractModelEngagifii extends Engagifii_API
         ['getendorsementcalendar', 'getendorsementCalendar'],
         ['eventscalendar', 'eventsCalendar'],
         ['geteventscalendar', 'geteventsCalendar'],
-        ['publicofficialdata', 'publicOfficalsearchData'],
-        ['publicOfficial', 'publicOfficialLoadData'],
-        ['publicOfficialFilter', 'publicOfficialFilterData'],
+        ['publicofficialdata', 'publicOfficalsearchData'], //public official name search
+        ['publicOfficial', 'publicOfficialLoadData'], //public offcial datatable
+        ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
         //end here
     ];
 
@@ -1379,16 +1379,18 @@ wp_die();
     }
 
 
-	    public function publicOfficialFilterData(){
-        $postedData = $this->_publicOfficialFilter();
+	    public function publicOfficialFilterCount(){
+        $postedData = $this->_publicOfficialCount();
         $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
-        header("Content-Type: application/json");   
-        echo $dataResponse['api_response'];
-		//print_r($dataResponse);
-		//die;
+        header("Content-Type: application/json");
+		$newcount=array();
+		foreach (json_decode($dataResponse['api_response'], true) as $key => $value) {
+			array_push($newcount,count($value));	
+		}
+		echo json_encode($newcount);
         wp_die();
     }
-    public function _publicOfficialFilter(){
+    public function _publicOfficialCount(){
         $postData = array();
         $postData['cityofResidence'] = $_POST['cityofResidence'];      
         $postData['committee'] = $_POST['committee'];      
@@ -2230,12 +2232,12 @@ foreach ($seqColumns as $key => $value) {
 	$tableHeader.='<th class="'.str_replace(' ', '', strtolower($value)).'Col">'.$value.'</th>';
 }
         $siteURL= site_url();
-        $postedData  = '{}';
+        $postedData = $this->_publicOfficialCount();
         $postedTab  = $_POST['tab'];
 		$postedTabCount  = $_POST['tabCount'];
 		//print_r(json_encode($postedTab));
 		//die;
-         $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", json_decode($postedData), "POST", 'legislation');
+         $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
        	if($postedTab=='stateSenateCommittees' || $postedTab=='stateHouseCommittees' || $postedTab=='countyDeligationList'){
 			if($postedTab=='countyDeligationList'){
 			   $collection   = json_decode($dataResponse['api_response'], true)[$postedTab][$postedTabCount]['countyOfficals'];
@@ -2245,12 +2247,41 @@ foreach ($seqColumns as $key => $value) {
 		}else{
 	   	 $collection   = json_decode($dataResponse['api_response'], true)[$postedTab];
 		}
-		 //print_r(json_decode($dataResponse['api_response'], true)[$postedTab['tab']]);
-		 //die;
-        $totalcount   = count($collection);
-        $data         = '<table id="ebtmaintable"   class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;"> <thead> <tr>
+		 $data='';
+		 if(($postedTab=='stateSenateCommittees' || $postedTab=='stateHouseCommittees' || $postedTab=='countyDeligationList') && $postedTabCount==''){
+			 $cards   = json_decode($dataResponse['api_response'], true)[$postedTab];
+			 if($cards){
+			   $tabCount='0';
+			   $data .='<div class="accordion" id="accordionExample">';
+			   foreach ($cards as $key => $value){
+				 $counterTab='';
+				 if($postedTab=='countyDeligationList'){
+					 $counterTab=count($value['countyOfficals']);
+				  }else{
+					$counterTab=count($value['committeeOfficals']);
+				  }
+			   $data  .='<div class="card">'; 
+			   $data  .='<div class="card-header px-0 " id="heading'.$value['id'] .'">
+					  <h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left py-0 d-flex align-items-center" type="button" data-toggle="collapse" data-target="#collapse'.$value['id'] .'" aria-expanded="true" aria-controls="collapseOne">
+						  <i class="fal fa-plus mr-3"></i>'.$value['name'] .'<span class="text-dark ml-auto">'.$counterTab.' Public Officials</span>
+						</button>
+					  </h2>
+					</div>';
+			  $data .='<div data-count="'.$tabCount.'" id="collapse'.$value['id'].'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+				<div class="card-body"></div>
+				</div>';
+			   $data  .='</div>';
+			   $tabCount++;
+			   }
+			   $data .='</div>';
+			 }else{
+				$data  .='<h5 class="text-center pt-5">Data not available</h5>';
+			 }
+		 }else{
+			 if($collection){
+        $data  .= '<table id="ebtmaintable"   class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;"> <thead> <tr>
                        '.$tableHeader.'</tr></thead><tbody>';
-                    
        foreach ($collection as $key => $value) { 
                         $data.= '<tr>';
                         //name
@@ -2314,9 +2345,11 @@ foreach ($seqColumns as $key => $value) {
                        $data.= '<td>'.$value['legislativeRole'].'</td>';
                         $data.= '</tr>';
                          }
-                     
 		$data.='</tbody></table>';
-
+			 }else{
+				$data  .='<h5 class="text-center pt-5">Data not available</h5>'; 
+			 }
+		 }
         echo $data;
         wp_die();
     }
