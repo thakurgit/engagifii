@@ -1397,6 +1397,7 @@ wp_die();
         $postData['politicalParty'] = $_POST['politicalParty'];      
         $postData['role'] = $_POST['role'];      
         $postData['county'] = $_POST['county'];      
+        $postData['office'] = $_POST['office'];      
         return $postData;
     }
 	

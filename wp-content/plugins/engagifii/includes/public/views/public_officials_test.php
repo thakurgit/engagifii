@@ -34,7 +34,7 @@ foreach ($seqColumns as $key => $value) {
 
 ?>
 <style type="text/css">
-  .session-tab button.active, .filter-top-bg{
+  .session-tab button.active{
 	background-color:#002474  !important;
  }
  .filter-toggle {
@@ -85,6 +85,51 @@ foreach ($seqColumns as $key => $value) {
  $i++; }
 	  ?>   		
       </ul>
+	<div class="dropdown dropleft po-filter d-none justify-content-end mb-3">
+  <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
+    <i class="far fa-filter"></i>
+  </button>
+  <div class="dropdown-menu py-0">
+	<div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> 
+        <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> 
+        <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> 
+    </div>
+    <div class="accordion" id="accordionFilter">
+    <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
+      <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left d-flex align-items-center <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" >
+              <?php echo $values; ?> <span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+            </button>
+          </h5>
+        <div  id="filter-<?php echo $ft; ?>" class="collapse" data-parent="#accordionFilter">
+          <ul class="list-group td-dropdown" style="overflow:auto; max-height:200px">
+        <?php
+        foreach ($filterAPI[$ft] as $key => $value) {
+			if($values=='Counties'){
+				$chkd = $value['text'];	
+			}else{
+				$chkd = $value['value'];	
+			}
+            echo '<li class="px-3"><div class="form-check">
+      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+        <small>'.$value['text'].'</small>      </label>
+    </div>
+    </li>';	
+        }
+        ?>
+       
+    </ul>
+        </div>
+      </div>
+	<?php $ft++; } ?>
+</div>
+<div class="text-center py-2">
+<button class="filter_submit btn btn-primary" type="submit">Apply</button>	
+</div>
+  </div>
+</div>
        <div class="tab-content" id="nav-tabContent">
       <?php $k=1; 
 	  	foreach ($publicOfficial as $key => $value) {
@@ -102,7 +147,7 @@ foreach ($seqColumns as $key => $value) {
        <script>
   var titleColumn = '<?php echo $title_key; ?>';
   var table,tab,prvtab,tabCount='';
-  var residence=[],committee=[],party=[],role=[],county=[],states=[];
+  var residence=[],committee=[],party=[],role=[],county=[],office=[];
 	  tab = $('.tab-pane.active').attr('data-tab');
 		ajaxDT();  
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
@@ -136,7 +181,7 @@ foreach ($seqColumns as $key => $value) {
 			  politicalParty:party,
 			  role:role,
 			  county:county,
-			  states:states
+			  office:office
           },
           success: function(response) { 
 		  	var data =   response; 
@@ -158,6 +203,8 @@ foreach ($seqColumns as $key => $value) {
 				  "bInfo":false,
 				  "processing": true,
 				  "searching": true,
+				  "responsive": true,
+				  //"fixedHeader": true,
 				  "ordering":true,
 				  "search": {regex: true},
 				  <?php if(in_array('Name', $seqColumns)){ ?>
@@ -270,7 +317,7 @@ function ajaxFilter(){
 				  politicalParty:party,
 				  role:role,
 				  county:county,
-				  states:states
+				  office:office
 			  },
 			  success: function(response) { 
 				$('#pills-tab li').each(function(){
@@ -284,7 +331,7 @@ function ajaxFilter(){
 }
 $('.filter_submit').on('click', function(){
 tabCount='';
-  residence=[];committee=[];party=[];role=[];county=[];states=[];
+  residence=[];committee=[];party=[];role=[];county=[];office=[];
 	$('.po-filter ul').each(function(){
 	  $('input',this).each(function(){
 		  if ($(this).is(':checked')) {
@@ -298,7 +345,7 @@ tabCount='';
 				county.push($(this).val());	
 			  }
 			  if($(this).parents('.border-bottom').attr('data-filter')=='district'){
-				states.push($(this).val());	
+				office.push($(this).val());	
 			  }
 			  if($(this).parents('.border-bottom').attr('data-filter')=='politicalparty'){
 				party.push($(this).val());	
@@ -318,7 +365,7 @@ tabCount='';
 		county = county.filter(function(elem, index, self) {
 		   return index === self.indexOf(elem);
 		});
-		states = states.filter(function(elem, index, self) {
+		office = office.filter(function(elem, index, self) {
 		   return index === self.indexOf(elem);
 		});
 		party = party.filter(function(elem, index, self) {
@@ -343,7 +390,7 @@ $('.po-filter ul').each(function(){
 });
 $('#clear-all').on('click', function(){
 tabCount='';
-  residence=[];committee=[];party=[];role=[];county=[];states=[];
+  residence=[];committee=[];party=[];role=[];county=[];office=[];
 	$('.po-filter input').each(function(){
 	  $(this).prop('checked', false);
 	});
