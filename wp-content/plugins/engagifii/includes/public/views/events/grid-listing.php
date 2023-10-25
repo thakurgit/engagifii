@@ -309,7 +309,7 @@ var table = $('#ebtmaintable').DataTable( {
        "ordering":true,
 	   //"search": {regex: true},
 		<?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		"order": [[<?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'asc']],
+		"order": [[<?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'desc']],
 		 <?php } ?>
        "columnDefs": [ 
           { "targets": ['tags','register','eventType','city','eventStatus'],
