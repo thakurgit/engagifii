@@ -98,11 +98,10 @@ foreach ($seqColumns as $key => $value) {
     <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
       <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
           <h5 class="mb-0">
-            <button class="btn btn-block text-left d-flex align-items-center <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" >
-              <?php echo $values; ?> <span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+            <button class="btn btn-block text-left d-flex align-items-center shadow-none <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
             </button>
           </h5>
-        <div  id="filter-<?php echo $ft; ?>" class="collapse" data-parent="#accordionFilter">
+        <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
           <ul class="list-group td-dropdown" style="overflow:auto; max-height:200px">
         <?php
         foreach ($filterAPI[$ft] as $key => $value) {
@@ -111,10 +110,9 @@ foreach ($seqColumns as $key => $value) {
 			}else{
 				$chkd = $value['value'];	
 			}
-            echo '<li class="px-3"><div class="form-check">
+            echo '<li><div class="form-check">
       <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-        <small>'.$value['text'].'</small>      </label>
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
     </div>
     </li>';	
         }
@@ -296,7 +294,7 @@ $('#searchclass').on("keydown", function(event) {
 });
 function ajaxFilter(){
 	$('.filter_submit').text('Loading...').append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>').attr('disabled',''); 
-	if($(".po-filter input:checkbox:checked").length > 0){
+	if($(".po-filter ul input:checkbox:checked").length > 0){
 		$('.po-filter').addClass('ft-selected');
 		if($('.filter-toggle span').length==0){
 		  $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
@@ -329,6 +327,7 @@ function ajaxFilter(){
 			});	
 	ajaxDT();
 }
+//events on filter submit button
 $('.filter_submit').on('click', function(){
 tabCount='';
   residence=[];committee=[];party=[];role=[];county=[];office=[];
@@ -387,7 +386,10 @@ $('.po-filter ul').each(function(){
 		$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');  
 	  }
 });
+	$('<input class="form-control my-2 form-control-sm bg-light ft-list" placeholder="Search..."/><div class="form-check"><input class="form-check-input select-all" type="checkbox" value="" id="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><label class="form-check-label" for="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><small class="font-weight-bold">Select / Deselect All</small></label></div>').insertBefore(this);
+	$('<span class="d-none small pb-2 text-center font-italic">No data found with this keyword</span>').insertAfter(this);
 });
+//clear all button in filter
 $('#clear-all').on('click', function(){
 tabCount='';
   residence=[];committee=[];party=[];role=[];county=[];office=[];
@@ -398,4 +400,31 @@ tabCount='';
   ajaxFilter();
 	$('.ft-counter').text('');
 });
+//select/Deselect all checkbox in filter
+$('.select-all').change(function(){
+	  if ($(this).is(':checked')) {
+		$(this).parent().siblings('ul').find('li input').prop('checked', true).change();  
+	  }else{
+		$(this).parent().siblings('ul').find('li input').prop('checked', false).change();  
+	  }
+});
+//seach list in filter
+  $('.ft-list').each(function() { 
+  $(this).on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).siblings('ul').find('li').filter(function() {
+      $(this).toggle($.trim($(this).text()).toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).siblings('ul').find('li:visible').length<1){
+		  $(this).siblings('span').removeClass('d-none').addClass('d-flex');
+		  $(this).siblings('div').addClass('d-none');
+	  } else {
+		  $(this).siblings('span').addClass('d-none').removeClass('d-flex');
+		  $(this).siblings('div').removeClass('d-none');
+	  }
+  });
+  });
+
+
 	  </script>
+      
