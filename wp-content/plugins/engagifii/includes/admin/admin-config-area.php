@@ -170,6 +170,18 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'Total bills count',
                     'shortcode'   => '[bill-count]'
+                ),
+                array(
+                    'name'        => 'Legislative Reports',
+                    'shortcode'   => '[legislative-reports]'
+                ),
+                array(
+                    'name'        => 'Public Officals',
+                    'shortcode'   => '[public-officials]'
+                ),
+                array(
+                    'name'        => 'Public Official details',
+                    'shortcode'   => '[public-officials-detail]'
                 )
             )
         ),
