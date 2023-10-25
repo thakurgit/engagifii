@@ -1001,7 +1001,7 @@ public function getEventsCalendar(){
     
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-    print_r($events_visible_column_list);
+    //print_r($events_visible_column_list);
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
