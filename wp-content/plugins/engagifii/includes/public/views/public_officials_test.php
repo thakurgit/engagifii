@@ -85,7 +85,7 @@ foreach ($seqColumns as $key => $value) {
  $i++; }
 	  ?>   		
       </ul>
-	<div class="dropdown dropleft po-filter d-none justify-content-end mb-3">
+	<div class="dropdown dropleft po-filter d-flex justify-content-end mb-3"> 
   <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
     <i class="far fa-filter"></i>
   </button>
