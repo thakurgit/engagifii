@@ -98,7 +98,7 @@ foreach ($seqColumns as $key => $value) {
     <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
       <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
           <h5 class="mb-0">
-            <button class="btn btn-block text-left d-flex align-items-center shadow-none <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+            <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
             </button>
           </h5>
         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
