@@ -92,13 +92,13 @@ border:3px solid white
     </div>
 </div>
 <div class="container-fluid">
-	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
+	<div class="border overflow-hidden mb-4" style="border-radius:10px">
 	<h5 class="bg-light py-2 px-3 border-bottom">Biography</h5>
     <div class="p-3">
     	<?php echo $response->bio; ?>
     </div>
     </div>
-	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
+	<div class="border overflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Counties</h5>
     <div class="p-3">
     	<ul class="list-group list-group-flush">	
@@ -108,7 +108,7 @@ border:3px solid white
 		</ul>
     </div>
     </div>
-	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
+	<div class="border overflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Address</h5>
     <div class="p-3">
 			<?php foreach ($response->address as $key => $value) {
@@ -116,7 +116,7 @@ border:3px solid white
             } ?>
     </div>
     </div>
-	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
+	<div class="border overflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Contact Details</h5>
     <div class="p-3">
     	<div class="row">
