@@ -2,11 +2,13 @@
 if (isset($_GET['id'])) {
     $paramValue = $_GET['id'];
    // echo "Value of 'param' parameter: " . $paramValue;
-} 
+}  else{
+echo'<h5 class="text-center pt-5">Public official ID not available</h5>';
+return;	
+}
 $options = get_option('ebt_api_settings');
-print_r($options);
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
-$url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1/legislative/public-bills/official-detail/'.$paramValue;
+$url = $options['lbt_api_url'].'/legislative/public-bills/official-detail/'.$paramValue;
 $curl = curl_init();
 // Append any necessary query parameters to the URL
 $queryParameters = array(
