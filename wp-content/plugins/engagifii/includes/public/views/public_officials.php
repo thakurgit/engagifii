@@ -1,93 +1,61 @@
 <?php
     $obj      =  new Engagifii_API();
     $publicOfficial = $obj->publicOfficial();
-
-/*$options = get_option('ebt_api_settings');
-$tenant_code          = $options['lbt_tenant_code']['tenant_code'];
-
-$url = 'https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
-$curl = curl_init();
-// Append any necessary query parameters to the URL
-$queryParameters = array(
-    // Add your query parameters here
-);
-$queryString = http_build_query($queryParameters);
-if (!empty($queryString)) {
-    $url .= '?' . $queryString;
+	if(!$publicOfficial){
+		echo'<h5 class="text-center pt-5">Data not available</h5>';
+		return;	
+	}
+	$residence = $obj->poResidence();
+	$district = $obj->poDistrict();
+	$party = $obj->poParty();
+	$role = $obj->poRole();
+	$committee = $obj->poComittee();
+	$counties = $obj->poCounty();
+	$filterParam = ['City of Residence', 'Committies','Counties','District','Political Party', 'Role', ];
+	$filterAPI = [$residence, $committee,$counties,$district,$party, $role ];
+	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
+	//print_r($publicOfficial);
+	$siteURL= site_url();
+    $title_key = -1;
+    
+$seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
+$forDatatable   =   array();
+$tableHeader='';
+$i = 0;
+foreach ($seqColumns as $key => $value) {
+	if($value == 'Name'){
+	  $title_key = $i;
+	}
+	$forDatatable[]['data'] = str_replace(' ', '', strtolower($value));
+	$tableHeader.='<th class="'.str_replace(' ', '', strtolower($value)).'Col">'.$value.'</th>';
+  $i++;
 }
 
-function fetchData($url, $tenant_code, $payload)
-{
-	$peopleDATA = '';
-	$curl = curl_init();
-	
-	curl_setopt_array($curl, array(  
-	  CURLOPT_URL => $url,
-	  CURLOPT_RETURNTRANSFER => true,
-	  CURLOPT_POST => true,  // Set request type to POST
-	  CURLOPT_POSTFIELDS => $payload,  // Set the payload data
-	  CURLOPT_HTTPHEADER => array(
-		"cache-control: no-cache",
-		"content-type: application/json",   
-		"tenant-code:".$tenant_code, 
-	   
-	  ),
-	));
-	$response = curl_exec($curl);
-	$peopleDATA = json_decode($response);
-	// Close the cURL session
-	curl_close($curl);
-	return $peopleDATA;
-}
-$payload='{}';
-$peopleDATA = fetchData($url, $tenant_code, $payload);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	
-    // Handle the search request and update $peopleDATA
-    $searchText = isset($_POST['searchText']) ? $_POST['searchText'] : '';
-    $payload = json_encode(['searchText' => $searchText]);
-	
-	$peopleDATA = fetchData($url, $tenant_code,$payload);
-    //print_r($peopleDATA);
-}*/
 ?>
 <style type="text/css">
-  
- .session-tab button {
-	border-bottom:3px solid transparent !important;
-	color:#333 !important;
- }
   .session-tab button.active{
-	border-bottom-color:#002474  !important;
+	background-color:#002474  !important;
  }
- mark, .mark {
-	background-color: #F9D276;
-}
+ .filter-toggle {
+	width: 40px;
+	height: 40px; 
+	color:#002474  !important;
+ }
+ .po-filter.show > .filter-toggle, .po-filter.ft-selected > .filter-toggle{
+	background-color:#002474  !important;
+	color:#fff  !important;
+ }
+ .po-filter .dropdown-menu {
+	width: 300px; 
+ }
+ .po-filter label {
+	font-size: 15px; 
+ }
 </style>
-<div class="container-fluid mb-4">
-<div class="row">
-	<div class="col-md-4"><form method="post" action="">
-    	<div class="position-relative input-group">
-		
-                    <input type="text" placeholder="Search Public Official..." class="form-control search-official border-dark" name="searchText">
-                    <div class="input-group-append">
-                    <button type="button" class="search-close position-absolute btn" style="right:30px; top:0; display:none; z-index:99"><i class="fal fa-times"></i></button>
-                        <button type="submit" class="input-group-text bg-transparent border-dark"><i class="fal fa-search"></i></button>
-                    </div>
-               
-
-      </div> </form>
-    </div>
-</div>
-</div>
-	<div class="position-relative">
-     <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
+ <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
       <?php $i=1; 
 	  	foreach ($publicOfficial as $key => $value) {
-			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
-				continue;	
-			}
 			if($key=='stateSenateMemberList'){
 				$name='State Senate';
 			}
@@ -112,298 +80,351 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if($i==1){
 				$class =' active';
 			}
-    echo '<li class="nav-item mr-4" role="presentation">
-    <button class="nav-link bg-transparent border-0 rounded-0 px-0'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
+    echo '<li class="nav-item mr-3 mb-3" role="presentation">
+    <button class="border-dark nav-link bg-transparent'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
  $i++; }
 	  ?>   		
       </ul>
-      <div class="tab-content" id="nav-tabContent">
-      <?php $k=1; 
-	  	foreach ($publicOfficial as $key => $value) {
-			if($key=='relatedOfficials' || $key=='myOfficials' || $key=='stateBoardOfEducationMemberList' || $key=='stateWideElectedMemberList'){
-				continue;	
+	<div class="dropdown dropleft po-filter d-flex justify-content-end mb-3"> 
+  <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
+    <i class="far fa-filter"></i>
+  </button>
+  <div class="dropdown-menu py-0">
+	<div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> 
+        <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> 
+        <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> 
+    </div>
+    <div class="accordion" id="accordionFilter">
+    <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
+      <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left d-flex align-items-center shadow-none <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+            </button>
+          </h5>
+        <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
+          <ul class="list-group td-dropdown" style="overflow:auto; max-height:200px">
+        <?php
+        foreach ($filterAPI[$ft] as $key => $value) {
+			if($values=='Counties'){
+				$chkd = $value['text'];	
+			}else{
+				$chkd = $value['value'];	
 			}
-			$class=''; 
-			if($k==1){
-				$class =' show active';
-			}
-			$list = $value;
-			?>
-      <div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" aria-labelledby="nav-home-tab">
-      	<div class="row">
-        	<?php if($key=='stateSenateCommittees' || $key=='stateHouseCommittees' || $key=='countyDeligationList'){ 
-				echo '<div class="accordion col-12" id="accordionExample">';
-				foreach ($list as $key => $value) { ?>
-					  <div class="card">
-                        <div class="card-header px-0" id="heading<?php echo $value['id']; ?>">
-                          <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse<?php echo $value['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
-                              <i class="fal fa-plus mr-3"></i><?php echo $value['name']; ?>
-                            </button>
-                          </h2>
-                        </div>
-                        <div id="collapse<?php echo $value['id']; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                          <div class="card-body">
-                            <div class="row">
-                            	<?php //if($key=='countyDeligationList'){
-									//print_r($value->countyOfficals);
-									 foreach ($value['countyOfficals'] as $key => $values) { ?>
-                                 	 <div class="col-md-6 col-lg-4 mb-3 ">
-                                  <div class="border bg-light rounded-2 p-3">
-                                      <div class="d-flex">
-                                          <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                  <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
-                                          </div>
-                                          <div>
-                                      <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
-                                      (<?php echo $values['officialNameLabel'] ; ?>)<br>
-                                      <?php echo $values['legislativeRole']; ?><br>
-                                      <?php echo $values['districtCode']; ?><br>
-                                      <?php echo $values['residence']; ?><br>
-                                      <?php echo $values['party']; ?>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                                	<?php }
-								//}
-								//if($key=='stateSenateCommittees' || $key=='stateHouseCommittees') {
-									foreach ($value['committeeOfficals'] as $key => $values) { ?>
-                                       <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="border bg-light rounded-2 p-3">
-                                        <div class="d-flex">
-                                            <div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                                                    <img src="<?php echo $values['profilePic']; ?>" alt="" class="img-fluid">
-                                            </div>
-                                            <div>
-                                         <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $values['id']; ?>"><?php echo $values['legalName']; ?></a><br>
-                                        (<?php echo $values['officialNameLabel'] ; ?>)<br>
-                                      <?php echo $values['legislativeRole']; ?><br>
-                                      <?php echo $values['districtCode']; ?><br>
-                                      <?php echo $values['residence']; ?><br>
-                                      <?php echo $values['party']; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-									<?php }
-								//}?>	
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-				<?php }
-				echo '</div>';
-			 } else {
-        		foreach ($list as $key => $value) {?>
-        		<div class="col-md-6 col-lg-4 mb-3">
-            	<div class="border bg-light rounded-2 p-3">
-                	<div class="d-flex">
-                    	<div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px">
-                        		<img src="<?php echo $value['profilePic']; ?>" alt="" class="img-fluid">
-                        </div>
-                        <div>
-                	 <a href="<?php echo site_url();?>/public-official-detail/?id=<?php echo $value['id']; ?>"><?php echo $value['legalName']; ?></a><br>
-                    (<?php echo $value['officialNameLabel'] ; ?>)<br>
-                    <?php echo $value['legislativeRole']; ?><br>
-                    <?php echo $value['districtCode']; ?><br>
-                    <?php echo $value['residence']; ?><br>
-                    <?php echo $value['party']; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           	 <?php }
-			 } ?>
+            echo '<li><div class="form-check">
+      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
+    </div>
+    </li>';	
+        }
+        ?>
+       
+    </ul>
         </div>
       </div>
-      <?php $k++; } ?>
-      </div>
-     <div class="loaders position-absolute w-100 h-100 text-center pt-5" style="left:0; top:0;  background:rgba(255,255,255,0.8); display:none"><div class="spinner-border" role="status">
-  <span class="sr-only">Loading...</span>
-</div></div>
-      </div>
-       <script>
-	   jQuery(document).ready(function(){
-		 jQuery('.search-official').val('');  
-	   });
-	   var searchOfficial='';
-	   jQuery('.search-official').keyup(function(){
-			if(jQuery('.search-official').val()!=''){
-				jQuery('.search-close').show();	
-			}else{
-			  jQuery('.search-close').hide();		
+	<?php $ft++; } ?>
+</div>
+<div class="text-center py-2">
+<button class="filter_submit btn btn-primary" type="submit">Apply</button>	
+</div>
+  </div>
+</div>
+       <div class="tab-content" id="nav-tabContent">
+      <?php $k=1; 
+	  	foreach ($publicOfficial as $key => $value) {
+			$class=''; 
+			if($k==1 ){
+				$class =' show active';
 			}
-	   });
-	   jQuery('form button[type="submit"]').click(function(e){
-		   if(jQuery('.search-official').val()!=''){
-			   jQuery('.loaders').show();
-			   searchOfficial = jQuery('.search-official').val();
-			 publicOfficial();
-		   }else{
-			alert('Search field should not be blank');   
-		   }
-		 e.preventDefault();
-	   });
-	    jQuery('.search-close').click(function(e){
-			jQuery('.loaders').show();
-			 jQuery('.search-official').val(''); 
-			jQuery(this).hide();
-			searchOfficial = '';
-			 publicOfficial();	
-			 e.stopPropagation();
-		});
-	    function publicOfficial()  {
-
-          $.ajax({
+			$tabDataArray= $publicOfficial[$key];
+			?>
+<div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" data-tab="<?php echo $key; ?>">
+</div><!--tab pane close-->
+      <?php $k++; 
+	  } ?>
+       </div>
+       <script>
+  var titleColumn = '<?php echo $title_key; ?>';
+  var table,tab,prvtab,tabCount='';
+  var residence=[],committee=[],party=[],role=[],county=[],office=[];
+	  tab = $('.tab-pane.active').attr('data-tab');
+		ajaxDT();  
+  $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
+	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
+	   tabCount='';
+	  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
+	  ajaxDT();
+   });
+   $('body').on('shown.bs.collapse','.card >div+div', function (e) {
+	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
+	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
+		if($('.card-body table',this).length==0){
+		  ajaxDT();
+		}
+	}) ;
+   function ajaxDT(){
+	   if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList')&& tabCount!=''){
+			$('.active .show .card-body').html('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');  	 
+			}else{
+			$('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');   
+	   }
+	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'publicofficialdata',
-			  searchText:searchOfficial
-        
+              action:'publicOfficial',
+			  tab:tab,
+			  tabCount:tabCount,
+			  cityofResidence:residence,
+			  committee:committee,
+			  politicalParty:party,
+			  role:role,
+			  county:county,
+			  office:office
           },
           success: function(response) { 
 		  	var data =   response; 
-			
-			console.log(data); 
-			
-			var tabsCount=[];
-			for (var keys in data) {
-				tabsCount.push(data[keys].length);
+			if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList') && tabCount!=''){
+			  $('.tab-pane.active .card .show .card-body').html(data);
+			}else{
+			  $('.tab-pane.active').html(data);
 			}
-			jQuery('#pills-tab li').each(function(){
-				jQuery(this).find('button b').text('('+tabsCount[jQuery(this).index()]+')');	
-			});
-
-			var keyss=[];
-			for (let key in data) { 
-				var html='';
-			  let value;
-			  value = data[key];
-			   //console.log(key);
-			  //console.log(value); 
-			  keyss.push(key);
-			   var index = keyss.indexOf(key);
-			   if(key=='stateSenateCommittees' || key=='stateHouseCommittees'){
-				  for (let key in value) {
-					htmlData=value[key]; 
-					var htmlinner='';
-					var innerValue = htmlData['committeeOfficals'];
-				
-					for (let key in innerValue) {
-						htmlinnerdata=innerValue[key];
-						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
-					}
-					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
-				  }
-				  //console.log(html);
-					jQuery('.tab-pane').eq(index).find('.accordion').html(html);	
-			   } else if(key=='countyDeligationList'){
-				 	for (let key in value) {
-					htmlData=value[key]; 
-					var htmlinner='';
-					var innerValue = htmlData['countyOfficals'];
-					for (let key in innerValue) {
-						htmlinnerdata=innerValue[key];
-						htmlinner+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlinnerdata['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlinnerdata['id']+'">'+htmlinnerdata['legalName']+'</a><br>('+htmlinnerdata['officialNameLabel']+')<br>'+htmlinnerdata['legislativeRole']+'<br>'+htmlinnerdata['districtCode']+'<br>'+htmlinnerdata['residence']+'<br>'+htmlinnerdata['party']+'</div></div></div> </div>';	
-					}
-					html+='<div class="card"> <div class="card-header px-0" id="heading'+htmlData['id']+'"> <h2 class="mb-0"> <button class="btn btn-link btn-block text-left py-0" type="button" data-toggle="collapse" data-target="#collapse'+htmlData['id']+'" aria-expanded="true" aria-controls="collapseOne"> <i class="fal fa-plus mr-3"></i>'+htmlData['name']+' </button> </h2> </div><div id="collapse'+htmlData['id']+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style=""> <div class="card-body"> <div class="row">'+htmlinner+' </div></div></div></div>';
-				  }
-				  //console.log(html);
-					jQuery('.tab-pane').eq(index).find('.accordion').html(html);  
-			   } else {
-				  for (let key in value) {
-					htmlData=value[key]; 
-					html+='<div class="col-md-6 col-lg-4 mb-3"><div class="border bg-light rounded-2 p-3"><div class="d-flex"><div class="overflow-hidden rounded-circle mr-3" style="height:50px; width:50px"><img src="'+htmlData['profilePic']+'" alt="" class="img-fluid"></div><div><a href="<?php echo site_url();?>/public-official-detail/?id='+htmlData['id']+'">'+htmlData['legalName']+'</a><br>('+htmlData['officialNameLabel']+')<br>'+htmlData['legislativeRole']+'<br>'+htmlData['districtCode']+'<br>'+htmlData['residence']+'<br>'+htmlData['party']+'</div></div></div> </div>';
-				  }
-				  //console.log(html);
-					jQuery('.tab-pane').eq(index).find('.row').html(html);	
-			   }
-	   
-		  } 
-		  jQuery('.loaders').hide();
+			$('.loaders').remove();
+			initDT();
 		  }
         });
-      }
+   }
+   function initDT(){
+	  table = $('table.tabData').DataTable({
+				  //"pageLength": '10',
+				 // "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+				  "bInfo":false,
+				  "processing": true,
+				  "searching": true,
+				  "responsive": true,
+				  //"fixedHeader": true,
+				  "ordering":true,
+				  "search": {regex: true},
+				  <?php if(in_array('Name', $seqColumns)){ ?>
+				  "order": [[<?php echo array_search('Name',$seqColumns);?>, 'asc']],
+				   <?php } ?>
+				  "columnDefs": [ 
+					{ "targets": ['countiesCol','committeesCol'],
+					  "orderable": false
+					},
+					{ width: 200, targets: <?php echo array_search('Name',$seqColumns);?> },
+					{ className: "text-center", "targets": ["startdate","instructors"] },
+					{ responsivePriority: 1, targets: 'sectionname' },
+				  ],
+				  "language": {
+					processing: '<span>&nbsp;</span>',
+					"emptyTable": '-'
+				  },
+				  "oLanguage": {
+					  "sLengthMenu": "Show _MENU_ records per page"
+				  },
+				  createdRow: function (row, data, index) { 
+					   //$(row).addClass( 'bg-white' );
+				  },  
+				  //"columns":<?php //echo (json_encode($forDatatable)); ?>,
+				   "drawCallback": function( settings ) {
+					   dt_dropdown();
+						 $('[data-toggle="tooltip"]').tooltip() ;
+				   },
+				   
+					"initComplete": function(settings, json) {
+					   tableEvents();
+			  },
+			  });
+   }
+<?php
+  if($title_key > -1){
+?>
+  function tableEvents(){
+  $('.dataTables_wrapper table').find('thead tr th:eq('+titleColumn+')').each( function (i) { 
+         var title = $(this).text();
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search Public official.." class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
 
-	  
-	/*function replaceText() {
-
-
-    var searchword = jQuery(".search-official").val();
-
-    var custfilter = new RegExp(searchword, "ig");
-    var repstr = "<span class='mark px-0'>" + searchword + "</span>";
-
-    if (searchword != "") {
-        jQuery('.tab-pane .col-md-6 div').each(function() {
-            jQuery(this).html(jQuery(this).html().replace(custfilter, repstr));
-        })
-    }
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
 }
-jQuery(".search-official1").on("keypress", function() {
-	if (event.keyCode === 13 && jQuery(this).val()!='') {
-		
-		
-		 var  officialPayload=[];
-		 var searchOfficial='';
-				 searchOfficial = {
-			"searchText": jQuery(this).val();
-		 };
-			officialPayload.push( searchOfficial ); 
-			 officialPayload = JSON.stringify(officialPayload[0]); 
-			 console.log();
-		const options = {
-				method: 'POST',
-				headers: {
-				  'Content-Type': 'application/json',
-				  'tenant-code':''
-				},
-				body: officialPayload
-			  };
-			  
-			  const apiUrl ='https://engagifii-preview6-billtracking.azurewebsites.net/api/1.0/legislative/public-bills/elected/officials-all-tabs-list';
-			  fetch(apiUrl,options)
-				.then(response => {
-				  if (!response.ok) {
-					throw new Error('Network response was not ok');
-				  }
-				  return response.json();
-				})
-				.then(data => {
-				  console.log('API response data:', data);
-				  
-			   		
-						  
-						})
-				.catch(error => {
-				  console.error('There has been a problem with your fetch operation:', error);
-				});
-		
-		
-		
-		
-   /* var value = jQuery(this).val().toLowerCase();
-         var val = value.trim();
-         val = val.replace(/\s+/g, '');
-		 
-	if(val.length > 3) { //for checking 3 characters
-   	 jQuery(".tab-pane .col-md-6 div").filter(function() {
-		if(jQuery(this).text().toLowerCase().indexOf(value) > -1) {
-			jQuery(this).parents('.col-md-6').removeClass('d-none');	
-		} else {
-			jQuery(this).parents('.col-md-6').addClass('d-none');	
-		}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var titlesearch = this.value;
+           if ( table.columns(titleColumn).search() !== titlesearch ) {
+				table.columns(titleColumn).search(titlesearch).draw();
+            }
+}, 500));
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$(this).parents('th').find('.clear-search').show();
+			} else {
+				$(this).parents('th').find('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $(this).parents('th').find('#searchclass').val('');
+	$(this).parents('th').find('.clear-search').hide();
+	e.stopPropagation();
+	table.column(titleColumn).search('').draw();
+ });
+
+    } );
+	 $('#searchclass, .search-dt span').on('click', function(e){
+       e.stopPropagation();    
     });
-replaceText();
-} else{
-	 jQuery(".tab-pane .col-md-6").removeClass('d-none');
-	 jQuery(".mark").each(function() {
-   		 jQuery(this).replaceWith(this.childNodes);
- 	 });	
+$('#searchclass').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
+  }
+	
+  <?php
 }
+  ?>
+  $(document).on('click', '.po-filter .dropdown-menu', function (e) {
+  e.stopPropagation();
+});
+function ajaxFilter(){
+	$('.filter_submit').text('Loading...').append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>').attr('disabled',''); 
+	if($(".po-filter ul input:checkbox:checked").length > 0){
+		$('.po-filter').addClass('ft-selected');
+		if($('.filter-toggle span').length==0){
+		  $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
+		}else{
+		  $('.filter-toggle span').text($('.ft-active').length);
+		}
+	}else{
+		$('.po-filter').removeClass('ft-selected');	
+		$('.filter-toggle span').remove();
 	}
-  });*/
-  
+	$.ajax({
+			  type : "post",
+			  url: engagifiiUrl_ajaxurl,
+			  data:{
+				  action:'publicOfficialCount',
+				  cityofResidence:residence,
+				  committee:committee,
+				  politicalParty:party,
+				  role:role,
+				  county:county,
+				  office:office
+			  },
+			  success: function(response) { 
+				$('#pills-tab li').each(function(){
+					var idx = $(this).index();	
+					$('button  b',this).text('('+response[idx]+')');
+				});
+				$('.filter_submit').text('Apply').removeAttr("disabled").find('span').remove();
+			  }
+			});	
+	ajaxDT();
+}
+//events on filter submit button
+$('.filter_submit').on('click', function(){
+tabCount='';
+  residence=[];committee=[];party=[];role=[];county=[];office=[];
+	$('.po-filter ul').each(function(){
+	  $('input',this).each(function(){
+		  if ($(this).is(':checked')) {
+			  if($(this).parents('.border-bottom').attr('data-filter')=='cityofresidence'){
+				residence.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='committies'){
+				committee.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='counties'){
+				county.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='district'){
+				office.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='politicalparty'){
+				party.push($(this).val());	
+			  }
+			  if($(this).parents('.border-bottom').attr('data-filter')=='role'){
+				role.push($(this).val());	
+			  }
+		  }
+	  });
+	});
+		residence = residence.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		committee = committee.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		county = county.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		office = office.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		party = party.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		role = role.filter(function(elem, index, self) {
+		   return index === self.indexOf(elem);
+		});
+		ajaxFilter();
+});
+$('.po-filter ul').each(function(){
+	$('input',this).prop('checked', false);
+   var ftSelected=0;
+	$('input',this).change(function(){
+		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
+	  if(ftSelected>0){
+		$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('('+ftSelected+')');  
+	  }else{
+		$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');  
+	  }
+});
+	$('<input class="form-control my-2 form-control-sm bg-light ft-list" placeholder="Search..."/><div class="form-check"><input class="form-check-input select-all" type="checkbox" value="" id="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><label class="form-check-label" for="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><small class="font-weight-bold">Select / Deselect All</small></label></div>').insertBefore(this);
+	$('<span class="d-none small pb-2 text-center font-italic">No data found with this keyword</span>').insertAfter(this);
+});
+//clear all button in filter
+$('#clear-all').on('click', function(){
+tabCount='';
+  residence=[];committee=[];party=[];role=[];county=[];office=[];
+	$('.po-filter input').each(function(){
+	  $(this).prop('checked', false);
+	});
+	$('.ft-active').removeClass('ft-active');
+  ajaxFilter();
+	$('.ft-counter').text('');
+});
+//select/Deselect all checkbox in filter
+$('.select-all').change(function(){
+	  if ($(this).is(':checked')) {
+		$(this).parent().siblings('ul').find('li input').prop('checked', true).change();  
+	  }else{
+		$(this).parent().siblings('ul').find('li input').prop('checked', false).change();  
+	  }
+});
+//seach list in filter
+  $('.ft-list').each(function() { 
+  $(this).on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $(this).siblings('ul').find('li').filter(function() {
+      $(this).toggle($.trim($(this).text()).toLowerCase().indexOf(value) > -1);
+    });
+	  if($(this).siblings('ul').find('li:visible').length<1){
+		  $(this).siblings('span').removeClass('d-none').addClass('d-flex');
+		  $(this).siblings('div').addClass('d-none');
+	  } else {
+		  $(this).siblings('span').addClass('d-none').removeClass('d-flex');
+		  $(this).siblings('div').removeClass('d-none');
+	  }
+  });
+  });
+
+
 	  </script>
+      
