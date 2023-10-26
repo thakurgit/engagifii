@@ -44,24 +44,33 @@ curl_close($curl);
 background:#082971; 
 border-radius:10px	
 }
+.po-header .po-header{
+max-width:100px; flex:0 0 100px; height:100px; border:3px solid white	
+}
+.pp-detail > div > span {
+	background: rgba(255,255,255,0.2);
+	padding: 2px 10px;
+	display: inline-block;
+	border-radius: 5px;
+}
 </style>
 <div class="container-fluid mb-3">
 <a href="<?php echo site_url(); ?>/public-officials" class="border border-dark btn" style="border-radius:10px"><i class="fal fa-arrow-left mr-2"></i>Go Back</a>
 </div>
 <div class="container-fluid  mb-4">
 	<div class=" p-3 text-white po-header" >
-	<div class="d-flex">
-    	<div class="rounded-circle overflow-hidden mr-4" style="max-width:100px; flex:0 0 100px; height:100px; border:3px solid white">
+	<div class="d-flex align-items-center">
+    	<div class="rounded-circle overflow-hidden mr-4 profile-pic" style="">
         	<img src="<?php echo $response->profilePic; ?>" alt="" class="img-fluid">
         </div>
         <div>
         	<h4 class="mb-1"><?php echo $response->firstName.' '.$response->middleName.' '.$response->lastName; ?> (<?php echo $response->officialNameLabel; ?>)</h4>
-            <div class="row">
-            	<div class="col-auto "><span><strong>District: </strong><?php echo $response->districtCode; ?></span></div>
-            	<div class="col-auto "><span><strong>City of Residence: </strong><?php echo $response->residence; ?></span></div>
-            	<div class="col-auto "><span><strong>Role: </strong><?php echo $response->role; ?></span></div>
-            	<div class="col-auto "><span><strong>Party: </strong><?php echo $response->party; ?></span></div>
-            	<div class="col-auto "><span><strong>County: </strong><?php echo $response->counties[0]->countyName; 
+            <div class="row pp-detail">
+            	<div class="col-auto pr-0"><span><strong>District: </strong><?php echo $response->districtCode; ?></span></div>
+            	<div class="col-auto pr-0"><span><strong>City of Residence: </strong><?php echo $response->residence; ?></span></div>
+            	<div class="col-auto pr-0"><span><strong>Role: </strong><?php echo $response->role; ?></span></div>
+            	<div class="col-auto pr-0"><span><strong>Party: </strong><?php echo $response->party; ?></span></div>
+            	<div class="col-auto pr-0"><span><strong>County: </strong><?php echo $response->counties[0]->countyName; 
 					if(count($response->counties) > 1){
 						echo ' <span class="dropdown dropright small"><a type="button" data-toggle="dropdown">+'.(count($response->counties)-1) .' more</a><div class="dropdown-menu py-0"><ul class="list-group list-group-flush">';	
 						foreach ($response->counties as $key => $value) {
