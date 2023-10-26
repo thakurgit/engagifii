@@ -90,7 +90,7 @@ border:3px solid white
         </div>
     </div>
     </div>
-</div>
+</div> 
 <div class="container-fluid">
 	<div class="border overflow-hidden mb-4" style="border-radius:10px">
 	<h5 class="bg-light py-2 px-3 border-bottom">Biography</h5>
