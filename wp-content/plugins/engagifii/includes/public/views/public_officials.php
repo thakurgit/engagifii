@@ -124,7 +124,7 @@ foreach ($seqColumns as $key => $value) {
 	<?php $ft++; } ?>
 </div>
 <div class="text-center py-2">
-<button class="filter_submit btn btn-primary" type="submit">Apply</button>	
+<button class="filter_submit btn btn-primary py-1" type="submit">Apply</button>	
 </div>
   </div>
 </div>
