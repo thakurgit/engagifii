@@ -44,8 +44,11 @@ curl_close($curl);
 background:#082971; 
 border-radius:10px	
 }
-.po-header .po-header{
-max-width:100px; flex:0 0 100px; height:100px; border:3px solid white	
+.po-header .profile-pic{
+max-width:100px; 
+flex:0 0 100px; 
+height:100px; 
+border:3px solid white	
 }
 .pp-detail > div > span {
 	background: rgba(255,255,255,0.2);
@@ -66,11 +69,11 @@ max-width:100px; flex:0 0 100px; height:100px; border:3px solid white
         <div>
         	<h4 class="mb-1"><?php echo $response->firstName.' '.$response->middleName.' '.$response->lastName; ?> (<?php echo $response->officialNameLabel; ?>)</h4>
             <div class="row pp-detail">
-            	<div class="col-auto pr-0"><span><strong>District: </strong><?php echo $response->districtCode; ?></span></div>
-            	<div class="col-auto pr-0"><span><strong>City of Residence: </strong><?php echo $response->residence; ?></span></div>
-            	<div class="col-auto pr-0"><span><strong>Role: </strong><?php echo $response->role; ?></span></div>
-            	<div class="col-auto pr-0"><span><strong>Party: </strong><?php echo $response->party; ?></span></div>
-            	<div class="col-auto pr-0"><span><strong>County: </strong><?php echo $response->counties[0]->countyName; 
+            	<div class="col-auto pr-0 mb-2"><span><strong>District: </strong><?php echo $response->districtCode; ?></span></div>
+            	<div class="col-auto pr-0 mb-2"><span><strong>City of Residence: </strong><?php echo $response->residence; ?></span></div>
+            	<div class="col-auto pr-0 mb-2"><span><strong>Role: </strong><?php echo $response->role; ?></span></div>
+            	<div class="col-auto pr-0 mb-2"><span><strong>Party: </strong><?php echo $response->party; ?></span></div>
+            	<div class="col-auto pr-0 "><span><strong>County: </strong><?php echo $response->counties[0]->countyName; 
 					if(count($response->counties) > 1){
 						echo ' <span class="dropdown dropright small"><a type="button" data-toggle="dropdown">+'.(count($response->counties)-1) .' more</a><div class="dropdown-menu py-0"><ul class="list-group list-group-flush">';	
 						foreach ($response->counties as $key => $value) {
@@ -86,11 +89,13 @@ max-width:100px; flex:0 0 100px; height:100px; border:3px solid white
     </div>
 </div>
 <div class="container-fluid">
-	<div class="border">
+	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
 	<h5 class="bg-light py-2 px-3 border-bottom">Biography</h5>
     <div class="p-3">
     	<?php echo $response->bio; ?>
     </div>
+    </div>
+	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Counties</h5>
     <div class="p-3">
     	<ul class="list-group list-group-flush">	
@@ -99,12 +104,16 @@ max-width:100px; flex:0 0 100px; height:100px; border:3px solid white
             } ?>
 		</ul>
     </div>
+    </div>
+	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Address</h5>
     <div class="p-3">
 			<?php foreach ($response->address as $key => $value) {
                 echo '<h6 class="mb-1">'.$value->addressType.'</h6><p>'.$value->addressLine1.' '.$value->addressLine2.'</p><hr>';	
             } ?>
     </div>
+    </div>
+	<div class="border ovreflow-hidden mb-4" style="border-radius:10px">
     <h5 class="bg-light py-2 px-3 border-bottom border-top">Contact Details</h5>
     <div class="p-3">
     	<div class="row">
