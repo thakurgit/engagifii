@@ -1,4 +1,3 @@
- 
 <?php
 $obj = new Engagifii_API();
 $reportsResponse = $obj->legislativeReports();
