@@ -56,13 +56,13 @@ foreach ($reportsResponses as $value) {
 		}
     </style>
 
-    <div class="tabs">
+    <div class="tabs flex-wrap ">
         <?php
         $first = true;
         foreach ($reportsResponses as $value) {
             $isActive = $first ? 'active' : '';
             ?>
-            <div class="tab <?php echo $isActive; ?>" data-report-type-id="<?php echo $value['reportTypeMasterId']; ?>">
+            <div class="tab mb-3 <?php echo $isActive; ?>" data-report-type-id="<?php echo $value['reportTypeMasterId']; ?>">
                 <a href="#">
                     <?php echo $value['name']; ?>
                 </a>
@@ -75,8 +75,9 @@ foreach ($reportsResponses as $value) {
 
     <div class="tab-content">
         <?php
+        
         foreach ($reportsResponses as $value) {
-            ?>
+             ?>
             <div class="tab-pane" id="tab-<?php echo $value['reportTypeMasterId']; ?>">
 			<?php $tabData = $reportListData[$value['reportTypeMasterId']]; 
 			foreach($tabData as $values){
