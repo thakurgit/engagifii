@@ -1,6 +1,10 @@
 <?php 
 $obj = new Engagifii_API();
 $reportsResponse = $obj->legislativeReports();
+	if(!$reportsResponse){
+		echo'<h5 class="text-center pt-5">Data not available</h5>';
+		return;	
+	}
 $reportsResponses = json_decode($reportsResponse['api_response'], true);
 $reportListData = [];
 $site_url = site_url();
@@ -129,9 +133,7 @@ foreach ($reportsResponses as $value) {
                 //displayData(tabPane, reportTypeId);
             });
         });
-		if(tabs){
 			tabs[0].click();
-		}
 		
         // Show "View Details" span on hover
         $(document).ready(function() {
