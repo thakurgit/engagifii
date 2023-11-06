@@ -1,5 +1,3 @@
-
-
 <style> 
  .tabbs {
      display: flex;
