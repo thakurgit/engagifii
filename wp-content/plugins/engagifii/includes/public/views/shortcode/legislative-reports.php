@@ -37,6 +37,9 @@ foreach ($reportsResponses as $value) {
         }
 		.tab a {
            color: #54595F !important;
+        font-weight: 600;
+    font-size: small;
+
         }
 
         .tab-content .tab-pane {
