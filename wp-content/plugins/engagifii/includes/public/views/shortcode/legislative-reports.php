@@ -129,7 +129,9 @@ foreach ($reportsResponses as $value) {
                 //displayData(tabPane, reportTypeId);
             });
         });
-		tabs[0].click();
+		if(tabs){
+			tabs[0].click();
+		}
 		
         // Show "View Details" span on hover
         $(document).ready(function() {
