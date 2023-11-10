@@ -1,5 +1,7 @@
 <style> 
- .tabbs {
+
+
+.tabbs {
      display: flex;
      padding-bottom: 40px;
  }
