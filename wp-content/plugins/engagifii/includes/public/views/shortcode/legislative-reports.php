@@ -1,5 +1,8 @@
 <?php 
 $obj = new Engagifii_API();
+$options = get_option('ebt_api_settings');
+$tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
+//print_r($tenant_url);
 $reportsResponse = $obj->legislativeReports();
 	if(!$reportsResponse){
 		echo'<h5 class="text-center pt-5">Data not available</h5>';
@@ -90,7 +93,7 @@ foreach ($reportsResponses as $value) {
 				$name = $values['billReportName'];
 				$id = $values['billReportId'];
 				?>
-				<a href="https://engagifii.engagifii-qa.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
+				<a href="https://<?php echo $tenant_url; ?>.engagifii-preview6.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
 				<div class="row mb-2">
 				       <div class="col-10">
                             <?php echo $name; ?>
