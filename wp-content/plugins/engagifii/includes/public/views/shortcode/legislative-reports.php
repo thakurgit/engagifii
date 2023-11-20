@@ -2,7 +2,16 @@
 $obj = new Engagifii_API();
 $options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
-//print_r($tenant_url);
+
+
+if (filter_var($tenant_url, FILTER_VALIDATE_URL)) {
+    $tenant = explode('.', parse_url($tenant_url, PHP_URL_HOST))[0];
+} else {
+    $tenant = $tenant_url;
+}
+
+//echo $tenant; // Output will be "gsba" in both cases
+
 $reportsResponse = $obj->legislativeReports();
 	if(!$reportsResponse){
 		echo'<h5 class="text-center pt-5">Data not available</h5>';
@@ -93,7 +102,7 @@ foreach ($reportsResponses as $value) {
 				$name = $values['billReportName'];
 				$id = $values['billReportId'];
 				?>
-				<a href="https://<?php echo $tenant_url; ?>.engagifii-qa.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
+				<a href="https://<?php echo $tenant; ?>.engagifii-qa.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
 				<div class="row mb-2">
 				       <div class="col-10">
                             <?php echo $name; ?>
