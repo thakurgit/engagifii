@@ -93,7 +93,7 @@ foreach ($reportsResponses as $value) {
 				$name = $values['billReportName'];
 				$id = $values['billReportId'];
 				?>
-				<a href="https://<?php echo $tenant_url; ?>.engagifii-preview6.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
+				<a href="https://<?php echo $tenant_url; ?>.engagifii-qa.com/public/lbt-report/<?php echo $id; ?>/schedule-false" style ="color: #002473;" target="_blank">
 				<div class="row mb-2">
 				       <div class="col-10">
                             <?php echo $name; ?>
