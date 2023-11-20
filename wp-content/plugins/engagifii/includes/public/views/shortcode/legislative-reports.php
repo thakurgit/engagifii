@@ -2,7 +2,7 @@
 $obj = new Engagifii_API();
 $options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
-print_r($tenant_url);
+//print_r($tenant_url);
 $reportsResponse = $obj->legislativeReports();
 	if(!$reportsResponse){
 		echo'<h5 class="text-center pt-5">Data not available</h5>';
