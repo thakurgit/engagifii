@@ -542,7 +542,7 @@ function getCheckedHouseCommitteValues()
   houseCommittees=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
       houseCommittees.push(chkval);
