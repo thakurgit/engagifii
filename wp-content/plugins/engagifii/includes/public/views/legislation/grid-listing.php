@@ -564,7 +564,7 @@ function getCheckedSenateCommitteValues()
   senateCommittees=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
       senateCommittees.push(chkval);
@@ -583,7 +583,7 @@ function getCheckedSponsersValues()
   sponsors=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
       sponsors.push(chkval);
@@ -601,7 +601,7 @@ function getCheckedtagsValues()
   tags=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
       tags.push(chkval);
@@ -622,7 +622,7 @@ function getcheckedassignValues()
   assignTags = [];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
 	if(checkbox){
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
@@ -645,7 +645,7 @@ function getCheckedBillTypesValues()
   billTypes=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
 	if(checkbox){
     if ( checkbox.checked == true){      
       var chkval = checkbox.value;
@@ -665,7 +665,7 @@ function getCheckedLastActionTypesValues()
   lastActionTypes=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
 if(checkbox){
     if (checkbox.checked == true){      
       var chkval = checkbox.value;
@@ -686,7 +686,7 @@ function getCheckedTrackingLevelsValues()
   trackingLevels=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
 	if(checkbox){
     if ( checkbox.checked == true){      
       var chkval = checkbox.value;
@@ -705,7 +705,7 @@ function getCheckedStatusTypesValues()
   statusTypes=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
-    var checkbox = element.querySelector("input[type='checkbox']");
+    var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
 	if(checkbox){
     if ( checkbox.checked == true){      
       var chkval = checkbox.value;
