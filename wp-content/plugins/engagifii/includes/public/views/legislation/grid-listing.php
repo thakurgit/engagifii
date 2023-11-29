@@ -1608,23 +1608,22 @@ $(document).ready(function () {
 });
 $(".tz-selectAll").change(function () {
 	if($(this).is(':checked')){
-		//$(this).parent().siblings().addClass('liactive deftzselected');
-		//$(this).parent().siblings().find('input').prop('checked',true);
 		$(this).parent().siblings().each(function(){
 		  if(!$(this).find('input').is(':checked')){
-			$(this).trigger('click');
+			//$(this).trigger('click');
+			$(this).find('input').prop('checked',true);
 		  }
 		});
+		
 	}else{
-		//$(this).parent().siblings().trigger('click');
-		//$(this).parent().siblings().removeClass('liactive deftzselected');
-		//$(this).parent().siblings().find('input').prop('checked',false);
 		$(this).parent().siblings().each(function(){
 		  if($(this).find('input').is(':checked')){
-			$(this).trigger('click');
+			//$(this).trigger('click');
+			$(this).find('input').prop('checked',false);
 		  }
 		});
 	}
+	getUpdatedValues();
 });
 });
 
