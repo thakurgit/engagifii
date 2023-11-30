@@ -1612,6 +1612,8 @@ $(".tz-selectAll").change(function () {
 		  if(!$(this).find('input').is(':checked')){
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',true);
+			$(this).addClass('liactive deftzselected');
+			$(this).parents('.filter-list').find('.heading-title span').text('('+$(this).siblings('li').length+')');
 		  }
 		});
 		
@@ -1620,6 +1622,8 @@ $(".tz-selectAll").change(function () {
 		  if($(this).find('input').is(':checked')){
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',false);
+			$(this).removeClass('liactive deftzselected');
+			$(this).parents('.filter-list').find('.heading-title span').text('');
 		  }
 		});
 	}
