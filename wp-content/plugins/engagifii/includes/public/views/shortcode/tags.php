@@ -4,7 +4,7 @@ $tags = $obj->legislationTagsFilter();
 $options = get_option( 'ebt_api_settings' );
 
 $lbt_visib_tags_list   = $options['lbt_visib_tags_list']  ?? array();
-if(site_url() == 'https://engagifiiweb.com'){
+/*if(site_url() == 'https://engagifiiweb.com'){
   $tags_list             = $options['tags_list'] ?? array();
 
     foreach ($tags as $tag) {
@@ -28,7 +28,7 @@ if(site_url() == 'https://engagifiiweb.com'){
     }
 
 
-}
+}*/
 
 function sort_list($a, $b) {
     return strcmp(ucfirst(trim($a->text)), ucfirst(trim($b->text)));
