@@ -139,7 +139,7 @@ if($tags){
 
 	echo '</ul>';		
 }else{
-echo '<b style="color:red"><i>No data dound!</i></b>';	
+echo '<b style="color:red"><i>No data found!</i></b>';	
 }
 ?>
 
@@ -168,7 +168,7 @@ $members = $obj->legislationAssignToFilter();
  					  
 	}
 		}else {
-			echo '<b style="color:red"><i>No data dound!</i></b>';	
+			echo '<b style="color:red"><i>No data found!</i></b>';	
 		}
     
 	echo '</ul>';		
@@ -198,11 +198,12 @@ $groups = $obj->legislationGroupsFilter();
                          
     }
 		}else {
-			echo '<b style="color:red"><i>No data dound!</i></b>';	
+			echo '<b style="color:red"><i>No data found!</i></b>';	
 		}
 	echo '</ul>';		
 ?>
 <h3>Tags <span> <input type="text" id="" onkeyup="" placeholder="Search..." class="regular-text"></span></h3>
+<hr>
 <?php
 $assignTags = $obj->legislationAssignToTagFilter();
 		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; max-height:200px; overflow:auto;">';
@@ -227,7 +228,7 @@ $assignTags = $obj->legislationAssignToTagFilter();
                          
     }
 		}else {
-			echo '<b style="color:red"><i>No data dound!</i></b>';	
+			echo '<b style="color:red"><i>No data found!</i></b>';	
 		}
 	echo '</ul>';		
 ?>
@@ -252,7 +253,7 @@ if($tags){
 
     echo '</ul>'; 
 }else {
-			echo '<b style="color:red"><i>No data dound!</i></b>';	
+			echo '<b style="color:red"><i>No data found!</i></b>';	
 }
 }
 	    
