@@ -64,12 +64,16 @@ var pluginFilterData = (function () {
         var res = this.classList.toggle(settings.itemselectedclass);
         if (res == true) {
             this.classList.add("deftzselected");
-            settings.countSelected++;
+            //settings.countSelected++;
+			 settings.countSelected=$(this).siblings('.deftzselected').length+1;
+			//console.log($(this).siblings('.deftzselected').length+1);
             this.querySelector("input[type='checkbox']").checked = true;
         }
         else {
             this.classList.remove("deftzselected");
-            settings.countSelected--;
+            //settings.countSelected--;
+			settings.countSelected=$(this).siblings('.deftzselected').length;
+			//console.log($(this).siblings('.deftzselected').length);
             this.querySelector("input[type='checkbox']").checked = false;
         }
        // console.log(settings.countSelected);
