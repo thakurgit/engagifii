@@ -104,7 +104,7 @@ if(isset($options['sessionsetting'])){
 	<p><img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/alternate-on-top.png"></p>
 </div>
 
-<h3>Tags for filters <span> <input type="text" id="searchTag" onkeyup="searchTags()" placeholder="Search..." class="regular-text"></span></h3>
+<h3>Filter Settings (Tags) <span> <input type="text" id="searchTag" onkeyup="searchTags()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php $tags = $obj->legislationTagsFilter();
 if($tags){
@@ -143,7 +143,7 @@ echo '<b style="color:red"><i>No data dound!</i></b>';
 }
 ?>
 
-<h3>Staff members for filters <span> <input type="text" id="searchMember" onkeyup="searchMembers()" placeholder="Search..." class="regular-text"></span></h3>
+<h3>Filter Settings (Staff Members) <span> <input type="text" id="searchMember" onkeyup="searchMembers()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php
 $members = $obj->legislationAssignToFilter();
@@ -172,7 +172,7 @@ $assignTags = $obj->legislationAssignToTagFilter();
 		}else {
 			echo '<b style="color:red"><i>No data dound!</i></b>';	
 		}
-    echo "<h3>Groups</h3>";
+    // echo "<h3>Groups</h3>";
 		if($groups){
     foreach ($groups as  $group) {
             
@@ -222,7 +222,7 @@ $assignTags = $obj->legislationAssignToTagFilter();
 	echo '</ul>';		
 ?>
 
-<h3>Legislative issue filters <span> <input type="text" id="searchIssue" onkeyup="searchIssues()" placeholder="Search..." class="regular-text"></span></h3>
+<h3>Legislative Issues <span> <input type="text" id="searchIssue" onkeyup="searchIssues()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php
 $tags = $obj->legislationTagsFilter();
