@@ -147,9 +147,7 @@ echo '<b style="color:red"><i>No data dound!</i></b>';
 <hr>
 <?php
 $members = $obj->legislationAssignToFilter();
-$groups = $obj->legislationGroupsFilter();
-$assignTags = $obj->legislationAssignToTagFilter();
-		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; height:200px; overflow:auto;">';
+		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($members){
 		foreach ($members as  $member) {
 	 		
@@ -172,7 +170,14 @@ $assignTags = $obj->legislationAssignToTagFilter();
 		}else {
 			echo '<b style="color:red"><i>No data dound!</i></b>';	
 		}
-    // echo "<h3>Groups</h3>";
+    
+	echo '</ul>';		
+?>
+<h3>Groups <span> <input type="text" id="" onkeyup="" placeholder="Search..." class="regular-text"></span></h3>
+<hr>
+<?php
+$groups = $obj->legislationGroupsFilter();
+		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($groups){
     foreach ($groups as  $group) {
             
@@ -195,7 +200,12 @@ $assignTags = $obj->legislationAssignToTagFilter();
 		}else {
 			echo '<b style="color:red"><i>No data dound!</i></b>';	
 		}
-    echo "<h3>Tags</h3>";
+	echo '</ul>';		
+?>
+<h3>Tags <span> <input type="text" id="" onkeyup="" placeholder="Search..." class="regular-text"></span></h3>
+<?php
+$assignTags = $obj->legislationAssignToTagFilter();
+		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($assignTags){
     foreach ($assignTags as  $assign) {
             
@@ -221,7 +231,6 @@ $assignTags = $obj->legislationAssignToTagFilter();
 		}
 	echo '</ul>';		
 ?>
-
 <h3>Legislative Issues <span> <input type="text" id="searchIssue" onkeyup="searchIssues()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php
