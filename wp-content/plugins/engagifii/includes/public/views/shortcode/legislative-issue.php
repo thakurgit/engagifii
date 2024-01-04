@@ -90,8 +90,8 @@ function getLegislativeIssues()
         action:'legislativeissuedata'
       },
       success: function(response) {    
-	  		var data = response;
-			//data = JSON.parse(data);
+	  		var data = response.api_response;
+			data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
 				if($.inArray(item.tagId, allissues) != -1) {
