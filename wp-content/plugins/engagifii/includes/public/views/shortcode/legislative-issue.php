@@ -95,8 +95,10 @@ function getLegislativeIssues()
 			var html='';
 			$.each(data, function(i, item) {
 				if($.inArray(item.tagId, allissues) != -1) {
+					if(item.count>0){
 					var cevent = 'onclick="filterIssues('+item.tagId+')"';
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
+					}
 				}
 			});			
 			
