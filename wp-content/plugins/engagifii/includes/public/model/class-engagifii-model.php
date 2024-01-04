@@ -1408,8 +1408,16 @@ wp_die();
 		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
-        header("Content-Type: application/json");   
-        echo json_encode($dataResponse);
+        header("Content-Type: application/json");  
+		$responseArray = array();
+		$options = get_option( 'ebt_api_settings' );
+		$lbt_visib_tags_list   = $options['lbt_visib_tags_list']  ?? array();
+		foreach(json_decode($dataResponse['api_response']) as $tag){
+			if($tag->count>0 && in_array($tag->tagId, $lbt_visib_tags_list)){
+			  array_push($responseArray, $tag);
+			}
+		}
+        echo json_encode($responseArray);
         wp_die();
     }
 	
