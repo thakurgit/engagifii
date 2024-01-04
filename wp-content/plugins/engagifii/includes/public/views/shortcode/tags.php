@@ -74,7 +74,7 @@ function getLegislativeTags()
       url: engagifiiUrl_ajaxurl,
       data:{
 		sessionId : sessionId,
-        action:'legislativeissuedata'
+        action:'legislativetagsdata'
       },
       success: function(response) {  
 	  		var data = response;

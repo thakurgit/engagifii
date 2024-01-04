@@ -119,6 +119,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['classcountdata', 'classCountFilterData'],
         ['legislationfiltercountdata', 'countLegislationFilterData'],
         ['legislativeissuedata', 'legislativeIssues'],
+        ['legislativetagsdata', 'legislativeTags'],
         ['trackingleveldata', 'trackingLevels'],
         ['legislativestaffmembers', 'staffMembers'],
         ['legislativeactionsdata', 'lastActions'],
@@ -1401,7 +1402,7 @@ wp_die();
         return $postData;
     }
 	
-	 public function legislativeIssues()
+	 public function legislativeTags()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
        // print_r($postedData);
@@ -1418,6 +1419,17 @@ wp_die();
 			}
 		}
         echo json_encode($responseArray);
+        wp_die();
+    }
+	 public function legislativeIssues()
+    {
+        $postedData = $this->_prepareLegislativeIssuesData();
+       // print_r($postedData);
+		//die;
+		$session = $postedData['sessionId'];
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
+        header("Content-Type: application/json");  
+        echo json_encode($dataResponse);
         wp_die();
     }
 	
