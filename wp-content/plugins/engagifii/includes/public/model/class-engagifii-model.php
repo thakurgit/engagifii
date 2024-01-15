@@ -1357,7 +1357,8 @@ wp_die();
     public function countLegislationFilterData()
     {
         $postedData = $this->_prepareLegislationPostCountData();
-        //print_r(json_encode($postedData));
+        print_r(json_encode($postedData));
+		die;
         $dataResponse = $this->submitApiRequest("legislative/public-bills/all-filter-list/count", $postedData, "POST", 'legislation');
         header("Content-Type: application/json");     
         echo json_encode($dataResponse);
@@ -2033,8 +2034,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		print_r(json_encode($postedData));
-		die;
+		//print_r(json_encode($postedData));
+		//die;
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
         header("Content-Type: application/json");
