@@ -2033,8 +2033,6 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		print_r($postedData);
-		die;
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
         header("Content-Type: application/json");
@@ -2708,6 +2706,8 @@ if (isset($_POST['sessionIds'])) {
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
         return $postData;
+		print_r($postData);
+		die;
     }
 
     private function _popoverTagsHtml($id, $tags){
