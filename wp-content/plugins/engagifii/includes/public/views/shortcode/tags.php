@@ -74,18 +74,14 @@ function getLegislativeTags()
       url: engagifiiUrl_ajaxurl,
       data:{
 		sessionId : sessionId,
-        action:'legislativeissuedata'
+        action:'legislativetagsdata'
       },
-      success: function(response) {    
-	  		var data = response.api_response;
-			data = JSON.parse(data);
+      success: function(response) {  
+	  		var data = response;
+			//data = JSON.parse(data);
 			var html='';
 			$.each(data, function(i, item) {
-				if(item.count>0){
-					var cevent = 'onclick="filterTag('+item.tagId+')"';
-				}else {
-					var cevent = '';
-				}
+				var cevent = 'onclick="filterTag('+item.tagId+')"';
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
 			});			
 			

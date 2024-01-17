@@ -4,7 +4,7 @@ $tags = $obj->legislationTagsFilter();
 $options = get_option( 'ebt_api_settings' );
  $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
 
- if(site_url() == 'https://engagifiiweb.com'){
+ /*if(site_url() == 'https://engagifiiweb.com'){
   $legislative_tags_list             = $options['legislative_tags_list'] ?? array();
 
     foreach ($tags as $tag) {
@@ -29,7 +29,7 @@ $options = get_option( 'ebt_api_settings' );
 
 
 }
-
+*/
 function sort_associative_array($a, $b) {
     return strcmp(ucfirst(trim($a->text)), ucfirst(trim($b->text)));
 }
@@ -95,12 +95,10 @@ function getLegislativeIssues()
 			var html='';
 			$.each(data, function(i, item) {
 				if($.inArray(item.tagId, allissues) != -1) {
-				if(item.count>0){
+					if(item.count>0){
 					var cevent = 'onclick="filterIssues('+item.tagId+')"';
-				}else {
-					var cevent = 'disabled';
-				}
 				 html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
+					}
 				}
 			});			
 			

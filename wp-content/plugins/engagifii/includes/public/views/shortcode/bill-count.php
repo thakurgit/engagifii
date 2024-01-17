@@ -32,8 +32,12 @@ function getCountSelected()
 		sessionId : sessionId,
         action:'legislationfiltercountdata'
       },
-      success: function(response) {       
+      success: function(response) { 
+	  <?php //if($tenant_url =="gsba") {?>
+       // $('#bill-count').html(response.api_response);
+	  <?php //} else { ?>
         $('#bill-count').html('(Total '+response.api_response+' bills)');
+	  <?php //} ?>      
 		<?php if($sessionsetting==1 && count($sessionlist)>0) {?>
        	 $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
 		<?php } ?>

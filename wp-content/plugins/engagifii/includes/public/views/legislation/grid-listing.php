@@ -1297,8 +1297,11 @@ if(tenant_code =="aasb"){
 }
 
 var table = $('#ebtmaintable').DataTable( {
-    
+    	<?php if($tenant_url =="gsba") {?>
+      "pageLength": 100,
+		<?php } else { ?>
       "pageLength": 10,
+		<?php } ?>
       "dom": '<"row no-gutters"<"col-sm-12 custom-scroll border-left border-right border-bottom"t>><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3 "p>>',
       "bInfo":false,
       "processing": true,

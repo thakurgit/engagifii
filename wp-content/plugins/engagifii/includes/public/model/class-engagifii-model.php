@@ -119,6 +119,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['classcountdata', 'classCountFilterData'],
         ['legislationfiltercountdata', 'countLegislationFilterData'],
         ['legislativeissuedata', 'legislativeIssues'],
+        ['legislativetagsdata', 'legislativeTags'],
         ['trackingleveldata', 'trackingLevels'],
         ['legislativestaffmembers', 'staffMembers'],
         ['legislativeactionsdata', 'lastActions'],
@@ -1401,6 +1402,25 @@ wp_die();
         return $postData;
     }
 	
+	 public function legislativeTags()
+    {
+        $postedData = $this->_prepareLegislativeIssuesData();
+       // print_r($postedData);
+		//die;
+		$session = $postedData['sessionId'];
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
+        header("Content-Type: application/json");  
+		$responseArray = array();
+		$options = get_option( 'ebt_api_settings' );
+		$lbt_visib_tags_list   = $options['lbt_visib_tags_list']  ?? array();
+		foreach(json_decode($dataResponse['api_response']) as $tag){
+			if($tag->count>0 && in_array($tag->tagId, $lbt_visib_tags_list)){
+			  array_push($responseArray, $tag);
+			}
+		}
+        echo json_encode($responseArray);
+        wp_die();
+    }
 	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
@@ -1408,7 +1428,7 @@ wp_die();
 		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
-        header("Content-Type: application/json");   
+        header("Content-Type: application/json");  
         echo json_encode($dataResponse);
         wp_die();
     }
