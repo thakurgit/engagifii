@@ -1,12 +1,34 @@
 
   <!-- Bootstrap CSS CDN link -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
-<style>
-  
-</style>
+  <style>
+        .session-tab {
+            display: flex;
+            width: 100%;
+            list-style: none;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            flex-grow: 1;
+            border: 1px solid #ddd; /* Border for each li */
+            border-radius: 5px;
+            margin-right: 5px; /* Adjust margin as needed */
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
 <?php
  $site_url = site_url();
 ?>
+
  <div class="pe-3 mb-3">
  	<div class="container-fluid  ">
     	<div class="row justify-content-end text-secondary small">
@@ -41,6 +63,14 @@
 </div>
     </div>
  </div>
+ <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Profile
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
     <div class="container-fluid  bg-light border pt-2 pb-1">
     	<h5>Contact Information</h5>
     </div>
@@ -848,6 +878,107 @@ Atlanta, GA 30303</p>
     </div>
   </div>
 </section>
+<br/>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                EVENTS AND TRAINING
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong>Certification Statistics</strong>
+                <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
+                    <li class="nav-item mb-3" role="presentation">
+                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true">Registered</a>
+                    </li>
+                    <li class="nav-item mb-3" role="presentation">
+                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true">In Progress</a>
+                    </li>
+                    <li class="nav-item mb-3" role="presentation">
+                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true">Not Started</a>
+                    </li>
+                    <li class="nav-item mb-3" role="presentation">
+                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true">Earned</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true">Awarded</a>
+                    </li>
+                </ul>
+
+                <div id="contentContainer" class="mt-3">
+                    <!-- Dynamic content will be displayed here -->
+                    <ul id="paginationList" class="pagination justify-content-center"></ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add click event listener to each pill link
+        var pillLinks = document.querySelectorAll('.nav-link');
+        pillLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                var pillId = link.getAttribute('data-target');
+                generateAccordions(pillId);
+            });
+        });
+    });
+
+    function generateAccordions(pillId) {
+      
+        var contentContainer = document.getElementById('contentContainer');
+        //contentContainer.innerHTML = ''; // Clear previous content
+
+        var totalItems = 50; // Total number of items
+        var itemsPerPage = 10; // Number of items per page
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        // Generate pagination links
+        var paginationList = document.getElementById('paginationList');
+        
+        paginationList.textContent = '';
+        alert(totalPages);
+        for (var i = 1; i <= totalPages; i++) {
+          alert("display items");
+            var li = document.createElement('li');
+            li.classList.add('page-item');
+            var a = document.createElement('a');
+            a.classList.add('page-link');
+            a.href = '#';
+            a.textContent = i;
+            a.addEventListener('click', function() {
+                displayItems(this.textContent, itemsPerPage, totalItems);
+            });
+            li.appendChild(a);
+            paginationList.appendChild(li);
+        }
+
+        // Display items for the first page
+        displayItems(1, itemsPerPage, totalItems);
+    }
+
+    function displayItems(page, itemsPerPage, totalItems) {
+      alert("display items");
+        var contentContainer = document.getElementById('contentContainer');
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage - 1;
+
+        // Display items based on the current page
+        var contentHTML = '<ul>';
+        for (var i = startIndex; i <= endIndex && i < totalItems; i++) {
+            contentHTML += '<li>Item ' + (i + 1) + '</li>';
+        }
+        contentHTML += '</ul>';
+
+        contentContainer.innerHTML = contentHTML;
+    }
+</script>
+
 <script>
 jQuery(document).ready(function(){
 	var lasttemp =  localStorage.getItem("profile_template");
