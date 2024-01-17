@@ -2033,6 +2033,8 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
+		//print_r(json_encode($postedData));
+		//die;
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
         header("Content-Type: application/json");
