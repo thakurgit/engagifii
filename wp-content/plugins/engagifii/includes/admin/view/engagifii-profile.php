@@ -24,6 +24,9 @@
             text-decoration: none;
             color: #333;
         }
+		.tab-pane .accordion-button::after {
+	margin-left: 1rem;
+}
     </style>
 <?php
  $site_url = site_url();
@@ -890,27 +893,79 @@ Atlanta, GA 30303</p>
             <div class="accordion-body">
                 <strong>Certification Statistics</strong>
                 <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
-                    <li class="nav-item mb-3" role="presentation">
-                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true">Registered</a>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 active " data-bs-toggle="pill" data-bs-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small>Registered <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span> </small></a>
                     </li>
-                    <li class="nav-item mb-3" role="presentation">
-                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true">In Progress</a>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
                     </li>
-                    <li class="nav-item mb-3" role="presentation">
-                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true">Not Started</a>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
                     </li>
-                    <li class="nav-item mb-3" role="presentation">
-                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true">Earned</a>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">8</span><small>Earned <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="border-dark nav-link bg-transparent" data-toggle="pill" data-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true">Awarded</a>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">9</span><small>Awarded <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
                     </li>
                 </ul>
 
-                <div id="contentContainer" class="mt-3">
-                    <!-- Dynamic content will be displayed here -->
-                    <ul id="paginationList" class="pagination justify-content-center"></ul>
-                </div>
+                <div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+  	<div class="accordion" id="accordionExample1">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ms-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </h2>
+    <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-bs-parent="#accordionExample1">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+  </div>
+  <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+  	  	<div class="accordion" id="accordionExample2">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnex<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ms-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </h2>
+    <div id="collapseOnex<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-bs-parent="#accordionExample2">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+
+  </div>
+  <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="" tabindex="0">...</div>
+</div>
+
 
             </div>
         </div>
@@ -918,7 +973,7 @@ Atlanta, GA 30303</p>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+   /* document.addEventListener("DOMContentLoaded", function() {
         // Add click event listener to each pill link
         var pillLinks = document.querySelectorAll('.nav-link');
         pillLinks.forEach(function(link) {
@@ -942,9 +997,9 @@ Atlanta, GA 30303</p>
         var paginationList = document.getElementById('paginationList');
         
         paginationList.textContent = '';
-        alert(totalPages);
+        //alert(totalPages);
         for (var i = 1; i <= totalPages; i++) {
-          alert("display items");
+          //alert("display items");
             var li = document.createElement('li');
             li.classList.add('page-item');
             var a = document.createElement('a');
@@ -963,7 +1018,7 @@ Atlanta, GA 30303</p>
     }
 
     function displayItems(page, itemsPerPage, totalItems) {
-      alert("display items");
+      //alert("display items");
         var contentContainer = document.getElementById('contentContainer');
         var startIndex = (page - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage - 1;
@@ -976,7 +1031,7 @@ Atlanta, GA 30303</p>
         contentHTML += '</ul>';
 
         contentContainer.innerHTML = contentHTML;
-    }
+    }*/
 </script>
 
 <script>
@@ -993,4 +1048,9 @@ jQuery('#tempswitch').change(function(){
 		 localStorage.setItem("profile_template", tempid);
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+</script>
