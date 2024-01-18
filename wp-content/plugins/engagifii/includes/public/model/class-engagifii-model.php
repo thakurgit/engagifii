@@ -1873,7 +1873,7 @@ wp_die();
 
         $options = get_option('ebt_api_settings');
         $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();

@@ -17,7 +17,7 @@
 	
 	$options = get_option('ebt_api_settings');
     $api_url = $options['ebt_api_url'];
-    $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
+    $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
 	$options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
 
