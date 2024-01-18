@@ -52,19 +52,20 @@ if(!$dataResponse['api_response']){
 
 <div class="containerEngagii">
 <!-- start filter UI -->
-<?php $placeholder_text = 'Search by event name';
-echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]'); ?>
 <?php
   if($calendar_view){
-	  
+	  $placeholder_text = 'Search by event name';
+echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]');
 ?>
-
- 
-
 <div class="container-fluid">
   <?php echo do_shortcode('[events-calendar]'); ?>
 </div>
 <?php
+  } else {
+	echo '<div class="col-12 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
+    <div class="flt-btn mr-3 " style="display:block">
+        </div>
+    </div>';  
   }
 ?>
 

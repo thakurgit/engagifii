@@ -134,20 +134,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		return ob_get_clean();
 	}
 	
-	public function events_list_calender_grid_view($attr)
-	{
-		ob_start();
-		extract(shortcode_atts(array(
-		     'calendar' => true
-		    ), $attr));
-		include $this->basePath.'includes/public/views/events/grid-listing.php';
-		return ob_get_clean();
-	}
-
-
 	
-	
-
 	public function legislation_grid_view(){
 		ob_start();
 		include $this->basePath.'includes/public/views/legislation/grid-listing.php';
@@ -402,6 +389,15 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	public function event_grid_view()
 	{
 		ob_start();
+		include $this->basePath.'includes/public/views/events/grid-listing.php';
+		return ob_get_clean();
+	}
+	public function events_list_calender_grid_view($attr)
+	{
+		ob_start();
+		extract(shortcode_atts(array(
+		     'calendar' => true
+		    ), $attr));
 		include $this->basePath.'includes/public/views/events/grid-listing.php';
 		return ob_get_clean();
 	}
