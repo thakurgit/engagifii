@@ -112,7 +112,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
   <div class="tab-pane fade border bg-light rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
   	<div class="row">
         	<div class="col-md-3 text-center">
-            <div class="overflow-hidden rounded-circle d-block m-auto" style="width:120px;height:120px">
+            <div class="overflow-hidden rounded-circle d-block m-auto" style="width:130px;height:130px">
             <span id="upload_profile" class="position-relative  d-block h-100">
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
@@ -142,11 +142,11 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                   </div>
                   <div class="form-group col-12">
                   	<div class="flex">
-                    	<span class="me-3">Tag(s):</span>
+                    	<span class="mr-3">Tag(s):</span>
                         <span class="tags_all">
      				<?php if($tags){
 						foreach ($tags as $key => $value) {
-							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle me-2 mb-2">'.$value->tagName.'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
+							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'.$value->tagName.'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
 					 }		
 					} else {
 						echo '<em>No Tags found!</em>';
@@ -155,15 +155,15 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                   	</div>
                     <input type="text" value="" class="form-control tag_add" placeholder="Add Tags">
                   </div>
-               <div class="form-group ">
+               <div class="form-group col-12">
                 	        <button type="submit" class="btn btn-primary">Update Profile</button>
 
                             <a class="btn btn-default border border-dark" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
 
                 </div>
-                <div class="curl-message" >
+                <div class="curl-message col-12" >
                 	
-                	<span class="curl-progress" style="display:none"><em>Profile updating...</em></span>
+                	<span class="curl-progress" style="display:none"><em>Hold on, Profile updating...</em></span>
                 	<span class="curl-success" style="display:none"><em>Profile updated successfully.</em></span>
                 </div>
               </div>
@@ -240,15 +240,15 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
 ?>
               
               </div>
-               <div class="form-group px-3">
+               <div class="form-group col-12 px-3">
                 	        <button type="submit" class="btn btn-primary">Update Profile</button>
 
                             <a class="btn btn-default border border-dark" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
 
                 </div>
-                <div class="curl-message px-3" >
+                <div class="curl-message col-12  px-3" >
                 	
-                	<span class="curl-progress" style="display:none"><em>Profile updating...</em></span>
+                	<span class="curl-progress" style="display:none"><em>Hold on, Profile updating...</em></span>
                 	<span class="curl-success" style="display:none"><em>Profile updated successfully.</em></span>
                 </div>
             </div>
@@ -273,7 +273,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
 					oldtag.find('span').remove();
 					tags.push(oldtag.html());	
 				});*/
-                var val = '<span class="badge rounded-pill text-bg-light border border-dark-subtle me-2 mb-2">'+jQuery(this).val()+'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
+                var val = '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'+jQuery(this).val()+'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
 				var tag=jQuery(this).val();
 				$('.tags_all').append(val);
 				jQuery(this).val('');

@@ -117,11 +117,11 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
   <div class="row justify-content-center">
   	<div class="col-md-7">
     	<div class="d-flex">
-        	<div class="flex-shrink-0 position-relative">
+        	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
                 <?php } ?>
-  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+  	<div class="overflow-hidden rounded-circle mb-3" style="width:130px;height:130px">
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
     </div>
     <a href="<?php echo $site_url ?>/engagifii-profile-edit" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
