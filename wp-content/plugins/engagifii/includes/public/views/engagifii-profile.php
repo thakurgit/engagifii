@@ -62,8 +62,8 @@ if (! is_user_logged_in()) {
     return;
 }
 ?>
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
-  <!--<link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
+ <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
+  <link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
   <div class="d-flex justify-content-end">
     
     <a href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
@@ -110,14 +110,10 @@ if (! is_user_logged_in()) {
 if($peopleDATA->isError==true) { 
 echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.</h5>";
  } else { ?>
-<div class="temp3 "  style="background-color: #eee; ">
-
-<div class="layout-content">
-
-<!-- Content -->
-
   <!-- Header -->
-  <div class="container-fluid bg-light border mb-4 py-5">
+  
+  <div class="container-fluid  mb-4 ">
+  <div class="bg-light border py-5 px-4 rounded-3">
   <div class="row justify-content-center">
   	<div class="col-md-7">
     	<div class="d-flex">
@@ -133,7 +129,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                 Edit profile
               </a>
   </div>
-  <div class="flex-grow-1 ms-3">
+  <div class="flex-grow-1 ml-3">
   	<h4 class="font-weight-bold mb-4"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
     <?php if($peopleDATA->people->pid) { ?>
         <p class="font-weight-bold mb-4"><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></p>
@@ -150,10 +146,10 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
             Status: <strong style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></strong>
           </div>
   			<?php if($peopleDATA->tags){ ?>
-          <p class="d-flex align-items-start"><strong>Tags: </strong><span class="tags_all ms-3">
+          <p class="d-flex align-items-start"><strong>Tags: </strong><span class="tags_all ml-3">
      				<?php 
 						foreach ($peopleDATA->tags as $key => $value) {
-							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle me-2 mb-2">'.$value->tagName.'</span>';
+							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'.$value->tagName.'</span>';
 					 }		
 					 ?>
                     </span>
@@ -164,10 +160,11 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
     </div>
   </div>
   </div>
+  </div>
   <!-- Header -->
   <div class="container-fluid">
   <div class="accordion" id="accordionExample">
-  <div class="card">
+  <div class="card mb-4 border rounded-3">
     <div class="card-header" id="headingOne">
       <h2 class="mb-0">
         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -276,7 +273,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
         <div class="card-header">Organization</div>
         <div class="card-body">
 
-          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic mr-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;">Cumberland Valley S D</span> 
                 </p>
           
 
@@ -303,7 +300,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
       </div>
     </div>
   </div>
-  <div class="card">
+  <div class="card mb-4 border rounded-3">
     <div class="card-header" id="headingTwo">
       <h2 class="mb-0">
         <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -320,6 +317,4 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
 </div>
 </div>
 
-</div>
-</div>
 <?php } ?>
