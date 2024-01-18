@@ -63,8 +63,8 @@ if (! is_user_logged_in()) {
  <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
   <link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
   <div class="d-flex justify-content-end">
-    <?php wp_logout_url(home_url()); ?>
-    <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
+    
+    <a href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
 <?php 
