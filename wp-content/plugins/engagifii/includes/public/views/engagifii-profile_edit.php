@@ -173,7 +173,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
   <div class="tab-pane fade border bg-light rounded-2" id="nav-body" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="pb-3">
               <div class="overflow-hidden">
-              <h5 class="bg-body-secondary py-2 pr-3 border-bottom">Contact Information</h5>
+              <h5 class="bg-body-secondary py-2 pl-3 border-bottom">Contact Information</h5>
               <div class="px-3">
               <div class="form-group">
               	<label for="Email Address">Email Address</label>
@@ -191,7 +191,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
  }
 ?>			</div>
 			</div>
-              <h5 class="bg-body-secondary py-2 pr-3 border-bottom">Address</h5>
+              <h5 class="bg-body-secondary py-2 pl-3 border-bottom">Address</h5>
               <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
      if($value->controlTypeId==9){ 
 	 $address = json_decode($value->selectedValue,true);
