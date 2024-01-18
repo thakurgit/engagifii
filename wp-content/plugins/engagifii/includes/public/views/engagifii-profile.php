@@ -171,7 +171,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
     <div class="card-header" id="headingOne">
       <h2 class="mb-0">
         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Profile
+         GENERAL DETAILS
         </button>
       </h2>
     </div>
@@ -218,14 +218,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
           <h6 class="my-3">Price List</h6>
 
           <div class="row mb-2">
-            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
-            <div class="col-md-9">
-              <a href="javascript:void(0)" class="text-body">Rock</a>,
-              <a href="javascript:void(0)" class="text-body">Alternative</a>,
-              <a href="javascript:void(0)" class="text-body">Electro</a>,
-              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
-              <a href="javascript:void(0)" class="text-body">Dance</a>
-            </div> -->
+            
           </div>
 
           <div class="row mb-2">
@@ -236,22 +229,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
           </div>
 
         </div>
-        <!-- <div class="card-footer text-center p-0">
-          <div class="row no-gutters row-bordered row-border-light">
-            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
-              <div class="font-weight-bold">24</div>
-              <div class="text-muted small">posts</div>
-            </a>
-            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
-              <div class="font-weight-bold">51</div>
-              <div class="text-muted small">videos</div>
-            </a>
-            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
-              <div class="font-weight-bold">215</div>
-              <div class="text-muted small">photos</div>
-            </a>
-          </div>
-        </div> -->
+       
       </div>
       <!-- / Info -->
 
@@ -329,7 +307,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
     <div class="card-header" id="headingTwo">
       <h2 class="mb-0">
         <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Events and Training
+          EVENTS AND TRAINING
         </button>
       </h2>
     </div>
