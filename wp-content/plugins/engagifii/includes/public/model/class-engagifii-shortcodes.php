@@ -65,7 +65,10 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'public-officials-detail' => 'public_officials_detail',
 			'public-officials-old' => 'public_officials_old',
 			'legislative-reports' => 'legislative_reports',
-			'report-list' => 'report_list'
+			'report-list' => 'report_list',
+			'engagifii-profile' => 'engagifii_profile',
+			'engagifii-profile-edit' => 'engagifii_profile_edit',
+			'engagifii-login' => 'engagifii_login'
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -75,6 +78,21 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	}
 
 
+	public function engagifii_profile(){
+		ob_start();
+		include $this->basePath.'includes/public/views/engagifii-profile.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_profile_edit(){
+		ob_start();
+		include $this->basePath.'includes/public/views/engagifii-profile_edit.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_login(){
+		ob_start();
+		include $this->basePath.'includes/public/views/engagifii-login.php';
+		return ob_get_clean();
+	}	
 	public function public_officials(){
 		ob_start();
 		include $this->basePath.'includes/public/views/public_officials.php';
