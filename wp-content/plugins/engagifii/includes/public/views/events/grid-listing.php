@@ -62,10 +62,10 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
 </div>
 <?php
   } else {
-	echo '<div class="col-12 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
+	echo '<div class="container-fluid pb-2"><div class="row"><div class="col-12 text-center text-lg-right view-mode d-flex align-items-center justify-content-end">
     <div class="flt-btn mr-3 " style="display:block">
         </div>
-    </div>';  
+    </div></div></div>';  
   }
 ?>
 
