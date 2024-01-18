@@ -126,7 +126,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
                 <?php } ?>
   	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
+    <img src="<?php echo 'https://'.$tenant_code.'.engagifii.com'.$peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
     </div>
     <a href="<?php echo $site_url ?>/engagifii-profile-edit" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
                 style="z-index: 1;">

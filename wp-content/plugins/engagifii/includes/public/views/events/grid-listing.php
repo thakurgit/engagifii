@@ -406,7 +406,7 @@ $('.list-search').on("keydown", function(event) {
   }  
 });
         var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
 		function delay(callback, ms) {
   var timer = 0;
   return function() {
