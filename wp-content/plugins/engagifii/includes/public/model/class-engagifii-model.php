@@ -113,6 +113,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['classes', 'classLoadGridData'],
         ['classsearch', 'classSearchLoadGridData'],
         ['events', 'eventsLoadGridData'],
+        ['eventsbyperson', 'eventsLoadGridDataByPerson'],
         ['eventfiltercountdata', 'eventCountFilterData'],
         ['filtercountdata', 'countFilterData'],
         ['coursecountdata', 'courseCountFilterData'],
@@ -2027,6 +2028,179 @@ wp_die();
         wp_die();
     }
 
+    //Load event list by person
+    public function eventsLoadGridDataByPerson(){
+        $postedData = $this->_prepareEventsData();
+        //print_r($postedData); die;
+        $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
+        $collection = json_decode($dataResponse['api_response'])->collection;
+        $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
+        
+        header("Content-Type: application/json");
+        $request = $_GET;
+
+        $options = get_option('ebt_api_settings');
+        $endorsement_api_url = $options['ebt_api_url'];
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
+        $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
+
+        $data = array();
+        //print_r($collection); 
+        foreach ($collection as $key => $row) {
+           
+            /* getdata for tables */
+            $nestedData = array();
+            $contactPopOver = '';
+           $locationPopOver      = '';
+
+           if(count($row->eventDates)) {
+                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
+			}
+            $locationCount = 0 ;
+            foreach($row->eventDates as $key => $location){
+
+                if($location->city){
+                    $locationCount = $locationCount+1;
+                }
+            }
+           
+            $default_Title = $row->name;
+            $default_Id = $row->id;
+            $default_Detailpage = "";
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . site_url() . '/event-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            if ($default_Title) {
+                $nestedData['name'] = $default_Detailpage;
+            }else{
+                $nestedData['name'] = "N/A";
+            }
+
+            $nestedData['eventType'] = $row->eventType;
+            $nestedData['eventWithClass'] = "<span class='text-center'>".$row->eventWithClass."</span>";
+            $nestedData['class'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" alt="class-icon" class="img-icon-lg"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$value->courseClassesCount.'</span></div>'.$classPopover;
+            $default_Date = $row->createdOn;
+            $convert_Date = strtotime($default_Date);
+            $new_Date = date('M d, Y', $convert_Date);
+            if($row->createdBy->imageThumbUrl)
+            {
+                if (filter_var($row->createdBy->imageThumbUrl, FILTER_VALIDATE_URL)) { 
+                    $instructor_img = $row->createdBy->imageThumbUrl;
+                }
+                else
+                {
+                    $instructor_img = $tenant_url.$row->createdBy->imageThumbUrl;
+                }
+                
+            }
+            else
+            {
+                $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+            }
+            
+            if($locationCount>0){
+                $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
+
+            }
+            else{
+            $nestedData['city'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
+            }
+            $nestedData['eventDates'] = $row->startDateTime; //eventDates
+            if($row->startDateTime){
+                $default_Date = $row->startDateTime;
+                $convert_Date = strtotime($default_Date);
+                $startdate = date('M d, Y', $convert_Date);
+                $starttime = date('h:i A', $convert_Date);
+            }
+            if($row->endDateTime){
+                $default_Date = $row->endDateTime;
+                $convert_Date = strtotime($default_Date);
+                $enddate = date('M d, Y', $convert_Date);
+                $endtime = date('h:i A', $convert_Date);
+            }
+            $nestedData['startDateTime'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
+            
+            $default_Courses = $row->courses;
+            if ($default_Courses) {
+                $nestedData['courseCount'] = $default_Courses;
+            }else{
+                $nestedData['courseCount'] = '<div class="course-badge"><img src="'.ENGAGIFII_ASSETS_URL.'/images/course-icon.png" class="img-circle" alt="course-icon"></div>';
+            }
+            
+            $event_status = $row->eventStatus;
+            $isAlreadyRegistered = $row->registrationWorkflows[0]->isAlreadyRegistered;
+            $nestedData['allReadyRegistered'] = $isAlreadyRegistered;
+            $event_status = preg_replace('/(?<!\ )[A-Z]/', ' $0', $event_status);
+			 $nestedData['eventStatus'] = $event_status;
+            $registration_state = $row->eventRegistrationState;
+            $default_RegisterBtn = "";
+            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted') {
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->eventRegistrationState);
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+            }
+            else if ($isAlreadyRegistered) {
+                $alreadyRegisteredText = "Already Registered";
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+            }
+            else{
+                $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+            }
+            
+           
+           
+                $nestedData['register'] = $default_RegisterBtn;
+           
+            $filter = $row->tags;
+            $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
+            $filterTag = array_values($allTags);
+            $default_Tags = array();
+            if (count($filterTag)) {
+
+                $allTags = array();
+                
+                foreach ($filterTag as $index => $tag) {
+
+                    $default_Tags[$index]->tagName = $tag;
+                    $default_Tags[$index]->id =$index;
+                }
+                
+                foreach ($default_Tags as $index => $value) {
+                   
+                    if(count($default_Tags) > 1 && $index == 0)
+                    {   
+                        
+                        $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                         $tagCount   = count($default_Tags) - 1;
+       			$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+					
+                    }
+                    elseif(count($default_Tags) == 1)
+                        $allTags[] = $value->tagName;
+
+                }
+               $nestedData['tags'] = $allTags;
+            }else{
+                $nestedData['tags'] = "";
+            }
+
+            $data[] = $nestedData;
+        }
+        
+        
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+//print_r($json_data);
+        echo json_encode($json_data);
+        wp_die();
+    }
 
     // Events Grid End here
 
@@ -3603,7 +3777,7 @@ $li=1;
         $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
-        $postData['pageSize'] = ((int) $_POST['length']);
+        $postData['pageSize'] = 250; //((int) $_POST['length']);
 		$postData['text'] = $_POST['text'];
         //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
