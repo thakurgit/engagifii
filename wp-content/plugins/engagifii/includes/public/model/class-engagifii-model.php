@@ -3777,7 +3777,7 @@ $li=1;
         $postData['sortBy'] = ucfirst($sortBy);
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
-        $postData['pageSize'] = 250; //((int) $_POST['length']);
+        $postData['pageSize'] = ((int) $_POST['length']);
 		$postData['text'] = $_POST['text'];
         //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
