@@ -355,7 +355,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
    	$length = 5;
 
 for($i = 0; $i < $length; $i++){ ?>
-	  <div class="card mb-4 border rounded-lg">
+	  <div class="card mb-4 border rounded-sm">
     <div class="card-header">
       <button class="btn btn-link d-flex w-100 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
         Accordion Item #<?php echo $i+1; ?><span class="ml-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
@@ -380,7 +380,7 @@ for($i = 0; $i < $length; $i++){ ?>
    	$length = 5;
 
 for($i = 0; $i < $length; $i++){ ?>
-	  <div class="card mb-4 border rounded-lg">
+	  <div class="card mb-4 border rounded-sm">
     <div class="card-header">
       <button class="btn btn-link d-flex w-100 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOnex<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
         Accordion Item #<?php echo $i+1; ?><span class="ml-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
