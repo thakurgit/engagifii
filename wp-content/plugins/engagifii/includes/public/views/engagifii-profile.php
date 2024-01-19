@@ -318,6 +318,93 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
       </div>
     </div>
   </div>
+  <div class="card mb-4 border rounded-3">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapseTwo">
+          AWARDS
+        </button>
+      </h2>
+    </div>
+    <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+                <strong>Certification Statistics</strong>
+                <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
+                    <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a class="border nav-link text-left py-3 active " data-toggle="pill" data-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small>Registered <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+                    </li>
+                    <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">8</span><small>Earned <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">9</span><small>Awarded <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+  	<div class="accordion" id="accordionExample1">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="card mb-4 border rounded-lg">
+    <div class="card-header">
+      <button class="btn btn-link d-flex w-100 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ml-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </div>
+    <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#accordionExample1">
+      <div class="card-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+  </div>
+  <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+  	  	<div class="accordion" id="accordionExample2">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="card mb-4 border rounded-lg">
+    <div class="card-header">
+      <button class="btn btn-link d-flex w-100 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOnex<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ml-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </div>
+    <div id="collapseOnex<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#accordionExample2">
+      <div class="card-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+
+  </div>
+  <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="" tabindex="0">...</div>
+</div>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 
