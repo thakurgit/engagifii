@@ -337,13 +337,13 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                         <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-2" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
                     </li>
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-3" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
                     </li>
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">8</span><small>Earned <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-4" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">8</span><small>Earned <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
                     </li>
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">9</span><small>Awarded <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-5" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">9</span><small>Awarded <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
                     </li>
                 </ul>
 
