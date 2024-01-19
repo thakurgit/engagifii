@@ -69,7 +69,7 @@ curl_close($curl);
  }
 	
 
-	$addresstabId = $peopleDATA->tabs[1]->id;
+	/*$addresstabId = $peopleDATA->tabs[1]->id;
 	$addresstabGroupId = $peopleDATA->tabs[1]->groupFields[0]->id;
 	if($peopleDATA->people->personaTypeId==2){
 		$addressTitle = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->name;
@@ -83,7 +83,7 @@ curl_close($curl);
 		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[1]->name;
 		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
 		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
-	}
+	}*/
 if($peopleDATA->isError==true) { 
 echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.</h5>";
  } else { ?>

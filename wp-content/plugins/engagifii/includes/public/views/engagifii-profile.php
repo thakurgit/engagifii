@@ -92,7 +92,7 @@ if (! is_user_logged_in()) {
  }
 	
 
-	$addresstabId = $peopleDATA->tabs[1]->id;
+	/*$addresstabId = $peopleDATA->tabs[1]->id;
 	$addresstabGroupId = $peopleDATA->tabs[1]->groupFields[0]->id;
 	if($peopleDATA->people->personaTypeId==2){
 		$addressTitle = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->name;
@@ -106,7 +106,7 @@ if (! is_user_logged_in()) {
 		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[1]->name;
 		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
 		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
-	}
+	}*/
 if($peopleDATA->isError==true) { 
 echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.</h5>";
  } else { ?>
@@ -183,14 +183,18 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
         <div class="card-body">
 
         
-		<?php if($address['country']) { ?>
+		<?php  //if($address['country']) { 
+		foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
+     if($value->controlTypeId==9){ 
+	 $address = json_decode($value->selectedValue,true);?>
           <div class="row mb-2">
             <div class="col-md-3 text-muted">Country:</div>
             <div class="col-md-9">
               <span class="text-body"><?php echo  $address['country'];?></span>
             </div>
           </div>
-          <?php } ?>
+          <?php } }
+		   //} ?>
 
           
 			<?php if($peopleDATA->people->primaryPhoneNumber->value){ ?>
