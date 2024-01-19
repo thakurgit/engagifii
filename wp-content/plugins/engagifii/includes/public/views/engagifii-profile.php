@@ -331,10 +331,10 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                 <strong>Certification Statistics</strong>
                 <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 active " data-toggle="pill" data-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small>Registered <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+                        <a class="border nav-link text-left py-3 active " data-toggle="pill" data-target="#tab-1" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small>Registered <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
                     </li>
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
+                        <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-2" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
                     </li>
                     <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
                         <a class="border nav-link text-left py-3 " data-toggle="pill" data-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span></small></a>
