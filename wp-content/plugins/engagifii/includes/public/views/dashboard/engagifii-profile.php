@@ -320,7 +320,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        <?php //echo do_shortcode('[event-list]'); ?>
+        <?php echo do_shortcode('[event-list]'); ?>
       </div>
     </div>
   </div>
@@ -419,7 +419,7 @@ foreach($tabs as $tab){?>
     </div>
     <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-      <?php echo do_shortcode('[courses-list]'); ?>
+      <?php //echo do_shortcode('[courses-list]'); ?>
       </div>
     </div>
   </div>
