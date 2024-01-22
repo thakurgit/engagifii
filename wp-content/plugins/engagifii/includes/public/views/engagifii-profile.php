@@ -405,6 +405,20 @@ for($i = 0; $i < $length; $i++){ ?>
       </div>
     </div>
   </div>
+  <div class="card mb-4 border rounded-3">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseTwo">
+          Credit Earned
+        </button>
+      </h2>
+    </div>
+    <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+      <?php echo do_shortcode('[courses-list]'); ?>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 
