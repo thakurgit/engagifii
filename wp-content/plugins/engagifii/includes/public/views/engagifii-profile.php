@@ -114,7 +114,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
                 Edit profile
               </a>
   </div>
-  <div class="flex-grow-1 ml-3">
+  <div class="flex-grow-1 ml-3 pt-3">
   	<h4 class=""><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
     <p class="mb-2"><?php if($peopleDATA->people->pid) { ?>
         <span><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></span>
@@ -147,10 +147,10 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   <!-- Header -->
   <div class="container-fluid">
   <div class="accordion" id="accordionExample">
-  <div class="card mb-4 border rounded-3">
-    <div class="card-header" id="headingOne">
+  <div class="card mb-4 border rounded-sm">
+    <div class="card-header p-0" id="headingOne">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <button class="btn btn-link btn-block text-left p-3" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
          GENERAL DETAILS
         </button>
       </h2>
@@ -287,10 +287,10 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
       </div>
     </div>
   </div>
-  <div class="card mb-4 border rounded-3">
-    <div class="card-header" id="headingTwo">
+  <div class="card mb-4 border rounded-sm">
+    <div class="card-header p-0" id="headingTwo">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <button class="btn btn-link btn-block text-left p-3 collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           EVENTS AND TRAINING
         </button>
       </h2>
@@ -301,10 +301,10 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
       </div>
     </div>
   </div>
-  <div class="card mb-4 border rounded-3">
-    <div class="card-header" id="headingTwo">
+  <div class="card mb-4 border rounded-sm">
+    <div class="card-header p-0" id="headingTwo">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapseTwo">
+        <button class="btn btn-link btn-block text-left p-3 collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapseTwo">
           AWARDS
         </button>
       </h2>
@@ -388,10 +388,10 @@ for($i = 0; $i < $length; $i++){ ?>
       </div>
     </div>
   </div>
-  <div class="card mb-4 border rounded-3">
-    <div class="card-header" id="headingTwo">
+  <div class="card mb-4 border rounded-sm">
+    <div class="card-header p-0" id="headingTwo">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseTwo">
+        <button class="btn btn-link btn-block text-left p-3 collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseTwo">
           Credit Earned
         </button>
       </h2>
