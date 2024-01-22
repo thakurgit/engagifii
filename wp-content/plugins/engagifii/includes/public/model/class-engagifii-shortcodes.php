@@ -79,27 +79,27 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 
 	public function engagifii_profile(){
 		ob_start();
-		include $this->basePath.'includes/public/views/engagifii-profile.php';
+		include $this->basePath.'includes/public/views/dashboard/engagifii-profile.php';
 		return ob_get_clean();
 	}	
 	public function engagifii_profile_edit(){
 		ob_start();
-		include $this->basePath.'includes/public/views/engagifii-profile_edit.php';
+		include $this->basePath.'includes/public/views/dashboard/engagifii-profile_edit.php';
 		return ob_get_clean();
 	}		
 	public function public_officials(){
 		ob_start();
-		include $this->basePath.'includes/public/views/public_officials.php';
+		include $this->basePath.'includes/public/views/public_official/public_officials.php';
 		return ob_get_clean();
 	}	
 	public function public_officials_old(){
 		ob_start();
-		include $this->basePath.'includes/public/views/public_officials_old.php';
+		include $this->basePath.'includes/public/views/public_official/public_officials_old.php';
 		return ob_get_clean();
 	}	
 	public function public_officials_detail(){
 		ob_start();
-		include $this->basePath.'includes/public/views/public_officials_detail.php';
+		include $this->basePath.'includes/public/views/public_official/public_officials_detail.php';
 		return ob_get_clean();
 	}	
 	public function endorsement_grid_view(){
