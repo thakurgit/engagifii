@@ -56,7 +56,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
  <!--<link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
   <div class="d-flex justify-content-end px-3 mb-3">
     
-    <a class="btn btn-outline-secondary" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
+    <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
 <?php 
@@ -101,7 +101,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   <!-- Header -->
   
   <div class="container-fluid  mb-4 ">
-  <div class="py-3 px-4 rounded-lg" style="background:#e0eafc">
+  <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
     	<div class="d-flex">
         	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
