@@ -1,5 +1,11 @@
 <?php
-    $obj      =  new Engagifii_API();
+if (! is_user_logged_in()) {
+    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
+    printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
+    echo '</h5></div>';
+    return;
+}
+$obj      =  new Engagifii_API();
 $site_url = site_url();
 $options = get_option('ebt_api_settings');
 $user_id = get_current_user_id();
@@ -39,34 +45,18 @@ $response = curl_exec($curl);
 $peopleDATA = json_decode($response);
 // Close the cURL session
 curl_close($curl);
-
-//       $err = curl_error($curl);
-//       curl_close($curl);
-//       if ($err) {
-//         //Only show errors while testing
-//         echo "cURL Error #:" . $err;
-//       } else {
-//       echo "hello";
-//         //The API returns data in JSON format, so first convert that to an array of data objects
-//         $responseObj = json_decode($response);
-// print_r("response:", $responseObj);
-// }
 $current_user_posts = get_posts($args);
 $total              = count($current_user_posts); ?>
 <?php
-if (! is_user_logged_in()) {
-    echo "<div class='wpfep-login-alert'>";
-    printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
-    echo '</div>';
-
-    return;
-}
+if($peopleDATA->isError==true) { 
+echo "<br><br><div class='alert alert-danger' role='alert'>
+<h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
+} else {
 ?>
- <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
-  <link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
+ <!--<link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
   <div class="d-flex justify-content-end px-3 mb-3">
     
-    <a class="btn-secondary btn-sm btn-xs" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
+    <a class="btn btn-outline-secondary" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
 <?php 
@@ -107,49 +97,44 @@ if (! is_user_logged_in()) {
 		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
 		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
 	}*/
-if($peopleDATA->isError==true) { 
-echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.</h5>";
- } else { ?>
+  ?>
   <!-- Header -->
   
   <div class="container-fluid  mb-4 ">
-  <div class="bg-light border py-5 px-4 rounded-3">
-  <div class="row justify-content-center">
-  	<div class="col-md-7">
+  <div class="py-3 px-4 rounded-lg" style="background:#e0eafc">
     	<div class="d-flex">
         	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
                 <?php } ?>
-  	<div class="overflow-hidden rounded-circle mb-3" style="width:130px;height:130px">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
+  	<div class="overflow-hidden rounded-circle mb-2 bg-white p-1 shadow-sm " style="width:120px;height:120px">
+    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
     </div>
-    <a href="<?php echo $site_url ?>/engagifii-profile-edit" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                style="z-index: 1;">
+    <a href="<?php echo $site_url ?>/engagifii-profile-edit" class="btn btn-outline-dark btn-sm" style="z-index: 1;">
                 Edit profile
               </a>
   </div>
   <div class="flex-grow-1 ml-3">
-  	<h4 class="font-weight-bold mb-4"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
-    <?php if($peopleDATA->people->pid) { ?>
-        <p class="font-weight-bold mb-4"><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></p>
+  	<h4 class=""><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
+    <p class="mb-2"><?php if($peopleDATA->people->pid) { ?>
+        <span><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></span>
     <?php } ?>
     
   
-          <div class="text-muted mb-4">
+          <span class="ml-3">
           	<?php $status = 'Inactive';
 					$statusColor = 'red';
 			 if($peopleDATA->people->isActive==true) {
 				$status = 'Active'; 
 				$statusColor = 'green';
 			 } ?>
-            Status: <strong style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></strong>
-          </div>
+            <strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span>
+          </span></p>
   			<?php if($peopleDATA->tags){ ?>
-          <p class="d-flex align-items-start"><strong>Tags: </strong><span class="tags_all ml-3">
+          <p class="d-flex align-items-start"><strong>Tag(s): </strong><span class="tags_all ml-2">
      				<?php 
 						foreach ($peopleDATA->tags as $key => $value) {
-							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'.$value->tagName.'</span>';
+							echo '<span class="badge badge-light mr-2 mb-2">'.$value->tagName.'</span>';
 					 }		
 					 ?>
                     </span>
@@ -157,8 +142,6 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
         
   </div>
         </div>
-    </div>
-  </div>
   </div>
   </div>
   <!-- Header -->
@@ -314,7 +297,7 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        <?php echo do_shortcode('[event-list]'); ?>
+        <?php //echo do_shortcode('[event-list]'); ?>
       </div>
     </div>
   </div>
