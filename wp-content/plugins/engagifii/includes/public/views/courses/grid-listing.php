@@ -78,7 +78,7 @@ $dt_class .= 'table-dark ';
 
 </div>
 <?php
-function removeWhitespace($buffer)
+function removeWhitespaceC($buffer)
 {
     return preg_replace('/\s+/', ' ', $buffer);
 }
@@ -153,7 +153,7 @@ ob_start();
 <?php
 $filter_content =ob_get_contents();
 ob_end_clean();
-$filter_content = removeWhitespace($filter_content);
+$filter_content = removeWhitespaceC($filter_content);
 ?>
 <script type="text/javascript">
 	var classes = '';
