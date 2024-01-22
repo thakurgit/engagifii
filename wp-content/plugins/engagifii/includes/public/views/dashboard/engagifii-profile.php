@@ -338,32 +338,55 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
                 <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
                 <?php 
    	$tabs = ['Registered','In Progress','Not Started','Earned','Awarded'];
+	$tabCount=array_fill(0, count($tabs), 0);
+	$tabCount[array_search('Registered', $tabs)] = count($awardData->result);
+	foreach ($awardData->result as $award){
+		switch ($award->status) {
+        case 5:
+            $tabCount[array_search('Awarded', $tabs)]++;
+            break;
+		case 1:
+            $tabCount[array_search('Not Started', $tabs)]++;
+            break;
+		case 2:
+            $tabCount[array_search('In Progress', $tabs)]++;
+            break;
+		case 4:
+            $tabCount[array_search('Earned', $tabs)]++;
+            break;
+		}
+	}
+	
 
 //for($i = 0; $i < $length; $i++){ 
 $tabNo=0;
 foreach($tabs as $tab){?>
 <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-<?php echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+                        <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab))?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
                     </li>	 
 <?php $tabNo++; } ?>
                    
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-  	<div class="accordion" id="accordionExample1">
-    <?php $i=0; $status=''; foreach ($awardData->result as $award){
+  <div class="tab-pane fade show active" id="tab-1<?php //echo $tabNo; ?>" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+  	<div class="accordion award-list" id="awrad-accordion">
+    <?php $i=0; $status=''; $class=''; foreach ($awardData->result as $award){
 		if($award->status==1){
 			$status = '<small class="text-danger"><i class="fa fa-times-circle mr-1"></i>Not started</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[2]));
 		} else if($award->status==5){
 			$status = '<small class="text-success"><i class="fa fa-check-circle mr-1"></i>Awarded on '.$award->grantedDateString.'</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[4]));
 		} else if($award->status==2){
 			$status = '<small class="text-warning"><i class="fa fa-clock mr-1"></i>In Progress ('.$award->certificationProgress.'%)</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[1]));
 		} else if($award->status==4){
 			$status = '<small class="text-success"><i class="fa fa-check-circle mr-1"></i>Earned</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[3]));
 		} 
 		 ?>
-		<div class="card mb-4 border rounded-sm">
+		<div class="card mb-4 border rounded-sm " data-content="<?php echo $class; ?>">
         	<div class="card-header p-0" id="headingTwo">
         	<h2 class="mb-0">
             	<button class="btn btn-link d-flex w-100 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
@@ -371,7 +394,7 @@ foreach($tabs as $tab){?>
       </button>
             </h2>
             </div>
-            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#accordionExample1">
+            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#awrad-accordion">
       <div class="card-body">
         <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
       </div>
@@ -381,11 +404,7 @@ foreach($tabs as $tab){?>
    
 </div>
   </div>
-  <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-
-  </div>
-  <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
-  <div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="" tabindex="0">...</div>
+  
 </div>
       </div>
     </div>
@@ -406,5 +425,21 @@ foreach($tabs as $tab){?>
   </div>
 </div>
 </div>
+<script>
+$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+ var activeTab = $(e.target).attr('data-tab');
+ $('#awrad-accordion > .card') .each(function(){
+	if($(this).attr('data-content')==activeTab){
+		$(this).removeClass('d-none');
+	}else{
+		$(this).addClass('d-none');
+	}
+	
+ });
+ if($(e.target).attr('data-tab')=='registered'){
+	$('#awrad-accordion > .card').removeClass('d-none'); 
+ }
+});
 
+</script>
 <?php } ?>
