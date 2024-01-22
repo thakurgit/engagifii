@@ -46,7 +46,7 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 $peopleDATA = json_decode($response);
 // Close the cURL session
-curl_close($curl);
+//curl_close($curl);
 $current_user_posts = get_posts($args);
 $total              = count($current_user_posts);
 $awardURL= 'https://engagifii-preview4-tna.azurewebsites.net/api/v1/Awards/AwardsCertificationsByPeople/5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
