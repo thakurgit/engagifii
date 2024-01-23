@@ -370,7 +370,6 @@ $('.flt-btn-course .clear-all').click(function(){
           },
           success: function(response) {       
             var element  = document.getElementById("coursecountFilterResult");
-            console.log(response);
             if(element)
             {
               element.innerHTML = " ("+response.api_response +")";
