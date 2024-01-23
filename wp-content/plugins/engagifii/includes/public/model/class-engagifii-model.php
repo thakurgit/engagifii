@@ -1753,7 +1753,6 @@ wp_die();
 
 
         foreach ($collection as $key => $value) {
-            # datatable
             $nestedData = array();
             $instructorPopOver = '';
             $classPopover      = '';
@@ -1765,7 +1764,7 @@ wp_die();
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);
 
             ## row data
-            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value['courseName'].'</a>';
             $nestedData['coursetype'] = $value->objectType;
             $nestedData['completiondate'] = '';
             $nestedData['credithours'] = $value->creditHours;
