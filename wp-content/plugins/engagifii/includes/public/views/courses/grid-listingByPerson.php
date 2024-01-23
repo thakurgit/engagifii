@@ -138,7 +138,7 @@ $filter_course = removeWhitespace($filter_course);
   var titleColumn = '<?php echo $title_key; ?>';
 	var tableCourse = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
-       	"dom": '<"row no-gutters"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-2"l><"col-sm-7 "p">>',
+				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
        	"processing": true,
        	"searching": true,
@@ -177,32 +177,20 @@ $filter_course = removeWhitespace($filter_course);
              //$(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 "initComplete": function(settings, json) {
-        
-		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
 		 
-
-    },
      "drawCallback": function( settings ) {
             dt_dropdown();
-           dt_scroll();
+          // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
          },
 		  "initComplete": function(settings, json) {
-			  $('#eng-overlay').css( 'display', 'none' );
+			  $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 		
 
     },
     });
 	 $('#courseByPerson').on( 'processing.dt', function ( e, settings, processing ) {
-        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
+        $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
 
@@ -265,9 +253,6 @@ $('#searchcourses').on("keydown", function(event) {
 
 
 	$('div.flt-btn-course').html('<?php echo $filter_course; ?>');
-    $('#courseByPerson').on( 'processing.dt', function ( e, settings, processing ) {
-        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
-    } ).dataTable();
 
     
     $('.flt-btn-course .filter-icon').click(function(e){

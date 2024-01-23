@@ -358,14 +358,7 @@ var table = $('#ebtmaintable').DataTable( {
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 "initComplete": function(settings, json) {
         
-		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
+		$('#eng-overlay').css( 'display', 'none' );
 		 
 
     },
