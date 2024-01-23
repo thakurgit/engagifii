@@ -114,8 +114,8 @@ ob_start();
 			
 		</div>
     <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
-          <span id="countFilterResult"></span>
+        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data1">Apply 
+          <span id="coursecountFilterResult"></span>
         </button>
       </div>
 	</div>
@@ -273,19 +273,19 @@ $('#searchcourses').on("keydown", function(event) {
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
-      countFilterData();
+      coursecountFilterData();
 
     });
 
 
   	//filter
-  	$('#apply-filter-data').click(function(){
+  	$('#apply-filter-data1').click(function(){
   		classes = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
   		instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
   		tags       = $.map($('input[name="courseTags[]"]:checked'), function(c){return c.value; });
   		createdDate = $('input[name="createdbetween"]').val();
       
-      $(".filter-area").toggleClass('d-none');
+      $(".flt-btn-course .filter-area").toggleClass('d-none');
   		tableCourse.draw();
 
   	});
@@ -293,17 +293,17 @@ $('#searchcourses').on("keydown", function(event) {
  $( document ).ready(function() {
     $('input[name="createdbetween"]').val('');
 });
-$( '.cleardate' ).click(function() {
+$( '.flt-btn-course .cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
     createdDate = '';
-    countFilterData();
+    coursecountFilterData();
 });
 
-$('.clear-all').click(function(){
+$('.flt-btn-course .clear-all').click(function(){
             $('input[type=checkbox]').prop('checked',false);
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
-            $('#countFilterResult').html(' ');
+            $('#coursecountFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light'); 
             tags = '';
@@ -326,17 +326,17 @@ $('.clear-all').click(function(){
 	  
 	  
 	  
-	  $("#apply-filter-data").click(function () {
+	  $("#apply-filter-data1").click(function () {
  
   
-  $('.filter-list').each(function() {
+  $('.flt-btn-course .filter-list').each(function() {
 	 if ($(this).find('input[type=checkbox]').is(':checked')) {
 		$(this).addClass('checked');
 	 } else {
 		$(this).removeClass('checked');
 	 }
   });
-  fv = $('.filter-list.checked').length;
+  fv = $('.flt-btn-course .filter-list.checked').length;
   if(fv>0){
 	$('.filter-icon').addClass('active bg-primary text-white').removeClass('bg-light');
 	$('.filter-icon span').text(fv); 
@@ -345,12 +345,12 @@ $('.clear-all').click(function(){
   }
  });  
 
-    $('.filter-list input[type=checkbox]').change(function(){
-          countFilterData();
+    $('.flt-btn-course .filter-list input[type=checkbox]').change(function(){
+          coursecountFilterData();
       })
 
 
-    function countFilterData()
+    function coursecountFilterData()
     {
 
       classes = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
@@ -369,7 +369,7 @@ $('.clear-all').click(function(){
             createdDate : createdDate,
           },
           success: function(response) {       
-            var element  = document.getElementById("countFilterResult");
+            var element  = document.getElementById("coursecountFilterResult");
             console.log(response);
             if(element)
             {
