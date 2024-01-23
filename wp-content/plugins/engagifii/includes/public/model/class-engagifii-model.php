@@ -1768,7 +1768,7 @@ wp_die();
             $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
             $nestedData['coursetype'] = $value->objectType;
             $nestedData['completiondate'] = '';
-            $nestedData['creditHours'] = $value->creditHours;
+            $nestedData['credithours'] = $value->creditHours;
             $courseTag = $value->courseTags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {
