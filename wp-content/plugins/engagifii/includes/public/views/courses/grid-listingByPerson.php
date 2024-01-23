@@ -136,6 +136,7 @@ $filter_course = removeWhitespace($filter_course);
   var endDate     = '';
   var fv= 0;
   var titleColumn = '<?php echo $title_key; ?>';
+  var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
 	var tableCourse = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -169,6 +170,7 @@ $filter_course = removeWhitespace($filter_course);
             	//d.tags    = tags;
             	//d.instructors = instructor;  
             	//d.createdDate = createdDate;
+				d.profileId = profileId;
 				  
                  
             }, 

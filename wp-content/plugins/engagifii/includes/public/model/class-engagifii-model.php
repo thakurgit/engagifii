@@ -1740,9 +1740,9 @@ wp_die();
     }
     public function courseLoadGridDataByPerson(){
         $postedData = $this->_prepareCoursePostDataByPerson();
-		//print_r(json_encode($postedData));
+		//print_r($postedData['profileId']);
 		//die;
-        $dataResponse = $this->submitApiRequest("Courses/CoursePagingListByPeople/5e7f3fed-c3f8-4b38-a25f-4f6a32511337/", $postedData, "POST", 'courses');
+        $dataResponse = $this->submitApiRequest("Courses/CoursePagingListByPeople/".$postedData['profileId']."/", $postedData, "POST", 'courses');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
@@ -1835,6 +1835,7 @@ wp_die();
         $postData['pageSize'] = ((int) $_POST['length']);
         $postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        $postData['profileId'] = $_POST["profileId"];
         if(!empty($_POST['classes']))
         {
             $postData['filterBody']['classes'] = $_POST['classes'];
