@@ -1743,32 +1743,31 @@ wp_die();
 		//print_r(json_encode($postedData));
 		//die;
         $dataResponse = $this->submitApiRequest("Courses/CoursePagingListByPeople/5e7f3fed-c3f8-4b38-a25f-4f6a32511337/", $postedData, "POST", 'courses');
-		//print_r($dataResponse);
-		//die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         $request = $_GET;
         $data    = array();
 
-
         foreach ($collection as $key => $value) {
+			//print_r($value->course->name);
+			//die;
             $nestedData = array();
             $instructorPopOver = '';
             $classPopover      = '';
             
-            if(count($value->certifiedInstructors))
+            /*if(count($value->certifiedInstructors))
                 $instructorPopOver = $this->_popOverInstructorData($key, $value->certifiedInstructors);
 
             if(count($value->courseClasses))
-                $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);
+                $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);*/
 
             ## row data
-            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
-            $nestedData['coursetype'] = $value->objectType;
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
+            $nestedData['coursetype'] = $value->course->objectType;
             $nestedData['completiondate'] = '';
-            $nestedData['credithours'] = $value->creditHours;
-            $courseTag = $value->courseTags;
+            $nestedData['credithours'] = $value->course->creditHours;
+            $courseTag = $value->course->courseTags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {
 
