@@ -31,6 +31,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'legislation_grid_detail_information' =>  'legislation_grid_details',
 			'legislation-details' => 'legislation_details',
 			'courses-list' => 'courses_grid_view',
+			'courses-list-ByPerson' => 'courses_grid_view_byPerson',
 			'courses-detail' => 'courses_detail',
 			'course-details' => 'course_details_id',
 			'classes-list' => 'classes_grid_view',
@@ -161,6 +162,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	{
 		ob_start();
 		include $this->basePath.'includes/public/views/courses/grid-listing.php';
+		return ob_get_clean();
+	}
+	public function courses_grid_view_byPerson()
+	{
+		ob_start();
+		include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php';
 		return ob_get_clean();
 	}
 

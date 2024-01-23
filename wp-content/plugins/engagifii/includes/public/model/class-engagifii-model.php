@@ -110,6 +110,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['endorsement', 'endorsementLoadGridData'],
         ['legislation', 'legislationLoadGridData'],
         ['courses', 'courseLoadGridData'],
+        ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['classes', 'classLoadGridData'],
         ['classsearch', 'classSearchLoadGridData'],
         ['events', 'eventsLoadGridData'],
@@ -1737,7 +1738,124 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
+    public function courseLoadGridDataByPerson(){
+        $postedData = $this->_prepareCoursePostDataByPerson();
+		//print_r(json_encode($postedData));
+		//die;
+        $dataResponse = $this->submitApiRequest("Courses/CoursePagingListByPeople/5e7f3fed-c3f8-4b38-a25f-4f6a32511337/", $postedData, "POST", 'courses');
+		//print_r($dataResponse);
+		//die;
+        $collection = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+        $request = $_GET;
+        $data    = array();
 
+
+        foreach ($collection as $key => $value) {
+            # datatable
+            $nestedData = array();
+            $instructorPopOver = '';
+            $classPopover      = '';
+            
+            if(count($value->certifiedInstructors))
+                $instructorPopOver = $this->_popOverInstructorData($key, $value->certifiedInstructors);
+
+            if(count($value->courseClasses))
+                $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);
+
+            ## row data
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
+            $nestedData['coursetype'] = $value->objectType;
+            $nestedData['completiondate '] = '';
+            $nestedData['creditHours'] = $value->creditHours;
+            $courseTag = $value->courseTags;
+            $allTags = array();
+            foreach ($courseTag as $index => $tag) {
+
+                if(count($courseTag) > 1 && $index == 0)
+                {   
+                    $tagPopover =  $this->_popOverTagData($key, $courseTag);
+
+                     $tagCount   = count($courseTag) - 1;
+                    $allTags[] = '<div class="d-flex justify-content-center"><div class="flex-1" style="white-space:normal;">'.$tag->tagName.'</div><span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span></div>'.$tagPopover;
+                }
+                elseif(count($classTag) == 1)
+                    $allTags[] = $tag->tagName;
+            }
+            $nestedData['tags'] = $allTags;
+            
+            $data[] = $nestedData;
+        }
+
+       
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+
+        echo json_encode($json_data);
+        wp_die();
+    }
+    public function _prepareCoursePostDataByPerson(){
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+
+        $isAsscend = $_POST["order"][0]["dir"];
+
+        if ($isAsscend == 'asc') {
+            $isAsscending = true;
+        } else {
+            $isAsscending = false;
+        }
+        
+
+        $title = $_POST['columns'][0]['search']['value'];
+
+        if (strlen($_POST['search']['value']) > 1) {
+            $title = $_POST['search']['value'];
+        }
+        $postData = array();
+        $sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $postData['itemCount'] = $_POST['length'];
+        $postData['sortBy'] = $sortBy;
+        //$postData['isAsscending'] = $isAsscending;
+        $postData['pageNumber'] = ($startPageNum);
+        $postData['pageSize'] = ((int) $_POST['length']);
+        $postData['sortDirection'] = $_POST["order"][0]["dir"];
+        $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        if(!empty($_POST['classes']))
+        {
+            $postData['filterBody']['classes'] = $_POST['classes'];
+        }
+        if(!empty($_POST['instructors']))
+        {
+            $postData['filterBody']['instructors'] = $_POST['instructors'];
+        }
+        if(!empty($_POST['tags']))
+        {
+            $postData['filterBody']['tags'] = $_POST['tags'];
+        }
+         if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+        return $postData;
+    }
 
     public function endorsementLoadGridData(){
         $postedData = $this->_preparePostData();

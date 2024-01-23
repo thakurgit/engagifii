@@ -319,8 +319,8 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
       </h2>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="card-body">
-        <?php echo do_shortcode('[event-list]'); ?>
+      <div class="card-body ">
+        <?php //echo do_shortcode('[event-list]'); ?>
       </div>
     </div>
   </div>
@@ -362,7 +362,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 $tabNo=0;
 foreach($tabs as $tab){?>
 <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab))?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+                        <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
                     </li>	 
 <?php $tabNo++; } ?>
                    
@@ -419,7 +419,7 @@ foreach($tabs as $tab){?>
     </div>
     <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-      <?php //echo do_shortcode('[courses-list]'); ?>
+      <?php echo do_shortcode('[courses-list-ByPerson]'); ?>
       </div>
     </div>
   </div>
