@@ -39,7 +39,7 @@ $dt_class .= 'table-dark ';
 		    <tr>        
 		    	<?php
 				$i=0;
-				$colNames =['Course Name','Course Type','Completion Date','Credit Hours','Tags'];
+				$colNames =['Course Name','Course Type','Completion Date','Credit Hours'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
