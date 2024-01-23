@@ -1763,11 +1763,12 @@ wp_die();
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);*/
 
             ## row data
-            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->course->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
             $nestedData['coursetype'] = $value->course->objectType;
-            $nestedData['completiondate'] = '';
-            $nestedData['credithours'] = $value->course->creditHours;
-            $courseTag = $value->course->courseTags;
+			$dt = new DateTime($value->courseStatusDate);
+            $nestedData['completiondate'] =   $dt->format('M d, Y');
+            $nestedData['credithours'] = $value->credits[0]->creditHours."/".$value->credits[0]->totalCreditHours;
+            $courseTag = $value->tags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {
 
