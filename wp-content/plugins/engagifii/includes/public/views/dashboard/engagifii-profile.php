@@ -45,11 +45,13 @@ curl_setopt_array($curl, array(
 ));
 $response = curl_exec($curl);
 $peopleDATA = json_decode($response);
+//$profileId= $peopleDATA->people->id;
+$profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
 // Close the cURL session
 //curl_close($curl);
 $current_user_posts = get_posts($args);
 $total              = count($current_user_posts);
-$awardURL= 'https://engagifii-preview4-tna.azurewebsites.net/api/v1/Awards/AwardsCertificationsByPeople/5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
+$awardURL= 'https://engagifii-preview4-tna.azurewebsites.net/api/v1/Awards/AwardsCertificationsByPeople/'.$profileId;
 $awardpayload = '{"itemCount":10,"pageNumber":1,"sortBy":"name","sortDirection":"asc","filterBody":{}}';
 curl_setopt_array($curl, array(  
   CURLOPT_URL => $awardURL,
@@ -320,7 +322,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body ">
-        <?php //echo do_shortcode('[event-list]'); ?>
+        <?php echo do_shortcode('[event-list]'); ?>
       </div>
     </div>
   </div>

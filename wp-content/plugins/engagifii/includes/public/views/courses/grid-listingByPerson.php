@@ -14,32 +14,19 @@
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
 ?>
-<?php 
-$dt_class=' ';
-$dt_respnsive = '';
-$dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
-if($dt_respnsive==1){
-$dt_class = 'dt-responsive nowrap ';	
-}
-$dt_darktheme = '';
-$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
-if($dt_darktheme==1){
-$dt_class .= 'table-dark ';	
-}
-?>
 <div class="containerEngagii">
 <div class="container-fluid pb-4">
 	<div class="row">
     	<div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end flt-btn"></div>
     </div>
 </div>
-	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-  	<table  id="courseByPerson" class="table table-bordered border-0 table-striped main-list-here course-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
+	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative">
+  	<table  id="courseByPerson" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
     	<thead> 
 		    <tr>        
 		    	<?php
 				$i=0;
-				$colNames =['Course Name','Course Type','Completion Date','Credit Hours','Tags'];
+				$colNames =['Course Name','Course Type','Completion Date','Credit Hours'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
@@ -83,6 +70,7 @@ $filter_content = removeWhitespace($filter_content);
 	var createdDate = '';
   var endDate     = '';
   var fv= 0;
+  var titleColumn = '<?php echo $title_key; ?>';
 	var table = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
        	"dom": '<"row no-gutters"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-2"l><"col-sm-7 "p">>',
@@ -115,7 +103,8 @@ $filter_content = removeWhitespace($filter_content);
             	//d.classes = classes;
             	//d.tags    = tags;
             	//d.instructors = instructor;  
-            	//d.createdDate = createdDate;   
+            	//d.createdDate = createdDate;
+				  
                  
             }, 
         },
@@ -137,82 +126,74 @@ $filter_content = removeWhitespace($filter_content);
 
     },
      "drawCallback": function( settings ) {
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
-            $('.prv').addClass('disabled');
-              var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-              
-            $('.nxt').click(function () {
-               $('.custom-scroll').animate({
-                  scrollLeft: "+=200px"
-               }, "slow"); 
-               $('.prv').removeClass('disabled'); 
-                 var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-               else{
-                $('.nxt').removeClass('disabled');
-               }
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
-            $('.prv').click(function () {
-               $('.custom-scroll').animate({
-                  scrollLeft: "-=200px"
-               }, "slow");
-                 var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-               else{
-                $('.nxt').removeClass('disabled');
-               }
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
-         }
-    });
-	$('body').on('click', '.blank', function(){
-			$('.dataTables_filter input[type=search]').val('').keyup(); 
-			$(this).parent('label').removeClass('has-data');
-			table.draw();
-		});
+            dt_dropdown();
+           dt_scroll();
+			   $('[data-toggle="tooltip"]').tooltip() ; 
+         },
+		  "initComplete": function(settings, json) {
+			  $('#eng-overlay').css( 'display', 'none' );
+		
 
-  <?php
+    },
+    });
+	 $('#courseByPerson').on( 'processing.dt', function ( e, settings, processing ) {
+        $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
+    } ).dataTable();
+	
+
+<?php
   if($title_key > -1){
 ?>
 
-  $('#courseByPerson thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
-        var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search courses" class="form-control form-control-sm search-endorsement" value=""/>' );
+  $('#courseByPerson thead tr th:eq('+titleColumn+')').each( function (i) {
  
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
+         var title = $(this).text();
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search courses" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var titlesearch = this.value;
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
             }
-        } );
+}, 500));
+
+
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#searchclass').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(titleColumn).search('').draw();
+ });
+
     } );
+	
+	$(document).ready(function (){    
+    $('#searchclass, .search-dt span').on('click', function(e){
+       e.stopPropagation();    
+    });
+$('#searchclass').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
+});
   <?php
 }
   ?>
