@@ -190,7 +190,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
            
-            <a href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" class="text-body"><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
+            <a href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
           </p>
             <?php } ?>	
                 </div>
