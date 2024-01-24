@@ -69,6 +69,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'report-list' => 'report_list',
 			'engagifii-profile' => 'engagifii_profile',
 			'engagifii-profile-edit' => 'engagifii_profile_edit',
+			'engagifii-myTranscript' => 'engagifii_myTranscript',
+			'engagifii-myEvents' => 'engagifii_myEvents',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -88,6 +90,16 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/dashboard/engagifii-profile_edit.php';
 		return ob_get_clean();
 	}		
+	public function engagifii_myTranscript(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/my-transcript.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_myEvents(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/events.php';
+		return ob_get_clean();
+	}	
 	public function public_officials(){
 		ob_start();
 		include $this->basePath.'includes/public/views/public_official/public_officials.php';

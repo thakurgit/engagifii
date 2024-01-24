@@ -109,7 +109,13 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
-<?php echo do_shortcode('[dashboard_nav]'); ?>
+<div class="container-fluid mb-4">
+	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
+    	<a href="<?php echo $site_url;?>/engagifii-profile" class="py-3 mx-4">My Profile</a>
+        <a href="<?php echo $site_url;?>/engagifii-profile/my-transcript" class="py-3 mx-4 active">My Transcript</a>
+        <a href="<?php echo $site_url;?>/engagifii-profile/events" class="py-3 mx-4">Events</a>
+    </div>
+</div>
 <?php 
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
@@ -152,123 +158,125 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   <!-- Header -->
 
   
-  <div class="container-fluid  mb-4 ">
-  <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
-    	<div class="d-flex">
-        	<div class="flex-shrink-0 position-relative text-center">
-            	<?php if($peopleDATA->people->isStarredMember==true) { ?>
-            	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
-                <?php } ?>
-  	<div class="overflow-hidden rounded-circle mb-2 bg-white p-1 shadow-sm " style="width:120px;height:120px">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
-    </div>
-    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm" style="z-index: 1;">
-                Edit profile
-              </a>
-  </div>
-  <div class="flex-grow-1 ml-3 pt-3">
-  	<h4 class=""><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
-    <div class="d-flex">
-    	<?php if($peopleDATA->people->pid) { ?>
-        <span class="mr-4 bg-white rounded py-1 px-2"><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></span>
-    <?php } 
-	$status = 'Inactive';
-			$statusColor = 'red';
-			 if($peopleDATA->people->isActive==true) {
-				$status = 'Active'; 
-				$statusColor = 'green';
-			  ?>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
-              <?php } 
-			  $dp = json_decode($peopleDATA->tabs[2]->groupFields[2]->fields[0]->selectedValue, true);
-			  $department =$dp[0]['positionHistory'][0]['departmentName'];
-			  $position =$dp[0]['positionHistory'][0]['positionName'];
-			  ?>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Department: </strong><?php echo $department; ?></span>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Position: </strong><?php echo $position; ?></span>
-  </div>
-        </div>
-        </div>
-  </div>
-  </div>
   <!-- Header -->
   <div class="container-fluid">
   <div class="accordion" id="accordionExample">
   <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
+    <div class="card-header p-0" id="headingTwo">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         Contact Information
+        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapseTwo">
+          AWARDS
         </button>
       </h2>
     </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+    <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        	<div class="row">
-            	<div class="col-12 ">
-            <?php  
-		 foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
-     if($value->controlTypeId==9){ 
-	 $address = json_decode($value->selectedValue,true);
-	 ?>
- <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['locationName'].'<br>'.  $address['address'].', '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];?>         
-     <?php  } 
- }
-?><hr class="my-4">
+                <strong>Certification Statistics</strong>
+                <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
+                <?php 
+   	$tabs = ['Registered','In Progress','Not Started','Earned','Awarded'];
+	$tabCount=array_fill(0, count($tabs), 0);
+	$tabCount[array_search('Registered', $tabs)] = count($awardData->result);
+	foreach ($awardData->result as $award){
+		switch ($award->status) {
+        case 5:
+            $tabCount[array_search('Awarded', $tabs)]++;
+            break;
+		case 1:
+            $tabCount[array_search('Not Started', $tabs)]++;
+            break;
+		case 2:
+            $tabCount[array_search('In Progress', $tabs)]++;
+            break;
+		case 4:
+            $tabCount[array_search('Earned', $tabs)]++;
+            break;
+		}
+	}
 	
-                </div>
-                <div class="col-md-4">
-                <?php if($peopleDATA->people->primaryEmail->value){ ?>
-          <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
-           
-            <a href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" class="text-body"><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
-          </p>
-            <?php } ?>	
-                </div>
-                
-                	<?php if($peopleDATA->people->primaryPhoneNumber->value){ ?>
-            <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
-     if($value->controlTypeId==11){ ?>
-             <div class="col-md-4"> 
-            <strong><?php echo $value->name;?>:</strong><br>
-            <a href="tel:<?php echo $value->selectedValue;?>"><?php echo $value->selectedValue;?></a> </div>
-   <?php  } 
- } }
-?>
-               
-                
-                
-            </div>
 
-<!-- / Content -->
+//for($i = 0; $i < $length; $i++){ 
+$tabNo=0;
+foreach($tabs as $tab){?>
+<li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
+                        <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+                    </li>	 
+<?php $tabNo++; } ?>
+                   
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="tab-1<?php //echo $tabNo; ?>" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+  	<div class="accordion award-list" id="awrad-accordion">
+    <?php $i=0; $status=''; $class=''; foreach ($awardData->result as $award){
+		if($award->status==1){
+			$status = '<small class="text-danger"><i class="fa fa-times-circle mr-1"></i>Not started</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[2]));
+		} else if($award->status==5){
+			$status = '<small class="text-success"><i class="fa fa-check-circle mr-1"></i>Awarded on '.$award->grantedDateString.'</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[4]));
+		} else if($award->status==2){
+			$status = '<small class="text-warning"><i class="fa fa-clock mr-1"></i>In Progress ('.$award->certificationProgress.'%)</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[1]));
+		} else if($award->status==4){
+			$status = '<small class="text-success"><i class="fa fa-check-circle mr-1"></i>Earned</small>';
+			$class=preg_replace('/\s+/', '', strtolower($tabs[3]));
+		} 
+		 ?>
+		<div class="card mb-4 border rounded-sm " data-content="<?php echo $class; ?>">
+        	<div class="card-header position-relative p-0" id="headingTwo">
+        	<h2 class="mb-0">
+            	<button class="btn btn-link d-flex w-100 pr-5 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+            </h2>
+            </div>
+            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#awrad-accordion">
+      <div class="card-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+        </div>
+	<?php $i++; } ?>
+   
+</div>
+  </div>
+  
+</div>
       </div>
     </div>
   </div>
   <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
+    <div class="card-header p-0" id="headingTwo">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="">
-         Organization
+        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseTwo">
+          Credit Earned
         </button>
       </h2>
     </div>
-
-    <div id="collapse2" class="collapse" aria-labelledby="" data-parent="#accordionExample">
+    <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        	<div class="row">
-            	<div class="col-12">
-<p class="mb-4">
-<span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
-                </p>
-         </div>    
-            </div>
-
-<!-- / Content -->
+      <?php echo do_shortcode('[courses-list-ByPerson]'); ?>
       </div>
     </div>
   </div>
 </div>
 </div>
+<script>
+$('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+ var activeTab = $(e.target).attr('data-tab');
+ $('#awrad-accordion > .card') .each(function(){
+	if($(this).attr('data-content')==activeTab){
+		$(this).removeClass('d-none');
+	}else{
+		$(this).addClass('d-none');
+	}
+	
+ });
+ if($(e.target).attr('data-tab')=='registered'){
+	$('#awrad-accordion > .card').removeClass('d-none'); 
+ }
+});
 
+</script>
 <?php } ?>

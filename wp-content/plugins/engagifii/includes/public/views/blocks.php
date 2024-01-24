@@ -70,3 +70,18 @@ function dd_header ($title, $search='') {
 }
 
 
+function dashboard_nav() {	
+$site_url = site_url();
+    $html ='<div class="container-fluid mb-4">
+	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
+    	<a href="'.$site_url.'/engagifii-profile" class="py-3 mx-4 active">My Profile</a>
+        <a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 mx-4">My Transcript</a>
+        <a href="'.$site_url.'/engagifii-profile/events" class="py-3 mx-4">Events</a>
+    </div>
+</div>';
+
+    return $html;
+
+}
+add_shortcode( 'dashboard_nav', 'dashboard_nav' );
+
