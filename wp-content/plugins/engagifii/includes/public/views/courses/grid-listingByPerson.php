@@ -200,7 +200,7 @@ $filter_course = removeWhitespace($filter_course);
   if($title_key > -1){
 ?>
 
-  $('#courseByPerson thead tr th:eq('+titleColumn+')').each( function (i) {
+  $('#courseByPerson1 thead tr th:eq('+titleColumn+')').each( function (i) {
  
          var title = $(this).text();
         $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchcourses" placeholder="Search courses" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
@@ -254,7 +254,7 @@ $('#searchcourses').on("keydown", function(event) {
   ?>
 
 
-	$('div.flt-btn-course').html('<?php echo $filter_course; ?>');
+	//$('div.flt-btn-course').html('<?php //echo $filter_course; ?>');
 
     
     $('.flt-btn-course .filter-icon').click(function(e){
