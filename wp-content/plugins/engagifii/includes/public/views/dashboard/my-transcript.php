@@ -124,49 +124,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
         <a href="<?php echo $site_url;?>/engagifii-profile/events" class="py-3 mx-4">Events</a>
     </div>
 </div>
-<?php 
-	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
-	//$pJSON = file_get_contents($peopleurl);
-	// $peopleDATA   = json_decode($pJSON);
-	//print_r($peopleDATA);
-	$infoseq='';
-	$infotabId = '';
-	$groupseq = '';
-	$groupId = '';
-	foreach ($peopleDATA->tabs as $key => $value) {
-     if($value->sequence==1){
-		 $infoseq = $key;
-		 $infotabId = $value->id;
-     }
- }
- 	foreach ($peopleDATA->tabs[$infoseq]->groupFields as $key => $value) {
-     if($value->sequence==1){
-		 $groupseq = $key;
-		 $groupId = $value->id;
-     }
- }
-	
-
-	/*$addresstabId = $peopleDATA->tabs[1]->id;
-	$addresstabGroupId = $peopleDATA->tabs[1]->groupFields[0]->id;
-	if($peopleDATA->people->personaTypeId==2){
-		$addressTitle = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[4]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->id;
-	}else if($peopleDATA->people->personaTypeId==4) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[2]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[2]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[2]->id;
-	}else if($peopleDATA->people->personaTypeId==3) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[1]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
-	}*/
-  ?>
-  <!-- Header -->
-
-  
-  <!-- Header -->
   <div class="container-fluid">
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
