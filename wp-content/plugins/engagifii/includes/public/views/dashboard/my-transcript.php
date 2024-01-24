@@ -80,7 +80,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 ?>
  <!--<link href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css" rel="stylesheet" >-->
    <style>
-.accordion .card-header button::after {
+/*.accordion .card-header button::after {
 	position: absolute;
 	content: '';
 	background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
@@ -93,7 +93,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 }
 .accordion .card-header button:not(.collapsed)::after {
 	transform: translateY(-50%) rotate(180deg);
-}
+}*/
 .transcaript-tabs button.nav-link {
 	border-bottom: 4px solid transparent !important;
 	padding-left: 0 !important;
@@ -202,7 +202,7 @@ z-index:-1;
 		<div class="card mb-4 border rounded-sm " data-content="<?php echo $class; ?>">
         	<div class="card-header position-relative p-0" id="headingTwo">
         	<h2 class="mb-0">
-            	<button class="btn btn-link d-flex w-100 pr-5 text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+            	<button class="btn btn-link d-flex w-100  text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
         <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1"><span class="mr-1"><svg width="10" height="12" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
@@ -211,11 +211,11 @@ z-index:-1;
       </button>
             </h2>
             </div>
-            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show1'; }?>" data-parent="#awrad-accordion">
+           <!-- <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show1'; }?>" data-parent="#awrad-accordion">
       <div class="card-body">
        
       </div>
-    </div>
+    </div>-->
         </div>
 	<?php $i++; } ?>
    
