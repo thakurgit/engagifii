@@ -177,14 +177,14 @@ foreach($tabs as $tab){?>
 		<div class="card mb-4 border rounded-sm " data-content="<?php echo $class; ?>">
         	<div class="card-header position-relative p-0" id="headingTwo">
         	<h2 class="mb-0">
-            	<button class="btn btn-link d-flex w-100 pr-5 text-left  <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+            	<button class="btn btn-link d-flex w-100 pr-5 text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
         <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
       </button>
             </h2>
             </div>
-            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-parent="#awrad-accordion">
+            <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show1'; }?>" data-parent="#awrad-accordion">
       <div class="card-body">
-        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+       
       </div>
     </div>
         </div>
