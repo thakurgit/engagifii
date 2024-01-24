@@ -127,7 +127,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   <div class="tab-pane p-3 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
   	<div class="d-flex justify-content-between align-items-center mb-4">
   	<h6>Certification Statistics</h6>
-    	<a href="" class="btn btn-primary"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    	<a href="" class="btn btn-primary btn-sm"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
