@@ -140,21 +140,21 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
                   <label for="">Last Name</label>
                     <input type="text" value="<?php echo $peopleDATA->people->lastName; ?>" class="form-control lastName">
                   </div>
-                  <div class="form-group col-12">
+                  <!-- <div class="form-group col-12">
                   	<div class="flex">
                     	<span class="mr-3">Tag(s):</span>
-                        <span class="tags_all">
-     				<?php if($tags){
+                        <span class="tags_all"> -->
+     				<?php /*if($tags){
 						foreach ($tags as $key => $value) {
 							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'.$value->tagName.'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
 					 }		
 					} else {
 						echo '<em>No Tags found!</em>';
-					} ?>
-                    </span>
+					}*/ ?> 
+                    <!-- </span>
                   	</div>
                     <input type="text" value="" class="form-control tag_add" placeholder="Add Tags">
-                  </div>
+                  </div> -->
                <div class="form-group col-12">
                 	        <button type="submit" class="btn btn-primary">Update Profile</button>
 
