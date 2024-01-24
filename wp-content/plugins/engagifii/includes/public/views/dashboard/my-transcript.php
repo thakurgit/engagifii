@@ -103,6 +103,14 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 	border-color: #2568EF;	
 	color:#2568EF;
 }
+.transcaript-tabs button.nav-link {
+	border-bottom: 4px solid transparent !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.transcaript-tabs button.nav-link.active, .transcaript-tabs button.nav-link:hover {
+	border-bottom:  4px solid #2568ef !important;
+}
   </style>
   <div class="d-flex justify-content-end px-3 mb-3">
     
@@ -160,52 +168,53 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   
   <!-- Header -->
   <div class="container-fluid">
-  <div class="accordion" id="accordionExample">
-  <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingTwo">
-      <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapseTwo">
-          AWARDS
-        </button>
-      </h2>
-    </div>
-    <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="card-body">
-                <strong>Certification Statistics</strong>
-                <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
-                <?php 
-   	$tabs = ['Registered','In Progress','Not Started','Earned','Awarded'];
-	$tabCount=array_fill(0, count($tabs), 0);
-	$tabCount[array_search('Registered', $tabs)] = count($awardData->result);
-	foreach ($awardData->result as $award){
-		switch ($award->status) {
-        case 5:
-            $tabCount[array_search('Awarded', $tabs)]++;
-            break;
-		case 1:
-            $tabCount[array_search('Not Started', $tabs)]++;
-            break;
-		case 2:
-            $tabCount[array_search('In Progress', $tabs)]++;
-            break;
-		case 4:
-            $tabCount[array_search('Earned', $tabs)]++;
-            break;
-		}
-	}
-	
+  <div class="border rounded">
+  	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Awards</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
+  </li>
+ 
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane p-3 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+  	<h6>Certification Statistics</h6>
+    <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
+    <?php 
+$tabs = ['Registered','In Progress','Not Started','Earned','Awarded'];
+$tabCount=array_fill(0, count($tabs), 0);
+$tabCount[array_search('Registered', $tabs)] = count($awardData->result);
+foreach ($awardData->result as $award){
+switch ($award->status) {
+case 5:
+$tabCount[array_search('Awarded', $tabs)]++;
+break;
+case 1:
+$tabCount[array_search('Not Started', $tabs)]++;
+break;
+case 2:
+$tabCount[array_search('In Progress', $tabs)]++;
+break;
+case 4:
+$tabCount[array_search('Earned', $tabs)]++;
+break;
+}
+}
+
 
 //for($i = 0; $i < $length; $i++){ 
 $tabNo=0;
 foreach($tabs as $tab){?>
 <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-                        <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
-                    </li>	 
+            <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+        </li>	 
 <?php $tabNo++; } ?>
-                   
-                </ul>
+       
+    </ul>
 
-                <div class="tab-content" id="myTabContent">
+    <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="tab-1<?php //echo $tabNo; ?>" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
   	<div class="accordion award-list" id="awrad-accordion">
     <?php $i=0; $status=''; $class=''; foreach ($awardData->result as $award){
@@ -243,24 +252,13 @@ foreach($tabs as $tab){?>
   </div>
   
 </div>
-      </div>
-    </div>
   </div>
-  <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingTwo">
-      <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseTwo">
-          Credit Earned
-        </button>
-      </h2>
-    </div>
-    <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="card-body">
-      <?php echo do_shortcode('[courses-list-ByPerson]'); ?>
-      </div>
-    </div>
+  <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+  <?php echo do_shortcode('[courses-list-ByPerson]'); ?>
   </div>
 </div>
+
+  </div>
 </div>
 <script>
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
