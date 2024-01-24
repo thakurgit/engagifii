@@ -116,7 +116,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Awards</button>
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
   </li>
   <li class="nav-item" role="presentation">
     <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
@@ -126,7 +126,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane p-3 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
   	<div class="d-flex justify-content-between align-items-center mb-4">
-  	<h6>Certification Statistics</h6>
+  	<h6>Badge Statistics</h6>
     	<a href="" class="btn btn-primary btn-sm"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
