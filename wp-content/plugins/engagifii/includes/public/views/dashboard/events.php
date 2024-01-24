@@ -56,29 +56,13 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
 } else {
 ?>
-   <style>
-.dashboard-nav a {
-	border-bottom: 4px solid transparent;	
-	transition:0.3s all ease-in-out;
-	color:#333;
-}
-.dashboard-nav a:hover, .dashboard-nav a.active {
-	border-color: #2568EF;	
-	color:#2568EF;
-}
-  </style>
+   
   <div class="d-flex justify-content-end px-3 mb-3">
     
     <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
-<div class="container-fluid mb-4">
-	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
-    	<a href="<?php echo $site_url;?>/engagifii-profile" class="py-3 mx-4">My Profile</a>
-        <a href="<?php echo $site_url;?>/engagifii-profile/my-transcript" class="py-3 mx-4">My Transcript</a>
-        <a href="<?php echo $site_url;?>/engagifii-profile/events" class="py-3 mx-4 active">Events</a>
-    </div>
-</div>
+<?php echo do_shortcode('[dashboard_nav]'); ?>
 <?php echo do_shortcode('[event-list]'); 
 
  } ?>

@@ -5,6 +5,9 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
+global $post;
+    $post_slug = $post->post_name;
+echo $post_slug;
 $obj      =  new Engagifii_API();
 $site_url = site_url();
 $options = get_option('ebt_api_settings');
@@ -94,15 +97,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 .accordion .card-header button:not(.collapsed)::after {
 	transform: translateY(-50%) rotate(180deg);
 }
-.dashboard-nav a {
-	border-bottom: 4px solid transparent;	
-	transition:0.3s all ease-in-out;
-	color:#333;
-}
-.dashboard-nav a:hover, .dashboard-nav a.active {
-	border-color: #2568EF;	
-	color:#2568EF;
-}
 .transcaript-tabs button.nav-link {
 	border-bottom: 4px solid transparent !important;
 	padding-left: 0 !important;
@@ -117,13 +111,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
-<div class="container-fluid mb-4">
-	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
-    	<a href="<?php echo $site_url;?>/engagifii-profile" class="py-3 mx-4">My Profile</a>
-        <a href="<?php echo $site_url;?>/engagifii-profile/my-transcript" class="py-3 mx-4 active">My Transcript</a>
-        <a href="<?php echo $site_url;?>/engagifii-profile/events" class="py-3 mx-4">Events</a>
-    </div>
-</div>
+<?php echo do_shortcode('[dashboard_nav]'); ?>
   <div class="container-fluid">
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">

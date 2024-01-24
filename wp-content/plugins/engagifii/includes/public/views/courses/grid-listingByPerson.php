@@ -166,10 +166,10 @@ $filter_course = removeWhitespace($filter_course);
             "type": "POST",
             "data": function(d) {  
             	d.action='coursesByPerson'; 
-            	//d.classes = classes;
-            	//d.tags    = tags;
-            	//d.instructors = instructor;  
-            	//d.createdDate = createdDate;
+            	d.classes = classes;
+            	d.tags    = tags;
+            	d.instructors = instructor;  
+            	d.createdDate = createdDate;
 				d.profileId = profileId;
 				  
                  
@@ -262,6 +262,11 @@ $('#searchcourses').on("keydown", function(event) {
         $(this).siblings('.filter-border').show();
        $(this).siblings('.filter-border').find('.filter-area').toggleClass('d-none');
         $('#isApplyACtive').val(1);
+		jQuery(".filter-area .list-group").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
     });
 
    $('.flt-btn-course .heading-title').click(function(){

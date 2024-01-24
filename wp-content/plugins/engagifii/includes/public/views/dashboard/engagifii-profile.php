@@ -5,6 +5,7 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
+ 
 $obj      =  new Engagifii_API();
 $site_url = site_url();
 $options = get_option('ebt_api_settings');
@@ -69,15 +70,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 }
 .accordion .card-header button:not(.collapsed)::after {
 	transform: translateY(-50%) rotate(180deg);
-}
-.dashboard-nav a {
-	border-bottom: 4px solid transparent;	
-	transition:0.3s all ease-in-out;
-	color:#333;
-}
-.dashboard-nav a:hover, .dashboard-nav a.active {
-	border-color: #2568EF;	
-	color:#2568EF;
 }
   </style>
   <div class="d-flex justify-content-end px-3 mb-3">

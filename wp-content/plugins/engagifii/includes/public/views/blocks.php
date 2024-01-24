@@ -72,11 +72,25 @@ function dd_header ($title, $search='') {
 
 function dashboard_nav() {	
 $site_url = site_url();
-    $html ='<div class="container-fluid mb-4">
+global $post;
+    $post_slug = $post->post_name;
+		$active = 'active';
+		 $html='<style>
+.dashboard-nav a {
+	border-bottom: 4px solid transparent;	
+	transition:0.3s all ease-in-out;
+	color:#333;
+}
+.dashboard-nav a:hover, .dashboard-nav a.active {
+	border-color: #2568EF;	
+	color:#2568EF;
+}
+  </style>';
+    $html .= '<div class="container-fluid mb-4">
 	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
-    	<a href="'.$site_url.'/engagifii-profile" class="py-3 mx-4 active">My Profile</a>
-        <a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 mx-4">My Transcript</a>
-        <a href="'.$site_url.'/engagifii-profile/events" class="py-3 mx-4">Events</a>
+    	<a href="'.$site_url.'/engagifii-profile" class="py-3 mx-4 ' . ($post_slug == 'engagifii-profile' ? $active : '') . '">My Profile</a>
+        <a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 mx-4 ' . ($post_slug == 'my-transcript' ? $active : '') . '">My Transcript</a>
+        <a href="'.$site_url.'/engagifii-profile/events" class="py-3 mx-4 ' . ($post_slug == 'events' ? $active : '') . '">Events</a>
     </div>
 </div>';
 
