@@ -49,10 +49,10 @@
 
 </div>
 <?php
-/*function removeWhitespace($buffer)
+function removeWhitespace($buffer)
 {
     return preg_replace('/\s+/', ' ', $buffer);
-}*/
+}
 
 ob_start();
 ?>
