@@ -5,9 +5,6 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
-global $post;
-    $post_slug = $post->post_name;
-echo $post_slug;
 $obj      =  new Engagifii_API();
 $site_url = site_url();
 $options = get_option('ebt_api_settings');
