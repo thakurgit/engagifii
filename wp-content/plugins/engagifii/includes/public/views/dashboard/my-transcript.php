@@ -126,6 +126,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
     <?php 
 $tabs = ['Registered','In Progress','Not Started','Earned','Awarded'];
+$tooltip=['This count indicates the total number of certifications a person is registered in.','This count indicates that out of all certifications a person is registered in, how many certifications they have started to earn credits for, by registering in the course(s) associated with the certifications.','This count indicates that out of all certifications a person is registered in, how many certifications they have not yet started because they are not registered in course(s) associated with the certifications.','This count indicates the number of certifications for which a person has met the certification criteria for but the certification is not awarded yet. An admin needs to manually award the certifications in such cases.','This count indicates the number of certifications that have been awarded to a person.'];
 $tabCount=array_fill(0, count($tabs), 0);
 $tabCount[array_search('Registered', $tabs)] = count($awardData->result);
 foreach ($awardData->result as $award){
@@ -150,7 +151,7 @@ break;
 $tabNo=0;
 foreach($tabs as $tab){?>
 <li class="nav-item mb-3 mr-3 rounded-1" role="presentation">
-            <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="Tooltip on top"><i class="far fa-info-circle"></i></span> </small></a>
+            <a data-tab="<?php echo preg_replace('/\s+/', '', strtolower($tab));?>" class="border nav-link text-left py-3 <?php if($tabNo==0){ echo 'active';} ?>" data-toggle="pill" data-target="#tab-1<?php //echo $tabNo; ?>" href="" role="tab" aria-controls="home" aria-selected="true"><span class="d-block h2 mb-0"><?php echo $tabCount[$tabNo]; ?></span><small><?php echo $tab; ?> <span class="ms-1"  data-toggle="tooltip" data-placement="top" data-title="<?php echo $tooltip[$tabNo]; ?>"><i class="far fa-info-circle"></i></span> </small></a>
         </li>	 
 <?php $tabNo++; } ?>
        
@@ -203,6 +204,10 @@ foreach($tabs as $tab){?>
   </div>
 </div>
 <script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
  var activeTab = $(e.target).attr('data-tab');
  $('#awrad-accordion > .card') .each(function(){
