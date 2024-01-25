@@ -102,9 +102,9 @@ ob_start();
 			</div>
             </div>
 		</div>
-		<div class="col-sm-12 height-4">
+		<div class="">
       <input type="hidden" id="isApplyACtive" value="0">
-			<div class="filter-list border-bottom">
+			<div class="filter-list border-bottom px-2">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Name <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none">
 					<ul class="list-group m-0">
@@ -112,7 +112,7 @@ ob_start();
 					</ul>
 				</div>
 			</div>
-			<div class="filter-list border-bottom">
+			<div class="filter-list border-bottom px-2">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructor <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none"><ul class="list-group m-0">
 					<?php
@@ -123,14 +123,14 @@ ob_start();
 					?>	
 				</ul></div>
 			</div>
-			<div class="filter-list border-bottom">
+			<div class="filter-list border-bottom px-2">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Between <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none position-relative">
 					<input type="text" name="createdbetween"  class="form-control input-xs small-css" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
                       <span class="position-absolute cleardate mt-1 mr-1 text-secondary" style="right:0; top:0; cursor:pointer"><i class="fa fa-times"></i></span>
 				</div>
 			</div>
-			<div class="filter-list border-bottom">
+			<div class="filter-list border-bottom px-2">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none"><ul class="list-group m-0">
 					<?php
@@ -161,6 +161,7 @@ $filter_content = removeWhitespace($filter_content);
 	var tags       = ''; 
 	var createdDate = '';
   var endDate     = '';
+  var titleColumn = '<?php echo $title_key; ?>';
   var fv= 0;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
@@ -275,23 +276,58 @@ $filter_content = removeWhitespace($filter_content);
 			table.draw();
 		});
 
-  <?php
+<?php
   if($title_key > -1){
 ?>
 
-  $('#ebtmaintable thead tr th:eq(<?php echo $title_key; ?>)').each( function (i) {
-        var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search courses" class="form-control form-control-sm search-endorsement" value=""/>' );
- 
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
+  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+         var title = $(this).text();
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchcourse" placeholder="Search courses" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
+
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var titlesearch = this.value;
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
             }
-        } );
+}, 500));
+
+
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#searchcourse').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(titleColumn).search('').draw();
+ });
+
     } );
+	
+	$(document).ready(function (){    
+    $('#searchcourse, .search-dt span').on('click', function(e){
+       e.stopPropagation();    
+    });
+$('#searchcourse').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
+});
   <?php
 }
   ?>
@@ -308,9 +344,17 @@ $filter_content = removeWhitespace($filter_content);
         $('.filter-border').show();
         $('.filter-area').toggleClass('d-none');
         $('#isApplyACtive').val(1);
-    })
+		jQuery(".filter-area .list-group").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
+    });
 
-    $('.heading-title').click(function(){$(this).next('.content-area').toggleClass('d-none')});
+    $('.heading-title').click(function(){
+		$(this).next('.content-area').toggleClass('d-none');
+		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
+	});
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',
@@ -391,6 +435,9 @@ $('.clear-all').click(function(){
  });  
 
     $('.filter-list input[type=checkbox]').change(function(){
+		if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
           countFilterData();
       })
 
@@ -415,7 +462,8 @@ $('.clear-all').click(function(){
           },
           success: function(response) {       
             var element  = document.getElementById("countFilterResult");
-            console.log(response);
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled');
             if(element)
             {
               element.innerHTML = " ("+response.api_response +")";

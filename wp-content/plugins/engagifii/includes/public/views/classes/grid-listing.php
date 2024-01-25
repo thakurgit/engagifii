@@ -679,7 +679,7 @@ $('#searchclass').on("keydown", function(event) {
 					theme:"minimal-dark",
 		 			scrollbarPosition:"outside"
 		 			});
-    })
+    });
 
     $('.heading-title').click(function(){
 		$(this).next('.content-area').toggleClass('d-none');
