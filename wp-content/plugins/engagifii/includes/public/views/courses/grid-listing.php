@@ -405,13 +405,20 @@ $('.clear-all').click(function(){
 
      
       $(document).on('click', function (e) {
-      var container = $(".filter-border");
-      // If the target of the click isn't the container
-      if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-        container.hide();
-        $('.filter-area').addClass('d-none');
-      }
-      });
+ $('.filter-area').addClass('d-none');
+});
+$(document).on('click', '.filter-area', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.prev', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', 'th.next', function (e) {
+  e.stopPropagation();
+});
+$(document).on('click', '.daterangepicker ', function (e) {
+  e.stopPropagation();
+});
 	  
 	  
 	  

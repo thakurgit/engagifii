@@ -1338,14 +1338,77 @@ wp_die();
 
 
     public function courseCountFilterData(){
-
+		
         $postedData = $this->_coursePostCountData();
         $dataResponse = $this->submitApiRequest("Public/Course/FilteredRecordCount", $postedData, "POST", 'courses');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
         wp_die();
     }
+    public function _coursePostCountData()
+    {
 
+        $searchValue = '';
+        if (strlen($_POST['search']['value']) > 1) {
+            $searchValue = $_POST['search']['value'];
+        }
+
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+       
+        
+
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+
+        if ($columnsData["name"] == "name") {
+            $sortBy = "name";
+        }else if ($columnsData["instructor"] == "instructor") {
+            $sortBy = "instructor";
+        }else if ($columnsData["class"] == "class") {
+            $sortBy = "class";
+        }else {
+            $sortBy = "";
+        }
+
+
+        $postData = array();
+        $postData['title'] = $searchValue;            
+        $postData['searchText'] = $searchText;      
+        $postData['lastActionStartDate'] = $datepickerstart;
+        $postData['lastActionEndDate'] = $datepickerend;
+        $postData['sortBy'] = $sortBy;
+        $postData['pageNumber'] = $startPageNum;
+        $postData['pageSize'] = $_POST['length'];
+
+        if(!empty($_POST['classes']))
+        {
+            $postData['classes'] = $_POST['classes'];
+        }
+        if(!empty($_POST['instructors']))
+        {
+            $postData['instructors'] = $_POST['instructors'];
+        }
+        if(!empty($_POST['tags']))
+        {
+            $postData['tags'] = $_POST['tags'];
+        }
+
+        if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+
+        $getCurrentdate = date("Y-m-d");
+        $postData['selectedDate'] = $getCurrentdate;
+        return $postData;
+    }
+	
     public function classCountFilterData(){
         $postedData = $this->_classPostCountData();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
@@ -3920,69 +3983,6 @@ $li=1;
         return $postData;
     }
 
-    public function _coursePostCountData()
-    {
-
-        $searchValue = '';
-        if (strlen($_POST['search']['value']) > 1) {
-            $searchValue = $_POST['search']['value'];
-        }
-
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-       
-        
-
-        $columnsData = [];
-        foreach ($_POST['columns'] as $key => $value) {
-            if ($value['orderable'] == "true") {
-                $columnsData[$value['data']] = $value['data'];
-            }
-        }
-
-        if ($columnsData["name"] == "name") {
-            $sortBy = "name";
-        }else if ($columnsData["instructor"] == "instructor") {
-            $sortBy = "instructor";
-        }else if ($columnsData["class"] == "class") {
-            $sortBy = "class";
-        }else {
-            $sortBy = "";
-        }
-
-
-        $postData = array();
-        $postData['title'] = $searchValue;            
-        $postData['searchText'] = $searchText;      
-        $postData['lastActionStartDate'] = $datepickerstart;
-        $postData['lastActionEndDate'] = $datepickerend;
-        $postData['sortBy'] = $sortBy;
-        $postData['pageNumber'] = $startPageNum;
-        $postData['pageSize'] = $_POST['length'];
-
-        if(!empty($_POST['classes']))
-        {
-            $postData['classes'] = $_POST['classes'];
-        }
-        if(!empty($_POST['instructors']))
-        {
-            $postData['instructors'] = $_POST['instructors'];
-        }
-        if(!empty($_POST['tags']))
-        {
-            $postData['tags'] = $_POST['tags'];
-        }
-
-        if(!empty($_POST['createdDate']))
-        {
-            $dateRange = explode("-", $_POST['createdDate']);
-            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
-        }
-
-        $getCurrentdate = date("Y-m-d");
-        $postData['selectedDate'] = $getCurrentdate;
-        return $postData;
-    }
 
     public function _classPostCountData(){
         $year = $_POST['year'];
