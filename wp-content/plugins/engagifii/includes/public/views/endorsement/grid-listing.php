@@ -293,8 +293,8 @@ var table = $('#ebtmaintable').DataTable( {
 <?php
   if($title_key > -1){
 ?>
-
-  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+dt_titleSearch('Search endorsement');
+  /*$('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
     $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){
@@ -353,7 +353,7 @@ $('#searchclass').on("keydown", function(event) {
        return false;   
   }  
 });
-});
+});*/
   <?php
 }
   ?>
