@@ -233,14 +233,16 @@ foreach ($seqColumns as $key => $value) {
 				   },
 				   
 					"initComplete": function(settings, json) {
-					   tableEvents();
+					   //tableEvents();
+					   dt_titleSearch('Search Public official..');
 			  },
 			  });
    }
 <?php
   if($title_key > -1){
 ?>
-  function tableEvents(){
+/*  function tableEvents(){
+	  
   $('.dataTables_wrapper table').find('thead tr th:eq('+titleColumn+')').each( function (i) { 
          var title = $(this).text();
         $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search Public official.." class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
@@ -284,7 +286,7 @@ $('#searchclass').on("keydown", function(event) {
        return false;   
   }  
 });
-  }
+  }*/
 	
   <?php
 }
