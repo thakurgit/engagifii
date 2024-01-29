@@ -182,6 +182,7 @@ $filter_course = removeWhitespace($filter_course);
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
+			dt_filterActivate();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
          },
@@ -257,7 +258,7 @@ $('#searchcourses').on("keydown", function(event) {
 	//$('div.flt-btn-course').html('<?php //echo $filter_course; ?>');
 
     
-    $('.flt-btn-course .filter-icon').click(function(e){
+   /* $('.flt-btn-course .filter-icon').click(function(e){
         e.stopPropagation();
         $(this).siblings('.filter-border').show();
        $(this).siblings('.filter-border').find('.filter-area').toggleClass('d-none');
@@ -272,7 +273,7 @@ $('#searchcourses').on("keydown", function(event) {
    $('.flt-btn-course .heading-title').click(function(){
 		$(this).next('.content-area').toggleClass('d-none');
 		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
-	});
+	});*/
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',

@@ -558,6 +558,7 @@ $filter_content = removeWhitespace($filter_content);
          "drawCallback": function( settings ) {
 			 
 			 dt_dropdown();
+			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -669,7 +670,7 @@ $('#searchclass').on("keydown", function(event) {
 
 
 
-    $('.filter-icon').click(function(e){
+    /* $('.filter-icon').click(function(e){
         e.stopPropagation();
         $('.filter-border').show();
         $('.filter-area').toggleClass('d-none');
@@ -681,10 +682,10 @@ $('#searchclass').on("keydown", function(event) {
 		 			});
     });
 
-    $('.heading-title').click(function(){
+   $('.heading-title').click(function(){
 		$(this).next('.content-area').toggleClass('d-none');
 		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
-	});
+	});*/
 
   
  $( document ).ready(function() {

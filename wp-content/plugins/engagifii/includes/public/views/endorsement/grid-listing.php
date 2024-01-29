@@ -290,6 +290,7 @@ var table = $('#ebtmaintable').DataTable( {
     },
     "drawCallback": function( settings ) {
 			 dt_dropdown();
+			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
             dt_scroll();
 			   <?php } ?>
@@ -395,7 +396,7 @@ $( '.cleardate' ).click(function() {
     createdDate = '';
     countFilterData();
 });
-    $('.filter-icon').click(function(e){
+   /* $('.filter-icon').click(function(e){
         e.stopPropagation();
         $('.filter-border').show();
         $('.filter-area').toggleClass('d-none');
@@ -411,7 +412,7 @@ $( '.cleardate' ).click(function() {
     $('.heading-title').click(function(){
 		$(this).next('.content-area').toggleClass('d-none');
 		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
-	});
+	});*/
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',

@@ -1105,7 +1105,7 @@ function dateChanged(ev) {
         $(".filter-border").show();
       }
      e.stopPropagation();
-    });*/
+    });
 	 $('.filter-icon').click(function(e){
         e.stopPropagation();
         $('.filter-border').show();
@@ -1117,7 +1117,7 @@ function dateChanged(ev) {
 		 			});
 		
     });
- 
+ */
 
     /*$(document).on('click', function (e) {
       var container = $(".filter-border");
@@ -1379,6 +1379,7 @@ var table = $('#ebtmaintable').DataTable( {
          
 		 "drawCallback": function( settings ) {
 			 dt_dropdown();
+			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>

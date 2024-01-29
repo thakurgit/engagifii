@@ -1,5 +1,5 @@
 
-$(document).ready(function(){
+/*$(document).ready(function(){
     //$( "#ebtmaintable" ).wrap( "<div class='engaifii-scroller'></div>" );
       // Add class name & Name Attribute in top search section
     
@@ -135,7 +135,7 @@ $(document).ready(function(){
 
    
 
-});
+});*/
 
     function __addExtraDiv(title)
     {
@@ -260,9 +260,22 @@ function dt_scroll(){
 				});  
 			   }	
 }
-$(document).ready(function(){
+function dt_filterActivate(){
     $('body').on('click', '.heading-title' ,function(){
         $(this).parent().toggleClass('active');
 		 $(this).parent().siblings('.filter-list').removeClass('active');
+		$(this).next('.content-area').toggleClass('d-none');
+		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
     });
-});
+	$('.filter-icon').on('click').click(function(e){
+        e.stopPropagation();
+        $('.filter-border').show();
+        $('.filter-area').toggleClass('d-none');
+		jQuery(".filter-area .list-group, .list-box").mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:"minimal-dark",
+		 			scrollbarPosition:"outside"
+		 			});
+		
+    });
+}
