@@ -1379,11 +1379,14 @@ var table = $('#ebtmaintable').DataTable( {
          
 		 "drawCallback": function( settings ) {
 			 dt_dropdown();
-			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
-         }
+         },
+		  "initComplete": function(settings, json) {
+			  $('#eng-overlay').css( 'display', 'none' );
+			  dt_filterActivate();
+    },
 		 
       });
    

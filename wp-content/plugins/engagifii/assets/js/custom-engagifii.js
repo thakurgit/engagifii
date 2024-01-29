@@ -279,3 +279,70 @@ function dt_filterActivate(){
 		
     });
 }
+function dt_titleSearch(placeholder = 'Search..'){
+
+$('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+$('.list-search-btn').click(function(e){
+	var ttitle= $('.list-search').val();
+	if(ttitle!=''){
+		$('#list').trigger('click');	
+		table.column(titleColumn).search(ttitle).draw();
+		 $( '#searchTitle' ).val($('.list-search').val());
+		$('.clear-search').show();
+	} else {
+		alert("search field can't be empty");	
+	}
+	e.stopPropagation();
+ });
+$('.list-search').on("keydown", function(event) {
+  if(event.which == 13){
+	$('.list-search-btn').trigger('click');  
+  }  
+});
+ 
+         var title = $(this).text();
+        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+  $( 'input', this ).keyup(delay(function (e) {
+	  var titlesearch = this.value;
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
+            }
+}, 500));
+
+
+ $( 'input', this ).keyup(function(e){
+	if(this.value.length!=0){
+				$('.clear-search').show();
+			} else {
+				$('.clear-search').hide();
+			} 
+ });
+$('th .clear-search').click(function(e){
+	 $('#searchTitle').val('');
+	$('.clear-search').hide();
+	e.stopPropagation();
+	table.column(titleColumn).search('').draw();
+ });
+
+    } );	
+ $('#searchTitle, .search-dt span').on('click', function(e){
+       e.stopPropagation();    
+    });
+$('#searchTitle').on("keydown", function(event) {
+  if(event.which == 13){
+       return false;   
+  }  
+});
+
+}

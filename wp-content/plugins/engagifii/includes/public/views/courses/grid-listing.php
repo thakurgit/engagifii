@@ -203,73 +203,17 @@ $filter_content = removeWhitespace($filter_content);
              //$(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 "initComplete": function(settings, json) {
-        
-		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
-		 
-
-    },
      "drawCallback": function( settings ) {
-		 dt_filterActivate();
-            $('.dataTables_wrapper ').append('<span class="nxt position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-right"></i></span>');
-            $('.dataTables_wrapper ').prepend('<span class="prv position-absolute bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"><i class="far fa-angle-left"></i></span>');
-            $('.prv').addClass('disabled');
-              var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-              
-            $('.nxt').click(function () {
-               $('.custom-scroll').animate({
-                  scrollLeft: "+=200px"
-               }, "slow"); 
-               $('.prv').removeClass('disabled'); 
-                 var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-               else{
-                $('.nxt').removeClass('disabled');
-               }
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
-            $('.prv').click(function () {
-               $('.custom-scroll').animate({
-                  scrollLeft: "-=200px"
-               }, "slow");
-                 var divWidth = parseInt($('.custom-scroll').width());
-               var scrollwidth =  parseInt($('.custom-scroll').get(0).scrollWidth);
-               var leftwidth = parseInt($('.custom-scroll').scrollLeft());
-               
-               if(scrollwidth - divWidth - leftwidth == '24')
-               {
-                  $('.nxt').addClass('disabled');
-               }
-               else{
-                $('.nxt').removeClass('disabled');
-               }
-               if($('.custom-scroll').scrollLeft()==0){
-                  $('.prv').addClass('disabled');  
-               }
-            });  
-         }
+			 dt_dropdown();
+			 <?php if($dt_respnsive==''){ ?>
+           dt_scroll();
+			   <?php } ?>
+			   $('[data-toggle="tooltip"]').tooltip() ;
+         },
+		  "initComplete": function(settings, json) {
+			  $('#eng-overlay').css( 'display', 'none' );
+			  dt_filterActivate();
+    },
     });
 	$('body').on('click', '.blank', function(){
 			$('.dataTables_filter input[type=search]').val('').keyup(); 

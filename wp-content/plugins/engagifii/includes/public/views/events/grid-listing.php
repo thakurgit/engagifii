@@ -356,29 +356,25 @@ var table = $('#ebtmaintable').DataTable( {
             // $(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 "initComplete": function(settings, json) {
-        
-		$('#eng-overlay').css( 'display', 'none' );
-		 
-
-    },
      "drawCallback": function( settings ) {
 			 dt_dropdown();
-			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
 			   $('[data-toggle="tooltip"]').tooltip() ;
-         }
-		
+         },
+		  "initComplete": function(settings, json) {
+			  $('#eng-overlay').css( 'display', 'none' );
+			  dt_filterActivate();
+    },
     });
 
 
 <?php
   if($title_key > -1){
 ?>
-
-  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+dt_titleSearch('Search Events');
+ /* $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
     
 $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
@@ -411,12 +407,7 @@ $('.list-search').on("keydown", function(event) {
     }, ms || 0);
   };
 }
- /* $( 'input', this ).keyup(delay(function (e) {
-	  var titlesearch = this.value;
-            if ( table.column(i).search() !== titlesearch ) {
-				table.column(i).search('hotfix').draw();
-            }
-}, 500));*/
+
 $( 'input', this ).keyup(delay(function (e) {
 	  text = this.value;
             if ( text !== '' ) {
@@ -441,14 +432,7 @@ $('th .clear-search').click(function(e){
 	table.draw();
  });
 
-        /*$( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
-            }
-        } );*/
+        
     } );
 	$(document).ready(function (){    
     $('#searchclass').on('click', function(e){
@@ -459,7 +443,7 @@ $('#searchclass').on("keydown", function(event) {
        return false;   
   }  
 });
-});
+});*/
   <?php
 }
   ?>

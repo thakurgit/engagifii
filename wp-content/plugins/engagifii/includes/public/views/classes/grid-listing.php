@@ -558,7 +558,8 @@ $filter_content = removeWhitespace($filter_content);
          "drawCallback": function( settings ) {
 			 
 			 dt_dropdown();
-			 dt_filterActivate();
+			 
+			// dt_titleSearch();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -567,6 +568,7 @@ $filter_content = removeWhitespace($filter_content);
 		 
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
+			  dt_filterActivate();
 		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
 		 $('.dataTables_filter input').keyup(function(){
 			if($(this).val()==''){
@@ -590,8 +592,8 @@ $filter_content = removeWhitespace($filter_content);
 <?php
   if($title_key > -1){
 ?>
-
-  $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+dt_titleSearch('Search classes');
+ /* $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
 $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){
@@ -656,7 +658,7 @@ $('#searchclass').on("keydown", function(event) {
        return false;   
   }  
 });
-});
+});*/
   <?php
 }
   ?>

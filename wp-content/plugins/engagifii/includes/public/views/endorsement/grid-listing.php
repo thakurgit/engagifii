@@ -275,27 +275,17 @@ var table = $('#ebtmaintable').DataTable( {
              //$(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 "initComplete": function(settings, json) {
-        
-		 $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
-		 
-
-    },
     "drawCallback": function( settings ) {
 			 dt_dropdown();
-			 dt_filterActivate();
 			 <?php if($dt_respnsive==''){ ?>
             dt_scroll();
 			   <?php } ?>
 			   $('[data-toggle="tooltip"]').tooltip() ;
          },
+		  "initComplete": function(settings, json) {
+			  $('#eng-overlay').css( 'display', 'none' );
+			  dt_filterActivate();
+    },
 		
     });
 
