@@ -164,7 +164,7 @@ if($tab == 'my-profile'){
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
 	  tCode =tCode.split('.')[0];
-	 tCode =tCode.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+	 tCode =tCode.replace(/([-,.€~!@#$%^&*()+=`{}\[\]\|\\:;'<>])+/g, '');
 	  jQuery(current).siblings('span').html(tCode);
 	   jQuery(current).siblings('input').val(tCode);
     }
