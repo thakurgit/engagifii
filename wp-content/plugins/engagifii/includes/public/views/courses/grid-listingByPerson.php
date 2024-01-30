@@ -182,11 +182,11 @@ $filter_course = removeWhitespace($filter_course);
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
-			dt_filterActivate();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
          },
 		  "initComplete": function(settings, json) {
+			dt_filterActivate();
 			  $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 		
 
