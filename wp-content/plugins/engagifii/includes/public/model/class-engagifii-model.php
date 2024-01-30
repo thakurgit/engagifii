@@ -3042,8 +3042,10 @@ if (isset($_POST['sessionIds'])) {
         $postData['senateCommittees'] = $senateCommittees;
         
      
-        $postData['title'] = $_POST['columns'][1]['search']['value'];
-        $postData['billNumber'] = $_POST['columns'][0]['search']['value'];
+		$titleColumn = $_POST['titleColumn'];
+        $postData['title'] = $_POST['columns'][$titleColumn]['search']['value'];
+		$billColumn = $_POST['billColumn'];
+        $postData['billNumber'] = $_POST['columns'][$billColumn]['search']['value'];
 
         $postData['searchText'] = '';
         $postData['lastActionStartDate'] = $datepickerstart;
@@ -3062,7 +3064,7 @@ if (isset($_POST['sessionIds'])) {
 		$postData['sessionId'] = $sessionId;
 		$postData['introducedStartDate'] = $_POST['startDate'];;
 		$postData['introducedEndDate'] = $_POST['endDate'];;
-        return $postData;
+       	return $postData;
     }
 
     private function _popoverTagsHtml($id, $tags){

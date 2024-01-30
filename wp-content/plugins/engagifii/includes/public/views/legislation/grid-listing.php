@@ -965,7 +965,6 @@ if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
 	$bill_number_column_key = array_search("billNumber", $searchTable);
 	$bill_title_key = array_search("title", $searchTable);
 }
-
 /*$temp_array = array();
 foreach ($seqColumns as $key => $value) {
  
@@ -1075,7 +1074,7 @@ function dateChanged(ev) {
       }
     
 }
-  $(document).ready(function() {
+//  $(document).ready(function() {
 
     var startDAta= $( "#datepicker-start, #datepicker-start1" ).daterangepicker({opens: 'left',singleDatePicker: true,autoApply: true}, function(start, end) {
       
@@ -1290,6 +1289,9 @@ function copyDataforApply()
 var sort_key = '<?php echo $sort_key ?>';
 var blog_title = "<?php echo _WORKSPACE_; ?>";
 var tenant_code = "<?php echo $tenant_url; ?>";
+var titleColumn = '<?php echo $bill_title_key; ?>';
+var table_key = '<?php echo $bill_number_column_key; ?>';
+var title_key = '<?php echo $bill_title_key; ?>';
 if(tenant_code =="aasb"){
   var order = [[$('th.billNumber').index(), 'asc']];
 }else{
@@ -1309,6 +1311,7 @@ var table = $('#ebtmaintable').DataTable( {
 	  "scrollX": false,
       
       "order": order,
+	  "search": {regex: true},
       "language": {
          processing: '<span>&nbsp;</span>',
          "emptyTable": "No bill found!",
@@ -1347,6 +1350,8 @@ var table = $('#ebtmaintable').DataTable( {
             d.assignGroups = appl_assignGroups;
             d.isapplyactive = $("#isapplyactive").val();
 			d.sessionIds = appl_sessionId1;
+			d.titleColumn = titleColumn;
+			d.billColumn = table_key;
          },
             
          },
@@ -1452,8 +1457,6 @@ $('#ebtmaintable')
 
 // checking table column for serach feature
 var billNumber = '<?php echo $billnumber; ?>';
-var table_key = '<?php echo $bill_number_column_key; ?>';
-var title_key = '<?php echo $bill_title_key; ?>';
 function delay(callback, ms) {
   var timer = 0;
   return function() {
@@ -1484,8 +1487,8 @@ if(table_key){
 		   strs = strs.replace(/  +/g, ' '); 
 		  }
 		  //console.log(strs);
-         if ( table.column(i).search() !== strs ) {
-            table.column(i).search( strs ).draw();
+         if ( table.column(table_key).search() !== strs ) {
+            table.column(table_key).search( strs ).draw();
          }
 	}, 500));
  	$( 'input', this ).keyup(function(e){
@@ -1499,14 +1502,15 @@ $('#bill_number + .clear-search').click(function(e){
 	 $('#bill_number').val('');
 	$(this).hide();
 	e.stopPropagation();
-	table.column(i).search('').draw();
+	table.column(table_key).search('').draw();
  });
 	  
    });
 }  
 
-if(title_key){
-  $('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
+if(titleColumn){
+	dt_titleSearch('Search title');
+  /*$('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
         var title = $(this).text();
         $(this).html( '<div class="position-relative input-group search-dt"><input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement pr-4 shadow-nonw" value="" id="searchclass"/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
  
@@ -1531,7 +1535,6 @@ $('#searchclass + div+ .clear-search').click(function(e){
  });
 		
     } );
-}
 $(document).ready(function (){    
     $('#searchclass, #bill_number, .search-dt span').on('click', function(e){
        e.stopPropagation();    
@@ -1541,7 +1544,9 @@ $('#searchclass, #bill_number').on("keydown", function(event) {
        return false;   
   }  
 });
-	 });
+	 });*/
+
+}
 
 <?php
 if (isset($_REQUEST['bill']))
@@ -1564,7 +1569,7 @@ $('.multisearch').on( 'keyup change clear', function () {
 });
 
 
-});
+//});
 
 function createLBTcssClass(className,backgroundColor)
 {
