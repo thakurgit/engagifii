@@ -96,7 +96,7 @@ foreach ($reportsResponses as $value) {
         
         foreach ($reportsResponses as $value) {
              ?>
-            <div class="tab-pane" id="tab-<?php echo $value['reportTypeMasterId']; ?>">
+            <div class="tab-pane" id="report-tab-<?php echo $value['reportTypeMasterId']; ?>">
 			<?php $tabData = $reportListData[$value['reportTypeMasterId']]; 
 			foreach($tabData as $values){
 				$name = $values['billReportName'];
@@ -131,7 +131,7 @@ foreach ($reportsResponses as $value) {
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const reportTypeId = tab.getAttribute('data-report-type-id');
-                const tabPane = document.getElementById(`tab-${reportTypeId}`);
+                const tabPane = document.getElementById(`report-tab-${reportTypeId}`);
 
                
                 tabs.forEach(t => t.classList.remove('active'));
