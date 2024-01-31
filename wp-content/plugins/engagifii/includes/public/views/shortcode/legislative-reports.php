@@ -91,7 +91,7 @@ foreach ($reportsResponses as $value) {
         ?>
     </div>
 
-    <div class="tab-content">
+    <div class="tab-content" id="reports-tabPane">
         <?php
         
         foreach ($reportsResponses as $value) {
@@ -135,7 +135,7 @@ foreach ($reportsResponses as $value) {
 
                
                 tabs.forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content .tab-pane').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('#reports-tabPane .tab-pane').forEach(p => p.classList.remove('active'));
 
                
                 tab.classList.add('active');
