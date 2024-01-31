@@ -149,13 +149,13 @@ foreach ($seqColumns as $key => $value) {
 	  tab = $('#nav-tabContent').find('.tab-pane.active').attr('data-tab');
 		ajaxDT();  
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
-	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
+	   tab = $('#nav-tabContent').find('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
 	   tabCount='';
 	  $('#nav-tabContent').find('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
 	  ajaxDT();
    });
    $('body').on('shown.bs.collapse','.card >div+div', function (e) {
-	   tabCount = $('.tab-pane.active .card .show').attr('data-count');
+	   tabCount = $('#nav-tabContent').find('.tab-pane.active .card .show').attr('data-count');
 	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
 		if($('.card-body table',this).length==0){
 		  ajaxDT();
