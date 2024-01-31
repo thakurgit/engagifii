@@ -81,7 +81,7 @@ foreach ($reportsResponses as $value) {
             $isActive = $first ? 'active' : '';
             ?>
             <div class="tab mb-3 <?php echo $isActive; ?>" data-report-type-id="<?php echo $value['reportTypeMasterId']; ?>">
-                <a href="#">
+                <a href="">
                     <?php echo $value['name']; ?>
                 </a>
             </div>
