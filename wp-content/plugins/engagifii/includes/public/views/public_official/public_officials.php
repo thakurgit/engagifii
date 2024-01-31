@@ -151,7 +151,7 @@ foreach ($seqColumns as $key => $value) {
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
 	   tabCount='';
-	  $('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
+	  $('#nav-tabContent').find('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
 	  ajaxDT();
    });
    $('body').on('shown.bs.collapse','.card >div+div', function (e) {
@@ -165,7 +165,7 @@ foreach ($seqColumns as $key => $value) {
 	   if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList')&& tabCount!=''){
 			$('.active .show .card-body').html('<div class="loaders text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');  	 
 			}else{
-			$('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');   
+			$('#nav-tabContent').find('.tab-pane.active').html('<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');   
 	   }
 	   $.ajax({
           type : "post",
@@ -186,7 +186,7 @@ foreach ($seqColumns as $key => $value) {
 			if((tab=='stateSenateCommittees'||tab=='stateHouseCommittees'||tab=='countyDeligationList') && tabCount!=''){
 			  $('.tab-pane.active .card .show .card-body').html(data);
 			}else{
-			  $('.tab-pane.active').html(data);
+			  $('#nav-tabContent').find('.tab-pane.active').html(data);
 			}
 			$('.loaders').remove();
 			initDT();
