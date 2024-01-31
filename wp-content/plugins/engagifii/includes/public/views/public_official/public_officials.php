@@ -146,7 +146,7 @@ foreach ($seqColumns as $key => $value) {
   var titleColumn = '<?php echo $title_key; ?>';
   var table,tab,prvtab,tabCount='';
   var residence=[],committee=[],party=[],role=[],county=[],office=[];
-	  tab = $('.tab-pane.active').attr('data-tab');
+	  tab = $('#nav-tabContent').find('.tab-pane.active').attr('data-tab');
 		ajaxDT();  
   $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 	   tab = $('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
