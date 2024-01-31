@@ -1690,8 +1690,8 @@ padding: 0 !important;
 .calendar__day:last-child {
 	border-right: none !important;
 }
-.input-group-text {
+/*.input-group-text {
 	
 	padding: 0.375rem 0.75rem !important;;
 	
-}
+}*/
