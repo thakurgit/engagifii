@@ -913,7 +913,7 @@ searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselecte
      // Extra Div for Tracking
 
 
-function addDivTracking(){
+/*function addDivTracking(){
     var span_Ext1 = jQuery(document).find(".select2-search").find("span.engTrackingLevels").length;
     if(span_Ext1 <1)
     {
@@ -921,20 +921,24 @@ function addDivTracking(){
       jQuery(document).find(".select2-search").find(".select2-search__field").after('<span class="icon engseachicon"><i class="fa fa-search"></i></span>'); 
       jQuery(document).find(".select2-search").prepend("<span class=\"engTrackingLevels\"> Tracking Levels </span>");  
     }
-}
+}*/
   </script>
 
 <?php 
 $dt_class=' ';
 $dt_respnsive = '';
-$dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
-if($dt_respnsive==1){
-$dt_class = 'dt-responsive nowrap ';	
-}
 $dt_darktheme = '';
-$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
-if($dt_darktheme==1){
-$dt_class .= 'table-dark ';	
+if (array_key_exists("dt_responsive",$options)){
+	$dt_respnsive = $options['dt_responsive'];
+	if($dt_respnsive==1){
+		$dt_class = 'dt-responsive nowrap ';	
+	}
+}
+if (array_key_exists("dt_darktheme",$options)){
+  $dt_darktheme = $options['dt_darktheme'];
+  if($dt_darktheme==1){
+  	$dt_class .= 'table-dark ';	
+  }
 }
 if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
   $filteredColumns=[]; //object array filtered from columnList

@@ -260,16 +260,19 @@ if(!$dataResponse['api_response']){
 <?php 
 $dt_class=' ';
 $dt_respnsive = '';
-$dt_respnsive = get_option( 'ebt_api_settings' )['dt_responsive'];
-if($dt_respnsive==1){
-$dt_class = 'dt-responsive nowrap ';	
-}
 $dt_darktheme = '';
-$dt_darktheme = get_option( 'ebt_api_settings' )['dt_darktheme'];
-if($dt_darktheme==1){
-$dt_class .= 'table-dark ';	
+if (array_key_exists("dt_responsive",$options)){
+	$dt_respnsive = $options['dt_responsive'];
+	if($dt_respnsive==1){
+		$dt_class = 'dt-responsive nowrap ';	
+	}
 }
-
+if (array_key_exists("dt_darktheme",$options)){
+  $dt_darktheme = $options['dt_darktheme'];
+  if($dt_darktheme==1){
+  	$dt_class .= 'table-dark ';	
+  }
+}
 if($class_visible_column_list && count($class_visible_column_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 

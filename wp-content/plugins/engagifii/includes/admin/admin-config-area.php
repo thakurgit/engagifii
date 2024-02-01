@@ -103,36 +103,31 @@ class ebtAdminConfigSettings {
 function ebt_api_shortocde_description() {
     $shortcodes = array(
         array(
-            'title' => 'Endorsement Shortcodes',
+            'title' => 'Class Shortcodes',
             'list'  => array(
                 array(
-                    'name'        => 'Endorsement List',
-                    'shortcode'   => '[endorsement-grid-list]'
+                    'name'        => 'Class List',
+                    'shortcode'   => '[classes-list]'
                 ),
                 array(
-                    'name'        => 'Endorsement Detail',
-                    'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
-                )
-            )
-        ),
-        array(
-            'title' => 'Event Shortcodes',
-            'list'  => array(
-                array(
-                    'name'        => 'Event List',
-                    'shortcode'   => '[event-list]'
+                    'name'        => 'Class Details',
+                    'shortcode'   => '[class-details Id=\'class-id\']'
                 ),
                 array(
-                    'name'        => 'Event Detail',
-                    'shortcode'   => '[events-details Id=\'event-id\']'
+                    'name'        => 'Class Calendar',
+                    'shortcode'   => '[class-calendar]'
                 ),
                 array(
-                    'name'        => 'Event Calendar',
-                    'shortcode'   => '[events-calendar]'
+                    'name'        => 'Class List & Calendar',
+                    'shortcode'   => '[classes-list-calendar calendar=true]'
                 ),
                 array(
-                    'name'        => 'Event List & Calendar',
-                    'shortcode'   => '[events-list-calendar calendar=true]'
+                    'name'        => 'Class List & Calendar (With Class Name)',
+                    'shortcode'   => '[classes-list-calendar-class-name calendarclassname=true]'
+                ),
+                array(
+                    'name'        => 'Class Calendar (With Class Name)',
+                    'shortcode'   => '[class-calendar-class-name]'
                 )
             )
         ),
@@ -174,15 +169,62 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'Legislative Reports',
                     'shortcode'   => '[legislative-reports]'
+                )
+            )
+        ),
+        array(
+            'title' => 'Event Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Event List',
+                    'shortcode'   => '[event-list]'
                 ),
                 array(
-                    'name'        => 'Public Officals',
+                    'name'        => 'Event Detail',
+                    'shortcode'   => '[events-details Id=\'event-id\']'
+                ),
+                array(
+                    'name'        => 'Event Calendar',
+                    'shortcode'   => '[events-calendar]'
+                ),
+                array(
+                    'name'        => 'Event List & Calendar',
+                    'shortcode'   => '[events-list-calendar calendar=true]'
+                )
+            )
+        ),
+		array(
+            'title' => 'Public Official Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Public Official List',
                     'shortcode'   => '[public-officials]'
                 ),
                 array(
-                    'name'        => 'Public Official details',
+                    'name'        => 'Public Official Details',
                     'shortcode'   => '[public-officials-detail]'
-                )
+                ),
+            )
+        ),
+		array(
+            'title' => 'My Engagifii Dashboard',
+            'list'  => array(
+                array(
+                    'name'        => 'My Profile',
+                    'shortcode'   => '[engagifii-profile]'
+                ),
+                array(
+                    'name'        => 'My profile edit',
+                    'shortcode'   => '[engagifii-profile-edit]'
+                ),
+                array(
+                    'name'        => 'My Events',
+                    'shortcode'   => '[engagifii-myEvents]'
+                ),
+                array(
+                    'name'        => 'My Transcript',
+                    'shortcode'   => '[engagifii-myTranscript]'
+                ),
             )
         ),
         array(
@@ -199,31 +241,15 @@ function ebt_api_shortocde_description() {
             )
         ),
         array(
-            'title' => 'Class Shortcodes',
+            'title' => 'Endorsement Shortcodes',
             'list'  => array(
                 array(
-                    'name'        => 'Class List',
-                    'shortcode'   => '[classes-list]'
+                    'name'        => 'Endorsement List',
+                    'shortcode'   => '[endorsement-grid-list]'
                 ),
                 array(
-                    'name'        => 'Class Details',
-                    'shortcode'   => '[class-details Id=\'class-id\']'
-                ),
-                array(
-                    'name'        => 'Class Calendar',
-                    'shortcode'   => '[class-calendar]'
-                ),
-                array(
-                    'name'        => 'Class List & Calendar',
-                    'shortcode'   => '[classes-list-calendar calendar=true]'
-                ),
-                array(
-                    'name'        => 'Class List & Calendar (With Class Name)',
-                    'shortcode'   => '[classes-list-calendar-class-name calendarclassname=true]'
-                ),
-                array(
-                    'name'        => 'Class Calendar (With Class Name)',
-                    'shortcode'   => '[class-calendar-class-name]'
+                    'name'        => 'Endorsement Detail',
+                    'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
                 )
             )
         )
@@ -232,14 +258,14 @@ function ebt_api_shortocde_description() {
     echo '<div class="engagifii-setting shortcode-list">';
 
     foreach ($shortcodes as $shortcode) {
-        echo "<h3 class='mb-0 bg-grey bordered'>{$shortcode['title']}</h3>";
+        echo "<div class='bg-grey bordered' style='margin-bottom:20px'><h3 class='' style='margin-top:0'>{$shortcode['title']}</h3>";
         echo "<ul class='list'>";
 
         foreach ($shortcode['list'] as $item) {
             echo "<li><strong>{$item['name']}</strong>: <code>{$item['shortcode']}</code></li>";
         }
 
-        echo "</ul>";
+        echo "</ul></div>";
     }
 
     echo "<hr>";
