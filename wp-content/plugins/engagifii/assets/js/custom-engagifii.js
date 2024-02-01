@@ -244,7 +244,6 @@ function dt_scroll(){
 				  		 if(tablewidth==divWidth+scrollLeft||tablewidth==divWidth+scrollLeft-1||tablewidth==divWidth+scrollLeft+1){
 						  $('.nxt').addClass('disabled');  
 				  		 }	
-						// console.log(tablewidth+'+'+divWidth+scrollLeft);
   					}); 
 				   
 				});  
