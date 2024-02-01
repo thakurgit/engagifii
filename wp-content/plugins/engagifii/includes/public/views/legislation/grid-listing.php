@@ -410,7 +410,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
             if($tracking->count > 0) { 
               $is_tracking = 1;
         ?>
-              <li data-title="<?php echo $tracking->title; ?>" data-id="<?php echo $tracking->value; ?>">
+              <li data-title="<?php echo $tracking->title; ?>" data-id="<?php //echo $tracking->value; ?>">
           <label class="d-none" for="tracking_item_id_<?php echo $tracking->trackingLevelId; ?>">Tracking levels</label>
         <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $tracking->trackingLevelId; ?>" id="tracking_item_id_<?php echo $tracking->trackingLevelId; ?>"  <?php if($tracking->trackingLevelId == $get_tracking) echo "checked disabled"; ?>>
         <span style="background-color:<?php echo $tracking->colorCode; ?>; width: 13px;height: 13px;border-radius: 50%;display: inline-block;margin-left: 8px;"></span>
@@ -1616,11 +1616,12 @@ if (window.location.href.indexOf("sessionId") > -1){
 
 $(document).ready(function () {
 	$(".tz-dropdown-filter").each(function () {
-	$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
+	//$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
+	$( '<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
 });
 $(".tz-selectAll").change(function () {
 	if($(this).is(':checked')){
-		$(this).parent().siblings().each(function(){
+		$(this).parent().siblings('ul').find('li').each(function(){
 		  if(!$(this).find('input').is(':checked')){
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',true);
@@ -1630,7 +1631,7 @@ $(".tz-selectAll").change(function () {
 		});
 		
 	}else{
-		$(this).parent().siblings().each(function(){
+		$(this).parent().siblings('ul').find('li').each(function(){
 		  if($(this).find('input').is(':checked')){
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',false);
