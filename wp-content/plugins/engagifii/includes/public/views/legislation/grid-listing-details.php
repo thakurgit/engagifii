@@ -14,7 +14,20 @@ if(isset($_REQUEST['billId'])){
   $api =  new Engagifii_API();
 
 
-  $options = get_option( 'ebt_api_settings' );
+	$options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $bills_page = $front_pages['bills_page'];
+    $bills_detail_page = $front_pages['bills_detail_page'];
+	if($bills_page){
+		$bills_page_link=get_permalink( $bills_page );	
+	}else{
+		$bills_page_link= site_url() .'/bill-tracking/';	
+	}
+	if($bills_detail_page){
+		$bills_detail_page_link=get_permalink( $bills_detail_page );	
+	}else{
+		$bills_detail_page_link= site_url() .'/engagifii-detail/';	
+	}
   $lbt_api_url = $options['lbt_api_url'];
   $lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
   if($lbt_vsbl_tag_list==null){
@@ -107,7 +120,7 @@ $siteURL= site_url();
 ?>
 <div class="bill-detail-page">
 <div class="mb-2 d-flex align-items-center justify-content-between">
-<a href="<?php echo site_url();?>/bill-tracking/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<a href="<?php echo $bills_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <div class="d-flex align-items-center">
 	<small><strong>Share:</strong></small>
     <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" target="_blank" rel="noopener" data-share-network="Facebook" data-share-action="Share" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -218,7 +231,7 @@ $siteURL= site_url();
                     $tagMatch = $tag->tagId;
                   if (in_array($tagMatch, $lbt_vsbl_tag_list)){
                     $countTag = $countTag+1;
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.site_url().'/bill-tracking/?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.$bills_page_link.'?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
 						
                   }
                 
@@ -246,21 +259,21 @@ $siteURL= site_url();
                 if(count($billResponses->clientUsers)){
                   foreach ($billResponses->clientUsers as $key => $assignto) {
                    
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
                   }
                 }
               ?>
               <?php if(count($billResponses->clientUserTags)){ 
                   foreach ($billResponses->clientUserTags as $key => $assignto) {
                   
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
                   }
              } ?>
 
               <?php if(count($billResponses->clientGroups)){ 
                   foreach ($billResponses->clientGroups as $key => $assignto) {
                     
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.site_url().'/bill-tracking/?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
                   }
              } ?>
   
@@ -277,11 +290,11 @@ $siteURL= site_url();
               <?php
                 if($prev){
               ?>
-              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo $bills_detail_page_link;?>?billId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a href="<?php echo site_url(); ?>/engagifii-detail/?billId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a href="<?php echo $bills_detail_page_link;?>?billId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
@@ -317,7 +330,9 @@ $siteURL= site_url();
                   <div class="border bg-white class-detail-main-nav">
                     <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
                             <!-- <?php
+							if($tabSequence){
                             array_multisort(array_column($tabSequence, 'sequence'), SORT_ASC, $tabSequence);
+							}
                             if(is_array($tabSequence) && count($tabSequence)){
                               foreach ($tabSequence as $key => $tab) {
                                
@@ -901,8 +916,8 @@ $siteURL= site_url();
                   var totat_count = obj.length;
                   totat_count = totat_count -1;
                   if(index != -1){
-                      var prev = site_url+'/engagifii-detail/?billId='+obj[index-1];
-                      var next = site_url+'/engagifii-detail/?billId='+obj[index+1];
+                      var prev = '<?php echo $bills_detail_page_link;?>/?billId='+obj[index-1];
+                      var next = '<?php echo $bills_detail_page_link;?>?billId='+obj[index+1];
                       if(index == 0)
                       {
                         var prev = '';

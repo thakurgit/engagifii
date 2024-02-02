@@ -6,14 +6,35 @@
 	$classesData        = $obj->getRelatedClassBycourse($id, count($response->classes));
 
 	$options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $courses_page = $front_pages['courses_page'];
+    $courses_detail_page = $front_pages['courses_detail_page'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($courses_page){
+	$courses_page_link=get_permalink( $courses_page );	
+	}else{
+	$courses_page_link= site_url() .'/courses/';	
+	}
+	if($courses_detail_page){
+	$courses_detail_page_link=get_permalink( $courses_detail_page );	
+	}else{
+	$courses_detail_page_link= site_url() .'/course-details/';	
+	}
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
 	
 
 	$certifiedInsturctor = $obj->getCertifiedInstructor($id);
-	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
+	$class_array = json_decode(stripslashes($_COOKIE['courseids']), true);
+	if($class_array){
   $class_key = array_search ($_GET['courseId'], $class_array);
   $class_count = count($class_array)-1;
+	}
   if($class_key == 0){
       $prev = 0;
       $next = $class_array[$class_key+1];
@@ -30,7 +51,7 @@
 
 ?>
 <div class="col-sm-12">
-    <a href="<?php echo site_url();?>/courses/" class="go-back"> Go Back </a>
+    <a href="<?php echo $courses_page_link;?>" class="go-back"> Go Back </a>
 </div>
 
 <div class="engagifii-box border border-bottom-0">
@@ -62,15 +83,15 @@
         	<?php
                 if($prev){
               ?>
-              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $prev; ?>"><i class="fa fa-arrow-left"></i> </a>
+              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo $courses_detail_page_link;?>?courseId=<?php echo $prev; ?>"><i class="fa fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="text-muted" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $next; ?>"> <i class="fa fa-arrow-right"></i></a>
+              <a class="text-muted" href="<?php echo $courses_detail_page_link;?>?courseId=<?php echo $next; ?>"> <i class="fa fa-arrow-right"></i></a>
               <?php
                 }
               ?>
-            <a href="<?php echo site_url();?>/courses/" class="p-2 mr-2 text-muted"><i class="fa fa-times"></i></a>
+            <a href="<?php echo $courses_page_link;?>" class="p-2 mr-2 text-muted"><i class="fa fa-times"></i></a>
         </div>
     </div>
             
@@ -340,7 +361,7 @@
 			  							$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><?php echo $response->name; ?><br/><a href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,10); ?></a><br/>
+			  						<td><span><?php echo $response->name; ?><br/><a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,10); ?></a><br/>
 			  							<?php 
 			  								if(!empty($value->startDate) ){
 			  									echo date('d M Y', strtotime($value->startDate)); 

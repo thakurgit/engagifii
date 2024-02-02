@@ -10,97 +10,6 @@ class abstractModelEngagifii extends Engagifii_API
 {
     protected $dbObj;
 
-    // public function __construct()
-    // {
-    //     global $wpdb;
-    //     $this->dbObj = $wpdb;
-    //     add_action('wp_ajax_nopriv_endorsement', array($this, 'endorsementLoadGridData'));
-    //     add_action('wp_ajax_endorsement', array($this, 'endorsementLoadGridData'));
-
-    //     add_action('wp_ajax_nopriv_legislation', array($this, 'legislationLoadGridData'));
-    //     add_action('wp_ajax_legislation', array($this, 'legislationLoadGridData'));
-
-    //     add_action('wp_ajax_nopriv_courses', array($this, 'courseLoadGridData'));
-    //     add_action('wp_ajax_courses', array($this, 'courseLoadGridData'));
-
-    //     add_action('wp_ajax_nopriv_classes', array($this, 'classLoadGridData'));
-    //     add_action('wp_ajax_classes', array($this, 'classLoadGridData')); //classSearchLoadGridData
-
-    //     //class calendar search
-    //     add_action('wp_ajax_nopriv_classsearch', array($this, 'classSearchLoadGridData'));
-    //     add_action('wp_ajax_classsearch', array($this, 'classSearchLoadGridData'));
-
-    //     //Load Events data
-    //     add_action('wp_ajax_nopriv_events', array($this, 'eventsLoadGridData'));
-    //     add_action('wp_ajax_events', array($this, 'eventsLoadGridData'));
-
-    //     add_action('wp_ajax_nopriv_eventfiltercountdata', array($this, 'eventCountFilterData'));
-    //     add_action('wp_ajax_eventfiltercountdata', array($this, 'eventCountFilterData'));
-    //     // end
-
-
-    //     add_action('wp_ajax_nopriv_filtercountdata', array($this, 'countFilterData'));
-    //     add_action('wp_ajax_filtercountdata', array($this, 'countFilterData'));
-
-    //     add_action('wp_ajax_nopriv_coursecountdata', array($this, 'courseCountFilterData'));
-    //     add_action('wp_ajax_coursecountdata', array($this, 'courseCountFilterData'));
-
-    //     add_action('wp_ajax_nopriv_classcountdata', array($this, 'classCountFilterData'));
-    //     add_action('wp_ajax_classcountdata', array($this, 'classCountFilterData'));
-
-    //     add_action('wp_ajax_nopriv_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
-    //     add_action('wp_ajax_legislationfiltercountdata', array($this, 'countLegislationFilterData'));
-
-
-
-    //     add_action('wp_ajax_nopriv_legislativeissuedata', array($this, 'legislativeIssues'));
-    //     add_action('wp_ajax_legislativeissuedata', array($this, 'legislativeIssues'));
-
-    //     add_action('wp_ajax_nopriv_trackingleveldata', array($this, 'trackingLevels'));
-    //     add_action('wp_ajax_trackingleveldata', array($this, 'trackingLevels'));
-
-    //     add_action('wp_ajax_nopriv_legislativestaffmembers', array($this, 'staffMembers'));
-    //     add_action('wp_ajax_legislativestaffmembers', array($this, 'staffMembers'));
-
-    //     add_action('wp_ajax_nopriv_legislativeactionsdata', array($this, 'lastActions'));
-    //     add_action('wp_ajax_legislativeactionsdata', array($this, 'lastActions'));
-
-
-
-
-
-    //     add_action('wp_ajax_nopriv_getbillids', array($this, 'legislationbillids'));
-    //     add_action('wp_ajax_getbillids', array($this, 'legislationbillids'));
-
-    //     add_action('wp_ajax_nopriv_calendar', array($this, 'classCalendar'));
-    //     add_action('wp_ajax_calendar', array($this, 'classCalendar'));
-
-    //     add_action('wp_ajax_nopriv_getcalendar', array($this, 'getCalendar'));
-    //     add_action('wp_ajax_getcalendar', array($this, 'getCalendar')); 
-
-    //     add_action('wp_ajax_nopriv_getcalendarclassname', array($this, 'getcalendarclassname1'));
-    //     add_action('wp_ajax_getcalendarclassname', array($this, 'getcalendarclassname1'));
-
-    //     //Added by guru
-
-    //     add_action('wp_ajax_nopriv_calendar', array($this, 'endorsementCalendar'));
-    //     add_action('wp_ajax_calendar', array($this, 'endorsementCalendar'));
-
-    //     add_action('wp_ajax_nopriv_getendorsementcalendar', array($this, 'getendorsementCalendar'));
-    //     add_action('wp_ajax_getendorsementcalendar', array($this, 'getendorsementCalendar'));
-
-
-    //     add_action('wp_ajax_nopriv_eventscalendar', array($this, 'eventsCalendar'));
-    //     add_action('wp_ajax_eventscalendar', array($this, 'eventsCalendar'));
-
-    //     add_action('wp_ajax_nopriv_geteventscalendar', array($this, 'geteventsCalendar'));
-    //     add_action('wp_ajax_geteventscalendar', array($this, 'geteventsCalendar'));
-
-
-    //     //end here
-
-        
-    // }
     public function __construct()
 {
     global $wpdb;
@@ -220,7 +129,14 @@ public function calendar_mode(){
 
 <?php  }
      public function classCalendar(){
-
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
         $siteURL= site_url();
 
         $year = $_POST['year'];
@@ -239,7 +155,6 @@ public function calendar_mode(){
 
         $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
         $last_date = date("Y-m-d",$last_date_find);
-        $options = get_option('ebt_api_settings');
         $class_visible_column_list = $options['class_visible_column_list'];
         
         $endorsement_api_url = $options['ebt_api_url'];
@@ -289,7 +204,7 @@ public function calendar_mode(){
                 $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
             }
-        		$data['title'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a>';
+        		$data['title'] = '<a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a>';
 				$data['titleNoLink'] = $value->sectionName;
 	            $data['id']    = $value->id;
 	            $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
@@ -318,7 +233,7 @@ public function calendar_mode(){
 	            }
 
 	            $data['classTag'] = $allTags;
-				 $data['viewdetails'] = '<a href="'.site_url().'/class-details/?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+				 $data['viewdetails'] = '<a href="'.$classes_detail_page_link.'?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                 if($value->isClassRegistrationAllow)
 	            {
                     //echo $value->registrationState;
@@ -458,7 +373,7 @@ public function getCalendarClassName(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="../class-details/?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $filteredItems[$fi]['register']; ?>
                                                     </div>
                                                     </div>
@@ -522,7 +437,7 @@ public function getCalendarClassName(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="../class-details/?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $filteredItems[$fi]['register']; ?>
                                                     </div>
                                                     </div>
@@ -647,7 +562,7 @@ public function getCalendarClassName(){
                                             
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="../class-details/?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php echo $weekfilteredItems[$fi]['register']; ?>
                                         </div>
                                         </div>
@@ -807,7 +722,7 @@ public function getCalendarClassName1(){
                                                         <?php } ?>
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="../class-details/?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php if(in_array('register', $class_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                                     </div>
                                                     </div>
@@ -945,7 +860,7 @@ public function getCalendarClassName1(){
                                             <?php } ?>
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="../class-details/?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php if(in_array('register', $class_visible_column_list)) { echo $weekfilteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
@@ -1007,7 +922,17 @@ public function getEventsCalendar(){
     //print_r($events_visible_column_list);
 ?>
     <main class="calendar-contain row">
-    <?php echo $this->calendar_mode(); ?>
+    <?php echo $this->calendar_mode(); 
+	        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $events_detail_page = $front_pages['events_detail_page'];
+	if($events_detail_page){
+		$events_detail_page_link=get_permalink( $events_detail_page );	
+	}else{
+		$events_detail_page_link= site_url() .'/event-detail/';	 
+	}
+
+	?>
        
         <div class="col-12 pt-4">
             <div class="row ">
@@ -1096,7 +1021,7 @@ public function getEventsCalendar(){
                                                    
                                                </div>
                                                <div class="modal-footer">
-                                               <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                                </div>
                                                </div>
@@ -1155,7 +1080,7 @@ public function getEventsCalendar(){
                                             
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="../event-detail/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
@@ -1275,7 +1200,7 @@ public function getEventsCalendar(){
                                                    
                                                </div>
                                                <div class="modal-footer">
-                                               <a href="../event-detail/?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                <?php echo $weekfilteredItems[$fi]['register']; ?>
                                                </div>
                                                </div>
@@ -1727,6 +1652,13 @@ wp_die();
         $data         = array();
 
         $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
         
@@ -1774,9 +1706,9 @@ wp_die();
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
-                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
@@ -1878,6 +1810,14 @@ wp_die();
 
     /* Class calendar search grid end here*/
     public function courseLoadGridData(){
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $courses_detail_page = $front_pages['courses_detail_page'];
+	if($courses_detail_page){
+		$courses_detail_page_link=get_permalink( $courses_detail_page );	
+	}else{
+		$courses_detail_page_link= site_url() .'/course-details/';	 
+	}
         $postedData = $this->_prepareCoursePostData();
         $dataResponse = $this->submitApiRequest("Public/CoursePagingList/", $postedData, "POST", 'courses');
         $collection = json_decode($dataResponse['api_response'])->result;
@@ -1900,7 +1840,7 @@ wp_die();
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);
 
             ## row data
-            $nestedData['name'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
+            $nestedData['name'] = '<a class="d-flex align-items-center" href="'.$courses_detail_page_link.'?courseId='.$value->id.'"><img src="'.$value->courseIcon.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->courseName.'</a>';
             $nestedData['objectType'] = $value->objectType;
             $nestedData['creditHours'] = $value->creditHours;
             $nestedData['instructor'] = '<div class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '""><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" alt="instructor-icon" class="img-icon-lg"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->courseInstructorsCount ).'</span></div>'.$instructorPopOver;            
@@ -1964,7 +1904,7 @@ wp_die();
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);*/
 
             ## row data
-            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.site_url().'/course-details/?courseId='.$value->course->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.$courses_detail_page_link.'?courseId='.$value->course->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
             $nestedData['coursetype'] = $value->course->objectType;
 			$dt = new DateTime($value->courseStatusDate);
             $nestedData['completiondate'] =   $dt->format('M d, Y');
@@ -2059,6 +1999,14 @@ wp_die();
     }
 
     public function endorsementLoadGridData(){
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $endorse_detail_page = $front_pages['endorse_detail_page'];
+	if($endorse_detail_page){
+		$endorse_detail_page_link=get_permalink( $endorse_detail_page );	
+	}else{
+		$endorse_detail_page_link= site_url() .'/endorsement-detail/';	 
+	}
         $postedData = $this->_preparePostData();
 		$dataResponse = $this->submitApiRequest("Public/AwardListPublic/", $postedData, "POST", 'endorsement');
         $collection = json_decode($dataResponse['api_response'])->result;
@@ -2083,7 +2031,7 @@ wp_die();
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->icon.'" class="img-fluid img-icon-lg p-0 mr-3" alt="award-icon"><a href=' . site_url() . '/endorsement-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->icon.'" class="img-fluid img-icon-lg p-0 mr-3" alt="award-icon"><a href=' . $endorse_detail_page_link.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -2192,6 +2140,13 @@ wp_die();
         $request = $_GET;
 
         $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $events_detail_page = $front_pages['events_detail_page'];
+	if($events_detail_page){
+		$events_detail_page_link=get_permalink( $events_detail_page );	
+	}else{
+		$events_detail_page_link= site_url() .'/event-detail/';	 
+	}
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
@@ -2219,7 +2174,7 @@ wp_die();
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . site_url() . '/event-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' .$events_detail_page_link.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -2349,6 +2304,14 @@ wp_die();
 
     //Load event list by person
     public function eventsLoadGridDataByPerson(){
+	        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $events_detail_page = $front_pages['events_detail_page'];
+	if($events_detail_page){
+		$events_detail_page_link=get_permalink( $events_detail_page );	
+	}else{
+		$events_detail_page_link= site_url() .'/event-detail/';	 
+	}
         $postedData = $this->_prepareEventsData();
         //print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
@@ -2358,7 +2321,6 @@ wp_die();
         header("Content-Type: application/json");
         $request = $_GET;
 
-        $options = get_option('ebt_api_settings');
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
@@ -2386,7 +2348,7 @@ wp_die();
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . site_url() . '/event-detail?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . $events_detail_page_link.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -2534,6 +2496,19 @@ wp_die();
         $request = $_GET;
 
         $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $bills_page = $front_pages['bills_page'];
+    $bills_detail_page = $front_pages['bills_detail_page'];
+	if($bills_page){
+	$bill_page_link=get_permalink( $bills_page );	
+	}else{
+	$bill_page_link= site_url() .'/bill-tracking/';	
+	}
+	if($bills_detail_page){
+	$bill_detail_link=get_permalink( $bills_detail_page );	
+	}else{
+	$bill_detail_link= site_url() .'/engagifii-detail/';	
+	}
         $lbt_api_url = $options['lbt_api_url'];
 
         $lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
@@ -2561,34 +2536,34 @@ wp_die();
             {
                 if($options['lbt_title_display_setting'] == 'alternate'){
                     if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->alternateTitle . '</a>';
+                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->alternateTitle . '</a>';
                     }
                     else
                     {
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
+                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
                     }
                     
 
                 }elseif($options['lbt_title_display_setting'] == 'alternate-top'){
                     if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->alternateTitle . '<br/>'.$row->title.'</a>';
+                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->alternateTitle . '<br/>'.$row->title.'</a>';
                     }
                     else
                     {
-                        $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->title . '</a>';
+                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->title . '</a>';
                     }
 
                 }elseif($options['lbt_title_display_setting'] == 'title-top'){
-                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id .' >' . $row->title . '<br/>'.$row->alternateTitle.'</a>';
+                    $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->title . '<br/>'.$row->alternateTitle.'</a>';
 
                 }
                 elseif($options['lbt_title_display_setting'] == 'title'){
-                    $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
+                    $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
                 }
             }
             else
             {
-                $billHtml = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >' . $row->title . '</a>';
+                $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
             }
             
             $pdf = '<a href=' . $lbt_api_url . '/file/' . $row->fileId . '> <img class="full-text-img" alt="pdf-icon" src="' . ENGAGIFII_ASSETS_URL . '/images/pdf.png' . '"> </a>';
@@ -2626,7 +2601,7 @@ wp_die();
 
             $nestedData["trackingLevelColorCode"] = $row->trackingLevelColorCode;
             $nestedData["BillType"] = $row->billTypeAbbr;
-            $nestedData["billNumber"] = '<a class="bill-title" href=' . site_url() . '/engagifii-detail/?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
+            $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
             $nestedData["state"] = $row->state;
             $nestedData["fileId"] = $pdf;
             $nestedData["title"] = $billHtml;
@@ -2709,10 +2684,10 @@ wp_die();
                     $tagCount              = count($row->tags) - 1;
                   
                     $tagList               = $this->_popoverTagsHtml1($row->id, $row->tags);
-                    $nestedData['tags'] = '<div class="dropdown pr-4"><span class="d-inline-block pr-2"> <a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span>'.$tagList.'</div>';
+                    $nestedData['tags'] = '<div class="dropdown pr-4"><span class="d-inline-block pr-2"> <a href="' . $bill_page_link.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span>'.$tagList.'</div>';
                 }else{
                     
-                    $nestedData['tags']       = '<a href="'.site_url().'/bill-tracking/?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
+                    $nestedData['tags']       = '<a href="' . $bill_page_link.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
                 }
             }
             else
@@ -2742,6 +2717,14 @@ wp_die();
 
 //Public official Datatable
    public function publicOfficialLoadData(){
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $public_official_detail_page = $front_pages['public_official_detail_page'];
+	if($public_official_detail_page){
+		$public_official_detail_page_link=get_permalink( $public_official_detail_page );	
+	}else{
+		$public_official_detail_page_link= site_url() .'/public-official-detail/';	
+	}
 $seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
 $tableHeader='';
 foreach ($seqColumns as $key => $value) {
@@ -2801,7 +2784,7 @@ foreach ($seqColumns as $key => $value) {
        foreach ($collection as $key => $value) { 
                         $data.= '<tr>';
                         //name
-                       $data.= '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$siteURL.'/public-official-detail/?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
+                       $data.= '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$public_official_detail_page_link.'?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
                          //counties 
                             $countiesList = $value['counties'];
                             $allCounties = array();
@@ -3248,6 +3231,15 @@ if (isset($_POST['sessionIds'])) {
     }
 
     private function _popoverTagsHtml1($id, $tags){
+	$options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $bills_page = $front_pages['bills_page'];
+	if($bills_page){
+	$bill_page_link=get_permalink( $bills_page );	
+	}else{
+	$bill_page_link= site_url() .'/bill-tracking/';	
+	}
+
         $rowName = array();
         $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
         $subItems = "";
@@ -3257,7 +3249,7 @@ if (isset($_POST['sessionIds'])) {
             if($li%2==1){
 			$class='bg-light';	
 			}
-			$subItems .= '<a style="display:block" href="'.site_url().'/bill-tracking/?tag='.$rowData->value.'&'.base64_encode($rowData->text).'" target="_blank" class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->text . '</a>';
+			$subItems .= '<a style="display:block" href="' . $bill_page_link.'?tag='.$rowData->value.'&'.base64_encode($rowData->text).'" target="_blank" class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->text . '</a>';
 			$li++;
 			}
 
@@ -4129,7 +4121,14 @@ if(!empty($_POST['minRange']))
     //Endorsement : Get data - Added by Gurpreet
 
     public function endorsementCalendar(){
-
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $endorse_detail_page = $front_pages['endorse_detail_page'];
+	if($endorse_detail_page){
+		$endorse_detail_page_link=get_permalink( $endorse_detail_page );	
+	}else{
+		$endorse_detail_page_link= site_url() .'/endorsement-detail/';	 
+	}
         $year = $_POST['year'];
         $month = $_POST['month'];
         $day   = $_POST['day'] ? $_POST['day'] :date('d');
@@ -4147,7 +4146,6 @@ if(!empty($_POST['minRange']))
         $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
         $last_date = date("Y-m-d",$last_date_find);
         
-    $options = get_option('ebt_api_settings');
     $endorsement_api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
     $postedData = $this->_preparePostCountData();
@@ -4176,7 +4174,7 @@ if(!empty($_POST['minRange']))
        $data         = array();
        $endorsmentData    = array();
        foreach ($collection as $key => $value) {
-               $data['title'] = '<a href="'.site_url().'/endorsement-detail/?endId='.$value->id.'">'.$value->name.'</a>';
+               $data['title'] = '<a href="'.$endorse_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
                $data['id']    = $value->id;
                $data['classDuration'] = $value->classDuration.' '.$value->classDurationType;
                $data['objectType'] = $value->objectType;
@@ -4195,7 +4193,7 @@ if(!empty($_POST['minRange']))
                }
 
                $data['endorsementTag'] = $allTags;
-               $data['viewdetails'] = '<a href="'.site_url().'/endorsement-details/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+               $data['viewdetails'] = '<a href="'.$endorse_detail_page_link.'?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                   
                if(!$value->isAlreadyRegistered)
                {
@@ -4215,8 +4213,14 @@ if(!empty($_POST['minRange']))
     //Events : Get data - Added by Gurpreet
 
     public function eventsCalendar(){
-        
-        $options = get_option('ebt_api_settings');
+	        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $events_detail_page = $front_pages['events_detail_page'];
+	if($events_detail_page){
+		$events_detail_page_link=get_permalink( $events_detail_page );	
+	}else{
+		$events_detail_page_link= site_url() .'/event-detail/';	 
+	}
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
         // $upcomingEvents = 'false';
@@ -4274,7 +4278,7 @@ if(!empty($_POST['minRange']))
                 $startDate = date('Y-m-d', strtotime($value->startDateTime));
                 //$sessionEndTime = date('Y-m-d', strtotime($value->endDateTime));
                    $endDate = date('Y-m-d', strtotime($value->endDateTime));
-                   $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
+                   $data['title'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
                    $data['titleNoLink'] = $value->name;
                    $data['id']    = $value->id;
                    $data['start'] = date('Y-m-d', strtotime($event->sessionStartTime));
@@ -4304,7 +4308,7 @@ if(!empty($_POST['minRange']))
                 }
     
                    $data['endorsementTag'] = $allTags;
-                   $data['viewdetails'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+                   $data['viewdetails'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                   
                    $default_RegisterBtn = "";
                    if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
@@ -4334,7 +4338,7 @@ if(!empty($_POST['minRange']))
                 // end here
                         $startDate = date('Y-m-d', strtotime($value->startDateTime));
                         $endDate = date('Y-m-d', strtotime($value->endDateTime));
-                        $data['title'] = '<a href="'.site_url().'/event-detail/?endId='.$value->id.'">'.$value->name.'</a>';
+                        $data['title'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
                         $data['titleNoLink'] = $value->name;
                         $data['id']    = $value->id;
                         $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
@@ -4597,7 +4601,14 @@ wp_die();
 //Display Calendar layout data for Endorsement : Added by Guru 
 
 public function getEndorsementCalendar(){
-    
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $endorse_detail_page = $front_pages['endorse_detail_page'];
+	if($endorse_detail_page){
+		$endorse_detail_page_link=get_permalink( $endorse_detail_page );	
+	}else{
+		$endorse_detail_page_link= site_url() .'/endorsement-detail/';	 
+	}
     $year = $_POST['year'];
     $month = $_POST['month'];
     $day   = $_POST['day'] ? $_POST['day'] :date('d');
@@ -4712,7 +4723,7 @@ public function getEndorsementCalendar(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="../endorsement-details/?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo $endorse_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $filteredItems[$fi]['register']; ?>
                                                     </div>
                                                     </div>
@@ -4846,7 +4857,7 @@ public function getEndorsementCalendar(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="../endorsement-details/?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo $endorse_detail_page_link;?>?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $weekfilteredItems[$fi]['register']; ?>
                                                         </div>
                                                         </div>

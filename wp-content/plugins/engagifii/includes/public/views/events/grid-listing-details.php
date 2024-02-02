@@ -16,6 +16,19 @@
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
 	$options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $events_page = $front_pages['events_page'];
+    $events_detail_page = $front_pages['events_detail_page'];
+	if($events_page){
+	$events_page=get_permalink( $events_page );	
+	}else{
+	$events_page= site_url() .'/events/';	
+	}
+	if($events_detail_page){
+	$events_detail_page_link=get_permalink( $events_detail_page );	
+	}else{
+	$events_detail_page_link= site_url() .'/event-detail/';	
+	}
     $api_url = $options['ebt_api_url'];
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
 	$options = get_option('ebt_api_settings');
@@ -42,7 +55,7 @@
 
 ?>
 <div class="mb-2">
-    <a href="<?php echo site_url();?>/events/" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+    <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 </div>
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
@@ -84,15 +97,15 @@
         	<?php
                 if($prev){
               ?>
-              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo $events_detail_page_link;?>?courseId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="text-muted" href="<?php echo site_url(); ?>/course-details/?courseId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a class="text-muted" href="<?php echo $events_detail_page_link;?>?courseId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
-            <a href="<?php echo site_url();?>/courses/" class="p-2 mr-2 text-muted d-none"><i class="fa fa-times"></i></a>
+            <a href="<?php echo $events_page;?>/courses/" class="p-2 mr-2 text-muted d-none"><i class="fa fa-times"></i></a>
         </div>
 		
           <?php 

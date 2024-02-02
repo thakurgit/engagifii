@@ -1,7 +1,25 @@
 <div class="wrap eng-customizer <?php if($tab == 'customizer'){ echo 'show';}else {echo 'hide'; }?>" >
 <div class="engagifii-setting m-tlr-20">
 <?php 
-function pages_list(){
+$options = get_option( 'ebt_api_settings' );
+$front_pages = $options['front_pages'];
+if(isset($front_pages)){
+    $classes_page = $front_pages['classes_page'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+    $bills_page = $front_pages['bills_page'];
+    $bills_detail_page = $front_pages['bills_detail_page'];
+    $events_page = $front_pages['events_page'];
+    $events_detail_page = $front_pages['events_detail_page'];
+    $courses_page = $front_pages['courses_page'];
+    $courses_detail_page = $front_pages['courses_detail_page'];
+    $endorse_page = $front_pages['endorse_page'];
+    $endorse_detail_page = $front_pages['endorse_detail_page'];
+    $public_official_page = $front_pages['public_official_page'];
+    $public_official_detail_page = $front_pages['public_official_detail_page'];
+   }else{
+   	$classes_page= $classes_detail_page =$bills_page=$bills_detail_page=$events_page=$events_detail_page=$courses_page =$courses_detail_page=$endorse_page=$endorse_detail_page=$public_official_page=$public_official_detail_page= '';
+   }
+function pages_list($module='',$selected=''){
 	$args = array(
     'sort_order' => 'asc',
     'sort_column' => 'post_title',
@@ -20,9 +38,9 @@ function pages_list(){
     'post_status' => 'publish'
 ); 
 $pages = get_pages($args); 
-  $html= '<select>';
+  $html= '<select name="ebt_api_settings[front_pages]['.$module.']"><option value="">--Select Page--</option>';
 foreach($pages as $page){ 
-  $html.= ' <option value="'.$page->ID.'">'.$page->post_title.'</option>';
+  $html.= ' <option '. ($selected == $page->ID ? 'selected' : '') .' value="'.$page->ID.'">'.$page->post_title.'</option>';
   $child_args = array(
     'parent' =>$page->ID, 
     'post_type'   => 'page',
@@ -30,7 +48,7 @@ foreach($pages as $page){
   );
   $childPages = get_pages($child_args);
   foreach($childPages as $page){
-	$html.= ' <option value="'.$page->ID.'">&nbsp;&nbsp;&nbsp;--'.$page->post_title.'</option>';  
+	$html.= ' <option '. ($selected == $page->ID ? 'selected' : '') .' value="'.$page->ID.'">&nbsp;&nbsp;&nbsp;--'.$page->post_title.'</option>';  
   }
 
 }
@@ -38,23 +56,72 @@ foreach($pages as $page){
   return $html;
 }
 ?>
-
 <div class="engagifii-setting api-urls">
 	<h3>Classes</h3>
     <div class="form-group">
     	<label for="">Listing page</label>
-        <?php echo pages_list(); ?>
+        <?php  echo pages_list('classes_page',$classes_page); ?>
     </div>
     <div class="form-group">
     	<label for="">Detail page</label>
-        <?php echo pages_list(); ?>
+         <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
+    </div>
+<hr>    
+	<h3>Legislation</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php  echo pages_list('bills_page',$bills_page); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+         <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
+    </div>
+<hr>    
+	<h3>Events</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php  echo pages_list('events_page',$events_page); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+         <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
+    </div>
+<hr>    
+	<h3>Courses</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php  echo pages_list('courses_page',$courses_page); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+         <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
+    </div>
+<hr>    
+	<h3>Endorsement</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php  echo pages_list('endorse_page',$endorse_page); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+         <?php  echo pages_list('endorse_detail_page',$endorse_detail_page); ?>
+    </div>
+<hr>    
+	<h3>Public Official</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php  echo pages_list('public_official_page',$public_official_page); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+         <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
     </div>
 <hr>    
     
 </div>
         <div>
         <?php
-		 $options = get_option( 'ebt_api_settings' );
+		 
 		 if(isset($options['dt_responsive'])){
     $dt_responsive = $options['dt_responsive'];
    }else{

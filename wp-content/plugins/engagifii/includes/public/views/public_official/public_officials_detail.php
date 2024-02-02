@@ -7,6 +7,13 @@ echo'<h5 class="text-center pt-5">Public official ID not available</h5>';
 return;	
 }
 $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $public_official_page = $front_pages['public_official_page'];
+	if($public_official_page){
+		$public_official_page_link=get_permalink( $public_official_page );	
+	}else{
+		$public_official_page_link= site_url() .'/public-officials/';	
+	}
 $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
 $url = $options['lbt_api_url'].'/legislative/public-bills/official-detail/'.$paramValue;
 $curl = curl_init();
@@ -61,7 +68,7 @@ border:3px solid white
 }
 </style>
 <div class="container-fluid mb-3">
-<a href="<?php echo site_url(); ?>/public-officials" class="border border-dark btn" style="border-radius:10px"><i class="fal fa-arrow-left mr-2"></i>Go Back</a>
+<a href="<?php echo $public_official_page_link;?>" class="border border-dark btn" style="border-radius:10px"><i class="fal fa-arrow-left mr-2"></i>Go Back</a>
 </div>
 <div class="container-fluid  mb-4">
 	<div class=" p-3 text-white po-header" >
