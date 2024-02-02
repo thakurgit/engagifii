@@ -70,6 +70,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-profile' => 'engagifii_profile',
 			'engagifii-profile-edit' => 'engagifii_profile_edit',
 			'engagifii-myTranscript' => 'engagifii_myTranscript',
+			'engagifii-myTransactions' => 'engagifii_myTransactions',
 			'engagifii-myEvents' => 'engagifii_myEvents',
 		);
 
@@ -98,6 +99,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	public function engagifii_myEvents(){
 		ob_start();
 		include $this->basePath.'includes/public/views/dashboard/events.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_myTransactions(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/my-transactions.php';
 		return ob_get_clean();
 	}	
 	public function public_officials(){

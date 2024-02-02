@@ -225,6 +225,10 @@ function ebt_api_shortocde_description() {
                     'name'        => 'My Transcript',
                     'shortcode'   => '[engagifii-myTranscript]'
                 ),
+                array(
+                    'name'        => 'My Transactions',
+                    'shortcode'   => '[engagifii-myTransactions]'
+                ),
             )
         ),
         array(

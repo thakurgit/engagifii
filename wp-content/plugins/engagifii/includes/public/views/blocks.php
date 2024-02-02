@@ -91,8 +91,9 @@ global $post;
     	<a href="'.$site_url.'/engagifii-profile" class="py-3 mx-4 ' . ($post_slug == 'engagifii-profile' ? $active : '') . '">My Profile</a>
         <a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 mx-4 ' . ($post_slug == 'my-transcript' ? $active : '') . '">My Transcript</a>
         <a href="'.$site_url.'/engagifii-profile/events" class="py-3 mx-4 ' . ($post_slug == 'events' ? $active : '') . '">Events</a>
+        
     </div>
-</div>';
+</div>'; //<a href="'.$site_url.'/engagifii-profile/my-transactions" class="py-3 mx-4 ' . ($post_slug == 'my-transactions' ? $active : '') . '">Accounting Details</a>
 
     return $html;
 
