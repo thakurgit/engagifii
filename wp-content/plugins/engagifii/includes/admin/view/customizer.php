@@ -1,5 +1,57 @@
 <div class="wrap eng-customizer <?php if($tab == 'customizer'){ echo 'show';}else {echo 'hide'; }?>" >
 <div class="engagifii-setting m-tlr-20">
+<?php 
+function pages_list(){
+	$args = array(
+    'sort_order' => 'asc',
+    'sort_column' => 'post_title',
+    'hierarchical' => 1,
+    'exclude' => '',
+    'include' => '',
+    'meta_key' => '',
+    'meta_value' => '',
+    'authors' => '',
+    'child_of' => 0,
+    'parent' => 0,
+    'exclude_tree' => '',
+    'number' => '',
+    'offset' => 0,
+    'post_type' => 'page',
+    'post_status' => 'publish'
+); 
+$pages = get_pages($args); 
+  $html= '<select>';
+foreach($pages as $page){ 
+  $html.= ' <option value="'.$page->ID.'">'.$page->post_title.'</option>';
+  $child_args = array(
+    'parent' =>$page->ID, 
+    'post_type'   => 'page',
+    'post_status' => 'publish'
+  );
+  $childPages = get_pages($child_args);
+  foreach($childPages as $page){
+	$html.= ' <option value="'.$page->ID.'">&nbsp;&nbsp;&nbsp;--'.$page->post_title.'</option>';  
+  }
+
+}
+  $html.='</select>';
+  return $html;
+}
+?>
+
+<div class="engagifii-setting api-urls">
+	<h3>Classes</h3>
+    <div class="form-group">
+    	<label for="">Listing page</label>
+        <?php echo pages_list(); ?>
+    </div>
+    <div class="form-group">
+    	<label for="">Detail page</label>
+        <?php echo pages_list(); ?>
+    </div>
+<hr>    
+    
+</div>
         <div>
         <?php
 		 $options = get_option( 'ebt_api_settings' );
