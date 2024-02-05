@@ -62,7 +62,7 @@ class ebtAdminConfigSettings {
 				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
 				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
-				add_submenu_page( 'engagifii-module-api', 'Customizer', 'Customizer', 'manage_options', $parent.'&tab=customizer',  $callback = '');
+				add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'My Profile', 'My Engagifii Profile', 'manage_options', $parent.'&tab=my-profile',  $callback = '');
 	}
 
@@ -371,7 +371,7 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>">Customize CSS</a>
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
-                <a href="?page=engagifii-module-api&tab=customizer" class="nav-tab <?php if($tab==='customizer'):?>nav-tab-active<?php endif; ?>">Customizer</a>
+                <a href="?page=engagifii-module-api&tab=customizer" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
     		</nav>
 
     		<div class="tab-content">

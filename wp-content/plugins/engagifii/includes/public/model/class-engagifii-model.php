@@ -615,6 +615,13 @@ public function getCalendarClassName1(){
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
 
     $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
     $class_visible_column_list = $options['class_visible_column_list'];
 
 ?>
