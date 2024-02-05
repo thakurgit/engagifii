@@ -1887,6 +1887,15 @@ wp_die();
         wp_die();
     }
     public function courseLoadGridDataByPerson(){
+        $options = get_option('ebt_api_settings');
+        $front_pages = $options['front_pages'];
+        $courses_detail_page = $front_pages['courses_detail_page'];
+        if($courses_detail_page){
+            $courses_detail_page_link=get_permalink( $courses_detail_page );	
+        }else{
+            $courses_detail_page_link= site_url() .'/course-details/';	 
+        }
+        
         $postedData = $this->_prepareCoursePostDataByPerson();
 		//print_r($postedData['profileId']);
 		//die;
