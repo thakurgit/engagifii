@@ -175,7 +175,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
-<?php echo do_shortcode('[dashboard_nav]'); ?>
+<?php echo do_shortcode('[sidebar-nav]').do_shortcode('[dashboard_nav]'); ?>
   <div class="container-fluid">
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">

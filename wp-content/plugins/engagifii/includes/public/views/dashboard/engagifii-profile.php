@@ -77,7 +77,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     <a class="btn btn-outline-dark" href="<?php echo esc_url(wp_logout_url('')); ?>"><?php esc_html_e('Logout', 'wpfep'); ?></a>
     
 </div>
-<?php echo do_shortcode('[dashboard_nav]'); ?>
+<?php echo do_shortcode('[sidebar-nav]').do_shortcode('[dashboard_nav]'); ?>
 <?php 
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
