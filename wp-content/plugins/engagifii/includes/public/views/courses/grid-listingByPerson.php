@@ -232,7 +232,6 @@ $filter_course = removeWhitespace($filter_course);
 							 $(".course-select :checkbox").prop("checked", true);	
 						}
 					}
-					console.log(selectedRow.length);
 			   if(selectedRow.length !== 0){
 				 $('.gt').removeAttr('disabled');  
 			   }else{
