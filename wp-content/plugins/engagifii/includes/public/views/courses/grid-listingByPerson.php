@@ -248,7 +248,7 @@ $filter_course = removeWhitespace($filter_course);
 			});
          },
 		  "initComplete": function(settings, json) {
-			dt_filterActivate();
+			//dt_filterActivate();
 			
 			  $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 			  
