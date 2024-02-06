@@ -65,8 +65,9 @@ border-bottom-color:white ;
 	-webkit-transition-delay: .5s;
 	transition-delay: .5s;
 }
-#menu-toggle.open #hamburger span {
-	width: 0%;
+#menu-toggle.open #hamburger span:nth-child(1) {
+	-webkit-transition-delay: 0s;
+	transition-delay: 0s;
 }
 #menu-toggle #hamburger span:nth-child(2) {
 	-webkit-transition-delay: .625s;
