@@ -1920,6 +1920,7 @@ wp_die();
                 $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);*/
 
             ## row data
+			$nestedData['course-select']='<input type="checkbox" class="select-row" value="'.$value->course->id.'"/>';
             $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.$courses_detail_page_link.'?courseId='.$value->course->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
             $nestedData['coursetype'] = $value->course->objectType;
 			$dt = new DateTime($value->courseStatusDate);

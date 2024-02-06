@@ -133,6 +133,8 @@ wp_enqueue_script(
 			wp_enqueue_script( 'dt-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
 			wp_enqueue_script( 'dt-fixedHeader', 'https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
+			//wp_enqueue_script( 'dt-checkbox', 'https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
+			
 		//	wp_enqueue_script( 'dt-reorder', 'https://cdn.datatables.net/colreorder/1.6.1/js/dataTables.colReorder.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
 			//wp_enqueue_script( 'dt-date', 'https://cdn.datatables.net/plug-ins/1.12.1/sorting/date-eu.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'range-slider', 'https://code.jquery.com/ui/1.13.1/jquery-ui.js', array('jquery'), $this->version, false );
@@ -164,6 +166,7 @@ wp_enqueue_script(
 
 			wp_enqueue_style( 'dt-bs', plugin_dir_url( __FILE__ ) . 'assets/css/dataTables.bootstrap4.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array('dt-bs'), $this->version, 'all' );
+			//wp_enqueue_style( 'dt-scheckbox', 'https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css', array('dt-bs'), $this->version, 'all' );
 			wp_enqueue_style( 'sleect2css-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/select2.min.css', array(), $this->version, 'all' );
 			
 			

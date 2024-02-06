@@ -14,6 +14,11 @@
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
 ?>
+<style>
+table tbody tr.selected {
+	background-color: #bed6f2 !important;
+}
+</style>
 <div class="containerEngagii">
 <div class="container-fluid pb-4">
 	<div class="row">
@@ -23,22 +28,24 @@
 	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative">
   	<table  id="courseByPerson" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
     	<thead> 
-		    <tr>        
+		    <tr>    
 		    	<?php
 				$i=0;
-				$colNames =['Course Name','Course Type','Completion Date','Credit Hours'];
+				$colNames =['course-select','Course Name','Course Type','Completion Date','Credit Hours'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
                     $title_key = $i;
                   }
+				  if($key == 'course-select'){
+					echo '<th class="'.$key.'"><input type="checkbox"></th>'; 
+					continue; 
+				  }
 		    				?>
 		    					<th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key ?></th>
 		    				<?php
                   $i++;
 				}
-		    	//print_r($forDatatable);
-				//die;			
 		    	?>		
 
 		    </tr> 
@@ -137,6 +144,11 @@ $filter_course = removeWhitespace($filter_course);
   var fv= 0;
   var titleColumn = '<?php echo $title_key; ?>';
   var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
+  var selectedRow=[];
+  function removeDuplicates(arr) {
+    return arr.filter((item,
+        index) => arr.indexOf(item) === index);
+}
 	var tableCourse = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -144,13 +156,16 @@ $filter_course = removeWhitespace($filter_course);
        	"processing": true,
        	"searching": true,
        	"ordering":true,
+		"order": [[<?php echo array_search('Course Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['tags','coursetype','completiondate','credithours'],
+          { "targets": ['course-select','tags','coursetype','completiondate','credithours'],
             "orderable": false
           },
 		  //{ className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["completiondate","credithours","tags","coursetype"] },
+		  { className: "text-center", "targets": ["completiondate","credithours","tags","coursetype","course-select"] },
+		   
         ],
+		
         "language": {
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
@@ -184,10 +199,48 @@ $filter_course = removeWhitespace($filter_course);
             dt_dropdown();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
+			$('.select-row').each(function(){
+			$(this).change(function(){
+				if ($(this).is(':checked')) {
+					$(this).parents('tr').addClass('selected');	
+					selectedRow.push($(this).val());
+					removeDuplicates(selectedRow);
+					console.log(selectedRow);
+				}else{
+					$(this).parents('tr').removeClass('selected');	
+					const index = selectedRow.indexOf($(this).val());
+					if (index > -1) {
+					  selectedRow.splice(index, 1); 
+					}
+					removeDuplicates(selectedRow);
+				}
+					
+					if($('.select-row:checked').length==0){
+						 $(".course-select :checkbox").prop("indeterminate", false);	
+						 $(".course-select :checkbox").prop("checked", false);	
+					} else{
+						$(".course-select :checkbox").prop("indeterminate", true);
+						if($('.select-row:checked').length==$('.select-row').length){
+						 	$(".course-select :checkbox").prop("indeterminate", false);	
+							 $(".course-select :checkbox").prop("checked", true);	
+						}
+					}
+				
+			});	
+			});
+			$(".course-select :checkbox").change(function(){
+				if ($(this).is(':checked')) {
+					$('.select-row').prop('checked',true).change(); 	
+				}else{
+					$('.select-row').prop('checked',false).change(); 
+				}
+			});
          },
 		  "initComplete": function(settings, json) {
 			dt_filterActivate();
+			
 			  $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+			  
 		
 
     },
