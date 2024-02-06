@@ -145,10 +145,7 @@ $filter_course = removeWhitespace($filter_course);
   var titleColumn = '<?php echo $title_key; ?>';
   var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
   var selectedRow=[];
-  function removeDuplicates(arr) {
-    return arr.filter((item,
-        index) => arr.indexOf(item) === index);
-}
+  var val;
 	var tableCourse = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -200,19 +197,22 @@ $filter_course = removeWhitespace($filter_course);
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			$('.select-row').each(function(){
+				if(selectedRow.includes($(this).val())){
+					$(this).prop('checked',true).change();  	
+				}
 			$(this).change(function(){
 				if ($(this).is(':checked')) {
 					$(this).parents('tr').addClass('selected');	
-					selectedRow.push($(this).val());
-					removeDuplicates(selectedRow);
-					console.log(selectedRow);
+					val =$(this).val();
+					if(selectedRow.indexOf(val)===-1){
+						selectedRow.push(val);
+					}
 				}else{
 					$(this).parents('tr').removeClass('selected');	
 					const index = selectedRow.indexOf($(this).val());
 					if (index > -1) {
 					  selectedRow.splice(index, 1); 
 					}
-					removeDuplicates(selectedRow);
 				}
 					
 					if($('.select-row:checked').length==0){
