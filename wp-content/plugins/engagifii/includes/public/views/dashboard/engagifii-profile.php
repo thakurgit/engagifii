@@ -238,5 +238,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
   </div>
 </div>
 </div>
-
+<script>
+ localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
+</script>
 <?php } ?>

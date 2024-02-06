@@ -21,8 +21,10 @@ table tbody tr.selected {
 </style>
 <div class="containerEngagii">
 <div class="container-fluid pb-4">
-	<div class="row">
-    	<div class="col-12 text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course"></div>
+	<div class="row row justify-content-end">
+    	<div class="col-auto"><button  type="button" class="btn btn-primary gt " disabled>Generate Transcript</button></div>
+    	<div class=" col-auto text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course ml-2"></div>
+        </div>
     </div>
 </div>
 	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative">
@@ -196,6 +198,11 @@ $filter_course = removeWhitespace($filter_course);
             dt_dropdown();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
+			   if(selectedRow.length !== 0){
+				 $('.gt').removeAttr('disabled');  
+			   }else{
+				 $('.gt').attr('disabled','');  
+			   }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val())){
 					$(this).prop('checked',true).change();  	
@@ -225,7 +232,12 @@ $filter_course = removeWhitespace($filter_course);
 							 $(".course-select :checkbox").prop("checked", true);	
 						}
 					}
-				
+					console.log(selectedRow.length);
+			   if(selectedRow.length !== 0){
+				 $('.gt').removeAttr('disabled');  
+			   }else{
+				 $('.gt').attr('disabled','');  
+			   }
 			});	
 			});
 			$(".course-select :checkbox").change(function(){
@@ -249,6 +261,34 @@ $filter_course = removeWhitespace($filter_course);
         $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
+
+$('.gt').click(function(){
+	var logged_in_user = localStorage.getItem("logged_in_user");
+	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'generateTranscript',
+			  CourseId:selectedRow,
+			  StudentIds: logged_in_user,
+			  CreatedBy:logged_in_user,
+			  OrderBy: "FirstName",
+			  IsConsolidatedFileSelected: false,
+			  RequestId: '',
+			  FileStructureForMultiple: "",
+			  OutputFolderName: "",
+			  ConsolidatedFileName: "",
+			  CertificateIdMapModel: '',
+          },
+          success: function(response) { 
+		  	var data =   response; 
+			
+		  }
+        });
+});
+
+
+
 
 <?php
   if($title_key > -1){
