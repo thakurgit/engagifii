@@ -5,7 +5,6 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
- 
 $obj      =  new Engagifii_API();
 $site_url = site_url();
 $options = get_option('ebt_api_settings');
