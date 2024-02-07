@@ -7,23 +7,23 @@ $sessionlist = get_option('ebt_api_settings')['lbt_visib_session_list']?? array(
 ?>
 <span id="bill-count"></span>
 <script type="text/javascript">
-var sessionId='';
 var viewAll;
 $(document).ready(function(){
+var sessionId='0'; 
 	viewAll = $('#bill-count').siblings('a').attr('href');
 	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
 		sessionId = $('.session-tab li:first-child button').attr('id');
-	<?php } else { ?>
-	localStorage.setItem("sessionname", "");	
-	<?php }?>
-	getCountSelected();
 		$('.session-tab li button').click(function(){
 			sessionId = $(this).attr('id');
-			getCountSelected();
+			getCountSelected(sessionId);
 		});
+	<?php } else { ?>
+	getCountSelected(sessionId);
+	localStorage.setItem("sessionname", "");	
+	<?php }?>
 	
 });
-function getCountSelected()
+function getCountSelected(sessionId)
 {
   $.ajax({
       type : "post",

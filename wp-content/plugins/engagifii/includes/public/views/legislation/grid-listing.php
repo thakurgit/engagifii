@@ -799,7 +799,7 @@ for (var i = 0; i < eletitle; i++) {
     }
   var eltzdatasearch = document.getElementsByName("tzdatasearch");
   var tzdatasearch = "";
-  var appl_sessionId = '';
+  var appl_sessionId = '0';
 if (window.location.href.indexOf("sessionId") > -1){
 	appl_sessionId = window.location.href.split('sessionId=')[1];
 }
@@ -1174,7 +1174,7 @@ var appl_tags =[];
 var appl_assignto  = [];
 var appl_assignGroups = [];
 var appl_assignTags   = [];
-var appl_sessionId1 = '';
+var appl_sessionId1 = '0';
 if (window.location.href.indexOf("sessionId") > -1){
 	appl_sessionId1 = window.location.href.split('sessionId=')[1];
 }

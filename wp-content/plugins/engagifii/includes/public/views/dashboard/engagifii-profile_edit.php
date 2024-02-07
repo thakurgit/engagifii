@@ -561,26 +561,7 @@ $curl = curl_init();
 $tokenresponse = curl_exec($curl);
 $tokenresponse = json_decode($tokenresponse);
 curl_close($curl);
-//print_r($tokenresponse);
-	
-/*$curl = curl_init();
-$url2 ='https://engagifiiresource.azurewebsites.net/api/upload';
-  curl_setopt_array($curl, array(
-  CURLOPT_URL => $url2,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_POST => true,  // Set request type to POST
-  CURLOPT_POSTFIELDS => $DPpayload,  // Set the payload data
-  CURLOPT_HTTPHEADER => array(
-    "cache-control: no-cache",
-    "content-type: application/json",
-    "tenant-code:".$tenant_code,
-  ),
-));
-$response2 = curl_exec($curl);
-$DPupdateDATA = json_decode($response2);
-print_r($DPupdateDATA);
-// Close the cURL session
-curl_close($curl);*/
+
 
 
 
