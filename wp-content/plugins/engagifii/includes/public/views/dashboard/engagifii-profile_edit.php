@@ -5,50 +5,13 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
-
-$site_url = site_url();
-	$user_id = get_current_user_id();
-$user    = get_userdata($user_id);
-$userEmail=$user->user_email;
-$args    = array(
-    'post_type' => 'get',
-    'author'    => $user_id,
-);
-$tenant_code = "psba";
-$tenant_url = "https://psba.engagifii.com";
-$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE2MDk5MDcxMTEsImV4cCI6MTYwOTkxNDMxMSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiODgwMzBjYzktYWMxNS00NzlkLWJhY2ItNmYzMTAzNDBkNmMxIiwiYXV0aF90aW1lIjoxNjA5OTA3MTExLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiJodHRwczovL2VuZ2FnaWZpaWlkc3RvcmFnZS5ibG9iLmNvcmUud2luZG93cy5uZXQ6NDQzL3Byb2ZpbGVwaWNzL3Byb2ZpbGUtcGljODgwMzBjYzktYWMxNS00NzlkLWJhY2ItNmYzMTAzNDBkNmMxLnBuZyIsInBpY3R1cmUtc21hbGwiOiJodHRwczovL2VuZ2FnaWZpaWlkc3RvcmFnZS5ibG9iLmNvcmUud2luZG93cy5uZXQ6NDQzL3Byb2ZpbGVwaWNzLXNtL3Byb2ZpbGUtcGljODgwMzBjYzktYWMxNS00NzlkLWJhY2ItNmYzMTAzNDBkNmMxLnBuZyIsInBpY3R1cmUtaWNvbiI6Imh0dHBzOi8vZW5nYWdpZmlpaWRzdG9yYWdlLmJsb2IuY29yZS53aW5kb3dzLm5ldDo0NDMvcHJvZmlsZXBpY3MtaWNvbi9wcm9maWxlLXBpYzg4MDMwY2M5LWFjMTUtNDc5ZC1iYWNiLTZmMzEwMzQwZDZjMS5wbmciLCJnaXZlbl9uYW1lIjoiRW5nYWdpZmlpIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjEvNi8yMDIxIDQ6MjM6MjIgQU0iLCJjdXJyZW50LWxvZ2luIjoiMS82LzIwMjEgNDoyNToxMSBBTSIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.siQUIA6URga2cwvFDOXdRs1Y2l71KH65hijXt_X-wEgN6o5to-TowYneiYPfdq9zBUilpnoJPsx73m7JUwer7YPMdHOBZCEcNYcOUPpjcTEfut_Bflj_CYfQb-RcUIbsdzoWEDJB-hRg-g-V-1CEWOsFbnRWxbPOliZnnco-YW0GGFZErrXhwb4YixwtjBidyaffomtn1TXN8pjwq2kq3SrpyzCPTs8H5WqXj7sA3AmA9fFWBFZQsbgCxbg_bmeYGE4S9YWt2NUZjT39ld1WrxAVuzx5F1VX0iVYMe0YIMBNB075upMvue1Tj3K7k-1j0oQnl_3anZ2Ph5ysUbEXQQ';
-
-// This is where you run the code and display the output
-$curl = curl_init();
-//$url = "https://engagifii-billtracking.azurewebsites.net/api/1/legislative/public-bills/column-list";
-$url = "https://engagifii-preview9-crm.azurewebsites.net/api/v1/GetPersonDetailByEmail/".$userEmail."/".$tenant_code;
-// Append any necessary query parameters to the URL
-$queryParameters = array(
-    // Add your query parameters here
-);
-$queryString = http_build_query($queryParameters);
-if (!empty($queryString)) {
-    $url .= '?' . $queryString;
-}
-curl_setopt_array($curl, array(  
-  CURLOPT_URL => $url,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_HTTPHEADER => array(
-    "cache-control: no-cache",
-    "content-type: application/json",   
-    "tenant-code:".$tenant_code, 
-    $authentication
-  ),
-));
-$response = curl_exec($curl);
-$peopleDATA = json_decode($response);
-// Close the cURL session
-curl_close($curl);
-
-	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
-	//$pJSON = file_get_contents($peopleurl);
-	// $peopleDATA   = json_decode($pJSON);
-	//print_r($response);
+include 'dashboard-api.php';
+if($peopleDATA->isError==true) { 
+echo "<br><br><div class='alert alert-danger' role='alert'>
+<h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
+return;
+} 
+include 'sidebar_nav.php';  
 	$tags= $peopleDATA->tags;
 	$infoseq='';
 	$infotabId = '';
@@ -66,27 +29,7 @@ curl_close($curl);
 		 $groupId = $value->id;
      }
  }
-	
-
-	/*$addresstabId = $peopleDATA->tabs[1]->id;
-	$addresstabGroupId = $peopleDATA->tabs[1]->groupFields[0]->id;
-	if($peopleDATA->people->personaTypeId==2){
-		$addressTitle = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[4]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->id;
-	}else if($peopleDATA->people->personaTypeId==4) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[2]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[2]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[2]->id;
-	}else if($peopleDATA->people->personaTypeId==3) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[1]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
-	}*/
-if($peopleDATA->isError==true) { 
-echo "<br><br><div class='alert alert-danger' role='alert'>
-<h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
-} else { ?>
+ ?>
     <style>
 	.profile-tabs .nav-link {
 	top:0 !important;	
@@ -96,35 +39,13 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 	border-bottom:0 !important	
 	}
 	</style>
-  <div class="d-flex justify-content-end px-3 mb-3">
-    <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
-    <?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?>
-    <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
-    <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) {?>
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
-    <?php } else { ?>
-    <i class="fa fa-user-circle" style="font-size:30px"></i>
-    <?php } ?>
-    </span>
-  </button>
-  <div class="dropdown-menu dropdown-menu-right">
-    <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/">My Profile</a>
-    <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/edit">Edit Profile</a>
-     <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>">Logout</a>
-  </div>
-</div>
-    
-</div>
-<?php include 'sidebar_nav.php'; ?>
 <div class="container-fluid">
 <ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#nav-header" type="button" role="tab" aria-controls="home" aria-selected="true">Header</button>
+    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#nav-header" type="button" role="tab" aria-controls="home" aria-selected="true">Header</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#nav-body" type="button" role="tab" aria-controls="profile" aria-selected="false">Contact Information</button>
+    <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#nav-body" type="button" role="tab" aria-controls="profile" aria-selected="false">Contact Information</button>
   </li>
  
 </ul>
@@ -254,7 +175,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
                     </div>
                     	
                 </div>
-                <?php //print_r($address);?>
                 </div>
                 <hr class="border-secondary">
    <?php  } 
@@ -279,7 +199,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
     
     	
     </form>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 	jQuery('body').on('click','.tag_del',function(){
 		jQuery(this).parent().remove();	
@@ -606,7 +525,7 @@ payload.push( Addressdata<?php echo $key;?> );
   
   
   //console.log(DPpayload);
-  console.log(payload);
+  //console.log(payload);
   
  
 
@@ -689,4 +608,3 @@ curl_close($curl);
 ?>
 </div>
 
-<?php } ?>
