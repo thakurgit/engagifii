@@ -23,7 +23,7 @@ $authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NER
 // This is where you run the code and display the output
 $curl = curl_init();
 //$url = "https://engagifii-billtracking.azurewebsites.net/api/1/legislative/public-bills/column-list";
-$url = "https://engagifii-qa-crm.azurewebsites.net/api/v1/GetPersonDetailByEmail/".$userEmail."/".$tenant_code;
+$url = "https://engagifii-preview9-crm.azurewebsites.net/api/v1/GetPersonDetailByEmail/".$userEmail."/".$tenant_code;
 // Append any necessary query parameters to the URL
 $queryParameters = array(
     // Add your query parameters here
