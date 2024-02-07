@@ -638,14 +638,14 @@ table.dataTable thead .sorting_desc_disabled:before {
 	width: 10%;
 	padding: 0px;
 }
-button.dropdown-toggle:hover,
+/*button.dropdown-toggle:hover,
 button.dropdown-toggle:active,
 button.dropdown-toggle:focus {
 	color: #fff !important;
 	background-color: #fff !important;
 	border-color: #fff !important;
 	outline: unset;
-}
+}*/
 .light-background {
 	background: #e0f2f1;
 }

@@ -1,9 +1,8 @@
 <?php 
 if (! is_user_logged_in()) {
-    echo "<div class='wpfep-login-alert'>";
+    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
     printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
-    echo '</div>';
-
+    echo '</h5></div>';
     return;
 }
 
@@ -85,8 +84,9 @@ curl_close($curl);
 		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
 	}*/
 if($peopleDATA->isError==true) { 
-echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.</h5>";
- } else { ?>
+echo "<br><br><div class='alert alert-danger' role='alert'>
+<h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
+} else { ?>
     <style>
 	.profile-tabs .nav-link {
 	top:0 !important;	
@@ -96,6 +96,28 @@ echo "<br><br><h5 class='text-center'>A person with this Email ID doesn't exist.
 	border-bottom:0 !important	
 	}
 	</style>
+  <div class="d-flex justify-content-end px-3 mb-3">
+    <div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
+    <?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?>
+    <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
+    <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) {?>
+    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
+    <?php } else { ?>
+    <i class="fa fa-user-circle" style="font-size:30px"></i>
+    <?php } ?>
+    </span>
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/">My Profile</a>
+    <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/edit">Edit Profile</a>
+     <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>">Logout</a>
+  </div>
+</div>
+    
+</div>
+<?php include 'sidebar_nav.php'; ?>
 <div class="container-fluid">
 <ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">

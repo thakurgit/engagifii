@@ -72,7 +72,6 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myTranscript' => 'engagifii_myTranscript',
 			'engagifii-myTransactions' => 'engagifii_myTransactions',
 			'engagifii-myEvents' => 'engagifii_myEvents',
-			'sidebar-nav' => 'sidebar_nav',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -106,12 +105,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		ob_start();
 		include $this->basePath.'includes/public/views/dashboard/my-transactions.php';
 		return ob_get_clean();
-	}	
-	public function sidebar_nav(){
-		ob_start();
-		include $this->basePath.'includes/public/views/dashboard/sidebar_nav.php';
-		return ob_get_clean();
-	}	
+	}		
 	public function public_officials(){
 		ob_start();
 		include $this->basePath.'includes/public/views/public_official/public_officials.php';

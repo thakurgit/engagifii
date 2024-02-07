@@ -141,11 +141,21 @@ $logo = wp_get_attachment_url($logo); ?>
 <div class="text-center px-3">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="navbar-brand text-hide "><img src="<?php echo $logo; ?>" alt="" class="img-fluid"></a>
         </div>
-        <?php } ?>
-    <ul class="list-unstyled sidebar-nav px-3 mt-4">
-    	<li class=""><a href=""><i class="fas fa-home mr-3"></i>Home</a></li>
-    	<li class=""><a href=""><i class="far fa-calendar-alt mr-3"></i>Events</a></li>
-    </ul>
+        <?php } 
+		$site_url = site_url();
+global $post;
+    $post_slug = $post->post_name;
+		$active = 'active';
+		
+    echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
+    	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '"><i class="fas fa-home mr-3"></i>Home</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/events" class="py-3  ' . ($post_slug == 'events' ? $active : '') . '"><i class="far fa-calendar-alt mr-3"></i>Event Registration</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 ' . ($post_slug == 'my-transcript' ? $active : '') . '"><i class="fas fa-file mr-3"></i>My Transcript</a></li>
+        <li><a href="" class="py-3 "><i class="fas fa-child mr-3"></i>Members</a></li>
+        <li><a href="" class="py-3 "><i class="fas fa-book mr-3"></i>Resources</a></li>
+        <li><a href="" class="py-3  "><i class="far fa-calendar-alt mr-3"></i>Signature Events</a></li>
+    </ul>';
+	?>
 </div>
 <script>
 $(document).ready(function() {
