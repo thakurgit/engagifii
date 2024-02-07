@@ -17,9 +17,7 @@ transition:0.3s all ease-in-out;
 .sidebar-nav-fixed.open {
 left: 0;
 }
-.sidebar-nav-fixed .navbar-brand img {
-filter:brightness(0) invert(1);	
-}
+
 .sidebar-nav li a {
 color:white;
 border-bottom: 1px solid rgba(255,255,255,0.2);	
