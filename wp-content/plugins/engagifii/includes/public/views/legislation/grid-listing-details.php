@@ -72,9 +72,14 @@ if(isset($_REQUEST['billId'])){
   }
 
 
+  
+  if($billResponses->lastActionOn==null){
+    $lastAction_new_date ='';
+}else{
   $last = $billResponses->lastActionOn;
   $last_k = strtotime($last);
   $lastAction_new_date = date('M d, Y',$last_k);
+}
 
   $introduced = $billResponses->introducedDate;
   $last_intro = strtotime($introduced);
@@ -200,16 +205,18 @@ $siteURL= site_url();
           <?php } if(in_array('lastActionOn', $lbt_visible_column_list)) { ?>
           <div class="pt-1 text-size-medium">
             <!-- <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span> -->
+            <?php if($lastAction_new_date && $lastAction_new_date!==null){ ?>
             <span class="pt-2 text-bold"><strong>Last Action: </strong></span><span><?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span>
+            <?php } ?>
           </div>
           <?php }
           }else{ ?>
             <div class="pt-1 small">
             <?php if(in_array('status', $lbt_visible_column_list)) { ?>
             <span class=""><strong>State:</strong> <?php echo $billResponses->state;?></span><br>
-            <?php } if(in_array('lastActionOn', $lbt_visible_column_list)) { ?>
+            <?php } if(in_array('lastActionOn', $lbt_visible_column_list) && $lastAction_new_date && $lastAction_new_date!==null) {  ?>
             <span class=""><strong>Last Action:</strong> <?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span><br>
-            <?php  } if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
+            <?php } if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
             <span class=""><strong>Introduced Date:</strong> <?php echo $intro_new_date;?> </span><br>
             <?php } if(in_array('status', $lbt_visible_column_list)) { ?>
             <span class=""><strong>Status:</strong> <?php echo $billResponses->status; ?></span><br>
