@@ -21,6 +21,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['classes', 'classLoadGridData'],
+        ['classesJS', 'classesDataJS'],
         ['classsearch', 'classSearchLoadGridData'],
         ['events', 'eventsLoadGridData'],
         ['eventsbyperson', 'eventsLoadGridDataByPerson'],
@@ -1814,7 +1815,236 @@ wp_die();
 
 
     }
+    public function _prepareClassData(){
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
 
+        $isAsscend = $_POST["order"][0]["dir"];
+
+        if ($isAsscend == 'asc') {
+            $isAsscending = true;
+        } else {
+            $isAsscending = false;
+        }
+        
+		$titleColumn = $_POST['titleColumn'];
+        $title = $_POST['columns'][$titleColumn]['search']['value'];
+
+        if (strlen($_POST['search']['value']) > 1) {
+            $title = $_POST['search']['value'];
+        }
+        $postData = array();
+        $sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $postData['itemCount'] = $_POST['length'];
+        $postData['sortBy'] = $sortBy;
+        //$postData['isAsscending'] = $isAsscending;
+        $postData['pageNumber'] = ($startPageNum);
+        $postData['pageSize'] = ((int) $_POST['length']);
+        $postData['sortDirection'] = $_POST["order"][0]["dir"];
+		$postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        
+        if(!empty($_POST['courses']))
+        {
+            $postData['filterBody']['courses'] = $_POST['courses'];
+        }
+        if(!empty($_POST['instructors']))
+        {
+            $postData['filterBody']['instructors'] = $_POST['instructors'];
+        }
+            $postData['filterBody']['registrationDateRange']['startDate'] = $_POST['minReg'];
+            $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
+            $postData['filterBody']['createdDateRange']['startDate'] = $_POST['class_start_date'];
+            $postData['filterBody']['createdDateRange']['endDate'] =$_POST['class_end_date'];
+            $postData['filterBody']['classStates'] =$_POST['classStates'];
+            $postData['filterBody']['creditHour']['min'] = $_POST['minRange'];
+            $postData['filterBody']['creditHour']['max'] = $_POST['maxRange'];
+        return $postData;
+    }
+    public function classesDataJS(){
+        $siteURL= site_url();
+        
+    $postData = array();  
+    $postData['itemCount'] = 1000;
+    $postData['sortBy'] = '';    
+    $postData['pageNumber'] = 1;    
+    $postData['sortDirection'] = "desc";
+    $postData['filterBody'] = array('searchText'=>'','selectedDate' => date('Y-m-d'),'classStates'=>'');   
+        $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
+		//print_r(json_encode($dataResponse));
+		//die;
+        $collection   = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+        $data         = array();
+
+        $options = get_option('ebt_api_settings');
+	$front_pages = $options['front_pages'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
+        $endorsement_api_url = $options['ebt_api_url'];
+        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+		$dataJS='';
+         foreach ($collection as $key => $value) {
+       		 $dataJS.='<tr>';
+            #nested data
+            $nestedData = array();
+			
+            $instructorPopOver = '';
+            $classPopover      = '';
+
+            $class_icon = $value->parentCourse->iconReference;
+            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
+                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
+                
+            }
+
+            if(count($value->classInstructors)){
+                $instructorPopOver = $this->_popOverInstructorData1($key, $value->classInstructors);
+			}
+            if(count($value->classSessions)){
+                $classPopover  = $this->_popOverClassData1($key, $value->classSessions);
+                
+			}
+
+            
+
+            ## row data
+            $class_schedule = '';
+            $counter = 0; 
+            if(count($value->classSessions))
+            {
+                foreach ($value->classSessions as $key => $rowData) {
+            
+                    $classSessionTime = '';
+                    if( $counter == 0 ) {         
+                        $classSessionStartTime = $rowData->startTime;
+                        $classSessionStartDate = $rowData->sessionDate;
+                    }                  
+                    if( $counter == count( $value->classSessions ) - 1) {
+                         $classSessionEndTime = $rowData->endTime;
+                         $classSessionEndDate = $rowData->sessionDate;
+                    }
+                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
+                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
+                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+                    $counter = $counter + 1;
+                }
+                $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div></td>';
+            }else{
+            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div></td>';
+            }
+            $dataJS .= '<td>'.$value->classDuration.' '.$value->classDurationType.'</td>';
+            $dataJS .= '<td>'.$value->objectType.'</td>';
+			
+            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" ></td>';
+
+			if(count($value->classSessions)){
+				 foreach ($value->classSessions as $key => $rowData) {
+            
+                    $classSessionTime = '';
+                    if( $counter == 0 ) {         
+                        $classSessionStartTime = $rowData->startTime;
+                        $classSessionStartDate = $rowData->sessionDate;
+                    }                  
+                    if( $counter == count( $value->classSessions ) - 1) {
+                         $classSessionEndTime = $rowData->endTime;
+                         $classSessionEndDate = $rowData->sessionDate;
+                    }
+                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
+                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
+                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+                    $counter = $counter + 1;
+                }
+            	 $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div></td>';
+			}
+			
+			$dataJS .='<td><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" ></td>';
+			if($value->classInstructorsCount>0){
+				$dataJS .= '<datalist><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div></datalist>';  
+			}
+            if($value->isCreditTypeSingle =="true"){
+            $dataJS .= '<td>'.number_format($value->courseCreditMapping[0]->credits, 2).'</td>';//($value->courseCreditMapping[0]->credits);          
+            }else{
+                $dataJS .= '<td>'.number_format($value->courseCreditMapping[0]->credits, 2).'</td>';      
+            }
+
+            $classTag = $value->classTag;
+            $allTags = array();
+            foreach ($classTag as $index => $tag) {
+                
+                    if(count($classTag) > 1 && $index == 0)
+                    {   
+                        $tagPopover =  $this->_popOverTagData1($key, $value->classTag);
+
+                           $tagCount   = count($classTag) - 1;
+                    
+					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+                    }
+                    elseif(count($classTag) == 1)
+                        $allTags[] = $tag->tagName;
+            }
+
+            $nestedData['classTag'] = '<td>'.implode(" ", $allTags).'</td>';
+            if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
+            {
+              if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+              {
+                   if($value->locationType->name=="onlocation")
+                      { 
+                      $dataJS .= '<td><a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a></td>';
+                      //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                      }
+                      elseif($value->locationType->name=="online"){
+                          $dataJS .= '<td><a href="'.$value->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a></td>';
+                      }
+                      elseif($value->locationType->name=="onlocationandonline"){
+                      $dataJS .= '<td><a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a></td>';
+                      }
+                  else{
+                      $dataJS .= '<td><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></td>';
+                  }
+              }
+              else{
+              $dataJS .= '<td><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></td>';
+              }
+          }else{
+            $dataJS .= '<td><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></td>';
+            //$data[] = $nestedData;    
+          }
+		  $dataJS .='</tr>';
+          $data[] = $nestedData;
+      }
+       
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            //"data" => $data,
+
+            "data" => $dataJS,
+        );
+        echo json_encode($json_data);
+		//$json_data = '<tr><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+        //echo $json_data;
+        wp_die();
+
+
+    }
     /* Class calendar search grid end here*/
     public function courseLoadGridData(){
         $options = get_option('ebt_api_settings');
@@ -2536,10 +2766,13 @@ wp_die();
         foreach ($collection->collection as $key => $row) {
 
             $nestedData = array();
-
-            $lastActionOndefault_Date = $row->lastActionOn;
-            $lastActionOnconvert_Date = strtotime($lastActionOndefault_Date);
-            $lastActionOnnew_Date = date('M d, Y', $lastActionOnconvert_Date);
+			if($row->lastActionOn==null){
+    $lastActionOnnew_Date ='';
+}else{
+    $lastActionOndefault_Date = $row->lastActionOn;
+    $lastActionOnconvert_Date = strtotime($lastActionOndefault_Date);
+    $lastActionOnnew_Date = date('M d, Y', $lastActionOnconvert_Date);
+}
 
             $default_Date = $row->introducedDate;
             $convert_Date = strtotime($default_Date);
@@ -3879,57 +4112,6 @@ $li=1;
         return $postData;
     }
 
-    public function _prepareClassData(){
-        $columnsData = [];
-        foreach ($_POST['columns'] as $key => $value) {
-            if ($value['orderable'] == "true") {
-                $columnsData[$value['data']] = $value['data'];
-            }
-        }
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-
-        $isAsscend = $_POST["order"][0]["dir"];
-
-        if ($isAsscend == 'asc') {
-            $isAsscending = true;
-        } else {
-            $isAsscending = false;
-        }
-        
-		$titleColumn = $_POST['titleColumn'];
-        $title = $_POST['columns'][$titleColumn]['search']['value'];
-
-        if (strlen($_POST['search']['value']) > 1) {
-            $title = $_POST['search']['value'];
-        }
-        $postData = array();
-        $sortByColumn = $_POST['order'][0]['column'];
-        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
-        $postData['itemCount'] = $_POST['length'];
-        $postData['sortBy'] = $sortBy;
-        //$postData['isAsscending'] = $isAsscending;
-        $postData['pageNumber'] = ($startPageNum);
-        $postData['pageSize'] = ((int) $_POST['length']);
-        $postData['sortDirection'] = $_POST["order"][0]["dir"];
-		$postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
-        
-        if(!empty($_POST['courses']))
-        {
-            $postData['filterBody']['courses'] = $_POST['courses'];
-        }
-        if(!empty($_POST['instructors']))
-        {
-            $postData['filterBody']['instructors'] = $_POST['instructors'];
-        }
-            $postData['filterBody']['registrationDateRange']['startDate'] = $_POST['minReg'];
-            $postData['filterBody']['registrationDateRange']['endDate'] =$_POST['maxReg'];
-            $postData['filterBody']['createdDateRange']['startDate'] = $_POST['class_start_date'];
-            $postData['filterBody']['createdDateRange']['endDate'] =$_POST['class_end_date'];
-            $postData['filterBody']['classStates'] =$_POST['classStates'];
-            $postData['filterBody']['creditHour']['min'] = $_POST['minRange'];
-            $postData['filterBody']['creditHour']['max'] = $_POST['maxRange'];
-        return $postData;
-    }
     public function _prepareEventsData(){
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
         if($allEvents==1){
