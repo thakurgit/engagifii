@@ -797,9 +797,9 @@ button.dropdown-toggle:focus {
 	margin-left: 10px;
 	list-style: none !important;
 }
-.entry-content>*:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.is-style-wide) {
+/*.entry-content>*:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.is-style-wide) {
 	max-width: 100% !important;
-}
+}*/
 .table-bordered.dataTable tbody td {
 	vertical-align: middle;
 }
