@@ -1894,7 +1894,9 @@ wp_die();
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
 		$dataJS='';
+		$i=1;
          foreach ($collection as $key => $value) {
+				 
        		 $dataJS.='<tr>';
             #nested data
             $nestedData = array();
@@ -1946,7 +1948,6 @@ wp_die();
             $dataJS .= '<td>'.$value->classDuration.' '.$value->classDurationType.'</td>';
             $dataJS .= '<td>'.$value->objectType.'</td>';
 			
-            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" ></td>';
 
 			if(count($value->classSessions)){
 				 foreach ($value->classSessions as $key => $rowData) {
@@ -1966,11 +1967,14 @@ wp_die();
                     $counter = $counter + 1;
                 }
             	 $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div></td>';
+			} else {
+            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" ></td>';
 			}
 			
-			$dataJS .='<td><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" ></td>';
 			if($value->classInstructorsCount>0){
-				$dataJS .= '<datalist><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div></datalist>';  
+				$dataJS .= '<td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div></td>';  
+			} else {
+			$dataJS .='<td><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" ></td>';
 			}
             if($value->isCreditTypeSingle =="true"){
             $dataJS .= '<td>'.number_format($value->courseCreditMapping[0]->credits, 2).'</td>';//($value->courseCreditMapping[0]->credits);          
@@ -1994,7 +1998,7 @@ wp_die();
                         $allTags[] = $tag->tagName;
             }
 
-            $nestedData['classTag'] = '<td>'.implode(" ", $allTags).'</td>';
+            $dataJS .= '<td>'.implode(" ", $allTags).'</td>';
             if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
             {
               if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
@@ -2023,6 +2027,8 @@ wp_die();
           }
 		  $dataJS .='</tr>';
           $data[] = $nestedData;
+		  $i++;
+
       }
        
         $draw           = $_POST['draw'];
