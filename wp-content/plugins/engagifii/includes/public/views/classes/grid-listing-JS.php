@@ -318,17 +318,16 @@ $filter_content = removeWhitespace($filter_content);
           success: function(response) { 
 		  	var data =   response; 
 			$('tbody').html(JSON.parse(data)['data']);
-			//initDT();
-			$('#ebtmaintable').DataTable();
+			initDT();
+			//$('#ebtmaintable').DataTable();
 		  }
         });
  function initDT(){
    table = $('#ebtmaintable').DataTable( {
-        "pageLength": '<?php echo $default_length; ?>',
+       "pageLength": '<?php echo $default_length; ?>',
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-        //"dom": '<"row"<"col-md-11 col-10"><"top-filter col-md-1 col-2 text-right">><"row"<"col-sm-12 custom-scroll"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-        "bInfo":false,
+		 "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+		"bInfo":false,
         "processing": true,
         "searching": true,
         "ordering":true,
@@ -340,7 +339,6 @@ $filter_content = removeWhitespace($filter_content);
           { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
             "orderable": false
           },
-          //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
 		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
@@ -352,14 +350,7 @@ $filter_content = removeWhitespace($filter_content);
            $(td).attr('data-order', cell ); 
        		 }
     	 },
-		 /*{'targets': <?php //echo array_search('sectionname',$class_visible_column_list);?>, 
-		  		'createdCell':  function (td, cellData, rowData, row, col) {
-			  var html = $(cellData);
-			  var editor = $("<p>").append(html);
-			  var cell = editor.find("span:first-child a").text().toLowerCase();
-           $(td).attr('data-order', cell.replace(/\s/g, '') ); 
-       		 }
-    	 }*/
+		 
 		 <?php } ?>
         ],
         "language": {
@@ -369,37 +360,15 @@ $filter_content = removeWhitespace($filter_content);
         "oLanguage": {
             "sLengthMenu": "Show _MENU_ records per page"
         },
-       /* "serverSide": true,
-        "ajax": {
-			  
-            "url": engagifiiUrl_ajaxurl,
-            "type": "POST",
-            "data": function(d) {  
-              d.action='classes'; 
-              d.courses = courses;
-              d.instructors = instructor;  
-             // d.createdDate = createdDate;   
-			   d.minRange = minRange; 
-            d.maxRange = maxRange;
-			d.minReg = minReg;
-			d.maxReg = maxReg;
-			d.class_start_date = class_start_date;
-			d.class_end_date = class_end_date;
-			d.classStates=classStates;
-			d.titleColumn = titleColumn;
-            }, 
-			
-        },*/
-		//"data": <?php //echo json_encode($dataa);  ?>,
+      
         createdRow: function (row, data, index) { 
-             //$(row).addClass( 'bg-white' );
+             
         },  
        //"columns":<?php //echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
 			 
 			 dt_dropdown();
 			 
-			// dt_titleSearch();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -416,15 +385,7 @@ dt_titleSearch('Search classes');
   <?php
 }
   ?>
-		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
-		 */
+		
 
     },
     });

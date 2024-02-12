@@ -22,7 +22,7 @@ table tbody tr.selected {
 <div class="containerEngagii">
 <div class="container-fluid pb-4">
 	<div class="row row justify-content-end">
-    	<div class="col-auto"><button  type="button" class="btn btn-primary gt " disabled>Generate Transcript</button></div>
+    	<div class="col-auto"><button  type="button" class="btn btn-primary gt " disabled><i class="far fa-file-pdf mr-2"></i>Print pdf</button></div>
     	<div class=" col-auto text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course ml-2"></div>
         </div>
     </div>

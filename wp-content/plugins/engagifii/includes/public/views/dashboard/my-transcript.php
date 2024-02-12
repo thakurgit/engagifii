@@ -155,6 +155,10 @@ z-index:-1;
 </div>
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    	<div><h6>Credit Earned Statistics</h6>
+    <p class="mb-0">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong><br>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></p>
+    </div>
+
   <?php echo do_shortcode('[courses-list-ByPerson]'); ?>
   </div>
 </div>
