@@ -56,6 +56,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'endorsement-calendar'    => 'endorsement_calendar',
 			'class-list-with-pagination' => 'class_list_pagination',
 			'event-list' => 'event_grid_view',
+			'event-listByPerson' => 'event_grid_view_person',
 			'events-details' => 'events_details',
 			'events-calendar'    => 'events_calendar',
 			'events-list-calendar' => 'events_list_calender_grid_view', 
@@ -421,6 +422,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	{
 		ob_start();
 		include $this->basePath.'includes/public/views/events/grid-listing.php';
+		return ob_get_clean();
+	}
+	public function event_grid_view_person()
+	{
+		ob_start();
+		include $this->basePath.'includes/public/views/events/grid-listingbyperson.php';
 		return ob_get_clean();
 	}
 	public function events_list_calender_grid_view($attr)
