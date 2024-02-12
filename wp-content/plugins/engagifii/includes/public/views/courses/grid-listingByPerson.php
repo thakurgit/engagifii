@@ -9,9 +9,9 @@
    /* $classes = $obj->courseAllClasses($date);
     $tags    = $obj->courseAllTags($date);
     $instructor = $obj->courseAllInstructors($date);
-    $dateRange  = $obj->courseDateFilter($date);
+    $dateRange  = $obj->courseDateFilter($date);*/
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));*/
+    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
 ?>
 <style>
