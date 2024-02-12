@@ -159,8 +159,8 @@ z-index:-1;
     <p class="mb-0">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong><br>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></p>
     </div>
 
-  <?php //echo do_shortcode('[courses-list-ByPerson]');
-  include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
+  <?php echo do_shortcode('[courses-list-ByPerson]');
+  //include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
   </div>
 </div>
 
