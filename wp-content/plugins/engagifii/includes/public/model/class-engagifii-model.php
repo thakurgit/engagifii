@@ -2129,7 +2129,7 @@ wp_die();
         //if($courses_detail_page){
            // $courses_detail_page_link=get_permalink( $courses_detail_page );	
         //}else{
-            $courses_detail_page_link= site_url() .'engagifii-profile/my-transcript/course-details/';	 
+            $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
         //}
         
         $postedData = $this->_prepareCoursePostDataByPerson();
