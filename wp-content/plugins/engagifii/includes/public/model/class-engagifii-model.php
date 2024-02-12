@@ -2131,17 +2131,23 @@ wp_die();
         //}else{
             $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
         //}
+    $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
         
-        $postedData = $this->_prepareCoursePostDataByPerson();
-		//print_r($postedData['profileId']);
+        //$postedData = $this->_prepareCoursePostDataByPerson();
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"6CB08110-069A-49BB-A3D9-3F941CCF549A","groupByType":3},"includeTotal":true}';
+        $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
+		//print_r($dataResponse);
 		//die;
-        $dataResponse = $this->submitApiRequest("Courses/CoursePagingListByPeople/".$postedData['profileId']."/", $postedData, "POST", 'courses');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         $request = $_GET;
         $data    = array();
-
         foreach ($collection as $key => $value) {
 			//print_r($value->course->name);
 			//die;
@@ -2150,18 +2156,38 @@ wp_die();
             $classPopover      = '';
             
             /*if(count($value->certifiedInstructors))
-                $instructorPopOver = $this->_popOverInstructorData($key, $value->certifiedInstructors);
+                $instructorPopOver = $this->_popOverInstructorData($key, $value->certifiedInstructors);*/
 
-            if(count($value->courseClasses))
-                $classPopover   = $this->_popOverClassesData($key, $value->courseClasses);*/
+            if(count($value->class)){
+               // $classPopover   = $this->_popOverClassData1($key, $value->class);
+			}
 
             ## row data
-			$nestedData['course-select']='<input  type="checkbox" class="select-row" value="'.$value->course->id.'"/>';
-            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.$courses_detail_page_link.'?courseId='.$value->course->id.'"><img src="'.$value->course->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg" alt="course-icon">'.$value->course->name.'</a>';
-            $nestedData['coursetype'] = $value->course->objectType;
+			$nestedData['course-select']='<input  type="checkbox" class="select-row" value="'.$value->id.'"/>';
+            $nestedData['coursename'] = '<a class="d-flex align-items-center" href="'.$courses_detail_page_link.'?courseId='.$value->id.'"><img src="'.$value->icon->iconReference.'" class="img-fluid mr-3 img-icon-lg d-none" alt="course-icon">'.$value->name.'</a>';
+            $nestedData['coursetype'] = $value->creditType->subObjectName;
+            $nestedData['classes'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
+			if(count($value->class)){
+				$classPopover = dd_header('Classes');
+				$subItems = "";
+				$li=1;
+				foreach ($value->class as $key => $rowData) {
+					$classStart = $rowData->startDate;
+					$classEnd = $rowData->endDate;
+					$class='';
+					if($li%2==1){
+					  $class='bg-light';	
+					}
+					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a target="_blank" href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('h:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('h:i A', strtotime($classEnd)).'</li>';
+					$li++;
+				}
+				$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+            	 $nestedData['classes'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->class).'</span></div>'.$classPopover.'</div>';
+			}
+			
 			$dt = new DateTime($value->courseStatusDate);
             $nestedData['completiondate'] =   $dt->format('M d, Y');
-            $nestedData['credithours'] = $value->credits[0]->creditHours."/".$value->credits[0]->totalCreditHours;
+            $nestedData['credithours'] = $value->grantedCredits."/".$value->totalCredit;
             $courseTag = $value->tags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {

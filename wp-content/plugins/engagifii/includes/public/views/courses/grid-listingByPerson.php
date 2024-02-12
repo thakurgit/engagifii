@@ -33,7 +33,7 @@ table tbody tr.selected {
 		    <tr>    
 		    	<?php
 				$i=0;
-				$colNames =['course-select','Course Name','Course Type','Completion Date','Credit Hours'];
+				$colNames =['course-select','Course Name','Course Type','Classes','Completion Date','Credit Hours'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
@@ -157,11 +157,11 @@ $filter_course = removeWhitespace($filter_course);
        	"ordering":true,
 		"order": [[<?php echo array_search('Course Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['course-select','tags','coursetype','completiondate','credithours'],
+          { "targets": ['course-select','tags','coursetype','completiondate','credithours','classes'],
             "orderable": false
           },
 		  //{ className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["completiondate","credithours","tags","coursetype","course-select"] },
+		  { className: "text-center", "targets": ["completiondate","credithours","tags","coursetype","course-select","classes"] },
 		   
         ],
 		
