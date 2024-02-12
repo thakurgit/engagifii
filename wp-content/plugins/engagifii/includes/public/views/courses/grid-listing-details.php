@@ -50,9 +50,14 @@
    
 
 ?>
-<div class="col-sm-12">
-    <a href="<?php echo $courses_page_link;?>" class="go-back"> Go Back </a>
-</div>
+<?php
+$current_user = wp_get_current_user();
+if ( in_array( 'subscriber', $current_user->roles ) ) {?> 
+    <a href="<?php echo site_url().'/engagifii-profile/my-transcript/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<?php } else { ?>
+    <a href="<?php echo $courses_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<?php } 
+?>
 
 <div class="engagifii-box border border-bottom-0">
     <div class="col-sm-12 d-md-flex p-1">
