@@ -58,9 +58,9 @@
 <?php
 $current_user = wp_get_current_user();
 if ( in_array( 'subscriber', $current_user->roles ) ) {?> 
-    <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
-<?php } else { ?>
     <a href="<?php echo site_url().'/engagifii-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<?php } else { ?>
+    <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
 ?>
 
