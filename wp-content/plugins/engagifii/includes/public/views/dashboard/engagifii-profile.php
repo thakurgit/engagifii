@@ -84,10 +84,8 @@ include 'sidebar_nav.php';
   </div>
   <div class="flex-grow-1 ml-3 pt-3">
   	<h4 class=""><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
-    <div class="d-flex">
-    	<?php if($peopleDATA->people->pid) { ?>
-        <span class="mr-4 bg-white rounded py-1 px-2"><strong>PID: </strong><?php echo $peopleDATA->people->pid; ?></span>
-    <?php } 
+    <div class="d-flex">    	
+    <?php 
 	$status = 'Inactive';
 			$statusColor = 'red';
 			 if($peopleDATA->people->isActive==true) {

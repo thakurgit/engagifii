@@ -345,7 +345,7 @@ var table = $('#ebtmaintable').DataTable( {
           "url": ajax_url_evt,
             "type": "POST",
             "data": function(d) {           
-            d.action = 'events';   
+            d.action = 'eventsbyperson';   
               d.tags    = tags; 
               d.types    = types; 
               d.locations    = city; 

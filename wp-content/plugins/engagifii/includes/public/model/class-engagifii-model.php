@@ -2560,12 +2560,8 @@ wp_die();
 	        $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
-	if($events_detail_page){
-		$events_detail_page_link=get_permalink( $events_detail_page );	
-	}else{
-		$events_detail_page_link= site_url() .'/event-detail/';	 
-	}
-        $postedData = $this->_prepareEventsData();
+	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
+	     $postedData = $this->_prepareEventsData();
         //print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;

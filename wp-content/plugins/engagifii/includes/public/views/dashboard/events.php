@@ -12,5 +12,5 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 } 
  include 'sidebar_nav.php'; 
- echo do_shortcode('[event-list]'); 
+ echo do_shortcode('[eventsbyperson]'); 
 
