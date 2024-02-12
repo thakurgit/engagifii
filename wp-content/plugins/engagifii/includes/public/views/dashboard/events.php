@@ -12,5 +12,6 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 } 
  include 'sidebar_nav.php'; 
- echo do_shortcode('[event-listByPerson]'); 
+include $this->basePath.'includes/public/views/events/grid-listingbyperson.php';
+ //echo do_shortcode('[event-listByPerson]'); 
 
