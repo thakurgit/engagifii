@@ -16,7 +16,7 @@ $authenticationAward = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0
 
 $profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
 $url = "https://engagifii-preview4-crm.azurewebsites.net/api/v1/GetPersonDetailByEmail/".$userEmail."/".$tenant_code;
-$awardURL = 'https://engagifii-qa-tna.azurewebsites.net/api/v1/Awards/AwardsCertificationsByPeople/'.$profileId;
+$awardURL = 'https://engagifii-preview4-tna.azurewebsites.net/api/v1/Awards/AwardsCertificationsByPeople/'.$profileId;
 $awardpayload = '{"itemCount":10,"pageNumber":1,"sortBy":"name","sortDirection":"asc","filterBody":{}}';
 
 // Initialize cURL multi handler
