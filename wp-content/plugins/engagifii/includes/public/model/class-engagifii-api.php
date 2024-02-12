@@ -19,6 +19,7 @@ class Engagifii_API{
 	*/
 	protected function submitApiRequest($requestUrl,$requestData,$requestType="POST", $module)
 	{
+		
 		$options = get_option( 'ebt_api_settings' );
 		$prepareApiResponse = array();
 		$authentication = '';
@@ -27,6 +28,7 @@ class Engagifii_API{
 		{
 			
 			if($module == 'legislation'){
+				//print_r(json_encode($requestData));
 				$ebt_api_url = $options['lbt_api_url'];
 				$ebt_tenant_code = $options['lbt_tenant_code'];
 			}else if($module == 'legislation-auth'){
