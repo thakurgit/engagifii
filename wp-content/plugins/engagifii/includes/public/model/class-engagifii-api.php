@@ -53,14 +53,10 @@ class Engagifii_API{
 				$authentication = 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDQzNzk4MzQsImV4cCI6MTczNTkxNTgzNCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA0Mzc5ODM0LCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjEvNC8yMDI0IDI6MjE6NTYgUE0iLCJjdXJyZW50LWxvZ2luIjoiMS80LzIwMjQgMjo1MDozNCBQTSIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.ikBTbijK5ERYN8kcjEUZWYToWQCXzrLm7eiCZYHAo8FXEypknmESO7YHrH-k36WOWNf3F1E-uKGtCfjMBuQqa_pYPHJKMBpWQuErZ2-HGLXj7YvIBPwbQtTuTebVbFcaeDJv1-wZo9RnxEOgvJQntDrSEP_Jwv8jxM05zckBNR7GwqGIxttO0H4E6-4oInej4F7pTT0LThegvBl83lOCUrhBwFV-vYM4SnpfSgmgnG8NpIv9M2OoiaXFEy8uN36WGh8aH0DW19COpqARskmL0Hje8W435X6V5x-3e1AZFlfKTor81dA_mKsqlSjFX-1UNKxHS7kwaNG-aBAK4iB3Tw';
 				} else if($module == 'dashboard'){
 				$ebt_api_url = 'https://engagifii-preview4-crm.azurewebsites.net/api/v1';
-				$ebt_tenant_code ['tenant_code'] = 'psba';
+				$ebt_tenant_code ['tenant_code'] = 'accg';
 $authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE2MDk5MDcxMTEsImV4cCI6MTYwOTkxNDMxMSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiODgwMzBjYzktYWMxNS00NzlkLWJhY2ItNmYzMTAzNDBkNmMxIiwiYXV0aF90aW1lIjoxNjA5OTA3MTExLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiJodHRwczovL2VuZ2FnaWZpaWlkc3RvcmFnZS5ibG9iLmNvcmUud2luZG93cy5uZXQ6NDQzL3Byb2ZpbGVwaWNzL3Byb2ZpbGUtcGljODgwMzBjYzktYWMxNS00NzlkLWJahY2ItNmYzMTAzNDBkNmMxLnBuZyIsInBpY3R1cmUtaWNvbiI6Imh0dHBzOi8vZW5nYWdpZmlpaWRzdG9yYWdlLmJsb2IuY29yZS53aW5kb3dzLm5ldDo0NDMvcHJvZmlsZXBpY3MtaWNvbi9wcm9maWxlLXBpYzg4MDMwY2M5LWFjMTUtNDc5ZC1iYWNiLTZmMzEwMzQwZDZjMS5wbmciLCJnaXZlbl9uYW1lIjoiRW5nYWdpZmlpIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjEvNi8yMDIxIDQ6MjM6MjIgQU0iLCJjdXJyZW50LWxvZ2luIjoiMS82LzIwMjEgNDoyNToxMSBBTSIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.siQUIA6URga2cwvFDOXdRs1Y2l71KH65hijXt_X-wEgN6o5to-TowYneiYPfdq9zBUilpnoJPsx73m7JUwer7YPMdHOBZCEcNYcOUPpjcTEfut_Bflj_CYfQb-RcUIbsdzoWEDJB-hRg-g-V-1CEWOsFbnRWxbPOliZnnco-YW0GGFZErrXhwb4YixwtjBidyaffomtn1TXN8pjwq2kq3SrpyzCPTs8H5WqXj7sA3AmA9fFWBFZQsbgCxbg_bmeYGE4S9YWt2NUZjT39ld1WrxAVuzx5F1VX0iVYMe0YIMBNB075upMvue1Tj3K7k-1j0oQnl_3anZ2Ph5ysUbEXQQ';
 				}
 			$tenant_code = $ebt_tenant_code ['tenant_code'];
-			/*print_r($ebt_api_url);
-			print_r($tenant_code);
-			print_r($authentication);
-			die;*/
 			$curl = curl_init();
 			curl_setopt_array($curl, array(  
 
@@ -95,15 +91,6 @@ $authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NER
 		return $prepareApiResponse; 
 		
 	}
-		/*public function psbaprofile(){
-
-		$postData='{}';
-		$responseArray = array();
-		$apiUrl = 'GetPersonDetailByEmail/dchristopher@yopmail.com/psba';
-		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'dashboard');
-		$responseArray = json_decode($response['api_response'], true);
-		return $response;
-	}*/
 
 
 	/*
@@ -682,6 +669,15 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
+	public function engagifiiProfile($tenant, $emailId){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'GetPersonDetailByEmail/'.$emailId.'/'.$tenant;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
+
 
 //public official API
 	public function publicOfficial(){
