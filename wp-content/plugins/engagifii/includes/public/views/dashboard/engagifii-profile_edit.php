@@ -5,6 +5,7 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
+$tenant_code = 'psba';
 $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
@@ -287,7 +288,6 @@ include 'sidebar_nav.php';
 				
 				function xxx(){
 			  const dpUrl = 'https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>';
-			  console.log(imageThumbpayload);
 					  const dpoptions = {
 						method: 'PUT',
 						headers: {
@@ -337,7 +337,7 @@ var tagsdata = {
 	  "tabId":null,
   "tabGroupId":null,
   "tabGroupFieldId":null,
-  "loggedInUserId":"f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+  "loggedInUserId":"<?php echo $peopleDATA->people->id; ?>",
   "profileUserId":"<?php echo $peopleDATA->people->id; ?>",
   "isHeader":true,
   "headerFieldName":"tags",
@@ -359,7 +359,7 @@ payload.push( tagsdata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "firstName",
@@ -382,7 +382,7 @@ payload.push( firstNamedata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "middleName",
@@ -405,7 +405,7 @@ payload.push( middleNamedata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "lastName",
@@ -431,7 +431,7 @@ payload.push( lastNamedata );
     "tabId": "<?php echo $infotabId; ?>",
     "tabGroupId": "<?php echo $groupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
-    "loggedInUserId": "f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": false,
     "headerFieldName": "",
@@ -474,12 +474,11 @@ for(i = 0 ; i < keys.length && i < values.length ; i++){
 //console.log(obj);
 //console.log(oldobj);
 if(JSON.stringify(obj)!=JSON.stringify(oldobj)){
-console.log('address changed');
 	  	var Addressdata<?php echo $key;?> = {
     "tabId": "<?php echo $infotabId; ?>",
     "tabGroupId": "<?php echo $groupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
-    "loggedInUserId": "f1b0c513-d43c-4e2f-a29d-10f2ebdabc77",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": false,
     "headerFieldName": "",

@@ -98,13 +98,6 @@ $title_key = -1;
             "type": "POST",
             "data": function(d) {  
             	d.action='downloadsByPerson'; 
-            	d.classes = classes;
-            	d.tags    = tags;
-            	d.instructors = instructor;  
-            	d.createdDate = createdDate;
-				d.profileId = profileId;
-				  
-                 
             }, 
         },
         createdRow: function (row, data, index) { 
