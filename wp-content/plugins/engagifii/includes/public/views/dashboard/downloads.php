@@ -20,9 +20,9 @@ return;
 $title_key = -1;
 ?>
 <div class="container-fluid mb-3">
-    	<div class="d-flex justify-content-between align-items-center">
-        	<h3 class="mb-0">My Downloads</h3>
-        	<button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i></i>Clear Downloads</button>
+    	<div class="d-flex align-items-center">
+        	<h3 class="mb-0 mr-5"><i class="fas fa-download mr-3"></i>My Downloads</h3>
+        	<button type="button" id="clearDownloads" class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i></i>Clear Downloads <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
         </div>
 </div>
 	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative">
@@ -37,6 +37,7 @@ $title_key = -1;
                   if($key == 'File Name'){
                     $title_key = $i;
                   }
+				  $i++;
 				  if($key == 'download-select'){
 					echo '<th class="'.$key.'"><input type="checkbox"></th>'; 
 					continue; 
@@ -44,7 +45,7 @@ $title_key = -1;
 		    				?>
 		    					<th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key ?></th>
 		    				<?php
-                  $i++;
+                  
 				}
 		    	?>		
 
@@ -64,7 +65,7 @@ $title_key = -1;
   var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
   var selectedRow=[];
   var val;
-	var tableCourse = $('#ebtmaintable').DataTable( {
+	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
@@ -131,6 +132,23 @@ $title_key = -1;
     } ).dataTable();
 	
 
+$('#clearDownloads').click(function(){
+	$('#clearDownloads').attr('disabled','').find('span').show();
+	var logged_in_user = localStorage.getItem("logged_in_user");
+	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'clearDownloads',
+          },
+          success: function(response) { 
+		  	$('#clearDownloads').removeAttr('disabled').find('span').hide();
+		  	if(response){
+				table.draw();	
+			}
+		  }
+        });
+});
 
 
 
@@ -138,56 +156,7 @@ $title_key = -1;
 <?php
   if($title_key > -1){
 ?>
-
-  $('#ebtmaintable1 thead tr th:eq('+titleColumn+')').each( function (i) {
- 
-         var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchcourses" placeholder="Search courses" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
-
-function delay(callback, ms) {
-  var timer = 0;
-  return function() {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      callback.apply(context, args);
-    }, ms || 0);
-  };
-}
-  $( 'input', this ).keyup(delay(function (e) {
-	  var titlesearch = this.value;
-            if ( tableCourse.column(titleColumn).search() !== titlesearch ) {
-				tableCourse.column(titleColumn).search(titlesearch).draw();
-            }
-}, 500));
-
-
- $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$('.clear-search').show();
-			} else {
-				$('.clear-search').hide();
-			} 
- });
-$('th .clear-search').click(function(e){
-	 $('#searchcourses').val('');
-	$('.clear-search').hide();
-	e.stopPropagation();
-	tableCourse.column(titleColumn).search('').draw();
- });
-
-    } );
-	
-	$(document).ready(function (){    
-    $('#searchcourses, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchcourses').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-});
+  dt_titleSearch('Search files...');
   <?php
 }
   ?>
@@ -223,7 +192,7 @@ $('#searchcourses').on("keydown", function(event) {
   		createdDate = $('input[name="createdbetween"]').val();
       
       $(".flt-btn-course .filter-area").toggleClass('d-none');
-  		tableCourse.draw();
+  		table.draw();
 
   	});
 
@@ -246,7 +215,7 @@ $('.flt-btn-course .clear-all').click(function(){
             createdDate = '';
             instructor = '';
             classes = '';
-            tableCourse.draw();
+            table.draw();
 
       })
 

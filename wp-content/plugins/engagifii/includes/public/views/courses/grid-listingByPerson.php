@@ -56,6 +56,7 @@ table tbody tr.selected {
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
 
+
 </div>
 <?php
 function removeWhitespace($buffer)
@@ -267,20 +268,12 @@ $('.gt').click(function(){
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'generateTranscript',
+              action:'generateDownloads',
 			  CourseId:selectedRow,
-			  StudentIds: logged_in_user,
-			  CreatedBy:logged_in_user,
-			  OrderBy: "FirstName",
-			  IsConsolidatedFileSelected: false,
-			  RequestId: '',
-			  FileStructureForMultiple: "",
-			  OutputFolderName: "",
-			  ConsolidatedFileName: "",
-			  CertificateIdMapModel: '',
+			  groupById: logged_in_user,
           },
           success: function(response) { 
-		  	var data =   response; 
+		  	$('#pdfcreated').modal('show')
 			
 		  }
         });

@@ -21,6 +21,8 @@ class abstractModelEngagifii extends Engagifii_API
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['downloadsByPerson', 'downloadDataByPerson'],
+        ['generateDownloads', 'generateDownloadsByPerson'],
+        ['clearDownloads', 'clearDownloadsByPerson'],
         ['classes', 'classLoadGridData'],
         ['classesJS', 'classesDataJS'],
         ['classsearch', 'classSearchLoadGridData'],
@@ -2319,7 +2321,31 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
-    public function endorsementLoadGridData(){
+   public function generateDownloadsByPerson(){
+        
+        $postedData = array();
+		$postedData['itemCount']=100;
+		$postedData['sortBy']='name';
+		$postedData['sortDirection']='asc';
+		$postedData['filterBody']['groupById']=$_POST['groupById'];
+		//$postedData['filterBody']['groupById']='5E7F3FED-C3F8-4B38-A25F-4F6A32511337';
+		$postedData['filterBody']['filterRules']=[];
+		$postedData['filterBody']['startDate']='2022-04-01T11:50:40';
+		$postedData['filterBody']['endDate']='2023-03-31T11:50:40';
+		$postedData['filterBody']['groupByType']=3;
+        $dataResponse = $this->submitApiRequest("CourseReport/GenerateCreditsEarnedGroupByCoursesPDFReport", $postedData, "POST", 'reports');
+        $collection = json_decode($dataResponse['api_response'])->result;
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+	public function clearDownloadsByPerson(){
+		$postedData =array();
+        $dataResponse = $this->submitApiRequest("exportpeople/get/clearallbyuser", $postedData, "GET", 'dashboard');
+        $response = json_decode($dataResponse['api_response']);
+        return $response;
+        wp_die();
+    }
+	 public function endorsementLoadGridData(){
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $endorse_detail_page = $front_pages['endorse_detail_page'];
