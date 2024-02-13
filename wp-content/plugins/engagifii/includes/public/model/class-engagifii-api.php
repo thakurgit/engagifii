@@ -59,6 +59,10 @@ $authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NER
 				$ebt_api_url = 'https://engagifii-preview4-engagifiireport.azurewebsites.net/api/v1';
 				$ebt_tenant_code ['tenant_code'] = 'accg';
 $authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDcyMDgxMTQsImV4cCI6MTczODc0NDExNCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA3MjA4MTEzLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjAyLzA2LzIwMjQgMDg6MTY6MzUiLCJjdXJyZW50LWxvZ2luIjoiMDIvMDYvMjAyNCAwODoyODozNCIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.Nrfe03f61j8sT2PwjRoA4LIf-EnkT__WMdiEbV0xr2kcpAWdbeAJlzMIGkms7Cge3EQ-DcS_yaaGSFtzjt83pvCULp9a75OMRyklMhEPxpT1AIlmxgLQnYGEpsCvYfYBKeTT8bX2kz3KGrNYsSf9f0-J4_nhF6iIeH_DROP3M2h8NcbyRc4wLxe00X8_-3vwO2lUIjQL6TYcEppIKdNRqyJ-odOP8dwfW2WYZJxKGPSRwEbWVTCnQyWQ03Y9hf7caAKAD8kI-6Xz7zPiT03ZBLZFHH99dBDCmfiGPIs0fQdlPqjbYGZDE0uhVvuJTwtNP3GqTQ93ai5Hz5pKfWsT0g';
+				} else if($module == 'awards'){
+				$ebt_api_url = 'https://engagifii-preview4-tna.azurewebsites.net/api/v1';
+				$ebt_tenant_code ['tenant_code'] = 'psba';
+$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDU5MjEwNDAsImV4cCI6MTcwNTkyODI0MCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA1OTIxMDQwLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjAxLzIyLzIwMjQgMTA6NTQ6NDciLCJjdXJyZW50LWxvZ2luIjoiMDEvMjIvMjAyNCAxMDo1NzoyMCIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.g-LxFKPj00MXMUkupYlN1trw3i_mL-0u3kGlQ31qli5VzQI-NFlnX5skewt-9OJKPOfItfMbM8Rdt5_qf4noFk3WEExwGjSHbY1C8RJRqCFbf9WybM2kqWk9A3YFy9ZbZD5XUd4lojb3cZQdSpMdcBvlMhTTcf33xhgsrf4Uy2BT1W8SP4ukZb6AqvkSeCtCrLEaUoWwn6kGcFjiOxycbdn1x9Gzy5C0K6eUoWi1Q2oeobDhgKXiRVSXuFn7c62N0U37t-1AnD2xXDPaJjm-mpWmx1OX1ZZqhb73Tolt_S5dwIzigI7xhSzviecp90mrE3Z6IkHQmt11nkjSqnLHEQ';
 				}
 			$tenant_code = $ebt_tenant_code ['tenant_code'];
 			$curl = curl_init();
@@ -677,6 +681,22 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = array();
 		$apiUrl = 'GetPersonDetailByEmail/'.$emailId.'/'.$tenant;
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
+	public function engagifiiProfileAwardsCount($profileId){
+		$postData='{}';
+		$responseArray = array();
+		$apiUrl = 'Awards/AwardsCertificationsByPeopleCount/'.$profileId;
+		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'awards');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
+	public function engagifiiProfileAwards($profileId,$awardDataCount){
+		$postData='{"itemCount":'.$awardDataCount.',"pageNumber":1,"sortBy":"name","sortDirection":"asc","filterBody":{}}';
+		$responseArray = array();
+		$apiUrl = 'Awards/AwardsCertificationsByPeople/'.$profileId;
+		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}

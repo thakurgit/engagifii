@@ -5,7 +5,12 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
-include 'dashboard-api.php';
+$user_id  = get_current_user_id();
+$user     = get_userdata($user_id);
+$userEmail = $user->user_email;
+    $obj      =  new Engagifii_API();
+    $engagifiiProfile = $obj->engagifiiProfile('psba',$userEmail);
+	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
