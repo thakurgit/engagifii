@@ -2142,7 +2142,7 @@ wp_die();
 	}
         
         //$postedData = $this->_prepareCoursePostDataByPerson();
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"6CB08110-069A-49BB-A3D9-3F941CCF549A","groupByType":3},"includeTotal":true}';
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"dd8e61f5-9cd0-4b9a-809a-f0573f2fa74f","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
 		//print_r($dataResponse);
 		//die;
@@ -2324,16 +2324,19 @@ wp_die();
    public function generateDownloadsByPerson(){
         
         $postedData = array();
-		$postedData['itemCount']=100;
+		$postedData['itemCount']=0;
 		$postedData['sortBy']='name';
 		$postedData['sortDirection']='asc';
-        $postedData['sourceType']=2;
+        //$postedData['sourceType']=2;
 		$postedData['filterBody']['groupById']=$_POST['groupById'];
-		//$postedData['filterBody']['groupById']='5E7F3FED-C3F8-4B38-A25F-4F6A32511337';
-		$postedData['filterBody']['filterRules']=[];
+		$postedData['filterBody']['filterRules'][0]['fieldId']='courses';
+		$postedData['filterBody']['filterRules'][0]['filterType']=1;
+		$postedData['filterBody']['filterRules'][0]['selectedValues']=$_POST['CourseId'];;
 		$postedData['filterBody']['startDate']='2022-04-01T11:50:40';
 		$postedData['filterBody']['endDate']='2023-03-31T11:50:40';
 		$postedData['filterBody']['groupByType']=3;
+		//print_r(json_encode($postedData));
+		//die;
         $dataResponse = $this->submitApiRequest("CourseReport/GenerateCreditsEarnedGroupByCoursesPDFReport", $postedData, "POST", 'reports');
         $collection = json_decode($dataResponse['api_response'])->result;
         echo json_encode($dataResponse);

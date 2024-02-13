@@ -1,3 +1,4 @@
+<?php $site_url = site_url();?>
 <style>
  body{
 padding-left: 300px;
@@ -165,7 +166,7 @@ border-bottom-color:white ;
         <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/mypsba-logo.png" alt="" class="img-fluid" style="max-height:65px">
         </div>
         <?php //} 
-		$site_url = site_url();
+		
 global $post;
     $post_slug = $post->post_name;
 		$active = 'active';
