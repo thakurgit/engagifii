@@ -20,8 +20,10 @@ return;
 include 'sidebar_nav.php';
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($peopleDATA->people->id);
  $awardDataCount = json_decode($engagifiiProfileAwardsCount['api_response']);
- $engagifiiProfileAwards = $obj->engagifiiProfileAwards($peopleDATA->people->id, $awardDataCount);
- $awardData = json_decode($engagifiiProfileAwards['api_response']);
+ if($awardDataCount>0){
+   $engagifiiProfileAwards = $obj->engagifiiProfileAwards($peopleDATA->people->id, $awardDataCount);
+   $awardData = json_decode($engagifiiProfileAwards['api_response']);
+ }
 ?>
    <style>
 /*.accordion .card-header button::after {
@@ -63,6 +65,9 @@ include 'sidebar_nav.php';
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane p-3 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+  <?php if($awardDataCount<1){ 
+  	echo '<h4>data not available</h4>';
+  }else{?>
   	<div class="d-flex justify-content-between align-items-end mb-4">
   	<div><h6>Badge Statistics</h6>
     <p class="mb-0">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong><br>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></p>
@@ -163,6 +168,7 @@ z-index:-1;
   </div>
   
 </div>
+<?php } ?>
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
     	<div><h6>Credit Earned Statistics</h6>
