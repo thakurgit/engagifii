@@ -20,6 +20,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['legislation', 'legislationLoadGridData'],
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
+        ['downloadsByPerson', 'downloadDataByPerson'],
         ['classes', 'classLoadGridData'],
         ['classesJS', 'classesDataJS'],
         ['classsearch', 'classSearchLoadGridData'],
@@ -2276,7 +2277,48 @@ wp_die();
         }
         return $postData;
     }
+	public function downloadDataByPerson(){
+        
+        //$postedData = $this->_prepareCoursePostDataByPerson();
+		$postedData = '{"itemCount":10,"sortBy":"createdDate","sortDirection":"desc","pageNumber":1,"filterBody":{"reportName":"","status":[],"fromDate":"","toDate":""}}';
+        $dataResponse = $this->submitApiRequest("exportpeople/allreport", json_decode($postedData), "POST", 'dashboard');
+        $collection = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+		//print_r($collection);
+		//die;
+        $request = $_GET;
+        $data    = array();
+        foreach ($collection as $key => $value) {
+            $nestedData = array();
+            
+            ## row data
+			$nestedData['download-select']='<input  type="checkbox" class="select-row" value="'.$value->id.'"/>';
+			if($value->reportLink){
+            $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
+			}else{
+            $nestedData['filename'] = $value->reportName;
+			}
+            $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('h:i A', strtotime($value->createdDate));
+            $nestedData['status'] = $value->status;
+            $data[] = $nestedData;
+        }
 
+       
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+
+        echo json_encode($json_data);
+        wp_die();
+    }
     public function endorsementLoadGridData(){
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];

@@ -75,6 +75,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myTransactions' => 'engagifii_myTransactions',
 			'engagifii-myEvents' => 'engagifii_myEvents',
 			'engagifii-myEvents-detail' => 'engagifii_myEvents_detail',
+			'engagifii-myDownloads' => 'engagifii_myDownloads',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -114,6 +115,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/dashboard/events-detail.php';
 		return ob_get_clean();
 	}	
+	public function engagifii_myDownloads(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/downloads.php';
+		return ob_get_clean();
+	}
 	public function engagifii_myTransactions(){
 		ob_start();
 		include $this->basePath.'includes/public/views/dashboard/my-transactions.php';
