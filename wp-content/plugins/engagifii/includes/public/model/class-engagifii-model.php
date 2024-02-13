@@ -2282,7 +2282,7 @@ wp_die();
 	public function downloadDataByPerson(){
         
         //$postedData = $this->_prepareCoursePostDataByPerson();
-		$postedData = '{"itemCount":10,"sortBy":"createdDate","sortDirection":"desc","pageNumber":1,"filterBody":{"reportName":"","status":[],"fromDate":"","toDate":""}}';
+		$postedData = '{"itemCount":10,"sortBy":"createdDate","sortDirection":"desc","pageNumber":1,"sourceType" :2,"filterBody":{"reportName":"","status":[],"fromDate":"","toDate":""}}';
         $dataResponse = $this->submitApiRequest("exportpeople/allreport", json_decode($postedData), "POST", 'dashboard');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
@@ -2327,6 +2327,7 @@ wp_die();
 		$postedData['itemCount']=100;
 		$postedData['sortBy']='name';
 		$postedData['sortDirection']='asc';
+        $postedData['sourceType']=2;
 		$postedData['filterBody']['groupById']=$_POST['groupById'];
 		//$postedData['filterBody']['groupById']='5E7F3FED-C3F8-4B38-A25F-4F6A32511337';
 		$postedData['filterBody']['filterRules']=[];
