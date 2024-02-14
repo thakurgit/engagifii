@@ -194,14 +194,12 @@ public function calendar_mode(){
            
         }
 		
-       // print_r(json_encode($postData));
       
         $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
         $collection   = json_decode($dataResponse['api_response'])->result;
         $data         = array();
         $classData    = array();
        
-        //print_r(json_encode($collection));
         foreach ($collection as $key => $value) {
             
             $class_icon = $value->parentCourse->iconReference;
@@ -781,7 +779,6 @@ public function getCalendarClassName1(){
                     $week_start_date = date("Y-m-d",strtotime($week_start_date.' +1 day'));
                     $week_end_date = date("Y-m-d",strtotime($week_end_date.' +1 day'));
                     $week_array = $this->date_range($week_start_date, $week_end_date);
-                    //print_r($week_start_date.' - '.$week_end_date);
 
             ?>
              <a href="javascript:void(0);" class="title-bar__prev position-absolute border-right border-bottom p-2 p-lg-3  text-uppercase small btn-primary" style="left: 0; top: 0" onclick="getCalendarClassName('calendar_div','<?php echo date("Y",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("m",strtotime($week_start_date.' - 7 day')); ?>','<?php echo date("d",strtotime($week_start_date.' - 7 day')); ?>');"><i class="fa fa-chevron-left"></i><span class="ml-2">Prev</span></a>
@@ -912,7 +909,6 @@ wp_die();
 //Display Calendar layout data for Events : Added by Gurpreet 
 
 public function getEventsCalendar(){
-    //print_r("hello i am in events calneder"); die;
     $year = $_POST['year'];
     $month = $_POST['month'];
     $day   = $_POST['day'] ? $_POST['day'] :date('d');
@@ -931,7 +927,6 @@ public function getEventsCalendar(){
     
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-    //print_r($events_visible_column_list);
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); 
@@ -1052,7 +1047,6 @@ public function getEventsCalendar(){
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                     <?php
                                         for($fi=0; $fi<count($filteredItems); $fi++){ 
-                                            //print_r($filteredItems[$fi]['id']);
                                             $test = $filteredItems[$fi]['name'];
                                             $test = substr($test,0,20);
                                         //echo $test.'...'; 
@@ -1351,8 +1345,6 @@ wp_die();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
-		//print_r(json_encode($dataResponse));
-		//die;
         wp_die();
     }
 
@@ -1509,8 +1501,6 @@ wp_die();
         $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
         header("Content-Type: application/json");   
         echo $dataResponse['api_response'];
-		//print_r($dataResponse);
-		//die;
         wp_die();
     }
     public function _publicOfficialSearch(){
@@ -1545,8 +1535,6 @@ wp_die();
 	 public function legislativeTags()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-       // print_r($postedData);
-		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json");  
@@ -1564,8 +1552,6 @@ wp_die();
 	 public function legislativeIssues()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-       // print_r($postedData);
-		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/tags?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json");  
@@ -2144,7 +2130,11 @@ wp_die();
         
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
+		//$titleColumn = $_POST['titleColumn'];
+		$sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $sortDirection = $_POST["order"][0]["dir"];
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
 		//print_r($postedData);
 		//die;
@@ -2250,20 +2240,21 @@ wp_die();
     }
 	public function downloadDataByPerson(){
         
-        //$postedData = $this->_prepareCoursePostDataByPerson();
-		$postedData = '{"itemCount":10,"sortBy":"createdDate","sortDirection":"desc","pageNumber":1,"sourceType" :2,"filterBody":{"reportName":"","status":[],"fromDate":"","toDate":""}}';
+		$sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $sortDirection = $_POST["order"][0]["dir"];
+		$titleColumn = $_POST['titleColumn'];
+		$title = $_POST['columns'][$titleColumn]['search']['value'];
+		$postedData = '{"itemCount":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","pageNumber":1,"sourceType" :2,"filterBody":{"reportName":"'.$title.'","status":[],"fromDate":"","toDate":""}}';
         $dataResponse = $this->submitApiRequest("exportpeople/allreport", json_decode($postedData), "POST", 'dashboard');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
-		//print_r($collection);
-		//die;
         $request = $_GET;
         $data    = array();
         foreach ($collection as $key => $value) {
             $nestedData = array();
             
-            ## row data
 			$nestedData['download-select']='<input  type="checkbox" class="select-row" value="'.$value->id.'"/>';
 			if($value->reportLink){
             $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
@@ -2441,7 +2432,6 @@ wp_die();
     // Events Grid Data
     public function eventsLoadGridData(){
         $postedData = $this->_prepareEventsData();
-        //print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
@@ -2619,7 +2609,6 @@ wp_die();
     $events_detail_page = $front_pages['events_detail_page'];
 	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
 	     $postedData = $this->_prepareEventsData();
-        //print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
@@ -2632,7 +2621,6 @@ wp_die();
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
-        //print_r($collection); 
         foreach ($collection as $key => $row) {
            
             /* getdata for tables */
@@ -2784,7 +2772,6 @@ wp_die();
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-//print_r($json_data);
         echo json_encode($json_data);
         wp_die();
     }
@@ -2794,8 +2781,6 @@ wp_die();
     public function legislationLoadGridData() {
 
         $postedData = $this->_prepareLegislationPostData();
-		//print_r(json_encode($postedData));
-		//die;
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
         header("Content-Type: application/json");
@@ -3043,8 +3028,6 @@ foreach ($seqColumns as $key => $value) {
         $postedData = $this->_publicOfficialCount();
         $postedTab  = $_POST['tab'];
 		$postedTabCount  = $_POST['tabCount'];
-		//print_r(json_encode($postedTab));
-		//die;
          $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
        	if($postedTab=='stateSenateCommittees' || $postedTab=='stateHouseCommittees' || $postedTab=='countyDeligationList'){
 			if($postedTab=='countyDeligationList'){

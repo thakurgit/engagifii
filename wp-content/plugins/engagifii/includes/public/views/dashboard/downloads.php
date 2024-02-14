@@ -55,15 +55,8 @@ $title_key = -1;
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
 <script type="text/javascript">
-	var classes = '';
-	var instructor = '';
-	var tags       = ''; 
-	var createdDate = '';
-  var endDate     = '';
-  var fv= 0;
   var titleColumn = '<?php echo $title_key; ?>';
   var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
-  var selectedRow=[];
   var val;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
@@ -97,7 +90,8 @@ $title_key = -1;
             "url": engagifiiUrl_ajaxurl,
             "type": "POST",
             "data": function(d) {  
-            	d.action='downloadsByPerson'; 
+            	d.action='downloadsByPerson';
+				d.titleColumn = titleColumn;  
             }, 
         },
         createdRow: function (row, data, index) { 

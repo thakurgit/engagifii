@@ -36,6 +36,7 @@ table tbody tr.selected {
                   if($key == 'Course Name'){
                     $title_key = $i;
                   }
+				  $i++;
 				  if($key == 'course-select'){
 					echo '<th class="'.$key.'"><input type="checkbox"></th>'; 
 					continue; 
@@ -43,7 +44,7 @@ table tbody tr.selected {
 		    				?>
 		    					<th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key ?></th>
 		    				<?php
-                  $i++;
+                  
 				}
 		    	?>		
 
@@ -177,7 +178,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
             	d.profileId = profileId;
             	d.startDate = startDate;
             	d.endDate = endDate;
-				  
+				 //d.titleColumn = titleColumn; 
                  
             }, 
         },
