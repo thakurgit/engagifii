@@ -23,6 +23,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['clearDownloads', 'clearDownloadsByPerson'],
+        ['allReports', 'allReportsByPerson'],
         ['classes', 'classLoadGridData'],
         ['classesJS', 'classesDataJS'],
         ['classsearch', 'classSearchLoadGridData'],
@@ -2142,9 +2143,9 @@ wp_die();
 	}
         
         //$postedData = $this->_prepareCoursePostDataByPerson();
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"dd8e61f5-9cd0-4b9a-809a-f0573f2fa74f","groupByType":3},"includeTotal":true}';
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
-		//print_r($dataResponse);
+		//print_r($postedData);
 		//die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
@@ -2225,59 +2226,26 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
-    public function _prepareCoursePostDataByPerson(){
-        $columnsData = [];
-        foreach ($_POST['columns'] as $key => $value) {
-            if ($value['orderable'] == "true") {
-                $columnsData[$value['data']] = $value['data'];
-            }
-        }
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-
-        $isAsscend = $_POST["order"][0]["dir"];
-
-        if ($isAsscend == 'asc') {
-            $isAsscending = true;
-        } else {
-            $isAsscending = false;
-        }
+   public function generateDownloadsByPerson(){
         
-
-        $title = $_POST['columns'][0]['search']['value'];
-
-        if (strlen($_POST['search']['value']) > 1) {
-            $title = $_POST['search']['value'];
-        }
-        $postData = array();
-        $sortByColumn = $_POST['order'][0]['column'];
-        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
-        $postData['itemCount'] = $_POST['length'];
-        $postData['sortBy'] = $sortBy;
-        //$postData['isAsscending'] = $isAsscending;
-        $postData['pageNumber'] = ($startPageNum);
-        $postData['pageSize'] = ((int) $_POST['length']);
-        $postData['sortDirection'] = $_POST["order"][0]["dir"];
-        $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
-        $postData['profileId'] = $_POST["profileId"];
-        if(!empty($_POST['classes']))
-        {
-            $postData['filterBody']['classes'] = $_POST['classes'];
-        }
-        if(!empty($_POST['instructors']))
-        {
-            $postData['filterBody']['instructors'] = $_POST['instructors'];
-        }
-        if(!empty($_POST['tags']))
-        {
-            $postData['filterBody']['tags'] = $_POST['tags'];
-        }
-         if(!empty($_POST['createdDate']))
-        {
-            $dateRange = explode("-", $_POST['createdDate']);
-            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
-        }
-        return $postData;
+        $postedData = array();
+		$postedData['itemCount']=0;
+		$postedData['sortBy']='name';
+		$postedData['sortDirection']='asc';
+        //$postedData['sourceType']=2;
+		$postedData['filterBody']['groupById']=$_POST['groupById'];
+		$postedData['filterBody']['filterRules'][0]['fieldId']='courses';
+		$postedData['filterBody']['filterRules'][0]['filterType']=1;
+		$postedData['filterBody']['filterRules'][0]['selectedValues']=$_POST['CourseId'];;
+		$postedData['filterBody']['startDate']='2022-04-01T11:50:40';
+		$postedData['filterBody']['endDate']='2023-03-31T11:50:40';
+		$postedData['filterBody']['groupByType']=3;
+		//print_r(json_encode($postedData));
+		//die;
+        $dataResponse = $this->submitApiRequest("CourseReport/GenerateCreditsEarnedGroupByCoursesPDFReport", $postedData, "POST", 'reports');
+        $collection = json_decode($dataResponse['api_response'])->result;
+        echo json_encode($dataResponse);
+        wp_die();
     }
 	public function downloadDataByPerson(){
         
@@ -2321,30 +2289,20 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
-   public function generateDownloadsByPerson(){
-        
-        $postedData = array();
-		$postedData['itemCount']=0;
-		$postedData['sortBy']='name';
-		$postedData['sortDirection']='asc';
-        //$postedData['sourceType']=2;
-		$postedData['filterBody']['groupById']=$_POST['groupById'];
-		$postedData['filterBody']['filterRules'][0]['fieldId']='courses';
-		$postedData['filterBody']['filterRules'][0]['filterType']=1;
-		$postedData['filterBody']['filterRules'][0]['selectedValues']=$_POST['CourseId'];;
-		$postedData['filterBody']['startDate']='2022-04-01T11:50:40';
-		$postedData['filterBody']['endDate']='2023-03-31T11:50:40';
-		$postedData['filterBody']['groupByType']=3;
-		//print_r(json_encode($postedData));
-		//die;
-        $dataResponse = $this->submitApiRequest("CourseReport/GenerateCreditsEarnedGroupByCoursesPDFReport", $postedData, "POST", 'reports');
-        $collection = json_decode($dataResponse['api_response'])->result;
-        echo json_encode($dataResponse);
-        wp_die();
-    }
 	public function clearDownloadsByPerson(){
 		$postedData =array();
         $dataResponse = $this->submitApiRequest("exportpeople/get/clearallbyuser", $postedData, "GET", 'dashboard');
+        $response = json_decode($dataResponse['api_response']);
+        return $response;
+        wp_die();
+    }
+	public function allReportsByPerson(){
+		$postedData =array();
+		if($_POST['awardId']){
+       	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport/".$_POST['profileId']."/".$_POST['awardId']."", $postedData, "GET", 'awards');
+		}else{
+       	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "GET", 'awards');
+		}
         $response = json_decode($dataResponse['api_response']);
         return $response;
         wp_die();

@@ -6,10 +6,10 @@
 	$options 	= get_option( 'ebt_api_settings' );
   
 
-   /* $classes = $obj->courseAllClasses($date);
+   $classes = $obj->courseAllClasses($date);
     $tags    = $obj->courseAllTags($date);
     $instructor = $obj->courseAllInstructors($date);
-    $dateRange  = $obj->courseDateFilter($date);*/
+    $dateRange  = $obj->courseDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
     $title_key = -1;
@@ -19,15 +19,12 @@ table tbody tr.selected {
 	background-color: #bed6f2 !important;
 }
 </style>
-<div class="containerEngagii">
+<div class="containerEngagii d-none">
 <div class="container-fluid pb-4">
-	<div class="row justify-content-end">
-    	<div class="col-auto"><button  type="button" class="btn btn-primary gt " disabled><i class="far fa-file-pdf mr-2"></i>Print pdf</button></div>
-    	<div class=" col-auto text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course ml-2"></div>
-        </div>
+    	<div class="text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course"></div>
     </div>
 </div>
-	<div class="container-fluid engagifii-box engagifii-main-cotainer position-relative">
+	<div class="engagifii-box engagifii-main-cotainer position-relative">
   	<table  id="courseByPerson" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
@@ -146,7 +143,7 @@ $filter_course = removeWhitespace($filter_course);
   var endDate     = '';
   var fv= 0;
   var titleColumn = '<?php echo $title_key; ?>';
-  var profileId = '5e7f3fed-c3f8-4b38-a25f-4f6a32511337';
+  var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
 	var tableCourse = $('#courseByPerson').DataTable( {
@@ -181,11 +178,7 @@ $filter_course = removeWhitespace($filter_course);
             "type": "POST",
             "data": function(d) {  
             	d.action='coursesByPerson'; 
-            	d.classes = classes;
-            	d.tags    = tags;
-            	d.instructors = instructor;  
-            	d.createdDate = createdDate;
-				d.profileId = profileId;
+            	d.profileId = profileId;
 				  
                  
             }, 
@@ -340,7 +333,7 @@ $('#searchcourses').on("keydown", function(event) {
   ?>
 
 
-	//$('div.flt-btn-course').html('<?php //echo $filter_course; ?>');
+	$('div.flt-btn-course').html('<?php echo $filter_course; ?>');
 
     
    /* $('.flt-btn-course .filter-icon').click(function(e){

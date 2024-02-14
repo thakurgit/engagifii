@@ -68,15 +68,15 @@ include 'sidebar_nav.php';
   <?php if($awardDataCount<1){ 
   	echo '<h4>data not available</h4>';
   }else{?>
-  	<div class="d-flex justify-content-between align-items-end mb-4">
-  	<div><h6>Badge Statistics</h6>
-    <p class="mb-0">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong><br>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></p>
-    </div>
-    	<a href="" class="btn btn-primary btn-sm"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+  	<div class="d-flex justify-content-between align-items-center mb-3">
+  	<h6 class="mb-0">Badge Statistics</h6>
+    <span class="btn btn-outline-success btn-sm text-dark ml-auto">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></span>
+    <span class="btn btn-outline-success btn-sm text-dark ml-3 ">Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></span>
+    <button type="button" id="allReports" class="btn btn-primary btn-sm ml-3"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
-</svg></span> All Reports</a>
+</svg></span> All Reports</button>
     </div>
     <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
     <?php 
@@ -129,7 +129,8 @@ z-index:-1;
     <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="tab-1<?php //echo $tabNo; ?>" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
   	<div class="accordion award-list" id="awrad-accordion">
-    <?php $i=0; $status=''; $class=''; foreach ($awardData->result as $award){
+    <?php $i=0; $status=''; $class=''; 
+	foreach ($awardData->result as $award){
 		if($award->status==1){
 			$status = '<small class="text-danger"><i class="fa fa-times-circle mr-1"></i>Not started</small>';
 			$class=preg_replace('/\s+/', '', strtolower($tabs[2]));
@@ -148,7 +149,7 @@ z-index:-1;
         	<div class="card-header position-relative p-0" id="headingTwo">
         	<h2 class="mb-0">
             	<button class="btn btn-link d-flex w-100  text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
-        <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1"><span class="mr-1"><svg width="10" height="12" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1 awardReport" data-report="<?php echo  $award->awardId;?>"><span class="mr-1"><svg width="10" height="12" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
@@ -156,9 +157,9 @@ z-index:-1;
       </button>
             </h2>
             </div>
-           <!-- <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show1'; }?>" data-parent="#awrad-accordion">
+           <!--<div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show1'; }?>" data-parent="#awrad-accordion">
       <div class="card-body">
-       
+       ---
       </div>
     </div>-->
         </div>
@@ -171,9 +172,13 @@ z-index:-1;
 <?php } ?>
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-    	<div><h6>Credit Earned Statistics</h6>
-    <p class="mb-0">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong><br>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></p>
+  	<div class="d-flex justify-content-between align-items-center mb-3">
+  	<h6 class="mb-0">Credit Earned Statistics</h6>
+    <span class="btn btn-outline-success btn-sm text-dark ml-auto">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></span>
+    <span class="btn btn-outline-success btn-sm text-dark ml-3 ">Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></span>
+    <button  type="button" class="btn btn-primary btn-sm ml-3 gt " disabled><i class="far fa-file-pdf mr-2"></i>Print pdf</button>
     </div>
+    	
 
   <?php //echo do_shortcode('[courses-list-ByPerson]');
   include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
@@ -184,7 +189,7 @@ z-index:-1;
     <div class="modal-content">
       <div class="modal-header pb-0 border-0">
         <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -216,6 +221,26 @@ $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
  if($(e.target).attr('data-tab')=='registered'){
 	$('#awrad-accordion > .card').removeClass('d-none'); 
  }
+});
+
+$('#allReports, .awardReport').click(function(e){
+	var awardId='';
+	awardId=$(this).attr('data-report');
+		
+	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'allReports',
+			  profileId: '<?php echo $peopleDATA->people->id;?>',
+			  awardId: awardId,
+          },
+          success: function(response) { 
+		  	$('#pdfcreated').modal('show')
+			
+		  }
+        });
+		e.stopPropagation();
 });
 
 </script>
