@@ -679,7 +679,7 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 	public function engagifiiProfile($tenant, $emailId){
 		$postData=array();
 		$responseArray = array();
-		$apiUrl = 'GetPersonDetailByEmail/'.$emailId.'/'.$tenant;
+		$apiUrl = 'People/GetLoggedInUserDetail';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
