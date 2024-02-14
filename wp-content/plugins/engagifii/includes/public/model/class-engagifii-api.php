@@ -55,7 +55,7 @@ class Engagifii_API{
 				$peopleToken = $_SESSION['accesstoken'];
 				$ebt_api_url = 'https://engagifii-preview4-crm.azurewebsites.net/api/v1';
 				$ebt_tenant_code ['tenant_code'] = 'psba';
-$authentication = 'authorization: Bearer .'$peopleToken.';
+$authentication = 'authorization: Bearer .'$peopleToken;
 				} else if($module == 'reports'){
 				$ebt_api_url = 'https://engagifii-preview4-engagifiireport.azurewebsites.net/api/v1';
 				$ebt_tenant_code ['tenant_code'] = 'psba';
