@@ -70,8 +70,8 @@ include 'sidebar_nav.php';
   }else{?>
   	<div class="d-flex justify-content-between align-items-center mb-3">
   	<h6 class="mb-0">Badge Statistics</h6>
-    <span class="btn btn-outline-success btn-sm text-dark ml-auto">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></span>
-    <span class="btn btn-outline-success btn-sm text-dark ml-3 ">Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></span>
+    <span class="btn btn-outline-success btn-sm text-dark ml-auto"><small>Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></small></span>
+    <span class="btn btn-outline-success btn-sm text-dark ml-3 "><small>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></small></span>
     <button type="button" id="allReports" class="btn btn-primary btn-sm ml-3"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
@@ -174,8 +174,21 @@ z-index:-1;
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
   	<div class="d-flex justify-content-between align-items-center mb-3">
   	<h6 class="mb-0">Credit Earned Statistics</h6>
-    <span class="btn btn-outline-success btn-sm text-dark ml-auto">Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></span>
-    <span class="btn btn-outline-success btn-sm text-dark ml-3 ">Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></span>
+    <div class="form-inline dateFilter ml-3">
+    <div class="input-group mr-2" style="max-width:255px">
+    <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Enter dates..." >
+  <div class="input-group-append">
+    <span class="input-group-text bg-transparent clearDateFilter" style="cursor:pointer; display:none;"><i class="far fa-times"></i></span>
+  </div>
+  <div class="input-group-append">
+    <span class="input-group-text " ><i class="far fa-calendar-alt"></i></span>
+  </div>
+</div>
+<button type="submit" class="btn btn-primary btn-sm ">Submit</button>
+</div>
+
+    <span class="btn btn-outline-success btn-sm text-dark ml-auto"><small>Total Credit Earned as of <?php echo date("d M Y");?>: <strong>200</strong></small></span>
+    <span class="btn btn-outline-success btn-sm text-dark ml-3 "><small>Total Credit Earned in <?php echo date("Y");?>: <strong>80</strong></small></span>
     <button  type="button" class="btn btn-primary btn-sm ml-3 gt " disabled><i class="far fa-file-pdf mr-2"></i>Print pdf</button>
     </div>
     	

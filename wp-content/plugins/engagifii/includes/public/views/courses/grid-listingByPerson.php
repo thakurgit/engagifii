@@ -136,17 +136,13 @@ $filter_course = removeWhitespace($filter_course);
 }
 ?>
 <script type="text/javascript">
-	var classes = '';
-	var instructor = '';
-	var tags       = ''; 
-	var createdDate = '';
-  var endDate     = '';
-  var fv= 0;
-  var titleColumn = '<?php echo $title_key; ?>';
+var startDate = '1970-01-01T00:00:00';
+var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
+ var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
-	var tableCourse = $('#courseByPerson').DataTable( {
+	var table = $('#courseByPerson').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
@@ -179,6 +175,8 @@ $filter_course = removeWhitespace($filter_course);
             "data": function(d) {  
             	d.action='coursesByPerson'; 
             	d.profileId = profileId;
+            	d.startDate = startDate;
+            	d.endDate = endDate;
 				  
                  
             }, 
@@ -272,8 +270,36 @@ $('.gt').click(function(){
         });
 });
 
-
-
+ $( document ).ready(function() {
+   // $('input[name="createdbetween"]').val('');
+    $('.dateFilter input').val('');
+});
+//date filter
+$('.dateFilter input').daterangepicker({
+  // minDate:'<?php //echo $class_start_date; ?>',
+   // maxDate: '<?php //echo $class_end_date; ?>',
+    autoApply: true
+  }, function(start, end) {
+      var classDates = start.format('YYYY-MM-DD')+'to'+end.format('YYYY-MM-DD');
+		var classDate = classDates.split("to");
+	 	startDate = $.trim(classDate[0])+'T00:00:00';
+		endDate = $.trim(classDate[1])+'T00:00:00';
+    });
+	$('.dateFilter input').change(function(){
+		if($(this).val()!==''){
+			$( '.clearDateFilter' ).show();
+		}
+	});
+$( '.clearDateFilter' ).click(function() {
+		 $('.dateFilter input').val('');
+		 $(this).hide();
+ startDate = '1970-01-01T00:00:00';
+ endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
+		 table.draw();
+});
+$( '.dateFilter button' ).click(function() {
+		 table.draw();
+});
 
 <?php
   if($title_key > -1){
@@ -296,8 +322,8 @@ function delay(callback, ms) {
 }
   $( 'input', this ).keyup(delay(function (e) {
 	  var titlesearch = this.value;
-            if ( tableCourse.column(titleColumn).search() !== titlesearch ) {
-				tableCourse.column(titleColumn).search(titlesearch).draw();
+            if ( table.column(titleColumn).search() !== titlesearch ) {
+				table.column(titleColumn).search(titlesearch).draw();
             }
 }, 500));
 
@@ -313,7 +339,7 @@ $('th .clear-search').click(function(e){
 	 $('#searchcourses').val('');
 	$('.clear-search').hide();
 	e.stopPropagation();
-	tableCourse.column(titleColumn).search('').draw();
+	table.column(titleColumn).search('').draw();
  });
 
     } );
@@ -353,39 +379,36 @@ $('#searchcourses').on("keydown", function(event) {
 		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
 	});*/
 
-   $('input[name="createdbetween"]').daterangepicker({
-   minDate:'<?php echo $min_date; ?>',
-    maxDate: '<?php echo $max_date; ?>',
+   /*$('input[name="createdbetween"]').daterangepicker({
+   minDate:'<?php //echo $min_date; ?>',
+    maxDate: '<?php //echo $max_date; ?>',
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
       coursecountFilterData();
 
-    });
+    });*/
 
 
   	//filter
-  	$('#apply-filter-data1').click(function(){
+  	/*$('#apply-filter-data1').click(function(){
   		classes = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
   		instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
   		tags       = $.map($('input[name="courseTags[]"]:checked'), function(c){return c.value; });
   		createdDate = $('input[name="createdbetween"]').val();
       
       $(".flt-btn-course .filter-area").toggleClass('d-none');
-  		tableCourse.draw();
+  		table.draw();
 
-  	});
+  	});*/
 
- $( document ).ready(function() {
-    $('input[name="createdbetween"]').val('');
-});
-$( '.flt-btn-course .cleardate' ).click(function() {
+/*$( '.flt-btn-course .cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
     createdDate = '';
     coursecountFilterData();
-});
+});*/
 
-$('.flt-btn-course .clear-all').click(function(){
+/*$('.flt-btn-course .clear-all').click(function(){
             $('input[type=checkbox]').prop('checked',false);
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
@@ -396,7 +419,7 @@ $('.flt-btn-course .clear-all').click(function(){
             createdDate = '';
             instructor = '';
             classes = '';
-            tableCourse.draw();
+            table.draw();
 
       })
 
@@ -408,11 +431,11 @@ $('.flt-btn-course .clear-all').click(function(){
         container.hide();
         $('.filter-area').addClass('d-none');
       }
-      });
+      });*/
 	  
 	  
 	  
-	  $("#apply-filter-data1").click(function () {
+	/*  $("#apply-filter-data1").click(function () {
  
   
   $('.flt-btn-course .filter-list').each(function() {
@@ -462,7 +485,7 @@ $('.flt-btn-course .clear-all').click(function(){
             }    
           }
         });
-      }
+      }*/
 
 $(document).ready(function(){
 	if($('html').height()<$(window).height()){

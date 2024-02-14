@@ -2142,8 +2142,9 @@ wp_die();
 		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
         
-        //$postedData = $this->_prepareCoursePostDataByPerson();
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"2022-10-01T11:50:40","endDate":"2024-03-31T11:50:40","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
+		$startDate = $_POST['startDate'];
+		$endDate = $_POST['endDate'];
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"course","sortDirection":"asc","filterBody":{"filterRules":[],"startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
 		//print_r($postedData);
 		//die;
