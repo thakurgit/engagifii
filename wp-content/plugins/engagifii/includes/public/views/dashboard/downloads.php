@@ -101,12 +101,12 @@ $title_key = -1;
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
-			deleteReport();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   
          },
 		  "initComplete": function(settings, json) {
+			deleteReport();
 			//dt_filterActivate();
 			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
