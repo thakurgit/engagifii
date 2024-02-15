@@ -106,7 +106,6 @@ $title_key = -1;
 			   
          },
 		  "initComplete": function(settings, json) {
-			//deleteReport();
 			//dt_filterActivate();
 			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
@@ -119,11 +118,9 @@ $title_key = -1;
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
-//function deleteReport(){
-//$('#clearDownloads, .deleteReport').click(function(e){
 	$('body').on('click', '#clearDownloads, .deleteReport', function(e) {
 	var reportid='';
-	if($(this).attr('report-id')!=='') {
+	if($(this).attr('report-id')) {
 		reportid = $(this).attr('report-id');	
 	}else{
 		$('#clearDownloads').attr('disabled','').find('span').show();
@@ -145,7 +142,6 @@ $title_key = -1;
 		e.stopPropagation();
 		e.preventDefault();
 });
-//}
 
 
 
