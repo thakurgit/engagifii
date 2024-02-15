@@ -101,12 +101,12 @@ $title_key = -1;
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
-			//deleteReport();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   
          },
 		  "initComplete": function(settings, json) {
+			deleteReport();
 			//dt_filterActivate();
 			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
@@ -119,8 +119,8 @@ $title_key = -1;
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
-//function deleteReport(){
-$('#clearDownloads, body .deleteReport').click(function(e){
+function deleteReport(){
+$('#clearDownloads, .deleteReport').click(function(e){
 	var reportid='';
 	if($(this).attr('report-id')!=='') {
 		reportid = $(this).attr('report-id');	
@@ -144,7 +144,7 @@ $('#clearDownloads, body .deleteReport').click(function(e){
 		e.stopPropagation();
 		e.preventDefault();
 });
-//}
+}
 
 
 
