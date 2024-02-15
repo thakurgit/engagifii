@@ -119,7 +119,7 @@ $title_key = -1;
     } ).dataTable();
 	
 
-$('#clearDownloads').click(function(){
+$('#clearDownloads, .deleteReport').click(function(){
 	$('#clearDownloads').attr('disabled','').find('span').show();
 	var logged_in_user = localStorage.getItem("logged_in_user");
 	   $.ajax({

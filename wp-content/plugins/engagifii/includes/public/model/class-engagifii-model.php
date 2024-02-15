@@ -2256,10 +2256,10 @@ wp_die();
             $nestedData = array();
             
 			if($value->reportLink){
-			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu"><a class="dropdown-item" target="_blank" href="'.$value->reportLink.'">Download</a><a class="dropdown-item" href="#">Delete</a></div></div>';
+			$nestedData['download-select']='<div class="dropdown"><button type="button"  class="btn btn-sm shadow-none" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2" target="_blank" href="'.$value->reportLink.'">Download</a><a class="dropdown-item px-2 deleteReport" href="#" report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
 			}else{
-			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu"><a class="dropdown-item" href="#">Delete</a></div></div>';
+			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm shadow-none" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2 deleteReport" href="#" report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = $value->reportName;
 			}
             $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('h:i A', strtotime($value->createdDate));
