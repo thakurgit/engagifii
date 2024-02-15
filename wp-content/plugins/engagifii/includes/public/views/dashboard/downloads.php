@@ -121,7 +121,7 @@ $title_key = -1;
 	
 //function deleteReport(){
 //$('#clearDownloads, .deleteReport').click(function(e){
-	$('body').on('click', '#clearDownloads, .deleteReport', function() {
+	$('body').on('click', '#clearDownloads, .deleteReport', function(e) {
 	var reportid='';
 	if($(this).attr('report-id')!=='') {
 		reportid = $(this).attr('report-id');	
