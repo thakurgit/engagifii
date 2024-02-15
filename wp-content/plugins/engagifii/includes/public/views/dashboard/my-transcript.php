@@ -20,7 +20,6 @@ return;
 include 'sidebar_nav.php';
  $creditEarnedCount = $obj->creditEarnedCount($peopleDATA->people->id);
  $creditEarnedCount = json_decode($creditEarnedCount);
- print_r($creditEarnedCount);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($peopleDATA->people->id);
  $awardDataCount = json_decode($engagifiiProfileAwardsCount['api_response']);
  if($awardDataCount>0){
