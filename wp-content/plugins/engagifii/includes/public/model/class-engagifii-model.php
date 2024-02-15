@@ -2284,7 +2284,12 @@ wp_die();
     }
 	public function clearDownloadsByPerson(){
 		$postedData =array();
-        $dataResponse = $this->submitApiRequest("exportpeople/get/clearallbyuser", $postedData, "GET", 'dashboard');
+		$reportid = $_POST['reportid'];
+		if($reportid){
+       	 $dataResponse = $this->submitApiRequest("exportpeople/get/deletebyreportid?=".$reportid, $postedData, "GET", 'dashboard');
+		}else{
+       	 $dataResponse = $this->submitApiRequest("exportpeople/get/clearallbyuser", $postedData, "GET", 'dashboard');
+		}
         $response = json_decode($dataResponse['api_response']);
         return $response;
         wp_die();

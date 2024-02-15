@@ -120,13 +120,18 @@ $title_key = -1;
 	
 
 $('#clearDownloads, .deleteReport').click(function(){
-	$('#clearDownloads').attr('disabled','').find('span').show();
-	var logged_in_user = localStorage.getItem("logged_in_user");
+	var reportid='';
+	if($(this).attr('report-id')!==''){
+		reportid = $(this).attr('report-id');	
+	}else{
+		$('#clearDownloads').attr('disabled','').find('span').show();
+	}
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'clearDownloads',
+			  reportid:reportid,
           },
           success: function(response) { 
 		  	$('#clearDownloads').removeAttr('disabled').find('span').hide();
