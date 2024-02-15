@@ -152,11 +152,11 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
        	"ordering":true,
 		"order": [[<?php echo array_search('Course Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['course-select','tags','coursetype','completiondate','credithours','classes'],
+          { "targets": ['course-select','tags','coursetype','completiondate','totalcreditearned','classes'],
             "orderable": false
           },
 		  //{ className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["completiondate","credithours","tags","coursetype","course-select","classes"] },
+		  { className: "text-center", "targets": ["completiondate","totalcreditearned","tags","coursetype","course-select","classes"] },
 		   
         ],
 		
