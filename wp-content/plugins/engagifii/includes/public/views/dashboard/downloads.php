@@ -141,6 +141,7 @@ $('#clearDownloads, .deleteReport').click(function(e){
 		  }
         });
 		e.stopPropagation();
+		e.preventDefault();
 });
 
 
