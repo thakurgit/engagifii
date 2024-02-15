@@ -648,7 +648,7 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 		$('#list').trigger("click");
 	}
 });
-</script>      
+</script> 
 <script>
   
     //  //Hide Filters on clicking outside filter area
@@ -670,7 +670,5 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
     // filterdp.onclick = function(){
     //   alert(e.target.id);
     // };
-    
- 
   </script>
 </div>
