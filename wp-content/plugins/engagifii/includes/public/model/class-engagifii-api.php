@@ -706,7 +706,14 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}
-
+	public function creditEarnedCount($profileId){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'registration/GetCreditsByParticipantId/'.$profileId;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'awards');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
 
 //public official API
 	public function publicOfficial(){
