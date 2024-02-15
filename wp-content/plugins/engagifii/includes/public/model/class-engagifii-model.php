@@ -2182,7 +2182,7 @@ wp_die();
 			
 			$dt = new DateTime($value->courseStatusDate);
             $nestedData['completiondate'] =   $dt->format('M d, Y');
-            $nestedData['credithours'] = $value->grantedCredits."/".$value->totalCredit;
+            $nestedData['totalcreditearned'] = $value->grantedCredits."/".$value->totalCredit;
             $courseTag = $value->tags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {

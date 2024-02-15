@@ -30,7 +30,7 @@ table tbody tr.selected {
 		    <tr>    
 		    	<?php
 				$i=0;
-				$colNames =['course-select','Course Name','Course Type','Classes','Completion Date','Credit Hours'];
+				$colNames =['course-select','Course Name','Course Type','Total Credit Earned','Classes','Completion Date'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
