@@ -119,7 +119,7 @@ $title_key = -1;
     } ).dataTable();
 	
 
-$('#clearDownloads, .deleteReport').click(function(){
+$('#clearDownloads, .deleteReport').click(function(e){
 	var reportid='';
 	if($(this).attr('report-id')!==''){
 		reportid = $(this).attr('report-id');	
@@ -140,6 +140,7 @@ $('#clearDownloads, .deleteReport').click(function(){
 			}
 		  }
         });
+		e.stopPropagation();
 });
 
 
