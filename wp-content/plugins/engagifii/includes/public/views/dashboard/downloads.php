@@ -39,7 +39,7 @@ $title_key = -1;
                   }
 				  $i++;
 				  if($key == 'download-select'){
-					echo '<th class="'.$key.'"><input type="checkbox"></th>'; 
+					echo '<th class="'.$key.'"></th>'; 
 					continue; 
 				  }
 		    				?>

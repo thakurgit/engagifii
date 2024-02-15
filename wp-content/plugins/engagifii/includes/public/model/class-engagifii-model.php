@@ -2255,7 +2255,7 @@ wp_die();
         foreach ($collection as $key => $value) {
             $nestedData = array();
             
-			$nestedData['download-select']='<input  type="checkbox" class="select-row" value="'.$value->id.'"/>';
+			$nestedData['download-select']='<button report-id="'.$value->id.'" class="btn"><i class="fal fa-ellipsis-h"></i></button>';
 			if($value->reportLink){
             $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
 			}else{
