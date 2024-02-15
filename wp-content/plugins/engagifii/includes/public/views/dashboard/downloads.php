@@ -106,7 +106,7 @@ $title_key = -1;
 			   
          },
 		  "initComplete": function(settings, json) {
-			deleteReport();
+			//deleteReport();
 			//dt_filterActivate();
 			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
@@ -119,8 +119,9 @@ $title_key = -1;
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
-function deleteReport(){
-$('#clearDownloads, .deleteReport').click(function(e){
+//function deleteReport(){
+//$('#clearDownloads, .deleteReport').click(function(e){
+	$('body').on('click', '#clearDownloads, .deleteReport', function() {
 	var reportid='';
 	if($(this).attr('report-id')!=='') {
 		reportid = $(this).attr('report-id');	
@@ -144,7 +145,7 @@ $('#clearDownloads, .deleteReport').click(function(e){
 		e.stopPropagation();
 		e.preventDefault();
 });
-}
+//}
 
 
 
