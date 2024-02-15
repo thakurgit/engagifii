@@ -101,12 +101,12 @@ $title_key = -1;
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
+			deleteReport();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   
          },
 		  "initComplete": function(settings, json) {
-			deleteReport();
 			//dt_filterActivate();
 			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
@@ -122,7 +122,7 @@ $title_key = -1;
 function deleteReport(){
 $('#clearDownloads, .deleteReport').click(function(e){
 	var reportid='';
-	if($(this).attr('report-id')!==''){
+	if($(this).attr('report-id')!=='') {
 		reportid = $(this).attr('report-id');	
 	}else{
 		$('#clearDownloads').attr('disabled','').find('span').show();
