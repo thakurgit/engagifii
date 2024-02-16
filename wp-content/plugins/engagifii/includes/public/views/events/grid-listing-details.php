@@ -523,7 +523,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
     </div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function() {
+	/*$(document).ready(function() {
 		$('#ebtmaintable').DataTable({
 			"pageLength": 10,
 			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
@@ -551,5 +551,5 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		     	searchPlaceholder: "Search..."
 		    	},
 		 	"ordering":true});
-	});
+	});*/
 </script>
