@@ -48,7 +48,7 @@ include 'sidebar_nav.php';
 <div class="container-fluid">
 <ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#nav-header" type="button" role="tab" aria-controls="home" aria-selected="true">Header</button>
+    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#nav-header" type="button" role="tab" aria-controls="home" aria-selected="true">Name</button>
   </li>
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#nav-body" type="button" role="tab" aria-controls="profile" aria-selected="false">Contact Information</button>
