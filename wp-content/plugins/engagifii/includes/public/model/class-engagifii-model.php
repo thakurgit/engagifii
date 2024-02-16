@@ -2188,6 +2188,7 @@ wp_die();
             foreach ($courseTag as $index => $tag) {
 
 
+
                 if(count($courseTag) > 1 && $index == 0)
                 {   
                     $tagPopover =  $this->_popOverTagData($key, $courseTag);
@@ -2653,7 +2654,7 @@ wp_die();
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . $events_detail_page_link.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' . $events_detail_page_link.'?endId=' . $default_Id . '&wId='.$row->registrationWorkflows[0]->registrationWorkflowId.'&rId='.$row->registrationWorkflows[0]->roleId.' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -4155,6 +4156,7 @@ $li=1;
         if(!empty($_POST['tags']))
         {
             $postData['filterBody']['tags'] = $_POST['tags'];
+
         }
          if(!empty($_POST['createdDate']))
         {
