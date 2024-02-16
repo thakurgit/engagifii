@@ -2625,10 +2625,6 @@ wp_die();
 
         $data = array();
         foreach ($collection as $key => $row) {
-			$portalTag = $row->tags;
-			if (!in_array("portal", $portalTag)){
-				continue;
-			}
            
             /* getdata for tables */
             $nestedData = array();
