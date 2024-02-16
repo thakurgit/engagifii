@@ -273,7 +273,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
 
 <script type="text/javascript">
 
-  var tags       = 'portal';
+  var tags       = '';
   var types       = '';
   var city       = '';
  var createdDate = '';
