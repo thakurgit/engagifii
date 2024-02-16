@@ -97,7 +97,7 @@ include 'sidebar_nav.php';
 				$status = 'Active'; 
 				$statusColor = 'green';
 			  ?>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
+              <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
 			  $dp = json_decode($peopleDATA->tabs[2]->groupFields[2]->fields[0]->selectedValue, true);
 			  $department =$dp[0]['positionHistory'][0]['departmentName'];
