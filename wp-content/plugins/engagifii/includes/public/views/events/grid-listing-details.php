@@ -524,7 +524,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('table#class_table').DataTable({
+		$('#ebtmaintable').DataTable({
 			"pageLength": 10,
 			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
 			"bInfo":false,
@@ -539,17 +539,17 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 
 		//$('.dropdown-toggle').dropdown();
 
-		// $('table#doc_table').DataTable({
-		// 	"pageLength": 10,
-		// 	"dom": '<"row"<"col-sm-12"f">><"row custom-scroll"t>i<"row"<"col-sm-4 pt-2"l><"col-sm-8 text-conter"p">>',
-		// 	"bInfo":false,
-		// 	"processing": true,
-		// 	"searching": true,
-		// 	"language": {
-		//     	processing: '<span>&nbsp;</span>',
-		//     	search:'',
-		//     	searchPlaceholder: "Search..."
-		//    	},
-		// 	"ordering":true});
+		 $('#ebtmaintable1').DataTable({
+		 	"pageLength": 10,
+		 	"dom": '<"row"<"col-sm-12"f">><"row custom-scroll"t>i<"row"<"col-sm-4 pt-2"l><"col-sm-8 text-conter"p">>',
+		 	"bInfo":false,
+		 	"processing": true,
+		 	"searching": true,
+		 	"language": {
+		     	processing: '<span>&nbsp;</span>',
+		     	search:'',
+		     	searchPlaceholder: "Search..."
+		    	},
+		 	"ordering":true});
 	});
 </script>
