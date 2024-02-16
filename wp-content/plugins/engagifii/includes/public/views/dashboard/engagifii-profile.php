@@ -137,7 +137,7 @@ include 'sidebar_nav.php';
 ?><hr class="my-4">
 	
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-4">
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
            
@@ -149,7 +149,7 @@ include 'sidebar_nav.php';
                 	<?php if($peopleDATA->people->primaryPhoneNumber->value){ ?>
             <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
      if($value->controlTypeId==11){ ?>
-             <div class="col-md-4"> 
+             <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
             <a href="tel:<?php echo $value->selectedValue;?>"><?php echo $value->selectedValue;?></a> </div>
    <?php  } 
