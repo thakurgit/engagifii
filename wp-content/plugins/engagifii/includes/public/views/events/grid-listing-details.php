@@ -202,7 +202,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 										$time = date('h:i A', $convert_Date);
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
-		                        	<div class="col-sm-4 ">Event Start Date</div>
+		                        	<div class="col-sm-4 ">Event Start Date:</div>
 		                        	<div class="col-sm-8"><?php echo $date." at ".$time; ?></div>
 		                        </div>
 		                        <?php
@@ -214,7 +214,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 											$time = date('h:i A', $convert_Date); //$convert_Date->format('h:i:s A');
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
-		                            <div class="col-sm-4 ">Event End Date</div>
+		                            <div class="col-sm-4 ">Event End Date:</div>
 		                            <div class="col-sm-8"><?php echo $date." at ".$time; ?></div>
 		                        </div>
 		                        <?php
