@@ -2187,6 +2187,7 @@ wp_die();
             $allTags = array();
             foreach ($courseTag as $index => $tag) {
 
+
                 if(count($courseTag) > 1 && $index == 0)
                 {   
                     $tagPopover =  $this->_popOverTagData($key, $courseTag);
@@ -2616,8 +2617,10 @@ wp_die();
 	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
 	     $postedData = $this->_prepareEventsData();
 		// print_r(json_encode($postedData));
-		 //die;
+		//die;
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
+		 //print_r($dataResponse['api_response']);
+		 //die;
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
         
@@ -2726,7 +2729,7 @@ wp_die();
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
-                $default_RegisterBtn .= '<a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/'. $default_Id .'/general" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
+                $default_RegisterBtn .= '<a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
             }
             
            
@@ -4470,6 +4473,7 @@ if(!empty($_POST['minRange']))
 	}else{
 		$events_detail_page_link= site_url() .'/event-detail/';	 
 	}
+
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
         // $upcomingEvents = 'false';
