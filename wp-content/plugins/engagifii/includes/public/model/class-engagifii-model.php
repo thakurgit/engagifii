@@ -2615,7 +2615,7 @@ wp_die();
     $events_detail_page = $front_pages['events_detail_page'];
 	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
 	     $postedData = $this->_prepareEventsData();
-		 print_r($postedData);
+		 print_r(json_encode($postedData));
 		 die;
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
