@@ -131,7 +131,7 @@ include 'sidebar_nav.php';
      if($value->controlTypeId==9){ 
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
- <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['locationName'].'<br>'.  $address['address'].', '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];?>         
+ <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].', '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];?>         
      <?php  } 
  }
 ?><hr class="my-4">
