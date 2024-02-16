@@ -138,7 +138,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  ?>
 			<div class="mt-auto">	
             <?php if ( strpos($url,'engagifii-profile') !== false ) { ?>			
-			<a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/<?php echo $id; ?>/<?php echo $wid; ?>/<?php echo $rid; ?>/eventregpub/signup/overview">Register</a></div>  
+			<a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
             <?php } else { ?>
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
             <?php } 
