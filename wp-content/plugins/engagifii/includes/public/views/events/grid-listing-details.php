@@ -58,7 +58,6 @@
 ?>
 <div class="mb-2">
 <?php
-$current_user = wp_get_current_user();
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
          $url = "https://";   
     else  

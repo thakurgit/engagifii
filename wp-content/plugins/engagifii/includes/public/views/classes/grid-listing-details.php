@@ -56,7 +56,18 @@
 	//$documentData  =  $obj->getCourseDocument($id, $response->name);
 ?>
 <div class="mb-2">
+<?php if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+         $url = "https://";   
+    else  
+         $url = "http://";   
+    $url.= $_SERVER['HTTP_HOST'];   
+    $url.= $_SERVER['REQUEST_URI'];    
+if ( strpos($url,'engagifii-profile') !== false ) {?> 
+    <a href="<?php echo site_url().'/engagifii-profile/my-transcript/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<?php } else { ?>
     <a href="<?php echo $classes_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<?php } 
+?>
 </div>
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">

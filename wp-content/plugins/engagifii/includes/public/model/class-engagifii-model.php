@@ -2116,17 +2116,8 @@ wp_die();
         $options = get_option('ebt_api_settings');
         $front_pages = $options['front_pages'];
         $courses_detail_page = $front_pages['courses_detail_page'];
-        //if($courses_detail_page){
-           // $courses_detail_page_link=get_permalink( $courses_detail_page );	
-        //}else{
-            $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
-        //}
-    $classes_detail_page = $front_pages['classes_detail_page'];
-	if($classes_detail_page){
-		$classes_detail_page_link=get_permalink( $classes_detail_page );	
-	}else{
-		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+        $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
+		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
         
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
