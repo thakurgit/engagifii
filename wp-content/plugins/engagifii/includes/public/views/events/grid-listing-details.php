@@ -126,20 +126,27 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
           <?php 
 		  $event_status = $response->eventStatus;
 		  $registration_state = $response->eventRegistrationState;
+		  $isAlreadyRegistered = $response->registrationWorkflows[0]->isAlreadyRegistered;
 		  $default_RegisterBtn = "";
 		  if(in_array('register', $events_visible_column_list)) {
-		  if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') { ?>
+		 if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
+			 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $registration_state); ?>
 		  <div class="mt-auto">				
-			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $response->eventRegistrationState; ?>"><button type="button" id="onlocation12" class="btn btn-primary  px-3 py-1"  disabled >Register</button></span>
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><button type="button" id="onlocation12" class="btn btn-primary  px-3 py-1"  disabled >Register</button></span>
 		  </div>
-		  <?php }
-		  else{
+		  <?php 
+		   } else if($isAlreadyRegistered){
+                $alreadyRegisteredText = "Already Registered";
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+		  } else{
+			  $tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom));
 			  ?>
 			<div class="mt-auto">	
             <?php if ( strpos($url,'engagifii-profile') !== false ) { ?>			
-			<a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></span></div>  
             <?php } else { ?>
-			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></span></div>  
             <?php } 
 			 }
 		  }
