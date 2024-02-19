@@ -56,14 +56,17 @@ class ebtAdminConfigSettings {
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		include_once( __DIR__.'/view/customizer.php' );
  	}
-
 	function ebt_api_add_admin_menu() {
+	$options = get_option( 'ebt_api_settings' );
+	$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
 				add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
 				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
 				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
-				add_submenu_page( 'engagifii-module-api', 'My Profile', 'My Engagifii Profile', 'manage_options', $parent.'&tab=my-profile',  $callback = '');
+				if($tenant_url=='psba'){
+					add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'My Engagifii Profile', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
+				}
 	}
 
 	// function ebt_api_settings_init(  ) {

@@ -2164,7 +2164,7 @@ wp_die();
 					if($li%2==1){
 					  $class='bg-light';	
 					}
-					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a target="_blank" href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('h:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('h:i A', strtotime($classEnd)).'</li>';
+					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('h:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('h:i A', strtotime($classEnd)).'</li>';
 					$li++;
 				}
 				$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
@@ -2256,7 +2256,7 @@ wp_die();
             $nestedData['filename'] = $value->reportName;
 			}
             $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('h:i A', strtotime($value->createdDate));
-            $nestedData['status'] = $value->status;
+            $nestedData['status'] = ucfirst($value->status);
             $data[] = $nestedData;
         }
 
