@@ -383,7 +383,7 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
                 <a href="?page=engagifii-module-api&tab=customizer" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
-                <?php if($tenant_url = 'psba'){ ?>
+                <?php if($tenant_url = 'psba'){ echo $tenant_url; ?>
                 <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a>
                 <?php } ?>
     		</nav>

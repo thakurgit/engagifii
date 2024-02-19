@@ -144,7 +144,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  ?>
 			<div class="mt-auto">	
             <?php if ( strpos($url,'engagifii-profile') !== false ) { ?>			
-			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></span></div>  
+			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></span></div>  
             <?php } else { ?>
 			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></span></div>  
             <?php } 

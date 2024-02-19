@@ -2724,7 +2724,7 @@ wp_die();
 				if($row->eventRegistrationState=='RegistrationOn'){
              	   $tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
 				}
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=https://psba.engagifii-preview4.com/pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a></span>';
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a></span>';
             }
             
            
