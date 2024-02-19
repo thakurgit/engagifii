@@ -123,51 +123,50 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  	</li> -->
 			</ul>
 			<div class="tab-content" id="myTabContent">
-			  	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-			  		<div class="row m-2">
-			  			<div class="col-sm-12 d-md-flex p-0">
-					  		<div class="col-sm-6 p-0 ">
-					  			<div class="m-1 border rounded box-shadow h-100">
-					  			<div class="panel-title p-3 bg-light border-bottom">
+			  	<div class="p-3 tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+			  		<div class="row">
+					  		<div class="col-sm-6 mb-4">
+					  			<div class="border rounded box-shadow h-100">
+					  			<div class="panel-title p-2 bg-light border-bottom">
 		                          <h5 class="heading d-inline">Course Details</h5>
 		                        </div>
 		                        <?php
 		                        	if(trim($response->description)){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Description:</div>
+		                        <div class=" row p-2">
+		                            <div class="col-sm-4">Description:</div>
 		                            <div class="col-sm-8"><?php echo trim($response->description); ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->objectType){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Course Type:</div>
+		                        <div class=" row p-2">
+		                            <div class="col-sm-4">Course Type:</div>
 		                            <div class="col-sm-8"><?php echo $response->objectType; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->creditHours){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                        	<div class="col-sm-4 p-0">Credit Hours</div>
+		                        <div class=" row p-2">
+		                        	<div class="col-sm-4 ">Credit Hours</div>
 		                        	<div class="col-sm-8"><?php echo $response->creditHours; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if($response->secondaryUnits[0]->value){
 		                        ?>
-		                        <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">PLU:</div>
+		                        <div class=" row p-2">
+		                            <div class="col-sm-4 ">PLU:</div>
 		                            <div class="col-sm-8"><?php echo $response->secondaryUnits[0]->value; ?></div>
 		                        </div>
 		                        <?php
 		                        	}
 		                        	if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
-		                         <div class="summary-content-para-engagiigii row">
-		                            <div class="col-sm-4 p-0">Skills:</div>
+		                         <div class=" row p-2">
+		                            <div class="col-sm-4 ">Skills:</div>
 		                            <div class="col-sm-8"><?php foreach ($response->skills as $key => $value) {
 		                            ?>
 		                            		<span class="border round-tag p-2 text-capitalize"><?php echo $value->name; ?></span>
@@ -179,9 +178,9 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		                        ?>
 		                    </div>
 					  		</div>
-					  		<div class="col-sm-6 p-0">
-					  			<div class="m-1 border rounded box-shadow h-100"> 
-						  			<div class="panel-title bg-light p-3 border-bottom">
+					  		<div class="col-sm-6 mb-4">
+					  			<div class="border rounded box-shadow h-100"> 
+						  			<div class="panel-title bg-light p-2 border-bottom">
 			                          <h5 class="heading d-inline">Class Location</h5>
 			                        </div>
 			                        <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -199,15 +198,15 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 									  				if(!empty($response->location) && isset($response->location->address))
 									  				{
 									  			?>
-									  				<div class="summary-content-para-engagiigii row">
-									  					<div class="col-sm-4 p-0">Room Name:</div>
+									  				<div class=" row p-2">
+									  					<div class="col-sm-4 ">Room Name:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
 					                            	</div>
-					                            	<div class="summary-content-para-engagiigii row">
-					                            		<div class="col-sm-4 p-0">Address:</div>
+					                            	<div class=" row p-2">
+					                            		<div class="col-sm-4">Address:</div>
 					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
 					                            	</div> 
-					                            	<div class="summary-content-para-engagiigii col-12">
+					                            	<div class=" col-12">
 					                            		<iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
 
 					                            	</div>
@@ -215,7 +214,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 									  				}
 									  				else{
 									  				?>
-									  						<div class="summary-content-para-engagiigii col-12">No class room is selected now</div>
+									  						<div class=" col-12">No class room is selected now</div>
 									  				<?php	
 									  				}
 									  			?>
@@ -223,30 +222,24 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 					                        
 									  	</div>
 									  	<div class="tab-pane fade show <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
-									  		<div class="summary-content-para-engagiigii row">
-			                            		<div class="col-sm-4 p-0">Online Class Location:</div>
+									  		<div class=" row p-2">
+			                            		<div class="col-sm-4">Online Class Location:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
 			                        		</div> 
-			                        		<div class="summary-content-para-engagiigii row">
-			                            		<div class="col-sm-4 p-0">Login Steps:</div>
+			                        		<div class=" row p-2">
+			                            		<div class="col-sm-4">Login Steps:</div>
 			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
 			                        		</div> 
 									  	</div>
 			                       	</div>
 		                    	</div>
 					  		</div>
-					  	</div>
-			  		</div>
-			  		<div class="row m-2">
-			  			<div class="col-sm-12 p-0">
-			  				<div class="m-1 border rounded box-shadow">
-			  					<div class="panel-title bg-light p-3 border-bottom">
+			  			<div class="col-sm-12 mb-4">
+			  				<div class="border rounded box-shadow">
+			  					<div class="panel-title bg-light p-2 border-bottom">
 		                        	<h5 class="heading d-inline">Instructor</h5>
 		                    	</div>
-		                    	<div class="card-box">
-		                    		
-
-
+		                    	<div class="p-2 row">
 		                    		<?php
 		                    		if(count($certifiedInsturctor)){
 		                    			
@@ -255,22 +248,22 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		                    				$skills = $value->coursesSkilledToTeach;
 
 		                    		?>
-		                    		<div class="p-3">
-		                    			<div class="card">
-		                    				<div class="card-body row align-items-start instructor-detail">
-		                    					<div class="col-3">
+		                    			<div class="col-md-4">
+		                    			<div class="card p-2">
+                                            <div class="row instructor-detail">
+		                    					<div class="col-auto">
 		                    					<?php if (filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) { ?>
-		                    						<img src="<?php echo $value->imageThumbUrl;?>" class="img-fluid mr-2">
+		                    						<img src="<?php echo $value->imageThumbUrl;?>" class="img-fluid" style="max-width:100px">
 		                    					<?php
 		                    						}
 		                    						else if($value->imageThumbUrl)
 		                    						{
 		                    					?>
-		                    							<img src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class=" img-fluid mr-2">
+		                    							<img src="<?php echo $tenant_url.$value->imageThumbUrl;?>" class=" img-fluid "  style="max-width:100px">
 		                    					<?php		
 		                    						}else{
 		                    					?>
-		                    								<img src="<?php echo ENGAGIFII_ASSETS_URL.'/images/user-default.png'; ?>" class="img-fluid mr-2">
+		                    								<img src="<?php echo ENGAGIFII_ASSETS_URL.'/images/user-default.png'; ?>" class="img-fluid"  style="max-width:100px">
 		                    					<?php
 		                    						}
 		                    					?>
@@ -284,11 +277,11 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 														  	style="background:url('<?php echo ENGAGIFII_ASSETS_URL; ?>/images/trophy.png');background-size:contain;background-repeat:no-repeat;width:35px;height:35px">
 														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($courses); ?></span>
 														  </button>
-														  <ul class="dropdown-menu p-1" aria-labelledby="course_<?php echo $key; ?>">
+														  <ul class="dropdown-menu p-1" aria-labelledby="course_<?php echo $key; ?>" style="max-height:250px; overflow:scroll">
 														  	<?php
 														  			foreach ($courses as $index => $val) {
 														  	?>
-														  				 <li class="position-relative p-1 inst-ac ml-0 d-inline-flex align-items-center justify-content-start"><img src="<?php echo $val->icon->iconReference ?>" class="img-fluid mr-2"> <span style="font-size: 14px; white-space:nowrap; padding: 0px 15px 0 0;"><?php echo $val->name; ?></span></li>
+														  				 <li class="position-relative p-1 inst-ac ml-0 d-flex align-items-center justify-content-start"><img src="<?php echo $val->icon->iconReference ?>" class="img-fluid mr-2"> <span style="font-size: 14px; white-space:nowrap; padding: 0px 15px 0 0;"><?php echo $val->name; ?></span></li>
 														  	<?php
 														  			}
 														  	?>
@@ -298,18 +291,18 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 														</div>
                                                         </li>
                                                 	
-                                                    <li class="position-relative inst-ac ml-0">
+                                                    <li class="position-relative inst-ac ml-2">
 
                                                 	<div class="dropdown">
 														  <button class="btn shadow-none no-border dropdown-toggle" type="button" id="skills_<?php echo $key; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 														  	style="background:url('<?php echo ENGAGIFII_ASSETS_URL; ?>/images/class.png');background-size:contain;background-repeat:no-repeat;width:35px;height:35px">
 														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($skills); ?></span>
 														  </button>
-														  <ul class="dropdown-menu p-1" aria-labelledby="skills_<?php echo $key; ?>">
+														  <ul class="dropdown-menu p-1" aria-labelledby="skills_<?php echo $key; ?>" style="max-height:250px; overflow:scroll">
 														  	<?php
 														  			foreach ($skills as $index => $val) {
 														  	?>
-														  				 <li class="position-relative p-1 inst-ac ml-0 d-inline-flex align-items-center justify-content-start"><img src="<?php echo $val->icon->iconReference ?>" class="img-fluid mr-2"> <span style="font-size: 14px; white-space:nowrap; padding: 0px 15px 0 0;"><?php echo $val->name; ?></span></li>
+														  				 <li class="position-relative p-1 inst-ac ml-0 d-flex align-items-center justify-content-start"><img src="<?php echo $val->icon->iconReference ?>" class="img-fluid mr-2"> <span style="font-size: 14px; white-space:nowrap; padding: 0px 15px 0 0;"><?php echo $val->name; ?></span></li>
 														  	<?php
 														  			}
 														  	?>
@@ -322,7 +315,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
                                                     </li>
                                                 </ul>
                                                 </div>
-                                                 <div class="ml-auto text-right col-3 px-0"> 
+                                                 <div class="ml-auto text-right col-3"> 
                                                  <?php 
                                                  	if($value->isLead){
                                                  ?>	
@@ -334,10 +327,10 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
                                                	<span class="badge badge-warning">Certified</span>
                                                 
 		                    				</div>
-                                             </div>
+                                            </div>
                                             
 		                    			</div>
-		                    		</div>
+		                    			</div>
 		                    		<?php
 		                    			}
 		                    		}
@@ -347,7 +340,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  			</div>
 			  		</div>
 			  	</div>
-			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+			  	<div class="p-3 tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="col-sm-12 pt-4">
 			  		<div class="table-responsive">
 			  		<table class="table table-hover table-bordered light-background nowrap" id="class_table" width="100%">
