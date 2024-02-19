@@ -62,7 +62,8 @@
          $url = "http://";   
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'engagifii-profile') !== false ) {?> 
+if ( strpos($url,'engagifii-profile') !== false ) {
+	$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';?> 
     <a href="<?php echo site_url().'/engagifii-profile/my-transcript/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $classes_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
