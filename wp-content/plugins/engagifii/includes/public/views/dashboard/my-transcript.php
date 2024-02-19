@@ -71,7 +71,7 @@ include 'sidebar_nav.php';
   	echo '<h4>data not available</h4>';
   }else{?>
   	<div class="d-flex justify-content-between align-items-center mb-3">
-  	<h6 class="mb-0">Badge Statistics</h6>
+  	<h6 class="mb-0"></h6>
     <span class="btn btn-outline-success btn-sm text-dark ml-auto"><small>Total Credit Earned as of <?php echo date("d M Y");?>: <strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></strong></small></span>
     <span class="btn btn-outline-success btn-sm text-dark ml-3 "><small>Total Credit Earned in <?php echo date("Y");?>: <strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></strong></small></span>
     <button type="button" id="allReports" class="btn btn-primary btn-sm ml-3"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -175,7 +175,7 @@ z-index:-1;
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
   	<div class="d-flex justify-content-between align-items-center mb-3">
-  	<h6 class="mb-0">Credit Earned Statistics</h6>
+  	<h6 class="mb-0"></h6>
     <div class="form-inline dateFilter ml-3">
     <div class="input-group mr-2" style="max-width:255px">
     <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Enter dates..." >
