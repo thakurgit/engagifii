@@ -83,6 +83,7 @@ ob_start();
 		</div>
 		<div class="col-sm-12 height-4">
       <input type="hidden" id="isApplyACtive" value="0">
+      	<?php if($classes){ ?>
 			<div class="filter-list border-bottom">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Name <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none">
@@ -91,6 +92,7 @@ ob_start();
 					</ul>
 				</div>
 			</div>
+            <?php } if($instructor){ ?>
 			<div class="filter-list border-bottom">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructor <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none"><ul class="list-group m-0">
@@ -102,6 +104,7 @@ ob_start();
 					?>	
 				</ul></div>
 			</div>
+            <?php } ?>
 			<div class="filter-list border-bottom">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Between <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none position-relative">
@@ -109,6 +112,7 @@ ob_start();
                       <span class="position-absolute cleardate mt-1 mr-1 text-secondary" style="right:0; top:0; cursor:pointer"><i class="fa fa-times"></i></span>
 				</div>
 			</div>
+            <?php if($tags){ ?>
 			<div class="filter-list border-bottom">
 				<div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
 				<div class="content-area d-none"><ul class="list-group m-0">
@@ -119,6 +123,7 @@ ob_start();
 					?>	
 				</ul></div>
 			</div>
+            <?php } ?>
 			
 		</div>
     <div class="apply-filter">
