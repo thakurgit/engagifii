@@ -21,7 +21,8 @@ class ebtAdminConfigSettings {
 	add_action('admin_init',array($this,'ebt_api_settings_init'));
 		add_action('engagifiiGetColumnList', array($this,'show_datatable_column'));		
 		add_action('engagifiiCustomizer', array($this,'engagifii_Customizer'));		
- 	}
+ 	add_action('profileSettings', array($this,'profile_Settings'));	
+	}
 
  	// function show_datatable_column()
  	// {
@@ -56,6 +57,12 @@ class ebtAdminConfigSettings {
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		include_once( __DIR__.'/view/customizer.php' );
  	}
+	function profile_Settings()
+ 	{
+		
+ 		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+		include_once( __DIR__.'/view/dashboard-settings.php' );
+ 	}
 	function ebt_api_add_admin_menu() {
 	$options = get_option( 'ebt_api_settings' );
 	$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
@@ -65,7 +72,7 @@ class ebtAdminConfigSettings {
 				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
 				if($tenant_url=='psba'){
-					add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'My Engagifii Profile', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
+					add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'Profile Settings', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
 				}
 	}
 
@@ -364,8 +371,9 @@ function ebt_tenant_code_render(  ) {
  
 
 	function ebt_api_settings_section_callback( ) {
-
   		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+	$options = get_option( 'ebt_api_settings' );
+	$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
     	?>
 		<!-- Our admin page content should all be inside .wrap -->
   		<div class="wrap">
@@ -375,6 +383,9 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
                 <a href="?page=engagifii-module-api&tab=customizer" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
+                <?php if($tenant_url = 'psba'){ ?>
+                <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a>
+                <?php } ?>
     		</nav>
 
     		<div class="tab-content">
@@ -386,7 +397,11 @@ function ebt_tenant_code_render(  ) {
       			case 'shortcode':
         			$this->ebt_api_shortocde_description();
         		break;
-				case 'customizer':
+				case 'page-settings':
+        			$this->engagifii_api_settings('hide');
+        			$this->engagifii_apply_css_ebt_render('hide');
+        		break;
+				case 'profile-settings':
         			$this->engagifii_api_settings('hide');
         			$this->engagifii_apply_css_ebt_render('hide');
         		break;

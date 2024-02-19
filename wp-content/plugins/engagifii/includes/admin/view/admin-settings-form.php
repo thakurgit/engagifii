@@ -1,8 +1,4 @@
 <?php   $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-if($tab == 'my-profile'){ 
-			include_once( __DIR__.'/engagifii-profile.php' );
-		return;
-		}
 		?>
         <form class="ebt-setting-frm" action='options.php' method='post'>
     <?php
@@ -151,7 +147,8 @@ if($tab == 'my-profile'){
 <?php
        do_action('engagifiiGetColumnList');
 	   do_action('engagifiiCustomizer');
-        ?>
+        do_action('profileSettings');
+		?>
     <div class="ebt-submit-btn">
         <?php 
             if($tab!= 'shortcode')
