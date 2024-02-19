@@ -227,7 +227,19 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		                        <?php
 		                        	}
 								}
-		                        	if(isset($response->skills) && count($response->skills) > 0){
+								if(in_array('register', $events_visible_column_list)) {
+									if ($response->registrationStartFrom){ ?>
+								<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                            <div class="col-sm-4 ">Registration Start Date:</div>
+		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationStartFrom)); ?> at <?php echo date('h:i A', strtotime($response->registrationStartFrom)); ?></div>
+		                        </div>
+                                <?php } if($response->registrationEndDate) { ?>
+								<div class="summary-content-para-engagiigii row flex-wrap mb-3">
+		                            <div class="col-sm-4 ">Registration End Date:</div>
+		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationEndDate)); ?> at <?php echo date('h:i A', strtotime($response->registrationEndDate)); ?></div>
+		                        </div>
+
+							<?php 	} } if(isset($response->skills) && count($response->skills) > 0){
 		                        ?>	
 		                         <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Skills:</div>
