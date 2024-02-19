@@ -343,7 +343,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  	<div class="p-3 tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="col-sm-12 pt-4">
 			  		<div class="table-responsive">
-			  		<table class="table table-hover table-bordered light-background nowrap" id="class_table" width="100%">
+			  		<table class="table table-hover table-bordered nowrap" id="class_table" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th>Class</th>
@@ -433,7 +433,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		    	search:'',
 		    	searchPlaceholder: "Search..."
 		   	},
-			"ordering":true});
+			"ordering":false});
 
 		$('.dropdown-toggle').dropdown();
 
