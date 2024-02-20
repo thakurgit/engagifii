@@ -2451,7 +2451,6 @@ wp_die();
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
-
         foreach ($collection as $key => $row) {
            
             /* getdata for tables */
@@ -2562,7 +2561,6 @@ wp_die();
                     $default_Tags[$index]->tagName = $tag;
                     $default_Tags[$index]->id =$index;
                 }
-                
                 foreach ($default_Tags as $index => $value) {
                    
                     if(count($default_Tags) > 1 && $index == 0)
@@ -2596,7 +2594,6 @@ wp_die();
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-
         echo json_encode($json_data);
         wp_die();
     }
