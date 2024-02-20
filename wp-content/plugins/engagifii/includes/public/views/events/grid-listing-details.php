@@ -135,13 +135,13 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		  <div class="mt-auto">				
 			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><button type="button" id="onlocation12" class="btn btn-primary  px-3 py-1"  disabled >Register</button></span>
 		  </div>
-			 }else{
+			<?php }else{
 			 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $registration_state); ?>
 		  <div class="mt-auto">				
 			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>"><button type="button" id="onlocation12" class="btn btn-primary  px-3 py-1"  disabled >Register</button></span>
 		  </div>
-        	  }
-		  <?php 
+        	<?php  }
+		   
 		   } else if($isAlreadyRegistered){
                 $alreadyRegisteredText = "Already Registered";
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
