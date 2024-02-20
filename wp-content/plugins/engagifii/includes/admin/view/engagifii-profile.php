@@ -1,0 +1,1056 @@
+
+  <!-- Bootstrap CSS CDN link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" >
+  <style>
+        .session-tab {
+            display: flex;
+            width: 100%;
+            list-style: none;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            flex-grow: 1;
+            border: 1px solid #ddd; /* Border for each li */
+            border-radius: 5px;
+            margin-right: 5px; /* Adjust margin as needed */
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+		.tab-pane .accordion-button::after {
+	margin-left: 1rem;
+}
+    </style>
+<?php
+ $site_url = site_url();
+?>
+
+ <div class="pe-3 mb-3">
+ 	<div class="container-fluid  ">
+    	<div class="row justify-content-end text-secondary small">
+        	<div class="col-md-3 d-flex align-items-center justify-content-end">
+            Select Profile Template: 
+            <select name="" id="tempswitch" class="form-control ms-2" style="width:130px">
+            	<option value="temp1">Template 1</option>
+                <option value="temp2">Template 2</option>
+                <option value="temp3">Template 3</option>
+            </select>
+            </div>
+            		
+        </div>
+    	
+    </div>
+ </div>
+ <section class="temp2 pe-3">
+ <div class="bg-light py-4 border-start border-4 border-primary mb-4">
+ 	<div class="container-fluid ">
+    	<div class="d-flex">
+  <div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    	<img src="http://www.accg.org/Staff%20Photos/Abercrombie_Ashley.jpg" alt="..." class="img-fluid">
+    </div>
+  </div>
+  <div class="flex-grow-1 ms-3">
+    <h3>Ms. Ashley Abercrombie</h3>
+    <p class="mb-0 text-secondary"><strong>PID:</strong> AACR7391</p>
+    <p class="text-secondary"><strong>Address: </strong>191 Peachtree Street, Suite 700 Atlanta, GA 30303</p>
+    <p class="text-secondary"><strong>Tags:</strong> <span class="badge rounded-pill text-bg-light border ms-2">Engagifii</span><span class="badge rounded-pill text-bg-light border ms-2">Legislation</span><span class="badge rounded-pill text-bg-light border ms-2">Bills</span><span class="badge rounded-pill text-bg-light border ms-2">Atlanta</span></p>
+  </div>
+</div>
+    </div>
+ </div>
+ <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Profile
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+    <div class="container-fluid  bg-light border pt-2 pb-1">
+    	<h5>Contact Information</h5>
+    </div>
+    <div class="container-fluid mb-4 border py-3">
+    	<div class="row">
+        	<div class="col-md-6">
+            	<div class="card mb-4 px-2 m-0 bg-light mw-100">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><strong>Full Name</strong></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Ms. Ashley Abercrombie</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><strong>Email</strong></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">aabercrombie@accg.org</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><strong>Phone</strong></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(404) 522-5022</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><strong>Mobile</strong></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(404) 522-5022</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><strong>Address</strong></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">191 Peachtree Street, Suite 700
+Atlanta, GA 30303</p>
+              </div>
+            </div>
+          </div>
+        </div>
+            </div>
+        	<div class="col-md-6"></div>
+        </div>	
+    </div>
+    <div class="container-fluid  bg-light border pt-2 pb-1">
+    	<h5>Organisation</h5>
+    </div>
+    <div class="container-fluid mb-4 border py-3">
+    	<div class="row">
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Organization</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;">Department: Other</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Lorem ipsum</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;"><strong>Department:</strong> Other</p>
+                <p style="font-size: .77rem;"><strong>Position:</strong> Director of Property & Liability Insurance Programs</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        	<div class="col-md-4">
+            	<div class="card mb-4 mb-md-0 px-0 bg-light mt-0 h-100">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Lorem ipsum</span> 
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                
+                <p class="mb-1" style="font-size: .77rem;">Department: Other</p>
+                
+                
+              </div>
+            </div>
+            </div>
+        </div>	
+    </div>
+    </section>
+<section class="temp4 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+
+<!-- Content -->
+
+  <!-- Header -->
+  <div class="container-fluid bg-light border mb-4 py-5">
+  <div class="row justify-content-center">
+  	<div class="col-md-7">
+    	<div class="d-flex">
+        	<div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
+    </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
+  </div>
+  <div class="flex-grow-1 ms-3">
+  	<h4 class="font-weight-bold mb-4">Ms. Heather Dunn</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>HDFY3418</p>
+  
+          <div class="text-muted mb-4">
+            Status: <strong style="color:green;">Active</strong>
+          </div>
+  
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
+  </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  <!-- Header -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
+      <!-- Info -->
+      <div class="card mb-4 px-3 mw-100">
+        <div class="card-body">
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Birthday:</div>
+            <div class="col-md-9">
+              May 3, 1995
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Country:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">United States</a>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Languages:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">English</a>
+            </div>
+          </div>
+
+          <h6 class="my-3">Contacts</h6>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Phone:</div>
+            <div class="col-md-9">
+            (717) 386-1904
+            </div>
+          </div>
+
+          <h6 class="my-3">Price List</h6>
+
+          <div class="row mb-2">
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">Rock</a>,
+              <a href="javascript:void(0)" class="text-body">Alternative</a>,
+              <a href="javascript:void(0)" class="text-body">Electro</a>,
+              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
+              <a href="javascript:void(0)" class="text-body">Dance</a>
+            </div> -->
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
+            <div class="col-md-9">
+            Current
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="card-footer text-center p-0">
+          <div class="row no-gutters row-bordered row-border-light">
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">24</div>
+              <div class="text-muted small">posts</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">51</div>
+              <div class="text-muted small">videos</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">215</div>
+              <div class="text-muted small">photos</div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+      <!-- / Info -->
+
+      
+    </div>
+    <div class="col-4">
+
+      <!-- Side info -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-body">
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
+          &nbsp;
+          <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
+            <span class="ion ion-md-mail"></span>
+          </a>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <p class="mb-2">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 1295 Kuhn Rd
+1295 Kuhn Road, <br>Cumberland County
+Boiling Springs, <br>PA 17007
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
+            <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
+            <a href="javascript:void(0)" class="text-body">hdunn@cvschools.org</a>
+          </p>
+        </div>
+        <hr class="border-light m-0">
+        <!-- <div class="card-body">
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-facebook ui-w-30 text-center text-facebook"></i> nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-0">
+            <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
+          </a>
+        </div> -->
+      </div>
+      <!-- / Side info -->
+
+      <!-- Skills -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-header">Organization</div>
+        <div class="card-body">
+
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
+
+          <div class="mb-1">Department - <small class="text-muted">School Board</small></div>
+          
+
+          <div class="mb-1">Position - <small class="text-muted">Board Chair</small></div>
+         
+
+          <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div>
+         
+
+        </div>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
+      </div>
+      <!-- / Skills -->
+
+      
+    </div>
+  </div>
+
+</div>
+<!-- / Content -->
+
+
+
+</div>
+</section>
+<!-- 2nd Profile -->
+<section class="temp1 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+
+<!-- Content -->
+
+  <!-- Header -->
+  <div class="container-fluid bg-light border mb-4 py-5">
+  <div class="row justify-content-center">
+  	<div class="col-md-7">
+    	<div class="d-flex">
+        	<div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
+    </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
+  </div>
+  <div class="flex-grow-1 ms-3">
+  	<h4 class="font-weight-bold mb-4">David Christopher</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>DCTP1526</p>
+  
+          <div class="text-muted mb-4">
+            Status: <strong style="color:green;">Active</strong>
+          </div>
+  
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
+  </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  <!-- Header -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
+      <!-- Info -->
+      <div class="card mb-4 px-3 mw-100">
+        <div class="card-body">
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Birthday:</div>
+            <div class="col-md-9">
+              May 3, 1995
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Country:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">United States</a>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Languages:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">English</a>
+            </div>
+          </div>
+
+          <h6 class="my-3">Contacts</h6>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Phone:</div>
+            <div class="col-md-9">
+            (717) 506-3301
+            </div>
+          </div>
+
+          <h6 class="my-3">Price List</h6>
+
+          <div class="row mb-2">
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">Rock</a>,
+              <a href="javascript:void(0)" class="text-body">Alternative</a>,
+              <a href="javascript:void(0)" class="text-body">Electro</a>,
+              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
+              <a href="javascript:void(0)" class="text-body">Dance</a>
+            </div> -->
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
+            <div class="col-md-9">
+            Current
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="card-footer text-center p-0">
+          <div class="row no-gutters row-bordered row-border-light">
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">24</div>
+              <div class="text-muted small">posts</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">51</div>
+              <div class="text-muted small">videos</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">215</div>
+              <div class="text-muted small">photos</div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+      <!-- / Info -->
+
+      
+    </div>
+    <div class="col-4">
+
+      <!-- Side info -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-body">
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
+          &nbsp;
+          <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
+            <span class="ion ion-md-mail"></span>
+          </a>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <p class="mb-2">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 6746 Carlisle Pike, 
+           <br>Cumberland County, <br>Mechanicsburg, PA 17050 <br>
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
+            <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
+            <a href="javascript:void(0)" class="text-body">dchristopher@cvschools.org</a>
+          </p>
+        </div>
+        <hr class="border-light m-0">
+        <!-- <div class="card-body">
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-facebook ui-w-30 text-center text-facebook"></i> nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-0">
+            <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
+          </a>
+        </div> -->
+      </div>
+      <!-- / Side info -->
+
+      <!-- Skills -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-header">Organization</div>
+        <div class="card-body">
+
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
+
+          <div class="mb-1">Department - <small class="text-muted">District Administration</small></div>
+          
+
+          <div class="mb-1">Position - <small class="text-muted">Superintendent</small></div>
+         
+
+          <!-- <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div> -->
+         
+
+        </div>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
+      </div>
+      <!-- / Skills -->
+
+      
+    </div>
+  </div>
+
+</div>
+<!-- / Content -->
+
+
+
+</div>
+</section>
+
+<!--3rd profile-->
+<section class="temp5 pe-3"  style="background-color: #eee; display:none"><div class="layout-content">
+
+<!-- Content -->
+
+  <!-- Header -->
+  <div class="container-fluid bg-light border mb-4 py-5">
+  <div class="row justify-content-center">
+  	<div class="col-md-7">
+    	<div class="d-flex">
+        	<div class="flex-shrink-0">
+  	<div class="overflow-hidden rounded-circle " style="width:120px;height:130px">
+    <img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/user-default.png'; ?>" alt="..." class="img-fluid">
+    </div>
+    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+              </button>
+  </div>
+  <div class="flex-grow-1 ms-3">
+  	<h4 class="font-weight-bold mb-4">Mr. Jevon Ford</h4>
+    <p class="font-weight-bold mb-4"><strong>PID: </strong>JFXQ2629</p>
+  
+          <div class="text-muted mb-4">
+            Status: <strong style="color:green;">Active</strong>
+          </div>
+  
+          <p class="text-secondary"><strong>Tags:</strong> </p>
+        
+  </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  <!-- Header -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
+      <!-- Info -->
+      <div class="card mb-4 px-3 mw-100">
+        <div class="card-body">
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Birthday:</div>
+            <div class="col-md-9">
+              May 3, 1995
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Country:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">United States</a>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Languages:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">English</a>
+            </div>
+          </div>
+
+          <h6 class="my-3">Contacts</h6>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Phone:</div>
+            <div class="col-md-9">
+            (717) 691-1427
+            </div>
+          </div>
+
+          <h6 class="my-3">Price List</h6>
+
+          <div class="row mb-2">
+            <!-- <div class="col-md-3 text-muted">Favorite music:</div>
+            <div class="col-md-9">
+              <a href="javascript:void(0)" class="text-body">Rock</a>,
+              <a href="javascript:void(0)" class="text-body">Alternative</a>,
+              <a href="javascript:void(0)" class="text-body">Electro</a>,
+              <a href="javascript:void(0)" class="text-body">Drum &amp; Bass</a>,
+              <a href="javascript:void(0)" class="text-body">Dance</a>
+            </div> -->
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 text-muted">Status:</div>
+            <div class="col-md-9">
+            Current
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="card-footer text-center p-0">
+          <div class="row no-gutters row-bordered row-border-light">
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">24</div>
+              <div class="text-muted small">posts</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">51</div>
+              <div class="text-muted small">videos</div>
+            </a>
+            <a href="javascript:void(0)" class="d-flex col flex-column text-body py-3">
+              <div class="font-weight-bold">215</div>
+              <div class="text-muted small">photos</div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+      <!-- / Info -->
+
+      
+    </div>
+    <div class="col-4">
+
+      <!-- Side info -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-body">
+          <a href="javascript:void(0)" class="btn btn-primary rounded-pill">+&nbsp; Contact</a>
+          &nbsp;
+          <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat rounded-pill">
+            <span class="ion ion-md-mail"></span>
+          </a>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <p class="mb-2">
+           <Strong>Address: </strong> <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> 3 Sycamore Drive, 
+           <br>Cumberland County, <br>Mechanicsburg, PA 17050 <br>
+United States<br>
+</p>
+         
+          <p class="mb-0"> <strong>Official Email: </strong>
+            <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
+            <a href="javascript:void(0)" class="text-body">jtford1978@gmail.com</a>
+          </p>
+        </div>
+        <hr class="border-light m-0">
+        <!-- <div class="card-body">
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-twitter ui-w-30 text-center text-twitter"></i> @nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-2">
+            <i class="ion ion-logo-facebook ui-w-30 text-center text-facebook"></i> nmaxwell
+          </a>
+          <a href="javascript:void(0)" class="d-block text-body mb-0">
+            <i class="ion ion-logo-instagram ui-w-30 text-center text-instagram"></i> nmaxwell
+          </a>
+        </div> -->
+      </div>
+      <!-- / Side info -->
+
+      <!-- Skills -->
+      <div class="card mb-4 px-2 mw-100">
+        <div class="card-header">Organization</div>
+        <div class="card-body">
+
+          <div class="mb-1"> <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://psba.engagifii.com/assets/images/org-list-grey.png" alt="avatar" class="rounded-circle img-fluid me-2" style="width: 30px;">Cumberland Valley S D</span> 
+                </p>
+          
+
+          <div class="mb-1">Department - <small class="text-muted">School Board</small></div>
+          
+
+          <div class="mb-1">Position - <small class="text-muted">Board Member</small></div> 
+         
+          <div class="mb-1">PSBA Liaison - <small class="text-muted">No</small></div>
+          <div class="mb-1">Board Service - <small class="text-muted">Board Service Term 1- 12/01/2019 - 11/30/2023</small></div>
+         
+
+        </div>
+        <!-- <a href="javascript:void(0)" class="card-footer d-block text-center text-body small font-weight-semibold">SHOW ALL SKILLS</a> -->
+      </div>
+      <!-- / Skills -->
+
+      
+    </div>
+  </div>
+
+</div>
+<!-- / Content -->
+
+
+
+</div>
+</section>
+
+<!-- 3rd end -->
+	<section class="temp3 pe-3"  style="background-color: #eee; display:none">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col">
+        <h3>My Profile</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="http://www.accg.org/Staff%20Photos/Abercrombie_Ashley.jpg" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;">
+            <h5 class="my-3">Ms. Ashley Abercrombie</h5>
+            <p class="text-muted mb-1"><strong>PID:</strong> AACR7391</p>
+            <p class="text-muted mb-4">191 Peachtree Street, Suite 700 Atlanta, GA 30303</p>
+            <div class="d-flex justify-content-center mb-2">
+              <button type="button" class="btn btn-primary">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded-3">
+              <li class="list-group-item d-flex justify-content-left align-items-center p-3">
+                <i class="fas fa-globe fa-lg text-warning"></i>
+                <p class="mb-0"><strong>Tags: </strong>ACCG: All Staff, Assigned to Certified: Co, eLiability Beat, eRisk Connection, eSafety Theme, Mailings: County Line e-n</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-left align-items-center p-3">
+                <i class="fab fa-github fa-lg" style="color: #333333;"></i>
+                <p class="mb-0">Status: <span style="color:green;">Active</span></p>
+              </li>
+              <!-- <li class="list-group-item d-flex justify-content-left align-items-center p-3">
+                <i class="fab fa-twitter fa-lg" style="color: #55ACEE;"></i>
+                <p class="mb-0">@mdbootstrap</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-left align-items-center p-3">
+                <i class="fab fa-instagram fa-lg" style="color: #AC2BAC;"></i>
+                <p class="mb-0">mdbootstrap</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-left align-items-center p-3">
+                <i class="fab fa-facebook-f fa-lg" style="color: #3B5998;"></i>
+                <p class="mb-0">mdbootstrap</p>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Ms. Ashley Abercrombie</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">aabercrombie@accg.org</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(404) 522-5022</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(404) 522-5022</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">191 Peachtree Street, Suite 700
+Atlanta, GA 30303</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+              <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 30px;">Organization</span>
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Department: Other</p>
+                <!-- <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p> -->
+                <!-- https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png -->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+            <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1"><img src="https://engagifiistorage.blob.core.windows.net/icons/organization/7ce64db3-50d7-4b6f-a57a-3e5cf2e2e4b5.png" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 30px;">Organization</span>
+                </p>
+                <p class="mb-1" style="font-size: .77rem;">Association County Commissioners Of Georgia</p>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Department: Other</p>
+                 <p class="mt-4 mb-1" style="font-size: .77rem;"><strong>Position: </strong>Director of Property & Liability Insurance Programs</p>
+               <!-- <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br/>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                EVENTS AND TRAINING
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong>Certification Statistics</strong>
+                <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 active " data-bs-toggle="pill" data-bs-target="#tab-1" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">10</span><small>Registered <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span> </small></a>
+                    </li>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-2" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">4</span><small>In Progress <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-3" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">5</span><small>Not Started <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-4" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">8</span><small>Earned <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
+                    </li>
+                    <li class="nav-item mb-3 rounded-1" role="presentation">
+                        <a class="border-dark nav-link text-start py-3 " data-bs-toggle="pill" data-bs-target="#tab-5" href="#" role="tab" aria-controls="home" aria-selected="true"><span class="d-block">9</span><small>Awarded <span class="ms-1"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">i</span></small></a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+  	<div class="accordion" id="accordionExample1">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ms-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </h2>
+    <div id="collapseOne<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-bs-parent="#accordionExample1">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+  </div>
+  <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+  	  	<div class="accordion" id="accordionExample2">
+    
+   <?php 
+   	$length = 5;
+
+for($i = 0; $i < $length; $i++){ ?>
+	  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button <?php if($i!=0){ echo 'collapsed'; }?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnex<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #<?php echo $i+1; ?><span class="ms-auto"><small class="text-warning">In progress (9%)</small> <span class="btn btn-primary btn-sm py-0 px-2 ms-1">Report</span></span>
+      </button>
+    </h2>
+    <div id="collapseOnex<?php echo $i;?>" class="accordion-collapse collapse <?php if($i==0){ echo 'show'; }?>" data-bs-parent="#accordionExample2">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+<?php }
+
+   ?>
+</div>
+
+  </div>
+  <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="" tabindex="0">...</div>
+</div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   /* document.addEventListener("DOMContentLoaded", function() {
+        // Add click event listener to each pill link
+        var pillLinks = document.querySelectorAll('.nav-link');
+        pillLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                var pillId = link.getAttribute('data-target');
+                generateAccordions(pillId);
+            });
+        });
+    });
+
+    function generateAccordions(pillId) {
+      
+        var contentContainer = document.getElementById('contentContainer');
+        //contentContainer.innerHTML = ''; // Clear previous content
+
+        var totalItems = 50; // Total number of items
+        var itemsPerPage = 10; // Number of items per page
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        // Generate pagination links
+        var paginationList = document.getElementById('paginationList');
+        
+        paginationList.textContent = '';
+        //alert(totalPages);
+        for (var i = 1; i <= totalPages; i++) {
+          //alert("display items");
+            var li = document.createElement('li');
+            li.classList.add('page-item');
+            var a = document.createElement('a');
+            a.classList.add('page-link');
+            a.href = '#';
+            a.textContent = i;
+            a.addEventListener('click', function() {
+                displayItems(this.textContent, itemsPerPage, totalItems);
+            });
+            li.appendChild(a);
+            paginationList.appendChild(li);
+        }
+
+        // Display items for the first page
+        displayItems(1, itemsPerPage, totalItems);
+    }
+
+    function displayItems(page, itemsPerPage, totalItems) {
+      //alert("display items");
+        var contentContainer = document.getElementById('contentContainer');
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage - 1;
+
+        // Display items based on the current page
+        var contentHTML = '<ul>';
+        for (var i = startIndex; i <= endIndex && i < totalItems; i++) {
+            contentHTML += '<li>Item ' + (i + 1) + '</li>';
+        }
+        contentHTML += '</ul>';
+
+        contentContainer.innerHTML = contentHTML;
+    }*/
+</script>
+
+<script>
+jQuery(document).ready(function(){
+	var lasttemp =  localStorage.getItem("profile_template");
+	if(lasttemp){
+	jQuery('.'+lasttemp).show().siblings('section').hide();
+	jQuery('#tempswitch').val(lasttemp);
+	}
+});
+jQuery('#tempswitch').change(function(){
+		var tempid = jQuery(this).val();
+		jQuery('.'+tempid).show().siblings('section').hide();
+		 localStorage.setItem("profile_template", tempid);
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+</script>

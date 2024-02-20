@@ -936,9 +936,15 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 /*Event Detail */
 public function getEventDetailsByID($id)
 {
+	$peopleToken = $_SESSION['accesstoken'];
 	$postData = array();
 	$responseArray = array();
-	$apiUrl = 'Public/'.$id;
+	if($peopleToken){
+		$apiUrl = 'event/'.$id;
+	}else{
+		$apiUrl = 'Public/'.$id;
+	}
+	
 	$response= $this->submitApiRequest($apiUrl,$postData, 'GET', 'event');
 	$responseArray = json_decode($response['api_response']);
 	return $responseArray;
