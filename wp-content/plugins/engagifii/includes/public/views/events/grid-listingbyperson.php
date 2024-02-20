@@ -384,6 +384,7 @@ dt_titleSearch('Search Events');
             // Set an interval to periodically check the child window status
             var checkChildWindow = setInterval(function() {
 				if (childWindow && childWindow.location.href.includes("/registration-complete")) {
+                    childWindow.focus();
                     childWindow.close();
                     clearInterval(checkChildWindow); // Stop checking once the child window is closed
                 }
