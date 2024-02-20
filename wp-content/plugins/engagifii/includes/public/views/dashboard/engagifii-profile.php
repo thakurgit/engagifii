@@ -1,4 +1,5 @@
 <?php  
+session_start();
 if (! is_user_logged_in()) {
     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
     printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
@@ -11,6 +12,9 @@ $userEmail = $user->user_email;
     $obj      =  new Engagifii_API();
     $engagifiiProfile = $obj->engagifiiProfile('psba',$userEmail);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
+	$_SESSION['pid']=$peopleDATA->people->id;
+	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";

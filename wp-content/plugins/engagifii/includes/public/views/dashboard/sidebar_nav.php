@@ -1,4 +1,7 @@
-<?php $site_url = site_url();?>
+<?php session_start();
+$name = $_SESSION['name'];
+$dp = $_SESSION['dp'];
+ $site_url = site_url();?>
 <style>
  body{
 padding-left: 300px;
@@ -127,9 +130,9 @@ border-bottom-color:white ;
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
-    <?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?>
+    <?php echo $name; ?>
     <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
-    <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) {?>
+    <?php if (str_contains($dp, 'http')) {?>
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
     <?php } else { ?>
     <i class="fa fa-user-circle" style="font-size:30px"></i>
