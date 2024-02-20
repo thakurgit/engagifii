@@ -3147,7 +3147,7 @@ foreach ($seqColumns as $key => $value) {
         echo $data;
         wp_die();
     }
- /*  public function publicOfficialLoadData(){
+ /*  public function publicOfficialLoadData(){ 
         $siteURL= site_url();
         
         $postedData  = $this->_preparePublicOfficialData();
