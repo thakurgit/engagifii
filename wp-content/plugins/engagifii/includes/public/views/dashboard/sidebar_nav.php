@@ -133,7 +133,7 @@ border-bottom-color:white ;
     <?php echo $name; ?>
     <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
     <?php if (str_contains($dp, 'http')) {?>
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
+    <img src="<?php echo $dp; ?>" alt="..." class="img-fluid rounded-circle">
     <?php } else { ?>
     <i class="fa fa-user-circle" style="font-size:30px"></i>
     <?php } ?>
