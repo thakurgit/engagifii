@@ -2451,6 +2451,7 @@ wp_die();
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
+
         foreach ($collection as $key => $row) {
            
             /* getdata for tables */
@@ -2561,6 +2562,7 @@ wp_die();
                     $default_Tags[$index]->tagName = $tag;
                     $default_Tags[$index]->id =$index;
                 }
+                
                 foreach ($default_Tags as $index => $value) {
                    
                     if(count($default_Tags) > 1 && $index == 0)
@@ -2594,6 +2596,7 @@ wp_die();
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
+
         echo json_encode($json_data);
         wp_die();
     }
@@ -2708,7 +2711,7 @@ wp_die();
 			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
-            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted') {
+            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->eventRegistrationState);
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
@@ -2716,17 +2719,12 @@ wp_die();
                 $alreadyRegisteredText = "Already Registered";
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-            }else if ($registration_state == 'RegistrationScheduled') {
-                $tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
-            
             else{
 				if($row->eventRegistrationState=='RegistrationOn'){
-             	   //$tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
+             	   $tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
 				}
-                
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1 open-pop" >Register</a></span>';
+                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a></span>';
             }
             
            
@@ -3152,7 +3150,7 @@ foreach ($seqColumns as $key => $value) {
         echo $data;
         wp_die();
     }
- /*  public function publicOfficialLoadData(){ 
+ /*  public function publicOfficialLoadData(){
         $siteURL= site_url();
         
         $postedData  = $this->_preparePublicOfficialData();
