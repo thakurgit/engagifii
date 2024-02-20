@@ -383,6 +383,10 @@ dt_titleSearch('Search Events');
             }
             // Set an interval to periodically check the child window status
             var checkChildWindow = setInterval(function() {
+				if (childWindow && childWindow.location.href.includes("/registration-complete")) {
+                    childWindow.close();
+                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
+                }
                 if (childWindow && childWindow.closed) {
                     // Update button text to indicate the parent window is refreshing
                     //document.getElementById('openChildButton').innerText = 'Refreshing...';
@@ -392,6 +396,7 @@ dt_titleSearch('Search Events');
                     clearInterval(checkChildWindow); // Stop checking once the child window is closed
                 }
             }, 500); // Adjust the interval as needed
+			
         //}
 
 		
