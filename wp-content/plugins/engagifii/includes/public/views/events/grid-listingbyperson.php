@@ -345,6 +345,7 @@ var table = $('#ebtmaintable').DataTable( {
         "columns":<?php echo (json_encode($forDatatable)); ?>,
      "drawCallback": function( settings ) {
 			 dt_dropdown();
+			 eventRegPopUp();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -364,6 +365,7 @@ dt_titleSearch('Search Events');
   <?php
 }
   ?>
+  function eventRegPopUp(){
 	$('.open-pop').click(function(e){
 		var tpath = $(this).attr('href');
 		//popup
@@ -385,7 +387,8 @@ dt_titleSearch('Search Events');
                     // Update button text to indicate the parent window is refreshing
                     //document.getElementById('openChildButton').innerText = 'Refreshing...';
                     // Refresh the parent window when the child window is closed
-                    location.reload();
+                    //location.reload();
+					table.draw();
                     clearInterval(checkChildWindow); // Stop checking once the child window is closed
                 }
             }, 500); // Adjust the interval as needed
@@ -395,7 +398,7 @@ dt_titleSearch('Search Events');
 		
 		e.preventDefault();
 	});
-	
+  }
 	
 	
 	
