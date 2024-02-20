@@ -50,6 +50,7 @@
    
 
 ?>
+<div class="mb-2">
 <?php
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
          $url = "https://";   
@@ -64,7 +65,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
     <a href="<?php echo $courses_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
 ?>
-
+</div>
 <div class="engagifii-box border border-bottom-0">
     <div class="col-sm-12 d-md-flex p-1">
         <div class="col-xl-1 col-md-2 pt-2 text-center">
