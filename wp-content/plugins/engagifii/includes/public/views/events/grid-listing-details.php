@@ -144,9 +144,9 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 		   
 		   } else if($isAlreadyRegistered){
                 $alreadyRegisteredText = "Already Registered";
-                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-		  } else{
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText); ?>
+                <div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
+		 <?php } else{
 			  //$tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom));
 			  ?>
 			<div class="mt-auto">	
