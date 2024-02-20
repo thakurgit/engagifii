@@ -7,9 +7,9 @@ if (! is_user_logged_in()) {
 }
 $pid = $_SESSION['pid'];
 $obj      =  new Engagifii_API();
-/*$user_id  = get_current_user_id();
+$user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
-$userEmail = $user->user_email;
+/*$userEmail = $user->user_email;
     $engagifiiProfile = $obj->engagifiiProfile('psba',$userEmail);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);*/
 if(!$pid) { 
