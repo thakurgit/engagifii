@@ -283,23 +283,6 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   var titleColumn = '<?php echo $title_key; ?>';
   var fv = 0;
 
-  $('#list').click(function(){
-	   		$(this).addClass('btn-primary').removeClass('btn-light');
-			$('#calendar').removeClass('btn-primary').addClass('btn-light');
-            $('#list_div').show();
-			$('.flt-btn').fadeIn(300);
-      $('#calendar_div, #calendar_filter, #calendarsearch_div, .calendarsearch-form, .new-search').hide();
-            $('#calendar_filter').hide();
- localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
-        })
-        $('#calendar').click(function(){
-	   		$(this).addClass('btn-primary').removeClass('btn-light');
-			$('#list').removeClass('btn-primary').addClass('btn-light');
-      $('#calendar_div, #calendar_filter, .calendarsearch-form, .new-search').show();
-      $('#list_div, #calendarsearch_div, .filter-border').hide();
-			$('.flt-btn').fadeOut(100);
- localStorage.setItem("view_mode",$('.view-m .btn-primary').attr('id'));
-        })
         
 var table = $('#ebtmaintable').DataTable( {
     
@@ -378,85 +361,48 @@ var table = $('#ebtmaintable').DataTable( {
   if($title_key > -1){
 ?>
 dt_titleSearch('Search Events');
- /* $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
-    
-$('.list-search-btn').click(function(e){
-	var ttitle= $('.list-search').val();
-	if(ttitle!=''){
-    text = ttitle;
-		$('#list').trigger('click');	
-		table.column(titleColumn).search(text).draw();
-		 $( '#searchclass' ).val($('.list-search').val());
-		$('.clear-search').show();
-     
-	} else {
-		alert("search field can't be empty");	
-	}
-	e.stopPropagation();
- });
-$('.list-search').on("keydown", function(event) {
-  if(event.which == 13){
-	$('.list-search-btn').trigger('click');  
-  }  
-});
-        var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search events" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
-		function delay(callback, ms) {
-  var timer = 0;
-  return function() {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      callback.apply(context, args);
-    }, ms || 0);
-  };
-}
-
-$( 'input', this ).keyup(delay(function (e) {
-	  text = this.value;
-            if ( text !== '' ) {
-				table.draw();
-            }
-}, 500));
-
-
- $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$('.clear-search').show();
-			} else {
-				$('.clear-search').hide();
-			} 
- });
-$('th .clear-search').click(function(e){
-	 $('#searchclass').val('');
-	$('.clear-search').hide();
-	e.stopPropagation();
-	//table.column(i).search('').draw();
-	text = '';
-	table.draw();
- });
-
-        
-    } );
-	$(document).ready(function (){    
-    $('#searchclass').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchclass').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-});*/
   <?php
 }
   ?>
-	$('body').on('click', '.blank', function(){
-			$('.dataTables_filter input[type=search]').val('').keyup(); 
-			$(this).parent('label').removeClass('has-data');
-			table.draw();
-		});
-    //$('div.top-filter').html('<?php //echo $filter_content; ?>');
+	$('.open-pop').click(function(e){
+		var tpath = $(this).attr('href');
+		//popup
+			var childWindow;
+       // function openChildWindow() {
+            // Open the child window and store the reference
+            childWindow = window.open(tpath, '_blank', 'width=800, height=600');
+            // Optional: Center the child window (not reliable for all browsers)
+            if (childWindow) {
+                var screenWidth = window.screen.width;
+                var screenHeight = window.screen.height;
+                var left = (screenWidth - 800) / 2;
+                var top = (screenHeight - 600) / 2;
+                childWindow.moveTo(left, top);
+            }
+            // Set an interval to periodically check the child window status
+            var checkChildWindow = setInterval(function() {
+                if (childWindow && childWindow.closed) {
+                    // Update button text to indicate the parent window is refreshing
+                    //document.getElementById('openChildButton').innerText = 'Refreshing...';
+                    // Refresh the parent window when the child window is closed
+                    location.reload();
+                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
+                }
+            }, 500); // Adjust the interval as needed
+        //}
+
+		
+		
+		e.preventDefault();
+	});
+	
+	
+	
+	
+		
+		
+		
+		
 	$('div.flt-btn').html('<?php echo $filter_content; ?>');
 
  

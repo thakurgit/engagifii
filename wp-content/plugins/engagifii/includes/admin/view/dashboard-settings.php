@@ -13,7 +13,7 @@ echo 'In Progress..';
 	{"label":"My Transcript","url":"engagifii-profile/my-transcript","icon":"fas fa-file"},
 	{"label":"Members","url":"","icon":"fas fa-child"},
 	{"label":"Resources","url":"","icon":"fas fa-book"},
-	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]');*/
+	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]');
 	$response = array();
     $options = get_option( 'ebt_api_settings' );
     $dash_menus = array();
@@ -38,7 +38,7 @@ echo 'In Progress..';
     	}
     	echo '</ul>';
 		
-		echo '</div>';				
+		echo '</div>';*/				
 
  } ?>
 </div>
