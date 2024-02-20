@@ -372,13 +372,13 @@ dt_titleSearch('Search Events');
 			var childWindow;
        // function openChildWindow() {
             // Open the child window and store the reference
-            childWindow = window.open(tpath, '_blank', 'width=800, height=600');
+            childWindow = window.open(tpath, '_blank', 'width=1000, height=650');
             // Optional: Center the child window (not reliable for all browsers)
             if (childWindow) {
                 var screenWidth = window.screen.width;
                 var screenHeight = window.screen.height;
-                var left = (screenWidth - 800) / 2;
-                var top = (screenHeight - 600) / 2;
+                var left = (screenWidth - 1000) / 2;
+                var top = (screenHeight - 650) / 2;
                 childWindow.moveTo(left, top);
             }
             // Set an interval to periodically check the child window status
