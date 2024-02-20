@@ -2712,8 +2712,13 @@ wp_die();
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
             if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
+				if($registration_state == 'RegistrationScheduled'){
+                	$tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
+               		$default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+				}else{
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->eventRegistrationState);
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+				}
             }
             else if ($isAlreadyRegistered) {
                 $alreadyRegisteredText = "Already Registered";
@@ -2721,10 +2726,10 @@ wp_die();
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
             }
             else{
-				if($row->eventRegistrationState=='RegistrationOn'){
-             	   $tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
-				}
-                $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a></span>';
+				//if($row->eventRegistrationState=='RegistrationOn'){
+             	//   $tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
+				//}
+                $default_RegisterBtn .= '<a href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview" target="_blank" class="btn btn-primary px-3 py-1" >Register</a>';
             }
             
            
