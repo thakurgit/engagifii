@@ -483,12 +483,12 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
 
       $('.clear-all').click(function(){
          <?php
-          if(in_array('tags', $ebt_visib_datacol_list))
-          {
+          //if(in_array('tags', $ebt_visib_datacol_list))
+         // {
         ?>
-            $('input[type=checkbox]').prop('checked',false);
+            $('.filter-content input[type=checkbox]').prop('checked',false);
         <?php
-          }
+         // }
         ?>
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
@@ -540,8 +540,10 @@ $(document).on('click', '.daterangepicker ', function (e) {
       function countFilterData()
       {
 
-//var courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(!tags){
+tags= ['portal'];	
+}
 var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
   $.ajax({
