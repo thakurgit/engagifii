@@ -345,7 +345,7 @@ var table = $('#ebtmaintable').DataTable( {
         "columns":<?php echo (json_encode($forDatatable)); ?>,
      "drawCallback": function( settings ) {
 			 dt_dropdown();
-			 eventRegPopUp();
+			// eventRegPopUp();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
