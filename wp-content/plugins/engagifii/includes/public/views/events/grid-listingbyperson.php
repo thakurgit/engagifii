@@ -471,6 +471,10 @@ $( '.cleardate' ).click(function() {
         }
       ?><?php */?>
 tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(tags.length==0){
+tags= ['portal'];	
+}
+
 types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
      // createdDate = $('input[name="createdbetween"]').val();
@@ -541,7 +545,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
       {
 
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
-if(!tags){
+if(tags.length==0){
 tags= ['portal'];	
 }
 var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
