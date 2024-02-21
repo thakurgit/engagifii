@@ -126,7 +126,7 @@ border-bottom-color:white ;
 	-webkit-transition-delay: .375s;
 	transition-delay: .375s;
 }
-</style>
+</style> 
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
