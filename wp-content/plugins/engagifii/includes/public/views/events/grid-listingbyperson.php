@@ -345,7 +345,7 @@ var table = $('#ebtmaintable').DataTable( {
         "columns":<?php echo (json_encode($forDatatable)); ?>,
      "drawCallback": function( settings ) {
 			 dt_dropdown();
-			// eventRegPopUp();
+			 eventRegPopUp();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -366,8 +366,8 @@ dt_titleSearch('Search Events');
 }
   ?>
   function eventRegPopUp(tpath){
-	//$('.open-pop').click(function(e){
-		//var tpath = $(this).attr('data-url');
+	$('.open-pop').click(function(e){
+		var tpath = $(this).attr('data-url');
 		//popup
 			var childWindow;
        // function openChildWindow() {
@@ -397,8 +397,8 @@ dt_titleSearch('Search Events');
 
 		
 		
-		//e.preventDefault();
-	//});
+		e.preventDefault();
+	});
   }
 	
 	
