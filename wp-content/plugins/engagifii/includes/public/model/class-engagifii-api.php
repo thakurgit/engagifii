@@ -422,6 +422,7 @@ public function _popOverSpeakerData3($id, $instructorData){
        
         $popOverHtml = '<span id="span_' . $courseid . '"  style="opacity:0;height:0;display:block;"> <select class="form-control" id="classbox_' . $courseid . '">';
         $subItems = "";
+
         
         foreach ($classData as $key => $rowData) {
             
@@ -537,6 +538,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 	{
 	$postData = array();
 	$apiUrl = 'legislative/public-bills/committees/house/';
+
 	return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation'); 
 	}
 
@@ -999,12 +1001,14 @@ public function getEventDetailsByID($id)
 		$postData = array();
 		$apiUrl = 'classes/event/list/'.$id;
 		$postData['eventId'] = $id;
-		$postData['itemCount'] = $count;
-		$postData['pageNumber'] = '1';
+		$postData['itemCount'] = 1;
+		$postData['pageNumber'] = 1;
+        $postData['pageSize'] = 10;
 		$postData['sortDirection'] = 'desc';
-		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'courses');
+		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'awards');
 		$responseArray = json_decode($response['api_response']);
 		return $responseArray;
+       
 
 	}
 	public function getEventRelatedClassBycourse($id, $count){

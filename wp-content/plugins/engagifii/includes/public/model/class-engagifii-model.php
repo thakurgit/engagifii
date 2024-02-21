@@ -2188,14 +2188,14 @@ wp_die();
         
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
-		//$titleColumn = $_POST['titleColumn'];
+		$titleColumn = $_POST['titleColumn'];
+		$title = $_POST['columns'][$titleColumn]['search']['value'];
 		$sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $sortDirection = $_POST["order"][0]["dir"];
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
+		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"searchText":"'.$title.'","startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
-		//print_r($postedData);
-		//die;
+		//print_r($postedData); die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
@@ -2221,7 +2221,7 @@ wp_die();
             $nestedData['coursetype'] = $value->creditType->subObjectName;
             $nestedData['classes'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
 			if(count($value->class)){
-				$classPopover = dd_header('Classes');
+				$classPopover = dd_header('Classes','Search classes..');
 				$subItems = "";
 				$li=1;
 				foreach ($value->class as $key => $rowData) {

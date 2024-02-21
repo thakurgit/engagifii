@@ -25,7 +25,7 @@ table tbody tr.selected {
     </div>
 </div>
 	<div class="engagifii-box engagifii-main-cotainer position-relative">
-  	<table  id="courseByPerson" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
+  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
 		    	<?php
@@ -148,7 +148,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
-	var table = $('#courseByPerson').DataTable( {
+	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
@@ -183,7 +183,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
             	d.profileId = profileId;
             	d.startDate = startDate;
             	d.endDate = endDate;
-				 //d.titleColumn = titleColumn; 
+				d.titleColumn = titleColumn; 
                  
             }, 
         },
@@ -248,14 +248,14 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
 			
-			  $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 			  
 		
 
     },
     });
-	 $('#courseByPerson').on( 'processing.dt', function ( e, settings, processing ) {
-        $('#courseByPerson_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
+	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
+        $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
 
@@ -311,55 +311,8 @@ $( '.dateFilter button' ).click(function() {
   if($title_key > -1){
 ?>
 
-  $('#courseByPerson1 thead tr th:eq('+titleColumn+')').each( function (i) {
- 
-         var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchcourses" placeholder="Search courses" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+ dt_titleSearch('Search Courses...');
 
-function delay(callback, ms) {
-  var timer = 0;
-  return function() {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      callback.apply(context, args);
-    }, ms || 0);
-  };
-}
-  $( 'input', this ).keyup(delay(function (e) {
-	  var titlesearch = this.value;
-            if ( table.column(titleColumn).search() !== titlesearch ) {
-				table.column(titleColumn).search(titlesearch).draw();
-            }
-}, 500));
-
-
- $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$('.clear-search').show();
-			} else {
-				$('.clear-search').hide();
-			} 
- });
-$('th .clear-search').click(function(e){
-	 $('#searchcourses').val('');
-	$('.clear-search').hide();
-	e.stopPropagation();
-	table.column(titleColumn).search('').draw();
- });
-
-    } );
-	
-	$(document).ready(function (){    
-    $('#searchcourses, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchcourses').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-});
   <?php
 }
   ?>
