@@ -1256,7 +1256,74 @@ wp_die();
         echo json_encode($dataResponse);
         wp_die();
     }
+	 public function _eventsPostCountData(){
 
+         $searchValue = '';
+        if (strlen($_POST['search']['value']) > 1) {
+            $searchValue = $_POST['search']['value'];
+        }
+
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+
+        if ($columnsData["sectionname"] == "sectionname") {
+            $sortBy = "sectionname";
+        }else if ($columnsData["startdate"] == "startdate") {
+            $sortBy = "startdate";
+        }else if ($columnsData["credithours"] == "credithours") {
+            $sortBy = "credithours";
+        }else {
+            $sortBy = "";
+        }
+
+        
+        $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+        if($allEvents==1){
+        $allEvents = 'false';	
+        }else{
+            $allEvents = 'true';
+        }
+        $postData = array();
+        $postData['title'] = $searchValue;            
+        $postData['searchText'] = $searchText;      
+        $postData['lastActionStartDate'] = $datepickerstart;
+        $postData['lastActionEndDate'] = $datepickerend;
+        $postData['sortBy'] = $sortBy;
+        $postData['pageNumber'] = $startPageNum;
+        $postData['onlyUpcoming'] = $allEvents;
+       // $postData['pageSize'] = $_POST['length'];
+
+        if(!empty($_POST['tags']))
+        {
+            $postData['tags'] = $_POST['tags'];
+        }
+        if(!empty($_POST['types']))
+        {
+            $postData['types'] = $_POST['types'];
+        }
+		if(!empty($_POST['locations']))
+        {
+            $postData['locations'] = $_POST['locations'];
+        }
+      
+
+        if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+
+        $getCurrentdate = date("Y-m-d");
+        $postData['selectedDate'] = $getCurrentdate;
+        return $postData;
+    }
     public function countFilterData()
     {
 
@@ -4302,74 +4369,6 @@ if(!empty($_POST['minRange']))
         return $postData;
     }
 
-	 public function _eventsPostCountData(){
-
-         $searchValue = '';
-        if (strlen($_POST['search']['value']) > 1) {
-            $searchValue = $_POST['search']['value'];
-        }
-
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-
-        $columnsData = [];
-        foreach ($_POST['columns'] as $key => $value) {
-            if ($value['orderable'] == "true") {
-                $columnsData[$value['data']] = $value['data'];
-            }
-        }
-
-        if ($columnsData["sectionname"] == "sectionname") {
-            $sortBy = "sectionname";
-        }else if ($columnsData["startdate"] == "startdate") {
-            $sortBy = "startdate";
-        }else if ($columnsData["credithours"] == "credithours") {
-            $sortBy = "credithours";
-        }else {
-            $sortBy = "";
-        }
-
-        
-        $upcomingEvents = get_option( 'ebt_api_settings' )['upcomingEvents'];
-        if($upcomingEvents==1){
-        $upcomingEvents = 'true';	
-        }else{
-            $upcomingEvents = 'false';
-        }
-        $postData = array();
-        $postData['title'] = $searchValue;            
-        $postData['searchText'] = $searchText;      
-        $postData['lastActionStartDate'] = $datepickerstart;
-        $postData['lastActionEndDate'] = $datepickerend;
-        $postData['sortBy'] = $sortBy;
-        $postData['pageNumber'] = $startPageNum;
-        $postData['onlyUpcoming'] = $upcomingEvents;
-       // $postData['pageSize'] = $_POST['length'];
-
-        if(!empty($_POST['tags']))
-        {
-            $postData['tags'] = $_POST['tags'];
-        }
-        if(!empty($_POST['types']))
-        {
-            $postData['types'] = $_POST['types'];
-        }
-		if(!empty($_POST['locations']))
-        {
-            $postData['locations'] = $_POST['locations'];
-        }
-      
-
-        if(!empty($_POST['createdDate']))
-        {
-            $dateRange = explode("-", $_POST['createdDate']);
-            $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
-            $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
-        }
-
-        $getCurrentdate = date("Y-m-d");
-        $postData['selectedDate'] = $getCurrentdate;
-        return $postData;
-    }
  
     //Endorsement : Get data - Added by Gurpreet
 

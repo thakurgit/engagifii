@@ -456,6 +456,9 @@ $( '.cleardate' ).click(function() {
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
+		  if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
       countFilterData();
 
     });
@@ -583,6 +586,14 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 		$(this).addClass('checked');
 	 } else {
 		$(this).removeClass('checked');
+	 }
+  });
+
+  $('input[name="createdbetween"]').each(function() {
+	 if ($(this).val()!='') {
+		$(this).parents('.filter-list').addClass('checked');
+	 } else {
+		$(this).parents('.filter-list').removeClass('checked');
 	 }
   });
   fv = $('.filter-list.checked').length;
