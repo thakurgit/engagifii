@@ -279,7 +279,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
  var createdDate = '';
   var startdate = '';
   var enddate     = '';
-  var text     = '';
+  var titleColumn     = '';
   var titleColumn = '<?php echo $title_key; ?>';
   var fv = 0;
 
@@ -335,7 +335,7 @@ var table = $('#ebtmaintable').DataTable( {
              // d.eventEndDate = enddate;   
 			 // d.eventStartDate = startdate;  
 			  d.createdDate = createdDate;
-			  d.text = text; 
+			  d.text = titleColumn; 
               
             }, 
         },
