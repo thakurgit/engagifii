@@ -4018,7 +4018,6 @@ $li=1;
 			}
 		  if($rowData->city){
 		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->city;
-          
 		  if($rowData->latitude){
 		 	 $subItems .= '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=hi&z=14&amp;output=embed" allowfullscreen></iframe></div>';
 		  }
