@@ -20,6 +20,7 @@
 	$front_pages = $options['front_pages'];
     $events_page = $front_pages['events_page'];
     $events_detail_page = $front_pages['events_detail_page'];
+    $classes_detail_page = $front_pages['classes_detail_page'];
 	if($events_page){
 	$events_page=get_permalink( $events_page );	
 	}else{
@@ -29,6 +30,11 @@
 	$events_detail_page_link=get_permalink( $events_detail_page );	
 	}else{
 	$events_detail_page_link= site_url() .'/event-detail/';	
+	}
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
     $api_url = $options['ebt_api_url'];
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
@@ -63,7 +69,8 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
          $url = "http://";   
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'engagifii-profile') !== false ) {?> 
+if ( strpos($url,'engagifii-profile') !== false ) {
+		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';?>  
     <a href="<?php echo site_url().'/engagifii-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
@@ -416,14 +423,13 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  			<tbody>
 			  				<?php
 			  					if(is_array($classesData->collection) && count($classesData->collection)){
-									print_r($classesData);
 			  						
-			  						foreach ($classesData->result as $key => $value) {
+			  						foreach ($classesData->collection as $key => $value) {
 			  							$instructorPopOver = $obj->_popOverInstructorData($key, $value->classInstructors);
 			  							$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><?php echo $response->name; ?><br/><a href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,10); ?></a><br/>
+			  						<td><span><?php echo $response->name; ?><br/><a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,10); ?></a><br/>
 			  							<?php 
 			  								if(!empty($value->startDate) ){
 			  									echo date('d M Y', strtotime($value->startDate)); 

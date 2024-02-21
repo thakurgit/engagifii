@@ -211,7 +211,7 @@ $(this).mCustomScrollbar({
   $('.search-dropdown').each(function() { 
   $(this).on('keyup', function() {
     var value = $(this).val().toLowerCase();
-    $(this).parent().siblings('li, a').filter(function() {
+    $(this).parent().siblings('li, a, li a').filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
 	  if($(this).parent().siblings('li:visible, a:visible').length<1){
