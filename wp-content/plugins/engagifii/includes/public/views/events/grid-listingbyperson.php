@@ -372,7 +372,7 @@ dt_titleSearch('Search Events');
 			var childWindow;
        // function openChildWindow() {
             // Open the child window and store the reference
-            childWindow = window.open(tpath, '_blank', 'width=1000, height=650');
+            childWindow = window.open(tpath, '', 'width=1300, height=700');
             // Optional: Center the child window (not reliable for all browsers)
             if (childWindow) {
                 var screenWidth = window.screen.width;
@@ -383,11 +383,6 @@ dt_titleSearch('Search Events');
             }
             // Set an interval to periodically check the child window status
             var checkChildWindow = setInterval(function() {
-				if (childWindow && childWindow.location.href.includes("/registration-complete")) {
-                    childWindow.focus();
-                    childWindow.close();
-                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
-                }
                 if (childWindow && childWindow.closed) {
                     // Update button text to indicate the parent window is refreshing
                     //document.getElementById('openChildButton').innerText = 'Refreshing...';
