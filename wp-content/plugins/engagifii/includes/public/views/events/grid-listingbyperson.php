@@ -365,9 +365,9 @@ dt_titleSearch('Search Events');
   <?php
 }
   ?>
-  function eventRegPopUp(){
-	$('.open-pop').click(function(e){
-		var tpath = $(this).attr('href');
+  function eventRegPopUp(tpath){
+	//$('.open-pop').click(function(e){
+		//var tpath = $(this).attr('data-url');
 		//popup
 			var childWindow;
        // function openChildWindow() {
@@ -397,8 +397,8 @@ dt_titleSearch('Search Events');
 
 		
 		
-		e.preventDefault();
-	});
+		//e.preventDefault();
+	//});
   }
 	
 	
