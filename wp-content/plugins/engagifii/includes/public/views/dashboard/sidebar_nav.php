@@ -143,7 +143,7 @@ border-bottom-color:white ;
     <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/">My Profile</a>
     <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/edit">Edit Profile</a>
      <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>">Logout</a>
+    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>" onclick="clearAllCookies()">Logout</a>
   </div>
 </div>
     
@@ -196,4 +196,15 @@ $(document).ready(function() {
   
 });
 });
+
+function clearAllCookies() {
+     var cookies = document.cookie.split(";");
+   for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    }
+}
+
 </script>
