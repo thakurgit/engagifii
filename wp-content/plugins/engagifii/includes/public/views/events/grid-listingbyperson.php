@@ -495,7 +495,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active'); 
-            tags = '';
+            tags = ['portal'];
 			types='';
 			city='';
             createdDate = '';
