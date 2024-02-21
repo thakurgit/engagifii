@@ -994,6 +994,19 @@ public function getEventDetailsByID($id)
 		return $responseArray;
 
 	}
+	public function getRelatedClassByEvents($id, $count){
+	//{"pageNumber":1,"pageSize":10,"eventId":"3f9317b4-69a4-4037-55c2-08dc31eeac6d","text":"","courses":[],"fromDate":null,"toDate":null,"sortBy":"startdate","isAscending":true}
+		$postData = array();
+		$apiUrl = 'classes/event/list/'.$id;
+		$postData['eventId'] = $id;
+		$postData['itemCount'] = $count;
+		$postData['pageNumber'] = '1';
+		$postData['sortDirection'] = 'desc';
+		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'courses');
+		$responseArray = json_decode($response['api_response']);
+		return $responseArray;
+
+	}
 	public function getEventRelatedClassBycourse($id, $count){
 	
 		$postData = array();

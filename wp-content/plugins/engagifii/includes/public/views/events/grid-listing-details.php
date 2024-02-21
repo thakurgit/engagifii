@@ -13,7 +13,7 @@
 		$postData['eventId']              = $id;
 		$postData['sortBy']        = 'StartDateTime';
 	
-	$classesData        = $obj->getRelatedClassBycourse($id, count($response->eventClasses));
+	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); //needs to apply condition for public events later
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
@@ -416,7 +416,8 @@ if ( strpos($url,'engagifii-profile') !== false ) {?>
 			  			</thead>
 			  			<tbody>
 			  				<?php
-			  					if(is_array($classesData->result) && count($classesData->result)){
+			  					if(is_array($classesData->collection) && count($classesData->collection)){
+									print_r($classesData);
 			  						
 			  						foreach ($classesData->result as $key => $value) {
 			  							$instructorPopOver = $obj->_popOverInstructorData($key, $value->classInstructors);
