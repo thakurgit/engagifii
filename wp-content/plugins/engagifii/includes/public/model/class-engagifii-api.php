@@ -997,11 +997,10 @@ public function getEventDetailsByID($id)
 
 	}
 	public function getRelatedClassByEvents($id, $count){
-	//{"pageNumber":1,"pageSize":10,"eventId":"3f9317b4-69a4-4037-55c2-08dc31eeac6d","text":"","courses":[],"fromDate":null,"toDate":null,"sortBy":"startdate","isAscending":true}
 		$postData = array();
 		$apiUrl = 'classes/event/list';
 		$postData['eventId'] = $id;
-		$postData['itemCount'] = 1;
+		$postData['itemCount'] = $count;
 		$postData['pageNumber'] = 1;
         $postData['pageSize'] = 10;
 		$postData['sortDirection'] = 'desc';
