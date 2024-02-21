@@ -352,7 +352,8 @@ var table = $('#ebtmaintable').DataTable( {
              // d.eventEndDate = enddate;   
 			 // d.eventStartDate = startdate;  
 			  d.createdDate = createdDate;
-			  d.text = text; 
+			  d.text = text;
+			  d.titleColumn = titleColumn; 
               
             }, 
         },

@@ -4190,8 +4190,8 @@ $li=1;
             $isAsscending = true;
         }
         
-
-        $title = $_POST['columns'][0]['search']['value'];
+		$titleColumn=$_POST['titleColumn'];
+        $title = $_POST['columns'][$titleColumn]['search']['value'];
 
         if (strlen($_POST['search']['value']) > 1) {
             $title = $_POST['search']['value'];
@@ -4205,7 +4205,7 @@ $li=1;
         $postData['isAscending'] = $isAsscending;
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
-		$postData['text'] = $_POST['text'];
+		$postData['text'] = $title;
         //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
         if(!empty($_POST['tags']))
