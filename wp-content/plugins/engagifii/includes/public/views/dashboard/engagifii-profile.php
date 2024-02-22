@@ -153,10 +153,13 @@ include 'sidebar_nav.php';
                 	<?php if($peopleDATA->people->primaryPhoneNumber->value){ ?>
             <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
      if($value->controlTypeId==11){ 
+          $formattedPhoneNumber='';
+          if($value->selectedValue){
           $areaCode = substr($value->selectedValue, 0, 3);
           $prefix = substr($value->selectedValue, 3, 3);
           $lineNumber = substr($value->selectedValue, 6);
           $formattedPhoneNumber = "($areaCode) $prefix-$lineNumber";
+          }
 ?>
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
