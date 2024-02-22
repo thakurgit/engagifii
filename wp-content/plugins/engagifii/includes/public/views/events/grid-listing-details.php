@@ -604,9 +604,78 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  			</tbody>
 			  		</table>
 			  	</div>
+				  <div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
+				  <div class="p-3">
+			  		<table class="table table-bordered border-0 table-striped" id="" width="100%">
+			  			<thead>
+			  				<tr>
+			  					<th>Session Name </th>
+			  					<th>Date/Time</th>
+			  					<th>Type</th>
+			  					<th>price</th>
+			  					<th>speakers</th>
+			  					<th>Session Status</th>
+			  					
+			  				</tr>
+			  			</thead>
+			  			<tbody>
+			  				<?php
+							  //print_r(count($sessionsData));
+							  //print_r(count($collections));
+							  //$i=0;
+			  					//if(($collection) && count($collection)){
+			  						//$sessionData = $sessionsData[0];
+			  						foreach ($collections as $key => $value) {
+										 $instructorPopOver = '';
+
+										if(count($value->speakers)){
+											$instructorPopOver = $obj->_popOverSpeakerData3($key, $value->speakers);
+										}
+			  							
+			  							//$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
+			  				?>
+			  					<tr class="bg-white">
+			  						<td><span><?php echo $value->name; ?><br/><a href="<?php echo site_url(); ?>/class-details/?classId=<?php echo $value->id; ?>"><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
+									</td><td><?php 
+			  								if(!empty($value->startDateTime) ){
+			  									echo date('M d, Y', strtotime($value->startDateTime)); //date('M d, Y', $convert_Date);
+			  									
+			  									 echo ' at '.date("h:i A",strtotime($value->startDateTime)).' - '.date("h:i A",strtotime($value->endDateTime));
+			  								}
+			  							 ?>
+			  						</span></td>
+			  						
+			  						<td><?php echo $value->type; ?></td>
+			  						<td>
+									  <?php echo '$'.$value->defaultPrice; ?>
+			  						</td>
+			  						<td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id="<?php echo $key ?>"><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->speakers); ?></span></div><?php echo $instructorPopOver; ?></div>
+                                    </td>
+			  						<td><?php 
+									if($value->activityStatus==1){
+										$sessionStatus = "Upcoming Session";
+									}
+									if($value->activityStatus==2){
+										$sessionStatus = "Session In-Play";
+									}
+									if($value->activityStatus==3){
+										$sessionStatus = "Session Completed";
+									}
+									echo $sessionStatus; ?></td>
+                                    
+                                    
+			  						
+			  					</tr>
+			  				<?php 
+			  					}
+			  			//	}
+			  				?>
+			  			</tbody>
+			  		</table>
+			  	</div>
 			  	</div>
 
-				  <div class="tab-pane fade" id="bundle" role="tabpanel" aria-labelledby="bundle-tab">
+				  <!-- <div class="tab-pane fade" id="bundle" role="tabpanel" aria-labelledby="bundle-tab">
 			  			<div class="p-3">
 			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
@@ -627,7 +696,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  	</div>
+			  	</div> -->
 
 			</div>
             </div>
