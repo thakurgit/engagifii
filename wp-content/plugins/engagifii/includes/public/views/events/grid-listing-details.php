@@ -615,17 +615,30 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						<tr>
 			  							<td>S.no</td>
 			  							<td>Bundle Name</td>
-										  <td>Bundle Name</td>
-										  <td>Bundle Price</td>
+										 <td>Bundle Price</td>
 
 			  						</tr>
 			  					</thead>
 			  					<tbody>
-			  						<tr class="bg-white">
-			  							<td></td>
-			  							<td></td>
-										<td></td>
-			  						</tr>
+								  <?php
+							 
+			  						foreach ($bundleData->collection as $key => $value) {
+			  				?>
+			  					<tr class="bg-white">
+									<td><?php echo $key+1; ?>
+									
+			  						<td>
+									  <?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/bundle-icon-bigger.png" class="img-icon-lg img-fluid" alt="bundle-icon" >'; ?>										
+										<span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>									
+			  						<td>
+									  <?php echo '$'.$value->defaultPrice; ?>
+			  						</td>
+			  						
+			  					</tr>
+			  				<?php 
+			  					}
+			  			
+			  				?>
 			  					</tbody>
 			  				</table>
 			  			</div>
