@@ -626,8 +626,10 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  				?>
 			  					<tr class="bg-white">
 									<td><?php echo $key+1; ?>
-			  						<td><img src="'.ENGAGIFII_ASSETS_URL.'/images/bundle-icon-bigger.png" class="img-icon-lg img-fluid" alt="bundle-icon"><span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
 									
+			  						<td>
+									  <?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/bundle-icon-bigger.png" class="img-icon-lg img-fluid" alt="bundle-icon" >'; ?>										
+										<span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>									
 			  						<td>
 									  <?php echo '$'.$value->defaultPrice; ?>
 			  						</td>
