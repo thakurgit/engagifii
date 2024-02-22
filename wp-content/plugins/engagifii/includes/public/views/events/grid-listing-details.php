@@ -615,17 +615,28 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						<tr>
 			  							<td>S.no</td>
 			  							<td>Bundle Name</td>
-										  <td>Bundle Name</td>
-										  <td>Bundle Price</td>
+										 <td>Bundle Price</td>
 
 			  						</tr>
 			  					</thead>
 			  					<tbody>
-			  						<tr class="bg-white">
-			  							<td></td>
-			  							<td></td>
-										<td></td>
-			  						</tr>
+								  <?php
+							 
+			  						foreach ($bundleData as $key => $value) {
+			  				?>
+			  					<tr class="bg-white">
+									<td><?php echo $key; ?>
+			  						<td><span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
+									
+			  						<td>
+									  <?php echo '$'.$value->defaultPrice; ?>
+			  						</td>
+			  						
+			  					</tr>
+			  				<?php 
+			  					}
+			  			
+			  				?>
 			  					</tbody>
 			  				</table>
 			  			</div>
