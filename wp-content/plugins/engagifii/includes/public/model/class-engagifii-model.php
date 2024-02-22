@@ -4018,9 +4018,9 @@ $li=1;
 			$class='bg-light';	
 			}
 		  if($rowData->city){
-		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' .$rowData->city;
+		  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><b>Address:</b><br>' .$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country;
 		  if($rowData->latitude){
-		 	 $subItems .= '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=hi&z=14&amp;output=embed" allowfullscreen></iframe></div>';
+		 	 $subItems .= '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
 		  }
 		  $subItems .= '</li>';
           }

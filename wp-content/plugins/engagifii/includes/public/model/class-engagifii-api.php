@@ -464,16 +464,16 @@ public function _popOverSpeakerData3($id, $instructorData){
      public function _popOverClassesDate1($courseid, $classData){
 
         $rowName = array();
-       
-        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Associated Classes</h6>';
+        $popOverHtml = dd_header('Class Dates');
+        //$popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Associated Classes</h6>';
         $subItems = "";
         $li=1;
         foreach ($classData as $key => $rowData) {
             
             $rowName[$rowData->sequenceNumber] = $rowData->sequenceNumber;
             $classTime = '';
-            if($rowData->sessionDay)
-                $classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date('H:i A', strtotime($rowData->sessionStartTime)).' - '.date('H:i A', strtotime($rowData->sessionEndTime));
+            //if($rowData->sessionDay)
+                $classTime = date('M d, Y', strtotime($rowData->sessionStartTime)).' At '.date('H:i A', strtotime($rowData->sessionStartTime)).' - '.date('H:i A', strtotime($rowData->sessionEndTime));
             $class='';
             if($li%2==1){
 			$class='bg-light';	

@@ -408,15 +408,15 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	</div>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
-			  		<table class="table table-bordered border-0 table-striped" id="" width="100%">
+			  		<table class="table table-bordered border-0 table-striped" id="ebtmaintable" width="100%">
 			  			<thead>
 			  				<tr>
-			  					<th>Class</th>
-			  					<th>Duration</th>
-			  					<th>Class Type</th>
-			  					<th>Class Dates</th>
-			  					<th>Instructor</th>
-			  					<th>Credit Hours</th>
+			  					<th class="class">Class</th>
+			  					<th class="duration">Duration</th>
+			  					<th class="classType">Class Type</th>
+			  					<th class="classDates">Class Dates</th>
+			  					<th class="instructor">Instructor</th>
+			  					<th class="creditHours">Credit Hours</th>
 			  					
 			  				</tr>
 			  			</thead>
@@ -425,30 +425,104 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  					if(is_array($classesData->collection) && count($classesData->collection)){
 			  						
 			  						foreach ($classesData->collection as $key => $value) {
-			  							$instructorPopOver = $obj->_popOverInstructorData($key, $value->classInstructors);
-			  							$classPopover   = $obj->_popOverClassesDate($key, $value->classSessionSettings);
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><?php echo $response->name; ?><br/><a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,10); ?></a><br/>
-			  							<?php 
+			  						<td><span><?php //echo $response->name; ?><a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,15); ?></a><br/>
+			  							<small><?php 
 			  								if(!empty($value->startDate) ){
 			  									echo date('d M Y', strtotime($value->startDate)); 
 			  									if($value->classDuration > 1)
 			  									{
-			  										echo ' - '.date('d M Y', strtotime($value->endDate));
+			  										echo ' - '.date('M d, Y', strtotime($value->endDate));
 			  									}
-			  									 echo '<br/> at '.date("H:i:s",strtotime($value->startDate)).' - '.date("H:i:s",strtotime($value->endDate));
+			  									 echo ' at '.date("H:i A",strtotime($value->startDate)).' - '.date("H:i A",strtotime($value->endDate));
 			  								}
-			  							 ?>
+			  							 ?></small>
 			  						</span></td>
 			  						<td><?php echo $value->classDuration.' '.$value->classDurationType; ?></td>
 			  						<td><?php echo $value->objectType; ?></td>
-			  						<td>
-			  							<div class="instructor-popover class_<?php echo $key; ?> " data-placement="left" data-containerid="<?php echo $key; ?>" id="<?php echo $key; ?>">
-			  							<img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/Agenda.png" class="img-icon-lg"><span class=" bg-grey badge-count"><?php echo count($value->classSessionSettings); ?></span></div><?php echo $classPopover; ?>
+			  						<td> <?php
+									if(count($value->classSessionSettings)){
+										$rowName = array();
+										$popOverHtml = dd_header('Class Dates');
+										$subItems = "";
+										$li=1;
+										foreach ($value->classSessionSettings as $key => $rowData) {
+											$classTime = '';
+											$classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date("H:i A",strtotime($rowData->sessionStartTime)).' - '.date("H:i A",strtotime($rowData->sessionEndTime));
+											$class='';
+											if($li%2==1){
+											$class='bg-light';	
+											}
+											$subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+											$li++;
+										}
+								
+										$popOverHtml .= $subItems;
+										$popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+										$searchName = json_encode(array_values($rowName));
+								
+										$vars = "";
+										$popOverHtml .= '</ul></span>';
+										$popOverHtml .= '</div>';
+										$popOverHtml .= '</div>';
+										$popOverHtml .= '</div>';
+										$popOverHtml .= '</div> ';
+										echo '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover" data-placement="left" data-containerid="" id=""><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessionSettings).'</span></div>'.$popOverHtml.'</div>';	
+									}else{
+										echo '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';	
+									}
+									?>
 			  								
 			  						</td>
-			  						<td><div class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg"><span class="bg-grey badge-count"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></td>
+			  						<td> <?php if($value->classInstructorsCount>0){
+										$rowName = array();
+										$popOverHtml =  dd_header('Instructors','Search Instructors..');
+										$subItems = "";
+										$li=1;
+										foreach ($value->classInstructors as $key => $rowData) {
+											
+											$rowName[$rowData->id] = $rowData->fullName;
+											
+											if($rowData->thumbnailUrl)
+											{
+												if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
+													$instructor_img = $rowData->thumbnailUrl;
+												}
+												else
+												{
+													$instructor_img = $tenant_url.$rowData->thumbnailUrl;
+												}
+												
+											}
+											else
+											{
+												$instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+								
+											}
+								
+											$class='';
+											if($li%2==1){
+											$class='bg-light';	
+											}
+											$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
+											$li++;
+										}
+										
+										$popOverHtml .= $subItems;
+										$popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+								
+										$vars = "";
+										$popOverHtml .= '</ul></span>';
+										$popOverHtml .= '</div>';
+								
+										$popOverHtml .= '</div>';
+										$popOverHtml .= '</div>';
+										$popOverHtml .= '</div> ';
+				echo  '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_ " data-placement="left" data-containerid="" id=""><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$popOverHtml.'</div>';  
+                                    }else{
+                                    	echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
+                                    } ?>
 			  						<td><?php echo $response->creditHours; ?></td>
 			  						
 			  					</tr>
@@ -555,21 +629,34 @@ if ( strpos($url,'engagifii-profile') !== false ) {
     </div>
 </div>
 <script type="text/javascript">
-	/*$(document).ready(function() {
+	$(document).ready(function() {
 		$('#ebtmaintable').DataTable({
 			"pageLength": 10,
 			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
 			"bInfo":false,
 			"processing": true,
-			"searching": true,
+			"searching": false,
 			"language": {
 		    	processing: '<span>&nbsp;</span>',
 		    	search:'',
 		    	searchPlaceholder: "Search..."
 		   	},
-			"ordering":true});
+			"ordering":true,
+			"order": [[3, 'asc']],
+			"columnDefs": [ 
+					{ "targets": ['duration','classType','instructor','creditHours'],
+					  "orderable": false
+					},
+					//{ width: 200, targets: <?php //echo array_search('Name',$seqColumns);?> },
+					{ className: "text-center", "targets": ["duration","classType","instructor","creditHours","classDates","instructor"] },
+				  ],
+			"drawCallback": function( settings ) {
+					   dt_dropdown();
+						 $('[data-toggle="tooltip"]').tooltip() ;
+				   },
+			});
 
-		//$('.dropdown-toggle').dropdown();
+		/*//$('.dropdown-toggle').dropdown();
 
 		 $('#ebtmaintable1').DataTable({
 		 	"pageLength": 10,
@@ -582,6 +669,6 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		     	search:'',
 		     	searchPlaceholder: "Search..."
 		    	},
-		 	"ordering":true});
-	});*/
+		 	"ordering":true});*/
+	});
 </script>
