@@ -1010,6 +1010,20 @@ public function getEventDetailsByID($id)
        
 
 	}
+	public function getRelatedBundleByEvents($id, $count){
+		$postData = array();
+		$apiUrl = 'eventBundle/list';
+		$postData['eventId'] = $id;
+		$postData['itemCount'] = $count;
+		$postData['pageNumber'] = 1;
+        $postData['pageSize'] = 10;
+		$postData['sortDirection'] = 'desc';
+		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'awards');
+		$responseArray = json_decode($response['api_response']);
+		return $responseArray;
+       
+
+	}
 	public function getEventRelatedClassBycourse($id, $count){
 	
 		$postData = array();
