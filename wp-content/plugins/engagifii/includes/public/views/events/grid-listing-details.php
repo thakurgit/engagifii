@@ -413,7 +413,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  				<tr>
 			  					<th class="class">Class</th>
 			  					<th class="duration">Duration</th>
-			  					<th class="classType">Class Type</th>
+			  					<!-- <th class="classType">Class Type</th> -->
 			  					<th class="classDates">Class Dates</th>
 			  					<th class="instructor">Instructor</th>
 			  					<th class="creditHours">Credit Hours</th>
@@ -440,7 +440,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  							 ?></small>
 			  						</span></td>
 			  						<td><?php echo $value->classDuration.' '.$value->classDurationType; ?></td>
-			  						<td><?php echo $value->objectType; ?></td>
+			  						<!-- <td><?php //echo $value->objectType; ?></td> -->
 			  						<td> <?php
 									if(count($value->classSessionSettings)){
 										$rowName = array();
@@ -523,7 +523,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                     }else{
                                     	echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
                                     } ?>
-			  						<td><?php echo $response->creditHours; ?></td>
+			  						<td><?php echo $value->courseCreditMapping[0]->credits; ?></td>
 			  						
 			  					</tr>
 			  				<?php
