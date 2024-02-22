@@ -625,7 +625,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						foreach ($bundleData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
-									<td><?php echo $key; ?>
+									<td><?php echo $key+1; ?>
 			  						<td><span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
 									
 			  						<td>
