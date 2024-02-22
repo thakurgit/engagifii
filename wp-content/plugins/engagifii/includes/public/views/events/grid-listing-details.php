@@ -12,7 +12,8 @@
 		$postData['eventId']              = $id;
 		$postData['sortBy']        = 'StartDateTime';
 	
-	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); //needs to apply condition for public events later
+	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); 
+	$        = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
@@ -29,7 +30,7 @@
 	if($events_detail_page){
 	$events_detail_page_link=get_permalink( $events_detail_page );	
 	}else{
-	$events_detail_page_link= site_url() .'/event-detail/';	
+	$events_detail_page_link= site_url() .'/event-detail/';	bundleData
 	}
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
@@ -605,24 +606,28 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	</div>
 			  	</div>
 
-				  <!-- <div class="tab-pane fade" id="speaker" role="tabpanel" aria-labelledby="speaker-tab">
+				  <div class="tab-pane fade" id="bundle" role="tabpanel" aria-labelledby="bundle-tab">
 			  			<div class="p-3">
 			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
 			  						<tr>
-			  							<td>File</td>
-			  							<td>Size</td>
+			  							<td>S.no</td>
+			  							<td>Bundle Name</td>
+										  <td>Bundle Name</td>
+										  <td>Bundle Price</td>
+
 			  						</tr>
 			  					</thead>
 			  					<tbody>
 			  						<tr class="bg-white">
-			  							<td>Document1</td>
-			  							<td>50KB</td>
+			  							<td></td>
+			  							<td></td>
+										<td></td>
 			  						</tr>
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  	</div> -->
+			  	</div>
 
 			</div>
             </div>
