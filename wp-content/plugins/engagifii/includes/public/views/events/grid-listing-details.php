@@ -607,7 +607,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 				
 			  	</div>
 
-				  <!-- <div class="tab-pane fade" id="bundle" role="tabpanel" aria-labelledby="bundle-tab">
+				  <div class="tab-pane fade" id="bundle" role="tabpanel" aria-labelledby="bundles-tab">
 			  			<div class="p-3">
 			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
 			  					<thead>
@@ -628,7 +628,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  					</tbody>
 			  				</table>
 			  			</div>
-			  	</div> -->
+			  	</div>
 
 			</div>
             </div>
