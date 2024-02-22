@@ -483,9 +483,9 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                                   echo date('d M Y', strtotime($value->startDate)); 
                                                   if($value->classDuration > 1)
                                                   {
-                                                      echo ' - '.date('d M Y', strtotime($value->endDate));
+                                                      echo ' - '.date('M d, Y', strtotime($value->endDate));
                                                   }
-                                                   echo ' at '.date("H:i:s",strtotime($value->startDate)).' - '.date("H:i:s",strtotime($value->endDate));
+                                                   echo ' at '.date("H:i A",strtotime($value->startDate)).' - '.date("H:i A",strtotime($value->endDate));
                                               }
                                            ?>
                                            </small>
