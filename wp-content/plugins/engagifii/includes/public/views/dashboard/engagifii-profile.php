@@ -104,11 +104,19 @@ include 'sidebar_nav.php';
               <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
 			  $dp = json_decode($peopleDATA->tabs[2]->groupFields[2]->fields[0]->selectedValue, true);
-			  $department =$dp[0]['positionHistory'][0]['departmentName'];
-			  $position =$dp[0]['positionHistory'][0]['positionName'];
-			  ?>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Department: </strong><?php echo $department; ?></span>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Position: </strong><?php echo $position; ?></span>
+			  if(count($dp[0]['positionHistory']>0)){ ?>
+                  <div class="dropdown">
+                  <a class="" href="" data-toggle="dropdown" aria-expanded="false">
+                    <?php echo count($dp[0]['positionHistory']). ' Positions'; ?>
+                  </a>
+                  <div class="dropdown-menu py-1">
+                  	<h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
+                    <?php foreach($dp[0]['positionHistory'] as $key => $position){ 
+                        echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 py-0  pl-4 small  text-dark"><b>'.$position['departmentName'].'</b></span><div class="dropdown-divider my-1"></div>';
+                    } ?>
+                  </div>
+                </div>
+              <?php  } ?>
   </div>
         </div>
         </div>
