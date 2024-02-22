@@ -182,7 +182,8 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="session-tab" data-toggle="pill" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
 			  	</li>
 				  <li class="nav-item">
-			    	<a class="nav-link" id="bundles-tab" data-toggle="tab" href="#bundles" role="tab" aria-controls="material" aria-selected="false">Bundles</a>
+				  <a class="nav-link rounded-0 px-0 mx-3 text-dark" id="bundles-tab" data-toggle="pill" href="#bundles" role="tab" aria-controls="bundle" aria-selected="false">Bundles</a>
+			    	
 			  	</li>
 				  <!--<li class="nav-item">
 			    	<a class="nav-link" id="speaker-tab" data-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">Speakers</a>
@@ -648,7 +649,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		    	searchPlaceholder: "Search..."
 		   	},
 			"ordering":true,
-			"order": [[3, 'asc']],
+			"order": [[2, 'asc']],
 			"columnDefs": [ 
 					{ "targets": ['duration','classType','instructor','creditHours'],
 					  "orderable": false
