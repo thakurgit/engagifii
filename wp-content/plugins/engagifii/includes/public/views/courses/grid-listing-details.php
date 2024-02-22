@@ -462,7 +462,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		    	searchPlaceholder: "Search..."
 		   	},
 			"ordering":true,
-			"order": [[3, 'asc']],
+			"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
 			"columnDefs": [ 
 					{ "targets": ['duration','classType','instructor','creditHours'],
 					  "orderable": false
