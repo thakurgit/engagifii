@@ -610,7 +610,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 
 				  <div class="tab-pane fade" id="bundles" role="tabpanel" aria-labelledby="bundles-tab">
 			  			<div class="p-3">
-			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
+						  <table class="table table-bordered border-0 table-striped" id="ebtmaintable" width="100%">
 			  					<thead>
 			  						<tr>
 			  							<td>S.no</td>
