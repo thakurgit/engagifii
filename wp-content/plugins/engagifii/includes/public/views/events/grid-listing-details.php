@@ -626,7 +626,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  				?>
 			  					<tr class="bg-white">
 									<td><?php echo $key+1; ?>
-			  						<td><span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
+			  						<td><img src="https://psba.engagifii-preview4.com/assets/images/Events/bundle-icon-bigger.png" alt="" width=30px; height=30px;/><span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>
 									
 			  						<td>
 									  <?php echo '$'.$value->defaultPrice; ?>
