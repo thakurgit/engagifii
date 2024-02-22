@@ -473,7 +473,7 @@ public function _popOverSpeakerData3($id, $instructorData){
             $rowName[$rowData->sequenceNumber] = $rowData->sequenceNumber;
             $classTime = '';
             //if($rowData->sessionDay)
-                $classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date('H:i A', strtotime($rowData->sessionStartTime)).' - '.date('H:i A', strtotime($rowData->sessionEndTime));
+                $classTime = date('M d, Y', strtotime($rowData->sessionStartTime)).' At '.date('H:i A', strtotime($rowData->sessionStartTime)).' - '.date('H:i A', strtotime($rowData->sessionEndTime));
             $class='';
             if($li%2==1){
 			$class='bg-light';	

@@ -480,7 +480,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                       <td><span class="d-block"><a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,15); ?></a></span><small class="d-block">
                                           <?php 
                                               if(!empty($value->startDate) ){
-                                                  echo date('d M Y', strtotime($value->startDate)); 
+                                                  echo date('M d, Y', strtotime($value->startDate)); 
                                                   if($value->classDuration > 1)
                                                   {
                                                       echo ' - '.date('M d, Y', strtotime($value->endDate));
