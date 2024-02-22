@@ -13,7 +13,7 @@
 		$postData['sortBy']        = 'StartDateTime';
 	
 	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); 
-	$bundleData        = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
+	$bundleData       = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
@@ -30,7 +30,7 @@
 	if($events_detail_page){
 	$events_detail_page_link=get_permalink( $events_detail_page );	
 	}else{
-	$events_detail_page_link= site_url() .'/event-detail/';	bundleData
+	$events_detail_page_link= site_url() .'/event-detail/';	
 	}
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
