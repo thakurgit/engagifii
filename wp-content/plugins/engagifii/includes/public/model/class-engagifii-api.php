@@ -464,8 +464,8 @@ public function _popOverSpeakerData3($id, $instructorData){
      public function _popOverClassesDate1($courseid, $classData){
 
         $rowName = array();
-       
-        $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Associated Classes</h6>';
+        $popOverHtml = dd_header('Class Dates');
+        //$popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center border-bottom mb-0 pb-3">Associated Classes</h6>';
         $subItems = "";
         $li=1;
         foreach ($classData as $key => $rowData) {
