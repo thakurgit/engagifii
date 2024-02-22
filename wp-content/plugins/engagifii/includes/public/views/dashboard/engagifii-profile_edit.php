@@ -131,10 +131,14 @@ include 'sidebar_nav.php';
               
               <div class="row">
               <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
-     if($value->controlTypeId==11){ ?>
+     if($value->controlTypeId==11){ 
+      $formattedPhoneNumber='';
+          if($value->selectedValue){
+          $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
+          }?>
               <div class="form-group col-md-6">
               	<label for=""><?php echo $value->name;?></label>
-                    <input type="text" value="<?php echo $value->selectedValue;?>" class="form-control phonenumber-<?php echo $key;?>">
+                    <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>">
               </div>
    <?php  } 
  }
