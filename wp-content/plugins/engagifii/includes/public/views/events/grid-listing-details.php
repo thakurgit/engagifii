@@ -13,7 +13,7 @@
 		$postData['sortBy']        = 'StartDateTime';
 	
 	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); 
-	$        = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
+	$bundleData        = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
