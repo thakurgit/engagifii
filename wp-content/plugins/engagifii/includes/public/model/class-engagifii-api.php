@@ -1018,7 +1018,7 @@ public function getEventDetailsByID($id)
 		$postData['pageNumber'] = 1;
         $postData['pageSize'] = 10;
 		$postData['sortDirection'] = 'desc';
-		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'awards');
+		$response= $this->submitApiRequest($apiUrl,$postData, 'POST', 'event');
 		$responseArray = json_decode($response['api_response']);
 		return $responseArray;
        

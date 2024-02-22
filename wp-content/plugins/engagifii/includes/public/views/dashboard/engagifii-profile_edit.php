@@ -10,7 +10,7 @@ $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
     $obj      =  new Engagifii_API();
-    $engagifiiProfile = $obj->engagifiiProfile('psba',$userEmail);
+    $engagifiiProfile = $obj->engagifiiProfile('psba');
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'>
