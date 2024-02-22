@@ -622,7 +622,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  					<tbody>
 								  <?php
 							 
-			  						foreach ($bundleData as $key => $value) {
+			  						foreach ($bundleData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
 									<td><?php echo $key; ?>
