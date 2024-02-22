@@ -155,10 +155,7 @@ include 'sidebar_nav.php';
      if($value->controlTypeId==11){ 
           $formattedPhoneNumber='';
           if($value->selectedValue){
-          $areaCode = substr($value->selectedValue, 0, 3);
-          $prefix = substr($value->selectedValue, 3, 3);
-          $lineNumber = substr($value->selectedValue, 6);
-          $formattedPhoneNumber = "($areaCode) $prefix-$lineNumber";
+          $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
           }
 ?>
              <div class="col-md-4 mb-4"> 
