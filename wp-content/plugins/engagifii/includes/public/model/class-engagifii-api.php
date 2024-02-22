@@ -688,7 +688,7 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
-	public function engagifiiProfile($tenant, $emailId){
+	public function engagifiiProfile($tenant){
 		$postData=array();
 		$responseArray = array();
 		$apiUrl = 'People/GetLoggedInUserDetail';
