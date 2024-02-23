@@ -87,7 +87,7 @@ $title_key = -1;
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
           search:'',
-          searchPlaceholder: "Search courses..."
+          searchPlaceholder: "Search courses"
         },
         "oLanguage": {
             "sLengthMenu": "Show _MENU_ records per page"
@@ -157,7 +157,7 @@ $title_key = -1;
 <?php
   if($title_key > -1){
 ?>
-  dt_titleSearch('Search files...');
+  dt_titleSearch('Search downloads');
   <?php
 }
   ?>
