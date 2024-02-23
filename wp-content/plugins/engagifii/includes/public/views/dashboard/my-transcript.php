@@ -175,10 +175,10 @@ z-index:-1;
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
   	<div class="d-flex justify-content-between align-items-center mb-3">
-  	<h6 class="mb-0"></h6>
+  	<h6 class="mb-0">Training Credits Earned Within a Date Range</h6>
     <div class="form-inline dateFilter ml-3">
     <div class="input-group mr-2" style="max-width:255px">
-    <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Enter dates..." >
+    <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Select Date Range" >
   <div class="input-group-append">
     <span class="input-group-text bg-transparent clearDateFilter" style="cursor:pointer; display:none;"><i class="far fa-times"></i></span>
   </div>
