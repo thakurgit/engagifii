@@ -174,8 +174,9 @@ z-index:-1;
 <?php } ?>
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+  <strong><p class="mb-0">Training Credits Earned Within a Date Range</p></strong>
   	<div class="d-flex justify-content-between align-items-center mb-3">
-  	<h6 class="mb-0">Training Credits Earned Within a Date Range</h6>
+  	<h6 class="mb-0"></h6>
     <div class="form-inline dateFilter ml-3">
     <div class="input-group mr-2" style="max-width:255px">
     <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Select Date Range" >
