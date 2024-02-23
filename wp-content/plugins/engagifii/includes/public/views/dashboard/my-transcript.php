@@ -174,7 +174,7 @@ z-index:-1;
 <?php } ?>
   </div>
   <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-  <strong><p class="mb-5">Training Credits Earned Within a Date Range</p></strong>
+  <strong><p class="mb-2" style="font-size: 12px; color:#21086b;">Training Credits Earned Within a Date Range</p></strong>
   	<div class="d-flex justify-content-between align-items-center mb-3">
   	<h6 class="mb-0"></h6>
     <div class="form-inline dateFilter ml-3">
