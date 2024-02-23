@@ -192,7 +192,7 @@ z-index:-1;
 
     <span class="btn btn-outline-secondary btn-sm text-dark ml-auto"><small><strong>Total Credit Earned as of <?php echo date("M d, Y");?>:</strong> <?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
     <span class="btn btn-outline-secondary btn-sm text-dark ml-3 "><small><strong>Total Credit Earned in <?php echo date("Y");?>:</strong> <?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
-    <button  type="button" class="btn btn-primary btn-sm ml-3 gt " disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
+    <button  type="button" class="btn btn-primary btn-sm ml-3 gt " data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
     </div>
     	
 

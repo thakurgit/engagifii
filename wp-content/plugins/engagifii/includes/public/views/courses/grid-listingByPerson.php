@@ -202,6 +202,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 				 $('.gt').removeAttr('disabled');  
 			   }else{
 				 $('.gt').attr('disabled','');  
+				 $('.gt').tooltip('hide');
 			   }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val())){
