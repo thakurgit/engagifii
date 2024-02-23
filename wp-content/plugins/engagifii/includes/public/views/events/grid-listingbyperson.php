@@ -77,14 +77,11 @@ function removeWhitespace($buffer)
 }
 
 ob_start();
-?><div class="d-flex align-items-center">
+?>
 <h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><img src="https://ssresource.azureedge.net/resource/event/Events_Inline.png" class="img-fluid img-icon-lg mr-3" alt="award-icon"></h4>
   <div class="mr-5">
   <h5 class="mb-0">Events</h5>
    </div>
-
-<button type="button" id="clearDownloads" class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i></i>Clear Downloads <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
-</div>
 <div class="filter-content" id="filterdp1">
 	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div>
   <div class="filter-border">
