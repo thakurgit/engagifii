@@ -221,7 +221,12 @@ z-index:-1;
 </div>
 <script>
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip();
+var url = window.location.href+'?tab=';
+$('#myTab button[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+	window.location.href= url+$(event.target).attr('data-target').replace(/\#/g,"");
+});
+
 });
 
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
@@ -237,10 +242,6 @@ $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
  if($(e.target).attr('data-tab')=='registered'){
 	$('#awrad-accordion > .card').removeClass('d-none'); 
  }
-});
-var url = window.location.href;
-$('#myTab button[data-toggle="tab"]').on('shown.bs.tab', function (event) {
-	window.location.href= url+$(event.target).attr('data-target');
 });
 
 
