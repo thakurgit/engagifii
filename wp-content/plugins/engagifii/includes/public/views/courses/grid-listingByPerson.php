@@ -160,7 +160,8 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
           { "targets": ['course-select','tags','coursetype','completiondate','totalcreditearned','classes'],
             "orderable": false
           },
-		  //{ className: "title-col", "targets": "name" },
+		  { width: 350, targets: <?php echo array_search('Course Name',$colNames);?> },
+		  { width: 150, targets: <?php echo array_search('Total Credit Earned',$colNames);?> },
 		  { className: "text-center", "targets": ["completiondate","totalcreditearned","tags","coursetype","course-select","classes"] },
 		   
         ],

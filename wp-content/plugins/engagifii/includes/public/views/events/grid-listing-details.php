@@ -410,7 +410,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	</div>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
-			  		<table class="table table-bordered border-0 table-striped" id="ebtmaintable" width="100%">
+			  		<table class="table table-bordered border-0 table-striped class-table" id="ebtmaintable" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th class="class">Class</th>
@@ -437,7 +437,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  									{
 			  										echo ' - '.date('M d, Y', strtotime($value->endDate));
 			  									}
-			  									 echo ' at '.date("H:i A",strtotime($value->startDate)).' - '.date("H:i A",strtotime($value->endDate));
+			  									 echo ' at '.date("h:i A",strtotime($value->startDate)).' - '.date("h:i A",strtotime($value->endDate));
 			  								}
 			  							 ?></small>
 			  						</span></td>
@@ -451,7 +451,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 										$li=1;
 										foreach ($value->classSessionSettings as $key => $rowData) {
 											$classTime = '';
-											$classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date("H:i A",strtotime($rowData->sessionStartTime)).' - '.date("H:i A",strtotime($rowData->sessionEndTime));
+											$classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date("h:i A",strtotime($rowData->sessionStartTime)).' - '.date("h:i A",strtotime($rowData->sessionEndTime));
 											$class='';
 											if($li%2==1){
 											$class='bg-light';	
@@ -538,7 +538,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	</div>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
 				  <div class="p-3">
-			  		<table class="table table-bordered border-0 table-striped" id="" width="100%">
+			  		<table class="table table-bordered border-0 table-striped session-table" id="ebtmaintable" width="100%">
 			  			<thead>
 			  				<tr>
 			  					<th>Session Name </th>
@@ -610,12 +610,12 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 
 				  <div class="tab-pane fade" id="bundles" role="tabpanel" aria-labelledby="bundles-tab">
 			  			<div class="p-3">
-			  				<table class="table table-bordered border-0 table-striped" id="doc_table" width="100%">
+			  				<table class="table table-bordered border-0 table-striped bundle-table" id="ebtmaintable" width="100%">
 			  					<thead>
 			  						<tr>
-			  							<td>S.no</td>
-			  							<td>Bundle Name</td>
-										 <td>Bundle Price</td>
+			  							<th>S.no</th>
+			  							<th>Bundle Name</th>
+										 <th>Bundle Price</th>
 
 			  						</tr>
 			  					</thead>
@@ -624,12 +624,12 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 							 
 			  						foreach ($bundleData->collection as $key => $value) {
 			  				?>
-			  					<tr class="bg-white">
-									<td><?php echo $key+1; ?>
+			  					<tr class="">
+									<td><?php echo $key+1; ?></td>
 									
 			  						<td>
 									  <?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/bundle-icon-bigger.png" class="img-icon-lg img-fluid" alt="bundle-icon" >'; ?>										
-										<span><?php echo $value->name; ?><br/><a href=""><?php //echo mb_substr($value->name, 0,10); ?></a><br/>									
+										<span><?php echo $value->name; ?>	</span>	</td>							
 			  						<td>
 									  <?php echo '$'.$value->defaultPrice; ?>
 			  						</td>
@@ -650,7 +650,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#ebtmaintable').DataTable({
+		$('.class-table').DataTable({
 			"pageLength": 10,
 			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
 			"bInfo":false,
@@ -675,20 +675,31 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 						 $('[data-toggle="tooltip"]').tooltip() ;
 				   },
 			});
-
-		/*//$('.dropdown-toggle').dropdown();
-
-		 $('#ebtmaintable1').DataTable({
-		 	"pageLength": 10,
-		 	"dom": '<"row"<"col-sm-12"f">><"row custom-scroll"t>i<"row"<"col-sm-4 pt-2"l><"col-sm-8 text-conter"p">>',
-		 	"bInfo":false,
-		 	"processing": true,
-		 	"searching": true,
-		 	"language": {
-		     	processing: '<span>&nbsp;</span>',
-		     	search:'',
-		     	searchPlaceholder: "Search..."
-		    	},
-		 	"ordering":true});*/
+		$('.session-table').DataTable({
+			"pageLength": 10,
+			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
+			"bInfo":false,
+			"processing": true,
+			"searching": false,
+			"language": {
+		    	processing: '<span>&nbsp;</span>',
+		    	search:'',
+		    	searchPlaceholder: "Search..."
+		   	},
+			"ordering":false,
+			});
+		$('.bundle-table').DataTable({
+			"pageLength": 10,
+			"dom": '<"row"<"col-sm-12"f">><"row"<"col-sm-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 p-4"l><"col-sm-7 "p">>',
+			"bInfo":false,
+			"processing": true,
+			"searching": false,
+			"language": {
+		    	processing: '<span>&nbsp;</span>',
+		    	search:'',
+		    	searchPlaceholder: "Search..."
+		   	},
+			"ordering":false,
+			});
 	});
 </script>

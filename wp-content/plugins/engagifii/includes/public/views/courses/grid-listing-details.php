@@ -385,7 +385,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                                   {
                                                       echo ' - '.date('M d, Y', strtotime($value->endDate));
                                                   }
-                                                   echo ' at '.date("H:i A",strtotime($value->startDate)).' - '.date("H:i A",strtotime($value->endDate));
+                                                   echo ' at '.date("h:i A",strtotime($value->startDate)).' - '.date("h:i A",strtotime($value->endDate));
 			  								}
 			  							 ?></small>
 			  						</span></td>

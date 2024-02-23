@@ -150,7 +150,7 @@ border-bottom-color:white ;
 </div>
 
 <div class="sidebar-nav-fixed position-fixed h-100 py-4 open">
-<div id="menu-toggle" class="position-absolute open navbtn  d-flex align-items-center justify-content-center">
+<div id="menu-toggle" class="position-absolute open navbtn   align-items-center justify-content-center d-none">
               <div id="hamburger" class="position-absolute text-right">
                 <span></span>
                 <span></span>

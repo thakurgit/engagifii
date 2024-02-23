@@ -23,7 +23,12 @@ $title_key = -1;
 ?>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
-        	<h3 class="mb-0 mr-5"><i class="fas fa-download mr-3"></i>My Downloads</h3>
+            	<h4 class="mb-0 mr-3"><i class="fas fa-download"></i></h4>
+                <div class="mr-5">
+                <h5 class="mb-0">My Downloads</h5>
+                <em><small>Files will be automatically deleted in 7 days</small></em>
+                </div>
+        	
         	<button type="button" id="clearDownloads" class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i></i>Clear Downloads <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
         </div>
 </div>
@@ -41,12 +46,12 @@ $title_key = -1;
                   }
 				  $i++;
 				  if($key == 'download-select'){
-					echo '<th class="'.$key.'"></th>'; 
+					echo '<th class="'.$key.'"><button type="button" class="refresh btn shadow-none p-2 text-white"> <i class="fal fa-sync"></i></button></th>'; 
 					continue; 
 				  }
-		    				?>
-		    					<th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key ?></th>
-		    				<?php
+				  ?>
+					  <th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key ?></th>
+				  <?php
                   
 				}
 		    	?>		
@@ -144,7 +149,9 @@ $title_key = -1;
 		e.stopPropagation();
 		e.preventDefault();
 });
-
+	$('.refresh').click(function(){
+		table.draw();
+	});
 
 
 <?php

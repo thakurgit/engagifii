@@ -118,7 +118,7 @@ include 'sidebar_nav.php';
                           <div class="dropdown-menu py-1">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span>';
+                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small text-dark">'.$peopleDATA->people->primaryOrganization->name.'</span>';
                    		 }  ?>
                          </div>
                			 </div> 
@@ -129,7 +129,7 @@ include 'sidebar_nav.php';
                           <div class="dropdown-menu py-1">
                             <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span>';
+                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small text-dark">'.$peopleDATA->people->primaryOrganization->name.'</span>';
                    		 }  ?>
                          </div>
                			 </div> 
