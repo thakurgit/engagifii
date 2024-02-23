@@ -169,7 +169,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
           search:'',
-          searchPlaceholder: "Search courses..."
+          searchPlaceholder: "Search courses"
         },
         "oLanguage": {
             "sLengthMenu": "Show _MENU_ records per page"
@@ -188,11 +188,12 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
             }, 
         },
         createdRow: function (row, data, index) { 
-             //$(row).addClass( 'bg-white' );
+            // $(row).addClass( 'bg-white1' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 
      "drawCallback": function( settings ) {
+		 	
             dt_dropdown();
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
@@ -244,6 +245,8 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 					$('.select-row').prop('checked',false).change(); 
 				}
 			});
+			var frow = $('#ebtmaintable tbody tr:first-child');
+			  $(frow).addClass('bg-secondary');
          },
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
@@ -254,6 +257,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 
     },
     });
+	
 	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
@@ -311,7 +315,7 @@ $( '.dateFilter button' ).click(function() {
   if($title_key > -1){
 ?>
 
- dt_titleSearch('Search Courses...');
+ dt_titleSearch('Search Courses');
 
   <?php
 }

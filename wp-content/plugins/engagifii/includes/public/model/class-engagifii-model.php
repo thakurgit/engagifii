@@ -2201,6 +2201,17 @@ wp_die();
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         $request = $_GET;
         $data    = array();
+		if($collection){
+		$nestedData = array();
+		$nestedData['course-select'] ='';	
+				$nestedData['coursename'] ='Total';	
+				$nestedData['coursetype'] ='';	
+				$nestedData['classes'] ='';	
+				$nestedData['completiondate'] ='';	
+				$nestedData['totalcreditearned'] =json_decode($dataResponse['api_response'])->grantedCredits.'/'.json_decode($dataResponse['api_response'])->totalCredit;
+				$nestedData['tags'] ='';
+				$data[] = $nestedData;
+		}
         foreach ($collection as $key => $value) {
 			//print_r($value->course->name);
 			//die;
@@ -2208,12 +2219,9 @@ wp_die();
             $instructorPopOver = '';
             $classPopover      = '';
             
-            /*if(count($value->certifiedInstructors))
-                $instructorPopOver = $this->_popOverInstructorData($key, $value->certifiedInstructors);*/
-
-            if(count($value->class)){
-               // $classPopover   = $this->_popOverClassData1($key, $value->class);
-			}
+            //if($count==1){
+					
+			//}
 
             ## row data
 			$nestedData['course-select']='<input  type="checkbox" class="select-row" value="'.$value->id.'"/>';
@@ -2261,7 +2269,6 @@ wp_die();
             
             $data[] = $nestedData;
         }
-
        
         $draw           = $_POST['draw'];
         $start          = $_POST['start']; //0, 5
