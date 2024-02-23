@@ -58,15 +58,15 @@ include 'sidebar_nav.php';
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#badges" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="profile-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
   </li>
  
 </ul>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane p-3 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+  <div class="tab-pane p-3 fade show active" id="badges" role="tabpanel" aria-labelledby="home-tab">
   <?php if($awardDataCount<1){ 
   	echo '<h4>data not available</h4>';
   }else{?>
@@ -173,7 +173,7 @@ z-index:-1;
 </div>
 <?php } ?>
   </div>
-  <div class="tab-pane p-3 fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+  <div class="tab-pane p-3 fade" id="credits" role="tabpanel" aria-labelledby="profile-tab">
   <strong><p class="mb-2" style="font-size: 13px; color:#2568ef;">Training Credits Earned Within a Date Range</p></strong>
   	<div class="d-flex justify-content-between align-items-center mb-3">
   	<h6 class="mb-0"></h6>
@@ -238,6 +238,11 @@ $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 	$('#awrad-accordion > .card').removeClass('d-none'); 
  }
 });
+var url = window.location.href;
+$('#myTab button[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+	window.location.href= url+$(event.target).attr('data-target');
+});
+
 
 $('#allReports, .awardReport').click(function(e){
 	var awardId='';
