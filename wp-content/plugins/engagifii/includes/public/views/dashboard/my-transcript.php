@@ -224,7 +224,10 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 var url = window.location.href+'?tab=';
 $('#myTab button[data-toggle="tab"]').on('shown.bs.tab', function (event) {
-	window.location.href= url+$(event.target).attr('data-target').replace(/\#/g,"");
+	/*window.location.href= url+$(event.target).attr('data-target').replace(/\#/g,"");
+	var url = new URL(url_string);
+var c = url.searchParams.get("c");
+console.log(c);*/
 });
 
 });
