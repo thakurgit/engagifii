@@ -2331,14 +2331,14 @@ wp_die();
             $nestedData['filename'] = $value->reportName;
 			}
             $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('h:i A', strtotime($value->createdDate));
-			if($value->status=='Success'){
-				$status = '<h5><span class="badge badge-success badge-pill">'.ucfirst($value->status).'</h5>';	
-			}else if($value->status=='Failed'){
-				$status = '<h5><span class="badge badge-danger badge-pill">'.ucfirst($value->status).'</h5>';
-			} else if($value->status=='In progress'){
-				$status = '<h5><span class="badge badge-warning badge-pill">'.ucfirst($value->status).'</h5>';
+			if($value->status=='success'){
+				$status = '<h5 class="mb-0"><span class="badge badge-success badge-pill">'.ucfirst($value->status).'</h5>';	
+			}else if($value->status=='failed'){
+				$status = '<h5 class="mb-0"><span class="badge badge-danger badge-pill">'.ucfirst($value->status).'</h5>';
+			} else if($value->status=='in progress'){
+				$status = '<h5class="mb-0"><span class="badge badge-warning badge-pill">'.ucfirst($value->status).'</h5>';
 			} else {
-				$status = '<h5><span class="badge badge-light badge-pill">'.ucfirst($value->status).'</h5>';
+				$status = '<h5 class="mb-0"><span class="badge badge-light badge-pill">'.ucfirst($value->status).'</h5>';
 			}
             $nestedData['status'] = $status;
             $data[] = $nestedData;
