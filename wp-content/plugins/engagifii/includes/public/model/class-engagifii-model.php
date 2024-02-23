@@ -2204,11 +2204,11 @@ wp_die();
 		if($collection){
 		$nestedData = array();
 		$nestedData['course-select'] ='';	
-				$nestedData['coursename'] ='Total';	
+				$nestedData['coursename'] ='<b>Total</b>';	
 				$nestedData['coursetype'] ='';	
 				$nestedData['classes'] ='';	
 				$nestedData['completiondate'] ='';	
-				$nestedData['totalcreditearned'] =json_decode($dataResponse['api_response'])->grantedCredits.'/'.json_decode($dataResponse['api_response'])->totalCredit;
+				$nestedData['totalcreditearned'] ='<b>'.json_decode($dataResponse['api_response'])->grantedCredits.'/'.json_decode($dataResponse['api_response'])->totalCredit.'</b>';
 				$nestedData['tags'] ='';
 				$data[] = $nestedData;
 		}
