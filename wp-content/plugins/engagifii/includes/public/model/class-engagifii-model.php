@@ -2246,7 +2246,7 @@ wp_die();
             	 $nestedData['classes'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->class).'</span></div>'.$classPopover.'</div>';
 			}
 			
-			$dt = new DateTime($value->courseStatusDate);
+			$dt = new DateTime($value->grantedDate);
             $nestedData['completiondate'] =   $dt->format('M d, Y');
             $nestedData['totalcreditearned'] = $value->grantedCredits."/".$value->totalCredit;
             $courseTag = $value->tags;
