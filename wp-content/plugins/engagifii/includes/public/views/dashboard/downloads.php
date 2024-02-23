@@ -23,7 +23,7 @@ $title_key = -1;
 ?>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
-            	<h4 class="mb-0 mr-3"><i class="fas fa-download"></i></h4>
+            	<h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><i class="fas fa-download"></i></h4>
                 <div class="mr-5">
                 <h5 class="mb-0">My Downloads</h5>
                 <em><small>Files will be automatically deleted in 7 days</small></em>
@@ -46,7 +46,7 @@ $title_key = -1;
                   }
 				  $i++;
 				  if($key == 'download-select'){
-					echo '<th class="'.$key.'"><button type="button" class="refresh btn shadow-none p-2 text-white"> <i class="fal fa-sync"></i></button></th>'; 
+					echo '<th class="'.$key.'"></th>'; 
 					continue; 
 				  }
 				  ?>
