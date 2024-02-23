@@ -126,7 +126,27 @@ border-bottom-color:white ;
 	-webkit-transition-delay: .375s;
 	transition-delay: .375s;
 }
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    cursor: progress;
+}
+
+.loader img {
+    width: 50px; /* Adjust the size as needed */
+    height: 50px;
+}
 </style> 
+<div id="loader" class="loader"></div>
+
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
@@ -214,5 +234,21 @@ function clearAllCookies() {
 	  }, 300);
 	
 }
+$(document).ready(function() {
+    $('#menu-toggle').click(function() {
+       
+        $('#loader').fadeIn();
+
+    
+        $(this).toggleClass('open');
+        $('.sidebar-nav-fixed').toggleClass('open');
+        $('body').toggleClass('menu-closed');
+
+       
+        setTimeout(function() {
+            $('#loader').fadeOut();
+        }, 500);
+    });
+});
 
 </script>
