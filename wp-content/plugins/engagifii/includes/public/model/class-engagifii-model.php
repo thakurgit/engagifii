@@ -2318,12 +2318,13 @@ wp_die();
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         $request = $_GET;
+        $download_icon = ENGAGIFII_ASSETS_URL.'/images/ellipses-gray.png';
         $data    = array();
         foreach ($collection as $key => $value) {
             $nestedData = array();
             
 			if($value->reportLink){
-			$nestedData['download-select']='<div class="dropdown"><button type="button"  class="btn btn-sm shadow-none" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2" target="_blank" href="'.$value->reportLink.'">Download</a><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
+			$nestedData['download-select']='<div class="dropdown"><button type="button"  class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod"/></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2" target="_blank" href="'.$value->reportLink.'">Download</a><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
 			}else{
 			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm shadow-none" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
