@@ -569,6 +569,7 @@ function initializeAutocomplete() {
             var autocomplete = new google.maps.places.Autocomplete(element, options);
             autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
+				console.log(place);
                 var parentDiv = element.closest('.address-wrap');
                 parentDiv.querySelector('.address').value = extractAddressComponent(place, 'street_number') + ' ' + extractAddressComponent(place, 'route');
                 parentDiv.querySelector('.addressLine2').value = extractAddressComponent(place, 'premise') + ' ' + extractAddressComponent(place, 'administrative_area_level_2');
@@ -583,7 +584,7 @@ function initializeAutocomplete() {
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 	</script>
     <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+/*if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $payload = json_decode(file_get_contents("php://input"), true);	
 //print_r($payload);
 //$DPpayload = json_decode(file_get_contents("php://input"), true);	
@@ -631,7 +632,7 @@ $response1 = curl_exec($curl);
 $updateDATA = json_decode($response1);
 //print_r($updateDATA);
 // Close the cURL session
-curl_close($curl);
+curl_close($curl);*/
 
 ?>
 </div>
