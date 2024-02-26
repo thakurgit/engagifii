@@ -163,7 +163,7 @@ include 'sidebar_nav.php';
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
  <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];?>         
-     <?php  } 
+     <?php  echo "<br><br>"; } 
  }
 ?><hr class="my-4">
 	
