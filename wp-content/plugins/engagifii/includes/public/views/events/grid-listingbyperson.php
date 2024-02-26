@@ -451,6 +451,8 @@ $( '.cleardate' ).click(function() {
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
+	  startdate=start.format('MM/DD/YYYY');
+	  enddate=end.format('MM/DD/YYYY');
 		  if($('#apply-filter-data .spinner-border').length==0){
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
@@ -501,6 +503,8 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
 			types='';
 			city='';
             createdDate = '';
+			startdate='';
+			enddate='';
             table.draw();
 
       })
@@ -556,8 +560,8 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
         tags : tags,  
         types : types,  
         locations : city,  
-         //eventEndDate : enddate,   
-		//eventStartDate : startdate ,
+         eventEndDate : enddate,   
+		eventStartDate : startdate ,
 		createdDate: createdDate, 
     },
     success: function(response) {     
