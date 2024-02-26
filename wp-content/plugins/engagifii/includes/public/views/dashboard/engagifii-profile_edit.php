@@ -557,9 +557,9 @@ payload.push( Addressdata<?php echo $key;?> );
       autocomplete.addListener('place_changed', function() {
          var place = autocomplete.getPlace();
          console.log(place.formatted_address);
-         document.getElementById('address').value = extractAddressComponent(place, 'street_number') + ' ' + extractAddressComponent(place, 'route');
-         document.getElementById('addressLine2').value =extractAddressComponent(place, 'locality');
-         document.getElementById('city').value = extractAddressComponent(place, 'city');
+         document.getElementById('address').value = extractAddressComponent(place, 'street_number');
+         document.getElementById('addressLine2').value =extractAddressComponent(place, 'route');
+         document.getElementById('city').value = extractAddressComponent(place, 'locality');
          document.getElementById('state').value = extractAddressComponent(place, 'administrative_area_level_1');
          document.getElementById('zipCode').value = extractAddressComponent(place, 'postal_code');
          document.getElementById('country').value = extractAddressComponent(place, 'country');
