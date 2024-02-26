@@ -1297,8 +1297,8 @@ wp_die();
         $postData['sortBy'] = $sortBy;
         $postData['pageNumber'] = $startPageNum;
         $postData['onlyUpcoming'] = $allEvents;
-        $postData['eventStartDate'] = $_POST['eventStartDate'];
-        $postData['eventEndDate'] = $_POST['eventEndDate'];
+        $postData['EventStartDate'] = date('m-d-Y',strtotime($_POST['eventStartDate']));
+        $postData['EventEndDate'] = date('m-d-Y',strtotime($_POST['eventEndDate']));;
        // $postData['pageSize'] = $_POST['length'];
 
         if(!empty($_POST['tags']))
