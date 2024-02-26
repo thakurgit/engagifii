@@ -156,18 +156,18 @@ include 'sidebar_nav.php';
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
         	<div class="row">
-            	<div class="col-12 ">
+            	
             <?php  
 		 foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
      if($value->controlTypeId==9){ 
 	 $address = json_decode($value->selectedValue,true);
-	 ?>
- <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];?>         
-     <?php  echo "<br><br>"; } 
+	 ?><div class="col-md-4 mb-4 ">
+ <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];         
+     echo "</div>"; } 
  }
-?><hr class="my-4">
+?><hr class="my-4 col-12">
 	
-                </div>
+                
                 <div class="col-md-4 mb-4">
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
