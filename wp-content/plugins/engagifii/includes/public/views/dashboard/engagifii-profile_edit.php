@@ -152,9 +152,16 @@ include 'sidebar_nav.php';
               	<div class="px-3 addressGroup<?php echo $key;?> ">
               	<div class="row">
                 <div class="form-group col-12">
-                  <label for=""><b><?php echo $value->name;?></b></label>
-                	<input type="text" name="" class="form-control text-start" id="locationName" data-value ="<?php  echo  $address['locationName'];?>" value="<?php  echo  $address['locationName'];?>"/>
+                	<div class="input-group">
+                    	 <label class="sr-only" for=""><b><?php echo $value->name;?></b></label>
+                        <input type="text" name="" class="form-control text-start" id="locationName" data-value ="<?php  echo  $address['locationName'];?>" value="<?php  echo  $address['locationName'];?>"/>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><i class="fal fa-search"></i></span>
+                      </div>
                     </div>
+
+                 
+                 </div>
                 <div class="form-group col-12">
                   <label for="">Address Line 1</label>
                 	<input type="text" name="" class="form-control text-start" id="address" data-value ="<?php  echo  $address['address'];?>" value="<?php  echo  $address['address'];?>"/>
@@ -540,6 +547,38 @@ payload.push( Addressdata<?php echo $key;?> );
 
 
 });
+//google places search
+   function initializeAutocomplete() {
+      var input = document.getElementById('locationName');
+      var options = {
+         types: ['geocode'],
+      };
+      var autocomplete = new google.maps.places.Autocomplete(input, options);
+      autocomplete.addListener('place_changed', function() {
+         var place = autocomplete.getPlace();
+         console.log(place.formatted_address);
+         document.getElementById('address').value = place.formatted_address;
+         document.getElementById('addressLine2').value = extractAddressComponent(place, 'street_number') + ' ' + extractAddressComponent(place, 'route');
+         document.getElementById('city').value = extractAddressComponent(place, 'locality');
+         document.getElementById('state').value = extractAddressComponent(place, 'administrative_area_level_1');
+         document.getElementById('zipCode').value = extractAddressComponent(place, 'postal_code');
+         document.getElementById('country').value = extractAddressComponent(place, 'country');
+         // Add more fields for other address components as needed
+      });
+   }
+   function extractAddressComponent(place, componentType) {
+      for (var i = 0; i < place.address_components.length; i++) {
+         var component = place.address_components[i];
+         for (var j = 0; j < component.types.length; j++) {
+            if (component.types[j] === componentType) {
+               return component.long_name;
+            }
+         }
+      }
+      return '';
+   }
+   google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
+
 
 	</script>
     <?php
