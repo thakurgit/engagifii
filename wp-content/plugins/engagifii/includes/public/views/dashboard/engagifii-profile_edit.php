@@ -556,9 +556,9 @@ payload.push( Addressdata<?php echo $key;?> );
       var autocomplete = new google.maps.places.Autocomplete(input, options);
       autocomplete.addListener('place_changed', function() {
          var place = autocomplete.getPlace();
-         console.log(place.formatted_address);
-         document.getElementById('address').value = extractAddressComponent(place, 'street_number');
-         document.getElementById('addressLine2').value =extractAddressComponent(place, 'route');
+         console.log(place);
+         document.getElementById('address').value = extractAddressComponent(place, 'street_number') + ' ' + extractAddressComponent(place, 'route');
+         document.getElementById('addressLine2').value =extractAddressComponent(place, 'administrative_area_level_2');
          document.getElementById('city').value = extractAddressComponent(place, 'locality');
          document.getElementById('state').value = extractAddressComponent(place, 'administrative_area_level_1');
          document.getElementById('zipCode').value = extractAddressComponent(place, 'postal_code');
