@@ -608,12 +608,12 @@ $curl = curl_init();
 ));
 $tokenresponse = curl_exec($curl);
 $tokenresponse = json_decode($tokenresponse);
-curl_close($curl);
+curl_close($curl);*/
 
 
 
-
-$authentication1 = 'authorization: Bearer '.$tokenresponse->result;
+$peopleToken = $_SESSION['accesstoken'];
+$authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
 $url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
   curl_setopt_array($curl, array(
@@ -632,7 +632,7 @@ $response1 = curl_exec($curl);
 $updateDATA = json_decode($response1);
 //print_r($updateDATA);
 // Close the cURL session
-curl_close($curl);*/
+curl_close($curl);
 
 ?>
 </div>
