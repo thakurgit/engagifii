@@ -58,10 +58,10 @@ include 'sidebar_nav.php';
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="home-tab" data-toggle="tab" data-target="#badges" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="badges-tab" data-toggle="tab" data-target="#badges" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="profile-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
+    <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="credits-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
   </li>
  
 </ul>
@@ -222,14 +222,11 @@ z-index:-1;
 <script>
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
-var url = window.location.href+'?tab=';
-$('#myTab button[data-toggle="tab"]').on('shown.bs.tab', function (event) {
-	/*window.location.href= url+$(event.target).attr('data-target').replace(/\#/g,"");
-	var url = new URL(url_string);
-var c = url.searchParams.get("c");
-console.log(c);*/
-});
-
+var url = new URL(window.location.href);
+var activeTab = url.searchParams.get("tab");
+if(activeTab){
+	$('#'+activeTab+'-tab').tab('show');	
+}
 });
 
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
