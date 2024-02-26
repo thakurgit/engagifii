@@ -165,7 +165,7 @@ include 'sidebar_nav.php';
  <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];         
      echo "</div>"; } 
  }
-?><hr class="my-4">
+?><hr class="my-4 col-12">
 	
                 
                 <div class="col-md-4 mb-4">
