@@ -267,5 +267,12 @@ $('#allReports, .awardReport').click(function(e){
         });
 		e.stopPropagation();
 });
+$('.select-row').change(function() {
+  if ($(this).is(':checked')) {
+    $('.gt').tooltip('disable');
+  } else {
+    $('.gt').tooltip('enable');
+  }
+});
 
 </script>
