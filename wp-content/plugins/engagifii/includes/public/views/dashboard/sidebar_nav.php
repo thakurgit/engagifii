@@ -179,7 +179,7 @@ global $post;
     	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '"><i class="fas fa-user mr-3"></i>My Profile</a></li>
         <li><a href="'.$site_url.'/engagifii-profile/my-transcript/downloads" class="py-3  "><i class="fas fa-download mr-3"></i></i>My Downloads</a></li>
         <li><a href="'.$site_url.'/engagifii-profile/events" class="py-3  ' . ($post_slug == 'events' ? $active : '') . '"><i class="far fa-calendar-alt mr-3"></i>Event Registration</a></li>
-        <li><a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 ' . ($post_slug == 'my-transcript' ? $active : '') . '"><i class="fas fa-file mr-3"></i>My Transcript</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 ' . ($post_slug == 'my-transcript' ? $active : '') . '"><i class="fas fa-file mr-3"></i>My Transcripts</a></li>
         <li><a href="" class="py-3 "><i class="fas fa-child mr-3"></i>Members</a></li>
         <li><a href="" class="py-3 "><i class="fas fa-book mr-3"></i>Resources</a></li>
         <li><a href="" class="py-3  "><i class="far fa-calendar-alt mr-3"></i>Signature Events</a></li>
