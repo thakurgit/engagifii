@@ -267,11 +267,11 @@ $('#allReports, .awardReport').click(function(e){
         });
 		e.stopPropagation();
 });
-$('.select-row').change(function() {
+$('.checkbox-class').change(function() {
   if ($(this).is(':checked')) {
-    $('.gt').tooltip('disable');
+    $('.gt').removeAttr('data-toggle');
   } else {
-    $('.gt').tooltip('enable');
+    $('.gt').attr('data-toggle', 'tooltip');
   }
 });
 
