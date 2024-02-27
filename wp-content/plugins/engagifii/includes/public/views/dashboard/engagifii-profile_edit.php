@@ -1,4 +1,5 @@
 <?php 
+ini_set('session.gc_maxlifetime', 3600);
 if (! is_user_logged_in()) {
     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
     printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
