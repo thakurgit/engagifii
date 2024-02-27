@@ -174,9 +174,10 @@ z-index:-1;
 <?php } ?>
   </div>
   <div class="tab-pane p-3 fade" id="credits" role="tabpanel" aria-labelledby="profile-tab">
-  <strong><p class="mb-2" style="font-size: 13px; color:#2568ef;">Training Credits Earned Within a Date Range</p></strong>
+  
   	<div class="d-flex justify-content-between align-items-center mb-3">
-  	<h6 class="mb-0"></h6>
+    <h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/download_blue.png" class="img-icon-lg img-fluid" alt="download-icon" >'; ?></h4>
+  	<strong><p class="mb-2" style="font-size: 13px; color:#2568ef;">Training Credits Earned <br>Within a Date Range</p></strong>
     <div class="form-inline dateFilter">
     <div class="input-group mr-2" style="max-width:255px">
     <input type="text" class=" form-control form-control-sm shadow-none" placeholder="Select Date Range" >
