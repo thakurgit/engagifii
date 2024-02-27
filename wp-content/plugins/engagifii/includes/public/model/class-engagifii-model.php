@@ -2602,12 +2602,15 @@ wp_die();
                 $convert_Date = strtotime($default_Date);
                 $startdate = date('M d, Y', $convert_Date);
                 $starttime = date('h:i A', $convert_Date);
+                $starttime = ltrim($starttime, '0');
             }
             if($row->endDateTime){
                 $default_Date = $row->endDateTime;
                 $convert_Date = strtotime($default_Date);
                 $enddate = date('M d, Y', $convert_Date);
                 $endtime = date('h:i A', $convert_Date);
+                $endtime = ltrim($endtime, '0');
+                
             }
             $nestedData['startDateTime'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
             
