@@ -88,7 +88,7 @@ ob_start();
         </span>
       </div>
       <div class="col-6 text-right">
-        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+        <span class="clear-all" id="clear-all"> Clear All</span>
       </div>
       </div>
     </div>
