@@ -176,7 +176,7 @@ z-index:-1;
   <div class="tab-pane p-3 fade" id="credits" role="tabpanel" aria-labelledby="profile-tab">
   
   <div class="d-flex justify-content-between align-items-center mb-3">
-   <button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2"> <i class="fas fa-sync"></i></button><img decoding="async" src="https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/engagifii/assets/images/download_blue.png" class="img-icon-lg img-fluid mr-2" alt="download-icon">
+   <button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2"> <i class="fas fa-sync"></i></button><img decoding="async" src="<?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" >'; ?>" class="img-icon-lg img-fluid mr-2" alt="download-icon">
   	<strong><p class="mr-2 mb-1" style="font-size: 10px; color:#2568ef;">Training Credits Earned <br>Within a Date Range</p></strong>
     <div class="form-inline dateFilter">
     <div class="input-group mr-2" style="max-width:255px">
