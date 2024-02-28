@@ -219,6 +219,12 @@ include 'sidebar_nav.php';
     	
     </form>
     <script>
+	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').keyup(function(){
+
+        if(this.value.length==10){
+            jQuery(this).val(this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'));   
+        }
+    }); 
 	jQuery('body').on('click','.tag_del',function(){
 		jQuery(this).parent().remove();	
 		if($('.tags_all>span').length==0){
@@ -437,8 +443,10 @@ payload.push( lastNamedata );
   }
   
    <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
-     if($value->controlTypeId==11){ ?>
-  if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $value->selectedValue; ?>'){
+     if($value->controlTypeId==11){ 
+	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
+	 ?>
+  if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
 	  var newPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
 	  	var PhoneNumberdata<?php echo $key;?> = {
     "tabId": "<?php echo $infotabId; ?>",
@@ -451,7 +459,7 @@ payload.push( lastNamedata );
     "smartDropDownRequest": "",
     "fieldChangeValues": [
       {
-        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "oldValue": "<?php echo $formattedPhoneNumber; ?>",
         "newValue": newPhoneNumber<?php echo $key;?>,
         "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
       }
@@ -585,17 +593,17 @@ function initializeAutocomplete() {
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 	</script>
     <?php
-/*if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $payload = json_decode(file_get_contents("php://input"), true);	
 //print_r($payload);
 //$DPpayload = json_decode(file_get_contents("php://input"), true);	
 //print_r($DPpayload);
 
-}
+
 
  	 //$payloadurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/payload.txt';
 	//$payload = file_get_contents($payloadurl);
-$curl = curl_init();
+/*$curl = curl_init();
 	$tokenurl= 'https://engagifii-preview4-crm.azurewebsites.net/api/v1/Settings/GetAccessToken';
 	
 	curl_setopt_array($curl, array(  
@@ -634,7 +642,7 @@ $updateDATA = json_decode($response1);
 //print_r($updateDATA);
 // Close the cURL session
 curl_close($curl);
-
+}
 ?>
 </div>
 
