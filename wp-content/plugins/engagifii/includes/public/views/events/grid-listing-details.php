@@ -37,6 +37,11 @@
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
+	if($course_detail_page){
+		$course_detail_page_link=get_permalink( $course_detail_page );	
+	}else{
+		$course_detail_page_link= site_url() .'/course-details/';	
+	}
     $api_url = $options['ebt_api_url'];
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
 	$options = get_option('ebt_api_settings');
@@ -429,7 +434,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,15); ?></a><br>
+			  						<td><span><a href="<?php echo $course_detail_page_link=; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,15); ?></a><br>
 									<a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
