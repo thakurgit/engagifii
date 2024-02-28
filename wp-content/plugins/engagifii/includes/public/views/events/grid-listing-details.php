@@ -674,7 +674,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 					{ "targets": ['duration','classType','instructor','creditHours'],
 					  "orderable": false
 					},
-					//{ width: 200, targets: <?php //echo array_search('Name',$seqColumns);?> },
+					{ width: 400, targets: 0 },
 					{ className: "text-center", "targets": ["duration","classType","instructor","creditHours","classDates","instructor"] },
 				  ],
 			"drawCallback": function( settings ) {
