@@ -48,12 +48,13 @@ include 'sidebar_nav.php';
 	border-bottom: 4px solid transparent !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
+	outline:none !important;
 }
 .transcaript-tabs button.nav-link.active, .transcaript-tabs button.nav-link:hover {
 	border-bottom:  4px solid #2568ef !important;
 }
 .tooltip > div {
-	max-width: 350px;
+	max-width: 300px;
 }
   </style>
   <div class="container-fluid">
