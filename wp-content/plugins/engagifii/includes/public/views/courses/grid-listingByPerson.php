@@ -199,9 +199,11 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   if(selectedRow.length !== 0){
-				 $('.gt').removeAttr('disabled');  
+				 $('.gt').removeAttr('disabled'); 
+				 $('.gt').attr('data-original-title', 'Download PDF'); 
 			   }else{
 				 $('.gt').attr('disabled','');  
+				 $('.gt').attr('data-original-title', 'Select Course');
 				 $('.gt').tooltip('hide');
 			   }
 			$('.select-row').each(function(){
@@ -234,9 +236,11 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 						}
 					}
 			   if(selectedRow.length !== 0){
-				 $('.gt').removeAttr('disabled');  
+				 $('.gt').removeAttr('disabled');
+				 $('.gt').attr('data-original-title', 'Download PDF');  
 			   }else{
-				 $('.gt').attr('disabled','');  
+				 $('.gt').attr('disabled',''); 
+				 $('.gt').attr('data-original-title', 'Select Course'); 
 			   }
 			});	
 			});

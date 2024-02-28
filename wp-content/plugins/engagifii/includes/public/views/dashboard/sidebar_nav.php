@@ -127,9 +127,6 @@ border-bottom-color:white ;
 	transition-delay: .375s;
 }
 </style> 
-<div id="loader-container" style="display: none;">
-    <div id="loader"></div>
-  </div>
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
@@ -200,20 +197,10 @@ $(document).ready(function() {
 });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  var loaderContainer = document.getElementById('loader-container');
-  var loader = document.getElementById('loader');
-
-  var sidebarLinks = document.querySelectorAll('.sidebar-nav-link');
-
-  sidebarLinks.forEach(function(link) {
-    link.addEventListener('click', function() {
-      loaderContainer.style.display = 'block';
-	setTimeout(function() {
-       loaderContainer.style.display = 'none';
-      }, 2000); 
-    });
-  });
+$('.sidebar-nav  a').click(function(){
+	if($(this).attr('href')!==''){
+		$('body').removeClass('loaded');
+	}
 });
 
 

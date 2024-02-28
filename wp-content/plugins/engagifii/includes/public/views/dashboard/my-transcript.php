@@ -230,14 +230,6 @@ var activeTab = url.searchParams.get("tab");
 if(activeTab){
 	$('#'+activeTab+'-tab').tab('show');	
 }
-$('.select-row').change(function() {
-  if ($(this).is(':checked')) {
-    $('.gt').removeAttr('data-toggle');
-  } else {
-    $('.gt').attr('data-toggle', 'tooltip');
-  }
-});
-
 });
 
 $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
