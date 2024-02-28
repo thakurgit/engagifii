@@ -76,7 +76,8 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
 if ( strpos($url,'engagifii-profile') !== false ) {
-		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';?>  
+		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/'; 
+		$course_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';?>
     <a href="<?php echo site_url().'/engagifii-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
@@ -434,7 +435,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><a href="<?php echo $course_detail_page_link; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,15); ?></a><br>
+			  						<td><span><a href="<?php echo $course_detail_page_link; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,25); ?></a><br>
 									<a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
