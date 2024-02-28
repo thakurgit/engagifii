@@ -240,7 +240,7 @@ var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
 				 $('.gt').attr('data-original-title', 'Download PDF');  
 			   }else{
 				 $('.gt').attr('disabled',''); 
-				 $('.gt').attr('data-original-title', 'Select Course'); 
+				 $('.gt').attr('data-original-title', 'Download PDF'); 
 			   }
 			});	
 			});
