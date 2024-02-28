@@ -434,7 +434,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><a href="<?php echo $course_detail_page_link=; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,15); ?></a><br>
+			  						<td><span><a href="<?php echo $course_detail_page_link; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,15); ?></a><br>
 									<a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
