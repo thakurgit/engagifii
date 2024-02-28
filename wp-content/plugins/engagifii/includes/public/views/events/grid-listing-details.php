@@ -439,7 +439,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 									<a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
-			  									echo date('d M Y', strtotime($value->startDate)); 
+			  									echo date('M d, Y', strtotime($value->startDate)); 
 			  									if($value->classDuration > 1)
 			  									{
 			  										echo ' - '.date('M d, Y', strtotime($value->endDate));
@@ -458,7 +458,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 										$li=1;
 										foreach ($value->classSessionSettings as $key => $rowData) {
 											$classTime = '';
-											$classTime = date('M d Y', strtotime($rowData->sessionStartTime)).' At '.date("h:i A",strtotime($rowData->sessionStartTime)).' - '.date("h:i A",strtotime($rowData->sessionEndTime));
+											$classTime = date('M d, Y', strtotime($rowData->sessionStartTime)).' At '.date("h:i A",strtotime($rowData->sessionStartTime)).' - '.date("h:i A",strtotime($rowData->sessionEndTime));
 											$class='';
 											if($li%2==1){
 											$class='bg-light';	
