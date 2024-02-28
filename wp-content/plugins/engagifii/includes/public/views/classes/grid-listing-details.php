@@ -445,6 +445,15 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   	<div class="p-3">
+                    <style>
+					table#ebtmaintable th:nth-child(1) {
+  width: 300px !important;
+}
+
+table#ebtmaintable td:nth-child(1) {
+  width: 300px !important;
+}
+					</style>
                       <table class="table table-bordered border-0 table-striped" id="ebtmaintable" width="100%">
                           <thead>
                               <tr>
