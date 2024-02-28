@@ -127,6 +127,9 @@ border-bottom-color:white ;
 	transition-delay: .375s;
 }
 </style> 
+<div id="loader-container" style="display: none;">
+    <div id="loader"></div>
+  </div>
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
@@ -176,10 +179,10 @@ global $post;
 		
     echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
     	<li><a href=""><i class="fas fa-home mr-3"></i>Home</a></li>
-    	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '"><i class="fas fa-user mr-3"></i>My Profile</a></li>
-        <li><a href="'.$site_url.'/engagifii-profile/my-transcript/downloads" class="py-3  "><i class="fas fa-download mr-3"></i></i>My Downloads</a></li>
-        <li><a href="'.$site_url.'/engagifii-profile/events" class="py-3  ' . ($post_slug == 'events' ? $active : '') . '"><i class="far fa-calendar-alt mr-3"></i>Event Registration</a></li>
-        <li><a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 ' . ($post_slug == 'my-transcript' ? $active : '') . '"><i class="fas fa-file mr-3"></i>My Transcripts</a></li>
+    	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-user mr-3"></i>My Profile</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/my-transcript/downloads" class="py-3  "><i class="fas fa-download mr-3" class="sidebar-nav-link"></i></i>My Downloads</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/events" class="py-3  ' . ($post_slug == 'events' ? $active : '') . '" class="sidebar-nav-link"><i class="far fa-calendar-alt mr-3"></i>Event Registration</a></li>
+        <li><a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 ' . ($post_slug == 'my-transcript' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-file mr-3"></i>My Transcripts</a></li>
         <li><a href="" class="py-3 "><i class="fas fa-child mr-3"></i>Members</a></li>
         <li><a href="" class="py-3 "><i class="fas fa-book mr-3"></i>Resources</a></li>
         <li><a href="" class="py-3  "><i class="far fa-calendar-alt mr-3"></i>Signature Events</a></li>
@@ -196,6 +199,23 @@ $(document).ready(function() {
   
 });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  var loaderContainer = document.getElementById('loader-container');
+  var loader = document.getElementById('loader');
+
+  var sidebarLinks = document.querySelectorAll('.sidebar-nav-link');
+
+  sidebarLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      loaderContainer.style.display = 'block';
+	setTimeout(function() {
+       loaderContainer.style.display = 'none';
+      }, 2000); 
+    });
+  });
+});
+
 
 function clearAllCookies() {
 	  localStorage.clear();  
