@@ -54,7 +54,7 @@ include 'sidebar_nav.php';
 	border-bottom:  4px solid #2568ef !important;
 }
 .tooltip > div {
-	max-width: 300px;
+	max-width: 250px;
 }
   </style>
   <div class="container-fluid">
