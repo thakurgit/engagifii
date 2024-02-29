@@ -42,11 +42,6 @@ foreach ($fiscalYearResponse as $fiscalYear) {
 }
 $fiscalStartDate = date('Y-m-d', $largestStartDate );
 $fiscalEndDate = date('Y-m-d', $largestEndDate );
-print_r($largestFiscalYearName);
-//print_r($fiscalEndDate);
-
-
-
 
  $creditEarnedCount = $obj->creditEarnedCount($pid, $fiscalStartDate, $fiscalEndDate);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
