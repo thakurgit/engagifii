@@ -95,7 +95,7 @@ print_r($largestFiscalYearName);
     <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="credits-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
   </li>
   <span class="btn btn-outline-secondary btn-sm text-dark ml-auto mt-1 mb-1"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
-  <span class="btn btn-outline-secondary btn-sm text-dark ml-3 mt-1 mb-1"><small><strong>Total Credits Earned in <?php echo date("Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
+  <span class="btn btn-outline-secondary btn-sm text-dark ml-3 mt-1 mb-1"><small><strong>Total Credits Earned This Year (<?php echo $largestFiscalYearName;?>): </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane p-3 fade show active" id="badges" role="tabpanel" aria-labelledby="home-tab">
