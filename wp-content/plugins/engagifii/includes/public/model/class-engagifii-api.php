@@ -57,7 +57,6 @@ class Engagifii_API{
 				//$authentication = 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDQzNzk4MzQsImV4cCI6MTczNTkxNTgzNCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA0Mzc5ODM0LCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjEvNC8yMDI0IDI6MjE6NTYgUE0iLCJjdXJyZW50LWxvZ2luIjoiMS80LzIwMjQgMjo1MDozNCBQTSIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.ikBTbijK5ERYN8kcjEUZWYToWQCXzrLm7eiCZYHAo8FXEypknmESO7YHrH-k36WOWNf3F1E-uKGtCfjMBuQqa_pYPHJKMBpWQuErZ2-HGLXj7YvIBPwbQtTuTebVbFcaeDJv1-wZo9RnxEOgvJQntDrSEP_Jwv8jxM05zckBNR7GwqGIxttO0H4E6-4oInej4F7pTT0LThegvBl83lOCUrhBwFV-vYM4SnpfSgmgnG8NpIv9M2OoiaXFEy8uN36WGh8aH0DW19COpqARskmL0Hje8W435X6V5x-3e1AZFlfKTor81dA_mKsqlSjFX-1UNKxHS7kwaNG-aBAK4iB3Tw';
 				} else if($module == 'dashboard'){
 					$peopleToken = $_SESSION['accesstoken'];
-					//setcookie('peopleToken', $peopleToken, time() + (24 * 60 * 60), '/');
 					if (isset($_COOKIE['peopleToken'])) {
 						$peopleTokenFromCookie = $_COOKIE['peopleToken'];						
 					} else {
@@ -733,11 +732,14 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		return $response;
 	}
 
-	public function creditEarnedCount($profileId){
+	public function creditEarnedCount($profileId, $fiscalStartDate, $fiscalEndDate){
 		$postData=array();
 		$responseArray = array();
-		$apiUrl = 'registration/GetCreditsByParticipantId/'.$profileId;
-		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'awards');
+		$postData['id'] = $profileId;
+		$postData['fiscalYearDateRange']['startDate'] = $fiscalStartDate;
+		$postData['fiscalYearDateRange']['endDate'] = $fiscalEndDate;
+		$apiUrl = 'registration/GetCreditsByParticipantId/';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}
