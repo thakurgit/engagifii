@@ -28,25 +28,26 @@ $largestStartDate = null;
 $largestEndDate = null;
 
 foreach ($fiscalYearResponse as $fiscalYear) {
-    $startDate = strtotime($fiscalYear['startDate']);
-    $endDate = strtotime($fiscalYear['endDate']);
+    $startDate = strtotime($fiscalYear->startDate);
+    $endDate = strtotime($fiscalYear->endDate);
 
     if ($largestStartDate === null || $startDate > $largestStartDate) {
         $largestStartDate = $startDate;
-    }
+   }
 
     if ($largestEndDate === null || $endDate > $largestEndDate) {
         $largestEndDate = $endDate;
     }
 }
+$fiscalStartDate = date('Y-m-d', $largestStartDate );
+$fiscalEndDate = date('Y-m-d', $largestEndDate );
+//print_r($fiscalStartDate);
+//print_r($fiscalEndDate);
 
-print_r("startDate:", $largestStartDate);
-print_r("endDate:", $largestEndDate);
 
 
 
-
- $creditEarnedCount = $obj->creditEarnedCount($pid);
+ $creditEarnedCount = $obj->creditEarnedCount($pid, $fiscalStartDate, $fiscalEndDate);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($pid);
  $awardDataCount = json_decode($engagifiiProfileAwardsCount['api_response']);
