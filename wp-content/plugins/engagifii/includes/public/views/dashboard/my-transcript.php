@@ -20,6 +20,8 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 }
 include 'sidebar_nav.php';
+$fiscalYear  = $obj->getFiscalYear();
+print_r($fiscalYear);
  $creditEarnedCount = $obj->creditEarnedCount($pid);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($pid);
