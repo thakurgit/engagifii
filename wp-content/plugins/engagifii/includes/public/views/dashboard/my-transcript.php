@@ -21,9 +21,31 @@ return;
 }
 include 'sidebar_nav.php';
 $fiscalYear  = $obj->getFiscalYear();
-$fiscalYearResponse = json_decode($fiscalYear['api_response']);
-$fiscalYearData = $fiscalYearData->collection; 
-print_r($fiscalYearData);
+$fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
+//$data = json_decode($jsonData, true);
+
+$largestStartDate = null;
+$largestEndDate = null;
+
+foreach ($fiscalYearResponse as $fiscalYear) {
+    $startDate = strtotime($fiscalYear['startDate']);
+    $endDate = strtotime($fiscalYear['endDate']);
+
+    if ($largestStartDate === null || $startDate > $largestStartDate) {
+        $largestStartDate = $startDate;
+    }
+
+    if ($largestEndDate === null || $endDate > $largestEndDate) {
+        $largestEndDate = $endDate;
+    }
+}
+
+print_r("startDate:", $largestStartDate);
+print_r("endDate:", $largestEndDate);
+
+
+
+
  $creditEarnedCount = $obj->creditEarnedCount($pid);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($pid);
