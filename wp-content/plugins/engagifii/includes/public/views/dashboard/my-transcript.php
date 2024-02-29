@@ -221,7 +221,7 @@ z-index:-1;
 </div>
 <button type="submit" class="btn btn-primary btn-sm ">Submit</button>
 </div>
-    <button  type="button" class="btn btn-primary btn-sm ml-3 gt " data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
+    <button  type="button" class="btn btn-primary btn-sm ml-3 gt ml-auto" data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
     </div>
     	
 
