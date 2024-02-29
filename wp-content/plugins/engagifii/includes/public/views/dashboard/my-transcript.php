@@ -293,5 +293,8 @@ $('#allReports, .awardReport').click(function(e){
         });
 		e.stopPropagation();
 });
+$('.refresh').click(function(){
+		table.draw();
+	});
 
 </script>
