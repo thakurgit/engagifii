@@ -21,7 +21,9 @@ return;
 }
 include 'sidebar_nav.php';
 $fiscalYear  = $obj->getFiscalYear();
-print_r($fiscalYear);
+$fiscalYearResponse = json_decode($fiscalYear['api_response']);
+$fiscalYearData = $fiscalYearData->collection; 
+print_r($fiscalYearData);
  $creditEarnedCount = $obj->creditEarnedCount($pid);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($pid);
