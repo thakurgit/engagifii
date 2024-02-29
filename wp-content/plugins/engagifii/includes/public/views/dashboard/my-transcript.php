@@ -33,6 +33,7 @@ foreach ($fiscalYearResponse as $fiscalYear) {
 
     if ($largestStartDate === null || $startDate > $largestStartDate) {
         $largestStartDate = $startDate;
+         $largestFiscalYearName = $fiscalYear->name;
    }
 
     if ($largestEndDate === null || $endDate > $largestEndDate) {
@@ -41,7 +42,7 @@ foreach ($fiscalYearResponse as $fiscalYear) {
 }
 $fiscalStartDate = date('Y-m-d', $largestStartDate );
 $fiscalEndDate = date('Y-m-d', $largestEndDate );
-//print_r($fiscalStartDate);
+print_r($largestFiscalYearName);
 //print_r($fiscalEndDate);
 
 
@@ -93,7 +94,8 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   <li class="nav-item" role="presentation">
     <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="credits-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
   </li>
- 
+  <span class="btn btn-outline-secondary btn-sm text-dark ml-auto"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
+  <span class="btn btn-outline-secondary btn-sm text-dark ml-3 "><small><strong>Total Credits Earned in <?php echo date("Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane p-3 fade show active" id="badges" role="tabpanel" aria-labelledby="home-tab">
@@ -102,8 +104,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   }else{?>
   	<div class="d-flex justify-content-between align-items-center mb-3">
   	<h6 class="mb-0"></h6>
-    <span class="btn btn-outline-secondary btn-sm text-dark ml-auto"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
-    <span class="btn btn-outline-secondary btn-sm text-dark ml-3 "><small><strong>Total Credits Earned in <?php echo date("Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
+    
     <button type="button" id="allReports" class="btn btn-primary btn-sm ml-3"><span class="mr-1"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
@@ -220,9 +221,6 @@ z-index:-1;
 </div>
 <button type="submit" class="btn btn-primary btn-sm ">Submit</button>
 </div>
-
-    <span class="btn btn-outline-secondary btn-sm text-dark ml-auto"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>:</strong> <?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
-    <span class="btn btn-outline-secondary btn-sm text-dark ml-3 "><small><strong>Total Credits Earned in <?php echo date("Y");?>:</strong> <?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
     <button  type="button" class="btn btn-primary btn-sm ml-3 gt " data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
     </div>
     	
