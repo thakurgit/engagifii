@@ -352,7 +352,8 @@ $('.edit-profile').on('submit', function(event) {
 	jQuery('.curl-progress').show().siblings().hide();
   setTimeout(function() {
                 jQuery('.curl-success').hide();
-            }, 7000);
+                window.location.href = "<?php echo $site_url; ?>/engagifii-profile";
+            }, 12000);
 	payload = [];
   event.preventDefault();
   
