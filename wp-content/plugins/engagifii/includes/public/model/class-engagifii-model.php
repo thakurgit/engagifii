@@ -49,6 +49,10 @@ class abstractModelEngagifii extends Engagifii_API
         ['eventscalendar', 'eventsCalendar'],
         ['geteventscalendar', 'geteventsCalendar'],
         ['publicofficialdata', 'publicOfficalsearchData'], //public official name search
+        ['publicOfficialTabs', 'publicOfficialTabs'], //public offcial datatable
+        ['poResidence1', 'poResidence1'], //public offcial datatable
+        ['poDistrict1', 'poDistrict1'], //public offcial datatable
+        ['poParty1', 'poParty1'], //public offcial datatable
         ['publicOfficial', 'publicOfficialLoadData'], //public offcial datatable
         ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
         //end here
@@ -3114,7 +3118,121 @@ wp_die();
     }
 
 //Public official Datatable
-   public function publicOfficialLoadData(){
+public function publicOfficialTabs(){
+		$postData='{}';
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/elected/officials-all-tabs-list';
+		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		if($responseArray){
+			$html =array();
+		  $i=1; 
+				  foreach ($responseArray as $key => $value) {
+					  if($key=='stateSenateMemberList'){
+						  $name='State Senate';
+					  }
+					  elseif($key=='stateHouseMemberList'){
+						  $name='State House';
+					  }
+					  elseif($key=='stateSenateCommittees'){
+						  $name='State Senate Committees';
+					  }
+					  elseif($key=='stateHouseCommittees'){
+						  $name='State House Committees';
+					  }
+					  elseif($key=='countyDeligationList'){
+						  $name='County Delegations';
+					  }
+					  elseif($key=='congressionalDelegationMemberList'){
+						  $name='Congressional Delegations';
+					  }else{
+						  $name=$Key;
+					  }
+					  $class=''; 
+					  $tabClass ='';
+					  if($i==1){
+						  $class =' active';
+						  $tabClass =' show active';
+					  }
+			  $html['tabName'].= '<li class="nav-item mr-3 mb-3" role="presentation">
+			  <button class="border-dark nav-link bg-transparent'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
+			  $html['tabContent'].='<div class="tab-pane fade '.$tabClass.'" id="tab-'. $i.'" role="tabpanel" data-tab="'.$key.'">
+</div>';
+		   $i++; 
+		   }
+ 		} else {
+			$html = '<h6 class="text-center">data not found</h6>';		
+		}
+		echo json_encode($html);
+        wp_die();
+}
+public function poResidence1(){
+	$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/residence-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		if($responseArray){
+			$chkd = $value['value'];
+			$html ='';
+			foreach ($responseArray as $key => $value) {
+			$html .= '<li><div class="form-check">
+      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
+    </div>
+    </li>';
+			}
+		} else {
+			$html = '<h6 class="text-center">data not found</h6>';		
+		}
+		echo $html;
+        wp_die();
+}
+  public function poDistrict1(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/districtname-list';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		if($responseArray){
+			$chkd = $value['value'];
+			$html ='';
+			foreach ($responseArray as $key => $value) {
+			$html .= '<li><div class="form-check">
+      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
+    </div>
+    </li>';
+			}
+		} else {
+			$html = '<h6 class="text-center">data not found</h6>';		
+		}
+		echo $html;
+        wp_die();
+} 
+  public function poParty1(){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'legislative/public-bills/political-party';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		$responseArray = json_decode($response['api_response'], true);
+		if($responseArray){
+			$chkd = $value['value'];
+			$html ='';
+			foreach ($responseArray as $key => $value) {
+			$html .= '<li><div class="form-check">
+      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
+      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
+    </div>
+    </li>';
+			}
+		} else {
+			$html = '<h6 class="text-center">data not found</h6>';		
+		}
+		echo $html;
+        wp_die();
+}
+ public function publicOfficialLoadData(){
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $public_official_detail_page = $front_pages['public_official_detail_page'];
