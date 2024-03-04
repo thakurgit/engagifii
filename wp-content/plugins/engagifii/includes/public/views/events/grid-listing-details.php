@@ -414,6 +414,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  			</div>
 			  		</div>
 			  	</div>
+				<?php if(is_array($classesData->collection) && count($classesData->collection)){ ?>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
                     <style>
@@ -439,7 +440,7 @@ table.class-table td:nth-child(1) {
 			  			</thead>
 			  			<tbody>
 			  				<?php
-			  					if(is_array($classesData->collection) && count($classesData->collection)){
+			  					
 			  						
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
@@ -546,12 +547,13 @@ table.class-table td:nth-child(1) {
 			  					</tr>
 			  				<?php
 			  					}
-			  				}
+			  				
 			  				?>
 			  			</tbody>
 			  		</table>
 			  	</div>
 			  	</div>
+				<?php } ?>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
 				  <div class="p-3">
 			  		<table class="table table-bordered border-0 table-striped session-table" id="ebtmaintable" width="100%">
