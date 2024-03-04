@@ -150,15 +150,7 @@ include 'sidebar_nav.php';
   <div class="container-fluid">
   <div class="accordion" id="accordionExample">
   <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
-      <h2 class="mb-0">
-        
-         Contact Information
-        
-      </h2>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
         	<div class="row">
             	
