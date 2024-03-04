@@ -152,9 +152,9 @@ include 'sidebar_nav.php';
   <div class="card mb-4 border rounded-sm">
     <div class="card-header p-0" id="headingOne">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        
          Contact Information
-        </button>
+        
       </h2>
     </div>
 
@@ -206,7 +206,7 @@ include 'sidebar_nav.php';
 <hr>
 <div class="row">
             	<div class="col-12">
-              Organization
+              Organization:
 <p class="mb-4">
 <span class="text-primary font-italic mr-1"><img decoding="async" src="https://ssresource.azureedge.net/resource/organization/847b4b19-9e08-4f6f-9fba-6111da6aa6d2.png" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;">Abington Heights School District</span> 
                 </p>
