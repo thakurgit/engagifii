@@ -349,7 +349,7 @@ include 'sidebar_nav.php';
       }
 
 $('.edit-profile').on('submit', function(event) {
-	jQuery('.curl-success').show().siblings().hide();
+	jQuery('.curl-progress').show().siblings().hide();
   setTimeout(function() {
                 jQuery('.curl-success').hide();
             }, 5000);
