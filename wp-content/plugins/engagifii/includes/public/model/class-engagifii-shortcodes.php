@@ -64,6 +64,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'events-calendar-search' => 'events_calendar_search',
 			'endorsement-calendar-search' => 'endorsement_calendar_search',
 			'public-officials' => 'public_officials',
+			'public-officials-new' => 'public_officials_new',
 			'public-officials-detail' => 'public_officials_detail',
 			'public-officials-old' => 'public_officials_old',
 			'legislative-reports' => 'legislative_reports',
@@ -136,6 +137,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/public_official/public_officials.php';
 		return ob_get_clean();
 	}	
+	public function public_officials_new(){
+		ob_start();
+		include $this->basePath.'includes/public/views/public_official/public_officials_new.php';
+		return ob_get_clean();
+	}
 	public function public_officials_old(){
 		ob_start();
 		include $this->basePath.'includes/public/views/public_official/public_officials_old.php';
