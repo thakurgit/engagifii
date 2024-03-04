@@ -1,37 +1,6 @@
 <?php
-   /* $obj      =  new Engagifii_API();
-    $publicOfficial = $obj->publicOfficial();
-	if(!$publicOfficial){
-		echo'<h5 class="text-center pt-5">Data not available</h5>';
-		return;	
-	}
-	$residence = $obj->poResidence();
-	$district = $obj->poDistrict();
-	$party = $obj->poParty();
-	$role = $obj->poRole();
-	$committee = $obj->poComittee();
-	$counties = $obj->poCounty();*/
-	$filterParam = ['City of Residence', 'Committies','Counties','District','Political Party', 'Role', ];
-	/*$filterAPI = [$residence, $committee,$counties,$district,$party, $role ];*/
-	//$publicOfficial = json_decode(file_get_contents(ENGAGIFII_ASSETS_URL.'/po.txt'));
-	//print_r($publicOfficial);
-	$siteURL= site_url();
-    $title_key = -1;
-    
-$seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
-$forDatatable   =   array();
-$tableHeader='';
-$i = 0;
-foreach ($seqColumns as $key => $value) {
-	if($value == 'Name'){
-	  $title_key = $i;
-	}
-	$forDatatable[]['data'] = str_replace(' ', '', strtolower($value));
-	$tableHeader.='<th class="'.str_replace(' ', '', strtolower($value)).'Col">'.$value.'</th>';
-  $i++;
-}
-
-
+  $filterParam = ['City of Residence', 'Committies','Counties','District','Political Party', 'Role', ];
+  $seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
 ?>
 <style type="text/css">
   .session-tab button.active{
@@ -55,37 +24,7 @@ foreach ($seqColumns as $key => $value) {
 </style>
  <ul class="nav nav-pills justify-content-center session-tab" id="pills-tab" role="tablist">
  	<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>
-      <?php /*$i=1; 
-	  	foreach ($publicOfficial as $key => $value) {
-			if($key=='stateSenateMemberList'){
-				$name='State Senate';
-			}
-			elseif($key=='stateHouseMemberList'){
-				$name='State House';
-			}
-			elseif($key=='stateSenateCommittees'){
-				$name='State Senate Committees';
-			}
-			elseif($key=='stateHouseCommittees'){
-				$name='State House Committees';
-			}
-			elseif($key=='countyDeligationList'){
-				$name='County Delegations';
-			}
-			elseif($key=='congressionalDelegationMemberList'){
-				$name='Congressional Delegations';
-			}else{
-				$name=$Key;
-			}
-			$class=''; 
-			if($i==1){
-				$class =' active';
-			}
-    echo '<li class="nav-item mr-3 mb-3" role="presentation">
-    <button class="border-dark nav-link bg-transparent'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
- $i++; }*/
-	  ?>   		
-      </ul>
+  </ul>
 	<div class="dropdown dropleft po-filter d-flex justify-content-end mb-3"> 
   <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
     <i class="far fa-filter"></i>
@@ -105,22 +44,7 @@ foreach ($seqColumns as $key => $value) {
         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
           <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
           	<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>
-        <?php
-        /*foreach ($filterAPI[$ft] as $key => $value) {
-			if($values=='Counties'){
-				$chkd = $value['text'];	
-			}else{
-				$chkd = $value['value'];	
-			}
-            echo '<li><div class="form-check">
-      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
-    </div>
-    </li>';	
-        }*/
-        ?>
-       
-    </ul>
+   		 </ul>
         </div>
       </div>
 	<?php $ft++; } ?>
@@ -131,21 +55,9 @@ foreach ($seqColumns as $key => $value) {
   </div>
 </div>
        <div class="tab-content" id="nav-tabContent">
-      <?php /*$k=1; 
-	  	foreach ($publicOfficial as $key => $value) {
-			$class=''; 
-			if($k==1 ){
-				$class =' show active';
-			}
-			$tabDataArray= $publicOfficial[$key];
-			?>
-<div class="tab-pane fade <?php echo $class; ?>" id="tab-<?php echo $k; ?>" role="tabpanel" data-tab="<?php echo $key; ?>">
-</div><!--tab pane close-->
-      <?php $k++; 
-	  }*/ ?>
        </div>
        <script>
-  var titleColumn = '<?php echo $title_key; ?>';
+  var titleColumn = '<?php echo array_search('Name',$seqColumns);?>';
   var table,tab,prvtab,tabCount='';
   var residence=[],committee=[],party=[],role=[],county=[],office=[];
 
