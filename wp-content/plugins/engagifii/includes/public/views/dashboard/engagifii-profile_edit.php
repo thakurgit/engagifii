@@ -350,10 +350,10 @@ include 'sidebar_nav.php';
 
 $('.edit-profile').on('submit', function(event) {
 	jQuery('.curl-progress').show().siblings().hide();
-  setTimeout(function() {
-                jQuery('.curl-success').hide();
-                window.location.href = "<?php echo $site_url; ?>/engagifii-profile";
-            }, 12000);
+  // setTimeout(function() {
+  //               jQuery('.curl-success').hide();
+  //               window.location.href = "<?php //echo $site_url; ?>/engagifii-profile";
+  //           }, 12000);
 	payload = [];
   event.preventDefault();
   
