@@ -24,7 +24,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 } 
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
-print_r($getPendingRequest);
+$isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
@@ -83,7 +83,7 @@ include 'sidebar_nav.php';
 }
   </style>
   <div class="container-fluid  mb-4 ">
-    <?php if($peopleDATA->people->requestStatus==1){ ?>
+    <?php if($isPendingRequest==true){ ?>
    <div> Profile changes pending under review</div> 
    <?php } ?>
   <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
