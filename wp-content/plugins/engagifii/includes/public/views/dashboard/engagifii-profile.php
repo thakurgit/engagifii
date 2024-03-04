@@ -80,6 +80,9 @@ include 'sidebar_nav.php';
 }
   </style>
   <div class="container-fluid  mb-4 ">
+    <?php if($peopleDATA->people->requestStatus==1){ ?>
+   <div> Profile changes pending under review</div> 
+   <?php } ?>
   <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
     	<div class="d-flex">
         	<div class="flex-shrink-0 position-relative text-center">
@@ -200,32 +203,20 @@ include 'sidebar_nav.php';
             </div>
 
 <!-- / Content -->
-      </div>
-    </div>
-  </div>
-  <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
-      <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="">
-         Organization
-        </button>
-      </h2>
-    </div>
-
-    <div id="collapse2" class="collapse" aria-labelledby="" data-parent="#accordionExample">
-      <div class="card-body">
-        	<div class="row">
+<hr>
+<div class="row">
             	<div class="col-12">
+              Organization
 <p class="mb-4">
-<span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
+<span class="text-primary font-italic mr-1"><img decoding="async" src="https://ssresource.azureedge.net/resource/organization/847b4b19-9e08-4f6f-9fba-6111da6aa6d2.png" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;">Abington Heights School District</span> 
                 </p>
          </div>    
             </div>
 
-<!-- / Content -->
       </div>
     </div>
   </div>
+
 </div>
 </div>
 <script>
