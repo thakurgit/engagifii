@@ -351,8 +351,8 @@ include 'sidebar_nav.php';
 $('.edit-profile').on('submit', function(event) {
 	jQuery('.curl-progress').show().siblings().hide();
   setTimeout(function() {
-                jQuery('.curl-progress').hide();
-            }, 5000);
+                jQuery('.curl-success').hide();
+            }, 7000);
 	payload = [];
   event.preventDefault();
   
