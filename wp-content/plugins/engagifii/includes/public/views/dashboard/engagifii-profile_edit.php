@@ -46,7 +46,16 @@ include 'sidebar_nav.php';
 	.profile-tabs .nav-link.active, .profile-tabs .nav-link:hover {
 	border-bottom:0 !important	
 	}
-  
+  .curl-progress, .curl-success {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #dff0d8; /* Bootstrap success alert background color */
+            border: 1px solid #d6e9c6; /* Bootstrap success alert border color */
+            border-radius: 4px;
+        }
 	</style>
 <div class="container-fluid">
 <ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
