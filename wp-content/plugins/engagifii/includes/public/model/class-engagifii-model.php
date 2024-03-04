@@ -3264,72 +3264,71 @@ foreach ($seqColumns as $key => $value) {
 			 }
 		 }else{
 			 if($collection){
-        $data  .= '<table id="ebtmaintable"   class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;"> <thead> <tr>
-                       '.$tableHeader.'</tr></thead><tbody>';
+        $data  .= '<table id="ebtmaintable"   class=" tabData table table-bordered border-0 table-striped" style="width: 100% !important;"> <thead> <tr>'.$tableHeader.'</tr></thead><tbody>';
        foreach ($collection as $key => $value) { 
                         $data.= '<tr>';
                         //name
                        $data.= '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$public_official_detail_page_link.'?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
-                         //counties 
-                            $countiesList = $value['counties'];
-                            $allCounties = array();
-                            if($countiesList){
-                              if(count($countiesList)>1){
-                                $countyPopover = dd_header('Associated Counties','Search counties..');
-                                $subItems = "";
-                                $li=1;
-                                foreach ($countiesList as $index => $county) {
-                                  $class='';
-                                  if($li%2==1){
-                                    $class='bg-light';	
-                                  }
-                                  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $county .  '</li>';
-                                  $li++;
-                                }
-                                $countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-                                $allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
-                              }else if(count($countiesList)==1){
-                                $allCounties[] = $countiesList[0];
-                              }
-                              $tdcounties= implode(" ", $allCounties);
-                            }else {
-                              $tdcounties='<em class="opacity-50">N/A</em>';
-                            }
-                        $data.= '<td>'.$tdcounties.'</td>';
-                        //residence
-                        $data.= '<td>'.$value['residence'].'</td>';
-                        $data.= '<td>'.$value['districtCode'].'</td>';
-                //committies
-                $committeesList=$value['committees'];
-            $allCommittees = array();
-            if($committeesList){
-              if(count($committeesList)>1){
-                $committeesPopover = dd_header('Associated Committies','Search committies..');
-                $subItems = "";
-                $li=1;
-                foreach ($committeesList as $index => $committee) {
-                  $class='';
-                  if($li%2==1){
-                    $class='bg-light';	
-                  }
-                  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $committee .  '</li>';
-                  $li++;
-                }
-                $committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-                $allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
-              }else if(count($committeesList)==1){
-                $allCommittees[] = $committeesList[0];
-              }
-              $tdcommittees= implode(" ", $allCommittees);
-            }else {
-              $tdcommittees='<em class="opacity-50">N/A</em>';
-            }
-                       $data.='<td>'.$tdcommittees.'</td>';
-                       $data.= '<td>'.$value['party'].'</td>';
-                       $data.= '<td>'.$value['legislativeRole'].'</td>';
-                        $data.= '</tr>';
-                         }
-		$data.='</tbody></table>';
+					  //counties 
+					  $countiesList = $value['counties'];
+					  $allCounties = array();
+					  if($countiesList){
+					  if(count($countiesList)>1){
+					  $countyPopover = dd_header('Associated Counties','Search counties..');
+					  $subItems = "";
+					  $li=1;
+					  foreach ($countiesList as $index => $county) {
+					  $class='';
+					  if($li%2==1){
+					  $class='bg-light';	
+					  }
+					  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $county .  '</li>';
+					  $li++;
+					  }
+					  $countyPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					  $allCounties[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$countiesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($countiesList)-1) .'</span>'.$countyPopover.'</div>';
+					  }else if(count($countiesList)==1){
+					  $allCounties[] = $countiesList[0];
+					  }
+					  $tdcounties= implode(" ", $allCounties);
+					  }else {
+					  	$tdcounties='<em class="opacity-50">N/A</em>';
+					  }
+					  $data.= '<td>'.$tdcounties.'</td>';
+					  //residence
+					  $data.= '<td>'.$value['residence'].'</td>';
+					  $data.= '<td>'.$value['districtCode'].'</td>';
+					  //committies
+					  $committeesList=$value['committees'];
+					  $allCommittees = array();
+					  if($committeesList){
+					  if(count($committeesList)>1){
+					  $committeesPopover = dd_header('Associated Committies','Search committies..');
+					  $subItems = "";
+					  $li=1;
+					  foreach ($committeesList as $index => $committee) {
+					  $class='';
+					  if($li%2==1){
+					  $class='bg-light';	
+					  }
+					  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $committee .  '</li>';
+					  $li++;
+					  }
+					  $committeesPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					  $allCommittees[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$committeesList[0].'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($committeesList)-1) .'</span>'.$committeesPopover.'</div>';
+					  }else if(count($committeesList)==1){
+					  $allCommittees[] = $committeesList[0];
+					  }
+					  $tdcommittees= implode(" ", $allCommittees);
+					  }else {
+					 	 $tdcommittees='<em class="opacity-50">N/A</em>';
+					  }
+					  $data.='<td>'.$tdcommittees.'</td>';
+					  $data.= '<td>'.$value['party'].'</td>';
+					  $data.= '<td>'.$value['legislativeRole'].'</td>';
+					  $data.= '</tr>';
+			   }
+				$data.='</tbody></table>';
 			 }else{
 				$data  .='<h5 class="text-center pt-5">Data not available</h5>'; 
 			 }
