@@ -181,16 +181,20 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	<li class="nav-item">
 				    <a class="nav-link rounded-0 px-0 mx-3 text-dark active" id="home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
 			  	</li>
+				<?php if(is_array($classesData->collection) && count($classesData->collection)){ ?>
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Classes</a>
 			  	</li>
+				<?php } if(($collection) && count($collection)){ ?>
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="session-tab" data-toggle="pill" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
 			  	</li>
+				<?php } if(($bundleData) && count($bundleData)){?>
 				  <li class="nav-item">
 				  <a class="nav-link rounded-0 px-0 mx-3 text-dark" id="bundles-tab" data-toggle="pill" href="#bundles" role="tab" aria-controls="bundle" aria-selected="false">Bundles</a>
 			    	
 			  	</li>
+				<?php } ?>
 				  <!--<li class="nav-item">
 			    	<a class="nav-link" id="speaker-tab" data-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">Speakers</a>
 			  	</li> -->
@@ -414,7 +418,6 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  			</div>
 			  		</div>
 			  	</div>
-				<?php if(is_array($classesData->collection) && count($classesData->collection)){ ?>
 			  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 			  		<div class="p-3">
                     <style>
@@ -440,7 +443,7 @@ table.class-table td:nth-child(1) {
 			  			</thead>
 			  			<tbody>
 			  				<?php
-			  					
+			  					if(is_array($classesData->collection) && count($classesData->collection)){
 			  						
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
@@ -547,13 +550,12 @@ table.class-table td:nth-child(1) {
 			  					</tr>
 			  				<?php
 			  					}
-			  				
+			  				}
 			  				?>
 			  			</tbody>
 			  		</table>
 			  	</div>
 			  	</div>
-				<?php } ?>
 			  	<div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab">
 				  <div class="p-3">
 			  		<table class="table table-bordered border-0 table-striped session-table" id="ebtmaintable" width="100%">
