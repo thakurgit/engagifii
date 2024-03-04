@@ -720,6 +720,16 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}
+	public function getPendingRequestByPeopleId($peopleId){
+		$postData= '{"objectType": "people", "loggedInUserId": ".'$peopleId'.", "profileId": ".'$peopleId'." }';		  
+		$responseArray = array();
+		$apiUrl = 'PeopleApproval/GetPendingRequestStatusByProfileId';
+		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'dashboard');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
+
+	
 	public function engagifiiProfileAwardsCount($profileId){
 		$postData='{}';
 		$responseArray = array();

@@ -13,6 +13,7 @@ $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
     $obj      =  new Engagifii_API();
     $engagifiiProfile = $obj->engagifiiProfile('psba');
+    
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 	$_SESSION['pid']=$peopleDATA->people->id;
 	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
@@ -22,6 +23,8 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
 return;
 } 
+$getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
+print_r($getPendingRequest);
 include 'sidebar_nav.php';  
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
