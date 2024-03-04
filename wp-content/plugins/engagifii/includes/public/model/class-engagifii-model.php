@@ -50,9 +50,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['geteventscalendar', 'geteventsCalendar'],
         ['publicofficialdata', 'publicOfficalsearchData'], //public official name search
         ['publicOfficialTabs', 'publicOfficialTabs'], //public offcial datatable
-        ['poResidence1', 'poResidence1'], //public offcial datatable
-        ['poDistrict1', 'poDistrict1'], //public offcial datatable
-        ['poParty1', 'poParty1'], //public offcial datatable
+        ['poFilter', 'poFilter'], //public offcial filter
         ['publicOfficial', 'publicOfficialLoadData'], //public offcial datatable
         ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
         //end here
@@ -3157,8 +3155,7 @@ public function publicOfficialTabs(){
 					  }
 			  $html['tabName'].= '<li class="nav-item mr-3 mb-3" role="presentation">
 			  <button class="border-dark nav-link bg-transparent'.$class.'" id="" data-toggle="pill" data-target="#tab-'.$i.'" type="button" role="tab" aria-controls="home" aria-selected="true">'.$name.' <b>('.count($value).')</b></button></li>';
-			  $html['tabContent'].='<div class="tab-pane fade '.$tabClass.'" id="tab-'. $i.'" role="tabpanel" data-tab="'.$key.'">
-</div>';
+			  $html['tabContent'].='<div class="tab-pane fade '.$tabClass.'" id="tab-'. $i.'" role="tabpanel" data-tab="'.$key.'"></div>';
 		   $i++; 
 		   }
  		} else {
@@ -3167,72 +3164,45 @@ public function publicOfficialTabs(){
 		echo json_encode($html);
         wp_die();
 }
-public function poResidence1(){
+  public function poFilter(){
 	$postData=array();
-		$responseArray = array();
-		$apiUrl = 'legislative/public-bills/residence-list';
-		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response'], true);
-		if($responseArray){
-			$chkd = $value['value'];
+	$htmlArray = array();
+	  $filterParams = $_POST['filterParams'];
+	  $apiUrl='';
+	  foreach ($filterParams as $key => $values) {
+		  if($values =='City of Residence'){
+			$apiUrl='legislative/public-bills/residence-list';  
+		  }else if($values =='Committies'){
+			$apiUrl='legislative/public-bills/committee-list';  
+		  }else if($values =='Counties'){
+			$apiUrl='legislative/public-bills/county-list';  
+		  }else if($values =='District'){
+			$apiUrl='legislative/public-bills/districtname-list';  
+		  }else if($values =='Role'){
+			$apiUrl='legislative/public-bills/legislative-role';  
+		  }else if($values =='Political Party'){
+			$apiUrl='legislative/public-bills/political-party';  
+		  }
+		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
+		  if($response['api_response']){
+			$response = json_decode($response['api_response'], true);
 			$html ='';
-			foreach ($responseArray as $key => $value) {
-			$html .= '<li><div class="form-check">
-      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
-    </div>
-    </li>';
+			foreach ($response as $key => $value) {
+				if($values=='Counties'){
+					$chkd = $value['text'];	
+				}else{
+					$chkd = $value['value'];	
+				}
+				$html.= '<li><div class="form-check"><input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label></div></li>';
+			  }
+	  		} else {
+				$html='<h6 class="text-center">data not found</h6>';	
 			}
-		} else {
-			$html = '<h6 class="text-center">data not found</h6>';		
-		}
-		echo $html;
-        wp_die();
-}
-  public function poDistrict1(){
-		$postData=array();
-		$responseArray = array();
-		$apiUrl = 'legislative/public-bills/districtname-list';
-		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response'], true);
-		if($responseArray){
-			$chkd = $value['value'];
-			$html ='';
-			foreach ($responseArray as $key => $value) {
-			$html .= '<li><div class="form-check">
-      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
-    </div>
-    </li>';
-			}
-		} else {
-			$html = '<h6 class="text-center">data not found</h6>';		
-		}
-		echo $html;
+			$htmlArray[]=$html;
+	  }
+		echo json_encode($htmlArray);
         wp_die();
 } 
-  public function poParty1(){
-		$postData=array();
-		$responseArray = array();
-		$apiUrl = 'legislative/public-bills/political-party';
-		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response'], true);
-		if($responseArray){
-			$chkd = $value['value'];
-			$html ='';
-			foreach ($responseArray as $key => $value) {
-			$html .= '<li><div class="form-check">
-      <input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'">
-      <label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label>
-    </div>
-    </li>';
-			}
-		} else {
-			$html = '<h6 class="text-center">data not found</h6>';		
-		}
-		echo $html;
-        wp_die();
-}
  public function publicOfficialLoadData(){
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];

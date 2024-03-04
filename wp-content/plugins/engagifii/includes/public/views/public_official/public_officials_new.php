@@ -103,8 +103,8 @@ foreach ($seqColumns as $key => $value) {
             </button>
           </h5>
         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
-          <ul class="list-group td-dropdown" style="overflow:auto; max-height:200px">
-          	<div class="loaders text-center py-5"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>
+          <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+          	<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>
         <?php
         /*foreach ($filterAPI[$ft] as $key => $value) {
 			if($values=='Counties'){
@@ -148,6 +148,7 @@ foreach ($seqColumns as $key => $value) {
   var titleColumn = '<?php echo $title_key; ?>';
   var table,tab,prvtab,tabCount='';
   var residence=[],committee=[],party=[],role=[],county=[],office=[];
+
 	   window.addEventListener("load", function () {
 		 // document.querySelector('body').classList.add('loaded');
  	   $.ajax({
@@ -157,50 +158,33 @@ foreach ($seqColumns as $key => $value) {
               action:'publicOfficialTabs',
           },
           success: function(response) { 
-		  //console.log((JSON.parse(response))['tabName']);
 		  	$('#pills-tab').html((JSON.parse(response))['tabName']);
 		  	$('#nav-tabContent').html((JSON.parse(response))['tabContent']);
 			tab = $('#nav-tabContent').find('.tab-pane.active').attr('data-tab');
 			ajaxDT();
- 	   $.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-          data:{
-              action:'poResidence1',
-          },
-          success: function(response) { 
-		  	$('#filter-0 .td-dropdown').html(response);
-		  }
-        });
-		 $.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-          data:{
-              action:'poDistrict1',
-          },
-          success: function(response) { 
-		  	$('#filter-3 .td-dropdown').html(response);
-		  }
-        }); 
-		$.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-          data:{
-              action:'poParty1',
-          },
-          success: function(response) { 
-		  	$('#filter-4 .td-dropdown').html(response);
-		  }
-        });
+			$('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
+				 tab = $('#nav-tabContent').find('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
+				 tabCount='';
+				$('#nav-tabContent').find('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
+				ajaxDT();
+			 });
+			 $.ajax({
+				type : "post",
+				url: engagifiiUrl_ajaxurl,
+				data:{
+					action:'poFilter',
+					filterParams:<?php echo json_encode($filterParam);?>,
+				},
+				success: function(response) { 
+				  for (var i = 0; i < (JSON.parse(response)).length; i++) {
+					  $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
+				  }
+				   dt_dropdown();
+				}
+			  });
 		  }
         });
 });
-  $('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
-	   tab = $('#nav-tabContent').find('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
-	   tabCount='';
-	  $('#nav-tabContent').find('.tab-pane:eq('+$(e.relatedTarget).parent('li').index()+')').html('');
-	  ajaxDT();
-   });
    $('body').on('shown.bs.collapse','.card >div+div', function (e) {
 	   tabCount = $('#nav-tabContent').find('.tab-pane.active .card .show').attr('data-count');
 	  $('.tab-pane .card .show').parents('.card').siblings().find('.card-body').html(''); 
@@ -235,7 +219,7 @@ foreach ($seqColumns as $key => $value) {
 			}else{
 			  $('#nav-tabContent').find('.tab-pane.active').html(data);
 			}
-			$('.loaders').remove();
+			//$('.loaders').remove();
 			initDT();
 		  }
         });
@@ -275,7 +259,7 @@ foreach ($seqColumns as $key => $value) {
 				  },  
 				  //"columns":<?php //echo (json_encode($forDatatable)); ?>,
 				   "drawCallback": function( settings ) {
-					   dt_dropdown();
+					  
 						 $('[data-toggle="tooltip"]').tooltip() ;
 				   },
 				   
@@ -285,59 +269,6 @@ foreach ($seqColumns as $key => $value) {
 			  },
 			  });
    }
-<?php
-  if($title_key > -1){
-?>
-/*  function tableEvents(){
-	  
-  $('.dataTables_wrapper table').find('thead tr th:eq('+titleColumn+')').each( function (i) { 
-         var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search Public official.." class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
-
-function delay(callback, ms) {
-  var timer = 0;
-  return function() {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      callback.apply(context, args);
-    }, ms || 0);
-  };
-}
-  $( 'input', this ).keyup(delay(function (e) {
-	  var titlesearch = this.value;
-           if ( table.columns(titleColumn).search() !== titlesearch ) {
-				table.columns(titleColumn).search(titlesearch).draw();
-            }
-}, 500));
- $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$(this).parents('th').find('.clear-search').show();
-			} else {
-				$(this).parents('th').find('.clear-search').hide();
-			} 
- });
-$('th .clear-search').click(function(e){
-	 $(this).parents('th').find('#searchclass').val('');
-	$(this).parents('th').find('.clear-search').hide();
-	e.stopPropagation();
-	table.column(titleColumn).search('').draw();
- });
-
-    } );
-	 $('#searchclass, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchclass').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-  }*/
-	
-  <?php
-}
-  ?>
   $(document).on('click', '.po-filter .dropdown-menu', function (e) {
   e.stopPropagation();
 });
@@ -457,7 +388,7 @@ $('.select-all').change(function(){
 		$(this).parent().siblings('ul').find('li input').prop('checked', false).change();  
 	  }
 });
-//seach list in filter
+//search list in filter
   $('.ft-list').each(function() { 
   $(this).on('keyup', function() {
     var value = $(this).val().toLowerCase();
