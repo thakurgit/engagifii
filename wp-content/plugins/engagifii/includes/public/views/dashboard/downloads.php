@@ -28,7 +28,7 @@ $title_key = -1;
             	<h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/download_blue.png" class="img-icon-lg img-fluid" alt="download-icon" >'; ?></h4>
                 <div class="mr-5">
                 <h5 class="mb-0">My Downloads</h5>
-                <em><small>Files will be automatically deleted in 7 days</small></em>
+                <small>Files will be automatically deleted in 7 days</small>
                 </div>
         	
         	<button type="button" id="clearDownloads" class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i></i>Clear Downloads <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>

@@ -80,6 +80,9 @@ include 'sidebar_nav.php';
 }
   </style>
   <div class="container-fluid  mb-4 ">
+    <?php if($peopleDATA->people->requestStatus==1){ ?>
+   <div> Profile changes pending under review</div> 
+   <?php } ?>
   <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
     	<div class="d-flex">
         	<div class="flex-shrink-0 position-relative text-center">
@@ -120,7 +123,7 @@ include 'sidebar_nav.php';
                           <div class="dropdown-menu py-1">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small text-dark">'.$peopleDATA->people->primaryOrganization->name.'</span>';
+                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
                    		 }  ?>
                          </div>
                			 </div> 
@@ -131,7 +134,7 @@ include 'sidebar_nav.php';
                           <div class="dropdown-menu py-1">
                             <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small text-dark">'.$peopleDATA->people->primaryOrganization->name.'</span>';
+                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
                    		 }  ?>
                          </div>
                			 </div> 
@@ -147,15 +150,7 @@ include 'sidebar_nav.php';
   <div class="container-fluid">
   <div class="accordion" id="accordionExample">
   <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
-      <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         Contact Information
-        </button>
-      </h2>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
         	<div class="row">
             	
@@ -200,32 +195,20 @@ include 'sidebar_nav.php';
             </div>
 
 <!-- / Content -->
-      </div>
-    </div>
-  </div>
-  <div class="card mb-4 border rounded-sm">
-    <div class="card-header p-0" id="headingOne">
-      <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left p-3 position-relative collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="">
-         Organization
-        </button>
-      </h2>
-    </div>
-
-    <div id="collapse2" class="collapse" aria-labelledby="" data-parent="#accordionExample">
-      <div class="card-body">
-        	<div class="row">
+<hr>
+<div class="row">
             	<div class="col-12">
+              Organization:
 <p class="mb-4">
-<span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
+<span class="text-primary font-italic mr-1"><img decoding="async" src="https://ssresource.azureedge.net/resource/organization/847b4b19-9e08-4f6f-9fba-6111da6aa6d2.png" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;">Abington Heights School District</span> 
                 </p>
          </div>    
             </div>
 
-<!-- / Content -->
       </div>
     </div>
   </div>
+
 </div>
 </div>
 <script>

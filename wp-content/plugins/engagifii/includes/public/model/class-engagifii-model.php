@@ -2342,8 +2342,9 @@ wp_die();
 				$status = '<span class="text-success">'.ucfirst($value->status).'</span>';	
 			}else if($value->status=='failed'){
 				$status = '<span class="text-danger">'.ucfirst($value->status).'</span>';
-			} else if($value->status=='in progress'){
-				$status = '<span class="text-warning">'.ucfirst($value->status).'</span>';
+			} else if($value->status=='inprogress'){
+                $statusInPrgoress = "In Progress";
+				$status = '<span class="text-warning">'.ucfirst($statusInPrgoress).'</span>';
 			} else {
 				$status = '<span class="text-dark">'.ucfirst($value->status).'</span>';
 			}
