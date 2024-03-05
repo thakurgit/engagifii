@@ -304,9 +304,12 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		                    					<h6 class="pb-2 mb-2 border-bottom"> Day <?php echo $key+1 ?> </h6>
                                                 <ul class="list-unstyled mb-0 lh-lg">
                                                 	<li><?php echo $value->sessionDay.", ".$startDate.' at '.$startTime." To ".$endTime; ?></li>
+													<?php if($value->name) { ?>
                                                     <li><strong>Venue:</strong> <?php echo $value->name; ?></li>
+												 <?php } if($value->addressLine) { ?>
                                                     <li><strong>Address: </strong>
 												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>, <?php echo $value->country; ?></li>
+												<?php } ?>
                                                 </ul>
 		                    			</div>
 		                    		<?php
