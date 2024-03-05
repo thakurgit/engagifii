@@ -201,7 +201,7 @@
 
 $("[data-toggle = 'tooltip']").tooltip(); 
 function dt_dropdown() {
-  $('.td-dropdown').each(function() {   
+  $('div.td-dropdown').each(function() {   
 $(this).mCustomScrollbar({
 		 	 scrollButtons:{enable:true},
 					theme:'minimal-dark',

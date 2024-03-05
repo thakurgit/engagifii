@@ -91,7 +91,6 @@ $.ajax({
 	 		 $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
 	 	 }
 		  filterEvents(); 
-		  dt_dropdown(); 
 		  }
 	});
   }
@@ -170,7 +169,7 @@ function initDT(){
 	},  
 	//"columns":<?php //echo (json_encode($forDatatable)); ?>,
 	"drawCallback": function( settings ) {
-		//dt_dropdown();
+		dt_dropdown();
 		$('[data-toggle="tooltip"]').tooltip() ;
 	},
 	
@@ -332,6 +331,13 @@ function filterEvents(){
 		  }
 	  });
   });
+  $('.po-filter .td-dropdown').each(function() {   
+$(this).mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+});
+});
 }
 
 </script> 
