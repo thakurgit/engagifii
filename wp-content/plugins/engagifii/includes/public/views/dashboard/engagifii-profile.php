@@ -115,12 +115,12 @@ include 'sidebar_nav.php';
 			  if(count($dp[0]['positionHistory'])>0){
 					  if(count($dp[0]['positionHistory'])==1){
 						 $department =$dp[0]['positionHistory'][0]['departmentName'];
-  						echo '<span class="py-1 px-2"><strong>Department: </strong>'.$department.'</span>';
+  						echo '<span class="py-1 px-2" style="font-size:.875rem;"><strong>Department: </strong>'.$department.'</span>';
 						 $position =$dp[0]['positionHistory'][0]['positionName'];
-  						echo '<span class="py-1 px-2"><strong>Position: </strong>'.$position.'</span>';
+  						echo '<span class="py-0 px-0" style="font-size:.875rem;"><strong>Position: </strong>'.$position.'</span>';
 					  }else{ ?>
                       	<div class="dropdown">
-                          <a class="py-1 px-2" href="" data-toggle="dropdown" aria-expanded="false">
+                          <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
                             <?php echo count($dp[0]['positionHistory']). ' Departments'; ?> | 
                           </a>
                           <div class="dropdown-menu py-1">
@@ -131,7 +131,7 @@ include 'sidebar_nav.php';
                          </div>
                			 </div> 
                       	<div class="dropdown">
-                          <a class="py-1 px-2" href="" data-toggle="dropdown" aria-expanded="false">
+                          <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
                             <?php echo count($dp[0]['positionHistory']). ' Positions'; ?>
                           </a>
                           <div class="dropdown-menu py-1">
