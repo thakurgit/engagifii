@@ -170,7 +170,7 @@ function initDT(){
 	},  
 	//"columns":<?php //echo (json_encode($forDatatable)); ?>,
 	"drawCallback": function( settings ) {
-		dt_dropdown();
+		//dt_dropdown();
 		$('[data-toggle="tooltip"]').tooltip() ;
 	},
 	
