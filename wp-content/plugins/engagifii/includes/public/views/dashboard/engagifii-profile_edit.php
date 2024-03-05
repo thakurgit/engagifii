@@ -104,6 +104,7 @@ include 'sidebar_nav.php';
               </div>
               </div>
     </div>
+    <hr class="border-secondary">
             <div class="pb-3">
               <div class="overflow-hidden">
               <div class="px-3">
