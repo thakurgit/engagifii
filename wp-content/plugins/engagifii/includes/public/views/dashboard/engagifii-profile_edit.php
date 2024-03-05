@@ -73,7 +73,7 @@ include 'sidebar_nav.php';
   <div class="tab-pane fade border rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
   	<div class="row">
         	<div class="col-md-3 text-center">
-            <div class="overflow-hidden rounded-circle d-block m-auto" style="width:130px;height:130px">
+            <div class="overflow-hidden d-block m-auto" style="width:130px;height:130px">
             <span id="upload_profile" class="position-relative  d-block h-100">
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
@@ -104,6 +104,7 @@ include 'sidebar_nav.php';
               </div>
               </div>
     </div>
+    <hr class="my-4 col-12">
             <div class="pb-3">
               <div class="overflow-hidden">
               <div class="px-3">
