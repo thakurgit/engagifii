@@ -58,7 +58,7 @@ include 'sidebar_nav.php';
         }
 	</style>
 <div class="container-fluid">
-<ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
+<!-- <ul class="nav nav-tabs profile-tabs mb-4" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#nav-header" type="button" role="tab" aria-controls="home" aria-selected="true">Name</button>
   </li>
@@ -66,7 +66,7 @@ include 'sidebar_nav.php';
     <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#nav-body" type="button" role="tab" aria-controls="profile" aria-selected="false">Contact Information</button>
   </li>
  
-</ul>
+</ul> -->
 	<form action="" class="edit-profile">
     
     <div class="tab-content" id="nav-tabContent">
@@ -100,41 +100,12 @@ include 'sidebar_nav.php';
                   <div class="form-group col-md-4">
                   <label for="">Last Name</label>
                     <input type="text" value="<?php echo $peopleDATA->people->lastName; ?>" class="form-control lastName">
-                  </div>
-                  <!-- <div class="form-group col-12">
-                  	<div class="flex">
-                    	<span class="mr-3">Tag(s):</span>
-                        <span class="tags_all"> -->
-     				<?php /*if($tags){
-						foreach ($tags as $key => $value) {
-							echo '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'.$value->tagName.'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
-					 }		
-					} else {
-						echo '<em>No Tags found!</em>';
-					}*/ ?> 
-                    <!-- </span>
-                  	</div>
-                    <input type="text" value="" class="form-control tag_add" placeholder="Add Tags">
-                  </div> -->
-               <div class="form-group col-12">
-                	        <button type="submit" class="btn btn-primary">Update Profile</button>
-
-                            <a class="btn btn-default border border-dark" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
-
-                </div>
-                <div class="curl-message col-12" >
-                	
-                	<span class="curl-progress" style="display:none"><em>Hold on, Profile updating...</em></span>
-                	<span class="curl-success" style="display:none"><em>Profile updated successfully.</em></span>
-                </div>
+                  </div>                                 
               </div>
-            </div>
+              </div>
     </div>
-  </div>
-  <div class="tab-pane fade border bg-light rounded-2" id="nav-body" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="pb-3">
               <div class="overflow-hidden">
-              <h5 class="bg-body-secondary py-2 pl-3 border-bottom">Contact Information</h5>
               <div class="px-3">
               <div class="form-group">
               	<label for="Email Address">Email Address</label>
@@ -225,6 +196,9 @@ include 'sidebar_nav.php';
             </div>
   </div>
 </div>
+           
+ 
+  
     
     	
     </form>
