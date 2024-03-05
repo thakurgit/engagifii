@@ -92,15 +92,15 @@ include 'sidebar_nav.php';
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
                 <?php } ?>
-  	<div class="overflow-hidden rounded-circle mb-2 bg-white p-1 shadow-sm " style="width:120px;height:120px">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid rounded-circle">
+  	<div class="overflow-hidden mb-2 bg-white p-1 shadow-sm " style="width:120px; height:120px;">
+    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
     </div>
     <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm" style="z-index: 1;">
                 Edit profile
               </a>
   </div>
   <div class="flex-grow-1 ml-3 pt-3">
-  	<p style="font-size:1.375rem;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
+  	<p style="font-size:1.375rem; margin-top:15px; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
     <div class="d-flex">    	
     <?php 
 	$status = 'Inactive';
