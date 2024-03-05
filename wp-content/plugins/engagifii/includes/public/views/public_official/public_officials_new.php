@@ -90,7 +90,6 @@ $.ajax({
 	 	 for (var i = 0; i < (JSON.parse(response)).length; i++) {
 	 		 $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
 	 	 }
-	 	 dt_dropdown();
 		  filterEvents();  
 		  }
 	});
@@ -170,6 +169,7 @@ function initDT(){
 	},  
 	//"columns":<?php //echo (json_encode($forDatatable)); ?>,
 	"drawCallback": function( settings ) {
+		dt_dropdown();
 		$('[data-toggle="tooltip"]').tooltip() ;
 	},
 	

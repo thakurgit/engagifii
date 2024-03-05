@@ -1,10 +1,15 @@
 <?php
+$options = get_option( 'ebt_api_settings' );
+   $sessionsetting = '';
+  $sessionlist = array();
+ if(isset($options['sessionsetting'])){	 
+   $sessionsetting = $options['sessionsetting'];
+  $sessionlist = $options['lbt_visib_session_list']?? array();
+ }
+if($sessionsetting==1 && count($sessionlist)>0) {
 $obj =  new Engagifii_API();
 $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);
-$sessionsetting = get_option('ebt_api_settings')['sessionsetting'];
-$sessionlist = get_option('ebt_api_settings')['lbt_visib_session_list']?? array();
-if($sessionsetting==1 && count($sessionlist)>0) {
 ?>
 <style type="text/css">
   
@@ -17,9 +22,8 @@ if($sessionsetting==1 && count($sessionlist)>0) {
  }
 </style>
      <ul class="nav nav-pills mb-3 justify-content-center session-tab border-bottom" id="pills-tab" role="tablist">
-          <?php 				//print_r($sessionlist);
-
-		  $i=0;
+          <?php
+          $i=0;
 		  rsort($sessionResponses);
              foreach ($sessionResponses  as $key => $value) {
 				$session_id = $value->sessionId;
@@ -40,6 +44,5 @@ if($sessionsetting==1 && count($sessionlist)>0) {
          
      
       </ul>
-    
 <?php } ?>
  

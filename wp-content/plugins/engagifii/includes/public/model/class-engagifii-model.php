@@ -1633,13 +1633,9 @@ wp_die();
 	 public function trackingLevels()
     {
         $postedData = $this->_prepareLegislativeIssuesData();
-       // print_r($postedData);
-		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/trackinglevels?sessionId=".$session,$postedData,"GET", 'legislation');
         header("Content-Type: application/json"); 
-		//print_r($dataResponse);
-		//die;  
         echo json_encode($dataResponse);
         wp_die();
     }

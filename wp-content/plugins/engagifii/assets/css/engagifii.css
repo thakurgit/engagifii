@@ -1695,3 +1695,12 @@ padding: 0 !important;
 	padding: 0.375rem 0.75rem !important;;
 	
 }*/
+.fixed-list{ overflow: auto;}
+  .eq-height {
+	max-height: 216px !important;  
+  }
+  @media (min-width:1200px) {
+	  .eq-height {
+	height: 216px !important;  
+  }
+}

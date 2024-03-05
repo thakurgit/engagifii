@@ -1,7 +1,7 @@
 <?php
-$obj =  new Engagifii_API();
+/*$obj =  new Engagifii_API();
 $billResponse = $obj->billType();
-$billResponses = json_decode($billResponse['api_response']);
+$billResponses = json_decode($billResponse['api_response']);*/
 ?>
 <style type="text/css">
   button#billSearch{ padding: 0 15px; }
@@ -11,7 +11,7 @@ $billResponses = json_decode($billResponse['api_response']);
 <div class="m-2">
       <div class="row">
       
-   <!--    <div class="col-lg-5">
+     <?php /*?> <div class="col-lg-5">
         <select class="form-control sm-select text-break bill-search-height" id="bill_type">
           <?php
               foreach ($billResponses as $key => $value) {
@@ -24,13 +24,13 @@ $billResponses = json_decode($billResponse['api_response']);
 
           ?>
           </select>
-      </div> -->
+      </div> <?php */?>
       <div class="col-lg-12">
         <div class="input-group bill-search-height">
           
         <input type="text" class="form-control bill-search-height" value="" id="bill_number" placeholder="Eg: HB 0002 or SB 0980">
         <div class="input-group-append">
-          <button type="button" id="billSearch" class="input-group-text"><label  for="inputGroupSelect02">Go</label></button>
+          <button type="button" id="billSearch" class="input-group-text">Go</button>
         </div>
         </div>
 
@@ -40,25 +40,27 @@ $billResponses = json_decode($billResponse['api_response']);
   </div>
  
   <script type="text/javascript">
-  var sessionId='';
+  /*var sessionId='';
   	$('.session-tab li button').click(function(){
 		sessionId = $(this).attr('id');
 		//$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
-	});
+	});*/
 
     $("#bill_number").keyup(function(event) {
     if (event.keyCode === 13) {
         $("#billSearch").click();
     }
     });
+	window.addEventListener("load", function () {
     $('#billSearch').click(function(){
       var bill = $('#bill_number').val();
       $("body").removeClass('loaded');
-	  if(sessionId!=''){
+	  if(sessionId!=0){
      	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill+'&sessionId='+sessionId;
 	  }else {
      	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill;
 	  }
       window.location.href = redirect_url;
-    })
+    });
+    });
   </script>

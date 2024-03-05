@@ -1,6 +1,6 @@
 <?php
 
- $obj =  new Engagifii_API();
+ /*$obj =  new Engagifii_API();
 $assignto = $obj->legislationAssignToFilter();
 $groups = $obj->legislationGroupsFilter();
 $assignTags = $obj->legislationAssignToTagFilter();
@@ -9,8 +9,19 @@ $options = get_option( 'ebt_api_settings' );
 
 $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
+$lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();*/
+$options = get_option( 'ebt_api_settings' );
+$lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
+$lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-if(site_url() == 'http://engagifiiweb.com')
+   $sessionsetting = '';
+  $sessionlist = array();
+ if(isset($options['sessionsetting'])){	 
+   $sessionsetting = $options['sessionsetting'];
+  $sessionlist = $options['lbt_visib_session_list']?? array();
+ }
+
+/*if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();
   $groups_list  = $options['groups_list'] ?? array();
@@ -37,14 +48,16 @@ if(site_url() == 'http://engagifiiweb.com')
         $decode_option_value['lbt_visib_members_tags_list'] = $lbt_visib_members_tags_list;
         update_option('ebt_api_settings', $decode_option_value);
     }
-}
+}*/
 
 ?>
 
 
   <div class="row">
       <div class="col-sm-12">
-        <?php
+<div class="list-group border eq-height legis-members position-relative" style="overflow: auto;">
+<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>
+       <?php /*?> <?php
          $site = site_url();
            if(is_array($assignto) && count($assignto) > 0){
         ?>
@@ -123,25 +136,30 @@ if(site_url() == 'http://engagifiiweb.com')
       </div>
     <?php
       }
-    ?>
+    ?><?php */?>
+    </div>
     </div>
     </div>
 
 
   <script type="text/javascript">
-  var sessionId='';
   var allmembers = <?php echo json_encode( $lbt_visib_members_list);  ?>;
   function toNumber(value) {
 	 return Number(value);
 		}
   allmembers  = allmembers.map(toNumber);
-			optionhover();
-	$('.session-tab li button').click(function(){
-		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-members"); 
-		sessionId = $(this).attr('id');
-		getStaffMembers();
-	});
-function getStaffMembers()
+ window.addEventListener("load", function () {
+	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
+		getStaffMembers(sessionId);
+		$('.session-tab li button').click(function(){
+			$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:2"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').prependTo(".legis-members"); 
+			getStaffMembers(sessionId);
+		});
+	<?php } else { ?>
+		getStaffMembers(sessionId);
+	<?php } ?>	 
+});
+function getStaffMembers(sessionId)
 {
   $.ajax({
       type : "post",
@@ -156,21 +174,30 @@ function getStaffMembers()
 			var html='';
 			
 			$.each(data, function(i, item) {
-				if(item.count>0){
-					if($.inArray(item.personId, allmembers) != -1) {
-						html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
+				if($.inArray(item.personId, allmembers) != -1) {
+					if(item.count>0){
+						if(sessionId==0){
+						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						}else{
+						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						}
+						//html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
 					}
 				}
 			});			
 			
-        	$('.legis-members').html(html);
+			if(html){
+        		$('.legis-members').html(html);
+			}else{
+        		$('.legis-members').html('<h6 class="p-3">No data found</h6>');
+			}
 			$('.legis-members').siblings('.issue-loader').remove();
-			optionhover();
+			//optionhover();
          }
     });
 }	
 	
-    function filterStaff(id) {
+    <?php /*?>function filterStaff(id) {
       $("body").removeClass('loaded');
       var name = $('select[name="staff_member"]').find(':selected').data('title');
       var assign_type = $('select[name="staff_member"]').find(':selected').data('type');
@@ -181,7 +208,7 @@ function getStaffMembers()
 	  }
       window.location.href = redirect_url;
 
-    }
+    }<?php */?>
 
    
 </script>
