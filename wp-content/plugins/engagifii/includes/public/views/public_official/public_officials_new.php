@@ -90,7 +90,8 @@ $.ajax({
 	 	 for (var i = 0; i < (JSON.parse(response)).length; i++) {
 	 		 $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
 	 	 }
-		  filterEvents();  
+		  filterEvents(); 
+		  dt_dropdown(); 
 		  }
 	});
   }
