@@ -100,7 +100,7 @@ include 'sidebar_nav.php';
               </a>
   </div>
   <div class="flex-grow-1 ml-3 pt-3">
-  	<h4 class=""><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></h4>
+  	<p style="font-size:1.375rem;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
     <div class="d-flex">    	
     <?php 
 	$status = 'Inactive';
@@ -123,7 +123,7 @@ include 'sidebar_nav.php';
                           <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
                             <?php echo count($dp[0]['positionHistory']). ' Departments'; ?> | 
                           </a>
-                          <div class="dropdown-menu py-1">
+                          <div class="dropdown-menu py-1" style="width:300px;">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
                        		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
@@ -134,7 +134,7 @@ include 'sidebar_nav.php';
                           <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
                             <?php echo count($dp[0]['positionHistory']). ' Positions'; ?>
                           </a>
-                          <div class="dropdown-menu py-1">
+                          <div class="dropdown-menu py-1" style="width:300px;">
                             <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
 						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
                        		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
