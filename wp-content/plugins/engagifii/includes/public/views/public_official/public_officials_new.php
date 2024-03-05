@@ -70,7 +70,9 @@ $.ajax({
 	$('#pills-tab').html((JSON.parse(response))['tabName']);
 	$('#nav-tabContent').html((JSON.parse(response))['tabContent']);
 	tab = $('#nav-tabContent').find('.tab-pane.active').attr('data-tab');
-	ajaxDT();
+	if(tab){
+		ajaxDT();
+	}
 	$('button[data-toggle="pill"]').on('shown.bs.tab', function(e){
 		tab = $('#nav-tabContent').find('.tab-pane:eq('+$(e.target).parent('li').index()+')').attr('data-tab');
 		tabCount='';
