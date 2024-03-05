@@ -70,7 +70,7 @@ include 'sidebar_nav.php';
 	<form action="" class="edit-profile">
     
     <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade border bg-light rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
+  <div class="tab-pane fade border rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
   	<div class="row">
         	<div class="col-md-3 text-center">
             <div class="overflow-hidden rounded-circle d-block m-auto" style="width:130px;height:130px">
@@ -104,8 +104,6 @@ include 'sidebar_nav.php';
               </div>
               </div>
     </div>
-</div>
-    <hr class="border-secondary">
             <div class="pb-3">
               <div class="overflow-hidden">
               <div class="px-3">
@@ -197,6 +195,12 @@ include 'sidebar_nav.php';
                 </div>
             </div>
   </div>
+</div>
+           
+ 
+  
+    
+    	
     </form>
     <script>
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').keyup(function(){
@@ -319,7 +323,7 @@ include 'sidebar_nav.php';
       }
 
 $('.edit-profile').on('submit', function(event) {
-	jQuery('.curl-progress').show().siblings().hide();
+	//jQuery('.curl-progress').show().siblings().hide();
 	payload = [];
   event.preventDefault();
   
@@ -522,7 +526,10 @@ payload.push( Addressdata<?php echo $key;?> );
     success: function(response) {
        // console.log("cURL request executed successfully. Response: ", payload);
 		jQuery('.curl-success').show().siblings().hide();
-		
+		setTimeout(function() {
+               jQuery('.curl-success').hide();
+                 window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
+             }, 5000);
     },
  });
  

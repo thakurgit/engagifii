@@ -86,7 +86,7 @@ include 'sidebar_nav.php';
     <?php if($isPendingRequest==true){ ?>
    <div> Profile changes pending under review</div> 
    <?php } ?>
-  <div class="py-3 px-4 rounded-sm" style="background:#e0eafc">
+  <div class="py-3 px-4 rounded-sm">
     	<div class="d-flex">
         	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
@@ -115,9 +115,9 @@ include 'sidebar_nav.php';
 			  if(count($dp[0]['positionHistory'])>0){
 					  if(count($dp[0]['positionHistory'])==1){
 						 $department =$dp[0]['positionHistory'][0]['departmentName'];
-  						echo '<span class="mr-4 bg-white rounded py-1 px-2"><strong>Department: </strong>'.$department.'</span>';
+  						echo '<span class="py-1 px-2"><strong>Department: </strong>'.$department.'</span> | ';
 						 $position =$dp[0]['positionHistory'][0]['positionName'];
-  						echo '<span class="mr-4 bg-white rounded py-1 px-2"><strong>Position: </strong>'.$position.'</span>';
+  						echo '<span class="py-1 px-2"><strong>Position: </strong>'.$position.'</span>';
 					  }else{ ?>
                       	<div class="dropdown">
                           <a class="mr-4 bg-white rounded py-1 px-2" href="" data-toggle="dropdown" aria-expanded="false">
