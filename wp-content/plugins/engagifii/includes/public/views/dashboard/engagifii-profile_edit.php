@@ -104,6 +104,7 @@ include 'sidebar_nav.php';
               </div>
               </div>
     </div>
+</div>
     <hr class="border-secondary">
             <div class="pb-3">
               <div class="overflow-hidden">
@@ -196,12 +197,6 @@ include 'sidebar_nav.php';
                 </div>
             </div>
   </div>
-</div>
-           
- 
-  
-    
-    	
     </form>
     <script>
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').keyup(function(){
