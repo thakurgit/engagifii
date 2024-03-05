@@ -3196,7 +3196,7 @@ public function publicOfficialTabs(){
 				$html.= '<li><div class="form-check"><input class="form-check-input" type="checkbox" value="'.$chkd.'" id="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><label class="form-check-label" for="'.str_replace(array( ' ', ',' ), '', strtolower($value['value'])).'"><small>'.$value['text'].'</small></label></div></li>';
 			  }
 	  		} else {
-				$html='<h6 class="text-center">data not found</h6>';	
+				$html='<h6 class="text-center mt-3">data not found</h6>';	
 			}
 			$htmlArray[]=$html;
 	  }

@@ -89,7 +89,8 @@ $.ajax({
 	 		 $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
 	 	 }
 	 	 dt_dropdown();
-	  }
+		  filterEvents();  
+		  }
 	});
   }
 });
@@ -167,13 +168,11 @@ function initDT(){
 	},  
 	//"columns":<?php //echo (json_encode($forDatatable)); ?>,
 	"drawCallback": function( settings ) {
-	
-	$('[data-toggle="tooltip"]').tooltip() ;
+		$('[data-toggle="tooltip"]').tooltip() ;
 	},
 	
 	"initComplete": function(settings, json) {
-	//tableEvents();
-	dt_titleSearch('Search Public official..');
+		dt_titleSearch('Search Public official..');
 	},
   });
 }
@@ -216,102 +215,120 @@ function ajaxFilter(){
   ajaxDT();
 }
 //events on filter submit button
-$('.filter_submit').on('click', function(){
-tabCount='';
-residence=[];committee=[];party=[];role=[];county=[];office=[];
-$('.po-filter ul').each(function(){
-$('input',this).each(function(){
-if ($(this).is(':checked')) {
-if($(this).parents('.border-bottom').attr('data-filter')=='cityofresidence'){
-residence.push($(this).val());	
-}
-if($(this).parents('.border-bottom').attr('data-filter')=='committies'){
-committee.push($(this).val());	
-}
-if($(this).parents('.border-bottom').attr('data-filter')=='counties'){
-county.push($(this).val());	
-}
-if($(this).parents('.border-bottom').attr('data-filter')=='district'){
-office.push($(this).val());	
-}
-if($(this).parents('.border-bottom').attr('data-filter')=='politicalparty'){
-party.push($(this).val());	
-}
-if($(this).parents('.border-bottom').attr('data-filter')=='role'){
-role.push($(this).val());	
-}
-}
-});
-});
-residence = residence.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-committee = committee.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-county = county.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-office = office.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-party = party.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-role = role.filter(function(elem, index, self) {
-return index === self.indexOf(elem);
-});
-ajaxFilter();
-});
-$('.po-filter ul').each(function(){
-$('input',this).prop('checked', false);
-var ftSelected=0;
-$('input',this).change(function(){
-ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
-if(ftSelected>0){
-$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('('+ftSelected+')');  
-}else{
-$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');  
-}
-});
-$('<input class="form-control my-2 form-control-sm bg-light ft-list" placeholder="Search..."/><div class="form-check"><input class="form-check-input select-all" type="checkbox" value="" id="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><label class="form-check-label" for="all-'+$(this).parents('.border-bottom').attr('data-filter')+'"><small class="font-weight-bold">Select / Deselect All</small></label></div>').insertBefore(this);
-$('<span class="d-none small pb-2 text-center font-italic">No data found with this keyword</span>').insertAfter(this);
+$('.filter_submit').on('click', function() {
+	tabCount = '';
+	residence = [];
+	committee = [];
+	party = [];
+	role = [];
+	county = [];
+	office = [];
+	$('.po-filter ul').each(function() {
+		$('input', this).each(function() {
+			if($(this).is(':checked')) {
+				if($(this).parents('.border-bottom').attr('data-filter') == 'cityofresidence') {
+					residence.push($(this).val());
+				}
+				if($(this).parents('.border-bottom').attr('data-filter') == 'committies') {
+					committee.push($(this).val());
+				}
+				if($(this).parents('.border-bottom').attr('data-filter') == 'counties') {
+					county.push($(this).val());
+				}
+				if($(this).parents('.border-bottom').attr('data-filter') == 'district') {
+					office.push($(this).val());
+				}
+				if($(this).parents('.border-bottom').attr('data-filter') == 'politicalparty') {
+					party.push($(this).val());
+				}
+				if($(this).parents('.border-bottom').attr('data-filter') == 'role') {
+					role.push($(this).val());
+				}
+			}
+		});
+	});
+	residence = residence.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	committee = committee.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	county = county.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	office = office.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	party = party.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	role = role.filter(function(elem, index, self) {
+		return index === self.indexOf(elem);
+	});
+	ajaxFilter();
 });
 //clear all button in filter
-$('#clear-all').on('click', function(){
-tabCount='';
-residence=[];committee=[];party=[];role=[];county=[];office=[];
-$('.po-filter input').each(function(){
-$(this).prop('checked', false);
+$('#clear-all').on('click', function() {
+	tabCount = '';
+	residence = [];
+	committee = [];
+	party = [];
+	role = [];
+	county = [];
+	office = [];
+	$('.po-filter input').each(function() {
+		$(this).prop('checked', false);
+	});
+	$('.ft-list').each(function() {
+	  if($(this).val()!=''){
+		  $(this).val('').keyup();
+	  }
+	});
+	$('.ft-active').removeClass('ft-active');
+	ajaxFilter();
+	$('.ft-counter').text('');
 });
-$('.ft-active').removeClass('ft-active');
-ajaxFilter();
-$('.ft-counter').text('');
-});
-//select/Deselect all checkbox in filter
-$('.select-all').change(function(){
-if ($(this).is(':checked')) {
-$(this).parent().siblings('ul').find('li input').prop('checked', true).change();  
-}else{
-$(this).parent().siblings('ul').find('li input').prop('checked', false).change();  
+function filterEvents(){
+	$('.po-filter ul').each(function() {
+		  	$('input', this).prop('checked', false);
+		  	var ftSelected = 0;
+		  	$('input', this).change(function() {
+		  		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
+		  		if(ftSelected > 0) {
+		  			$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('(' + ftSelected + ')');
+		  		} else {
+		  			$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');
+		  		}
+		  	});
+			if($('li', this).length>0){
+		 	 	$('<input class="form-control my-2 form-control-sm bg-light ft-list" placeholder="Search..."/><div class="form-check"><input class="form-check-input select-all" type="checkbox" value="" id="all-' + $(this).parents('.border-bottom').attr('data-filter') + '"><label class="form-check-label" for="all-' + $(this).parents('.border-bottom').attr('data-filter') + '"><small class="font-weight-bold">Select / Deselect All</small></label></div>').insertBefore(this);
+		  		$('<span class="d-none small pb-2 text-center font-italic">No data found with this keyword</span>').insertAfter(this);
+			}
+		  });	
+  //select/Deselect all checkbox in filter
+  $('.select-all').change(function() {
+	  if($(this).is(':checked')) {
+		  $(this).parent().siblings('ul').find('li input').prop('checked', true).change();
+	  } else {
+		  $(this).parent().siblings('ul').find('li input').prop('checked', false).change();
+	  }
+  });
+  //search list in filter
+  $('.ft-list').each(function() {
+	  $(this).on('keyup', function() {
+		  var value = $(this).val().toLowerCase();
+		  $(this).siblings('ul').find('li').filter(function() {
+			  $(this).toggle($.trim($(this).text()).toLowerCase().indexOf(value) > -1);
+		  });
+		  if($(this).siblings('ul').find('li:visible').length < 1) {
+			  $(this).siblings('span').removeClass('d-none').addClass('d-flex');
+			  $(this).siblings('div').addClass('d-none');
+		  } else {
+			  $(this).siblings('span').addClass('d-none').removeClass('d-flex');
+			  $(this).siblings('div').removeClass('d-none');
+		  }
+	  });
+  });
 }
-});
-//search list in filter
-$('.ft-list').each(function() { 
-$(this).on('keyup', function() {
-var value = $(this).val().toLowerCase();
-$(this).siblings('ul').find('li').filter(function() {
-$(this).toggle($.trim($(this).text()).toLowerCase().indexOf(value) > -1);
-});
-if($(this).siblings('ul').find('li:visible').length<1){
-$(this).siblings('span').removeClass('d-none').addClass('d-flex');
-$(this).siblings('div').addClass('d-none');
-} else {
-$(this).siblings('span').addClass('d-none').removeClass('d-flex');
-$(this).siblings('div').removeClass('d-none');
-}
-});
-});
-
 
 </script> 
