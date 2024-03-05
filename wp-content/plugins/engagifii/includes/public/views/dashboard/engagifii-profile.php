@@ -84,7 +84,7 @@ include 'sidebar_nav.php';
   </style>
   <div class="container-fluid  mb-4 ">
     <?php if($isPendingRequest==true){ ?>
-   <div> Profile changes pending under review</div> 
+      <div class="text-right"><span class="badge badge-warning">Profile Changes Pending for Approval</span> </div> 
    <?php } ?>
   <div class="py-3 px-4 rounded-sm">
     	<div class="d-flex">
