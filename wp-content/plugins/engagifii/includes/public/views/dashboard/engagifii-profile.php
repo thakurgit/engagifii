@@ -19,7 +19,7 @@ $userEmail = $user->user_email;
 	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 if($peopleDATA->isError==true) { 
-echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()'> Login again</a></h5></div>";
+echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
 ?><script>
  function clearAllCookies() {
 	  localStorage.clear();  
