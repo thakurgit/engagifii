@@ -28,6 +28,7 @@ border-bottom: 1px solid rgba(255,255,255,0.2);
 padding: 15px 0px;
 display: block;
 transition:0.3s all ease-in-out;
+font-weight: 500;
 }
 .sidebar-nav li a:hover, .sidebar-nav li a.active {
 border-bottom-color:white ;	

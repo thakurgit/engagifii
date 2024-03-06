@@ -2699,6 +2699,9 @@ wp_die();
 	     $postedData = $this->_prepareEventsData();
 		// print_r(json_encode($postedData));
 		//die;
+        $postedDataPermission = array();
+        $userPermission = $this->submitApiRequest("Subject/GetAssignedRolesPermission?tenantCode=psba&userId=dd8e61f5-9cd0-4b9a-809a-f0573f2fa74f", $postedDataPermission, "GET", 'auth'); 
+
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
 		 //print_r($dataResponse['api_response']);
 		 //die;
