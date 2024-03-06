@@ -72,7 +72,7 @@ include 'sidebar_nav.php';
     <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade border rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
   	<div class="row">
-        	<div class="col-md-3 text-center">
+        	<div class="col-md-1 mr-5 text-center">
             <div class="overflow-hidden d-block m-auto" style="width:130px;height:130px">
             <span id="upload_profile" class="position-relative  d-block h-100">
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
@@ -87,7 +87,7 @@ include 'sidebar_nav.php';
     </div>	
     
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8 ml-3 mt-3">
               <div data-section="header" class="row mb-4">
                   <div class="form-group col-md-4">
                   <label for="">First Name</label>
