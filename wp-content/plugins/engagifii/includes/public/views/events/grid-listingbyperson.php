@@ -61,7 +61,7 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
 </div>
 <?php
   } else {
-	echo '<div class="container-fluid pb-2"><div class="row"><div class="col-6"><div class="d-flex align-items-center"><h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><img src="https://ssresource.azureedge.net/resource/event/Events_Inline.png" class="img-fluid img-icon-lg" alt="award-icon"></h4><h5 class="mb-0">Events</h5></div></div><div class="col-6 text-center text-lg-right view-mode d-flex align-items-center justify-content-end"><div class="flt-btn mr-3 " style="display:block"></div></div></div>';  
+	echo '<div class="container-fluid pb-2"><div class="row"><div class="col-6"><div class="d-flex align-items-center"><h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> <i class="fas fa-sync"></i></button><img src="'.ENGAGIFII_ASSETS_URL.'/images/Events.png" class="img-fluid img-icon-lg" alt="award-icon"></h4><h5 class="mb-0">Events</h5></div></div><div class="col-6 text-center text-lg-right view-mode d-flex align-items-center justify-content-end"><div class="flt-btn mr-3 " style="display:block"></div></div></div>';  
   }
 ?>
 
