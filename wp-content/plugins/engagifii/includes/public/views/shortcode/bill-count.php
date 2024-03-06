@@ -10,7 +10,8 @@ $options = get_option( 'ebt_api_settings' );
   $sessionlist = $options['lbt_visib_session_list']?? array();
  }
 ?>
-<span id="bill-count"></span>
+
+<span id="bill-count"><span class="content-loader"></span></span>
 <script type="text/javascript">
 var viewAll;
 var sessionId;
@@ -23,6 +24,7 @@ window.addEventListener("load", function () {
 		getCountSelected(sessionId);
 		localStorage.setItem("sessionname", $('.session-tab li:first-child button').text());
 		$('.session-tab li button').click(function(){
+			$('#bill-count').html('<span class="content-loader"></span>');
 			sessionId = $(this).attr('id');
 			getCountSelected(sessionId);
 			localStorage.setItem("sessionname", $(this).text());
