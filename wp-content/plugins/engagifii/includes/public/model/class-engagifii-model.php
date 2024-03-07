@@ -2694,7 +2694,7 @@ wp_die();
     public function eventsLoadGridDataByPerson(){
     $options = get_option('ebt_api_settings');
     $loggedInUserId = $_SESSION['pid'];
-    $tenatCode = $options['ebt_tenant_code'];
+    $tenantCode = $options['ebt_tenant_code']['tenant_code'];
 
     //print_r($loggedInUserId); die;
 	
@@ -2706,7 +2706,8 @@ wp_die();
 		//die;
         $userPermissionArray = array();
         $postedDataPermission = array();
-        $userPermission = $this->submitApiRequest("Subject/GetAssignedRolesPermission?tenantCode='.$tenantCode.'&userId='.$loggedInUserId.'", $postedDataPermission, "GET", 'auth'); 
+        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
         $userPermissionResponse = $userPermission['api_response'];
         $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
         foreach($userpermissionJson as $key => $permissionValue){
