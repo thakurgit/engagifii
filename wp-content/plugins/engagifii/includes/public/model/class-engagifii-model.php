@@ -2703,9 +2703,25 @@ wp_die();
         $postedDataPermission = array();
         $userPermission = $this->submitApiRequest("Subject/GetAssignedRolesPermission?tenantCode=psba&userId=dd8e61f5-9cd0-4b9a-809a-f0573f2fa74f", $postedDataPermission, "GET", 'auth'); 
         $userPermissionResponse = $userPermission['api_response'];
-        foreach($userPermission as $key => $permissionValue){
-            $userPermissionArray = $permissionValue->name;
+        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+        foreach($userpermissionJson as $key => $permissionValue){
+            $userPermissionArray[] = $permissionValue['name'];
         }
+        if(in_array('MemberOwnOrg', $userPermissionArray)){
+            $registerOthers = 'true';
+        }
+        else{
+            $registerOthers = 'false';
+        }
+        if(in_array('OverrideRegistrationDates', $userPermissionArray)){
+            $registerOverride = 'true';
+        }
+        else{
+            $registerOverride = 'false';
+        }
+        $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
+		 //print_r($userPermissionArray);
+		 //die;
         //if(in_array('sessions', $class_visible_column_list))
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
 		 //print_r($dataResponse['api_response']);
@@ -2810,7 +2826,7 @@ wp_die();
 			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
-            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
+            if (($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled')) && ($registerOverride=='false') {
 				if($registration_state == 'RegistrationScheduled'){
                 	$tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
                		$default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
@@ -2819,7 +2835,7 @@ wp_die();
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
 				}
             }
-            else if ($isAlreadyRegistered) {
+            else if (($isAlreadyRegistered) && ($registerOthers=='false')) {
                 $alreadyRegisteredText = "Already Registered";
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText);
                 $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
