@@ -741,10 +741,12 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		return $response;
 	}
 	public function getPendingRequestByPeopleId($peopleId){
-		$postData= '{"objectType": "people", "loggedInUserId": '.$peopleId.', "profileId": '.$peopleId.'}';		  
-		$responseArray = array();
+		$postData['objectType'] = 'people';
+        $postData['loggedInUserId'] = $peopleId;
+        $postData['profileId'] = $peopleId;
+        $responseArray = array();
 		$apiUrl = 'PeopleApproval/GetPendingRequestStatusByProfileId';
-		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'dynamicobject');
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'dynamicobject');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}
