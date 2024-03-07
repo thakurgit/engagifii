@@ -2720,8 +2720,8 @@ wp_die();
             $registerOverride = 'false';
         }
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
-		 print_r($userPermissionArray);
-		 die;
+		 //print_r($userPermissionArray);
+		 //die;
         //if(in_array('sessions', $class_visible_column_list))
         $dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
 		 //print_r($dataResponse['api_response']);
@@ -2826,7 +2826,7 @@ wp_die();
 			 $nestedData['eventStatus'] = $event_status;
             $registration_state = $row->eventRegistrationState;
             $default_RegisterBtn = "";
-            if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
+            if (($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') && ($registerOverride=='false')) {
 				if($registration_state == 'RegistrationScheduled'){
                 	$tooltip = 'Registration opens from '.date('M d, Y', strtotime($row->registrationStartFrom));
                		$default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
