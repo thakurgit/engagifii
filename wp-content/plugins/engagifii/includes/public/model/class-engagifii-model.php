@@ -2692,7 +2692,12 @@ wp_die();
 
     //Load event list by person
     public function eventsLoadGridDataByPerson(){
-	        $options = get_option('ebt_api_settings');
+    $options = get_option('ebt_api_settings');
+    $loggedInUserId = $_SESSION['pid'];
+    $tenatCode = $options['ebt_tenant_code']
+
+    //print_r($loggedInUserId); die;
+	
 	$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
 	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
@@ -2701,7 +2706,7 @@ wp_die();
 		//die;
         $userPermissionArray = array();
         $postedDataPermission = array();
-        $userPermission = $this->submitApiRequest("Subject/GetAssignedRolesPermission?tenantCode=psba&userId=dd8e61f5-9cd0-4b9a-809a-f0573f2fa74f", $postedDataPermission, "GET", 'auth'); 
+        $userPermission = $this->submitApiRequest("Subject/GetAssignedRolesPermission?tenantCode='.$tenantCode.'&userId='.$loggedInUserId.'", $postedDataPermission, "GET", 'auth'); 
         $userPermissionResponse = $userPermission['api_response'];
         $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
         foreach($userpermissionJson as $key => $permissionValue){
