@@ -2694,7 +2694,7 @@ wp_die();
     public function eventsLoadGridDataByPerson(){
     $options = get_option('ebt_api_settings');
     $loggedInUserId = $_SESSION['pid'];
-    $tenatCode = $options['ebt_tenant_code']
+    $tenatCode = $options['ebt_tenant_code'];
 
     //print_r($loggedInUserId); die;
 	
