@@ -78,6 +78,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myEvents' => 'engagifii_myEvents',
 			'engagifii-myEvents-detail' => 'engagifii_myEvents_detail',
 			'engagifii-myDownloads' => 'engagifii_myDownloads',
+			'engagifii-myHome' => 'engagifii_myHome',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -125,6 +126,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	public function engagifii_myDownloads(){
 		ob_start();
 		include $this->basePath.'includes/public/views/dashboard/downloads.php';
+		return ob_get_clean();
+	}
+	public function engagifii_myHome(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/welcome-to-psba.php';
 		return ob_get_clean();
 	}
 	public function engagifii_myTransactions(){
