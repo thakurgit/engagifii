@@ -46,8 +46,30 @@
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
 	$options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
-
+	$loggedInUserId = $_SESSION['pid'];
+    $tenantCode = $options['ebt_tenant_code']['tenant_code'];
 	$contactPersons = $response->contacts;
+	$userPermissionArray = array();
+        $postedDataPermission = array();
+        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
+        $userPermissionResponse = $userPermission['api_response'];
+        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+        foreach($userpermissionJson as $key => $permissionValue){
+            $userPermissionArray[] = $permissionValue['name'];
+        }
+        if(in_array('MemberOwnOrg', $userPermissionArray)){
+            $registerOthers = 'true';
+        }
+        else{
+            $registerOthers = 'false';
+        }
+        if(in_array('OverrideRegistrationDates', $userPermissionArray)){
+            $registerOverride = 'true';
+        }
+        else{
+            $registerOverride = 'false';
+        }
 	
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
   $class_key = array_search ($_GET['courseId'], $class_array);
@@ -142,7 +164,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		  $isAlreadyRegistered = $response->registrationWorkflows[0]->isAlreadyRegistered;
 		  $default_RegisterBtn = "";
 		  if(in_array('register', $events_visible_column_list)) {
-		 if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') {
+			if (($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') && ($registerOverride=='false')) {
 			 if($registration_state == 'RegistrationScheduled'){
 			 $tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom)); ?>
 		  <div class="mt-auto">				
@@ -155,7 +177,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		  </div>
         	<?php  }
 		   
-		   } else if($isAlreadyRegistered){
+		   }  else if (($isAlreadyRegistered) && ($registerOthers=='false')) {
                 $alreadyRegisteredText = "Already Registered";
                 $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText); ?>
                 <div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
