@@ -175,7 +175,8 @@ global $post;
     $post_slug = $post->post_name;
 		$active = 'active';
 	$options = get_option( 'ebt_api_settings' );
-    $menus = $options['items'];	
+    $menus =$options['dash_menus']['items'];
+	if($menus){
 	echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">';
 	foreach($menus as $key=>$menu){
 		if(!array_key_exists("label",$menu)){
@@ -197,6 +198,7 @@ global $post;
         <li><a href="" class="py-3 "><i class="fas fa-book mr-3"></i>Resources</a></li>
         <li><a href="" class="py-3  "><i class="far fa-calendar-alt mr-3"></i>Signature Events</a></li>
     </ul>';*/
+	}
 	?>
 </div>
 <script>
