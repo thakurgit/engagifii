@@ -34,9 +34,10 @@
     	}
     	echo '</ul></div>';
 		
-//manage dashboard fields		
+//manage dashboard fields	
+	$tenant_code = $options['ebt_tenant_code']['tenant_code'];	
     $obj =  new adminDataColumn();
-    $fielddata = $obj->getDashboardFieldData();
+    $fielddata = $obj->getDashboardFieldData($tenant_code);
 	
 	$dashboard_fields = array();
 	$dashboard_fields_list=array();
@@ -50,17 +51,17 @@
 	
    	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage Dashboard field items</h3> <i>Check the field items that should be visible on the profile page and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[dashboard_fields][order]" value="'.$dashboard_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
 	$counter=1;
-	foreach(json_decode($fielddata,true)['groups'] as $key=>$rows){
+	foreach(json_decode($fielddata,true) as $key=>$row){
 		
-		foreach($rows['fields'] as $key=>$row){
+		
 			$checked = "";
 			if(in_array($row['controlTypeId'], $dashboard_fields_list)){
 				$checked .= " checked";
 			}
-			echo '<li  data-order="'.$counter.'"><input  id="'.$row['name'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['controlTypeId'].'"><label for="'.$row['name'].'">'.$row['name'].'</label></li>';	
+			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['controlTypeId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
 			$counter++;	
 		}
-	}
+	
 echo '</ul></div>';
  } ?>
 </div>

@@ -97,10 +97,10 @@ class adminDataColumn extends Engagifii_API{
 		$dataResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		return $dataResponse['api_response'];
 	}
-	public function getDashboardFieldData(){
+	public function getDashboardFieldData($tenantCode){
 		$postData = array();
- 	   $apiUrl = 'FieldConfiguration/GetFieldConfigurationByTab/people/2bc0f0f5-e5e0-4fd2-a29d-d52297300bba';	
-		$dataResponse = $this->submitApiRequest($apiUrl,$postData, "GET",'dashboardFields');
+ 	   $apiUrl = 'GetPersonProfileFields/'.$tenantCode;	
+		$dataResponse = $this->submitApiRequest($apiUrl,$postData, "GET",'dashboard');
 		return $dataResponse['api_response'];
 	}
 }
