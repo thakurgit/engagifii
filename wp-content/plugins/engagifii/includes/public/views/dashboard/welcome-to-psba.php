@@ -7,4 +7,9 @@ if (! is_user_logged_in()) {
 }
 include 'sidebar_nav.php';
 ?>
+<div class="text-center px-3">
+        <!--<a href="<?php //echo esc_url( home_url( '/' ) ); ?>" class="navbar-brand text-hide "><img src="<?php //echo $logo; ?>" alt="" class="img-fluid"></a>-->
+        <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/mypsba-logo.png" alt="" class="img-fluid" style="max-height:65px">
+        </div>
+
 <h2>Welcome to MyPSBA </h2>
