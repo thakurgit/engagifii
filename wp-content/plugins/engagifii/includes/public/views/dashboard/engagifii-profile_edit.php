@@ -208,7 +208,7 @@ include 'sidebar_nav.php';
         </button>
       </div>
       <div class="modal-body">
-       	<p class="text-center">Your request submiited successfully. Go back to <a target="_blank" href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
+       	<p class="text-center">Your request submiited successfully. Go back to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
       </div>
       
     </div>
@@ -543,7 +543,7 @@ payload.push( Addressdata<?php echo $key;?> );
     success: function(response) {
        // console.log("cURL request executed successfully. Response: ", payload);
        $('#requestSubmitted').modal('show');
-       $('#updateProfile').attr('disabled','').find('span').show();
+       $('#updateProfile').attr('disabled','').find('span').hide();
 		//jQuery('.curl-success').show().siblings().hide();
 		// setTimeout(function() {
     //            jQuery('.curl-success').hide();
