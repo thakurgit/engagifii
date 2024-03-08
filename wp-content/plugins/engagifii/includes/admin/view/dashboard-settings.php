@@ -2,7 +2,7 @@
 <div class="engagifii-setting m-tlr-20">
 <?php 
 //API setting
-	
+	$options = get_option( 'ebt_api_settings' );
 	$dashboard_apis=array();
     if(isset($options['dashboard_apis'])){
     	$dashboard_apis = $options['dashboard_apis']; 
@@ -16,7 +16,7 @@
 	$response = json_decode($navdata);
 
 	//$response = array();
-    $options = get_option( 'ebt_api_settings' );
+    
     $dash_menus = array();
 	$dash_menus_label = array();
     if(isset($options['dash_menus'])){
