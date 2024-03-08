@@ -325,8 +325,7 @@ include 'sidebar_nav.php';
 						})
 						.then(data => {
 						  console.log('profile image updated successfully');
-              $('#requestSubmitted').modal('show')
-						})
+              })
 						.catch(error => {
 						  //console.error('There has been a problem with your fetch operation:', error);
 						});
@@ -543,11 +542,12 @@ payload.push( Addressdata<?php echo $key;?> );
     data: JSON.stringify(payload),
     success: function(response) {
        // console.log("cURL request executed successfully. Response: ", payload);
-		jQuery('.curl-success').show().siblings().hide();
-		setTimeout(function() {
-               jQuery('.curl-success').hide();
-                 window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
-             }, 5000);
+       $('#requestSubmitted').modal('show')
+		//jQuery('.curl-success').show().siblings().hide();
+		// setTimeout(function() {
+    //            jQuery('.curl-success').hide();
+    //              window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
+    //          }, 5000);
     },
  });
  
