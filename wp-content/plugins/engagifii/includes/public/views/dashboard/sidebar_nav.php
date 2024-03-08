@@ -183,12 +183,12 @@ global $post;
 			continue;	
 		}
 		$label =$menu['label'];
-		$url =$menu['url'];
+		$url =$site_url.'/'.$menu['url'];
 		$icon=$menu['icon'];
 		if(!$url){
-			$url = 'engagifii-profile';	
+			$url = '#';	
 		}
-		echo '<li><a href="'.$site_url.'/'.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
+		echo '<li><a href="'.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
 	}
 	echo '</ul>';
     /*echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
