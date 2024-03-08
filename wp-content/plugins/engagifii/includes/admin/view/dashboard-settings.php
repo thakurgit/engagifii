@@ -6,6 +6,17 @@
  if($tenant_url!='psba'){
 	echo '<h4>Profile settings is not allowed</h4>';
 } else { 
+//API setting
+	
+	$dashboard_apis=array();
+    if(isset($options['dashboard_apis'])){
+    	$dashboard_apis = $options['dashboard_apis']; 
+	}
+	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content api-urls" style="display:none">';
+		echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div>';
+		echo '<div class="form-group"><label>Tenant Code</label><input onkeyup="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'"></div>';
+	echo '</ul></div>';
+//dashboard navigation
 	$navdata ='[{"label":"Home","url":"","icon":"fas fa-home"},{"label":"My Profile","url":"engagifii-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"engagifii-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Event Registration","url":"engagifii-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"engagifii-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
 	$response = json_decode($navdata);
 
@@ -35,7 +46,7 @@
     	echo '</ul></div>';
 		
 //manage dashboard fields	
-	$tenant_code = $options['ebt_tenant_code']['tenant_code'];	
+	$tenant_code = $options['dashboard_apis']['tenant'];	
     $obj =  new adminDataColumn();
     $fielddata = $obj->getDashboardFieldData($tenant_code);
 	
@@ -50,6 +61,9 @@
 	}
 	
    	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage Dashboard field items</h3> <i>Check the field items that should be visible on the profile page and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[dashboard_fields][order]" value="'.$dashboard_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
+	if(!$tenant_code){
+		echo '<b style="color:red">oops! Dashboard Tenant code not found.</b>';	
+	}else{
 	$counter=1;
 	foreach(json_decode($fielddata,true) as $key=>$row){
 		
@@ -61,6 +75,7 @@
 			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['controlTypeId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
 			$counter++;	
 		}
+	}
 	
 echo '</ul></div>';
  } ?>
