@@ -58,7 +58,7 @@
         foreach($userpermissionJson as $key => $permissionValue){
             $userPermissionArray[] = $permissionValue['name'];
         }
-        if(in_array('MemberOwnOrg', $userPermissionArray)){
+        if(in_array('RegisterMembersfromOwnOrganization', $userPermissionArray)){
             $registerOthers = 'true';
         }
         else{
