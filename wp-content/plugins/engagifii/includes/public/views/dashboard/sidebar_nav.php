@@ -176,7 +176,7 @@ global $post;
 		$active = 'active';
 		
     echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
-    	<li><a href=""><i class="fas fa-home mr-3"></i>Home</a></li>
+    	<li><a href="'.$site_url.'/engagifii-profile/welcome-to-mypsba" class="py-3  ' . ($post_slug == 'welcome-to-mypsba' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-home mr-3"></i>Home</a></li>
     	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-user mr-3"></i>My Profile</a></li>
         <li><a href="'.$site_url.'/engagifii-profile/my-transcript/downloads" class="py-3  "><i class="fas fa-download mr-3" class="sidebar-nav-link"></i></i>My Downloads</a></li>
         <li><a href="'.$site_url.'/engagifii-profile/events" class="py-3  ' . ($post_slug == 'events' ? $active : '') . '" class="sidebar-nav-link"><i class="far fa-calendar-alt mr-3"></i>Event Registration</a></li>
