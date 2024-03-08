@@ -543,7 +543,7 @@ payload.push( Addressdata<?php echo $key;?> );
     success: function(response) {
        // console.log("cURL request executed successfully. Response: ", payload);
        $('#requestSubmitted').modal('show');
-       $('#updateProfile').attr('disabled','').find('span').hide();
+       $('#updateProfile').removeAttr('disabled').find('span').hide();
 		//jQuery('.curl-success').show().siblings().hide();
 		// setTimeout(function() {
     //            jQuery('.curl-success').hide();
