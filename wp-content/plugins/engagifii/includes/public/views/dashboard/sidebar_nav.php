@@ -185,7 +185,7 @@ global $post;
 		$label =$menu['label'];
 		$url =$site_url.'/'.$menu['url'];
 		$icon=$menu['icon'];
-		if(!$url){
+		if(!$menu['url']){
 			$url = '#';	
 		}
 		echo '<li><a href="'.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
