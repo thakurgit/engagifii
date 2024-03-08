@@ -185,6 +185,9 @@ global $post;
 		$label =$menu['label'];
 		$url =$menu['url'];
 		$icon=$menu['icon'];
+		if(!$url){
+			$url = 'engagifii-profile';	
+		}
 		echo '<li><a href="'.$site_url.'/'.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
 	}
 	echo '</ul>';
