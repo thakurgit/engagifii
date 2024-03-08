@@ -176,6 +176,7 @@ global $post;
 		$active = 'active';
 	$options = get_option( 'ebt_api_settings' );
     $menus = $options['items'];	
+	echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">';
 	foreach($menus as $key=>$menu){
 		if(!array_key_exists("label",$menu)){
 			continue;	
@@ -185,7 +186,8 @@ global $post;
 		$icon=$menu['icon'];
 		echo '<li><a href="'.$site_url.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
 	}
-    echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
+	echo '</ul>';
+    /*echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
     	<li><a href="'.$site_url.'/engagifii-profile/welcome-to-mypsba" class="py-3  ' . ($post_slug == 'welcome-to-mypsba' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-home mr-3"></i>Home</a></li>
     	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-user mr-3"></i>My Profile</a></li>
         <li><a href="'.$site_url.'/engagifii-profile/my-transcript/downloads" class="py-3  "><i class="fas fa-download mr-3" class="sidebar-nav-link"></i></i>My Downloads</a></li>
@@ -194,7 +196,7 @@ global $post;
         <li><a href="" class="py-3 "><i class="fas fa-child mr-3"></i>Members</a></li>
         <li><a href="" class="py-3 "><i class="fas fa-book mr-3"></i>Resources</a></li>
         <li><a href="" class="py-3  "><i class="far fa-calendar-alt mr-3"></i>Signature Events</a></li>
-    </ul>';
+    </ul>';*/
 	?>
 </div>
 <script>
