@@ -174,7 +174,17 @@ border-bottom-color:white ;
 global $post;
     $post_slug = $post->post_name;
 		$active = 'active';
-		
+	$options = get_option( 'ebt_api_settings' );
+    $menus = $options['items'];	
+	foreach($menus as $key=>$menu){
+		if(!array_key_exists("label",$menu)){
+			continue;	
+		}
+		$label =$menu['label'];
+		$url =$menu['url'];
+		$icon=$menu['icon'];
+		echo '<li><a href="'.$site_url.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
+	}
     echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
     	<li><a href="'.$site_url.'/engagifii-profile/welcome-to-mypsba" class="py-3  ' . ($post_slug == 'welcome-to-mypsba' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-home mr-3"></i>Home</a></li>
     	<li><a href="'.$site_url.'/engagifii-profile" class="py-3  ' . ($post_slug == 'engagifii-profile' ? $active : '') . '" class="sidebar-nav-link"><i class="fas fa-user mr-3"></i>My Profile</a></li>
