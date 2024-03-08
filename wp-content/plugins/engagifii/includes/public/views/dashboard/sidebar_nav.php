@@ -185,7 +185,7 @@ global $post;
 		$label =$menu['label'];
 		$url =$menu['url'];
 		$icon=$menu['icon'];
-		echo '<li><a href="'.$site_url.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
+		echo '<li><a href="'.$site_url.'/'.$url.'" class="py-3  ' . ($post_slug == $url ? $active : '') . '" class="sidebar-nav-link"><i class="'.$icon.' mr-3"></i>'.$label.'</a></li>';	
 	}
 	echo '</ul>';
     /*echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">
