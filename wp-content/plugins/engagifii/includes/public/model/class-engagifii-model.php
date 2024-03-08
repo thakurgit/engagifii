@@ -2719,7 +2719,7 @@ wp_die();
         else{
             $registerOthers = 'false';
         }
-        if(in_array('OverrideRegistrationDates', $userPermissionArray)){
+        if(in_array('OverrideRegistration', $userPermissionArray)){
             $registerOverride = 'true';
         }
         else{
