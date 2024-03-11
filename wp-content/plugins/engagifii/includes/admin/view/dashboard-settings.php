@@ -35,7 +35,7 @@
 		if(in_array($row->label, $dash_menus_label)){
 			$checked .= " checked";
 		}			
-			echo '<li  data-order="'.$counter.'"><input name="ebt_api_settings[dash_menus][items]['.$key.'][icon]" type="hidden" value="'.$row->icon.'"/><input name="ebt_api_settings[dash_menus][items]['.$key.'][url]" type="hidden" value="'.$row->url.'"/> <input  id="'.$row->label.'" class="'.$row->label.'" type="checkbox" name="ebt_api_settings[dash_menus][items]['.$key.'][label]" '.$checked.' value="'.$row->label.'"><label for="'.$row->label.'">'.$row->label.'</label></li>';
+			echo '<li  data-order="'.$counter.'"><input name="ebt_api_settings[dash_menus][items]['.$key.'][icon]" type="hidden" value="'.$row->icon.'"/><input name="ebt_api_settings[dash_menus][items][items]['.$key.'][url]" type="hidden" value="'.$row->url.'"/> <input  id="'.$row->label.'" class="'.$row->label.'" type="checkbox" name="ebt_api_settings[dash_menus][items][items]['.$key.'][label]" '.$checked.' value="'.$row->label.'"><label for="'.$row->label.'">'.$row->label.'</label></li>';
 			$counter++;	  
     	}
     	echo '</ul></div>';
@@ -54,22 +54,30 @@
 		}
 		
 	}
-	
    	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage Dashboard field items</h3> <i>Check the field items that should be visible on the profile page and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[dashboard_fields][order]" value="'.$dashboard_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
 	if(!$tenant_code){
 		echo '<b style="color:red">oops! Dashboard Tenant code not found.</b>';	
 	}else{
-	$counter=1;
-	foreach(json_decode($fielddata,true) as $key=>$row){
+		if(array_key_exists("isError",json_decode($fielddata,true)) && json_decode($fielddata,true)['isError']==true){
+			echo '<b style="color:red">oops! data not found.</b>';
+		} else{
+			$counter=1;
+			foreach(json_decode($fielddata,true) as $key=>$row){
 		
 		
 			$checked = "";
-			if(in_array($row['fieldId'], $dashboard_fields_list)){
+			if(count($dashboard_fields_list)>0){
+				if(in_array($row['fieldId'], $dashboard_fields_list)){
+					$checked .= " checked";
+				}
+			}else{
 				$checked .= " checked";
 			}
 			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
 			$counter++;	
+		}	
 		}
+	
 	}
 	
 echo '</ul></div>';

@@ -15,18 +15,14 @@ $userEmail = $user->user_email;
     $options = get_option('ebt_api_settings'); 
     $profilePayload = $options['dashboard_fields']['fields']; 
    // print_r($profilePayload); die;
-    $tenantCode = 'psba';
+    //$tenantCode = 'psba';
+	$tenantCode = $options['dashboard_apis']['tenant'];
     $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
-    
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
-//print_r(json_encode($peopleDATA)); 
-// print_r($peopleDATA->people->primaryEmail->value); 
-	$_SESSION['pid']=$peopleDATA->people->id;
-	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
-?><script>
+?>
+<script>
  function clearAllCookies() {
 	  localStorage.clear();  
      var cookies = document.cookie.split(";");
@@ -46,6 +42,9 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 }</script> 
 <?php return;
 } 
+	$_SESSION['pid']=$peopleDATA->people->id;
+	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
