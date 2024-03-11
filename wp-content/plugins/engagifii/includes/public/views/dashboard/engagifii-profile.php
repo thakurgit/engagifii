@@ -98,7 +98,11 @@ include 'sidebar_nav.php';
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
                 <?php } ?>
   	<div class="overflow-hidden mb-2 bg-white p-1 shadow-sm " style="width:120px; height:120px;">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
+    <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) { ?>
+    	<img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid">
+    <?php } else { ?>
+    	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
+    <?php } ?>
     </div>
     <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm" style="z-index: 1;">
                 Edit profile
