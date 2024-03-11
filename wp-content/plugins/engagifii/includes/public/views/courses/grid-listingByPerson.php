@@ -143,7 +143,7 @@ $filter_course = removeWhitespace($filter_course);
 ?>
 <script type="text/javascript">
 var startDate = '1970-01-01T00:00:00';
-var endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
+var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
