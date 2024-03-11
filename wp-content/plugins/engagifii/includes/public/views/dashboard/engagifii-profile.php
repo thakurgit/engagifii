@@ -160,10 +160,7 @@ include 'sidebar_nav.php';
   </div>
   <!-- Header -->
   <div class="container-fluid">
-  <div class="accordion" id="accordionExample">
-  <div class="card mb-4 border rounded-sm">
-      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="card-body">
+      <div class="card-body border rounded">
         	<div class="row">
             	
             <?php  
@@ -171,14 +168,14 @@ include 'sidebar_nav.php';
 		 foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==9){ 
 	 $address = json_decode($value->selectedValue,true);
-	 ?><div class="col-md-4 mb-4 ">
+	 ?>
+     <div class="col-md-4 mb-4 ">
  <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];         
      echo "</div>"; } 
  }
-?><hr class="my-4 col-12">
-	
-                
-                <div class="col-md-4 mb-4">
+?>
+<hr class="my-4 col-12">
+  <div class="col-md-4 mb-4">
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
            
@@ -203,28 +200,19 @@ include 'sidebar_nav.php';
  } 
  //}
 ?>
-               
-                
-                
-            </div>
 
-<!-- / Content -->
-<hr>
-<div class="row">
-            	<div class="col-12">
-              Organization:
+<hr class="my-4 col-12">
+<div class="col-12">
+              <strong>Organization:</strong><br>
+
 <p class="mb-4">
-<span class="text-primary font-italic mr-1"><img decoding="async" src="https://ssresource.azureedge.net/resource/organization/847b4b19-9e08-4f6f-9fba-6111da6aa6d2.png" alt="avatar" class="rounded-circle img-fluid mr-2" style="width: 30px;">Abington Heights School District</span> 
+<span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
                 </p>
-         </div>    
-            </div>
-
+                </div>
+ </div>
       </div>
     </div>
-  </div>
-
-</div>
-</div>
+    
 <script>
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
  
