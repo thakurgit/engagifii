@@ -68,8 +68,8 @@ class Engagifii_API{
 					} else {}
 				$ebt_api_url = $options['dashboard_apis']['url'];
 				$ebt_tenant_code ['tenant_code'] = $options['dashboard_apis']['tenant'];
-				$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
-				//$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDcyMDgxMTQsImV4cCI6MTczODc0NDExNCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA3MjA4MTEzLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjAyLzA2LzIwMjQgMDg6MTY6MzUiLCJjdXJyZW50LWxvZ2luIjoiMDIvMDYvMjAyNCAwODoyODozNCIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.Nrfe03f61j8sT2PwjRoA4LIf-EnkT__WMdiEbV0xr2kcpAWdbeAJlzMIGkms7Cge3EQ-DcS_yaaGSFtzjt83pvCULp9a75OMRyklMhEPxpT1AIlmxgLQnYGEpsCvYfYBKeTT8bX2kz3KGrNYsSf9f0-J4_nhF6iIeH_DROP3M2h8NcbyRc4wLxe00X8_-3vwO2lUIjQL6TYcEppIKdNRqyJ-odOP8dwfW2WYZJxKGPSRwEbWVTCnQyWQ03Y9hf7caAKAD8kI-6Xz7zPiT03ZBLZFHH99dBDCmfiGPIs0fQdlPqjbYGZDE0uhVvuJTwtNP3GqTQ93ai5Hz5pKfWsT0g';
+				//$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
+				$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTAxMzY5MzksImV4cCI6MTcxMDE0NDEzOSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSIsIlVzZXJzQVBJIl0sImNsaWVudF9pZCI6InBzYmEiLCJzdWIiOiIzZWJhNGY1Mi1iOTBiLTRjODAtYWJiMy01MTliMGE3NzIwZWUiLCJhdXRoX3RpbWUiOjE3MTAxMzY5MzcsImlkcCI6ImxvY2FsIiwic3MtcGlkIjoiMDYyNDY0YWEtNTkxZS00NTg0LTkyMjQtNzFmZmM2MTJlYzI4IiwicGljdHVyZSI6IiIsInBpY3R1cmUtc21hbGwiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIiLCJlbWFpbCI6ImpjcmF3bGV5QHlvcG1haWwuY29tIiwibGFzdC1sb2dpbiI6IjAxLzAxLzAwMDEgMDA6MDA6MDAiLCJjdXJyZW50LWxvZ2luIjoiMDMvMTEvMjAyNCAwNjowMjoxOCIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIiwicHJvZmlsZSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiLCJVc2Vyc0FQSSJdLCJhbXIiOlsicHdkIl19.nZnFMbCHnoAF7R3eWSsqdZ70cJli2_BTfT5jb4ByYbbRbBuE1Zzcf2kvqmbMeegjSjqZzi41JFLA3IrCb2zlmvCCOO2NERSt385lU-tTsnUDcndZP9N4ooG7RcnwAsgOAkTFd_PQzfKo6g2PLqpl9m9sf2x1aLtfos_NQGtT75f1kg25Qp8QT77owJIDQjEKTb8B8mhk_eoDviALrnen8m-3lTf2xcz586JYIkQFMeCFT7vy3XwvCFLLw9hO731KWnI19KnI65reeiang_m7O4ZZYZzXdWP7IA5HhJZqEstfYWMF_BHqGtAGNkakzLWD4nyQ742h_EKDnTcKInPZZA';
 				} else if($module == 'reports'){
 				$ebt_api_url = 'https://engagifii-preview4-engagifiireport.azurewebsites.net/api/v1';
 				$ebt_tenant_code ['tenant_code'] = 'psba';
@@ -732,11 +732,11 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
-	public function engagifiiProfile($tenant){
-		$postData=array();
+	public function engagifiiProfile($payload, $tenant){
+		$postData= $payload;
 		$responseArray = array();
-		$apiUrl = 'People/GetLoggedInUserDetail';
-		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		$apiUrl = 'People/GetLoggedInUserDetailWithFields';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'dashboard');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}

@@ -64,10 +64,10 @@
 		
 		
 			$checked = "";
-			if(in_array($row['controlTypeId'], $dashboard_fields_list)){
+			if(in_array($row['fieldId'], $dashboard_fields_list)){
 				$checked .= " checked";
 			}
-			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['controlTypeId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
+			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
 			$counter++;	
 		}
 	}

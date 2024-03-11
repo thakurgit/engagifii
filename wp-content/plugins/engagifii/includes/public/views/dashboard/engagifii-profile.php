@@ -12,9 +12,15 @@ $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
     $obj      =  new Engagifii_API();
-    $engagifiiProfile = $obj->engagifiiProfile('psba');
+    $options = get_option('ebt_api_settings'); 
+    $profilePayload = $options['dashboard_fields']['fields']; 
+   // print_r($profilePayload); die;
+    $tenantCode = 'psba';
+    $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
     
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
+//print_r(json_encode($peopleDATA)); 
+// print_r($peopleDATA->people->primaryEmail->value); 
 	$_SESSION['pid']=$peopleDATA->people->id;
 	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
