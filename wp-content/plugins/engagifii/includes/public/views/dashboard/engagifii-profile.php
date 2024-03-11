@@ -68,23 +68,6 @@ include 'sidebar_nav.php';
 		 $groupId = $value->id;
      }
  }
-	
-
-	/*$addresstabId = $peopleDATA->tabs[1]->id;
-	$addresstabGroupId = $peopleDATA->tabs[1]->groupFields[0]->id;
-	if($peopleDATA->people->personaTypeId==2){
-		$addressTitle = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[4]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[4]->id;
-	}else if($peopleDATA->people->personaTypeId==4) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[2]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[2]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[2]->id;
-	}else if($peopleDATA->people->personaTypeId==3) {
-		$addressTitle =$peopleDATA->tabs[1]->groupFields[0]->fields[1]->name;
-		 $address = json_decode($peopleDATA->tabs[1]->groupFields[0]->fields[1]->selectedValue,true);
-		$addresstabGroupFieldId = $peopleDATA->tabs[1]->groupFields[0]->fields[1]->id;
-	}*/
   ?>
   <!-- Header -->
 
@@ -133,13 +116,13 @@ include 'sidebar_nav.php';
 			  ?>
               <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
-			  $dp = json_decode($peopleDATA->tabs[2]->groupFields[2]->fields[0]->selectedValue, true);
+			  $dp = json_decode($peopleDATA->peopleFields[11]->organizationValue, true);
 			  if(count($dp[0]['positionHistory'])>0){
 					  if(count($dp[0]['positionHistory'])==1){
 						 $department =$dp[0]['positionHistory'][0]['departmentName'];
-  						echo '<span class="py-1 px-2" style="font-size:.875rem;"><strong>Department: </strong>'.$department.'</span>';
+  						echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Department: </strong>'.$department.'</span>';
 						 $position =$dp[0]['positionHistory'][0]['positionName'];
-  						echo '<span class="py-0 px-0" style="font-size:.875rem;"><strong>Position: </strong>'.$position.'</span>';
+  						echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Position: </strong>'.$position.'</span>';
 					  }else{ ?>
                       	<div class="dropdown">
                           <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
@@ -180,7 +163,8 @@ include 'sidebar_nav.php';
         	<div class="row">
             	
             <?php  
-		 foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
+		// foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
+		 foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==9){ 
 	 $address = json_decode($value->selectedValue,true);
 	 ?><div class="col-md-4 mb-4 ">
@@ -199,8 +183,8 @@ include 'sidebar_nav.php';
             <?php } ?>	
                 </div>
                 
-                	<?php if($peopleDATA->people->primaryPhoneNumber->value){ ?>
-            <?php  foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
+                	<?php //if($peopleDATA->people->primaryPhoneNumber->value){
+           foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==11){ 
           $formattedPhoneNumber='';
           if($value->selectedValue){
@@ -212,7 +196,8 @@ include 'sidebar_nav.php';
             
             <a href="tel:<?php echo $formattedPhoneNumber;?>"><?php echo $formattedPhoneNumber;?></a> </div>
    <?php  } 
- } }
+ } 
+ //}
 ?>
                
                 
