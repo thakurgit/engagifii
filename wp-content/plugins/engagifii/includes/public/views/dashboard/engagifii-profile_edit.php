@@ -118,7 +118,7 @@ include 'sidebar_nav.php';
               
               <div class="row">
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){
       $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
@@ -132,7 +132,7 @@ include 'sidebar_nav.php';
 ?>			</div>
 			</div>
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){ 
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
               	<div class="px-3 address-wrap addressGroup<?php echo $key;?> ">
@@ -447,14 +447,14 @@ payload.push( lastNamedata );
   }
   
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
 	 ?>
   if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
 	  var newPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
 	  	var PhoneNumberdata<?php echo $key;?> = {
-    "tabId": "<?php echo $infotabId; ?>",
-    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
     "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
@@ -477,7 +477,7 @@ payload.push( PhoneNumberdata<?php echo $key;?> );
  } 
 ?>
      <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){
 	 //$address = json_decode($value->selectedValue,true);
 	 ?>
 	var keys= [];
@@ -500,8 +500,8 @@ for(i = 0 ; i < keys.length && i < values.length ; i++){
 //console.log(oldobj);
 if(JSON.stringify(obj)!=JSON.stringify(oldobj)){
 	  	var Addressdata<?php echo $key;?> = {
-    "tabId": "<?php echo $infotabId; ?>",
-    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
     "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",

@@ -105,7 +105,7 @@ include 'sidebar_nav.php';
     	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
     <?php } ?>
     </div>
-    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm edit-profile" style="z-index: 1;">
+    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm edit-profile-btn" style="z-index: 1;">
                 Edit profile
               </a>
   </div>
@@ -232,19 +232,10 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	.profile-tabs .nav-link.active, .profile-tabs .nav-link:hover {
 	border-bottom:0 !important	
 	}
-  .curl-progress, .curl-success {
-            display: none;
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background-color: #dff0d8; /* Bootstrap success alert background color */
-            border: 1px solid #d6e9c6; /* Bootstrap success alert border color */
-            border-radius: 4px;
-        }
+  
    </style>
    	<div class="container-fluid profile-edit-modal d-none">
-    		<form action="" class="edit-profile">
+	<form action="" class="edit-profile">
     
     <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade border rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -292,7 +283,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               
               <div class="row">
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){
       $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
@@ -306,7 +297,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 ?>			</div>
 			</div>
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){ 
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
               	<div class="px-3 address-wrap addressGroup<?php echo $key;?> ">
@@ -366,15 +357,24 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                             <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
 
                 </div>
-                <div class="curl-message col-12  px-3" >
+               <!-- <div class="curl-message col-12  px-3" >
                 	
                 	<span class="curl-progress" style="display:none"><em>Hold on, Profile updating...</em></span>
                 	<span class="curl-success" style="display:none"><em>Profile updated successfully.</em></span>
-                </div>
+                </div>-->
             </div>
   </div>
 </div>
-           
+<div class="position-fixed top-0 right-0 p-3" style="z-index: 5; right: 7px; top: 60px;">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+<div class="toast-body" style="background:#dff0d8">
+      Profile updated successfully.<button type="button" data-dismiss="toast" aria-label="Close" class="ml-4  close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+      </div>
+</div>
+         
 <div class="modal fade" id="requestSubmitted" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -383,6 +383,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
           <span aria-hidden="true">&times;</span>
         </button>
+
       </div>
       <div class="modal-body">
        	<p class="text-center">Your request submiited successfully. Go back to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
@@ -397,13 +398,12 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     </form>
 
     </div>
-   
     <script>
-	jQuery(document).ready(function(e){
-	jQuery('.edit-profile').click(function(e){
-		//jQuery('.profile-page').hide();
-		//jQuery('.profile-edit-modal').removeClass('d-none');
-		//e.preventDefault();	
+   	jQuery(document).ready(function(e){
+	jQuery('.edit-profile-btn').click(function(e){
+		jQuery('.profile-page').hide();
+		jQuery('.profile-edit-modal').removeClass('d-none');
+		e.preventDefault();	
 	});
 	jQuery('.edit-profile-cancel').click(function(e){
 		jQuery('.profile-page').show();
@@ -488,7 +488,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 			   }
 			   ;
 				  jQuery('#blah').attr('src',data);
-				  jQuery('.curl-success').show().siblings().hide();
+				  jQuery("#liveToast").toast("show");
+				 // jQuery('.curl-success').show().siblings().hide();
 					xxx();		
 						  
 						})
@@ -636,14 +637,14 @@ payload.push( lastNamedata );
   }
   
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
 	 ?>
   if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
 	  var newPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
 	  	var PhoneNumberdata<?php echo $key;?> = {
-    "tabId": "<?php echo $infotabId; ?>",
-    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
     "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
@@ -666,7 +667,7 @@ payload.push( PhoneNumberdata<?php echo $key;?> );
  } 
 ?>
      <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){
 	 //$address = json_decode($value->selectedValue,true);
 	 ?>
 	var keys= [];
@@ -689,8 +690,8 @@ for(i = 0 ; i < keys.length && i < values.length ; i++){
 //console.log(oldobj);
 if(JSON.stringify(obj)!=JSON.stringify(oldobj)){
 	  	var Addressdata<?php echo $key;?> = {
-    "tabId": "<?php echo $infotabId; ?>",
-    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
     "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
