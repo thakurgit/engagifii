@@ -172,7 +172,7 @@ include 'sidebar_nav.php';
             <?php  
 		// foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
 		 foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
      <div class="col-md-4 mb-4 ">
@@ -192,7 +192,7 @@ include 'sidebar_nav.php';
                 
                 	<?php //if($peopleDATA->people->primaryPhoneNumber->value){
            foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){
           $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
@@ -208,6 +208,9 @@ include 'sidebar_nav.php';
 ?>
 
 <hr class="my-4 col-12">
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    		 if($value->controlTypeId==12 && in_array($value->id, $profilePayload)){ ?>
 <div class="col-12">
               <strong>Organization:</strong><br>
 
@@ -215,6 +218,7 @@ include 'sidebar_nav.php';
 <span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
                 </p>
                 </div>
+                <?php } } ?>
  </div>
       </div>
     </div>
