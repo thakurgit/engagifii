@@ -234,7 +234,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	}
   
    </style>
-   	<div class="container-fluid profile-edit-modal d-none">
+   	<div class="container-fluid position-relative profile-edit-modal d-none">
+    <button type="button" style="top:0; right:0;" class="btn  position-absolute edit-profile-cancel mr-3 p-2 shadow-none" title="Cancel edit"><i class="fa fa-times"></i></button>
 	<form action="" class="edit-profile">
     
     <div class="tab-content" id="nav-tabContent">
