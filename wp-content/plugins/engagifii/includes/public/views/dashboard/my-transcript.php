@@ -8,17 +8,14 @@ if (! is_user_logged_in()) {
 }
 session_start();
 $pid = $_SESSION['pid'];
-$obj      =  new Engagifii_API();
-$user_id  = get_current_user_id();
-$user     = get_userdata($user_id);
-/*$userEmail = $user->user_email;
-    $engagifiiProfile = $obj->engagifiiProfile('psba',$userEmail);
-	$peopleDATA = json_decode($engagifiiProfile['api_response']);*/
 if(!$pid) { 
 echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
 return;
 }
+$obj      =  new Engagifii_API();
+$user_id  = get_current_user_id();
+$user     = get_userdata($user_id);
 include 'sidebar_nav.php';
 $fiscalYear  = $obj->getFiscalYear();
 $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
@@ -50,6 +47,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
  if($awardDataCount>0){
    $engagifiiProfileAwards = $obj->engagifiiProfileAwards($pid, $awardDataCount);
    $awardData = json_decode($engagifiiProfileAwards['api_response']);
+   
  }
 ?>
    <style>
@@ -83,14 +81,14 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   <div class="container-fluid">
   <div class="border rounded">
   	<ul class="nav nav-tabs transcaript-tabs" id="myTab" role="tablist">
-  <li class="nav-item" role="presentation">
+ 		 <li class="nav-item" role="presentation">
     <button class="nav-link px-0 mx-3 border-0 bg-transparent active" id="badges-tab" data-toggle="tab" data-target="#badges" type="button" role="tab" aria-controls="home" aria-selected="true">Badges</button>
-  </li>
-  <li class="nav-item" role="presentation">
+ 		 </li>
+  		<li class="nav-item" role="presentation">
     <button class="nav-link px-0 mx-3 border-0 bg-transparent" id="credits-tab" data-toggle="tab" data-target="#credits" type="button" role="tab" aria-controls="profile" aria-selected="false">Credits Earned</button>
-  </li>
-  <span class="btn btn-outline-secondary btn-sm text-dark ml-auto mt-1 mb-1"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
-  <span class="btn btn-outline-secondary btn-sm text-dark ml-3 mt-1 mb-1"><small><strong>Total Credits Earned This Year (<?php echo $largestFiscalYearName;?>): </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
+ 		 </li>
+		  <span class="btn btn-outline-secondary btn-sm text-dark ml-auto mt-1 mb-1"><small><strong>Total Credits Earned as of <?php echo date("M d, Y");?>: </strong><?php echo $creditEarnedCount->totalCreditCountTillNow;?></small></span>
+ 		 <span class="btn btn-outline-secondary btn-sm text-dark ml-3 mt-1 mb-1"><small><strong>Total Credits Earned This Year (<?php echo $largestFiscalYearName;?>): </strong><?php echo $creditEarnedCount->totalCreditCountInYear;?></small></span>
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane p-3 fade show active" id="badges" role="tabpanel" aria-labelledby="home-tab">

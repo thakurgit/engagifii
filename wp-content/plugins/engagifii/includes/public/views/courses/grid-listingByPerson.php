@@ -1,17 +1,17 @@
 <?php
-	$obj 			=  new Engagifii_API();
+	/*$obj 			=  new Engagifii_API();*/
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
   
 
-   $classes = $obj->courseAllClasses($date);
+  /* $classes = $obj->courseAllClasses($date);
     $tags    = $obj->courseAllTags($date);
     $instructor = $obj->courseAllInstructors($date);
     $dateRange  = $obj->courseDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
+    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));*/
     $title_key = -1;
 ?>
 <style>
@@ -56,7 +56,7 @@ table tbody tr.selected {
 
 
 </div>
-<?php
+<?php /*?><?php
 function removeWhitespace($buffer)
 {
     return preg_replace('/\s+/', ' ', $buffer);
@@ -140,7 +140,7 @@ ob_end_clean();
 if(function_exists('removeWhitespace')){
 $filter_course = removeWhitespace($filter_course);
 }
-?>
+?><?php */?>
 <script type="text/javascript">
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
@@ -328,7 +328,7 @@ $( '.dateFilter button' ).click(function() {
   ?>
 
 
-	$('div.flt-btn-course').html('<?php echo $filter_course; ?>');
+	//$('div.flt-btn-course').html('<?php //echo $filter_course; ?>');
 
     
    /* $('.flt-btn-course .filter-icon').click(function(e){

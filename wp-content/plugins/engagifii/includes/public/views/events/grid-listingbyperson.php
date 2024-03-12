@@ -28,7 +28,7 @@ if(!$dataResponse['api_response']){
 	}
 
     /* Get Tags list */
-    $payloadData = array();
+    /*$payloadData = array();
     $getCurrentdate = date("Y-m-d");
     $payloadData['selectedDate'] = $getCurrentdate;
     $payloadData['itemCount'] = 10;
@@ -39,8 +39,10 @@ if(!$dataResponse['api_response']){
 
     $postedData = $payloadData;
     $date = date('Y-m-d');
-    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    $tags = $obj->eventsAllTags();
+    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');*/
+	if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
+    	$tags = $obj->eventsAllTags();
+	}
     $eventTypes = $obj->eventTypes($date);
     $eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
