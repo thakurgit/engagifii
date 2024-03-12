@@ -121,8 +121,10 @@ include 'sidebar_nav.php';
 			  ?>
               <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
-			  $dp = json_decode($peopleDATA->peopleFields[11]->organizationValue, true);
-			  if(count($dp[0]['positionHistory'])>0){
+			  foreach ($peopleDATA->peopleFields as $key => $value) {
+    		 if($value->controlTypeId==12 && in_array($value->id, $profilePayload)){ 
+				$dp = json_decode($value->organizationValue, true);
+				 if(count($dp[0]['positionHistory'])>0){
 					  if(count($dp[0]['positionHistory'])==1){
 						 $department =$dp[0]['positionHistory'][0]['departmentName'];
   						echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Department: </strong>'.$department.'</span>';
@@ -153,7 +155,10 @@ include 'sidebar_nav.php';
                			 </div> 
 					 <?php  }
 				  
-           } ?>
+           }
+			  }
+			  }
+			  ?>
   </div>
         </div>
         </div>

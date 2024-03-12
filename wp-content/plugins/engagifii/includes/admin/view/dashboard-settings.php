@@ -62,8 +62,12 @@
 			echo '<b style="color:red">oops! data not found.</b>';
 		} else{
 			$counter=1;
+			//$allowedFields=['Cell Phone','Home Phone','Office Phone','Office Address','Address','Personal Email','Office Email','Organization'];
+			$allowedFields=[9,10,11,12];
 			foreach(json_decode($fielddata,true) as $key=>$row){
-		
+				if(!in_array($row['controlTypeId'], $allowedFields)){
+					continue;
+				}
 		
 			$checked = "";
 			if(count($dashboard_fields_list)>0){
@@ -73,7 +77,7 @@
 			}else{
 				$checked .= " checked";
 			}
-			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'">'.$row['fieldName'].'</label></li>';	
+			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'&type='.$row['controlTypeId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'&type='.$row['controlTypeId'].'">'.$row['fieldName'].'</label></li>';	
 			$counter++;	
 		}	
 		}
