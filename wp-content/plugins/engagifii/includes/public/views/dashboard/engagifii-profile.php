@@ -87,6 +87,7 @@ include 'sidebar_nav.php';
 	transform: translateY(-50%) rotate(180deg);
 }
   </style>
+  <div class="profile-page">
   <div class="container-fluid  mb-4 ">
     <?php if($isPendingRequest==true){ ?>
       <div class="text-right"><span class="badge badge-warning">Profile Changes Pending for Approval</span> </div> 
@@ -104,7 +105,7 @@ include 'sidebar_nav.php';
     	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
     <?php } ?>
     </div>
-    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm" style="z-index: 1;">
+    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm edit-profile" style="z-index: 1;">
                 Edit profile
               </a>
   </div>
@@ -212,9 +213,604 @@ include 'sidebar_nav.php';
  </div>
       </div>
     </div>
+   </div> 
+    <!--profile edit-->
+   <style>
+   .profile-tabs .nav-link {
+	top:0 !important;	
+	border-bottom:0 !important	
+	}
+	.profile-tabs .nav-link.active, .profile-tabs .nav-link:hover {
+	border-bottom:0 !important	
+	}
+  .curl-progress, .curl-success {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #dff0d8; /* Bootstrap success alert background color */
+            border: 1px solid #d6e9c6; /* Bootstrap success alert border color */
+            border-radius: 4px;
+        }
+   </style>
+   	<div class="container-fluid profile-edit-modal d-none">
+    		<form action="" class="edit-profile">
     
+    <div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade border rounded-2 p-4 show active" id="nav-header" role="tabpanel" aria-labelledby="nav-home-tab">
+  	<div class="row">
+        	<div class="col-md-1 mr-5 text-center">
+            <div class="overflow-hidden d-block m-auto" style="width:130px;height:130px">
+            <span id="upload_profile" class="position-relative  d-block h-100">
+    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
+    <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
+    <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange="encodeImageFileAsURL(this)"> 
+    <style>
+	#upload_profile:hover span {
+	opacity:1 !important;	
+	}
+	</style>
+    </span>
+    </div>	
+    
+            </div>
+            <div class="col-md-8 ml-3 mt-3">
+              <div data-section="header" class="row mb-4">
+                  <div class="form-group col-md-4">
+                  <label for="">First Name</label>
+                    <input  type="text" value="<?php echo $peopleDATA->people->firstName; ?>" class="form-control firstName">
+                  </div>
+                  <div class="form-group col-md-4">
+                  <label for="">Middle Name</label>
+                    <input  type="text" value="<?php echo $peopleDATA->people->middleName; ?>" class="form-control middleName">
+                  </div>
+                  <div class="form-group col-md-4">
+                  <label for="">Last Name</label>
+                    <input type="text" value="<?php echo $peopleDATA->people->lastName; ?>" class="form-control lastName">
+                  </div>                                 
+              </div>
+              </div>
+    </div>
+    <hr class="my-4 col-12">
+            <div class="pb-3">
+              <div class="overflow-hidden">
+              <div class="px-3">
+              <div class="form-group">
+              	<label for="Email Address">Email Address</label>
+                    <input disabled type="text" value="<?php echo $peopleDATA->people->primaryEmail->value; ?>" class="form-control primaryEmail">
+              </div>
+              
+              <div class="row">
+              <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==11){ 
+      $formattedPhoneNumber='';
+          if($value->selectedValue){
+          $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
+          }?>
+              <div class="form-group col-md-6">
+              	<label for=""><?php echo $value->name;?></label>
+                    <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>">
+              </div>
+   <?php  } 
+ }
+?>			</div>
+			</div>
+              <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==9){ 
+	 $address = json_decode($value->selectedValue,true);
+	 ?>
+              	<div class="px-3 address-wrap addressGroup<?php echo $key;?> ">
+              <h5 class="bg-body-secondary py-2 border-bottom"><?php echo $value->name;?></h5>
+              	<div class="row">
+                <div class="form-group col-12">
+                	<div class="input-group">
+                    	 <label class="sr-only" for=""><b><?php echo $value->name;?></b></label>
+                        <input type="text" name="" class="form-control text-start locationName" id="locationName" data-value ="<?php  echo  $address['locationName'];?>" value="<?php  echo  $address['locationName'];?>"/>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><i class="fal fa-search"></i></span>
+                      </div>
+                    </div>
+
+                 
+                 </div>
+                <div class="form-group col-12">
+                  <label for="">Address Line 1</label>
+                	<input type="text" name="" class="form-control text-start address" id="address" data-value ="<?php  echo  $address['address'];?>" value="<?php  echo  $address['address'];?>"/>
+                    </div>
+                <div class="form-group col-12">
+                  <label for="">Address Line 2</label>
+                	<input type="text" name="" class="form-control text-start addressLine2" id="addressLine2" data-value ="<?php  echo  $address['addressLine2'];?>" value="<?php  echo  $address['addressLine2'];?>"/>
+                    </div>
+                <div class="form-group col-md-4">
+                  <label for="">City</label>
+                	<input type="text" name="" class="form-control text-start city" id="city" data-value ="<?php  echo  $address['city'];?>" value="<?php  echo  $address['city'];?>"/>
+                    </div>
+                <div class="form-group col-md-4">
+                  <label for="">State</label>
+                	<input type="text" name="" class="form-control text-start state" id="state" data-value ="<?php  echo  $address['state'];?>" value="<?php  echo  $address['state'];?>"/>
+                    </div>
+                <div class="form-group col-md-4">
+                  <label for="">Zip</label>
+                	<input type="text" name="" class="form-control text-start zipCode" id="zipCode" data-value ="<?php  echo  $address['zipCode'];?>" value="<?php  echo  $address['zipCode'];?>"/>
+                    </div>
+                <div class="form-group col-md-4">
+                  <label for="">Country</label>
+                	<input type="text" name="" class="form-control text-start country" id="country" data-value ="<?php  echo  $address['country'];?>" value="<?php  echo  $address['country'];?>"/>
+                    </div>
+                     <div class="">
+                	<input type="hidden" name="" class="form-control text-start" id="lat" data-value ="<?php  echo  $address['lat'];?>" value="<?php  echo  $address['lat'];?>"/>
+                	<input type="hidden" name="" class="form-control text-start" id="lng" data-value ="<?php  echo  $address['lng'];?>" value="<?php  echo  $address['lng'];?>"/>
+                    </div>
+                    	
+                </div>
+                </div>
+                <hr class="border-secondary">
+   <?php  } 
+ }
+?>
+              
+              </div>
+               <div class="form-group col-12 px-3">
+                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
+
+                            <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
+
+                </div>
+                <div class="curl-message col-12  px-3" >
+                	
+                	<span class="curl-progress" style="display:none"><em>Hold on, Profile updating...</em></span>
+                	<span class="curl-success" style="display:none"><em>Profile updated successfully.</em></span>
+                </div>
+            </div>
+  </div>
+</div>
+           
+<div class="modal fade" id="requestSubmitted" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">Your request submiited successfully. Go back to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+  
+    
+    	
+    </form>
+
+    </div>
+   
+    <script>
+	jQuery(document).ready(function(e){
+	jQuery('.edit-profile').click(function(e){
+		//jQuery('.profile-page').hide();
+		//jQuery('.profile-edit-modal').removeClass('d-none');
+		//e.preventDefault();	
+	});
+	jQuery('.edit-profile-cancel').click(function(e){
+		jQuery('.profile-page').show();
+		jQuery('.profile-edit-modal').addClass('d-none');
+		e.preventDefault();	
+	});
+	});
+	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').keyup(function(){
+
+        if(this.value.length==10){
+            jQuery(this).val(this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'));   
+        }
+    }); 
+	jQuery('body').on('click','.tag_del',function(){
+		jQuery(this).parent().remove();	
+		if($('.tags_all>span').length==0){
+		$('.tags_all').html('<em>No Tags Found!</em>');	
+		}
+	});
+	 jQuery(".tag_add").keypress(function (event) {
+            if (event.keyCode === 13 && jQuery(this).val()!='') {
+				$('.tags_all>em').remove();
+				/*jQuery('.tags_all > span').each(function(){
+					var oldtag=jQuery(this).clone();  
+					oldtag.find('span').remove();
+					tags.push(oldtag.html());	
+				});*/
+                var val = '<span class="badge rounded-pill text-bg-light border border-dark-subtle mr-2 mb-2">'+jQuery(this).val()+'<span class="tag_del px-1" style="cursor:pointer">X</span></span>';
+				var tag=jQuery(this).val();
+				$('.tags_all').append(val);
+				jQuery(this).val('');
+				/*tags.push(tag);
+				allTags = tags.join();*/
+            }
+			//event.stopPropagation();
+			//event.preventDefault();
+        });
+	var payload = [];
+
+	 function encodeImageFileAsURL(element) {
+		 var  DPpayload=[];
+		 var baseimg, profiledpdata, imageThumbUrlpath,imageThumbUrl='';
+        let file = element.files[0];
+		if(file.size/1024>100){
+			alert('Image size should be less than 100KB');
+		return;	
+		}
+        let reader = new FileReader();
+        reader.onloadend = function() {
+		  let xx = reader.result;
+		  baseimg =xx.replace(/^data:image\/[a-z]+;base64,/, "");
+		  const [files] = element.files
+		  if (files) {
+			blah.src = URL.createObjectURL(files);
+				 profiledpdata = {
+			"ImageString": baseimg,
+			"Module": 'crm',
+		 };
+		  if(profiledpdata){
+			DPpayload.push( profiledpdata ); 
+			 DPpayload = JSON.stringify(DPpayload[0] ); 
+				   const options = {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json'
+				},
+				body: DPpayload
+			  };
+			  
+			  const apiUrl = 'https://engagifiiresource.azurewebsites.net/api/upload';
+			  fetch(apiUrl,options)
+				.then(response => {
+				  if (!response.ok) {
+					throw new Error('Network response was not ok');
+				  }
+				  return response.json();
+				})
+				.then(data => {
+				  //console.log('API response data:', data);
+			   imageThumbpayload = {
+				  "imageThumbUrl": data,
+			   }
+			   ;
+				  jQuery('#blah').attr('src',data);
+				  jQuery('.curl-success').show().siblings().hide();
+					xxx();		
+						  
+						})
+				.catch(error => {
+				  console.error('There has been a problem with your fetch operation:', error);
+				});
+				
+				
+				function xxx(){
+			  const dpUrl = 'https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>';
+					  const dpoptions = {
+						method: 'PUT',
+						headers: {
+						  'Content-Type': 'application/json',
+						  'Authorization':'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTAxNjM4NjAsImV4cCI6MTc0MTY5OTg2MCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiM2ViYTRmNTItYjkwYi00YzgwLWFiYjMtNTE5YjBhNzcyMGVlIiwiYXV0aF90aW1lIjoxNzEwMTYzODYwLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IjA2MjQ2NGFhLTU5MWUtNDU4NC05MjI0LTcxZmZjNjEyZWMyOCIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIiwiZW1haWwiOiJqY3Jhd2xleUB5b3BtYWlsLmNvbSIsImxhc3QtbG9naW4iOiIwMy8xMS8yMDI0IDEzOjMwOjAwIiwiY3VycmVudC1sb2dpbiI6IjAzLzExLzIwMjQgMTM6MzE6MDAiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJVc2Vyc0FQSSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiXSwiYW1yIjpbInB3ZCJdfQ.rRBS-695ziRsJNb1d4eGlostYFdsfOKF3b-Lj_9nUCGdxA95lHlsFxI1Qk-oLrBvNzRDBf_sbKisOQQ3fjw05V3d5flg7FXViUe48ekeDn-dIZWqa33btFT_-6Ukt-4rMjP-ZFSi7FscHiHW1vAbjx8vKAkDrEdhTR1yvLKy2Bnfkocgr225Om-1ATby8lXRy-3Xq1wofjrg25EUfgl7QzPv_s3LK_pT0eS1pdYuEw39UoZB8yWwtzQ4sqhaQihA6b63IBJqDKTO_Mda__dTqQndmheqfFcgZ-VvZF9EWl6_O8fu3g5CmrFXryDFO3vLeovvVm3L_HlDqEkyZUoh9g',
+						  'tenant-code':'<?php echo $tenantCode; ?>'
+						},
+						body: JSON.stringify(imageThumbpayload)
+						};
+					  fetch(dpUrl,dpoptions)
+						.then(response => {
+						  if (!response.ok) {
+							throw new Error('Network response was not ok');
+						  }
+						  return response.json();
+						})
+						.then(data => {
+						  console.log('profile image updated successfully');
+              })
+						.catch(error => {
+						  //console.error('There has been a problem with your fetch operation:', error);
+						});
+				}
+				
+
+		  }
+		}
+        }
+        reader.readAsDataURL(file);
+      }
+
+$('.edit-profile').on('submit', function(event) {
+  $('#updateProfile').attr('disabled','').find('span').show();
+	//jQuery('.curl-progress').show().siblings().hide();
+	payload = [];
+  event.preventDefault();
+  
+var tags=[];
+var allTags='';
+jQuery('.tags_all > span').each(function(){
+	var oldtag=jQuery(this).clone();  
+	oldtag.find('span').remove();
+	tags.push(oldtag.html());	
+	allTags = tags.join();
+});
+if(allTags){
+var tagsdata = {
+	  "tabId":null,
+  "tabGroupId":null,
+  "tabGroupFieldId":null,
+  "loggedInUserId":"<?php echo $peopleDATA->people->id; ?>",
+  "profileUserId":"<?php echo $peopleDATA->people->id; ?>",
+  "isHeader":true,
+  "headerFieldName":"tags",
+  "smartDropDownRequest":"",
+  "fieldChangeValues":[
+  			{
+			"oldValue":"",
+			"newValue":allTags,
+			"primary":false
+			}
+		],
+	"isValueChanged":false
+};
+payload.push( tagsdata );  
+}
+  if(jQuery('.firstName').val()!='<?php echo $peopleDATA->people->firstName; ?>'){
+	  var newfirstName = jQuery('.firstName').val();
+	  	var firstNamedata = {
+    "tabId": null,
+    "tabGroupId": null,
+    "tabGroupFieldId": null,
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": true,
+    "headerFieldName": "firstName",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $peopleDATA->people->firstName; ?>",
+        "newValue": newfirstName,
+        "primary": false
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( firstNamedata );  
+  }
+  if(jQuery('.middleName').val()!='<?php echo $peopleDATA->people->middleName; ?>'){
+	  var newmiddleName = jQuery('.middleName').val();
+	  	var middleNamedata = {
+    "tabId": null,
+    "tabGroupId": null,
+    "tabGroupFieldId": null,
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": true,
+    "headerFieldName": "middleName",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $peopleDATA->people->middleName; ?>",
+        "newValue": newmiddleName,
+        "primary": false
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( middleNamedata );  
+  }
+  if(jQuery('.lastName').val()!='<?php echo $peopleDATA->people->lastName; ?>'){
+	  var newlastName = jQuery('.lastName').val();
+	  	var lastNamedata = {
+    "tabId": null,
+    "tabGroupId": null,
+    "tabGroupFieldId": null,
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": true,
+    "headerFieldName": "lastName",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $peopleDATA->people->lastName; ?>",
+        "newValue": newlastName,
+        "primary": false
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( lastNamedata );  
+  }
+  
+   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==11){ 
+	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
+	 ?>
+  if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
+	  var newPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
+	  	var PhoneNumberdata<?php echo $key;?> = {
+    "tabId": "<?php echo $infotabId; ?>",
+    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $formattedPhoneNumber; ?>",
+        "newValue": newPhoneNumber<?php echo $key;?>,
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( PhoneNumberdata<?php echo $key;?> );  
+  }
+   <?php  } 
+ } 
+?>
+     <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==9){ 
+	 //$address = json_decode($value->selectedValue,true);
+	 ?>
+	var keys= [];
+var olds=[];
+var values=[];
+var  oldobj = {};
+var  obj = {};
+jQuery('.addressGroup<?php echo $key; ?> input').each(function(){
+keys.push(jQuery(this).attr('id'));
+olds.push(jQuery(this).attr('data-value'));
+values.push(jQuery(this).val());
+});
+for(i = 0 ; i < keys.length && i < olds.length ; i++){
+    oldobj[keys[i]] = olds[i];
+}
+for(i = 0 ; i < keys.length && i < values.length ; i++){
+    obj[keys[i]] = values[i];
+}
+//console.log(obj);
+//console.log(oldobj);
+if(JSON.stringify(obj)!=JSON.stringify(oldobj)){
+	  	var Addressdata<?php echo $key;?> = {
+    "tabId": "<?php echo $infotabId; ?>",
+    "tabGroupId": "<?php echo $groupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": JSON.stringify(oldobj),
+        "newValue": JSON.stringify(obj),
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( Addressdata<?php echo $key;?> );  
+}
+   <?php  } 
+ }
+?>
+ 
+
+
+  
+/*$.ajax({
+    url: window.location.href,
+    type: "POST",
+    contentType: "application/json",
+    data: DPpayload,
+    success: function(response) {
+        console.log("Profile Picture successfully. Response: ", DPpayload);
+		jQuery('.curl-success').show().siblings().hide();
+		
+    },
+ });*/
+ $.ajax({
+    url: window.location.href,
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(payload),
+    success: function(response) {
+       // console.log("cURL request executed successfully. Response: ", payload);
+       $('#requestSubmitted').modal('show');
+       $('#updateProfile').removeAttr('disabled').find('span').hide();
+		//jQuery('.curl-success').show().siblings().hide();
+		// setTimeout(function() {
+    //            jQuery('.curl-success').hide();
+    //              window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
+    //          }, 5000);
+    },
+ });
+ 
+
+  
+  
+  //console.log(DPpayload);
+  //console.log(payload);
+  
+ 
+
+
+
+});
+//google places search
+   function extractAddressComponent(place, componentType) {
+      for (var i = 0; i < place.address_components.length; i++) {
+         var component = place.address_components[i];
+         for (var j = 0; j < component.types.length; j++) {
+            if (component.types[j] === componentType) {
+               return component.long_name;
+            }
+         }
+      }
+      return '';
+   }
+function initializeAutocomplete() {
+        var input = document.querySelectorAll('.locationName');
+        var options = {
+            types: ['establishment','geocode']
+        };
+        input.forEach(function (element) {
+            var autocomplete = new google.maps.places.Autocomplete(element, options);
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+				console.log(place);
+                var parentDiv = element.closest('.address-wrap');
+                parentDiv.querySelector('.address').value = extractAddressComponent(place, 'street_number') + ' ' + extractAddressComponent(place, 'route');
+                parentDiv.querySelector('.addressLine2').value = extractAddressComponent(place, 'premise') + ' ' + extractAddressComponent(place, 'administrative_area_level_2');
+                parentDiv.querySelector('.city').value = extractAddressComponent(place, 'locality');
+                parentDiv.querySelector('.state').value = extractAddressComponent(place, 'administrative_area_level_1');
+                parentDiv.querySelector('.zipCode').value = extractAddressComponent(place, 'postal_code');
+                parentDiv.querySelector('.country').value = extractAddressComponent(place, 'country');
+                element.value = place.formatted_address;
+            });
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
+	</script>
 <script>
+
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
  
 
 </script>
+  <?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+$payload = json_decode(file_get_contents("php://input"), true);	
+
+$peopleToken = $_SESSION['accesstoken'];
+$authentication1 = 'authorization: Bearer '.$peopleToken;
+$curl = curl_init();
+$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+  curl_setopt_array($curl, array(
+  CURLOPT_URL => $url1,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST => true,  // Set request type to POST
+  CURLOPT_POSTFIELDS => json_encode($payload),  // Set the payload data
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "tenant-code:".$tenantCode,
+    $authentication1
+  ),
+));
+$response1 = curl_exec($curl);
+$updateDATA = json_decode($response1);
+//print_r($updateDATA);
+// Close the cURL session
+curl_close($curl);
+}
+?>
