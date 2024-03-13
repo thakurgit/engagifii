@@ -387,7 +387,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 
       </div>
       <div class="modal-body">
-       	<p class="text-center">Your request submiited successfully. Go back to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
       </div>
       
     </div>
