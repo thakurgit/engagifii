@@ -185,9 +185,14 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  //$tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom));
 			  ?>
 			<div class="mt-auto">	
-            <?php if ( strpos($url,'engagifii-profile') !== false ) { ?>			
+            <?php if ( strpos($url,'engagifii-profile') !== false ) { 
+				if($row->registrationWorkflows[0]->registrationWorkflowId==''){
+                    $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
+					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
+                 <?php } else{ ?>			
 			<a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
-            <?php } else { ?>
+            <?php } }
+			else { ?>
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
             <?php } 
 			 }
