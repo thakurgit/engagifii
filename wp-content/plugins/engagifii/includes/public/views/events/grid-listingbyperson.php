@@ -81,7 +81,7 @@ ob_start();
 <div class="filter-content" id="filterdp1">
 	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div>
   <div class="filter-border">
-  <div class="filter-area" id="filterdp">
+  <div class="filter-area d-none" id="filterdp">
     <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
       <div class="row">
       <div class="col-6 text-left">
@@ -111,6 +111,9 @@ ob_start();
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
         <div class="content-area eventType-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
           <?php
 		  /*if($eventTypes){
             foreach ($eventTypes as $key => $value) {
@@ -131,6 +134,9 @@ ob_start();
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
             <div class="content-area city-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
               <?php
 			 /* if($eventLocations){
                 foreach ($eventLocations as $key => $value) {
@@ -149,6 +155,9 @@ ob_start();
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
         <div class="content-area tags-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
           <?php
 		 /* if($tags){
             foreach ($tags as $key => $value) {
@@ -353,7 +362,7 @@ var table = $('#ebtmaintable').DataTable( {
          },
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
-			  dt_filterActivate();
+			 // dt_filterActivate();
     },
     });
 
@@ -403,13 +412,6 @@ dt_titleSearch('Search Events');
 		e.preventDefault();
 	});
   }
-	
-	
-	
-		
-		
-		
-		
 	$('div.flt-btn').html('<?php echo $filter_content; ?>');
 
  
@@ -422,35 +424,34 @@ dt_titleSearch('Search Events');
         $('.dataTables_empty').html('');
     },500);
   
-    $( document ).ready(function() {
-    $('input[name="createdbetween"]').val('');
-});
 
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
     createdDate = '';
     countFilterData();
 });
-   /* $('.filter-icon').click(function(e){
-        e.stopPropagation();
-        $(this).siblings('.filter-border').show();
-       $(this).siblings('.filter-border').find('.filter-area').toggleClass('d-none');
-        $('#isApplyACtive').val(1);
-		jQuery(".filter-area .list-group").mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:"minimal-dark",
-		 			scrollbarPosition:"outside"
-		 			});
-    })
-
-   $('.heading-title').click(function(){
-		$(this).next('.content-area').toggleClass('d-none');
-		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
-	});*/
-
+window.addEventListener("load", function () {
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'eventFilters',
+		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
+		},
+		success: function(response) { 
+		for (var key of Object.keys(JSON.parse(response))) {
+			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
+		}
+		dt_filterActivate();
+		var dates = JSON.parse(response)['startDateTime'];
+		filterEvents(dates['minStartDate'],dates['maxEndDate']); 
+			}
+	  });
+});
+function filterEvents(minDate,maxDate){
    $('input[name="createdbetween"]').daterangepicker({
-   minDate:'<?php echo $min_date; ?>',
-    maxDate: '<?php echo $max_date; ?>',
+   minDate:minDate,
+    maxDate: maxDate,
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
@@ -462,6 +463,15 @@ $( '.cleardate' ).click(function() {
       countFilterData();
 
     });
+  $('input[name="createdbetween"]').val('');
+  $('.filter-list input[type=checkbox]').change(function(){
+	  if($('#apply-filter-data .spinner-border').length==0){
+		  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+	  }
+	  
+	  countFilterData();
+  })
+}
 
     //filter
     $('#apply-filter-data').click(function(){
@@ -513,15 +523,6 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
       })
 
 
-     
-      $(document).on('click', function (e) {
-      var container = $(".filter-border");
-      // If the target of the click isn't the container
-      if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-       // container.hide();
-       // $('.filter-area').addClass('d-none');
-      }
-      });
 	  $(document).on('click', function (e) {
  $('.filter-area').addClass('d-none');
 });
@@ -538,13 +539,6 @@ $(document).on('click', '.daterangepicker ', function (e) {
   e.stopPropagation();
 });
 
-      $('.filter-list input[type=checkbox]').change(function(){
-		  if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
-		  
-          countFilterData();
-      })
 
       function countFilterData()
       {
@@ -624,22 +618,5 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 });
 
 
-window.addEventListener("load", function () {
-  $.ajax({
-		type : "post",
-		url: engagifiiUrl_ajaxurl,
-		data:{
-		   action:'eventFilters',
-		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
-		},
-		success: function(response) { 
-		console.log(JSON.parse(response));
-		   for (var i = 0; i < (JSON.parse(response)).length; i++) {
-			  // $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
-		   }
-			/*filterEvents(); */
-			}
-	  });
-});
 </script>      
 </div>

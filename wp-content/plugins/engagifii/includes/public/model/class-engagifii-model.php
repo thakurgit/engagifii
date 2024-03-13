@@ -2714,7 +2714,8 @@ public function eventFilters(){
 			if($response){
 			  foreach ($response as $key => $value) {
 				  if($values=='startDateTime'){
-					  $html[$values]=$response;		
+					  $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
+					  $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
 				  }else if($values =='tags'){
 					  $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
 				  }else if($values =='city'){
