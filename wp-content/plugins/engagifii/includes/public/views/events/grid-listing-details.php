@@ -186,7 +186,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  ?>
 			<div class="mt-auto">	
             <?php if ( strpos($url,'engagifii-profile') !== false ) { 
-				if($row->registrationWorkflows[0]->registrationWorkflowId==''){
+				if($workflowid==''){
                     $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
                  <?php } else{ ?>			
