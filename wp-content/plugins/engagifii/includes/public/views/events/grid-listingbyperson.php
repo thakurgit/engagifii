@@ -38,8 +38,9 @@ if(!$dataResponse['api_response']){
     $payloadData['filterBody'] = array('searchText' => '', 'selectedDate' => $getCurrentdate);
 
     $postedData = $payloadData;
-    $date = date('Y-m-d');
+    
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');*/
+	$date = date('Y-m-d');
 	if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
     	$tags = $obj->eventsAllTags();
 	}
@@ -620,6 +621,25 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 	if(localStorage.getItem("view_mode")=='list'){
 		$('#list').trigger("click");
 	}
+});
+
+
+window.addEventListener("load", function () {
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'eventFilters',
+		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
+		},
+		success: function(response) { 
+		console.log(response);
+		  /* for (var i = 0; i < (JSON.parse(response)).length; i++) {
+			   $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
+		   }
+			filterEvents(); */
+			}
+	  });
 });
 </script>      
 <script>
