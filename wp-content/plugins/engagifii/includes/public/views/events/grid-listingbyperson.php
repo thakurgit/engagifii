@@ -428,6 +428,8 @@ dt_titleSearch('Search Events');
 $( '.cleardate' ).click(function() {
     $('input[name="createdbetween"]').val('');
     createdDate = '';
+			startdate='';
+			enddate='';
     countFilterData();
 });
 window.addEventListener("load", function () {
@@ -463,6 +465,8 @@ function filterEvents(minDate,maxDate){
       countFilterData();
 
     });
+  startdate='';
+  enddate='';
   $('input[name="createdbetween"]').val('');
   $('.filter-list input[type=checkbox]').change(function(){
 	  if($('#apply-filter-data .spinner-border').length==0){

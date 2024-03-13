@@ -1254,6 +1254,7 @@ wp_die();
     {
 
         $postedData = $this->_eventsPostCountData();
+		//print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("Public/count", $postedData, "POST", 'event');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
@@ -1300,8 +1301,12 @@ wp_die();
         $postData['sortBy'] = $sortBy;
         $postData['pageNumber'] = $startPageNum;
         $postData['onlyUpcoming'] = $allEvents;
-        $postData['EventStartDate'] = date('m-d-Y',strtotime($_POST['eventStartDate']));
-        $postData['EventEndDate'] = date('m-d-Y',strtotime($_POST['eventEndDate']));;
+		if(!empty($_POST['eventStartDate'])){
+        	$postData['EventStartDate'] = date('m-d-Y',strtotime($_POST['eventStartDate']));
+		}
+		if(!empty($_POST['eventEndDate'])){
+        	$postData['EventEndDate'] = date('m-d-Y',strtotime($_POST['eventEndDate']));;
+		}
        // $postData['pageSize'] = $_POST['length'];
 
         if(!empty($_POST['tags']))
