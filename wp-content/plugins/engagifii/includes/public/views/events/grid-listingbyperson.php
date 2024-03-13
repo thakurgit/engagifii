@@ -472,17 +472,32 @@ function filterEvents(minDate,maxDate){
 	  countFilterData();
   })
 }
-
     //filter
     $('#apply-filter-data').click(function(){
-     <?php /*?> <?php
-       if(in_array('tags', $ebt_visib_datacol_list))
-       {
-      ?>
-          tags       = $.map($('input[name="emdorsementTag[]"]:checked'), function(c){return c.value; });
-      <?php
-        }
-      ?><?php */?>
+  $('.filter-list').each(function() {
+	 if ($(this).find('input[type=checkbox]').is(':checked')) {
+		$(this).addClass('checked');
+	 } else {
+		$(this).removeClass('checked');
+	 }
+  });
+
+  $('input[name="createdbetween"]').each(function() {
+	 if ($(this).val()!='') {
+		$(this).parents('.filter-list').addClass('checked');
+	 } else {
+		$(this).parents('.filter-list').removeClass('checked');
+	 }
+  });
+  fv = $('.filter-list.checked').length;
+  if(fv>0){
+	$('.filter-icon').addClass('active'); 
+	$('.filter-icon span').text(fv); 
+  } else {
+	$('.filter-icon').removeClass('active');  
+  }
+
+
 tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
 if(tags.length==0){
 tags= ['portal'];	
@@ -490,7 +505,6 @@ tags= ['portal'];
 
 types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
-     // createdDate = $('input[name="createdbetween"]').val();
       
       $(".filter-area").toggleClass('d-none');
       table.draw();
@@ -540,8 +554,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
 });
 
 
-      function countFilterData()
-      {
+      function countFilterData(){
 
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
 if(tags.length==0){
@@ -575,31 +588,6 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 });
 }
 
-	  $("#apply-filter-data").click(function () {
-
-  $('.filter-list').each(function() {
-	 if ($(this).find('input[type=checkbox]').is(':checked')) {
-		$(this).addClass('checked');
-	 } else {
-		$(this).removeClass('checked');
-	 }
-  });
-
-  $('input[name="createdbetween"]').each(function() {
-	 if ($(this).val()!='') {
-		$(this).parents('.filter-list').addClass('checked');
-	 } else {
-		$(this).parents('.filter-list').removeClass('checked');
-	 }
-  });
-  fv = $('.filter-list.checked').length;
-  if(fv>0){
-	$('.filter-icon').addClass('active'); 
-	$('.filter-icon span').text(fv); 
-  } else {
-	$('.filter-icon').removeClass('active');  
-  }
- });  
  
  $(document).ready(function(){
   <?php
