@@ -2711,18 +2711,20 @@ public function eventFilters(){
 		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
 		  if($response['api_response']){
 			$response = json_decode($response['api_response'], true);
-			$html[$values] ='';
-			foreach ($response as $key => $value) {
-				if($values=='startDateTime'){
-					$html[$values]='<input type="text" name="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>';		
-				}else if($values =='tags'){
-					$html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-				}else if($values =='city'){
-					$html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';	
-				}else if($values=='eventType'){
-				  $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+			if($response){
+			  foreach ($response as $key => $value) {
+				  if($values=='startDateTime'){
+					  $html[$values]=$response;		
+				  }else if($values =='tags'){
+					  $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				  }else if($values =='city'){
+					  $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';	
+				  }else if($values=='eventType'){
+					$html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+				  }
 				}
+			  }else{
+				$html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
 			  }
 	  		} else {
 				$html[$values]='<h6 class="text-center mt-3">data not found</h6>';	

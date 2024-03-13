@@ -39,7 +39,7 @@ if(!$dataResponse['api_response']){
 
     $postedData = $payloadData;
     
-    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');*/
+    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
 	$date = date('Y-m-d');
 	if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
     	$tags = $obj->eventsAllTags();
@@ -49,7 +49,7 @@ if(!$dataResponse['api_response']){
     //print_r($dataResponse);
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
+    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));*/
     
 ?>
 
@@ -110,13 +110,13 @@ ob_start();
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
+        <div class="content-area eventType-filter d-none"><ul class="list-group m-0">
           <?php
-		  if($eventTypes){
+		  /*if($eventTypes){
             foreach ($eventTypes as $key => $value) {
               echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
             }
-            }
+            }*/
           ?>  
         </ul></div>
       </div>
@@ -130,13 +130,13 @@ ob_start();
           ?>
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
-            <div class="content-area d-none"><ul class="list-group m-0">
+            <div class="content-area city-filter d-none"><ul class="list-group m-0">
               <?php
-			  if($eventLocations){
+			 /* if($eventLocations){
                 foreach ($eventLocations as $key => $value) {
            echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
                 }
-                }
+                }*/
               ?>  
             </ul></div>
           </div>
@@ -148,13 +148,13 @@ ob_start();
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
+        <div class="content-area tags-filter d-none"><ul class="list-group m-0">
           <?php
-		  if($tags){
+		 /* if($tags){
             foreach ($tags as $key => $value) {
               echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
             }
-            }
+            }*/
           ?>  
         </ul></div>
       </div>
@@ -633,37 +633,13 @@ window.addEventListener("load", function () {
 		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
 		},
 		success: function(response) { 
-		console.log(response);
-		  /* for (var i = 0; i < (JSON.parse(response)).length; i++) {
-			   $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
+		console.log(JSON.parse(response));
+		   for (var i = 0; i < (JSON.parse(response)).length; i++) {
+			  // $('#filter-'+i+' .td-dropdown').html((JSON.parse(response))[i]);
 		   }
-			filterEvents(); */
+			/*filterEvents(); */
 			}
 	  });
 });
 </script>      
-<script>
-  
-    //  //Hide Filters on clicking outside filter area
-    //  const filterdp1= document.getElementById('filterdp1');
-    //  const filterdp= document.getElementById('filterdp');
-    //  const test= document.getElementById('list');
-    //  const id = $('.filter-area').val();
-
-    //  document.onclick= function(e){
-    //  if(e.target.id !== 'filterdp1' && e.target.id !== 'filterdp' && e.target.id !== 'test'){
-    //   var elmId = $("#filter-area").attr("id");
-    //     alert(elmId);
-    //     //$('.filter-area').addClass('d-none');
-    //     //$('.filter-content').addClass('d-none');
-        
-    //   }
-    // };
-
-    // filterdp.onclick = function(){
-    //   alert(e.target.id);
-    // };
-    
- 
-  </script>
 </div>
