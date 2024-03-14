@@ -145,7 +145,7 @@
         
       
 <?php
-      //do_action('engagifiiGetColumnList');
+      do_action('engagifiiGetColumnList');
 	   do_action('engagifiiCustomizer');
         do_action('profileSettings');
 		?>
