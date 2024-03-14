@@ -258,7 +258,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 										$defaulget_Date = $response->startDateTime;
 										$convert_Date = strtotime($defaulget_Date);
 										$date = date('M d, Y', $convert_Date);
-										$time = date('h:i A', $convert_Date);
+										$time = date('g:i A', $convert_Date);
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                        	<div class="col-sm-4 ">Event Start Date:</div>
@@ -270,7 +270,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 										$defaulget_Date = $response->endDateTime;
 										$convert_Date = strtotime($defaulget_Date);
                                             $date = date('M d, Y', $convert_Date);
-											$time = date('h:i A', $convert_Date); //$convert_Date->format('h:i:s A');
+											$time = date('g:i A', $convert_Date); //$convert_Date->format('h:i:s A');
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Event End Date:</div>
@@ -283,12 +283,12 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 									if ($response->registrationStartFrom){ ?>
 								<div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Registration Start Date:</div>
-		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationStartFrom)); ?> at <?php echo date('h:i A', strtotime($response->registrationStartFrom)); ?></div>
+		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationStartFrom)); ?> at <?php echo date('g:i A', strtotime($response->registrationStartFrom)); ?></div>
 		                        </div>
                                 <?php } if($response->registrationEndDate) { ?>
 								<div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Registration End Date:</div>
-		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationEndDate)); ?> at <?php echo date('h:i A', strtotime($response->registrationEndDate)); ?></div>
+		                            <div class="col-sm-8"><?php echo date('M d, Y', strtotime($response->registrationEndDate)); ?> at <?php echo date('g:i A', strtotime($response->registrationEndDate)); ?></div>
 		                        </div>
 
 							<?php 	} } if(isset($response->skills) && count($response->skills) > 0){
@@ -321,10 +321,10 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		                    				$department = $value->$department;
 											$sessionStart_Date = strtotime($value->sessionStartTime);
 											$startDate = date('M d, Y', $sessionStart_Date);
-											$startTime = date('h:i A', $sessionStart_Date);
+											$startTime = date('g:i A', $sessionStart_Date);
 											$sessionEnd_Date = strtotime($value->sessionEndTime);
 											$endDate = date('M d, Y', $sessionEnd_Date);
-											$endTime = date('h:i A', $sessionEnd_Date);
+											$endTime = date('g:i A', $sessionEnd_Date);
 
 		                    		?>
 		                    			<div class="border rounded p-3 pt-xl-2 mb-3 bg-light">
