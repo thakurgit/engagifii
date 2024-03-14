@@ -379,7 +379,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  							$classPopover   = $obj->_popOverClassesDate1($key, $value->classSessionSettings);
 			  				?>
 			  					<tr>
-			  						<td><span><?php //echo $response->name; ?><a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,15); ?></a><br/>
+			  						<td><span><?php //echo $response->name; ?><a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,25); ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
                                                   echo date('M d, Y', strtotime($value->startDate)); 
