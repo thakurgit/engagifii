@@ -186,9 +186,9 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                       <?php } } 
                                       else{
                                         $classStartDateTime = $response->classSessionSettings[0]->sessionStartTime;
-                                        $classStartTimeVal = date('h:i A',strtotime($classStartDateTime));
+                                        $classStartTimeVal = date('g:i A',strtotime($classStartDateTime));
                                         $classEndDateTime = $response->classSessionSettings[0]->sessionEndTime;
-                                        $classEndTimeVal = date('h:i A',strtotime($classEndDateTime));
+                                        $classEndTimeVal = date('g:i A',strtotime($classEndDateTime));
                                        
 
                                         ?>
@@ -243,7 +243,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                   ?>
                                   <div class="summary-content-para-engagiigii row">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Registration Dates:</strong></div>
-                                      <div class="col-md-8 col-xl-9"><?php echo date('M d, Y h:i A',strtotime($response->classRegistrationSetting->registrationStartDateTime)).' to '.date('M d, Y h:i A',strtotime($response->classRegistrationSetting->regularRegistrationEndDateTime)); ?></div>
+                                      <div class="col-md-8 col-xl-9"><?php echo date('M d, Y g:i A',strtotime($response->classRegistrationSetting->registrationStartDateTime)).' to '.date('M d, Y g:i A',strtotime($response->classRegistrationSetting->regularRegistrationEndDateTime)); ?></div>
                                   </div>
                               </div>
                               </div>
@@ -494,7 +494,7 @@ table#ebtmaintable td:nth-child(1) {
                                                   {
                                                       echo ' - '.date('M d, Y', strtotime($value->endDate));
                                                   }
-                                                   echo ' at '.date("h:i A",strtotime($value->startDate)).' - '.date("h:i A",strtotime($value->endDate));
+                                                   echo ' at '.date("g:i A",strtotime($value->startDate)).' - '.date("g:i A",strtotime($value->endDate));
                                               }
                                            ?>
                                            </small>
