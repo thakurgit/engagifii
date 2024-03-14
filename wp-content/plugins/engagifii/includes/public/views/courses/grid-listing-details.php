@@ -103,7 +103,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
               <?php
                 }
               ?>
-            <a href="<?php echo $courses_page_link;?>" class="p-2 mr-2 text-muted"><i class="fa fa-times"></i></a>
+            <!-- <a href="<?php echo $courses_page_link;?>" class="p-2 mr-2 text-muted"><i class="fa fa-times"></i></a> -->
         </div>
     </div>
             
