@@ -162,15 +162,14 @@ border-bottom-color:white ;
                 <span></span>
               </div>
             </div>
- <?php //$logo = get_theme_mod('custom_logo');
-//if($logo) {
-//$logo = wp_get_attachment_url($logo); ?>
 <div class="text-center px-3">
-        <!--<a href="<?php //echo esc_url( home_url( '/' ) ); ?>" class="navbar-brand text-hide "><img src="<?php //echo $logo; ?>" alt="" class="img-fluid"></a>-->
-        <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/mypsba-logo.png" alt="" class="img-fluid" style="max-height:65px">
+	<?php $options = get_option( 'ebt_api_settings' );
+	 if($options['dash_menus']['logo']){
+		echo '<img src="'.wp_get_attachment_url( $options['dash_menus']['logo'].'" alt="" class="img-fluid" style="max-height:65px">';
+	} ?>
+        
         </div>
-        <?php //} 
-		
+<?php		
 global $post;
     $post_slug = $post->post_name;
 		$active = 'active';

@@ -70,7 +70,11 @@ Final Class Engagifii {
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
 		define( 'ENGAGIFII_ASSETS_URL', esc_url( plugins_url( '/assets', __FILE__ ) ) );
 		define('_WORKSPACE_', get_bloginfo( 'name' ));
-		add_action('wp_head',array($this,'engagifii_include_custom_css'));			
+		add_action('wp_head',array($this,'engagifii_include_custom_css'));	
+		add_action ( 'admin_enqueue_scripts', function () {
+		if (is_admin ())
+				wp_enqueue_media ();
+		} );		
  	}
 
  	public function engagifii_include_custom_css(){

@@ -145,7 +145,7 @@
         
       
 <?php
-      do_action('engagifiiGetColumnList');
+      //do_action('engagifiiGetColumnList');
 	   do_action('engagifiiCustomizer');
         do_action('profileSettings');
 		?>
@@ -284,4 +284,31 @@ jQuery(this).siblings('.cls').val('');
           
        
   } );
+  jQuery(document).ready(function() {
+    var $ = jQuery;
+    if ($('.set_logo').length > 0) {
+        if ( typeof wp !== 'undefined' && wp.media && wp.media.editor) {
+            $('.set_logo').on('click', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var id = button.siblings('input');
+                var img = button.siblings('img');
+                var remove = button.siblings('button');
+                wp.media.editor.send.attachment = function(props, attachment) {
+                    id.val(attachment.id);
+					img.attr('src',attachment.url);
+					remove.removeClass('hidden');
+                };
+                wp.media.editor.open(button);
+                return false;
+            });
+			$('.remove_logo').on('click', function(e) {
+				 e.preventDefault();
+				$(this).siblings('input').val('');
+				$(this).siblings('img').attr('src','');
+				$(this).addClass('hidden');
+			});
+        }
+    }
+});
 </script>

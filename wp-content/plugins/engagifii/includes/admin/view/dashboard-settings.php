@@ -38,7 +38,13 @@
 			echo '<li  data-order="'.$counter.'"><input name="ebt_api_settings[dash_menus][items]['.$key.'][icon]" type="hidden" value="'.$row->icon.'"/><input name="ebt_api_settings[dash_menus][items]['.$key.'][url]" type="hidden" value="'.$row->url.'"/> <input  id="'.$row->label.'" class="'.$row->label.'" type="checkbox" name="ebt_api_settings[dash_menus][items]['.$key.'][label]" '.$checked.' value="'.$row->label.'"><label for="'.$row->label.'">'.$row->label.'</label></li>';
 			$counter++;	  
     	}
-    	echo '</ul></div>';
+    	echo '</ul>';
+		$hidden ='hidden';
+		if($dash_menus['logo']){
+			$hidden ='';	
+		}
+		echo ' <h3>Set Dashboad Logo</h3><div><img style="max-width:150px;height:auto;padding-bottom:8px" src="'.wp_get_attachment_url( $dash_menus['logo'] ).'"><br></img><input type="hidden" name="ebt_api_settings[dash_menus][logo]" class="postbox" value="'.$dash_menus['logo'].'"><button class="remove_logo button '.$hidden.'">Remove Logo</button> <button class="set_logo button">Add Logo</button></div>';
+    	echo '</div>';
 		
 //manage dashboard fields	
 	$tenant_code = $options['dashboard_apis']['tenant'];	
