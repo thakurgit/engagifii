@@ -127,7 +127,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			<div class="tab-content" id="myTabContent">
 			  	<div class="p-3 tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 			  		<div class="row">
-					  		<div class="col-sm-6 mb-4">
+					  		<div class="col-sm-12 mb-4">
 					  			<div class="border rounded box-shadow h-100">
 					  			<div class="panel-title p-2 bg-light border-bottom">
 		                          <h5 class="heading d-inline">Course Details</h5>
