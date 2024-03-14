@@ -2337,7 +2337,7 @@ wp_die();
 			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod" style="width:20px;"/ ></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = $value->reportName;
 			}
-            $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('h:i A', strtotime($value->createdDate));
+            $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('g:i A', strtotime($value->createdDate));
 			if($value->status=='success'){
 				$status = '<span class="text-success">'.ucfirst($value->status).'</span>';	
 			}else if($value->status=='failed'){
