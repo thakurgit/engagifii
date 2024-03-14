@@ -162,7 +162,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
           },
 		  { width: 350, targets: <?php echo array_search('Course Name',$colNames);?> },
 		  { width: 150, targets: <?php echo array_search('Total Credits Earned',$colNames);?> },
-		  { className: "text-center", "targets": ["completiondate","totalcreditearned","tags","coursetype","course-select","classes"] },
+		  { className: "text-center", "targets": ["completiondate","totalcreditsearned","tags","coursetype","course-select","classes"] },
 		   
         ],
 		
