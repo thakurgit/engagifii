@@ -30,7 +30,7 @@ table tbody tr.selected {
 		    <tr>    
 		    	<?php
 				$i=0;
-				$colNames =['course-select','Course Name','Course Type','Total Credit Earned','Classes','Completion Date'];
+				$colNames =['course-select','Course Name','Course Type','Total Credits Earned','Classes','Completion Date'];
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'Course Name'){
@@ -161,7 +161,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             "orderable": false
           },
 		  { width: 350, targets: <?php echo array_search('Course Name',$colNames);?> },
-		  { width: 150, targets: <?php echo array_search('Total Credit Earned',$colNames);?> },
+		  { width: 150, targets: <?php echo array_search('Total Credits Earned',$colNames);?> },
 		  { className: "text-center", "targets": ["completiondate","totalcreditearned","tags","coursetype","course-select","classes"] },
 		   
         ],
