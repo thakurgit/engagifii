@@ -1779,7 +1779,7 @@ wp_die();
                 }
                 $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
@@ -2006,7 +2006,7 @@ wp_die();
                 }
                 $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div></td>';
             }else{
-            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate)).' </small></div></div></td>';
+            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div></td>';
             }
             $dataJS .= '<td>'.$value->classDuration.' '.$value->classDurationType.'</td>';
             $dataJS .= '<td>'.$value->objectType.'</td>';
@@ -2245,7 +2245,7 @@ wp_die();
 					if($li%2==1){
 					  $class='bg-light';	
 					}
-					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('h:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('h:i A', strtotime($classEnd)).'</li>';
+					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('g:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('g:i A', strtotime($classEnd)).'</li>';
 					$li++;
 				}
 				$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
@@ -2607,15 +2607,15 @@ wp_die();
                 $default_Date = $row->startDateTime;
                 $convert_Date = strtotime($default_Date);
                 $startdate = date('M d, Y', $convert_Date);
-                $starttime = date('h:i A', $convert_Date);
-                $starttime = ltrim($starttime, '0');
+                $starttime = date('g:i A', $convert_Date);
+                //$starttime = ltrim($starttime, '0');
             }
             if($row->endDateTime){
                 $default_Date = $row->endDateTime;
                 $convert_Date = strtotime($default_Date);
                 $enddate = date('M d, Y', $convert_Date);
-                $endtime = date('h:i A', $convert_Date);
-                $endtime = ltrim($endtime, '0');
+                $endtime = date('g:i A', $convert_Date);
+                //$endtime = ltrim($endtime, '0');
                 
             }
             $nestedData['startDateTime'] ='<span style="display:none;">'.strtotime($startdate).'</span>'. $startdate." at ".$starttime." - ".$enddate." at ".$endtime ;
@@ -4635,14 +4635,14 @@ if(!empty($_POST['minRange']))
                 $default_StartDate = $event->sessionStartTime;
                 $convert_StartDate = strtotime($default_StartDate);
                 $new_StartDate = date('M d, Y', $convert_StartDate);
-                $sessionStartTime = date('h:i A', $convert_StartDate);
+                $sessionStartTime = date('g:i A', $convert_StartDate);
                 //end here
 
                 //session end date and time
                 $default_EndDate = $event->sessionEndTime;
                 $convert_EndDate = strtotime($default_EndDate);
                 $new_EndDate = date('M d, Y', $convert_EndDate);
-                $sessionEndTime = date('h:i A', $convert_EndDate);
+                $sessionEndTime = date('g:i A', $convert_EndDate);
                 // end here
 
                 $startDate = date('Y-m-d', strtotime($value->startDateTime));
@@ -4697,14 +4697,14 @@ if(!empty($_POST['minRange']))
                 $default_StartDate = $event->sessionStartTime;
                 $convert_StartDate = strtotime($default_StartDate);
                 $new_StartDate = date('M d, Y', $convert_StartDate);
-                $sessionStartTime = date('h:i A', $convert_StartDate);
+                $sessionStartTime = date('g:i A', $convert_StartDate);
                 //end here
 
                 //session end date and time
                 $default_EndDate = $event->sessionEndTime;
                 $convert_EndDate = strtotime($default_EndDate);
                 $new_EndDate = date('M d, Y', $convert_EndDate);
-                $sessionEndTime = date('h:i A', $convert_EndDate);
+                $sessionEndTime = date('g:i A', $convert_EndDate);
                 // end here
                         $startDate = date('Y-m-d', strtotime($value->startDateTime));
                         $endDate = date('Y-m-d', strtotime($value->endDateTime));
