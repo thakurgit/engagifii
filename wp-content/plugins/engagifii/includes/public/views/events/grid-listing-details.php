@@ -487,7 +487,7 @@ table.class-table td:nth-child(1) {
 			  									{
 			  										echo ' - '.date('M d, Y', strtotime($value->endDate));
 			  									}
-			  									 echo ' at '.date("h:i A",strtotime($value->startDate)).' - '.date("h:i A",strtotime($value->endDate));
+			  									 echo ' at '.date("g:i A",strtotime($value->startDate)).' - '.date("g:i A",strtotime($value->endDate));
 			  								}
 			  							 ?></small>
 			  						</span></td>
