@@ -159,10 +159,10 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		                        	}
 		                        	if($response->secondaryUnits[0]->value){
 		                        ?>
-		                        <div class=" row p-2">
+		                        <!-- <div class=" row p-2">
 		                            <div class="col-sm-4 ">PLU:</div>
 		                            <div class="col-sm-8"><?php echo $response->secondaryUnits[0]->value; ?></div>
-		                        </div>
+		                        </div> -->
 		                        <?php
 		                        	}
 		                        	if(isset($response->skills) && count($response->skills) > 0){
@@ -180,62 +180,62 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		                        ?>
 		                    </div>
 					  		</div>
-					  		<div class="col-sm-6 mb-4">
+					  		<!-- <div class="col-sm-6 mb-4">
 					  			<div class="border rounded box-shadow h-100"> 
 						  			<div class="panel-title bg-light p-2 border-bottom">
 			                          <h5 class="heading d-inline">Class Location</h5>
 			                        </div>
 			                        <ul class="nav nav-tabs" id="myTab" role="tablist">
 									  	<li class="nav-item">
-										    <a class="nav-link <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline-tab" data-toggle="tab" href="#offline" role="tab" aria-controls="offline" aria-selected="true">In Person Class</a>
+										    <a class="nav-link <?php //if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline-tab" data-toggle="tab" href="#offline" role="tab" aria-controls="offline" aria-selected="true">In Person Class</a>
 									  	</li>
 									  	<li class="nav-item">
-									    	<a class="nav-link  <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online-tab" data-toggle="tab" href="#online" role="tab" aria-controls="online" aria-selected="false">Online Class</a>
+									    	<a class="nav-link  <?php //if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online-tab" data-toggle="tab" href="#online" role="tab" aria-controls="online" aria-selected="false">Online Class</a>
 									  	</li>
 									 </ul>
 									 <div class="tab-content">
-									  	<div class="tab-pane fade show  <?php if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
+									  	<div class="tab-pane fade show  <?php //if($response->courseLocationType != 'online') {echo "active"; } ?>" id="offline" role="tabpanel" aria-labelledby="offline-tab">
 									  		
 									  			<?php
-									  				if(!empty($response->location) && isset($response->location->address))
-									  				{
+									  				//if(!empty($response->location) && isset($response->location->address))
+									  				//{
 									  			?>
 									  				<div class=" row p-2">
 									  					<div class="col-sm-4 ">Room Name:</div>
-					                            		<div class="col-sm-8"><?php echo $response->location->classRoom->roomNumber; ?></div>
+					                            		<div class="col-sm-8"><?php// echo $response->location->classRoom->roomNumber; ?></div>
 					                            	</div>
 					                            	<div class=" row p-2">
 					                            		<div class="col-sm-4">Address:</div>
-					                            		<div class="col-sm-8"><?php echo $response->location->address->addressLine1; ?><br/><?php echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
+					                            		<div class="col-sm-8"><?php //echo $response->location->address->addressLine1; ?><br/><?php //echo $response->location->address->city.' '.$response->location->address->state.', '.$response->location->address->zipCode; ?><br/><?php echo $response->location->address->country; ?></div>
 					                            	</div> 
 					                            	<div class=" col-12">
-					                            		<iframe src = "https://maps.google.com/maps?q=<?php echo urlencode($response->location->address->addressLine1); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
+					                            		<iframe src = "https://maps.google.com/maps?q=<?php //echo urlencode($response->location->address->addressLine1); ?>&hl=en;z=14&amp;output=embed" width="100%" height="200"></iframe>
 
 					                            	</div>
 									  			<?php
-									  				}
-									  				else{
+									  				//}
+									  				//else{
 									  				?>
 									  						<div class=" col-12">No class room is selected now</div>
 									  				<?php	
-									  				}
+									  				//}
 									  			?>
 					                            
 					                        
 									  	</div>
-									  	<div class="tab-pane fade show <?php if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
+									  	<div class="tab-pane fade show <?php //if($response->courseLocationType == 'online') {echo "active"; } ?>" id="online" role="tabpanel" aria-labelledby="online-tab">
 									  		<div class=" row p-2">
 			                            		<div class="col-sm-4">Online Class Location:</div>
-			                            		<div class="col-sm-8"><?php echo $response->locationUrl ?? 'N/A'; ?></div>
+			                            		<div class="col-sm-8"><?php //echo $response->locationUrl ?? 'N/A'; ?></div>
 			                        		</div> 
 			                        		<div class=" row p-2">
 			                            		<div class="col-sm-4">Login Steps:</div>
-			                            		<div class="col-sm-8"><?php echo $response->locationAccessDetail ?? 'N/A'; ?></div>
+			                            		<div class="col-sm-8"><?php //echo $response->locationAccessDetail ?? 'N/A'; ?></div>
 			                        		</div> 
 									  	</div>
 			                       	</div>
 		                    	</div>
-					  		</div>
+					  		</div> -->
 			  			<div class="col-sm-12 mb-4">
 			  				<div class="border rounded box-shadow">
 			  					<div class="panel-title bg-light p-2 border-bottom">
