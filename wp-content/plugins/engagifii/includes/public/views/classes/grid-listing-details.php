@@ -153,9 +153,11 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  	<li class="nav-item">
 				    <a class="nav-link rounded-0 px-0 mx-3 text-dark active" id="home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
 			  	</li>
+                <?php  if(is_array($classesData->result) && count($classesData->result)){ ?>
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark " id="profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Related Classes</a>
 			  	</li>
+                <?php } ?>
 			  <!-- 	<li class="nav-item">
 			    	<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Document</a>
 			  	</li> -->
