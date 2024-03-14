@@ -7,7 +7,9 @@ if (! is_user_logged_in()) {
     return;
 }
 session_start();
-$pid = $_SESSION['pid'];
+if (isset($_COOKIE['pid'])) {
+  $pid = $_COOKIE['pid'];
+}
 if(!$pid) { 
 echo "<br><br><div class='alert alert-danger' role='alert'>
 <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";

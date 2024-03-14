@@ -9,7 +9,10 @@ if (! is_user_logged_in()) {
     return;
 }
     $obj      =  new Engagifii_API();
-$pid = $_SESSION['pid'];
+//$pid = $_SESSION['pid'];
+if (isset($_COOKIE['pid'])) {
+    $pid = $_COOKIE['pid'];
+  }
 $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 /*$userEmail = $user->user_email;
