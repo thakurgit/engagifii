@@ -254,7 +254,27 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	</style>
     </span>
     </div>	
-    
+    <div class="modal fade" id="modal_crop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Crop the image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="crop">Crop</button>
+          </div>
+        </div>
+      </div>
+    </div>
             </div>
             <div class="col-md-8 ml-3 mt-3">
               <div data-section="header" class="row mb-4">
@@ -443,7 +463,92 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 			//event.preventDefault();
         });
 	var payload = [];
+    window.addEventListener('DOMContentLoaded', function () {
+      var avatar = document.getElementById('blah');
+      var image = document.getElementById('image');
+      var input = document.getElementById('imgInp');
+      var $modal = $('#modal_crop');
+      var cropper;
 
+
+      input.addEventListener('change', function (e) {
+        var files = e.target.files;
+        var done = function (url) {
+          input.value = '';
+          image.src = url;
+          $modal.modal('show');
+        };
+        var reader;
+        var file;
+        var url;
+
+        if (files && files.length > 0) {
+          file = files[0];
+
+          if (URL) {
+            done(URL.createObjectURL(file));
+          } else if (FileReader) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+              done(reader.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      });
+
+      $modal.on('shown.bs.modal', function () {
+        cropper = new Cropper(image, {
+          aspectRatio: 1,
+          viewMode: 0,
+        });
+      }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+        cropper = null;
+      });
+
+      document.getElementById('crop').addEventListener('click', function () {
+        var initialAvatarURL;
+        var canvas;
+
+        $modal.modal('hide');
+
+        if (cropper) {
+          canvas = cropper.getCroppedCanvas({
+            width: 130,
+            height: 130,
+          });
+          initialAvatarURL = avatar.src;
+          avatar.src = canvas.toDataURL();
+          canvas.toBlob(function (blob) {
+			var profiledpdata = {
+			"ImageString": (avatar.src).replace(/^data:image\/[a-z]+;base64,/, ""),
+			"Module": 'crm',
+		 };
+		 profiledpdata = JSON.stringify(profiledpdata ); 
+            $.ajax('https://engagifiiresource.azurewebsites.net/api/upload', {
+              method: 'POST',
+      			data: profiledpdata,
+              processData: false,
+              headers: {
+				'Content-Type': 'application/json',
+			  },
+              success: function (response) {
+				  jQuery('#blah').attr('src',response);
+				  jQuery("#liveToast").toast("show");
+              },
+
+              error: function () {
+                avatar.src = initialAvatarURL;
+              },
+
+              complete: function () {
+              },
+            });
+          });
+        }
+      });
+    });
 	 function encodeImageFileAsURL(element) {
 		 var  DPpayload=[];
 		 var baseimg, profiledpdata, imageThumbUrlpath,imageThumbUrl='';

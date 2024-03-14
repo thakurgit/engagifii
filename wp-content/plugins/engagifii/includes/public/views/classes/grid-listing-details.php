@@ -398,9 +398,9 @@ if ( strpos($url,'engagifii-profile') !== false ) {
                                                   <div>
                                                   <p class="card-title mb-2"><?php echo $value->fullName;?></p>
                                                   <ul class="list-unstyled mb-0 ml-0 d-flex flex-wrap">
-                                                      <li class="position-relative mr-2 inst-ac ml-0"><img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/trophy.png" class="img-fluid" alt=""></li>
+                                                      <li class="position-relative mr-2 inst-ac ml-0"><img title="Awards" src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/trophy.png" class="img-fluid" alt=""></li>
                                                       <li class="position-relative mr-2 inst-ac ml-0">
-                                                          <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/class.png" class="img-fluid" alt="">
+                                                          <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/class.png" title="Classes" class="img-fluid" alt="">
                                                           <!-- <span class="badge badge-secondary position-absolute rounded-circle">2</span> -->
                                                       </li>
                                                   </ul>
