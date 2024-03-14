@@ -246,7 +246,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             <span id="upload_profile" class="position-relative  d-block h-100">
     <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
-    <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange="encodeImageFileAsURL(this)"> 
+    <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange=""> 
     <style>
 	#upload_profile:hover span {
 	opacity:1 !important;	
@@ -469,6 +469,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       var input = document.getElementById('imgInp');
       var $modal = $('#modal_crop');
       var cropper;
+	  var imageThumbpayload;
 
 
       input.addEventListener('change', function (e) {
@@ -534,8 +535,29 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 				'Content-Type': 'application/json',
 			  },
               success: function (response) {
+				  imageThumbpayload = {
+					"imageThumbUrl": response,
+				   };
 				  jQuery('#blah').attr('src',response);
-				  jQuery("#liveToast").toast("show");
+				  $.ajax('https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>', {
+					method: 'PUT',
+					  data: JSON.stringify(imageThumbpayload),
+					processData: false,
+					headers: {
+					  'Content-Type': 'application/json',
+					  'Authorization':'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTAxNjM4NjAsImV4cCI6MTc0MTY5OTg2MCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiM2ViYTRmNTItYjkwYi00YzgwLWFiYjMtNTE5YjBhNzcyMGVlIiwiYXV0aF90aW1lIjoxNzEwMTYzODYwLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IjA2MjQ2NGFhLTU5MWUtNDU4NC05MjI0LTcxZmZjNjEyZWMyOCIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIiwiZW1haWwiOiJqY3Jhd2xleUB5b3BtYWlsLmNvbSIsImxhc3QtbG9naW4iOiIwMy8xMS8yMDI0IDEzOjMwOjAwIiwiY3VycmVudC1sb2dpbiI6IjAzLzExLzIwMjQgMTM6MzE6MDAiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJVc2Vyc0FQSSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiXSwiYW1yIjpbInB3ZCJdfQ.rRBS-695ziRsJNb1d4eGlostYFdsfOKF3b-Lj_9nUCGdxA95lHlsFxI1Qk-oLrBvNzRDBf_sbKisOQQ3fjw05V3d5flg7FXViUe48ekeDn-dIZWqa33btFT_-6Ukt-4rMjP-ZFSi7FscHiHW1vAbjx8vKAkDrEdhTR1yvLKy2Bnfkocgr225Om-1ATby8lXRy-3Xq1wofjrg25EUfgl7QzPv_s3LK_pT0eS1pdYuEw39UoZB8yWwtzQ4sqhaQihA6b63IBJqDKTO_Mda__dTqQndmheqfFcgZ-VvZF9EWl6_O8fu3g5CmrFXryDFO3vLeovvVm3L_HlDqEkyZUoh9g',
+					  'tenant-code':'<?php echo $tenantCode; ?>'
+					},
+					success: function (response) {
+						jQuery("#liveToast").toast("show");
+					},
+	  
+					error: function () {
+					},
+	  
+					complete: function () {
+					},
+				  });
               },
 
               error: function () {
@@ -549,7 +571,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         }
       });
     });
-	 function encodeImageFileAsURL(element) {
+	
+	<?php /*?> function encodeImageFileAsURL(element) {
 		 var  DPpayload=[];
 		 var baseimg, profiledpdata, imageThumbUrlpath,imageThumbUrl='';
         let file = element.files[0];
@@ -635,7 +658,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 		}
         }
         reader.readAsDataURL(file);
-      }
+      }<?php */?>
 
 $('.edit-profile').on('submit', function(event) {
   $('#updateProfile').attr('disabled','').find('span').show();

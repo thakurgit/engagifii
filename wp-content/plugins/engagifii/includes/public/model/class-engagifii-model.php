@@ -2214,7 +2214,7 @@ wp_die();
 				$nestedData['coursetype'] ='';	
 				$nestedData['classes'] ='';	
 				$nestedData['completiondate'] ='';	
-				$nestedData['totalcreditearned'] ='<b>'.json_decode($dataResponse['api_response'])->grantedCredits.'/'.json_decode($dataResponse['api_response'])->totalCredit.'</b>';
+				$nestedData['totalcreditsearned'] ='<b>'.json_decode($dataResponse['api_response'])->grantedCredits.'/'.json_decode($dataResponse['api_response'])->totalCredit.'</b>';
 				$nestedData['tags'] ='';
 				$data[] = $nestedData;
 		}
@@ -2254,7 +2254,7 @@ wp_die();
 			
 			$dt = new DateTime($value->grantedDate);
             $nestedData['completiondate'] =   $dt->format('M d, Y');
-            $nestedData['totalcreditearned'] = $value->grantedCredits."/".$value->totalCredit;
+            $nestedData['totalcreditsearned'] = $value->grantedCredits."/".$value->totalCredit;
             $courseTag = $value->tags;
             $allTags = array();
             foreach ($courseTag as $index => $tag) {
