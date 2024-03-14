@@ -163,9 +163,9 @@ border-bottom-color:white ;
               </div>
             </div>
 <div class="text-center px-3">
-	<?php $options = get_option( 'ebt_api_settings' );
-	 if($options['dash_menus']['logo']){
-		echo '<img src="'.wp_get_attachment_url( $options['dash_menus']['logo'].'" alt="" class="img-fluid" style="max-height:65px">';
+	<?php $logo = get_option( 'ebt_api_settings' )['dash_menus']['logo'];
+	 if($logo){
+		echo '<img src="'.wp_get_attachment_url( $logo).'" alt="" class="img-fluid" style="max-height:65px">';
 	} ?>
         
         </div>
