@@ -43,6 +43,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 <?php return;
 } 
 	$_SESSION['pid']=$peopleDATA->people->id;
+  setcookie('pid', $people_id, time() + (24 * 3600), '/');
 	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
