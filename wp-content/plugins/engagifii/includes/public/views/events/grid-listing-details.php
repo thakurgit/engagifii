@@ -501,7 +501,7 @@ table.class-table td:nth-child(1) {
 										$li=1;
 										foreach ($value->classSessionSettings as $key => $rowData) {
 											$classTime = '';
-											$classTime = date('M d, Y', strtotime($rowData->sessionStartTime)).' At '.date("h:i A",strtotime($rowData->sessionStartTime)).' - '.date("h:i A",strtotime($rowData->sessionEndTime));
+											$classTime = date('M d, Y', strtotime($rowData->sessionStartTime)).' At '.date("g:i A",strtotime($rowData->sessionStartTime)).' - '.date("g:i A",strtotime($rowData->sessionEndTime));
 											$class='';
 											if($li%2==1){
 											$class='bg-light';	
@@ -622,7 +622,7 @@ table.class-table td:nth-child(1) {
 			  								if(!empty($value->startDateTime) ){
 			  									echo date('M d, Y', strtotime($value->startDateTime)); //date('M d, Y', $convert_Date);
 			  									
-			  									 echo ' at '.date("h:i A",strtotime($value->startDateTime)).' - '.date("h:i A",strtotime($value->endDateTime));
+			  									 echo ' at '.date("g:i A",strtotime($value->startDateTime)).' - '.date("g:i A",strtotime($value->endDateTime));
 			  								}
 			  							 ?>
 			  						</span></td>
