@@ -313,6 +313,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               <div class="form-group col-md-6">
               	<label for=""><?php echo $value->name;?></label>
                     <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>">
+                    <div class="invalid-feedback">Only numbers allowed.</div>
               </div>
    <?php  } 
  }
@@ -434,8 +435,11 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	});
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').keyup(function(){
-
-        if(this.value.length==10){
+		if (this.value.match(/[^$,.\d]/)){
+    		jQuery(this).siblings('.invalid-feedback').show();
+		}
+		this.value = this.value.replace(/\D/g,"");
+        if(this.value.length>=10){
             jQuery(this).val(this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'));   
         }
     }); 
