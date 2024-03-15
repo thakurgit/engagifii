@@ -94,15 +94,18 @@ include 'sidebar_nav.php';
               <div data-section="header" class="row mb-4">
                   <div class="form-group col-md-4">
                   <label for="">First Name</label>
-                    <input  type="text" value="<?php echo $peopleDATA->people->firstName; ?>" class="form-control firstName">
+                    <input  type="text" value="<?php echo $peopleDATA->people->firstName; ?>" class="form-control firstName" pattern="[A-Za-z]+" title="Please enter only letters">
+                    <div class="invalid-feedback">Please enter only letters.</div>
                   </div>
                   <div class="form-group col-md-4">
                   <label for="">Middle Name</label>
-                    <input  type="text" value="<?php echo $peopleDATA->people->middleName; ?>" class="form-control middleName">
+                    <input  type="text" value="<?php echo $peopleDATA->people->middleName; ?>" class="form-control middleName" pattern="[A-Za-z]+" title="Please enter only letters">
+                    <div class="invalid-feedback">Please enter only letters.</div>
                   </div>
                   <div class="form-group col-md-4">
                   <label for="">Last Name</label>
-                    <input type="text" value="<?php echo $peopleDATA->people->lastName; ?>" class="form-control lastName">
+                    <input type="text" value="<?php echo $peopleDATA->people->lastName; ?>" class="form-control lastName" pattern="[A-Za-z]+" title="Please enter only letters">
+                    <div class="invalid-feedback">Please enter only letters.</div>
                   </div>                                 
               </div>
               </div>
@@ -125,7 +128,8 @@ include 'sidebar_nav.php';
           }?>
               <div class="form-group col-md-6">
               	<label for=""><?php echo $value->name;?></label>
-                    <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>">
+                    <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>" pattern="[0-9]+" maxlength="10" title="Please enter only numbers with a maximum length of 10">
+                    <div class="invalid-feedback">Please enter only numbers with a maximum length of 10.</div>
               </div>
    <?php  } 
  }
