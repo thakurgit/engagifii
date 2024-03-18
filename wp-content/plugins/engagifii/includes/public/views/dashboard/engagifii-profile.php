@@ -123,42 +123,59 @@ include 'sidebar_nav.php';
               <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
 			  foreach ($peopleDATA->peopleFields as $key => $value) {
-    		 if($value->controlTypeId==12 && in_array($value->id, $profilePayload)){ 
-				$dp = json_decode($value->organizationValue, true);
-				 if(count($dp[0]['positionHistory'])>0){
-					  if(count($dp[0]['positionHistory'])==1){
-						 $department =$dp[0]['positionHistory'][0]['departmentName'];
-  						echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Department: </strong>'.$department.'</span>';
-						 $position =$dp[0]['positionHistory'][0]['positionName'];
-  						echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Position: </strong>'.$position.'</span>';
-					  }else{ ?>
-                      	<div class="dropdown">
+          if ($value->controlTypeId == 12 && in_array($value->id, $profilePayload)) {
+              $dp = json_decode($value->organizationValue, true);
+              // foreach($dp as $key => $value){
+              if (count($dp[0]['positionHistory']) > 0) {
+                  if (count($dp[0]['positionHistory']) == 1) {
+                      $department = $dp[0]['positionHistory'][0]['departmentName'];
+                      echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span>';
+                      $position = $dp[0]['positionHistory'][0]['positionName'];
+                      echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
+                  } else { ?>
+                      <div class="dropdown">
                           <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
-                            <?php echo count($dp[0]['positionHistory']). ' Departments'; ?> | 
+                          <?php
+                        $totalDepartments = 0;
+                        foreach ($dp as $item) {
+                            $totalDepartments += count($item['positionHistory']);
+                        }
+                        echo $totalDepartments . ' Departments';
+                        ?> |
                           </a>
                           <div class="dropdown-menu py-1" style="width:300px;">
-                            <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
-						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['departmentName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
-                   		 }  ?>
-                         </div>
-               			 </div> 
-                      	<div class="dropdown">
+                              <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
+                              <?php foreach ($dp as $item) {
+                                  foreach ($item['positionHistory'] as $position) {
+                                      echo '<span class="dropdown-item px-2 py-0 small text-dark">' . $position['departmentName'] . '</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">' . $item['name'] . '</span>';
+                                  }
+                              } ?>
+                          </div>
+                      </div>
+                      <div class="dropdown">
                           <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false">
-                            <?php echo count($dp[0]['positionHistory']). ' Positions'; ?>
+                              <?php
+                              $totalPositions = 0;
+                              foreach ($dp as $item) {
+                                  $totalPositions += count($item['positionHistory']);
+                              }
+                              echo $totalPositions . ' Positions'; ?>
                           </a>
                           <div class="dropdown-menu py-1" style="width:300px;">
-                            <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo count($dp[0]['positionHistory']); ?>)</h6>
-						<?php  foreach($dp[0]['positionHistory'] as $key => $position){ 
-                       		 echo '<span class="dropdown-item px-2 py-0 small text-dark">'.$position['positionName'].'</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">'.$peopleDATA->people->primaryOrganization->name.'</span>';
-                   		 }  ?>
-                         </div>
-               			 </div> 
-					 <?php  }
-				  
-           }
-			  }
-			  }
+                              <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo $totalPositions; ?>)</h6>
+                              <?php foreach ($dp as $item) {
+                                  foreach ($item['positionHistory'] as $position) {
+                                      echo '<span class="dropdown-item px-2 py-0 small text-dark">' . $position['positionName'] . '</span><span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;">' . $item['name'] . '</span>';
+                                  }
+                              } ?>
+                          </div>
+                      </div>
+                  <?php }
+              }
+              // }
+          }
+      }
+      
 			  ?>
   </div>
         </div>
