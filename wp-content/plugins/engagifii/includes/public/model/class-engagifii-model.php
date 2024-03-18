@@ -2904,12 +2904,11 @@ public function eventFilters(){
                      $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                   }else{
                     if($row->registrantsCapacity > $row->attendeesCount){
-                        $tooltip = 'Sold Out';
-                        $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-
-                    }else{
                         $url = 'https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
+                    }else{                        
+                        $tooltip = 'Sold Out';
+                        $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                     }
                  
                   }
