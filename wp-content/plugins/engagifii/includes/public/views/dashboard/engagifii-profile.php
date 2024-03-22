@@ -392,7 +392,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               
               </div>
                <div class="form-group col-12 px-3">
-                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
+                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:block" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
 
                             <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
 

@@ -79,6 +79,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myEvents-detail' => 'engagifii_myEvents_detail',
 			'engagifii-myDownloads' => 'engagifii_myDownloads',
 			'engagifii-myHome' => 'engagifii_myHome',
+			'people-list' => 'people_list',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -87,6 +88,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 
 	}
 
+	public function people_list(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/peoplelist.php';
+		return ob_get_clean();
+	}	
 
 	public function engagifii_profile(){
 		ob_start();

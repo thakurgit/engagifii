@@ -91,6 +91,55 @@
 	}
 	
 echo '</ul></div>';
+
+//manage People fields	
+$tenant_code = $options['dashboard_apis']['tenant'];	
+//$obj =  new adminDataColumn();
+$fielddata = ['people-select','People Name', 'Email', 'Current Position', 'Organization','Person Type'];
+
+$people_fields = array();
+$people_fields_list=array();
+if(isset($options['people_fields'])){
+	$people_fields = $options['people_fields']; 
+	if(array_key_exists("fields",$people_fields)){
+		$people_fields_list = $people_fields['fields'];	
+	}
+	
+}
+   echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">People Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage People field items</h3> <i>Check the field items that should be visible on the People List View and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[people_fields][order]" value="'.$people_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
+//print_r($tenant_code);
+   if(!$tenant_code){
+	echo '<b style="color:red">oops! People Tenant code not found.</b>';	
+}else{
+	if(!$fielddata){
+		echo '<b style="color:red">oops! data not found.</b>';
+	} else{
+		$counter=1;
+		$allowedFields=['people-select','People Name', 'Email', 'Current Position', 'Organization','Person Type'];
+		//print_r($allowedFields);
+		//$allowedFields=[9,10,11,12];
+		foreach ($allowedFields as $field) {
+			if (!in_array($field, $allowedFields)) {
+				continue;
+			}
+		
+			$checked = '';
+			if (count($people_fields_list) > 0) {
+				if (in_array($field, $people_fields_list)) {
+					$checked .= ' checked';
+				}
+			} else {
+				$checked .= ' checked';
+			}
+			echo '<li  data-order="'.$counter.'"><input  id="'.$field.'" class="" type="checkbox" name="ebt_api_settings[people_fields][fields][]" '.$checked.' value="'.$field.'"><label for="'.$field.'">'.$field.'</label></li>'; 
+			$counter++;    
+		}
+		
+	}
+
+}
+
+echo '</ul></div>';
  ?>
 </div>
 </div>

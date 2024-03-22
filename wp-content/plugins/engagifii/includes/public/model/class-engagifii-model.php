@@ -20,6 +20,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['legislation', 'legislationLoadGridData'],
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
+        ['peopleList', 'peopleLoadGridData'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['clearDownloads', 'clearDownloadsByPerson'],
@@ -2199,7 +2200,7 @@ wp_die();
 		$sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $sortDirection = $_POST["order"][0]["dir"];
-		$postedData = '{"itemCount":10,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"searchText":"'.$title.'","startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
+		$postedData = '{"itemCount":100,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"searchText":"'.$title.'","startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
         $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
 		//print_r($postedData); die;
         $collection = json_decode($dataResponse['api_response'])->result;
@@ -2290,6 +2291,85 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
+
+    //PeopleList
+    public function peopleloadGridData(){
+        $options = get_option('ebt_api_settings');
+        $front_pages = $options['front_pages'];
+        $courses_detail_page = $front_pages['courses_detail_page'];
+        $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
+		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
+        
+		$postedData = $this->_preparePeopleData();
+       // print_r($postedData); die;
+        $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
+		//print_r($postedData); die;
+        $collection = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+        //print_r(json_encode($collection)); die;
+        $request = $_GET;
+        $data    = array();
+		if($collection){
+		$nestedData = array();
+		$nestedData['people-select'] ='';	
+				$nestedData['peoplename'] ='';	
+				$nestedData['email'] ='';	
+				$nestedData['currentposition'] ='';	
+                $nestedData['currentdepartment'] ='';	
+				$nestedData['persontype'] ='';
+				$nestedData['organization'] ='';
+                $nestedData['totaltimecommittiee'] ='';
+                $nestedData['roles'] ='';
+                $nestedData['totaltimeworked'] ='';
+
+
+				$data[] = $nestedData;
+		}
+        foreach ($collection as $key => $value) {
+			//print_r($value->course->name);
+			//die;
+            $nestedData = array();
+            $instructorPopOver = '';
+            $classPopover      = '';
+            
+            //if($count==1){
+					
+			//}
+
+            ## row data
+			$nestedData['people-select']='<input  type="checkbox" class="select-row" value="'.$value->people->id.'"/>';
+            $nestedData['peoplename'] = '<img _ngcontent-c19="" alt="" class="img-circle img-xs mr-2 localImageURL" src="'.$value->people->imageThumbUrl.'"><a class="align-items-right" href="">'.$value->people->fullName.'</a>';
+            $nestedData['email'] = $value->people->email;
+            $nestedData['currentposition'] = '';
+            $nestedData['currentdepartment'] ='';	
+			$nestedData['persontype'] =$value->people->personTypes[0]->name;
+			$nestedData['organization'] = $value->people->organization->name;
+            $nestedData['totaltimecommittiee'] ='';
+            $nestedData['roles'] ='';
+            $nestedData['totaltimeworked'] ='';
+			
+            
+            $data[] = $nestedData;
+        }
+       
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+
+        echo json_encode($json_data);
+        wp_die();
+    }
+
+    
+
    public function generateDownloadsByPerson(){
         
         $postedData = array();
@@ -2741,6 +2821,7 @@ public function eventFilters(){
         wp_die();
 	
 }
+
 
     //Load event list by person
     public function eventsLoadGridDataByPerson(){
@@ -4355,6 +4436,67 @@ $li=1;
         }
         return $postData;
     }
+
+    public function _preparePeopleData(){
+        // $postData = '{"itemCount":"50","pageNumber":1,"sortBy":"updated","sortDirection":"desc","filterBody":{"selectedDate":"2024-03-19","onlyFavorite":false,
+        //     "searchText":"","search":[{"searchText":"","searchType":"searchText"},{"searchText":"","searchType":"searchEmailText"},{"searchText":"",
+        //         "searchType":"searchContactText"}],"searchEmailText":"","searchContactText":"","pageNumber":1,"pageSize":"50",
+        //         "allPeoplePermission":{"viewInstructor":false,"viewAllMembers":true,"viewStaff":false,"viewNonMembers":false,
+        //             "viewOwnOrganizationMembers":true,"viewChildOrganizationMembers":false,
+        //             "viewDeactivatedPeople":false,"sendEmailPer":true,"deletePer":false,"invitePersonPer":false,
+        //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+        $postData = array(
+            'itemCount' => $_POST['length'],
+            'sortBy' => "updated",
+            'pageNumber' => $startPageNum,
+            'pageSize' => ((int) $_POST['length']),
+            'sortDirection' => "desc",
+            'filterBody' => array(
+                'selectedDate' => "2024-03-19",
+                'onlyFavorite' => false,
+                'searchText' => '',
+                'search' => array(
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchText"
+                    ),
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchEmailText"
+                    ),
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchContactText"
+                    )
+                ),
+                'searchEmailText' => '',
+                'searchContactText' => '',
+                'allPeoplePermission' => array(
+                    'viewInstructor' => false,
+                    'viewAllMembers' => true,
+                    'viewStaff' => false,
+                    'viewNonMembers' => false,
+                    'viewOwnOrganizationMembers' => true,
+                    'viewChildOrganizationMembers' => false,
+                    'viewDeactivatedPeople' => false,
+                    'sendEmailPer' => true,
+                    'deletePer' => false,
+                    'invitePersonPer' => false,
+                    'addRemoveTagsPer' => false,
+                    'viewDetail' => true,
+                    'deactivatePeople' => true,
+                    'viewExhibitor' => false,
+                    'viewPublic' => false
+                ),
+                'filterRules' => array()
+            )
+        );
+        
+      
+    return $postData;
+    }
+
 
     public function _prepareEventsData(){
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
