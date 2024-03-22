@@ -2299,52 +2299,68 @@ wp_die();
         $courses_detail_page = $front_pages['courses_detail_page'];
         $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
 		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
-        
 		$postedData = $this->_preparePeopleData();
-       // print_r($postedData); die;
         $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
-		//print_r($postedData); die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         //print_r(json_encode($collection)); die;
         $request = $_GET;
         $data    = array();
-		if($collection){
-		$nestedData = array();
-		$nestedData['people-select'] ='';	
-				$nestedData['peoplename'] ='';	
-				$nestedData['email'] ='';	
-				$nestedData['currentposition'] ='';	
-                $nestedData['currentdepartment'] ='';	
-				$nestedData['persontype'] ='';
-				$nestedData['organization'] ='';
-                $nestedData['totaltimecommittiee'] ='';
-                $nestedData['roles'] ='';
-                $nestedData['totaltimeworked'] ='';
-
-
-				$data[] = $nestedData;
-		}
         foreach ($collection as $key => $value) {
-			//print_r($value->course->name);
-			//die;
             $nestedData = array();
             $instructorPopOver = '';
             $classPopover      = '';
-            
-            //if($count==1){
-					
-			//}
-
-            ## row data
 			$nestedData['people-select']='<input  type="checkbox" class="select-row" value="'.$value->people->id.'"/>';
-            $nestedData['peoplename'] = '<img _ngcontent-c19="" alt="" class="img-circle img-xs mr-2 localImageURL" src="'.$value->people->imageThumbUrl.'"><a class="align-items-right" href="">'.$value->people->fullName.'</a>';
-            $nestedData['email'] = $value->people->email;
-            $nestedData['currentposition'] = '';
+			$nestedData['peoplename']='<div class="d-flex align-items-center">';
+			if($value->people->imageThumbUrl && filter_var($value->people->imageThumbUrl, FILTER_VALIDATE_URL)){
+				$nestedData['peoplename'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
+			}else{
+				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
+			}
+            $nestedData['peoplename'] .= '<a href="">'.$value->people->fullName.'</a></div>';
+            $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
-			$nestedData['organization'] = $value->people->organization->name;
+			//$nestedData['organization'] = $value->people->organization->name;
+			if($value->people->peoplePosition){
+				if(count($value->people->peoplePosition)==1){
+					$nestedData['organization'] =$value->people->peoplePosition[0]->organizationName;
+					$nestedData['currentposition'] =$value->people->peoplePosition[0]->positionName;
+				}else{
+					//positions
+					$classPopover = dd_header('Positions','Search positions..');
+					$subItems = "";
+					$li=1;
+					foreach ($value->people->peoplePosition as $key => $rowData) {
+						$class='';
+						if($li%2==1){
+						  $class='bg-light';	
+						}
+						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->positionName.'</li>';
+						$li++;
+					}
+					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					 $nestedData['currentposition'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
+					//organizations
+					$classPopover = dd_header('0rganizations','Search 0rganizations..');
+					$subItems = "";
+					$li=1;
+					foreach ($value->people->peoplePosition as $key => $rowData) {
+						$class='';
+						if($li%2==1){
+						  $class='bg-light';	
+						}
+						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
+						$li++;
+					}
+					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+				}
+			}else{
+				$nestedData['organization'] ='--';
+				$nestedData['currentposition'] = '--';	
+			}
             $nestedData['totaltimecommittiee'] ='';
             $nestedData['roles'] ='';
             $nestedData['totaltimeworked'] ='';
