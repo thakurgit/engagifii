@@ -345,3 +345,46 @@ $('#searchTitle').on("keydown", function(event) {
 });
 
 }
+function delay(callback, ms) {
+  var timer = 0;
+  return function() {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      callback.apply(context, args);
+    }, ms || 0);
+  };
+}
+function dt_columnSearch(key,placeholder){
+  $('#ebtmaintable thead tr th:eq('+key+')').each( function () { 
+  var title = $(this).text();
+  $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+	$( 'input', this ).keyup(delay(function (e) {
+		var titlesearch = this.value;
+			  if ( table.column(key).search() !== titlesearch ) {
+				  table.column(key).search(titlesearch).draw();
+			  }
+  }, 500));
+   $( 'input', this ).keyup(function(e){
+	  if(this.value.length!==0){
+				  $(this).siblings('.clear-search').show();
+			  } else {
+				  $(this).siblings('.clear-search').hide();
+			  } 
+   });
+  	$(this).find('.clear-search').click(function(e){
+	   $(this).siblings('#searchTitle').val('');
+	  $(this).hide();
+	  e.stopPropagation();
+	  table.column(key).search('').draw();
+   });
+    });	
+  $('#searchTitle, .search-dt span').on('click', function(e){
+		 e.stopPropagation();    
+	  });
+  $('#searchTitle').on("keydown", function(event) {
+	if(event.which == 13){
+		 return false;   
+	}  
+  });
+} 

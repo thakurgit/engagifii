@@ -19,17 +19,14 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 } 
  include 'sidebar_nav.php'; 
-
-
 	/*$obj 			=  new Engagifii_API();*/
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
-    
     $colNames = $options['people_fields']['fields']; 
     //print_r($colNames);
-    $title_key = -1;
+    $columnSearch_key = [];
 ?>
 <style>
 table tbody tr.selected {
@@ -110,7 +107,12 @@ table tbody tr.selected {
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'People Name'){
-                    $title_key = $i;
+                    $columnSearch_key[0]['key'] = $i;
+                    $columnSearch_key[0]['placeholder'] = 'Search Member';
+                  }
+                  if($key == 'Email'){
+                    $columnSearch_key[1]['key'] = $i;
+                    $columnSearch_key[1]['placeholder'] = 'Search Office Email';
                   }
 				  $i++;
 				  if($key == 'people-select'){
@@ -122,7 +124,7 @@ table tbody tr.selected {
 		    				<?php
                   
 				}
-		    	?>		
+ 		    	?>		
 
 		    </tr> 
     	</thead> 
@@ -136,7 +138,8 @@ table tbody tr.selected {
 <script type="text/javascript">
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
- var titleColumn = '<?php echo $title_key; ?>';
+ var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
+ columnSearch = JSON.parse(columnSearch);
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
@@ -152,8 +155,11 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
           { "targets": ['people-select','email','currentposition', 'organization', 'persontype'],
             "orderable": false
           },
-		  { width: 350, targets: <?php echo array_search('People Name',$colNames);?> },
+		  <?php if(in_array('People Name', $colNames)){ ?>
+		  	{ width: 350, targets: <?php echo array_search('People Name',$colNames);?> },
+		  <?php } if(in_array('Email', $colNames)){ ?>
 		  { width: 150, targets: <?php echo array_search('Email',$colNames);?> },
+		  <?php } ?>
 		  { className: "text-center", "targets": ['people-select'] },
 		   
         ],
@@ -176,8 +182,10 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             	//d.profileId = profileId;
             	//d.startDate = startDate;
             	//d.endDate = endDate;
-				d.titleColumn = titleColumn; 
-                 
+				d.titleColumn = columnSearch[0]['key']; 
+				<?php if(in_array('Email', $colNames)){ ?>
+				d.emailColumn = columnSearch[1]['key']; 
+				<?php } ?>
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -307,11 +315,11 @@ $( '.dateFilter button' ).click(function() {
 });
 
 <?php
-  if($title_key > -1){
+  if(count($columnSearch_key)>0){
 ?>
-
- dt_titleSearch('Search Member');
-
+for (var i = 0; i < columnSearch.length; i++) {
+ dt_columnSearch(columnSearch[i].key,columnSearch[i].placeholder);
+}
   <?php
 }
   ?>

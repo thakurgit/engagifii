@@ -131,6 +131,9 @@ if(isset($options['people_fields'])){
 			} else {
 				$checked .= ' checked';
 			}
+			if($field=='People Name'){
+ 				$checked .= " checked readonly";
+			}
 			echo '<li  data-order="'.$counter.'"><input  id="'.$field.'" class="" type="checkbox" name="ebt_api_settings[people_fields][fields][]" '.$checked.' value="'.$field.'"><label for="'.$field.'">'.$field.'</label></li>'; 
 			$counter++;    
 		}
