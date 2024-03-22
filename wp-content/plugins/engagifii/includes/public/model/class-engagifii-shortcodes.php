@@ -74,7 +74,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myTranscript' => 'engagifii_myTranscript',
 			'engagifii-myTranscript-detail' => 'engagifii_myTranscript_detail',
 			'engagifii-myTranscript-class-detail' => 'engagifii_myTranscript_class_detail',
-			'engagifii-myTransactions' => 'engagifii_myTransactions',
+			'engagifii-members' => 'engagifii_members',
 			'engagifii-myEvents' => 'engagifii_myEvents',
 			'engagifii-myEvents-detail' => 'engagifii_myEvents_detail',
 			'engagifii-myDownloads' => 'engagifii_myDownloads',
@@ -133,9 +133,9 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 		include $this->basePath.'includes/public/views/dashboard/welcome-to-psba.php';
 		return ob_get_clean();
 	}
-	public function engagifii_myTransactions(){
+	public function engagifii_members(){
 		ob_start();
-		include $this->basePath.'includes/public/views/dashboard/my-transactions.php';
+		include $this->basePath.'includes/public/views/dashboard/members.php';
 		return ob_get_clean();
 	}		
 	public function public_officials(){

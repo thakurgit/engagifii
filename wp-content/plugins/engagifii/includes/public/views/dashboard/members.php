@@ -8,6 +8,7 @@ if (! is_user_logged_in()) {
     echo '</h5></div>';
     return;
 }
+    $obj      =  new Engagifii_API();
 if (isset($_COOKIE['pid'])) {
     $pid = $_COOKIE['pid'];
   }
@@ -19,5 +20,4 @@ echo "<br><br><div class='alert alert-danger' role='alert'>
 return;
 } 
  include 'sidebar_nav.php'; 
-include $this->basePath.'includes/public/views/events/grid-listingbyperson.php';
 
