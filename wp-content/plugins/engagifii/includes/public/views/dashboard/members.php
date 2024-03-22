@@ -41,7 +41,63 @@ table tbody tr.selected {
             	<h4 class="mb-0 mr-2">
                 	<button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/download_blue.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
-                <button  type="button" class="btn btn-primary btn-sm ml-3 gt ml-auto" data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Generate Credits Earned Report</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group dateFilter">
+                        <label>Select date range</label>
+                        <div class="input-group mr-2" style="max-width:255px">
+                        <input type="text" class="form-control form-control-sm shadow-none" placeholder="Select Date Range">
+                      <div class="input-group-append">
+                        <span class="input-group-text bg-transparent clearDateFilter" style="cursor:pointer; display:none;"><i class="far fa-times"></i></span>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
+                      </div>
+                    </div>
+                    </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dropdown dropleft po-filter d-flex justify-content-end ml-3">
+                  <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false"> <i class="far fa-filter"></i> </button>
+                  <div class="dropdown-menu py-0">
+                    <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> </div>
+                    <div class="accordion" id="accordionFilter">
+                      <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
+                      <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
+                        <h5 class="mb-0">
+                          <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
+                        </h5>
+                        <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
+                          <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+                            <div class="loaders text-center py-3">
+                              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                            </div>
+                          </ul>
+                        </div>
+                      </div>
+                      <?php $ft++; } ?>
+                    </div>
+                    <div class="text-center py-2">
+                      <button class="filter_submit btn btn-primary py-1" type="submit">Apply</button>
+                    </div>
+                  </div>
+                </div>
         </div>
 </div>
 	<div class="engagifii-box engagifii-main-cotainer position-relative">
@@ -93,7 +149,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"ordering":true,
 		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','peoplename','email','currentposition', 'organization', 'persontype'],
+          { "targets": ['people-select','email','currentposition', 'organization', 'persontype'],
             "orderable": false
           },
 		  { width: 350, targets: <?php echo array_search('People Name',$colNames);?> },
@@ -136,11 +192,8 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   if(selectedRow.length !== 0){
 				 $('.gt').removeAttr('disabled'); 
-				 $('.gt').attr('data-original-title', 'Download PDF'); 
 			   }else{
 				 $('.gt').attr('disabled','');  
-				 $('.gt').attr('data-original-title', 'Select Course');
-				 $('.gt').tooltip('hide');
 			   }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val())){

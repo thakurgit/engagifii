@@ -2307,9 +2307,8 @@ wp_die();
         //print_r(json_encode($collection)); die;
         $request = $_GET;
         $data    = array();
-        foreach ($collection as $key => $value) {
+        foreach ($collection as $key => $value) { 
             $nestedData = array();
-            $instructorPopOver = '';
             $classPopover      = '';
 			$nestedData['people-select']='<input  type="checkbox" class="select-row" value="'.$value->people->id.'"/>';
 			$nestedData['peoplename']='<div class="d-flex align-items-center">';
@@ -2318,14 +2317,20 @@ wp_die();
 			}else{
 				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['peoplename'] .= '<a href="">'.$value->people->fullName.'</a></div>';
+            $nestedData['peoplename'] .= '<a href="'.site_url().'/engagifii-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
 			//$nestedData['organization'] = $value->people->organization->name;
 			if($value->people->peoplePosition){
 				if(count($value->people->peoplePosition)==1){
-					$nestedData['organization'] =$value->people->peoplePosition[0]->organizationName;
+					$nestedData['organization']='<div class="d-flex align-items-center">';	
+					if($value->people->peoplePosition[0]->imageThumbUrl && filter_var($value->people->peoplePosition[0]->imageThumbUrl, FILTER_VALIDATE_URL)){
+						$nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->peoplePosition[0]->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->peoplePosition[0]->imageThumbUrl.'">';	
+					}else{
+						$nestedData['organization'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+					}
+					$nestedData['organization'] .=$value->people->peoplePosition[0]->organizationName.'</div>';
 					$nestedData['currentposition'] =$value->people->peoplePosition[0]->positionName;
 				}else{
 					//positions
@@ -2383,7 +2388,66 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
-
+    public function _preparePeopleData(){
+        // $postData = '{"itemCount":"50","pageNumber":1,"sortBy":"updated","sortDirection":"desc","filterBody":{"selectedDate":"2024-03-19","onlyFavorite":false,
+        //     "searchText":"","search":[{"searchText":"","searchType":"searchText"},{"searchText":"","searchType":"searchEmailText"},{"searchText":"",
+        //         "searchType":"searchContactText"}],"searchEmailText":"","searchContactText":"","pageNumber":1,"pageSize":"50",
+        //         "allPeoplePermission":{"viewInstructor":false,"viewAllMembers":true,"viewStaff":false,"viewNonMembers":false,
+        //             "viewOwnOrganizationMembers":true,"viewChildOrganizationMembers":false,
+        //             "viewDeactivatedPeople":false,"sendEmailPer":true,"deletePer":false,"invitePersonPer":false,
+        //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+		$titleColumn = $_POST['titleColumn'];
+        $postData = array(
+            'itemCount' => $_POST['length'],
+            'sortBy' => "updated",
+            'pageNumber' => $startPageNum,
+            'pageSize' => ((int) $_POST['length']),
+            'sortDirection' => "desc",
+            'filterBody' => array(
+                'selectedDate' => "2024-03-19",
+                'onlyFavorite' => false,
+       			'searchText' => $_POST['columns'][$titleColumn]['search']['value'],
+                'search' => array(
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchText"
+                    ),
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchEmailText"
+                    ),
+                    array(
+                        'searchText' => '',
+                        'searchType' => "searchContactText"
+                    )
+                ),
+                'searchEmailText' => '',
+                'searchContactText' => '',
+                'allPeoplePermission' => array(
+                    'viewInstructor' => false,
+                    'viewAllMembers' => true,
+                    'viewStaff' => false,
+                    'viewNonMembers' => false,
+                    'viewOwnOrganizationMembers' => true,
+                    'viewChildOrganizationMembers' => false,
+                    'viewDeactivatedPeople' => false,
+                    'sendEmailPer' => true,
+                    'deletePer' => false,
+                    'invitePersonPer' => false,
+                    'addRemoveTagsPer' => false,
+                    'viewDetail' => true,
+                    'deactivatePeople' => true,
+                    'viewExhibitor' => false,
+                    'viewPublic' => false
+                ),
+                'filterRules' => array()
+            )
+        );
+        
+      
+    return $postData;
+    }
     
 
    public function generateDownloadsByPerson(){
@@ -4453,65 +4517,6 @@ $li=1;
         return $postData;
     }
 
-    public function _preparePeopleData(){
-        // $postData = '{"itemCount":"50","pageNumber":1,"sortBy":"updated","sortDirection":"desc","filterBody":{"selectedDate":"2024-03-19","onlyFavorite":false,
-        //     "searchText":"","search":[{"searchText":"","searchType":"searchText"},{"searchText":"","searchType":"searchEmailText"},{"searchText":"",
-        //         "searchType":"searchContactText"}],"searchEmailText":"","searchContactText":"","pageNumber":1,"pageSize":"50",
-        //         "allPeoplePermission":{"viewInstructor":false,"viewAllMembers":true,"viewStaff":false,"viewNonMembers":false,
-        //             "viewOwnOrganizationMembers":true,"viewChildOrganizationMembers":false,
-        //             "viewDeactivatedPeople":false,"sendEmailPer":true,"deletePer":false,"invitePersonPer":false,
-        //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
-        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
-        $postData = array(
-            'itemCount' => $_POST['length'],
-            'sortBy' => "updated",
-            'pageNumber' => $startPageNum,
-            'pageSize' => ((int) $_POST['length']),
-            'sortDirection' => "desc",
-            'filterBody' => array(
-                'selectedDate' => "2024-03-19",
-                'onlyFavorite' => false,
-                'searchText' => '',
-                'search' => array(
-                    array(
-                        'searchText' => '',
-                        'searchType' => "searchText"
-                    ),
-                    array(
-                        'searchText' => '',
-                        'searchType' => "searchEmailText"
-                    ),
-                    array(
-                        'searchText' => '',
-                        'searchType' => "searchContactText"
-                    )
-                ),
-                'searchEmailText' => '',
-                'searchContactText' => '',
-                'allPeoplePermission' => array(
-                    'viewInstructor' => false,
-                    'viewAllMembers' => true,
-                    'viewStaff' => false,
-                    'viewNonMembers' => false,
-                    'viewOwnOrganizationMembers' => true,
-                    'viewChildOrganizationMembers' => false,
-                    'viewDeactivatedPeople' => false,
-                    'sendEmailPer' => true,
-                    'deletePer' => false,
-                    'invitePersonPer' => false,
-                    'addRemoveTagsPer' => false,
-                    'viewDetail' => true,
-                    'deactivatePeople' => true,
-                    'viewExhibitor' => false,
-                    'viewPublic' => false
-                ),
-                'filterRules' => array()
-            )
-        );
-        
-      
-    return $postData;
-    }
 
 
     public function _prepareEventsData(){
