@@ -13,11 +13,11 @@ if (isset($_COOKIE['pid'])) {
   }
 $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
-if(!$pid) { 
-echo "<br><br><div class='alert alert-danger' role='alert'>
-<h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
-return;
-} 
+// if(!$pid) { 
+// echo "<br><br><div class='alert alert-danger' role='alert'>
+// <h5 class='text-center'>Profile with username <strong>".$user->user_login."</strong> doesn't exist.</h5></div>";
+// return;
+// } 
  include 'sidebar_nav.php'; 
 	/*$obj 			=  new Engagifii_API();*/
 	$collection 	=	array();
@@ -38,7 +38,7 @@ table tbody tr.selected {
             	<h4 class="mb-0 mr-2">
                 	<button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/download_blue.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
-                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" style="visibility: hidden;"><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -64,7 +64,7 @@ table tbody tr.selected {
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary gtm">Submit</button>
                       </div>
                     </div>
                   </div>
@@ -75,7 +75,7 @@ table tbody tr.selected {
                   <div class="dropdown-menu py-0">
                     <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> </div>
                     <div class="accordion" id="accordionFilter">
-                      <?php $ft=0; foreach ($filterParam as $key => $values) { ?>
+                      <?php $ft=0; foreach ($colNames1 as $key => $values) { ?>
                       <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
                         <h5 class="mb-0">
                           <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
@@ -152,7 +152,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"ordering":true,
 		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','currentposition', 'organization', 'persontype'],
+          { "targets": ['people-select','email','currentposition','organization', 'persontype', 'currentdepartment'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
@@ -183,6 +183,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             	//d.startDate = startDate;
             	//d.endDate = endDate;
 				d.titleColumn = columnSearch[0]['key']; 
+        d.emailColumn = columnSearch[1]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
 				d.emailColumn = columnSearch[1]['key']; 
 				<?php } ?>
@@ -199,9 +200,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
           // dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   if(selectedRow.length !== 0){
-				 $('.gt').removeAttr('disabled'); 
+				  $('.gt').css('visibility', 'visible');
 			   }else{
-				 $('.gt').attr('disabled','');  
+          $('.gt').css('visibility', 'hidden');
 			   }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val())){
@@ -233,10 +234,10 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 						}
 					}
 			   if(selectedRow.length !== 0){
-				 $('.gt').removeAttr('disabled');
+          $('.gt').css('visibility', 'visible');
 				 $('.gt').attr('data-original-title', 'Download PDF');  
 			   }else{
-				 $('.gt').attr('disabled',''); 
+          $('.gt').css('visibility', 'hidden');
 				 $('.gt').attr('data-original-title', 'Download PDF'); 
 			   }
 			});	
@@ -266,15 +267,19 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
     } ).dataTable();
 	
 
-$('.gt').click(function(){
+$('.gtm').click(function(){
+  //alert("here");
+  var selectedIds = selectedRow.join();
+  var selectedDateRange = $('.dateFilter input').val();
+  //alert(selectedDateRange);
 	var logged_in_user = localStorage.getItem("logged_in_user");
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'generateDownloads',
-			  CourseId:selectedRow,
-			  groupById: logged_in_user,
+              action:'generateDownloadsByMemberIds',
+			  memberIds: selectedRow,
+			  selectedDateRange: selectedDateRange,
           },
           success: function(response) { 
 		  	$('#pdfcreated').modal('show')
@@ -333,5 +338,23 @@ $(document).ready(function(){
 	}
 });
 
-
+window.addEventListener("load", function () {
+  console.log($colNames);
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'peopleFilters',
+		   filterParams:<?php echo json_encode($colNames);?>,
+		},
+		success: function(response) { 
+		for (var key of Object.keys(JSON.parse(response))) {
+			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
+		}
+		dt_filterActivate();
+	//	var dates = JSON.parse(response)['startDateTime'];
+		//filterEvents(dates['minStartDate'],dates['maxEndDate']); 
+			}
+	  });
+});
 </script> 

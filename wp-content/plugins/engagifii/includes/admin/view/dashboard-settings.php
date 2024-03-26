@@ -115,7 +115,7 @@ if(isset($options['people_fields'])){
 		echo '<b style="color:red">oops! data not found.</b>';
 	} else{
 		$counter=1;
-		$allowedFields=['people-select','People Name', 'Email', 'Current Position', 'Organization','Person Type'];
+		$allowedFields=['people-select','People Name', 'Email', 'Current Position', 'Current Department', 'Organization','Person Type'];
 		//print_r($allowedFields);
 		//$allowedFields=[9,10,11,12];
 		foreach ($allowedFields as $field) {

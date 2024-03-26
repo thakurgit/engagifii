@@ -23,6 +23,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['peopleList', 'peopleLoadGridData'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
+        ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
         ['clearDownloads', 'clearDownloadsByPerson'],
         ['allReports', 'allReportsByPerson'],
         ['classes', 'classLoadGridData'],
@@ -2300,6 +2301,7 @@ wp_die();
         $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
 		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
 		$postedData = $this->_preparePeopleData();
+        //print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
@@ -2366,6 +2368,39 @@ wp_die();
 				$nestedData['organization'] ='--';
 				$nestedData['currentposition'] = '--';	
 			}
+            if($value->people->peopleDepartment){
+				if(count($value->people->peopleDepartment)==1){
+					$nestedData['currentdepartment']='<div class="d-flex align-items-center">';	
+					if($value->people->peopleDepartment[0]->imageThumbUrl && filter_var($value->people->peopleDepartment[0]->imageThumbUrl, FILTER_VALIDATE_URL)){
+						$nestedData['currentdepartment'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->peopleDepartment[0]->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->peopleDepartment[0]->imageThumbUrl.'">';	
+					}else{
+						$nestedData['currentdepartment'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+					}
+					$nestedData['currentdepartment'] .=$value->people->peopleDepartment[0]->organizationName.'</div>';
+					$nestedData['currentdepartment'] =$value->people->peopleDepartment[0]->departmentName;
+				}else{
+					//positions
+					$classPopover = dd_header('Departments','Search departments..');
+					$subItems = "";
+					$li=1;
+					foreach ($value->people->peopleDepartment as $key => $rowData) {
+						$class='';
+						if($li%2==1){
+						  $class='bg-light';	
+						}
+						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->departmentName.'</li>';
+						$li++;
+					}
+					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					 $nestedData['currentdepartment'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
+					
+					//$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					// $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+				}
+			}else{
+				//$nestedData['organization'] ='--';
+				$nestedData['currentdepartment'] = '--';	
+			}
             $nestedData['totaltimecommittiee'] ='';
             $nestedData['roles'] ='';
             $nestedData['totaltimeworked'] ='';
@@ -2398,6 +2433,7 @@ wp_die();
         //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
 		$titleColumn = $_POST['titleColumn'];
+        $titleColumn = $_POST['emailColumn'];//emailColumn
         $postData = array(
             'itemCount' => $_POST['length'],
             'sortBy' => "updated",
@@ -2414,7 +2450,7 @@ wp_die();
                         'searchType' => "searchText"
                     ),
                     array(
-                        'searchText' => '',
+                        'searchText' => "",
                         'searchType' => "searchEmailText"
                     ),
                     array(
@@ -2422,7 +2458,7 @@ wp_die();
                         'searchType' => "searchContactText"
                     )
                 ),
-                'searchEmailText' => '',
+                'searchEmailText' => "",
                 'searchContactText' => '',
                 'allPeoplePermission' => array(
                     'viewInstructor' => false,
@@ -2449,7 +2485,45 @@ wp_die();
     return $postData;
     }
     
-
+    public function peopleFilters(){
+        $postData=array();
+        $htmlArray = array();
+          $filterParams = $_POST['filterParams'];
+          $apiUrl='';
+          $date = date('Y-m-d');
+          foreach ($filterParams as $keys => $values) {
+              if($values =='department'){
+                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1/tenantdepartment/GetAllTenantDepartmentsLite/'.$date; 
+              }else if($values =='position'){
+                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1/Organization/GetAllOrganizationPositionsLite/'.$date;   
+              }else if($values =='organization'){
+                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1.0/Organization/GetOrganizationListWithIdForFilters/'.$date;   
+              }
+              $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+              if($response['api_response']){
+                $response = json_decode($response['api_response'], true);
+                if($response){
+                  foreach ($response as $key => $value) {
+                      if($values =='department'){
+                          $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values =='position'){
+                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values=='organization'){
+                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                      }
+                    }
+                  }else{
+                    $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+                  }
+                  } else {
+                    $html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+                }
+                $htmlArray=$html;
+          }
+            echo json_encode($htmlArray);
+            wp_die();
+        
+    }
    public function generateDownloadsByPerson(){
         
         $postedData = array();
@@ -2467,6 +2541,23 @@ wp_die();
 		//print_r(json_encode($postedData));
 		//die;
         $dataResponse = $this->submitApiRequest("CourseReport/GenerateCreditsEarnedGroupByCoursesPDFReport", $postedData, "POST", 'reports');
+        $collection = json_decode($dataResponse['api_response'])->result;
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+    public function generateDownloadsByMemberIds(){
+        $postedData = array();
+        $postedData['itemCount'] = 100;
+        $postedData['sortBy'] = 'name';
+        $postedData['sortDirection'] = 'asc';
+        $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
+        $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
+        $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
+        $postedData['filterBody']['startDate'] = '2023-01-01T05:00:00';
+        $postedData['filterBody']['endDate'] = '2023-12-31T05:00:00';
+		//print_r(json_encode($postedData));
+		//die;
+        $dataResponse = $this->submitApiRequest("PeopleReport/GenerateCreditsEarnedGroupByParticipantsPDFReport", $postedData, "POST", 'reports');
         $collection = json_decode($dataResponse['api_response'])->result;
         echo json_encode($dataResponse);
         wp_die();
