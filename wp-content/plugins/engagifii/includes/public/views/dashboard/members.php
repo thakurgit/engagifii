@@ -36,7 +36,7 @@ table tbody tr.selected {
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
             	<h4 class="mb-0 mr-2">
-                	<button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/download_blue.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
+                	<button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
                 <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" style="visibility: hidden;"><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -134,7 +134,22 @@ table tbody tr.selected {
 
 
 </div>
-
+<div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/engagifii-profile/my-transcript/downloads">My Downloads</a>. </p>
+      </div>
+      
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
@@ -271,6 +286,9 @@ $('.gtm').click(function(){
   //alert("here");
   var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
+  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
+  var startDate = dates[0]; // Start date
+  var endDate = dates[1]; // End date
   //alert(selectedDateRange);
 	var logged_in_user = localStorage.getItem("logged_in_user");
 	   $.ajax({
@@ -279,9 +297,11 @@ $('.gtm').click(function(){
           data:{
               action:'generateDownloadsByMemberIds',
 			  memberIds: selectedRow,
-			  selectedDateRange: selectedDateRange,
+			  selectedStartDate: startDate, 
+			  selectedEndDate: endDate, 
           },
           success: function(response) { 
+            $('#exampleModal').modal('hide') ;
 		  	$('#pdfcreated').modal('show')
 			
 		  }
@@ -357,4 +377,8 @@ window.addEventListener("load", function () {
 			}
 	  });
 });
+$('.refresh').click(function(){
+		table.draw();
+	});
+
 </script> 

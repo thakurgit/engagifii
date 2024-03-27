@@ -175,12 +175,29 @@ global $post;
 		$active = 'active';
 	$options = get_option( 'ebt_api_settings' );
     $menus =$options['dash_menus']['items'];
+	$userPermissionArray = array();
+        $postedDataPermission = array();
+        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=psbae&userId=062464aa-591e-4584-9224-71ffc612ec28";
+        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
+        $userPermissionResponse = $userPermission['api_response'];
+        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+		//print_r($userpermissionJson);
+        foreach($userpermissionJson as $key => $permissionValue){
+            $userPermissionArray[] = $permissionValue['name'];
+        }
+        if(in_array('ViewOwnOrganizationMembers', $userPermissionArray)){
+            $showMemberList = true;
+        }
 	if($menus){
+		//print_r($menus);
 	echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">';
 	foreach($menus as $key=>$menu){
 		if(!array_key_exists("label",$menu)){
 			continue;	
 		}
+		if(!$showMemberList && $menu['label'] === 'Members'){
+           continue;
+        }
 		$label =$menu['label'];
 		$url =$site_url.'/'.$menu['url'];
 		$icon=$menu['icon'];

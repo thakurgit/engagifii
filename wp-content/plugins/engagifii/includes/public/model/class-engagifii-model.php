@@ -2345,29 +2345,36 @@ wp_die();
 						  $class='bg-light';	
 						}
 						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->positionName.'</li>';
+                        $subItems .= ' <span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;"><li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li></span>';
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 					 $nestedData['currentposition'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
 					//organizations
-					$classPopover = dd_header('0rganizations','Search 0rganizations..');
-					$subItems = "";
-					$li=1;
-					foreach ($value->people->peoplePosition as $key => $rowData) {
-						$class='';
-						if($li%2==1){
-						  $class='bg-light';	
-						}
-						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
-						$li++;
-					}
-					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+					// $classPopover = dd_header('0rganizations','Search 0rganizations..');
+					// $subItems = "";
+					// $li=1;
+					// foreach ($value->people->peoplePosition as $key => $rowData) {
+					// 	$class='';
+					// 	if($li%2==1){
+					// 	  $class='bg-light';	
+					// 	}
+					// 	$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
+					// 	$li++;
+					// }
+					// $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					 //$nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
 				$nestedData['currentposition'] = '--';	
 			}
+            if($value->people->organization->name){
+            $nestedData['organization'] = $value->people->organization->name;
+            }
+            else{
+                $nestedData['organization'] = '--';
+            }
             if($value->people->peopleDepartment){
 				if(count($value->people->peopleDepartment)==1){
 					$nestedData['currentdepartment']='<div class="d-flex align-items-center">';	
@@ -2389,6 +2396,7 @@ wp_die();
 						  $class='bg-light';	
 						}
 						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->departmentName.'</li>';
+                        $subItems .= ' <span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;"><li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li></span>';
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
@@ -2553,8 +2561,8 @@ wp_die();
         $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
         $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
         $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
-        $postedData['filterBody']['startDate'] = '2023-01-01T05:00:00';
-        $postedData['filterBody']['endDate'] = '2023-12-31T05:00:00';
+        $postedData['filterBody']['startDate']= $_POST['selectedStartDate']; 
+		$postedData['filterBody']['endDate']= $_POST['selectedEndDate'];
 		//print_r(json_encode($postedData));
 		//die;
         $dataResponse = $this->submitApiRequest("PeopleReport/GenerateCreditsEarnedGroupByParticipantsPDFReport", $postedData, "POST", 'reports');
