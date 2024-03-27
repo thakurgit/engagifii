@@ -30,7 +30,7 @@ $user     = get_userdata($user_id);
 ?>
 <style>
 table tbody tr.selected {
-	background-color: #bed6f2 !important;
+/*background-color: #bed6f2 !important;*/
 }
 </style>
 <div class="container-fluid mb-3">
@@ -111,8 +111,11 @@ table tbody tr.selected {
                     $columnSearch_key[0]['placeholder'] = 'Search Member';
                   }
                   if($key == 'Email'){
-                    $columnSearch_key[1]['key'] = $i;
-                    $columnSearch_key[1]['placeholder'] = 'Search Office Email';
+                   // $columnSearch_key[1]['key'] = $i;
+                   // $columnSearch_key[1]['placeholder'] = 'Search Office Email';
+                  }
+                  if($key == 'Organization'){
+                   $key = 'Primary Organization';
                   }
 				  $i++;
 				  if($key == 'people-select'){
@@ -165,9 +168,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc']],
+		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc'], [<?php echo array_search('Organization', $colNames); ?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','currentposition','organization', 'persontype', 'currentdepartment'],
+          { "targets": ['people-select','email','currentposition', 'persontype', 'currentdepartment'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
@@ -198,9 +201,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             	//d.startDate = startDate;
             	//d.endDate = endDate;
 				d.titleColumn = columnSearch[0]['key']; 
-        d.emailColumn = columnSearch[1]['key']; 
+        //d.emailColumn = columnSearch[1]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
-				d.emailColumn = columnSearch[1]['key']; 
+				//d.emailColumn = columnSearch[1]['key']; 
 				<?php } ?>
             }, 
         },
@@ -380,5 +383,9 @@ window.addEventListener("load", function () {
 $('.refresh').click(function(){
 		table.draw();
 	});
+
+
+
+
 
 </script> 
