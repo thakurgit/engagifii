@@ -18,9 +18,9 @@
 	echo '</select>';
 	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/>
 	<input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/>
-	<input name="ebt_api_settings[dashboard_apis][revenueUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['revenueUrl'].'"/>
-	<input name="ebt_api_settings[dashboard_apis][doUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['doUrl'].'"/>
-	
+	<input name="ebt_api_settings[dashboard_apis][revenueUrl]" class="revenueUrl" type="hidden" value="'.$dashboard_apis['revenueUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][doUrl]" class="doUrl" type="hidden" value="'.$dashboard_apis['doUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>
 	';
 		// echo '<div class="form-group"><label>API URL (CRM)</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.(isset($dashboard_apis['url']) ? $dashboard_apis['url'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL(Reports)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_reports]" class="postbox" value="'.(isset($dashboard_apis['url_reports']) ? $dashboard_apis['url_reports'] : '').'" required></div>';

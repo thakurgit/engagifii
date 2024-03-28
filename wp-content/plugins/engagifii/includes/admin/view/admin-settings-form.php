@@ -317,11 +317,30 @@ jQuery(this).siblings('.cls').val('');
 			crmUrl = crmUrl+'/api/v1';	
 		}
 		jQuery('.select-env').siblings('.crmUrl').val(crmUrl);
+
 		var reportUrl = result.courseReporturl;
 		if(reportUrl.indexOf('api') == -1){
 			reportUrl = reportUrl+'/api/v1';	
 		}
 		jQuery('.select-env').siblings('.reportUrl').val(reportUrl);
+
+    var authUrl = result.authPolicyDevUrl;
+		if(authUrl.indexOf('api') == -1){
+			authUrl = authUrl+'/api/v1';	
+		}
+		jQuery('.select-env').siblings('.authUrl').val(authUrl);
+
+    var revenueUrl = result.revenueBaseUrl;
+		if(revenueUrl.indexOf('api') == -1){
+			revenueUrl = revenueUrl+'/api/v1';	
+		}
+		jQuery('.select-env').siblings('.revenueUrl').val(revenueUrl);
+
+    var doUrl = result.dynamicObjectApprovalUrl;
+		if(doUrl.indexOf('api') == -1){
+			doUrl = doUrl+'/api/v1';	
+		}
+		jQuery('.select-env').siblings('.doUrl').val(doUrl);
   		}
 		});
 	});
