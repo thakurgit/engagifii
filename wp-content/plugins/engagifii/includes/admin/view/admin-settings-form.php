@@ -310,5 +310,20 @@ jQuery(this).siblings('.cls').val('');
 			});
         }
     }
+	jQuery('.select-env').change( function() {
+		 $.ajax({url: "https://denaj.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", success: function(result){
+		var crmUrl = result.crmBaseUrl;
+		if(crmUrl.indexOf('api') == -1){
+			crmUrl = crmUrl+'/api/v1';	
+		}
+		jQuery('.select-env').siblings('.crmUrl').val(crmUrl);
+		var reportUrl = result.courseReporturl;
+		if(reportUrl.indexOf('api') == -1){
+			reportUrl = reportUrl+'/api/v1';	
+		}
+		jQuery('.select-env').siblings('.reportUrl').val(reportUrl);
+  		}
+		});
+	});
 });
 </script>

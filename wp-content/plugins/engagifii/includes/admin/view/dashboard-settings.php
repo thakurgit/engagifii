@@ -8,31 +8,15 @@
     	$dashboard_apis = $options['dashboard_apis']; 
 	}
 	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content api-urls" style="display:none">';
-		echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div>';
-		echo '<div class="form-group"><label>Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="postbox"></div';
-	echo '<option value="production" ' . ($dashboard_apis['environment'] == 'production' ? 'selected' : '') . '>Production</option>';
-	echo '<option value="qa" ' . ($dashboard_apis['environment'] == 'qa' ? 'selected' : '') . '>QA</option>';
-	echo '<option value="support" ' . ($dashboard_apis['environment'] == 'support' ? 'selected' : '') . '>Support</option>';
-	echo '<option value="hotfix" ' . ($dashboard_apis['environment'] == 'hotfix' ? 'selected' : '') . '>Hotfix</option>';
-	echo '<option value="preview4" ' . ($dashboard_apis['environment'] == 'preview4' ? 'selected' : '') . '>Preview4</option>';
+		/*echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div><!--API URL end-->';*/
+		echo '<div class="form-group"><label>Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
+	echo '<option value="" ' . ($dashboard_apis['environment'] == '' ? 'selected' : '') . '>Production</option>';
+	echo '<option value="-qa" ' . ($dashboard_apis['environment'] == '-qa' ? 'selected' : '') . '>QA</option>';
+	echo '<option value="-support" ' . ($dashboard_apis['environment'] == '-support' ? 'selected' : '') . '>Support</option>';
+	echo '<option value="-hotfix" ' . ($dashboard_apis['environment'] == '-hotfix' ? 'selected' : '') . '>Hotfix</option>';
+	echo '<option value="-preview4" ' . ($dashboard_apis['environment'] == '-preview4' ? 'selected' : '') . '>Preview4</option>';
 	echo '</select>';
-$test = '-'.$options['dashboard_apis']['environment'];
-$base_url = 'https://denaj.engagifii'.$test.'.com/assets/environment-config-1.0.json?cache=1710484666566';
-$json_data = file_get_contents($base_url);
-
-// Decode JSON data
-$config_data = json_decode($json_data, true);
-$crm_base_url = $config_data['crmBaseUrl'];
-if (substr($crm_base_url, -7) !== "/api/v1") {
-    // Append "/api/v1" to $json_data
-    $crm_base_url .= "/api/v1";
-}
-
-// Update the 'url' in the settings array
-$options['dashboard_apis']['url'] = $crm_base_url;
-$check =$options['dashboard_apis']['url'];
-print_r($check);
-	
+	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/><input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/><input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>';
 		// echo '<div class="form-group"><label>API URL (CRM)</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.(isset($dashboard_apis['url']) ? $dashboard_apis['url'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL(Reports)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_reports]" class="postbox" value="'.(isset($dashboard_apis['url_reports']) ? $dashboard_apis['url_reports'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (Revenue)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_revenue]" class="postbox" value="'.(isset($dashboard_apis['url_revenue']) ? $dashboard_apis['url_revenue'] : '').'" required></div>';
@@ -80,7 +64,6 @@ print_r($check);
 	$tenant_code = $options['dashboard_apis']['tenant'];	
     $obj =  new adminDataColumn();
     $fielddata = $obj->getDashboardFieldData($tenant_code);
-	//print_r($fielddata);
 	$dashboard_fields = array();
 	$dashboard_fields_list=array();
     if(isset($options['dashboard_fields'])){
@@ -119,7 +102,8 @@ print_r($check);
 		}	
 		}
 	
-	}}
+	}
+	}
 	
 echo '</ul></div>';
 
