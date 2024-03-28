@@ -957,13 +957,12 @@ function initializeAutocomplete() {
 </script>
   <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  
 $payload = json_decode(file_get_contents("php://input"), true);	
 
 $peopleToken = $_SESSION['accesstoken'];
 $authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
-$url1 ='https://engagifii-'.$env.'-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
   curl_setopt_array($curl, array(
   CURLOPT_URL => $url1,
   CURLOPT_RETURNTRANSFER => true,

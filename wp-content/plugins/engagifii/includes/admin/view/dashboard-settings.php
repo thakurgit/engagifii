@@ -9,21 +9,26 @@
 	}
 	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content api-urls" style="display:none">';
 		/*echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div><!--API URL end-->';*/
-		echo '<div class="form-group"><label>Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
+		echo '<div class="form-group"><label style="width: 150px;">Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
 	echo '<option value="" ' . ($dashboard_apis['environment'] == '' ? 'selected' : '') . '>Production</option>';
 	echo '<option value="-qa" ' . ($dashboard_apis['environment'] == '-qa' ? 'selected' : '') . '>QA</option>';
 	echo '<option value="-support" ' . ($dashboard_apis['environment'] == '-support' ? 'selected' : '') . '>Support</option>';
 	echo '<option value="-hotfix" ' . ($dashboard_apis['environment'] == '-hotfix' ? 'selected' : '') . '>Hotfix</option>';
 	echo '<option value="-preview4" ' . ($dashboard_apis['environment'] == '-preview4' ? 'selected' : '') . '>Preview4</option>';
 	echo '</select>';
-	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/><input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/><input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>';
+	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][revenueUrl]" class="revenueUrl" type="hidden" value="'.$dashboard_apis['revenueUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][doUrl]" class="doUrl" type="hidden" value="'.$dashboard_apis['doUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>
+	';
 		// echo '<div class="form-group"><label>API URL (CRM)</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.(isset($dashboard_apis['url']) ? $dashboard_apis['url'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL(Reports)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_reports]" class="postbox" value="'.(isset($dashboard_apis['url_reports']) ? $dashboard_apis['url_reports'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (Revenue)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_revenue]" class="postbox" value="'.(isset($dashboard_apis['url_revenue']) ? $dashboard_apis['url_revenue'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (Auth)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_auth]" class="postbox" value="'.(isset($dashboard_apis['url_auth']) ? $dashboard_apis['url_auth'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (DynamicObject)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_do]" class="postbox" value="'.(isset($dashboard_apis['url_do']) ? $dashboard_apis['url_do'] : '').'" required></div>';
 		
-		echo '<div class="form-group"><label>Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
+		echo '<div class="form-group"><label style="width: 142px;">Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
 	echo '</ul></div></div>';
 //dashboard navigation
 	$navdata ='[{"label":"Home","url":"engagifii-profile/welcome-to-mypsba","icon":"fas fa-home"},{"label":"My Profile","url":"engagifii-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"engagifii-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Event Registration","url":"engagifii-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"engagifii-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"engagifii-profile/members","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
@@ -110,7 +115,7 @@ echo '</ul></div>';
 //manage People fields	
 $tenant_code = $options['dashboard_apis']['tenant'];	
 //$obj =  new adminDataColumn();
-$fielddata = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
+$fielddata1 = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
 
 $people_fields = array();
 $people_fields_list=array();
@@ -121,24 +126,24 @@ if(isset($options['people_fields'])){
 	}
 	
 }
-//print_r($fielddata);
+//print_r($fielddata1);
    echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">People Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage People field items</h3> <i>Check the field items that should be visible on the People List View and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[people_fields][order]" value="'.$people_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
 
    if(!$tenant_code){
 	echo '<b style="color:red">oops! People Tenant code not found.</b>';	
 }else{
-	if(!$fielddata){
+	if(!$fielddata1){
 		echo '<b style="color:red">oops! data not found.</b>';
 	} else{
 		$counter=1;
-		$allowedFields=['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone', 'Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
+		//$allowedFields=['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone', 'Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
 		//print_r($fielddata);
 		//$allowedFields=[9,10,11,12];
-		foreach ($fielddata as $field) {
+		foreach ($fielddata1 as $field) {
 			//echo $field;
-			if (!in_array($field, $allowedFields)) {
-				continue;
-			}
+			//if (!in_array($field, $allowedFields)) {
+			//	continue;
+			//}
 		
 			$checked = '';
 			if (count($people_fields_list) > 0) {

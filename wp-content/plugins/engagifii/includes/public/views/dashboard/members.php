@@ -1,5 +1,4 @@
 <?php 
-global $env;
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
@@ -28,31 +27,31 @@ $user     = get_userdata($user_id);
     $colNames = $options['people_fields']['fields']; 
     //print_r($colNames);
     $columnSearch_key = [];
-//     $fiscalYear  = $obj->getFiscalYear();
-// $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
-// //print_r($fiscalYear); 
+    $fiscalYear  = $obj->getFiscalYear();
+$fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
+//print_r($fiscalYear); 
 
-// $largestStartDate = null;
-// $largestEndDate = null;
+$largestStartDate = null;
+$largestEndDate = null;
 
-// foreach ($fiscalYearResponse as $fiscalYear) {
-//     $startDate = strtotime($fiscalYear->startDate);
-//     $endDate = strtotime($fiscalYear->endDate);
+foreach ($fiscalYearResponse as $fiscalYear) {
+    $startDate = strtotime($fiscalYear->startDate);
+    $endDate = strtotime($fiscalYear->endDate);
 
-//     if ($largestStartDate === null || $startDate > $largestStartDate) {
-//         $largestStartDate = $startDate;
-//          $largestFiscalYearName = $fiscalYear->name;
-//    }
+    if ($largestStartDate === null || $startDate > $largestStartDate) {
+        $largestStartDate = $startDate;
+         $largestFiscalYearName = $fiscalYear->name;
+   }
 
-//     if ($largestEndDate === null || $endDate > $largestEndDate) {
-//         $largestEndDate = $endDate;
-//     }
-// }
-// $fiscalStartDate = date('Y-m-d', $largestStartDate );
-// $fiscalEndDate = date('Y-m-d', $largestEndDate );
+    if ($largestEndDate === null || $endDate > $largestEndDate) {
+        $largestEndDate = $endDate;
+    }
+}
+$fiscalStartDate = date('Y-m-d', $largestStartDate );
+$fiscalEndDate = date('Y-m-d', $largestEndDate );
 
-//print_r($fiscalStartDate);
-//print_r($fiscalEndDate);
+// print_r($fiscalStartDate);
+// print_r($fiscalEndDate);
 ?>
 <style>
 table tbody tr.selected {
@@ -315,7 +314,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 	
 
 $('.gtm').click(function(){
-  //alert("here");
+  //alert($('.dateFilter input').val());
   var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
@@ -342,7 +341,11 @@ $('.gtm').click(function(){
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
-    $('.dateFilter input').val('');
+    var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
+    var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
+    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
+    //$('.dateFilter input').val('');
+    //$('.dateFilter input').val('');
 });
 //date filter
 $('.dateFilter input').daterangepicker({
