@@ -16,7 +16,12 @@
 	echo '<option value="-hotfix" ' . ($dashboard_apis['environment'] == '-hotfix' ? 'selected' : '') . '>Hotfix</option>';
 	echo '<option value="-preview4" ' . ($dashboard_apis['environment'] == '-preview4' ? 'selected' : '') . '>Preview4</option>';
 	echo '</select>';
-	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/><input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/><input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>';
+	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][revenueUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['revenueUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][doUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['doUrl'].'"/>
+	
+	';
 		// echo '<div class="form-group"><label>API URL (CRM)</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.(isset($dashboard_apis['url']) ? $dashboard_apis['url'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL(Reports)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_reports]" class="postbox" value="'.(isset($dashboard_apis['url_reports']) ? $dashboard_apis['url_reports'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (Revenue)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_revenue]" class="postbox" value="'.(isset($dashboard_apis['url_revenue']) ? $dashboard_apis['url_revenue'] : '').'" required></div>';

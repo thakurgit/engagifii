@@ -16,6 +16,10 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
     $obj      =  new Engagifii_API();
     $options = get_option('ebt_api_settings'); 
     $profilePayload = $options['dashboard_fields']['fields']; 
+   	$dashboard_apis=array();
+    if(isset($options['dashboard_apis'])){
+    	$dashboard_apis = $options['dashboard_apis']; 
+	}
    // print_r($profilePayload); die;
     //$tenantCode = 'psba';
 	$tenantCode = $options['dashboard_apis']['tenant'];
@@ -568,7 +572,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 					"imageThumbUrl": response,
 				   };
 				  jQuery('#blah').attr('src',response);
-				  $.ajax('https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>', {
+				  $.ajax('<?php echo $dashboard_apis['crmUrl'];?>/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>', {
 					method: 'PUT',
 					  data: JSON.stringify(imageThumbpayload),
 					processData: false,
@@ -957,13 +961,12 @@ function initializeAutocomplete() {
 </script>
   <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  
 $payload = json_decode(file_get_contents("php://input"), true);	
 
 $peopleToken = $_SESSION['accesstoken'];
 $authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
-$url1 ='https://engagifii-'.$env.'-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+$url1 = $dashboard_apis['doUrl'].'/PeopleApproval/CreateRequest';
   curl_setopt_array($curl, array(
   CURLOPT_URL => $url1,
   CURLOPT_RETURNTRANSFER => true,
