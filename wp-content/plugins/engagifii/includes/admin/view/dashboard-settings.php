@@ -9,7 +9,7 @@
 	}
 	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content api-urls" style="display:none">';
 		/*echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div><!--API URL end-->';*/
-		echo '<div class="form-group"><label>Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
+		echo '<div class="form-group"><label style="width: 150px;">Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
 	echo '<option value="" ' . ($dashboard_apis['environment'] == '' ? 'selected' : '') . '>Production</option>';
 	echo '<option value="-qa" ' . ($dashboard_apis['environment'] == '-qa' ? 'selected' : '') . '>QA</option>';
 	echo '<option value="-support" ' . ($dashboard_apis['environment'] == '-support' ? 'selected' : '') . '>Support</option>';
@@ -28,7 +28,7 @@
 		// echo '<div class="form-group"><label>API URL (Auth)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_auth]" class="postbox" value="'.(isset($dashboard_apis['url_auth']) ? $dashboard_apis['url_auth'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL (DynamicObject)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_do]" class="postbox" value="'.(isset($dashboard_apis['url_do']) ? $dashboard_apis['url_do'] : '').'" required></div>';
 		
-		echo '<div class="form-group"><label>Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
+		echo '<div class="form-group"><label style="width: 142px;">Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
 	echo '</ul></div></div>';
 //dashboard navigation
 	$navdata ='[{"label":"Home","url":"engagifii-profile/welcome-to-mypsba","icon":"fas fa-home"},{"label":"My Profile","url":"engagifii-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"engagifii-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Event Registration","url":"engagifii-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"engagifii-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"engagifii-profile/members","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
