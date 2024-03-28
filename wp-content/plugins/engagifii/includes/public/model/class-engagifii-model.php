@@ -2323,6 +2323,51 @@ wp_die();
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
+            $nestedData['status'] =$value->people->status;
+            if($value->people->primaryPhoneNumber->value){
+                $phoneNumber = $value->people->primaryPhoneNumber->value;               
+                $phoneNumber = preg_replace('/\D/', '', $phoneNumber);               
+                if (strlen($phoneNumber) == 10) {                    
+                    $formattedPhoneNumber = '(' . substr($phoneNumber, 0, 3) . ') ' . substr($phoneNumber, 3, 3) . '-' . substr($phoneNumber, 6);
+                    $nestedData['officephone'] = $formattedPhoneNumber;
+                } else {                    
+                    $nestedData['officephone'] = $value->people->primaryPhoneNumber->value;
+                }
+            }else{
+                $nestedData['officephone'] ='--';
+            }
+            if($value->people->lastLogin){
+                $timestamp = strtotime($value->people->lastLogin);
+                $nestedData['lastlogin'] = date('M d, Y', $timestamp);
+            }else{ $nestedData['lastlogin'] ='--';}
+            
+            if ($value->people->totalTimeWorked) {
+                $totalMonths = $value->people->totalTimeWorked;
+                $years = floor($totalMonths / 12);
+                $remainingMonths = $totalMonths % 12;
+                
+                // Construct the output string
+                $output = '';
+                if ($years > 0) {
+                    $output .= $years . ' yr';
+                    if ($years > 1) {
+                        $output .= 's';
+                    }
+                    $output .= ' ';
+                }
+                if ($remainingMonths > 0) {
+                    $output .= $remainingMonths . ' mo';
+                    if ($remainingMonths > 1) {
+                        $output .= 's';
+                    }
+                }
+                
+                $nestedData['totaltime'] = $output;
+            } else {
+                $nestedData['totaltime'] = '--';
+            }
+               
+
 			//$nestedData['organization'] = $value->people->organization->name;
 			if($value->people->peoplePosition){
 				if(count($value->people->peoplePosition)==1){
@@ -2333,7 +2378,7 @@ wp_die();
 						$nestedData['organization'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
 					}
 					$nestedData['organization'] .=$value->people->peoplePosition[0]->organizationName.'</div>';
-					$nestedData['currentposition'] =$value->people->peoplePosition[0]->positionName;
+					$nestedData['position'] =$value->people->peoplePosition[0]->positionName;
 				}else{
 					//positions
 					$classPopover = dd_header('Positions','Search positions..');
@@ -2349,42 +2394,42 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['currentposition'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
+					 $nestedData['position'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
 					//organizations
-					// $classPopover = dd_header('0rganizations','Search 0rganizations..');
-					// $subItems = "";
-					// $li=1;
-					// foreach ($value->people->peoplePosition as $key => $rowData) {
-					// 	$class='';
-					// 	if($li%2==1){
-					// 	  $class='bg-light';	
-					// 	}
-					// 	$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
-					// 	$li++;
-					// }
-					// $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 //$nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+					$classPopover = dd_header('0rganizations','Search 0rganizations..');
+					$subItems = "";
+					$li=1;
+					foreach ($value->people->peoplePosition as $key => $rowData) {
+						$class='';
+						if($li%2==1){
+						  $class='bg-light';	
+						}
+						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
+						$li++;
+					}
+					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
-				$nestedData['currentposition'] = '--';	
+				$nestedData['position'] = '--';	
 			}
-            if($value->people->organization->name){
-            $nestedData['organization'] = $value->people->organization->name;
+             if($value->people->organization->name){
+             $nestedData['primaryorganization'] = $value->people->organization->name;
             }
-            else{
-                $nestedData['organization'] = '--';
-            }
+             else{
+                 $nestedData['primaryorganization'] = '--';
+             }
             if($value->people->peopleDepartment){
 				if(count($value->people->peopleDepartment)==1){
-					$nestedData['currentdepartment']='<div class="d-flex align-items-center">';	
+					$nestedData['department']='<div class="d-flex align-items-center">';	
 					if($value->people->peopleDepartment[0]->imageThumbUrl && filter_var($value->people->peopleDepartment[0]->imageThumbUrl, FILTER_VALIDATE_URL)){
-						$nestedData['currentdepartment'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->peopleDepartment[0]->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->peopleDepartment[0]->imageThumbUrl.'">';	
+						$nestedData['department'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->peopleDepartment[0]->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->peopleDepartment[0]->imageThumbUrl.'">';	
 					}else{
-						$nestedData['currentdepartment'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+						$nestedData['department'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
 					}
-					$nestedData['currentdepartment'] .=$value->people->peopleDepartment[0]->organizationName.'</div>';
-					$nestedData['currentdepartment'] =$value->people->peopleDepartment[0]->departmentName;
+					$nestedData['department'] .=$value->people->peopleDepartment[0]->organizationName.'</div>';
+					$nestedData['department'] =$value->people->peopleDepartment[0]->departmentName;
 				}else{
 					//positions
 					$classPopover = dd_header('Departments','Search departments..');
@@ -2400,14 +2445,14 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['currentdepartment'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
+					 $nestedData['department'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
 					
 					//$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 					// $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				//$nestedData['organization'] ='--';
-				$nestedData['currentdepartment'] = '--';	
+				$nestedData['department'] = '--';	
 			}
             $nestedData['totaltimecommittiee'] ='';
             $nestedData['roles'] ='';
@@ -2497,6 +2542,7 @@ wp_die();
         $postData=array();
         $htmlArray = array();
           $filterParams = $_POST['filterParams'];
+          print_r($filterParams); die;
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {

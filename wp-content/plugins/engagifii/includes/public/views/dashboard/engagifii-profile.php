@@ -11,13 +11,20 @@ if (! is_user_logged_in()) {
 $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
+$member_id = isset($_GET['member']) ? $_GET['member'] : null;
+
     $obj      =  new Engagifii_API();
     $options = get_option('ebt_api_settings'); 
     $profilePayload = $options['dashboard_fields']['fields']; 
    // print_r($profilePayload); die;
     //$tenantCode = 'psba';
 	$tenantCode = $options['dashboard_apis']['tenant'];
+  if($member_id){
+    $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode, $member_id);
+  }else{
     $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
+  }
+   
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
@@ -392,7 +399,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               
               </div>
                <div class="form-group col-12 px-3">
-                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:block" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
+                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
 
                             <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
 
@@ -451,15 +458,15 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 		e.preventDefault();	
 	});
 	});
-	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input',	function(){
-		this.value = this.value.replace(/\D/g,"");
-		if (this.value.match(/[^$,.\d]/)){
-    		jQuery(this).siblings('.invalid-feedback').show();
-		}
-        if(this.value.length>=10){
-            jQuery(this).val(this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'));   
-        }
-    }); 
+	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
+    this.value = this.value.replace(/\D/g, "");
+    if (this.value.match(/[^$,.\d]/)) {
+        jQuery(this).siblings('.invalid-feedback').show();
+    }
+    if (this.value.length >= 10) {
+        this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    }
+});
 	jQuery('body').on('click','.tag_del',function(){
 		jQuery(this).parent().remove();	
 		if($('.tags_all>span').length==0){
@@ -950,12 +957,13 @@ function initializeAutocomplete() {
 </script>
   <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  
 $payload = json_decode(file_get_contents("php://input"), true);	
 
 $peopleToken = $_SESSION['accesstoken'];
 $authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
-$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+$url1 ='https://engagifii-'.$env.'-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
   curl_setopt_array($curl, array(
   CURLOPT_URL => $url1,
   CURLOPT_RETURNTRANSFER => true,

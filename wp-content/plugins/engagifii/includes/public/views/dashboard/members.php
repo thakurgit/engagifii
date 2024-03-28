@@ -1,4 +1,5 @@
 <?php 
+global $env;
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
@@ -19,7 +20,7 @@ $user     = get_userdata($user_id);
 // return;
 // } 
  include 'sidebar_nav.php'; 
-	/*$obj 			=  new Engagifii_API();*/
+	$obj 			=  new Engagifii_API();
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
@@ -27,6 +28,31 @@ $user     = get_userdata($user_id);
     $colNames = $options['people_fields']['fields']; 
     //print_r($colNames);
     $columnSearch_key = [];
+//     $fiscalYear  = $obj->getFiscalYear();
+// $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
+// //print_r($fiscalYear); 
+
+// $largestStartDate = null;
+// $largestEndDate = null;
+
+// foreach ($fiscalYearResponse as $fiscalYear) {
+//     $startDate = strtotime($fiscalYear->startDate);
+//     $endDate = strtotime($fiscalYear->endDate);
+
+//     if ($largestStartDate === null || $startDate > $largestStartDate) {
+//         $largestStartDate = $startDate;
+//          $largestFiscalYearName = $fiscalYear->name;
+//    }
+
+//     if ($largestEndDate === null || $endDate > $largestEndDate) {
+//         $largestEndDate = $endDate;
+//     }
+// }
+// $fiscalStartDate = date('Y-m-d', $largestStartDate );
+// $fiscalEndDate = date('Y-m-d', $largestEndDate );
+
+//print_r($fiscalStartDate);
+//print_r($fiscalEndDate);
 ?>
 <style>
 table tbody tr.selected {
@@ -115,8 +141,11 @@ table tbody tr.selected {
                    // $columnSearch_key[1]['placeholder'] = 'Search Office Email';
                   }
                   if($key == 'Organization'){
-                   $key = 'Primary Organization';
+                   $key = 'Current Organization';
                   }
+                  if($key == 'Total Time'){
+                    $key = 'Total Time Worked';
+                   }
 				  $i++;
 				  if($key == 'people-select'){
 					echo '<th class="'.$key.'"><input type="checkbox"></th>'; 
@@ -170,7 +199,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"ordering":true,
 		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc'], [<?php echo array_search('Organization', $colNames); ?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','currentposition', 'persontype', 'currentdepartment'],
+          { "targets": ['people-select','email','currentposition', 'status', 'officephone', 'lastlogin', 'persontype', 'primaryorganization','currentdepartment','totaltime'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
