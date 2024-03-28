@@ -314,7 +314,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 	
 
 $('.gtm').click(function(){
-  //alert("here");
+  //alert($('.dateFilter input').val());
   var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
@@ -341,9 +341,10 @@ $('.gtm').click(function(){
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
-   var defaultStartDate = '<?php echo $fiscalStartDate; ?>';
-    var defaultEndDate = '<?php echo $fiscalEndDate; ?>';
+    var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
+    var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
     $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
+    //$('.dateFilter input').val('');
     //$('.dateFilter input').val('');
 });
 //date filter
