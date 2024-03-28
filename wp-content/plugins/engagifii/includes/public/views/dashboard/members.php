@@ -27,31 +27,31 @@ $user     = get_userdata($user_id);
     $colNames = $options['people_fields']['fields']; 
     //print_r($colNames);
     $columnSearch_key = [];
-//     $fiscalYear  = $obj->getFiscalYear();
-// $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
-// //print_r($fiscalYear); 
+    $fiscalYear  = $obj->getFiscalYear();
+$fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
+//print_r($fiscalYear); 
 
-// $largestStartDate = null;
-// $largestEndDate = null;
+$largestStartDate = null;
+$largestEndDate = null;
 
-// foreach ($fiscalYearResponse as $fiscalYear) {
-//     $startDate = strtotime($fiscalYear->startDate);
-//     $endDate = strtotime($fiscalYear->endDate);
+foreach ($fiscalYearResponse as $fiscalYear) {
+    $startDate = strtotime($fiscalYear->startDate);
+    $endDate = strtotime($fiscalYear->endDate);
 
-//     if ($largestStartDate === null || $startDate > $largestStartDate) {
-//         $largestStartDate = $startDate;
-//          $largestFiscalYearName = $fiscalYear->name;
-//    }
+    if ($largestStartDate === null || $startDate > $largestStartDate) {
+        $largestStartDate = $startDate;
+         $largestFiscalYearName = $fiscalYear->name;
+   }
 
-//     if ($largestEndDate === null || $endDate > $largestEndDate) {
-//         $largestEndDate = $endDate;
-//     }
-// }
-// $fiscalStartDate = date('Y-m-d', $largestStartDate );
-// $fiscalEndDate = date('Y-m-d', $largestEndDate );
+    if ($largestEndDate === null || $endDate > $largestEndDate) {
+        $largestEndDate = $endDate;
+    }
+}
+$fiscalStartDate = date('Y-m-d', $largestStartDate );
+$fiscalEndDate = date('Y-m-d', $largestEndDate );
 
-//print_r($fiscalStartDate);
-//print_r($fiscalEndDate);
+print_r($fiscalStartDate);
+print_r($fiscalEndDate);
 ?>
 <style>
 table tbody tr.selected {
@@ -341,7 +341,10 @@ $('.gtm').click(function(){
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
-    $('.dateFilter input').val('');
+   var defaultStartDate = '<?php echo $fiscalStartDate; ?>';
+    var defaultEndDate = '<?php echo $fiscalEndDate; ?>';
+    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
+    //$('.dateFilter input').val('');
 });
 //date filter
 $('.dateFilter input').daterangepicker({
