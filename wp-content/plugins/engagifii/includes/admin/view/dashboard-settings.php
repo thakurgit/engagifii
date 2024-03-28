@@ -115,7 +115,7 @@ echo '</ul></div>';
 //manage People fields	
 $tenant_code = $options['dashboard_apis']['tenant'];	
 //$obj =  new adminDataColumn();
-$fielddata = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
+$fielddata1 = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
 
 $people_fields = array();
 $people_fields_list=array();
@@ -126,24 +126,24 @@ if(isset($options['people_fields'])){
 	}
 	
 }
-//print_r($fielddata);
+//print_r($fielddata1);
    echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">People Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage People field items</h3> <i>Check the field items that should be visible on the People List View and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[people_fields][order]" value="'.$people_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
 
    if(!$tenant_code){
 	echo '<b style="color:red">oops! People Tenant code not found.</b>';	
 }else{
-	if(!$fielddata){
+	if(!$fielddata1){
 		echo '<b style="color:red">oops! data not found.</b>';
 	} else{
 		$counter=1;
-		$allowedFields=['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone', 'Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
+		//$allowedFields=['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone', 'Department', 'Last Login', 'Organization', 'Primary Organization','Person Type', 'Total Time'];
 		//print_r($fielddata);
 		//$allowedFields=[9,10,11,12];
-		foreach ($fielddata as $field) {
+		foreach ($fielddata1 as $field) {
 			//echo $field;
-			if (!in_array($field, $allowedFields)) {
-				continue;
-			}
+			//if (!in_array($field, $allowedFields)) {
+			//	continue;
+			//}
 		
 			$checked = '';
 			if (count($people_fields_list) > 0) {
