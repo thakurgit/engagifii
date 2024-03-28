@@ -50,8 +50,8 @@ foreach ($fiscalYearResponse as $fiscalYear) {
 $fiscalStartDate = date('Y-m-d', $largestStartDate );
 $fiscalEndDate = date('Y-m-d', $largestEndDate );
 
-print_r($fiscalStartDate);
-print_r($fiscalEndDate);
+// print_r($fiscalStartDate);
+// print_r($fiscalEndDate);
 ?>
 <style>
 table tbody tr.selected {
