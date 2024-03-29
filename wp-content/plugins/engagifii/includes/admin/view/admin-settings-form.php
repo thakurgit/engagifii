@@ -310,38 +310,18 @@ jQuery(this).siblings('.cls').val('');
 			});
         }
     }
-	jQuery('.select-env').change( function() {
+    jQuery('.select-env').change( function() {
 		 $.ajax({url: "https://denaj.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", success: function(result){
-		var crmUrl = result.crmBaseUrl;
-		if(crmUrl.indexOf('api') == -1){
-			crmUrl = crmUrl+'/api/v1';	
-		}
-		jQuery('.select-env').siblings('.crmUrl').val(crmUrl);
-
-		var reportUrl = result.courseReporturl;
-		if(reportUrl.indexOf('api') == -1){
-			reportUrl = reportUrl+'/api/v1';	
-		}
-		jQuery('.select-env').siblings('.reportUrl').val(reportUrl);
-
-    var authUrl = result.authPolicyDevUrl;
-		if(authUrl.indexOf('api') == -1){
-			authUrl = authUrl+'/api/v1';	
-		}
-		jQuery('.select-env').siblings('.authUrl').val(authUrl);
-
-    var revenueUrl = result.revenueBaseUrl;
-		if(revenueUrl.indexOf('api') == -1){
-			revenueUrl = revenueUrl+'/api/v1';	
-		}
-		jQuery('.select-env').siblings('.revenueUrl').val(revenueUrl);
-
-    var doUrl = result.dynamicObjectApprovalUrl;
-		if(doUrl.indexOf('api') == -1){
-			doUrl = doUrl+'/api/v1';	
-		}
-		jQuery('.select-env').siblings('.doUrl').val(doUrl);
-  		}
+			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl};
+			 for (var key in apiUrls) {
+				if (apiUrls.hasOwnProperty(key)) {
+					if(apiUrls[key].indexOf('api') == -1){
+						apiUrls[key] = apiUrls[key]+'/api/v1';	
+					}
+					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
+				}
+			}
+			}
 		});
 	});
 });
