@@ -21,6 +21,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
+        ['peopleFilters', 'peopleFilters'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
@@ -2542,28 +2543,29 @@ wp_die();
         $postData=array();
         $htmlArray = array();
           $filterParams = $_POST['filterParams'];
-          print_r($filterParams); die;
+          //print_r($filterParams); die;
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {
-              if($values =='department'){
-                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1/tenantdepartment/GetAllTenantDepartmentsLite/'.$date; 
-              }else if($values =='position'){
-                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1/Organization/GetAllOrganizationPositionsLite/'.$date;   
-              }else if($values =='organization'){
-                $apiUrl='https://engagifii-qa-crm.azurewebsites.net/api/v1.0/Organization/GetOrganizationListWithIdForFilters/'.$date;   
+              if($values =='Department'){
+                $apiUrl='tenantdepartment/GetAllTenantDepartmentsLite/'.$date; 
+              }else if($values =='Position'){
+                $apiUrl='Organization/GetAllOrganizationPositionsLite/'.$date;   
+              }else if($values =='Organization'){
+                $apiUrl='Organization/GetOrganizationListWithIdForFilters/'.$date;   
               }
               $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+              //print_r($response);
               if($response['api_response']){
                 $response = json_decode($response['api_response'], true);
                 if($response){
                   foreach ($response as $key => $value) {
-                      if($values =='department'){
-                          $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-                      }else if($values =='position'){
-                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
-                      }else if($values=='organization'){
-                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                      if($values =='Department'){
+                          $html[$values].='<li class="d-flex align-items-start"><input id="department_'.$key.'" class="mr-2 mt-1" type="checkbox" name="peopleDepartement[]" value="'.$value['id'].'"> <label class="" for="department_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values =='Position'){
+                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="peoplePosition[]" id="position_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="position_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values=='Organization'){
+                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
                       }
                     }
                   }else{
