@@ -2382,7 +2382,7 @@ wp_die();
 					$nestedData['position'] =$value->people->peoplePosition[0]->positionName;
 				}else{
 					//positions
-					$classPopover = dd_header('Positions','Search positions..');
+					$classPopover = dd_header('Positions');
 					$subItems = "";
 					$li=1;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
@@ -2390,8 +2390,8 @@ wp_die();
 						if($li%2==1){
 						  $class='bg-light';	
 						}
-						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->positionName.'</li>';
-                        $subItems .= ' <span class="dropdown-item pr-2 pl-4 mb-2 py-0 small" style="color:#21086b;"><li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li></span>';
+						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->positionName.'<span class="pl-2 d-block" style="color:#21086b;">'.$rowData->organizationName.'</span></li>';
+                        $subItems .= ' ';
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
@@ -2487,13 +2487,15 @@ wp_die();
         //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
 		$titleColumn = $_POST['titleColumn'];
-        $titleColumn = $_POST['emailColumn'];//emailColumn
+        //$titleColumn = $_POST['emailColumn'];//emailColumn
+       	$sortByColumn = $_POST['order'][0]['column'];
         $postData = array(
             'itemCount' => $_POST['length'],
-            'sortBy' => "updated",
+            'sortBy' => $_POST['columns'][$sortByColumn]['data'],
+            //'sortBy' => "updated",
             'pageNumber' => $startPageNum,
             'pageSize' => ((int) $_POST['length']),
-            'sortDirection' => "desc",
+            'sortDirection' => $_POST['order'][0]['dir'],
             'filterBody' => array(
                 'selectedDate' => "2024-03-19",
                 'onlyFavorite' => false,
@@ -2547,6 +2549,8 @@ wp_die();
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {
+			  $response = '';
+			  $apiUrl = '';
               if($values =='Department'){
                 $apiUrl='tenantdepartment/GetAllTenantDepartmentsLite/'.$date; 
               }else if($values =='Position'){
@@ -2554,18 +2558,22 @@ wp_die();
               }else if($values =='Organization'){
                 $apiUrl='Organization/GetOrganizationListWithIdForFilters/'.$date;   
               }
+			  /*else if($values =='Status'){
+				  
+				}else if($values =='Total Time'){ 
+				
+				}*/
               $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
-              //print_r($response);
               if($response['api_response']){
                 $response = json_decode($response['api_response'], true);
                 if($response){
                   foreach ($response as $key => $value) {
                       if($values =='Department'){
-                          $html[$values].='<li class="d-flex align-items-start"><input id="department_'.$key.'" class="mr-2 mt-1" type="checkbox" name="peopleDepartement[]" value="'.$value['id'].'"> <label class="" for="department_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+                          $html[$values].='<li><div class="form-check"><input id="department_'.$key.'" class="form-check-input" type="checkbox" name="peopleDepartement[]" value="'.$value['id'].'"> <label class="form-check-label" class="" for="department_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';	
                       }else if($values =='Position'){
-                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="peoplePosition[]" id="position_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="position_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
+                          $html[$values].= '<li><div class="form-check"><input  type="checkbox" name="peoplePosition[]" id="position_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="position_'.$key.'"><small>'.addslashes($value['name']).'</small></label></div></li>';	
                       }else if($values=='Organization'){
-                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['value'].'" class="form-check-input"> <label class="form-check-label" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
                       }
                     }
                   }else{

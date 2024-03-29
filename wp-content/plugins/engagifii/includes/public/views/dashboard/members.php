@@ -25,6 +25,7 @@ $user     = get_userdata($user_id);
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
     $colNames = $options['people_fields']['fields']; 
+	$filterParams=array_intersect($colNames,['Organization','Position','Department','Status','Total Time']);
     //print_r($colNames);
     $columnSearch_key = [];
     $fiscalYear  = $obj->getFiscalYear();
@@ -54,8 +55,20 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 // print_r($fiscalEndDate);
 ?>
 <style>
-table tbody tr.selected {
-/*background-color: #bed6f2 !important;*/
+.filter-toggle {
+	width: 40px;
+	height: 40px;
+	color: #002474 !important;
+}
+.po-filter.show > .filter-toggle, .po-filter.ft-selected > .filter-toggle {
+	background-color: #002474 !important;
+	color: #fff !important;
+}
+.po-filter .dropdown-menu {
+	width: 300px;
+}
+.po-filter label {
+	font-size: 15px;
 }
 </style>
 <div class="container-fluid mb-3">
@@ -100,7 +113,7 @@ table tbody tr.selected {
                   <div class="dropdown-menu py-0">
                     <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> </div>
                     <div class="accordion" id="accordionFilter">
-                      <?php $ft=0; foreach ($colNames as $key => $values) { ?>
+                      <?php $ft=0; foreach ($filterParams as $key => $values) { ?>
                       <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
                         <h5 class="mb-0">
                           <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
@@ -196,9 +209,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc'], [<?php echo array_search('Organization', $colNames); ?>, 'asc']],
+		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','currentposition', 'status', 'officephone', 'lastlogin', 'persontype', 'primaryorganization','currentdepartment','totaltime'],
+          { "targets": ['people-select','email','position', 'status', 'officephone', 'lastlogin', 'persontype', 'currentorganization','department','totaltimeworked'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
@@ -307,7 +320,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 
     },
     });
-	
+$(document).on('click', '.po-filter .dropdown-menu', function (e) {
+	e.stopPropagation();
+});	
 	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
@@ -341,10 +356,13 @@ $('.gtm').click(function(){
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
-    var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
-    var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
+   $('.dateFilter input').val('');
+   <?php  if ($fiscalStartDate){ ?>
+      var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
+     var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
     $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
-    //$('.dateFilter input').val('');
+   <?php }   ?>
+    
     //$('.dateFilter input').val('');
 });
 //date filter
@@ -392,7 +410,7 @@ $(document).ready(function(){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
 	}
 });
-var colNames = <?php echo json_encode($colNames); ?>;
+var colNames = <?php echo json_encode($filterParams); ?>;
 //console.log(colNames);
 window.addEventListener("load", function () {
   //console.log('hellooo');
@@ -405,9 +423,10 @@ window.addEventListener("load", function () {
 		},
 		success: function(response) {     
 		for (var key of Object.keys(JSON.parse(response))) {
-			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
+			var index = Object.keys(JSON.parse(response)).indexOf(key);
+			$('#filter-'+index+' ul').html(JSON.parse(response)[key]);
 		}
-		dt_filterActivate();
+		filterEvents();
 	//	var dates = JSON.parse(response)['startDateTime'];
 		//filterEvents(dates['minStartDate'],dates['maxEndDate']); 
 			}
@@ -416,6 +435,55 @@ window.addEventListener("load", function () {
 $('.refresh').click(function(){
 		table.draw();
 	});
+function filterEvents(){
+	$('.po-filter ul').each(function() {
+		  	$('input', this).prop('checked', false);
+		  	var ftSelected = 0;
+		  	$('input', this).change(function() {
+		  		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
+		  		if(ftSelected > 0) {
+		  			$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('(' + ftSelected + ')');
+		  		} else {
+		  			$(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');
+		  		}
+		  	});
+			if($('li', this).length>0){
+		 	 	$('<input class="form-control my-2 form-control-sm bg-light ft-list" placeholder="Search..."/><div class="form-check"><input class="form-check-input select-all" type="checkbox" value="" id="all-' + $(this).parents('.border-bottom').attr('data-filter') + '"><label class="form-check-label" for="all-' + $(this).parents('.border-bottom').attr('data-filter') + '"><small class="font-weight-bold">Select / Deselect All</small></label></div>').insertBefore(this);
+		  		$('<span class="d-none small pb-2 text-center font-italic">No data found with this keyword</span>').insertAfter(this);
+			}
+		  });	
+  //select/Deselect all checkbox in filter
+  $('.select-all').change(function() {
+	  if($(this).is(':checked')) {
+		  $(this).parent().siblings('ul').find('li input').prop('checked', true).change();
+	  } else {
+		  $(this).parent().siblings('ul').find('li input').prop('checked', false).change();
+	  }
+  });
+  //search list in filter
+  $('.ft-list').each(function() {
+	  $(this).on('keyup', function() {
+		  var value = $(this).val().toLowerCase();
+		  $(this).siblings('ul').find('li').filter(function() {
+			  $(this).toggle($.trim($(this).text()).toLowerCase().indexOf(value) > -1);
+		  });
+		  if($(this).siblings('ul').find('li:visible').length < 1) {
+			  $(this).siblings('span').removeClass('d-none').addClass('d-flex');
+			  $(this).siblings('div').addClass('d-none');
+		  } else {
+			  $(this).siblings('span').addClass('d-none').removeClass('d-flex');
+			  $(this).siblings('div').removeClass('d-none');
+		  }
+	  });
+  });
+  $('.po-filter .td-dropdown').each(function() {   
+$(this).mCustomScrollbar({
+		 	 scrollButtons:{enable:true},
+					theme:'minimal-dark',
+		 			scrollbarPosition:'outside'
+});
+});
+}
 
 
 
