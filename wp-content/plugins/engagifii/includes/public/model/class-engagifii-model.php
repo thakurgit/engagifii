@@ -22,6 +22,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
         ['peopleFilters', 'peopleFilters'],
+        ['peoplefiltercountdata', 'peoplefiltercountdata'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
@@ -2540,7 +2541,16 @@ wp_die();
       
     return $postData;
     }
-    
+	/* public function peoplefiltercountdata(){
+        $postData = array();
+        $postData['cityofResidence'] = $_POST['positions'];      
+        $postData['committee'] = $_POST['departments'];      
+        $postData['politicalParty'] = $_POST['orgs'];      
+        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
+        header("Content-Type: application/json");
+		echo json_encode($dataResponse);
+        wp_die();	 
+	 } */   
     public function peopleFilters(){
         $postData=array();
         $htmlArray = array();
@@ -2573,7 +2583,7 @@ wp_die();
                       }else if($values =='Position'){
                           $html[$values].= '<li><div class="form-check"><input  type="checkbox" name="peoplePosition[]" id="position_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="position_'.$key.'"><small>'.addslashes($value['name']).'</small></label></div></li>';	
                       }else if($values=='Organization'){
-                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['value'].'" class="form-check-input"> <label class="form-check-label" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
+                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
                       }
                     }
                   }else{

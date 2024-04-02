@@ -128,9 +128,9 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                       </div>
                       <?php $ft++; } ?>
                     </div>
-                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
-          <span id="countFilterResult"></span>
-        </button>
+                    <div class="text-center py-2">
+                    <button class="btn btn-primary py-1" type="button" name="callmasterApi" id="apply-filter-data">Apply<span class="mx-1" id="countFilterResult"></span><div class="spinner-border spinner-border-sm d-none" role="status"><span class="sr-only">Loading...</span></div>      
+        </button></div>
                   </div>
                 </div>
         </div>
@@ -195,6 +195,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   </div>
 </div>
 <script type="text/javascript">
+var positions = [], departments = [], orgs=[];
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
@@ -202,6 +203,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
+  var filterSubmitted = false;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -238,11 +240,10 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             "type": "POST",
             "data": function(d) {  
             	d.action='peopleList'; 
-            	//d.profileId = profileId;
-            	//d.startDate = startDate;
-            	//d.endDate = endDate;
+				d.positions=positions; 
+				d.departments=departments; 
+				d.orgs=orgs; 
 				d.titleColumn = columnSearch[0]['key']; 
-        //d.emailColumn = columnSearch[1]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
 				//d.emailColumn = columnSearch[1]['key']; 
 				<?php } ?>
@@ -254,7 +255,6 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 
      "drawCallback": function( settings ) {
-		 	
             dt_dropdown();
            dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
@@ -308,8 +308,18 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 					$('.select-row').prop('checked',false).change(); 
 				}
 			});
-			var frow = $('#ebtmaintable tbody tr:first-child');
-			  $(frow).addClass('bg-secondary');
+			
+			 $('#apply-filter-data .spinner-border').addClass('d-none');
+			 $('#apply-filter-data').removeAttr('disabled')
+			if(filterSubmitted){
+				 var element  = document.getElementById("countFilterResult");
+				if(element){
+					 element.innerHTML = " ("+settings._iRecordsTotal+")";
+				 } 
+				 filterSubmitted = false;
+			}
+			
+			
          },
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
@@ -427,8 +437,6 @@ window.addEventListener("load", function () {
 			$('#filter-'+index+' ul').html(JSON.parse(response)[key]);
 		}
 		filterEvents();
-	//	var dates = JSON.parse(response)['startDateTime'];
-		//filterEvents(dates['minStartDate'],dates['maxEndDate']); 
 			}
 	  });
 });
@@ -486,68 +494,60 @@ $(this).mCustomScrollbar({
 }
 
     //filter
-    $('#apply-filter-data').click(function(){
-  $('.filter-list').each(function() {
-	 if ($(this).find('input[type=checkbox]').is(':checked')) {
-		$(this).addClass('checked');
-	 } else {
-		$(this).removeClass('checked');
-	 }
-  });
-
-  $('input[name="createdbetween"]').each(function() {
-	 if ($(this).val()!='') {
-		$(this).parents('.filter-list').addClass('checked');
-	 } else {
-		$(this).parents('.filter-list').removeClass('checked');
-	 }
-  });
-  fv = $('.filter-list.checked').length;
-  if(fv>0){
-	$('.filter-icon').addClass('active'); 
-	$('.filter-icon span').text(fv); 
-  } else {
-	$('.filter-icon').removeClass('active');  
+$('#apply-filter-data').click(function(){
+	filterSubmitted = true;
+	positions = $.map($('input[name="peoplePosition[]"]:checked'), function(c){return c.value; });
+	departments = $.map($('input[name="peopleDepartement[]"]:checked'), function(c){return c.value; });
+	orgs = $.map($('input[name="peopleOrganization[]"]:checked'), function(c){return c.value; });
+	$('#apply-filter-data .spinner-border').removeClass('d-none');
+	if($(".po-filter ul input:checkbox:checked").length > 0){
+  	$('.po-filter').addClass('ft-selected');
+ 	 if($('.filter-toggle span').length==0){
+ 		 $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
+ 	 }else{
+  		$('.filter-toggle span').text($('.ft-active').length);
+  	}
+  }else{
+  	$('.po-filter').removeClass('ft-selected');	
+  	$('.filter-toggle span').remove();
   }
-
-
-tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
-if(tags.length==0){
-tags= ['portal'];	
-}
-
-types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
-city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
-      
-      $(".filter-area").toggleClass('d-none');
+	$(this).attr('disabled','');
+	//countFilterData();
       table.draw();
-
     });
-
-function countFilterData(){
-
-var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
-if(tags.length==0){
-tags= ['portal'];	
-}
-var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
-var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
+$('#clear-all').click(function(){
+	positions = [], departments = [], orgs=[];
+	$('#apply-filter-data').attr('disabled','');
+	$('#apply-filter-data .spinner-border').removeClass('d-none');
+	$('#countFilterResult').text('');
+	$('.filter-toggle span').remove();
+	$('.po-filter input').each(function() {
+		$(this).prop('checked', false);
+	});
+	$('.ft-list').each(function() {
+	  if($(this).val()!=''){
+		  $(this).val('').keyup();
+	  }
+	});
+	$('.ft-active').removeClass('ft-active');
+	$('.ft-counter').text('');
+//countFilterData();
+	table.draw();	
+});
+/*function countFilterData(){
   $.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
         action:'peoplefiltercountdata',
-        tags : tags,  
-        types : types,  
-        locations : city,  
-         eventEndDate : enddate,   
-		eventStartDate : startdate ,
-		createdDate: createdDate, 
+        positions : positions,  
+        departments : departments,  
+        orgs : orgs,  
     },
     success: function(response) {     
 	//console.log(response); 
       var element  = document.getElementById("countFilterResult");
-	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data .spinner-border').addClass('d-none');
 	  $('#apply-filter-data').removeAttr('disabled')
       if(element)
       {
@@ -556,7 +556,7 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
       }    
     }
 });
-}
+}*/
 
 
 
