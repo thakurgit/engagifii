@@ -2490,6 +2490,29 @@ wp_die();
 		$titleColumn = $_POST['titleColumn'];
         //$titleColumn = $_POST['emailColumn'];//emailColumn
        	$sortByColumn = $_POST['order'][0]['column'];
+        $filterRules = array();
+        if($_POST['positions']){
+            $filterRules[]= array(                
+                    'fieldId' => 'positions',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['positions'],               
+            );
+        }
+        if($_POST['departments']){
+            $filterRules[]= array(                
+                    'fieldId' => 'departments',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['departments'],               
+            );
+        }
+        if($_POST['orgs']){
+            $filterRules[]= array(                
+                    'fieldId' => 'currentOrganization',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['orgs'],               
+            );
+        }
+
         $postData = array(
             'itemCount' => $_POST['length'],
             'sortBy' => $_POST['columns'][$sortByColumn]['data'],
@@ -2534,24 +2557,7 @@ wp_die();
                     'viewExhibitor' => false,
                     'viewPublic' => false
                 ),
-                'filterRules' => array(
-                    array(
-                    'fieldId' => 'positions',
-                    'filterType' => 1,
-                    "selectedValues"=> $_POST['positions']
-                ),
-                array(
-                    'fieldId' => 'departments',
-                    'filterType' => 1,
-                    "selectedValues"=> $_POST['departments']
-                ),
-                array(
-                    'fieldId' => 'currentOrganization',
-                    'filterType' => 1,
-                    "selectedValues"=> $_POST['orgs']
-                ),
-
-                )
+                'filterRules' => $filterRules
 
             )
         );
