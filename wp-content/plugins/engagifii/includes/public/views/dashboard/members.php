@@ -114,7 +114,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                     <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> </div>
                     <div class="accordion" id="accordionFilter">
                       <?php $ft=0; foreach ($filterParams as $key => $values) { ?>
-                      <div class="border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
+                      <div class="filter-list border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
                         <h5 class="mb-0">
                           <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
                         </h5>
@@ -128,9 +128,9 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                       </div>
                       <?php $ft++; } ?>
                     </div>
-                    <div class="text-center py-2">
-                      <button class="filter_submit btn btn-primary py-1" type="submit">Apply</button>
-                    </div>
+                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
+          <span id="countFilterResult"></span>
+        </button>
                   </div>
                 </div>
         </div>
@@ -256,7 +256,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
      "drawCallback": function( settings ) {
 		 	
             dt_dropdown();
-          // dt_scroll();
+           dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 			   if(selectedRow.length !== 0){
 				  $('.gt').css('visibility', 'visible');
@@ -485,7 +485,78 @@ $(this).mCustomScrollbar({
 });
 }
 
+    //filter
+    $('#apply-filter-data').click(function(){
+  $('.filter-list').each(function() {
+	 if ($(this).find('input[type=checkbox]').is(':checked')) {
+		$(this).addClass('checked');
+	 } else {
+		$(this).removeClass('checked');
+	 }
+  });
 
+  $('input[name="createdbetween"]').each(function() {
+	 if ($(this).val()!='') {
+		$(this).parents('.filter-list').addClass('checked');
+	 } else {
+		$(this).parents('.filter-list').removeClass('checked');
+	 }
+  });
+  fv = $('.filter-list.checked').length;
+  if(fv>0){
+	$('.filter-icon').addClass('active'); 
+	$('.filter-icon span').text(fv); 
+  } else {
+	$('.filter-icon').removeClass('active');  
+  }
+
+
+tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(tags.length==0){
+tags= ['portal'];	
+}
+
+types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
+city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
+      
+      $(".filter-area").toggleClass('d-none');
+      table.draw();
+
+    });
+
+function countFilterData(){
+
+var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(tags.length==0){
+tags= ['portal'];	
+}
+var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
+var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
+  $.ajax({
+    type : "post",
+    url: engagifiiUrl_ajaxurl,
+    data:{
+        action:'peoplefiltercountdata',
+        tags : tags,  
+        types : types,  
+        locations : city,  
+         eventEndDate : enddate,   
+		eventStartDate : startdate ,
+		createdDate: createdDate, 
+    },
+    success: function(response) {     
+	//console.log(response); 
+      var element  = document.getElementById("countFilterResult");
+	  $('#apply-filter-data .spinner-border').remove();
+	  $('#apply-filter-data').removeAttr('disabled')
+      if(element)
+      {
+          element.innerHTML = " ("+response.api_response +")";
+          //console.log(response.api_response);
+      }    
+    }
+});
+}
 
 
 
