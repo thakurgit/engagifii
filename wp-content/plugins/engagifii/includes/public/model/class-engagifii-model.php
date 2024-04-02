@@ -2534,7 +2534,25 @@ wp_die();
                     'viewExhibitor' => false,
                     'viewPublic' => false
                 ),
-                'filterRules' => array()
+                'filterRules' => array(
+                    array(
+                    'fieldId' => 'positions',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['positions']
+                ),
+                array(
+                    'fieldId' => 'departments',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['departments']
+                ),
+                array(
+                    'fieldId' => 'currentOrganization',
+                    'filterType' => 1,
+                    "selectedValues"=> $_POST['orgs']
+                ),
+
+                )
+
             )
         );
         
