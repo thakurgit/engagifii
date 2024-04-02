@@ -135,8 +135,8 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                 </div>
         </div>
 </div>
-	<div class="engagifii-box engagifii-main-cotainer position-relative">
-  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page " style="width: 100% !important;">
+	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5">
+  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
 		    	<?php

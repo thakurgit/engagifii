@@ -2320,7 +2320,7 @@ wp_die();
 			}else{
 				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['peoplename'] .= '<a href="'.site_url().'/engagifii-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
+            $nestedData['peoplename'] .= '<a class="text-nowrap" href="'.site_url().'/engagifii-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
@@ -2330,9 +2330,9 @@ wp_die();
                 $phoneNumber = preg_replace('/\D/', '', $phoneNumber);               
                 if (strlen($phoneNumber) == 10) {                    
                     $formattedPhoneNumber = '(' . substr($phoneNumber, 0, 3) . ') ' . substr($phoneNumber, 3, 3) . '-' . substr($phoneNumber, 6);
-                    $nestedData['officephone'] = $formattedPhoneNumber;
+                    $nestedData['officephone'] = '<span class="text-nowrap">'.$formattedPhoneNumber.'</span>';
                 } else {                    
-                    $nestedData['officephone'] = $value->people->primaryPhoneNumber->value;
+                    $nestedData['officephone'] = '<span class="text-nowrap">'.$value->people->primaryPhoneNumber->value.'</span>';
                 }
             }else{
                 $nestedData['officephone'] ='--';
