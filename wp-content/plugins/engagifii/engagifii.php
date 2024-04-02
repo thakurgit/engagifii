@@ -214,7 +214,7 @@ function insert_page_on_activation() {
     $page1 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Bill Tracking',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
+        'post_content'  => '[legislation-list]',  // Content
         'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page1_slug            // Slug of the Post
@@ -227,7 +227,7 @@ function insert_page_on_activation() {
     $page2 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Bill Detail',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
+		'post_content'  => "[legislation-details Id='bill-id']",  // Content
         'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page2_slug            // Slug of the Post
@@ -253,7 +253,7 @@ function insert_page_on_activation() {
 		$page4 = array(
 			'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
 			'post_title'    => 'Classes',    // Title of the Content
-			//'post_content'  => 'Test Page Content',  // Content
+			'post_content'  => '[classes-list-calendar-class-name calendarclassname=true]',  // Content
 			'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page4_slug            // Slug of the Post
@@ -266,7 +266,7 @@ function insert_page_on_activation() {
     $page5 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Class Details',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
+		'post_content'  => "[class-details Id='class-id']",  // Content
         'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page5_slug            // Slug of the Post
@@ -279,7 +279,7 @@ function insert_page_on_activation() {
     $page6 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Courses',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
+        'post_content'  => '[courses-list]',  // Content
         'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page6_slug            // Slug of the Post
@@ -292,7 +292,7 @@ function insert_page_on_activation() {
     $page7 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Course Details',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
+        'post_content'  => "[course-details Id='course-id']",  // Content
         'post_status'   => 'publish',            // Post Status
         'post_author'   => 1,                    // Post Author ID
         'post_name'     => $page7_slug            // Slug of the Post
