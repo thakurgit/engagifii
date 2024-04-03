@@ -2512,6 +2512,13 @@ wp_die();
                     "selectedValues"=> $_POST['orgs'],               
             );
         }
+        if($_POST['status']){
+            $filterRules[]= array(                
+                    'fieldId' => 'status',
+                    'filterType' => 4,
+                    "selectedValues"=> $_POST['status'],               
+            );
+        }
 
         $postData = array(
             'itemCount' => $_POST['length'],
@@ -2591,15 +2598,23 @@ wp_die();
                 $apiUrl='Organization/GetAllOrganizationPositionsLite/'.$date;   
               }else if($values =='Organization'){
                 $apiUrl='Organization/GetOrganizationListWithIdForFilters/'.$date;   
+              }else if($values =='Status'){
+                $apiUrl='status';   
               }
-			  /*else if($values =='Status'){
-				  
-				}else if($values =='Total Time'){ 
+			  else if($values =='Total Time'){ 
 				
-				}*/
-              $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+				}
+               
+            $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+            if($values =='Status'){
+                $response2 ="test";
+                
+        }
+            //print_r($response2);
               if($response['api_response']){
                 $response = json_decode($response['api_response'], true);
+                print_r($response2);
+                
                 if($response){
                   foreach ($response as $key => $value) {
                       if($values =='Department'){
@@ -2608,6 +2623,10 @@ wp_die();
                           $html[$values].= '<li><div class="form-check"><input  type="checkbox" name="peoplePosition[]" id="position_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="position_'.$key.'"><small>'.addslashes($value['name']).'</small></label></div></li>';	
                       }else if($values=='Organization'){
                         $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
+                      }
+                      else if($values=='Status'){
+                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleStatus[]" id="status_1" value="active" class="form-check-input"> <label class="form-check-label" for="status1"><small> '.addslashes('Active').'</small></label></div></li>';
+                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleStatus[]" id="status_2" value="deactivated" class="form-check-input"> <label class="form-check-label" for="status2"><small> '.addslashes('Deactivated').'</small></label></div></li>';
                       }
                     }
                   }else{

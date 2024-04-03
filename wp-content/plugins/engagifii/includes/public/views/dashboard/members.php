@@ -2,12 +2,12 @@
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
-if (! is_user_logged_in()) {
-    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
-    printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
-    echo '</h5></div>';
-    return;
-}
+// if (! is_user_logged_in()) {
+//     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
+//     printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
+//     echo '</h5></div>';
+//     return;
+// }
 if (isset($_COOKIE['pid'])) {
     $pid = $_COOKIE['pid'];
   }
@@ -26,7 +26,7 @@ $user     = get_userdata($user_id);
 	$options 	= get_option( 'ebt_api_settings' );
     $colNames = $options['people_fields']['fields']; 
 	$filterParams=array_intersect($colNames,['Organization','Position','Department','Status','Total Time']);
-    //print_r($colNames);
+    //print_r($filterParams);
     $columnSearch_key = [];
     $fiscalYear  = $obj->getFiscalYear();
 $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
@@ -195,7 +195,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   </div>
 </div>
 <script type="text/javascript">
-var positions = [], departments = [], orgs=[];
+var positions = [], departments = [], orgs=[], status=[];
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
@@ -243,6 +243,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 				d.positions=positions; 
 				d.departments=departments; 
 				d.orgs=orgs; 
+        //d.status=status;
 				d.titleColumn = columnSearch[0]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
 				//d.emailColumn = columnSearch[1]['key']; 
@@ -499,6 +500,7 @@ $('#apply-filter-data').click(function(){
 	positions = $.map($('input[name="peoplePosition[]"]:checked'), function(c){return c.value; });
 	departments = $.map($('input[name="peopleDepartement[]"]:checked'), function(c){return c.value; });
 	orgs = $.map($('input[name="peopleOrganization[]"]:checked'), function(c){return c.value; });
+  status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	if($(".po-filter ul input:checkbox:checked").length > 0){
   	$('.po-filter').addClass('ft-selected');
@@ -516,7 +518,7 @@ $('#apply-filter-data').click(function(){
       table.draw();
     });
 $('#clear-all').click(function(){
-	positions = [], departments = [], orgs=[];
+	positions = [], departments = [], orgs=[], status=[];
 	$('#apply-filter-data').attr('disabled','');
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	$('#countFilterResult').text('');
