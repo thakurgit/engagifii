@@ -119,11 +119,15 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                           <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
                         </h5>
                         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
-                          <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+                        	<?php if($values =='Total Time'){ ?>
+                            	
+                            <?php } else { ?>
+                        	  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
                             <div class="loaders text-center py-3">
                               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
                             </div>
                           </ul>
+                            <?php } ?>
                         </div>
                       </div>
                       <?php $ft++; } ?>

@@ -2598,7 +2598,9 @@ wp_die();
                 $apiUrl='Organization/GetAllOrganizationPositionsLite/'.$date;   
               }else if($values =='Organization'){
                 $apiUrl='Organization/GetOrganizationListWithIdForFilters/'.$date;   
-              }
+              }else if($values =='Total Time'){
+				  continue;
+			  }
              if($values =='Status'){
 				$response =[
                 'api_response' => '[
