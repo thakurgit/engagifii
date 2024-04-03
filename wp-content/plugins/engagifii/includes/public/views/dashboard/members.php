@@ -120,15 +120,10 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                         </h5>
                         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
                         	<?php if($values =='Total Time'){ ?>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input class="form-control" type="number" min="0" step="1">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">to</span>
-                                    </div>
-                                    <input class="form-control" type="number">
-                                </div>
+                            <div class="d-flex align-items-center py-2 timework">
+                            <input class="form-control form-control-sm min" placeholder="1" type="number" min="0" step="1"><span class="px-2">to</span><input class="form-control form-control-sm max" type="number" min="0" step="1" placeholder="2">
                             </div>
+                            
                             <?php } else { ?>
                         	  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
                             <div class="loaders text-center py-3">
@@ -207,7 +202,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   </div>
 </div>
 <script type="text/javascript">
-var positions = [], departments = [], orgs=[], Status=[];
+var positions = [], departments = [], orgs=[], Status=[], totalTime=[];
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
@@ -255,7 +250,8 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 				d.positions=positions; 
 				d.departments=departments; 
 				d.orgs=orgs; 
-        d.status=Status;
+      			  d.status=Status;
+				d.totalTime= totalTime;
 				d.titleColumn = columnSearch[0]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
 				//d.emailColumn = columnSearch[1]['key']; 
@@ -506,31 +502,50 @@ $(this).mCustomScrollbar({
 });
 }
 
-    //filter
+$('.timework .min').on('input', function(){
+	if($(this).val() == parseInt($(this).val(), 10)){
+	  $('.timework .max').attr('min',$(this).val());	
+	}
+});
+$('.timework .max').on('blur', function(){
+	if($(this).val() < $(this).attr('min')){
+	  $(this).val($(this).attr('min'));	
+	}
+});
+//filter submit
 $('#apply-filter-data').click(function(){
+	totalTime=[];
 	filterSubmitted = true;
 	positions = $.map($('input[name="peoplePosition[]"]:checked'), function(c){return c.value; });
 	departments = $.map($('input[name="peopleDepartement[]"]:checked'), function(c){return c.value; });
 	orgs = $.map($('input[name="peopleOrganization[]"]:checked'), function(c){return c.value; });
   Status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
+	$(this).attr('disabled','');
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
-	if($(".po-filter ul input:checkbox:checked").length > 0){
-  	$('.po-filter').addClass('ft-selected');
- 	 if($('.filter-toggle span').length==0){
- 		 $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
- 	 }else{
-  		$('.filter-toggle span').text($('.ft-active').length);
-  	}
+  if($('.timework .min').val()==parseInt($('.timework .min').val(), 10) && $('.timework .max').val()==parseInt($('.timework .max').val(), 10)){
+	 totalTime.push(parseInt($('.timework .min').val()), parseInt($('.timework .max').val())); 
+  }
+  if(totalTime.length!=0){
+	$('.timework').parents('.filter-list').addClass('ft-active');
+  }else{
+	$('.timework').parents('.filter-list').removeClass('ft-active');
+  }
+	if($(".po-filter ul input:checkbox:checked").length > 0 || totalTime.length!=0){
+	  $('.po-filter').addClass('ft-selected');
+	   if($('.filter-toggle span').length==0){
+		   $('.filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">'+$('.ft-active').length+'</span>');
+	   }else{
+		  $('.filter-toggle span').text($('.ft-active').length);
+	  }
   }else{
   	$('.po-filter').removeClass('ft-selected');	
   	$('.filter-toggle span').remove();
   }
-	$(this).attr('disabled','');
 	//countFilterData();
       table.draw();
     });
 $('#clear-all').click(function(){
-	positions = [], departments = [], orgs=[], Status=[];
+	positions = [], departments = [], orgs=[], Status=[],totalTime=[];
 	$('#apply-filter-data').attr('disabled','');
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	$('#countFilterResult').text('');
@@ -543,6 +558,7 @@ $('#clear-all').click(function(){
 		  $(this).val('').keyup();
 	  }
 	});
+	$('.timework input').val('');
 	$('.ft-active').removeClass('ft-active');
 	$('.ft-counter').text('');
 //countFilterData();
