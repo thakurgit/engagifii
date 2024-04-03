@@ -501,15 +501,9 @@ $(this).mCustomScrollbar({
 });
 });
 }
-
-$('.timework .min').on('input', function(){
-	if($(this).val() == parseInt($(this).val(), 10)){
-	  $('.timework .max').attr('min',$(this).val());	
-	}
-});
 $('.timework .max').on('blur', function(){
-	if($(this).val() < $(this).attr('min')){
-	  $(this).val($(this).attr('min'));	
+	if(parseInt($(this).val(),10) < parseInt($('.timework .min').val())){
+	  $(this).val($('.timework .min').val());	
 	}
 });
 //filter submit
@@ -550,6 +544,7 @@ $('#clear-all').click(function(){
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	$('#countFilterResult').text('');
 	$('.filter-toggle span').remove();
+	$('.po-filter').removeClass('ft-selected');	
 	$('.po-filter input').each(function() {
 		$(this).prop('checked', false);
 	});
