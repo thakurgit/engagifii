@@ -120,7 +120,15 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                         </h5>
                         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
                         	<?php if($values =='Total Time'){ ?>
-                            	
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" type="number" min="0" step="1">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input class="form-control" type="number">
+                                </div>
+                            </div>
                             <?php } else { ?>
                         	  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
                             <div class="loaders text-center py-3">
@@ -199,7 +207,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   </div>
 </div>
 <script type="text/javascript">
-var positions = [], departments = [], orgs=[], status=[];
+var positions = [], departments = [], orgs=[], Status=[];
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
@@ -247,7 +255,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 				d.positions=positions; 
 				d.departments=departments; 
 				d.orgs=orgs; 
-        //d.status=status;
+        d.status=Status;
 				d.titleColumn = columnSearch[0]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
 				//d.emailColumn = columnSearch[1]['key']; 
@@ -504,7 +512,7 @@ $('#apply-filter-data').click(function(){
 	positions = $.map($('input[name="peoplePosition[]"]:checked'), function(c){return c.value; });
 	departments = $.map($('input[name="peopleDepartement[]"]:checked'), function(c){return c.value; });
 	orgs = $.map($('input[name="peopleOrganization[]"]:checked'), function(c){return c.value; });
-  status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
+  Status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	if($(".po-filter ul input:checkbox:checked").length > 0){
   	$('.po-filter').addClass('ft-selected');
@@ -522,7 +530,7 @@ $('#apply-filter-data').click(function(){
       table.draw();
     });
 $('#clear-all').click(function(){
-	positions = [], departments = [], orgs=[], status=[];
+	positions = [], departments = [], orgs=[], Status=[];
 	$('#apply-filter-data').attr('disabled','');
 	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	$('#countFilterResult').text('');

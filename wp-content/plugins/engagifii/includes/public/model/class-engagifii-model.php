@@ -2630,7 +2630,7 @@ wp_die();
                         $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleOrganization[]" id="organization_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
                       }
                       else if($values=='Status'){
-                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleStatus[]" id="status_'.$key.'" value="'.$value['id'].'" class="form-check-input"> <label class="form-check-label" for="status_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
+                        $html[$values].= '<li><div class="form-check"><input type="checkbox" name="peopleStatus[]" id="status_'.$key.'" value="'.$value['name'].'" class="form-check-input"> <label class="form-check-label" for="status_'.$key.'"><small> '.addslashes($value['name']).'</small></label></div></li>';
                       }
                     }
                   }else{
