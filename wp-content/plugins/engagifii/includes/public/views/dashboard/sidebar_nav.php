@@ -1,11 +1,12 @@
-<?php session_start();
-if(!isset($_COOKIE['loggedin_username'])) {
-	$name = $_COOKIE['loggedin_username'];
+<?php 
+$name = $_COOKIE['loggedin_username'];
 	$dp = $_COOKIE['loggedin_userdp'];
-} else {
-    $name = $_SESSION['name'];
-	$dp = $_SESSION['dp'];
-}
+session_start();
+//$member_id = isset($_GET['member']) ? $_GET['member'] : null;
+    
+	//$name = $_SESSION['name'];
+	//$dp = $_SESSION['dp'];
+
 	
 //} $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
  $site_url = site_url();?>

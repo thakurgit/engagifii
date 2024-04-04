@@ -60,22 +60,19 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 }</script> 
 <?php return;
 } 
-	$_SESSION['pid']=$peopleDATA->people->id;
-  setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/'); 
-if($member_id){
+	 
+if(!$member_id){
   $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
   $loggedin_userdp = $peopleDATA->people->imageThumbUrl;
+   $_SESSION['pid']=$peopleDATA->people->id;
+  setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/');
   setcookie('loggedin_username', $loggedin_username, time() + (24 * 3600), "/");
   setcookie('loggedin_userdp', $loggedin_userdp, time() + (24 * 3600), "/"); // 86400 = 1 day
 }else{
   $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
+   
 }
-
-  
-    $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-    $_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
- 
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
@@ -973,9 +970,9 @@ function initializeAutocomplete() {
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 	</script>
 <script>
-
+//if(!$member_id){
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
-
+//}
 
 </script>
   <?php
