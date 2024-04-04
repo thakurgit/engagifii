@@ -744,10 +744,10 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 
 	
 	public function engagifiiProfileAwardsCount($profileId){
-		$postData='{}';
+		$postData= array();
 		$responseArray = array();
-		$apiUrl = 'Awards/AwardsCertificationsByPeopleCount/'.$profileId;
-		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'awards');
+		$apiUrl = 'Awards/GetMemberStatistics/'.$profileId;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
 	}
