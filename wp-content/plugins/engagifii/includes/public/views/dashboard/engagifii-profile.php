@@ -717,6 +717,7 @@ $('.edit-profile').on('submit', function(event) {
   
 var tags=[];
 var allTags='';
+var loggedInUserId = localStorage.getItem("logged_in_user");
 jQuery('.tags_all > span').each(function(){
 	var oldtag=jQuery(this).clone();  
 	oldtag.find('span').remove();
@@ -728,7 +729,7 @@ var tagsdata = {
 	  "tabId":null,
   "tabGroupId":null,
   "tabGroupFieldId":null,
-  "loggedInUserId":"<?php echo $peopleDATA->people->id; ?>",
+  "loggedInUserId": loggedInUserId,
   "profileUserId":"<?php echo $peopleDATA->people->id; ?>",
   "isHeader":true,
   "headerFieldName":"tags",
@@ -750,7 +751,7 @@ payload.push( tagsdata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "loggedInUserId": loggedInUserId,
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "firstName",
@@ -773,7 +774,7 @@ payload.push( firstNamedata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "loggedInUserId": loggedInUserId,
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "middleName",
@@ -796,7 +797,7 @@ payload.push( middleNamedata );
     "tabId": null,
     "tabGroupId": null,
     "tabGroupFieldId": null,
-    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "loggedInUserId": loggedInUserId,
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": true,
     "headerFieldName": "lastName",
@@ -824,7 +825,7 @@ payload.push( lastNamedata );
     "tabId": "<?php echo $value->tabId; ?>",
     "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
-    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "loggedInUserId": loggedInUserId,
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": false,
     "headerFieldName": "",
@@ -871,7 +872,7 @@ if(JSON.stringify(obj)!=JSON.stringify(oldobj)){
     "tabId": "<?php echo $value->tabId; ?>",
     "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
-    "loggedInUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "loggedInUserId": loggedInUserId,
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": false,
     "headerFieldName": "",
@@ -970,9 +971,9 @@ function initializeAutocomplete() {
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 	</script>
 <script>
-//if(!$member_id){
+ if (!localStorage.getItem("logged_in_user")) {
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
-//}
+}
 
 </script>
   <?php
