@@ -141,7 +141,7 @@ include 'sidebar_nav.php';
               <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } 
 			  foreach ($peopleDATA->peopleFields as $key => $value) {
-          if ($value->controlTypeId == 12 && in_array($value->id, $profilePayload)) {
+          if ($value->controlTypeId == 12 && in_array($value->id, $profilePayloadFields)) {
               $dp = json_decode($value->organizationValue, true);
               // foreach($dp as $key => $value){
               if (count($dp[0]['positionHistory']) > 0) {
@@ -208,7 +208,7 @@ include 'sidebar_nav.php';
             <?php  
 		// foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
 		 foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields)){
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
      <div class="col-md-4 mb-4 ">
@@ -228,7 +228,7 @@ include 'sidebar_nav.php';
                 
                 	<?php //if($peopleDATA->people->primaryPhoneNumber->value){
            foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
           $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
@@ -246,7 +246,7 @@ include 'sidebar_nav.php';
 <hr class="my-4 col-12">
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
-    		 if($value->controlTypeId==12 && in_array($value->id, $profilePayload)){ ?>
+    		 if($value->controlTypeId==12 && in_array($value->id, $profilePayloadFields)){ ?>
 <div class="col-12">
               <strong>Organization:</strong><br>
 
@@ -340,7 +340,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               
               <div class="row">
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
       $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
@@ -355,7 +355,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 ?>			</div>
 			</div>
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){ 
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields)){ 
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
               	<div class="px-3 address-wrap addressGroup<?php echo $key;?> ">
@@ -806,7 +806,7 @@ payload.push( lastNamedata );
   }
   
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11 && in_array($value->id, $profilePayload)){ 
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
 	 ?>
   if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
@@ -836,7 +836,7 @@ payload.push( PhoneNumberdata<?php echo $key;?> );
  } 
 ?>
      <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9 && in_array($value->id, $profilePayload)){
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields)){
 	 //$address = json_decode($value->selectedValue,true);
 	 ?>
 	var keys= [];
