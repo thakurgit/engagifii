@@ -2490,6 +2490,7 @@ wp_die();
 		$titleColumn = $_POST['titleColumn'];
         //$titleColumn = $_POST['emailColumn'];//emailColumn
        	$sortByColumn = $_POST['order'][0]['column'];
+		
         $filterRules = array();
         if($_POST['positions']){
             $filterRules[]= array(                
@@ -2519,6 +2520,13 @@ wp_die();
                     "selectedValues"=> $_POST['status'],               
             );
         }
+		if($_POST['totalTime']){
+			$filterRules[]= array(                
+                    'fieldId' => 'totalTimeWorked',
+                    'filterType' => 202,
+                    "selectedValues"=> $_POST['totalTime'],               
+            );
+		}
 
         $postData = array(
             'itemCount' => $_POST['length'],
