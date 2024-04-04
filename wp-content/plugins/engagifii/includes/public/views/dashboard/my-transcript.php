@@ -45,7 +45,8 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
  $creditEarnedCount = $obj->creditEarnedCount($pid, $fiscalStartDate, $fiscalEndDate);
  $creditEarnedCount = json_decode($creditEarnedCount['api_response']);
  $engagifiiProfileAwardsCount = $obj->engagifiiProfileAwardsCount($pid);
- $awardDataCount = json_decode($engagifiiProfileAwardsCount['api_response']);
+ $awardDataCountNumber = json_decode($engagifiiProfileAwardsCount['api_response']);
+$awardDataCount = $awardDataCountNumber->totalCount;
  if($awardDataCount>0){
    $engagifiiProfileAwards = $obj->engagifiiProfileAwards($pid, $awardDataCount);
    $awardData = json_decode($engagifiiProfileAwards['api_response']);
