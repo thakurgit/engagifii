@@ -62,11 +62,16 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 } 
 	$_SESSION['pid']=$peopleDATA->people->id;
   setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/'); 
+if($member_id){
+  $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+  $loggedin_userdp = $peopleDATA->people->imageThumbUrl;
+  setcookie('loggedin_username', $loggedin_username, time() + (24 * 3600), "/");
+  setcookie('loggedin_userdp', $loggedin_userdp, time() + (24 * 3600), "/"); // 86400 = 1 day
+}else{
+  $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
+}
 
-$loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-$loggedin_userdp = $peopleDATA->people->imageThumbUrl;
-setcookie('loggedin_username', $loggedin_username, time() + (24 * 3600), "/");
-setcookie('loggedin_userdp', $loggedin_userdp, time() + (24 * 3600), "/"); // 86400 = 1 day
   
     $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
     $_SESSION['dp']=$peopleDATA->people->imageThumbUrl;

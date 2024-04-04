@@ -1,6 +1,13 @@
 <?php session_start();
-$name = $_SESSION['name'];
-$dp = $_SESSION['dp'];
+if(!isset($_COOKIE['loggedin_username'])) {
+	$name = $_COOKIE['loggedin_username'];
+	$dp = $_COOKIE['loggedin_userdp']
+} else {
+    $name = $_SESSION['name'];
+	$dp = $_SESSION['dp'];
+}
+	
+//} $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
  $site_url = site_url();?>
 <style>
  body{
