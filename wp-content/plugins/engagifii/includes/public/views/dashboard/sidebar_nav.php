@@ -1,7 +1,7 @@
 <?php session_start();
 if(!isset($_COOKIE['loggedin_username'])) {
 	$name = $_COOKIE['loggedin_username'];
-	$dp = $_COOKIE['loggedin_userdp']
+	$dp = $_COOKIE['loggedin_userdp'];
 } else {
     $name = $_SESSION['name'];
 	$dp = $_SESSION['dp'];
