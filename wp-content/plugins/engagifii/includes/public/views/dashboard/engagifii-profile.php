@@ -2,6 +2,7 @@
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
+//print_r($_SESSION);
 if (! is_user_logged_in()) {
     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
     printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
@@ -61,8 +62,15 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 } 
 	$_SESSION['pid']=$peopleDATA->people->id;
   setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/'); 
-	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
+
+$loggedin_username = "test";//$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+$loggedin_userdp = "dp";//$peopleDATA->people->imageThumbUrl;
+setcookie('loggedin_username', $loggedin_username, time() + (86400 * 30), "/");
+setcookie('loggedin_userdp', $loggedin_userdp, time() + (86400 * 30), "/"); // 86400 = 1 day
+  
+    $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+    $_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
+ 
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
@@ -962,7 +970,7 @@ function initializeAutocomplete() {
 <script>
 
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
- 
+
 
 </script>
   <?php
