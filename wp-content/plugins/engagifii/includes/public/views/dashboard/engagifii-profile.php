@@ -27,8 +27,7 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
-    //print_r(json_encode($profilePayload)); die;
-    //$tenantCode = 'psba';
+        //$tenantCode = 'psba';
 	$tenantCode = $options['dashboard_apis']['tenant'];
   // if($member_id){
   //   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode, $member_id);
@@ -61,7 +60,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 <?php return;
 } 
 	$_SESSION['pid']=$peopleDATA->people->id;
-  setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/');
+  setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/'); 
 	$_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
