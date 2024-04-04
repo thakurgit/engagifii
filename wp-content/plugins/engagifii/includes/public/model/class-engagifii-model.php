@@ -2398,7 +2398,7 @@ wp_die();
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 					 $nestedData['position'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
 					//organizations
-					$classPopover = dd_header('0rganizations','Search 0rganizations..');
+					$classPopover = dd_header('0rganizations');
 					$subItems = "";
 					$li=1;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
