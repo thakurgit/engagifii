@@ -15,16 +15,27 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
 
     $obj      =  new Engagifii_API();
     $options = get_option('ebt_api_settings'); 
-    $profilePayload = $options['dashboard_fields']['fields']; 
-   // print_r($profilePayload); die;
+    $profilePayloadFields = $options['dashboard_fields']['fields']; 
+
+    //$profilePayloadData = json_encode($profilePayloadFields); 
+    if($member_id){
+      $memberid = $member_id;
+    }else{
+        $memberid ="";
+    }
+    $profilePayload = array(
+      "id" => $memberid,
+      "fieldIds" => $profilePayloadFields
+  );
+    //print_r(json_encode($profilePayload)); die;
     //$tenantCode = 'psba';
 	$tenantCode = $options['dashboard_apis']['tenant'];
-  if($member_id){
-    $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode, $member_id);
-  }else{
-    $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
-  }
-   
+  // if($member_id){
+  //   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode, $member_id);
+  // }else{
+  //   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
+  // }
+  $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
