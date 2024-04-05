@@ -204,7 +204,7 @@ include 'sidebar_nav.php';
 				$status = 'Active'; 
 				$statusColor = 'green';
 			  if($member_id) { ?>
-              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
+              <span class="mr-4 bg-white rounded py-1"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } } ?>
   </div>
         </div>
