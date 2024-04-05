@@ -2494,7 +2494,7 @@ wp_die();
         //             "addRemoveTagsPer":false,"viewDetail":true,"deactivatePeople":true,"viewExhibitor":false,"viewPublic":false},"filterRules":[]}}';
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
 		$titleColumn = $_POST['titleColumn'];
-        //$titleColumn = $_POST['emailColumn'];//emailColumn
+        $emailColumn = $_POST['emailColumn'];//emailColumn
        	$sortByColumn = $_POST['order'][0]['column'];
 		
         $filterRules = array();
@@ -2551,7 +2551,7 @@ wp_die();
                         'searchType' => "searchText"
                     ),
                     array(
-                        'searchText' => "",
+                        'searchText' => $_POST['columns'][$emailColumn]['search']['value'],
                         'searchType' => "searchEmailText"
                     ),
                     array(
@@ -2559,7 +2559,7 @@ wp_die();
                         'searchType' => "searchContactText"
                     )
                 ),
-                'searchEmailText' => "",
+                'searchEmailText' => $_POST['columns'][$emailColumn]['search']['value'],
                 'searchContactText' => '',
                 'allPeoplePermission' => array(
                     'viewInstructor' => false,

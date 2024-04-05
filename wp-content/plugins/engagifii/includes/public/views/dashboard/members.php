@@ -148,7 +148,6 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 		    <tr>    
 		    	<?php
 				$i=0;
-				//$colNames =['people-select','People Name', 'Email', 'Current Position', 'Organization','Person Type']; //,'Current Department','Person Type','Organization', 'Total Time Served in Committees','Roles', 'Total Time Worked'
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'People Name'){
@@ -156,8 +155,8 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                     $columnSearch_key[0]['placeholder'] = 'Search Member';
                   }
                   if($key == 'Email'){
-                   // $columnSearch_key[1]['key'] = $i;
-                   // $columnSearch_key[1]['placeholder'] = 'Search Office Email';
+                    $columnSearch_key[1]['key'] = $i;
+                    $columnSearch_key[1]['placeholder'] = 'Search Office Email';
                   }
                   if($key == 'Organization'){
                    $key = 'Current Organization';
@@ -254,7 +253,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 				d.totalTime= totalTime;
 				d.titleColumn = columnSearch[0]['key']; 
 				<?php if(in_array('Email', $colNames)){ ?>
-				//d.emailColumn = columnSearch[1]['key']; 
+				d.emailColumn = columnSearch[1]['key']; 
 				<?php } ?>
             }, 
         },
