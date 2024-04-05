@@ -114,13 +114,18 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                     <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter">Clear All</span> </div>
                     <div class="accordion" id="accordionFilter">
                       <?php $ft=0; foreach ($filterParams as $key => $values) { 
-					if($values =='Total Time'){ 
-						$values = "Total Time Worked (In Years)";
-					}?>
+					?>
                       <div class="filter-list border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
                         <h5 class="mb-0">
-                          <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $values; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
-                        </h5>
+							<?php 
+								if($values =='Total Time'){ 
+									$filterTitle = "Total Time Worked (In Years)";
+								} else{ 
+										$filterTitle = $values;
+									}
+								?>
+									<button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1 <?php if($ft % 2 == 1){ echo 'bg-light'; } ?>" type="button" data-toggle="collapse" data-target="#filter-<?php echo $ft; ?>" ><?php echo $filterTitle; ?><span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i> </button>
+						</h5>
                         <div  id="filter-<?php echo $ft; ?>" class="collapse px-3" data-parent="#accordionFilter">
                         	<?php if($values =='Total Time'){ ?>
                             <div class="d-flex align-items-center py-2 timework">
