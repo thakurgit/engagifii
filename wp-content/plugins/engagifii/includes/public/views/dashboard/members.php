@@ -220,7 +220,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
        	"ordering":true,
 		"order": [[<?php echo array_search('People Name',$colNames);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','position', 'status', 'officephone', 'lastlogin', 'persontype', 'currentorganization','department','totaltimeworked'],
+          { "targets": ['people-select','email','position', 'status', 'officephone', 'lastlogin', 'lastupdated', 'persontype', 'currentorganization','department','totaltimeworked'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>

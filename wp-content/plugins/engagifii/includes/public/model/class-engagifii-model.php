@@ -2343,6 +2343,12 @@ wp_die();
                 $nestedData['lastlogin'] = date('M d, Y', $timestamp);
             }else{ $nestedData['lastlogin'] ='--';}
             
+            if($value->people->modifiedDate){
+                $timestamp = strtotime($value->people->modifiedDate);
+                $nestedData['lastupdated'] = date('M d, Y', $timestamp);
+            }else{ $nestedData['lastupdated'] ='--';}
+
+            
             if ($value->people->totalTimeWorked) {
                 $totalMonths = $value->people->totalTimeWorked;
                 $years = floor($totalMonths / 12);
