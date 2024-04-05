@@ -115,7 +115,7 @@ echo '</ul></div>';
 //manage People fields	
 $tenant_code = $options['dashboard_apis']['tenant'];	
 //$obj =  new adminDataColumn();
-$fielddata1 = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Last updated','Organization', 'Primary Organization','Person Type', 'Total Time'];
+$fielddata1 = ['people-select','People Name', 'Email', 'Position', 'Status', 'Office Phone','Department', 'Last Login', 'Last Updated','Organization', 'Primary Organization','Person Type', 'Total Time'];
 
 $people_fields = array();
 $people_fields_list=array();

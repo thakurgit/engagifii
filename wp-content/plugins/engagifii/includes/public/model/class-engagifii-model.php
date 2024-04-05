@@ -2339,8 +2339,8 @@ wp_die();
                 $nestedData['officephone'] ='--';
             }
             if($value->people->lastLogin){
-                $timestamp = strtotime($value->people->lastLogin);
-                $nestedData['lastlogin'] = date('M d, Y', $timestamp);
+                    $timestamp = strtotime($value->people->lastLogin);
+                    $nestedData['lastlogin'] = date('M d, Y', $timestamp);
             }else{ $nestedData['lastlogin'] ='--';}
             
             if($value->people->modifiedDate){
