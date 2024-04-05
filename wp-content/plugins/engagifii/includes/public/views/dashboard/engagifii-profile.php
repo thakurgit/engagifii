@@ -141,14 +141,6 @@ include 'sidebar_nav.php';
   	<p style="font-size:1.375rem; margin-top:15px; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
     <div class="d-flex">    	
     <?php 
-	$status = 'Inactive';
-			$statusColor = 'red';
-			 if($peopleDATA->people->isActive==true) {
-				$status = 'Active'; 
-				$statusColor = 'green';
-			  ?>
-              <span class="mr-4 bg-white rounded py-1 px-2 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
-              <?php } 
 			  foreach ($peopleDATA->peopleFields as $key => $value) {
           if ($value->controlTypeId == 12 && in_array($value->id, $profilePayloadFields)) {
               $dp = json_decode($value->organizationValue, true);
@@ -202,7 +194,14 @@ include 'sidebar_nav.php';
               // }
           }
       }
-      
+      $status = 'Inactive';
+			$statusColor = 'red';
+			 if($peopleDATA->people->isActive==true) {
+				$status = 'Active'; 
+				$statusColor = 'green';
+			  if($member_id) {?>
+              <span class="mr-4 bg-white rounded py-1 px-2"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
+              <?php } }
 			  ?>
   </div>
         </div>
@@ -406,9 +405,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 	<input type="text" name="" class="form-control text-start country" id="country" data-value ="<?php  echo  $address['country'];?>" value="<?php  echo  $address['country'];?>"/>
                     </div>
                      <div class="">
-                	<input type="hidden" name="" class="form-control text-start" id="lat" data-value ="<?php  echo  $address['lat'];?>" value="<?php  echo  $address['lat'];?>"/>
+                	<!--<input type="hidden" name="" class="form-control text-start" id="lat" data-value ="<?php  echo  $address['lat'];?>" value="<?php  echo  $address['lat'];?>"/>
                 	<input type="hidden" name="" class="form-control text-start" id="lng" data-value ="<?php  echo  $address['lng'];?>" value="<?php  echo  $address['lng'];?>"/>
-                    </div>
+                    </div> -->
                     	
                 </div>
                 </div>
@@ -454,7 +453,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
      <?php  if($member_id){ ?>
-      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">User Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member='.$member_id.'">User Profile</a></p>
       <?php } else { ?>
         <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
         <?php } ?> 
