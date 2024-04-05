@@ -194,15 +194,18 @@ include 'sidebar_nav.php';
               // }
           }
       }
-      $status = 'Inactive';
+      
+			  ?>
+  </div>
+  <div> <?php 
+  $status = 'Inactive';
 			$statusColor = 'red';
 			 if($peopleDATA->people->isActive==true) {
 				$status = 'Active'; 
 				$statusColor = 'green';
-			  if($member_id) {?>
+			  if($member_id) { ?>
               <span class="mr-4 bg-white rounded py-1 px-2"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
-              <?php } }
-			  ?>
+              <?php } } ?>
   </div>
         </div>
         </div>
