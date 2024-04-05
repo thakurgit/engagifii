@@ -2404,7 +2404,7 @@ wp_die();
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 					 $nestedData['position'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
 					//organizations
-					$classPopover = dd_header('0rganizations');
+					$classPopover = dd_header('Organizations');
 					$subItems = "";
 					$li=1;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
@@ -2416,7 +2416,7 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
@@ -2456,7 +2456,7 @@ wp_die();
 					 $nestedData['department'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
 					
 					//$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					// $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' 0rganizations</a>'.$classPopover.'</div>';
+					// $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				//$nestedData['organization'] ='--';

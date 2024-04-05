@@ -111,7 +111,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                 <div class="dropdown dropleft po-filter d-flex justify-content-end ml-3">
                   <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false"> <i class="far fa-filter"></i> </button>
                   <div class="dropdown-menu py-0">
-                    <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter"> <i class="fal fa-sync"></i> </span> </div>
+                    <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center"> <span class="filter-title"> <i class="far fa-filter mr-2"></i> Filter </span> <span class="clear-all ml-auto" id="clear-all" title="Reset Filter">Clear All</span> </div>
                     <div class="accordion" id="accordionFilter">
                       <?php $ft=0; foreach ($filterParams as $key => $values) { ?>
                       <div class="filter-list border-bottom" data-filter="<?php echo str_replace(array( ' ' ), '', strtolower($values)); ?>">
