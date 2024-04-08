@@ -147,8 +147,8 @@ $filter_course = removeWhitespace($filter_course);
   var fiscalstartDate = dates[0]; // Start date
   var fiscalendDate = dates[1]; // End date
   //alert(startDate);
-var startDate = '1970-01-01T00:00:00';
-var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
+var startDate = fiscalstartDate;
+var endDate = fiscalendDate;
  var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
   //alert(profileId);
