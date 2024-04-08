@@ -30,6 +30,21 @@
     <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
         <tr>
+        	<td colspan="4"><h3>Theme Colors</h3><hr></td>
+        </tr>
+        <tr>
+        	<td><h4>Primary Color</h4>
+            <?php
+                       $engagifii_theme_color = @$options['engagifii_theme_color'];
+                       $_inputHtml = '<input type="text" name="ebt_api_settings[engagifii_theme_color]" value="'.$engagifii_theme_color.'" class="engagifii-color-picker hide-options-here-tz">';
+                         echo $_inputHtml;
+			?>
+            </td>
+        	<td></td>
+        	<td></td>
+        	<td></td>
+        </tr>
+        <tr>
         	<td colspan="4"><h3>Table Header</h3><hr></td>
         </tr>
             <tr>                

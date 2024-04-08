@@ -54,23 +54,6 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 // print_r($fiscalStartDate);
 // print_r($fiscalEndDate);
 ?>
-<style>
-.filter-toggle {
-	width: 40px;
-	height: 40px;
-	color: #002474 !important;
-}
-.po-filter.show > .filter-toggle, .po-filter.ft-selected > .filter-toggle {
-	background-color: #002474 !important;
-	color: #fff !important;
-}
-.po-filter .dropdown-menu {
-	width: 300px;
-}
-.po-filter label {
-	font-size: 15px;
-}
-</style>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
             	<h4 class="mb-0 mr-2">

@@ -26,10 +26,33 @@ $ebt_table_link_hover_color   = ( isset( $settings['ebt_table_link_hover_color']
 $ebt_detail_calendar_hover_color         = $settings['ebt_detail_calendar_hover_color'] ?? '';
 $ebt_detail_calendar_strip_color         = $settings['ebt_detail_calendar_strip_color'] ?? '';
 $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_strip_hover_color'] ?? '';
+$engagifii_theme_color   = ( isset( $settings['engagifii_theme_color'] ) && $settings['engagifii_theme_color'] != '' ) ? $settings['engagifii_theme_color'] : '';
+function darken_color($rgb, $darker=2) {
+
+	$hash = (strpos($rgb, '#') !== false) ? '#' : '';
+	$rgb = (strlen($rgb) == 7) ? str_replace('#', '', $rgb) : ((strlen($rgb) == 6) ? $rgb : false);
+	if(strlen($rgb) != 6) return $hash.'000000';
+	$darker = ($darker > 1) ? $darker : 1;
+
+	list($R16,$G16,$B16) = str_split($rgb,2);
+
+	$R = sprintf("%02X", floor(hexdec($R16)/$darker));
+	$G = sprintf("%02X", floor(hexdec($G16)/$darker));
+	$B = sprintf("%02X", floor(hexdec($B16)/$darker));
+
+	return $hash.$R.$G.$B;
+}
 ?>
 <style>
-<?php if(isset($activate_css)){?>
-#ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt, .filter-top-bg{ 
+<?php if(isset($activate_css)){
+	if($engagifii_theme_color){
+?>
+:root{
+--engagifii-color:<?php echo $engagifii_theme_color;?>;
+--engagifii-color-hover:<?php echo darken_color($engagifii_theme_color, $darker=1.5);?>;
+}
+<?php } ?>
+#ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
   background: <?php echo $table_heading_bg;?> !important;
   color:<?php echo $table_heading_color?> !important;
 }
@@ -57,12 +80,12 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
 .engTrackingLevels{
 	background: <?php echo $table_heading_bg;?> !important;
 }
-.filter-btn-tz{
+<?php /*?>.filter-btn-tz{
 	background: <?php echo $table_heading_bg;?> !important;
 	border: <?php echo $table_heading_bg;?> !important;
 	box-shadow: none;
 	color: <?php echo $table_heading_color?> !important;
-}
+}<?php */?>
 .engagifii-box table.table thead th{border-bottom: none;}
 #ebtmaintable thead>tr>th,  .light-background thead>tr>th{
 	color:<?php echo $table_heading_color?>;
@@ -83,5 +106,26 @@ $ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_
     background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
 .classNames > a:hover, .classNames > a:focus {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
+.page-link {
+	color: var(--engagifii-color);
+}
+.page-item.active .page-link , .btn-primary, .btn-primary.disabled, .btn-primary:disabled {
+	background-color: var(--engagifii-color);
+	border-color: var(--engagifii-color);
+} 
+.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+	background-color: var(--engagifii-color-hover);
+	border-color: var(--engagifii-color-hover);
+}
+a, .btn-link {
+	color:var(--engagifii-color);
+}
+.text-primary {
+	color:var(--engagifii-color) !important;
+}
+
+a:hover, .btn-link:hover, .dropdown-item:hover, .dropdown-item:focus {
+	color: var(--engagifii-color-hover);
+}
 <?php }?>
 </style>

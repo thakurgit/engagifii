@@ -69,15 +69,7 @@ $awardDataCount = $awardDataCountNumber->totalCount;
 .accordion .card-header button:not(.collapsed)::after {
 	transform: translateY(-50%) rotate(180deg);
 }*/
-.transcaript-tabs button.nav-link {
-	border-bottom: 4px solid transparent !important;
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-	outline:none !important;
-}
-.transcaript-tabs button.nav-link.active, .transcaript-tabs button.nav-link:hover {
-	border-bottom:  4px solid #2568ef !important;
-}
+
 .tooltip > div {
 	max-width: 250px;
 }
@@ -205,7 +197,7 @@ z-index:-1;
   
   <div class="d-flex align-items-center mb-3">
    <button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid mr-2" alt="class-icon" >'; ?>
-  	<strong><p class="mr-2 mb-1" style="font-size: 14px; color:#2568ef; line-height:1;">Training Credits Earned <br>Within a Date Range</p></strong>
+  	<strong><p class="mr-2 mb-1 text-primary" style="font-size: 14px;  line-height:1;">Training Credits Earned <br>Within a Date Range</p></strong>
     <div class="form-inline dateFilter">
     <div class="input-group mr-2" style="max-width:255px">
     <input type="text" class="form-control form-control-sm shadow-none" placeholder="Select Date Range" date-start="<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>" date-end="<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>">

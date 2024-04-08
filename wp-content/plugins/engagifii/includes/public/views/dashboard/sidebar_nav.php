@@ -138,7 +138,7 @@ border-bottom-color:white ;
 </style> 
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 rounded-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" style="background:#21086B;">
+  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 rounded-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" >
     <?php echo $name; ?>
     <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
     <?php if (str_contains($dp, 'http')) {?>
