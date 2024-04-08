@@ -144,11 +144,11 @@ $filter_course = removeWhitespace($filter_course);
 <script type="text/javascript">
 	var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
-  var startDate = dates[0]; // Start date
-  var endDate = dates[1]; // End date
+  var fiscalstartDate = dates[0]; // Start date
+  var fiscalendDate = dates[1]; // End date
   //alert(startDate);
-// var startDate = '1970-01-01T00:00:00';
-// var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
+var startDate = '1970-01-01T00:00:00';
+var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
   //alert(profileId);
@@ -276,6 +276,10 @@ $filter_course = removeWhitespace($filter_course);
 	
 
 $('.gt').click(function(){
+	var selectedDateRange = $('.dateFilter input').val();
+  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
+  var startDate = dates[0]; // Start date
+  var endDate = dates[1]; // End date
 	var logged_in_user = localStorage.getItem("logged_in_user");
 	   $.ajax({
           type : "post",
@@ -284,6 +288,8 @@ $('.gt').click(function(){
               action:'generateDownloads',
 			  CourseId:selectedRow,
 			  groupById: logged_in_user,
+			  selectedStartDate: startDate, 
+			  selectedEndDate: endDate, 
           },
           success: function(response) { 
 		  	$('#pdfcreated').modal('show')
