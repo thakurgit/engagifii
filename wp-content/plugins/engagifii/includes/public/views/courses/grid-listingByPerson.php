@@ -142,13 +142,13 @@ $filter_course = removeWhitespace($filter_course);
 }
 ?><?php */?>
 <script type="text/javascript">
-var selectedDateRange = $('.dateFilter input').val();
-  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
-  var fiscalstartDate = dates[0]; // Start date
-  var fiscalendDate = dates[1]; // End date
+//var selectedDateRange = $('.dateFilter input').val();
+ // var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
+ // var fiscalstartDate = $('.dateFilter input').attr('date-start'); // Start date
+  //var fiscalendDate = $('.dateFilter input').attr('date-end'); // End date
   //alert(startDate);
-var startDate = fiscalstartDate;
-var endDate = fiscalendDate;
+var startDate = $('.dateFilter input').attr('date-start');
+var endDate = $('.dateFilter input').attr('date-end');
  var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
   //alert(profileId);
@@ -299,20 +299,22 @@ $('.gt').click(function(){
 });
 
  $( document ).ready(function() {
-   // $('input[name="createdbetween"]').val('');
-    $('.dateFilter input').val('');
+    $('.dateFilter input').val($('.dateFilter input').attr('date-start')+' - '+$('.dateFilter input').attr('date-end'));
+	if($('.dateFilter input').val()!==''){
+		$( '.clearDateFilter' ).show();
+	}
 });
 //date filter
 $('.dateFilter input').daterangepicker({
-  // minDate:'<?php //echo $class_start_date; ?>',
-   // maxDate: '<?php //echo $class_end_date; ?>',
+   //minDate:$('.dateFilter input').attr('date-start'),
+   // maxDate: $('.dateFilter input').attr('date-end'),
     autoApply: true
   }, function(start, end) {
       var classDates = start.format('YYYY-MM-DD')+'to'+end.format('YYYY-MM-DD');
 		var classDate = classDates.split("to");
   //var fiscalstartDate = dates[0]; // Start date
-	 	startDate = fiscalstartDate;//$.trim(classDate[0])+'T00:00:00';
-		endDate = fiscalendDate;//$.trim(classDate[1])+'T00:00:00';
+	 	startDate = $.trim(classDate[0])+'T00:00:00';
+		endDate = $.trim(classDate[1])+'T23:59:59';
     });
 	$('.dateFilter input').change(function(){
 		if($(this).val()!==''){
@@ -322,8 +324,8 @@ $('.dateFilter input').daterangepicker({
 $( '.clearDateFilter' ).click(function() {
 		 $('.dateFilter input').val('');
 		 $(this).hide();
- startDate = '1970-01-01T00:00:00';
- endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
+		startDate = $('.dateFilter input').attr('date-start');
+		endDate = $('.dateFilter input').attr('date-end');
 		 table.draw();
 });
 $( '.dateFilter button' ).click(function() {

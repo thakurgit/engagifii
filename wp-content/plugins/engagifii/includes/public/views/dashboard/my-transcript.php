@@ -208,7 +208,7 @@ z-index:-1;
   	<strong><p class="mr-2 mb-1" style="font-size: 14px; color:#2568ef; line-height:1;">Training Credits Earned <br>Within a Date Range</p></strong>
     <div class="form-inline dateFilter">
     <div class="input-group mr-2" style="max-width:255px">
-    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Select Date Range">
+    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Select Date Range" date-start="<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>" date-end="<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>">
   <div class="input-group-append">
     <span class="input-group-text bg-transparent clearDateFilter" style="cursor:pointer; display:none;"><i class="far fa-times"></i></span>
   </div>
@@ -220,10 +220,7 @@ z-index:-1;
 </div>
     <button  type="button" class="btn btn-primary btn-sm ml-3 gt ml-auto" data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
     </div>
-    	
-
-  <?php //echo do_shortcode('[courses-list-ByPerson]');
-  include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
+  <?php include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
   </div>
 </div>
 <div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -293,15 +290,5 @@ $('#allReports, .awardReport').click(function(e){
 $('.refresh').click(function(){
 		table.draw();
 	});
-  $( document ).ready(function() {
-   // $('input[name="createdbetween"]').val('');
-   $('.dateFilter input').val('');
-   <?php  if ($fiscalStartDate){ ?>
-      var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
-     var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
-    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
-   <?php }   ?>
-    
-    //$('.dateFilter input').val('');
-});
+
 </script>
