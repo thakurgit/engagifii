@@ -2685,6 +2685,7 @@ wp_die();
         $postedData['itemCount'] = 100;
         $postedData['sortBy'] = 'name';
         $postedData['sortDirection'] = 'asc';
+        $postedData['filterBody']['groupType'] = 4;
         $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
         $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
         $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
