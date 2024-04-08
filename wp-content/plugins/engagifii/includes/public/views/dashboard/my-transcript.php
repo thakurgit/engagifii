@@ -293,5 +293,15 @@ $('#allReports, .awardReport').click(function(e){
 $('.refresh').click(function(){
 		table.draw();
 	});
-
+  $( document ).ready(function() {
+   // $('input[name="createdbetween"]').val('');
+   $('.dateFilter input').val('');
+   <?php  if ($fiscalStartDate){ ?>
+      var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
+     var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
+    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
+   <?php }   ?>
+    
+    //$('.dateFilter input').val('');
+});
 </script>

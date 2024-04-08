@@ -142,10 +142,16 @@ $filter_course = removeWhitespace($filter_course);
 }
 ?><?php */?>
 <script type="text/javascript">
+	var selectedDateRange = $('.dateFilter input').val();
+  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
+  var startDate = dates[0]; // Start date
+  var endDate = dates[1]; // End date
+  alert(startDate);
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var titleColumn = '<?php echo $title_key; ?>';
   var profileId = localStorage.getItem("logged_in_user");
+  //alert(profileId);
   var selectedRow=[];
   var val;
 	var table = $('#ebtmaintable').DataTable( {
