@@ -142,7 +142,7 @@ $filter_course = removeWhitespace($filter_course);
 }
 ?><?php */?>
 <script type="text/javascript">
-	var selectedDateRange = $('.dateFilter input').val();
+var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
   var fiscalstartDate = dates[0]; // Start date
   var fiscalendDate = dates[1]; // End date
@@ -310,8 +310,9 @@ $('.dateFilter input').daterangepicker({
   }, function(start, end) {
       var classDates = start.format('YYYY-MM-DD')+'to'+end.format('YYYY-MM-DD');
 		var classDate = classDates.split("to");
-	 	startDate = $.trim(classDate[0])+'T00:00:00';
-		endDate = $.trim(classDate[1])+'T00:00:00';
+  //var fiscalstartDate = dates[0]; // Start date
+	 	startDate = fiscalstartDate;//$.trim(classDate[0])+'T00:00:00';
+		endDate = fiscalendDate;//$.trim(classDate[1])+'T00:00:00';
     });
 	$('.dateFilter input').change(function(){
 		if($(this).val()!==''){
