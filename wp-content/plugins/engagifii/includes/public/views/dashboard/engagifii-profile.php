@@ -13,12 +13,9 @@ $user_id  = get_current_user_id();
 $user     = get_userdata($user_id);
 $userEmail = $user->user_email;
 $member_id = isset($_GET['member']) ? $_GET['member'] : null;
-
     $obj      =  new Engagifii_API();
     $options = get_option('ebt_api_settings'); 
     $profilePayloadFields = $options['dashboard_fields']['fields']; 
-
-    //$profilePayloadData = json_encode($profilePayloadFields); 
     if($member_id){
       $memberid = $member_id;
     }else{
@@ -28,13 +25,7 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
-        //$tenantCode = 'psba';
 	$tenantCode = $options['dashboard_apis']['tenant'];
-  // if($member_id){
-  //   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode, $member_id);
-  // }else{
-  //   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
-  // }
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 if($peopleDATA->isError==true) { 
@@ -65,17 +56,13 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 if(!$member_id){
   $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
   $loggedin_userdp = $peopleDATA->people->imageThumbUrl;
-   $_SESSION['pid']=$peopleDATA->people->id;
   setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/');
   setcookie('loggedin_username', $loggedin_username, time() + (24 * 3600), "/");
   setcookie('loggedin_userdp', $loggedin_userdp, time() + (24 * 3600), "/"); // 86400 = 1 day
-}else{
-  $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
-   
+   $_SESSION['pid']=$peopleDATA->people->id;
+  $_SESSION['name']=$loggedin_username;
+	$_SESSION['dp']=$loggedin_userdp;
 }
-  $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
-	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  

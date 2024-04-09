@@ -1,14 +1,13 @@
 <?php 
 $name = $_COOKIE['loggedin_username'];
-	$dp = $_COOKIE['loggedin_userdp'];
+$dp = $_COOKIE['loggedin_userdp'];
 session_start();
-//$member_id = isset($_GET['member']) ? $_GET['member'] : null;
-    
-	//$name = $_SESSION['name'];
-	//$dp = $_SESSION['dp'];
-
-	
-//} $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+ if(!$name){
+	$name = $_SESSION['name']; 
+ }
+ if(!$dp){
+	$dp = $_SESSION['dp']; 
+ }
  $site_url = site_url();?>
 <style>
  body{
@@ -18,7 +17,7 @@ transition:0.3s all ease-in-out;
 </style> 
   <div class="d-flex justify-content-end px-3 mb-3">
     <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0 rounded-0 align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" >
+  <button type="button" class="btn btn-primary dropdown-toggle px-2 border-0  align-items-center d-inline-flex" data-toggle="dropdown" aria-expanded="false" >
     <?php echo $name; ?>
     <span class="overflow-hidden rounded-circle ml-2 " style="width:30px;height:30px">
     <?php if (str_contains($dp, 'http')) {?>
