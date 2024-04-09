@@ -57,7 +57,8 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 	  myWindow();
 	  }, 300);
 	
-}</script> 
+}
+</script> 
 <?php return;
 } 
 	 
@@ -73,6 +74,8 @@ if(!$member_id){
 	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
    
 }
+  $_SESSION['name']=$peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
+	$_SESSION['dp']=$peopleDATA->people->imageThumbUrl;
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  

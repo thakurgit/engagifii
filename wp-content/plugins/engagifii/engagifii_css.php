@@ -106,7 +106,7 @@ function darken_color($rgb, $darker=2) {
     background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
 .classNames > a:hover, .classNames > a:focus {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
-.page-link {
+.page-link, a, .btn-link {
 	color: var(--engagifii-color);
 }
 .page-item.active .page-link , .btn-primary, .btn-primary.disabled, .btn-primary:disabled {
@@ -117,15 +117,14 @@ function darken_color($rgb, $darker=2) {
 	background-color: var(--engagifii-color-hover);
 	border-color: var(--engagifii-color-hover);
 }
-a, .btn-link {
-	color:var(--engagifii-color);
-}
 .text-primary {
 	color:var(--engagifii-color) !important;
 }
-
 a:hover, .btn-link:hover, .dropdown-item:hover, .dropdown-item:focus {
 	color: var(--engagifii-color-hover);
+}
+.bg-primary{
+	background-color: var(--engagifii-color) !important;
 }
 <?php }?>
 </style>
