@@ -297,8 +297,14 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 <div class="col-12">
               <strong>Organization:</strong><br>
 
-<p class="mb-4">
-<span class="text-primary font-italic mr-1"><img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;"><?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
+<p class="mb-4 mt-2">
+<span class="text-primary font-italic mr-1">
+<?php if($peopleDATA->people->primaryOrganization->imageThumbUrl && filter_var($peopleDATA->people->primaryOrganization->imageThumbUrl, FILTER_VALIDATE_URL)){ ?>
+<img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;">
+<?php } else { ?>
+<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>
+<?php } ?>
+<?php echo $peopleDATA->people->primaryOrganization->name; ?></span> 
                 </p>
                 </div>
                 <?php } } ?>
