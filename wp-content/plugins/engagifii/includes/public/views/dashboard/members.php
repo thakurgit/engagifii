@@ -203,7 +203,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
   var filterSubmitted = false;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
-				  "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
        	"processing": true,
        	"searching": true,
@@ -260,7 +260,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 			   if(selectedRow.length !== 0){
 				  $('.gt').css('visibility', 'visible');
 			   }else{
-          $('.gt').css('visibility', 'hidden');
+         		 $('.gt').css('visibility', 'hidden');
 			   }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val())){
@@ -291,13 +291,6 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 							 $(".people-select :checkbox").prop("checked", true);	
 						}
 					}
-			   if(selectedRow.length !== 0){
-          $('.gt').css('visibility', 'visible');
-				 $('.gt').attr('data-original-title', 'Download PDF');  
-			   }else{
-          $('.gt').css('visibility', 'hidden');
-				 $('.gt').attr('data-original-title', 'Download PDF'); 
-			   }
 			});	
 			});
 			$(".people-select :checkbox").change(function(){

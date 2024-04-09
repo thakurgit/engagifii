@@ -36,6 +36,9 @@
         	<td><h4>Primary Color</h4>
             <?php
                        $engagifii_theme_color = @$options['engagifii_theme_color'];
+					   if(!$engagifii_theme_color){
+							$engagifii_theme_color = $options['ebt_table_bg_color'];   
+					   }
                        $_inputHtml = '<input type="text" name="ebt_api_settings[engagifii_theme_color]" value="'.$engagifii_theme_color.'" class="engagifii-color-picker hide-options-here-tz">';
                          echo $_inputHtml;
 			?>

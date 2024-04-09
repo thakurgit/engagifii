@@ -53,7 +53,6 @@ function darken_color($rgb, $darker=2) {
 }
 <?php } ?>
 #ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
-  background: <?php echo $table_heading_bg;?> !important;
   color:<?php echo $table_heading_color?> !important;
 }
 .ui-widget-content {
