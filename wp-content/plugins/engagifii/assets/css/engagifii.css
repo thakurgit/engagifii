@@ -1,6 +1,6 @@
 /* Filter Section*/ 
 :root{
---engagifii-color: var(--engagifii-color);
+--engagifii-color:#007bff;
 --engagifii-color-hover:#0e47ba;
 }
 table.dataTable {
