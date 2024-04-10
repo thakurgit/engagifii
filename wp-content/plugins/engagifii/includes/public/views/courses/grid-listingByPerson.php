@@ -14,11 +14,6 @@
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));*/
     $title_key = -1;
 ?>
-<style>
-table tbody tr.selected {
-	background-color: #bed6f2 !important;
-}
-</style>
 <div class="containerEngagii d-none">
 <div class="container-fluid pb-4">
     	<div class="text-center text-lg-right d-flex align-items-center justify-content-end flt-btn-course"></div>

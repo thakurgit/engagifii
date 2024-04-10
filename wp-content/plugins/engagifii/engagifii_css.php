@@ -101,7 +101,7 @@ $ebt_detail_calendar_strip_hover_color         = darken_color($ebt_detail_calend
     background-color: <?php echo $ebt_detail_calendar_strip_color; ?> !important;
 }
 .classNames > a:hover, .classNames > a:focus {background-color: <?php echo $ebt_detail_calendar_strip_hover_color; ?>!important;; }
-.page-link, a, .btn-link {
+.page-link, a, .btn-link, .page-link:hover {
 	color: var(--engagifii-color);
 }
 .page-item.active .page-link , .btn-primary, .btn-primary.disabled, .btn-primary:disabled {

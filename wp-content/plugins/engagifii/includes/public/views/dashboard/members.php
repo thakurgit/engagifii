@@ -133,6 +133,9 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                 </div>
         </div>
 </div>
+<div class="container-fluid mb-3 bg-light py-2 text-center d-none memberSelect">
+	<span class="currentSelected"></span>/<span class="totalMembers"></span> members selected. <button class="btn btn-link p-0 selectAll shadow-none">Select all <span class="totalMembers"></span> members</button><button class="btn btn-link p-0 deSelectAll d-none shadow-none">Clear selection</button>
+</div>
 	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
@@ -202,7 +205,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
   var val;
   var filterSubmitted = false;
 	var table = $('#ebtmaintable').DataTable( {
-       	"pageLength": 10,
+       	"pageLength": 5,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
        	"processing": true,
@@ -257,14 +260,19 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
             dt_dropdown();
            dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
-			   if(selectedRow.length !== 0){
+		   var thSelect= $(".people-select :checkbox");
+				$('.totalMembers').text(settings._iRecordsTotal);
+			   if(selectedRow.length > 0 || selectedRow =='all'){
 				  $('.gt').css('visibility', 'visible');
 			   }else{
          		 $('.gt').css('visibility', 'hidden');
 			   }
 			$('.select-row').each(function(){
-				if(selectedRow.includes($(this).val())){
-					$(this).prop('checked',true).change();  	
+				if(selectedRow.includes($(this).val()) || selectedRow =='all'){
+					$(this).prop('checked',true).change().parents('tr').addClass('selected');  
+					if(selectedRow =='all'){
+						$(this).attr('disabled','');	
+					}
 				}
 				$(this).change(function(){
 					if ($(this).is(':checked')) {
@@ -280,15 +288,13 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 						  selectedRow.splice(index, 1); 
 						}
 					}
-						
-						if($('.select-row:checked').length==0){
-							 $(".people-select :checkbox").prop("indeterminate", false);	
-							 $(".people-select :checkbox").prop("checked", false);	
+						if($('tr.selected').length==0){
+							 thSelect.prop("indeterminate", false).prop("checked", false);	
 						} else{
-							$(".people-select :checkbox").prop("indeterminate", true);
-							if($('.select-row:checked').length==$('.select-row').length){
-								$(".people-select :checkbox").prop("indeterminate", false);	
-								 $(".people-select :checkbox").prop("checked", true);	
+							thSelect.prop("indeterminate", true);
+							if($('tr.selected').length==settings.aoData.length){
+								thSelect.prop("checked", true).prop("indeterminate", false);	
+								$('.memberSelect').removeClass('d-none');
 							}
 						}
 						if(selectedRow.length !== 0){
@@ -296,16 +302,57 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 						}else{
 						  $('.gt').css('visibility', 'hidden');
 						 }
+						$('.currentSelected').text(selectedRow.length);
+						if(selectedRow.length==settings._iRecordsTotal){
+							$('.deSelectAll').removeClass('d-none');
+							$('.selectAll').addClass('d-none');		
+						} else {
+							$('.deSelectAll').addClass('d-none');
+							$('.selectAll').removeClass('d-none');		
+						}
 				});	
 			});
-			$(".people-select :checkbox").change(function(){
+			thSelect.change(function(){
 				if ($(this).is(':checked')) {
-					$('.select-row').prop('checked',true).change(); 	
+					$('.select-row').prop('checked',true).change(); 
+					$('.memberSelect').removeClass('d-none');
+					$('.currentSelected').text(selectedRow.length);
 				}else{
 					$('.select-row').prop('checked',false).change(); 
 				}
 			});
-			
+		   if($('tr.selected').length==settings.aoData.length){
+				thSelect.prop("checked", true).prop("indeterminate", false);   
+		   }
+		   if($('tr.selected').length<settings.aoData.length && $('tr.selected').length>0){
+			  $(".people-select :checkbox").prop("indeterminate", true); 
+		   } 
+		   if($('tr.selected').length==0){
+			  thSelect.prop("checked", false).prop("indeterminate", false);
+		   }
+		   $('.selectAll').click(function(){
+			  $(this).addClass('d-none');
+			  $('.deSelectAll').removeClass('d-none');
+			  selectedRow = 'all';
+			  thSelect.prop('checked',true).attr('disabled','');
+			  $('.select-row').each(function(){
+				$(this).prop('checked',true).attr('disabled','').parents('tr').addClass('selected');
+			  });
+			  $('.currentSelected').text(settings._iRecordsTotal);
+			   $('.gt').css('visibility', 'visible');
+			});
+			$('.deSelectAll').click(function(){
+			  $(this).addClass('d-none');  
+			  $('.selectAll').removeClass('d-none'); 
+			  selectedRow = [];
+			  thSelect.removeAttr('disabled').prop("checked", false);
+			  $('.select-row').each(function(){
+				$(this).removeAttr('disabled').prop('checked',false).parents('tr').removeClass('selected');
+			  });
+			  $('.currentSelected').text('0');
+			   $('.gt').css('visibility', 'hidden');
+			});
+
 			 $('#apply-filter-data .spinner-border').addClass('d-none');
 			 $('#apply-filter-data').removeAttr('disabled')
 			if(filterSubmitted){
@@ -314,17 +361,12 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 					 element.innerHTML = " ("+settings._iRecordsTotal+")";
 				 } 
 				 filterSubmitted = false;
+				 $('.deSelectAll').trigger('click');
 			}
-			
-			
          },
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
-			
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
-			  
-		
-
     },
     });
 $(document).on('click', '.po-filter .dropdown-menu', function (e) {
@@ -332,9 +374,7 @@ $(document).on('click', '.po-filter .dropdown-menu', function (e) {
 });	
 	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
-    } ).dataTable();
-	
-
+    } ).dataTable();	
 $('.gtm').click(function(){
   //alert($('.dateFilter input').val());
   var selectedIds = selectedRow.join();
