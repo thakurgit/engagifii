@@ -271,7 +271,7 @@ include 'sidebar_nav.php';
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
             
-            <a href="tel:<?php echo $formattedPhoneNumber;?>"><?php echo $formattedPhoneNumber;?></a> </div>
+            <?php echo $formattedPhoneNumber;?></div>
    <?php  } 
  } 
  //}
@@ -285,7 +285,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               <strong>Organization:</strong><br>
 
 <p class="mb-4 mt-2">
-<span class="text-primary font-italic mr-1">
+<span class="text-primary mr-1">
 <?php if($peopleDATA->people->primaryOrganization->imageThumbUrl && filter_var($peopleDATA->people->primaryOrganization->imageThumbUrl, FILTER_VALIDATE_URL)){ ?>
 <img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;">
 <?php } else { ?>
@@ -485,7 +485,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
      <?php  if($member_id){ ?>
-      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member='.$member_id.'">User Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member=<?php echo $member_id; ?>">User Profile</a></p>
       <?php } else { ?>
         <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
         <?php } ?> 
@@ -517,6 +517,14 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     this.value = this.value.replace(/\D/g, "");
     if (this.value.match(/[^$,.\d]/)) {
         jQuery(this).siblings('.invalid-feedback').show();
+    }
+    if (this.value.length < 10) {
+       jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (10 digits minimum).').show();
+    } else {
+        jQuery(this).siblings('.invalid-feedback').hide();
+    }
+    if (this.value.length > 10) {
+       this.value = this.value.substring(0, 10);
     }
     if (this.value.length >= 10) {
         this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
