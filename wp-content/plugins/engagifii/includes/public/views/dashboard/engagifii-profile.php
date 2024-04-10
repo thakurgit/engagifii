@@ -320,7 +320,12 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         	<div class="col-md-1 mr-5 text-center">
             <div class="overflow-hidden d-block m-auto" style="width:130px;height:130px">
             <span id="upload_profile" class="position-relative  d-block h-100">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
+            <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) { ?>
+    	<img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
+    <?php } else { ?>
+    	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
+    <?php } ?>
+    <!-- <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  > -->
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
     <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange=""> 
     <style>
