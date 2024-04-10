@@ -522,7 +522,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     } else {
         jQuery(this).siblings('.invalid-feedback').hide();
         if (this.value.length >= 10) {
-            this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+          var formattedValue = this.value.replace(/(\d{3})(\d{3})(\d{0,4})/, '($1) $2-$3');
+            this.value = formattedValue.trim();
         }
     }
 });
