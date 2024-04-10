@@ -266,32 +266,37 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 				if(selectedRow.includes($(this).val())){
 					$(this).prop('checked',true).change();  	
 				}
-			$(this).change(function(){
-				if ($(this).is(':checked')) {
-					$(this).parents('tr').addClass('selected');	
-					val =$(this).val();
-					if(selectedRow.indexOf(val)===-1){
-						selectedRow.push(val);
-					}
-				}else{
-					$(this).parents('tr').removeClass('selected');	
-					const index = selectedRow.indexOf($(this).val());
-					if (index > -1) {
-					  selectedRow.splice(index, 1); 
-					}
-				}
-					
-					if($('.select-row:checked').length==0){
-						 $(".people-select :checkbox").prop("indeterminate", false);	
-						 $(".people-select :checkbox").prop("checked", false);	
-					} else{
-						$(".people-select :checkbox").prop("indeterminate", true);
-						if($('.select-row:checked').length==$('.select-row').length){
-						 	$(".people-select :checkbox").prop("indeterminate", false);	
-							 $(".people-select :checkbox").prop("checked", true);	
+				$(this).change(function(){
+					if ($(this).is(':checked')) {
+						$(this).parents('tr').addClass('selected');	
+						val =$(this).val();
+						if(selectedRow.indexOf(val)===-1){
+							selectedRow.push(val);
+						}
+					}else{
+						$(this).parents('tr').removeClass('selected');	
+						const index = selectedRow.indexOf($(this).val());
+						if (index > -1) {
+						  selectedRow.splice(index, 1); 
 						}
 					}
-			});	
+						
+						if($('.select-row:checked').length==0){
+							 $(".people-select :checkbox").prop("indeterminate", false);	
+							 $(".people-select :checkbox").prop("checked", false);	
+						} else{
+							$(".people-select :checkbox").prop("indeterminate", true);
+							if($('.select-row:checked').length==$('.select-row').length){
+								$(".people-select :checkbox").prop("indeterminate", false);	
+								 $(".people-select :checkbox").prop("checked", true);	
+							}
+						}
+						if(selectedRow.length !== 0){
+						  $('.gt').css('visibility', 'visible');
+						}else{
+						  $('.gt').css('visibility', 'hidden');
+						 }
+				});	
 			});
 			$(".people-select :checkbox").change(function(){
 				if ($(this).is(':checked')) {
