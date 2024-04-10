@@ -261,7 +261,7 @@ jQuery(this).siblings('.cls').val('');
                 e.preventDefault();
                 var button = $(this);
                 var id = button.siblings('input');
-                var img = button.siblings('img');
+                var img = button.siblings('img'); 
                 var remove = button.siblings('button');
                 wp.media.editor.send.attachment = function(props, attachment) {
                     id.val(attachment.id);
@@ -281,7 +281,7 @@ jQuery(this).siblings('.cls').val('');
     }
     jQuery('.select-env').change( function() {
 		 $.ajax({url: "https://denaj.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", success: function(result){
-			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl};
+			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};
 			 for (var key in apiUrls) {
 				if (apiUrls.hasOwnProperty(key)) {
 					if(apiUrls[key].indexOf('api') == -1){

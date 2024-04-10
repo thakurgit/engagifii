@@ -41,8 +41,38 @@ class Engagifii_API{
 				if($module == 'courses'){
 				$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDQzNzk4MzQsImV4cCI6MTczNTkxNTgzNCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcWEtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA0Mzc5ODM0LCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjEvNC8yMDI0IDI6MjE6NTYgUE0iLCJjdXJyZW50LWxvZ2luIjoiMS80LzIwMjQgMjo1MDozNCBQTSIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.ikBTbijK5ERYN8kcjEUZWYToWQCXzrLm7eiCZYHAo8FXEypknmESO7YHrH-k36WOWNf3F1E-uKGtCfjMBuQqa_pYPHJKMBpWQuErZ2-HGLXj7YvIBPwbQtTuTebVbFcaeDJv1-wZo9RnxEOgvJQntDrSEP_Jwv8jxM05zckBNR7GwqGIxttO0H4E6-4oInej4F7pTT0LThegvBl83lOCUrhBwFV-vYM4SnpfSgmgnG8NpIv9M2OoiaXFEy8uN36WGh8aH0DW19COpqARskmL0Hje8W435X6V5x-3e1AZFlfKTor81dA_mKsqlSjFX-1UNKxHS7kwaNG-aBAK4iB3Tw';
 				}
+			} 
+			else if($module == 'event' || $module == 'mycourses' || $module == 'reports' || $module == 'dashboard' || $module == 'awards' || $module == 'revenue' || $module == 'dynamicobject' || $module == 'auth'){
+				if (isset($_COOKIE['peopleToken'])) {
+					$peopleTokenFromCookie = $_COOKIE['peopleToken'];						
+					$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
+				}
+				//$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTI1OTQ2MzUsImV4cCI6MTcxMjYwMTgzNSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSIsIlVzZXJzQVBJIl0sImNsaWVudF9pZCI6InBzYmEiLCJzdWIiOiIzZWJhNGY1Mi1iOTBiLTRjODAtYWJiMy01MTliMGE3NzIwZWUiLCJhdXRoX3RpbWUiOjE3MTI1OTQ2MzQsImlkcCI6ImxvY2FsIiwic3MtcGlkIjoiMDYyNDY0YWEtNTkxZS00NTg0LTkyMjQtNzFmZmM2MTJlYzI4IiwicGljdHVyZSI6IiIsInBpY3R1cmUtc21hbGwiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIiLCJlbWFpbCI6ImpjcmF3bGV5QHlvcG1haWwuY29tIiwibGFzdC1sb2dpbiI6IjA0LzA4LzIwMjQgMTY6Mzc6NDEiLCJjdXJyZW50LWxvZ2luIjoiMDQvMDgvMjAyNCAxNjo0Mzo1NCIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIiwicHJvZmlsZSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiLCJVc2Vyc0FQSSJdLCJhbXIiOlsicHdkIl19.rm4gELOWw__ZDJvev-252dIoZd1O48HTn6-cLZbF2FdsD83iKGdePaNBQHqCU_3XgQUq9_-lBtSQVWTgmxekqpHSyQEqsW_bNf8diDDWF8y0FXw_0Oxc5TwBbBztnS2jKDAA1hUYwWeBFU7T_hckhmLxljDO3BIbKiP65r9dtCgnKgcdVt8YxZUTthfQIFMGKOxxiwSJw6TkaprWf3IJXHrC6FQ9cqXxO9V7uhaRtl3MFzRoUkWYKN-BtZFsIb97dnFnlrT39P25GHJQVfmHRHybDtCIpyolNQh-Ujb7O61qlspWGGrNALWRhk1qrTd0csbt3PdRxYlaEtrwoDf5lg';
+				if($module == 'event'){
+					$ebt_tenant_code = $options['evt_tenant_code'];
+				}else{
+					$ebt_tenant_code ['tenant_code'] = $options['dashboard_apis']['tenant'];
+				}
+				if($module == 'event'){
+					$ebt_api_url = $options['evt_api_url'];
+					if(!$ebt_api_url){
+					  $ebt_api_url = $options['dashboard_apis']['eventUrl'];	
+					}
+				}else if($module == 'mycourses' || $module == 'reports'){
+					$ebt_api_url = $options['dashboard_apis']['reportUrl'];	
+				}else if($module == 'dashboard'){
+					$ebt_api_url = $options['dashboard_apis']['crmUrl'];	
+				}else if($module == 'awards'){
+					$ebt_api_url = $options['dashboard_apis']['tnaUrl'];	
+				}else if($module == 'revenue'){
+					$ebt_api_url = $options['dashboard_apis']['revenueUrl'];	
+				}else if($module == 'dynamicobject'){
+					$ebt_api_url = $options['dashboard_apis']['doUrl'];	
+				}else if($module == 'auth'){
+					$ebt_api_url = $options['dashboard_apis']['authUrl'];	
+				}
 			}
-			else if($module == 'event'){
+			/*else if($module == 'event'){
 				$ebt_api_url = $options['evt_api_url'];//"https://engagifii-preview4-event.azurewebsites.net/api/1.0";
 				$ebt_tenant_code = $options['evt_tenant_code'];
 					$peopleToken = $_SESSION['accesstoken'];
@@ -108,7 +138,7 @@ class Engagifii_API{
 								} else { }
 							$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
 			//$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MDU5MjEwNDAsImV4cCI6MTcwNTkyODI0MCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiNzE5ZTgwOTgtOTg0YS00OTBmLThiNWEtM2M5MTk0ZDk2NzhmIiwiYXV0aF90aW1lIjoxNzA1OTIxMDQwLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IiIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IkNyZXNjZXJhbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AY3Jlc2NlcmFuY2UuY29tIiwibGFzdC1sb2dpbiI6IjAxLzIyLzIwMjQgMTA6NTQ6NDciLCJjdXJyZW50LWxvZ2luIjoiMDEvMjIvMjAyNCAxMDo1NzoyMCIsInNjb3BlIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJhbXIiOlsicHdkIl19.g-LxFKPj00MXMUkupYlN1trw3i_mL-0u3kGlQ31qli5VzQI-NFlnX5skewt-9OJKPOfItfMbM8Rdt5_qf4noFk3WEExwGjSHbY1C8RJRqCFbf9WybM2kqWk9A3YFy9ZbZD5XUd4lojb3cZQdSpMdcBvlMhTTcf33xhgsrf4Uy2BT1W8SP4ukZb6AqvkSeCtCrLEaUoWwn6kGcFjiOxycbdn1x9Gzy5C0K6eUoWi1Q2oeobDhgKXiRVSXuFn7c62N0U37t-1AnD2xXDPaJjm-mpWmx1OX1ZZqhb73Tolt_S5dwIzigI7xhSzviecp90mrE3Z6IkHQmt11nkjSqnLHEQ';
-							} 
+							} */
 			$tenant_code = $ebt_tenant_code ['tenant_code'];
 			$curl = curl_init();
 			curl_setopt_array($curl, array(  

@@ -14,13 +14,19 @@
 	echo '<option value="-qa" ' . ($dashboard_apis['environment'] == '-qa' ? 'selected' : '') . '>QA</option>';
 	echo '<option value="-support" ' . ($dashboard_apis['environment'] == '-support' ? 'selected' : '') . '>Support</option>';
 	echo '<option value="-hotfix" ' . ($dashboard_apis['environment'] == '-hotfix' ? 'selected' : '') . '>Hotfix</option>';
+	echo '<option value="-preview3" ' . ($dashboard_apis['environment'] == '-preview3' ? 'selected' : '') . '>Preview3</option>';
 	echo '<option value="-preview4" ' . ($dashboard_apis['environment'] == '-preview4' ? 'selected' : '') . '>Preview4</option>';
+	echo '<option value="-preview6" ' . ($dashboard_apis['environment'] == '-preview6' ? 'selected' : '') . '>Preview6</option>';
+	echo '<option value="-preview9" ' . ($dashboard_apis['environment'] == '-preview9' ? 'selected' : '') . '>Preview9</option>';
 	echo '</select>';
 	echo '<input name="ebt_api_settings[dashboard_apis][crmUrl]" class="crmUrl" type="hidden" value="'.$dashboard_apis['crmUrl'].'"/>
 	<input name="ebt_api_settings[dashboard_apis][reportUrl]" class="reportUrl" type="hidden" value="'.$dashboard_apis['reportUrl'].'"/>
 	<input name="ebt_api_settings[dashboard_apis][revenueUrl]" class="revenueUrl" type="hidden" value="'.$dashboard_apis['revenueUrl'].'"/>
 	<input name="ebt_api_settings[dashboard_apis][doUrl]" class="doUrl" type="hidden" value="'.$dashboard_apis['doUrl'].'"/>
 	<input name="ebt_api_settings[dashboard_apis][authUrl]" class="authUrl" type="hidden" value="'.$dashboard_apis['authUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][tnaUrl]" class="tnaUrl" type="hidden" value="'.$dashboard_apis['tnaUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][eventUrl]" class="eventUrl" type="hidden" value="'.$dashboard_apis['eventUrl'].'"/>
+	<input name="ebt_api_settings[dashboard_apis][legisUrl]" class="legisUrl" type="hidden" value="'.$dashboard_apis['legisUrl'].'"/> 
 	';
 		// echo '<div class="form-group"><label>API URL (CRM)</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.(isset($dashboard_apis['url']) ? $dashboard_apis['url'] : '').'" required></div>';
 		// echo '<div class="form-group"><label>API URL(Reports)</label><input type="text" name="ebt_api_settings[dashboard_apis][url_reports]" class="postbox" value="'.(isset($dashboard_apis['url_reports']) ? $dashboard_apis['url_reports'] : '').'" required></div>';
