@@ -376,8 +376,7 @@ $(document).on('click', '.po-filter .dropdown-menu', function (e) {
         $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();	
 $('.gtm').click(function(){
-  //alert($('.dateFilter input').val());
-  var selectedIds = selectedRow.join();
+  //var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
   var startDate = dates[0]; // Start date

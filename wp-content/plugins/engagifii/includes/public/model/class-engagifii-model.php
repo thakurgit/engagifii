@@ -2689,6 +2689,9 @@ wp_die();
         $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
         $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
         $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
+		if($_POST['memberIds']=='all'){
+			$postedData['filterBody']['filterRules'][0]['selectedValues']='';	
+		} 
         $postedData['filterBody']['startDate']= $_POST['selectedStartDate']; 
 		$postedData['filterBody']['endDate']= $_POST['selectedEndDate'];
 		//print_r(json_encode($postedData));
