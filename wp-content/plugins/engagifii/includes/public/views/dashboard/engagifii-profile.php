@@ -255,7 +255,7 @@ include 'sidebar_nav.php';
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
            
-            <a href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
+            <a class="font-weight-normal" href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
           </p>
             <?php } ?>	
                 </div>
@@ -271,7 +271,7 @@ include 'sidebar_nav.php';
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
             
-            <a href="tel:<?php echo $formattedPhoneNumber;?>"><?php echo $formattedPhoneNumber;?></a> </div>
+            <?php echo $formattedPhoneNumber;?></div>
    <?php  } 
  } 
  //}
@@ -285,7 +285,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               <strong>Organization:</strong><br>
 
 <p class="mb-4 mt-2">
-<span class="text-primary font-italic mr-1">
+<span class="text-primary mr-1">
 <?php if($peopleDATA->people->primaryOrganization->imageThumbUrl && filter_var($peopleDATA->people->primaryOrganization->imageThumbUrl, FILTER_VALIDATE_URL)){ ?>
 <img src="<?php echo $peopleDATA->people->primaryOrganization->imageThumbUrl; ?>" alt="" class="rounded-circle img-fluid mr-2" style="width: 30px;">
 <?php } else { ?>
@@ -320,7 +320,12 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         	<div class="col-md-1 mr-5 text-center">
             <div class="overflow-hidden d-block m-auto" style="width:130px;height:130px">
             <span id="upload_profile" class="position-relative  d-block h-100">
-    <img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
+            <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) { ?>
+    	<img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
+    <?php } else { ?>
+    	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
+    <?php } ?>
+    <!-- <img src="<?php //echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  > -->
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
     <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange=""> 
     <style>
@@ -485,7 +490,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
      <?php  if($member_id){ ?>
-      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member='.$member_id.'">User Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member=<?php echo $member_id; ?>">User Profile</a></p>
       <?php } else { ?>
         <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
         <?php } ?> 
@@ -515,11 +520,16 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
     this.value = this.value.replace(/\D/g, "");
-    if (this.value.match(/[^$,.\d]/)) {
-        jQuery(this).siblings('.invalid-feedback').show();
-    }
-    if (this.value.length >= 10) {
-        this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    if (this.value.length < 10) {
+        jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (10 digits minimum).').show();
+    } else if (this.value.length > 25) {
+        jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (25 characters maximum).').show();
+    } else {
+        jQuery(this).siblings('.invalid-feedback').hide();
+        if (this.value.length >= 10) {
+          var formattedValue = this.value.replace(/(\d{3})(\d{3})(\d{0,4})/, '($1) $2-$3');
+            this.value = formattedValue.trim();
+        }
     }
 });
 	jQuery('body').on('click','.tag_del',function(){

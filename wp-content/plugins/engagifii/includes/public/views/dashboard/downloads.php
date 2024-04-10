@@ -77,7 +77,7 @@ $title_key = -1;
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('Requested',$colNames);?>, 'desc']],
+		"order": [[<?php echo array_search('File Name',$colNames);?>, 'desc']],
       	"columnDefs": [ 
           { "targets": ['download-select','requested','status'],
             "orderable": false
