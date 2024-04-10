@@ -255,7 +255,7 @@ include 'sidebar_nav.php';
                 <?php if($peopleDATA->people->primaryEmail->value){ ?>
           <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
            
-            <a href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
+            <a class="font-weight-normal" href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
           </p>
             <?php } ?>	
                 </div>
@@ -515,19 +515,15 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
     this.value = this.value.replace(/\D/g, "");
-    if (this.value.match(/[^$,.\d]/)) {
-        jQuery(this).siblings('.invalid-feedback').show();
-    }
     if (this.value.length < 10) {
-       jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (10 digits minimum).').show();
+        jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (10 digits minimum).').show();
+    } else if (this.value.length > 25) {
+        jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (25 characters maximum).').show();
     } else {
         jQuery(this).siblings('.invalid-feedback').hide();
-    }
-    if (this.value.length > 10) {
-       this.value = this.value.substring(0, 10);
-    }
-    if (this.value.length >= 10) {
-        this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+        if (this.value.length >= 10) {
+            this.value = this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+        }
     }
 });
 	jQuery('body').on('click','.tag_del',function(){
