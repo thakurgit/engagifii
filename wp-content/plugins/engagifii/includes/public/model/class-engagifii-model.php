@@ -2691,6 +2691,7 @@ wp_die();
         $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
 		if($_POST['memberIds']=='all'){
 			$postedData['filterBody']['filterRules'][0]['selectedValues']='';	
+			$postedData['filterBody']['filterRules'][0]['fieldId'] = '';
 		} 
         $postedData['filterBody']['startDate']= $_POST['selectedStartDate']; 
 		$postedData['filterBody']['endDate']= $_POST['selectedEndDate'];
