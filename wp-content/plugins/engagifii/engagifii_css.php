@@ -14,20 +14,7 @@ if(isset($options['engagifii_apply_css_ebt'])){
    }else{
    	$activate_css = 0;
 }
-// css settings
-$settings = get_option('ebt_api_settings');
-$table_heading_bg   = ( isset( $settings['ebt_table_bg_color'] ) && $settings['ebt_table_bg_color'] != '' ) ? $settings['ebt_table_bg_color'] : '';
-$table_heading_color   = ( isset( $settings['ebt_table_thead_color'] ) && $settings['ebt_table_thead_color'] != '' ) ? $settings['ebt_table_thead_color'] : '';
-$table_heading_fsize   = ( isset( $settings['ebt_table_thead_fontsize'] ) && $settings['ebt_table_thead_fontsize'] != '' ) ? $settings['ebt_table_thead_fontsize'] : '';
-$ebt_table_tbody_color   = ( isset( $settings['ebt_table_tbody_color'] ) && $settings['ebt_table_tbody_color'] != '' ) ? $settings['ebt_table_tbody_color'] : '';
-$ebt_table_tbody_fontsize   = ( isset( $settings['ebt_table_tbody_fontsize'] ) && $settings['ebt_table_tbody_fontsize'] != '' ) ? $settings['ebt_table_tbody_fontsize'] : '';
-$ebt_table_link_color   = ( isset( $settings['ebt_table_link_color'] ) && $settings['ebt_table_link_color'] != '' ) ? $settings['ebt_table_link_color'] : '';
-$ebt_table_link_hover_color   = ( isset( $settings['ebt_table_link_hover_color'] ) && $settings['ebt_table_link_hover_color'] != '' ) ? $settings['ebt_table_link_hover_color'] : '';
-$ebt_detail_calendar_hover_color         = $settings['ebt_detail_calendar_hover_color'] ?? '';
-$ebt_detail_calendar_strip_color         = $settings['ebt_detail_calendar_strip_color'] ?? '';
-$ebt_detail_calendar_strip_hover_color         = $settings['ebt_detail_calendar_strip_hover_color'] ?? '';
-$engagifii_theme_color   = ( isset( $settings['engagifii_theme_color'] ) && $settings['engagifii_theme_color'] != '' ) ? $settings['engagifii_theme_color'] : '';
-function darken_color($rgb, $darker=2) {
+function darken_color($rgb, $darker=1.5) {
 
 	$hash = (strpos($rgb, '#') !== false) ? '#' : '';
 	$rgb = (strlen($rgb) == 7) ? str_replace('#', '', $rgb) : ((strlen($rgb) == 6) ? $rgb : false);
@@ -42,6 +29,17 @@ function darken_color($rgb, $darker=2) {
 
 	return $hash.$R.$G.$B;
 }
+// css settings
+$settings = get_option('ebt_api_settings');
+$engagifii_theme_color   = ( isset( $settings['engagifii_theme_color'] ) && $settings['engagifii_theme_color'] != '' ) ? $settings['engagifii_theme_color'] : '';
+$table_heading_bg   = ( isset( $settings['ebt_table_bg_color'] ) && $settings['ebt_table_bg_color'] != '' ) ? $settings['ebt_table_bg_color'] : '';
+$table_heading_color   = ( isset( $settings['ebt_table_thead_color'] ) && $settings['ebt_table_thead_color'] != '' ) ? $settings['ebt_table_thead_color'] : '';
+$ebt_table_tbody_color   = ( isset( $settings['ebt_table_tbody_color'] ) && $settings['ebt_table_tbody_color'] != '' ) ? $settings['ebt_table_tbody_color'] : '';
+$ebt_table_link_color   = ( isset( $settings['ebt_table_link_color'] ) && $settings['ebt_table_link_color'] != '' ) ? $settings['ebt_table_link_color'] : '';
+$ebt_table_link_hover_color   = darken_color($ebt_table_link_color, $darker=1.5);
+$ebt_detail_calendar_hover_color         = $settings['ebt_detail_calendar_hover_color'] ?? '';
+$ebt_detail_calendar_strip_color         = $settings['ebt_detail_calendar_strip_color'] ?? '';
+$ebt_detail_calendar_strip_hover_color         = darken_color($ebt_detail_calendar_strip_color, $darker=1.5);
 ?>
 <style>
 <?php if(isset($activate_css)){
@@ -88,10 +86,8 @@ function darken_color($rgb, $darker=2) {
 .engagifii-box table.table thead th{border-bottom: none;}
 #ebtmaintable thead>tr>th,  .light-background thead>tr>th{
 	color:<?php echo $table_heading_color?>;
-	font-size: <?php echo $table_heading_fsize?>px;
 }
 #ebtmaintable.table-bordered.dataTable tbody td{
-	font-size: <?php echo $ebt_table_tbody_fontsize?>px;
     color: <?php echo $ebt_table_tbody_color?>;
 }
 #ebtmaintable a{

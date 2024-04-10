@@ -58,24 +58,7 @@
                          echo $_inputHtml;
                           ?>
                 </td>
-                <td>
-                 <?php
-                    if ( isset( $options['ebt_table_thead_fontsize'])){
-                            $current = $options['ebt_table_thead_fontsize'];
-                    	}
-                        else{
-                            $current = '';
-                        }
-                    ?>
-                	<h4>Table Header Font Size</h4>	
-                     <select name="ebt_api_settings[ebt_table_thead_fontsize]" id="font-size-tz">
-                        <option> </option>
-                        <?php foreach( $fontssie as $key => $font ):?>
-                        <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td colspan="2">
+                <td colspan="3">
                 	<h4>Table Heading Color</h4>
                     <?php
                         $ebt_table_thead_color = $options['ebt_table_thead_color'];
@@ -96,37 +79,13 @@
                           echo $_inputHtml;
                     	 ?>
                 </td>
-                <td>
-                 <?php
-                    if ( isset( $options['ebt_table_tbody_fontsize'])){
-                            $current = $options['ebt_table_tbody_fontsize'];
-                    	}
-                        else{
-                            $current = '';
-                        }
-                    ?>
-                	<h4>Table Body Font size</h4>
-                     <select name="ebt_api_settings[ebt_table_tbody_fontsize]" id="table-size-tz">
-                        <option> </option>
-                        <?php foreach( $fontssie as $key => $font ):?>
-                        <option <?php if($key == $current) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $font['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td>
-                	<h4>Hyperlink Color</h4>
+                <td colspan="3">
+                	<h4>Link Color</h4>
                     <?php
                         $ebt_table_link_color = $options['ebt_table_link_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_link_color]" value="'.$ebt_table_link_color.'" class="engagifii-color-picker">';
                           echo $_inputHtml;
                     	 ?>
-                </td>
-                <td>
-                	<h4>Hyperlink Hover Color</h4>
-                    <?php
-                       $ebt_table_link_hover_color = $options['ebt_table_link_hover_color'];
-                       $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_table_link_hover_color]" value="'.$ebt_table_link_hover_color.'" class="engagifii-color-picker">';
-                       echo $_inputHtml;?>
                 </td>
             </tr>
              <tr>
@@ -140,19 +99,11 @@
                         echo $_inputHtml;
                     ?>
               </td>
-              <td>
+              <td colspan="3">
               	<h4>Calendar Class Name Background</h4>
                  <?php
                         $ebt_detail_calendar_strip_color = $options['ebt_detail_calendar_strip_color'];
                         $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_strip_color]" value="'.$ebt_detail_calendar_strip_color.'" class="engagifii-color-picker">';
-                        echo $_inputHtml;
-                    ?>
-              </td>
-              <td colspan="2">
-              	<h4>Calendar Class Name Background - Hover</h4>
-                 <?php
-                        $ebt_detail_calendar_strip_hover_color = $options['ebt_detail_calendar_strip_hover_color'];
-                        $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_detail_calendar_strip_hover_color]" value="'.$ebt_detail_calendar_strip_hover_color.'" class="engagifii-color-picker">';
                         echo $_inputHtml;
                     ?>
               </td>
