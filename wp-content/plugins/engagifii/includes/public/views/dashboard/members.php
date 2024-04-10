@@ -205,7 +205,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
   var val;
   var filterSubmitted = false;
 	var table = $('#ebtmaintable').DataTable( {
-       	"pageLength": 5,
+       	"pageLength": 10,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
        	"processing": true,
@@ -334,7 +334,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 			  $(this).addClass('d-none');
 			  $('.deSelectAll').removeClass('d-none');
 			  selectedRow = 'all';
-			  thSelect.prop('checked',true).attr('disabled','');
+			  thSelect.prop('checked',true).prop("indeterminate", false).attr('disabled','');
 			  $('.select-row').each(function(){
 				$(this).prop('checked',true).attr('disabled','').parents('tr').addClass('selected');
 			  });
@@ -345,7 +345,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 			  $(this).addClass('d-none');  
 			  $('.selectAll').removeClass('d-none'); 
 			  selectedRow = [];
-			  thSelect.removeAttr('disabled').prop("checked", false);
+			  thSelect.removeAttr('disabled').prop("checked", false).prop("indeterminate", false);
 			  $('.select-row').each(function(){
 				$(this).removeAttr('disabled').prop('checked',false).parents('tr').removeClass('selected');
 			  });
