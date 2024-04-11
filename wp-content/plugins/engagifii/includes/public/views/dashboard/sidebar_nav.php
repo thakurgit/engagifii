@@ -63,7 +63,7 @@ global $post;
 	$options = get_option( 'ebt_api_settings' );
     $menus =$options['dash_menus']['items'];
 	$tenantCode = $options['dashboard_apis']['tenant'];
-	$loggedInUserId = '062464aa-591e-4584-9224-71ffc612ec28';//$_SESSION['pid'];
+	$loggedInUserId = $_SESSION['pid'];
 	$userPermissionArray = array();
         $postedDataPermission = array();
         $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
