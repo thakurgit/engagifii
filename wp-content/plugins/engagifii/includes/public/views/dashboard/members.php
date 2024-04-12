@@ -298,9 +298,9 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 							}
 						}
 						if(selectedRow.length !== 0){
-						  $('.gt').css('visibility', 'visible');
+							$('.gt').removeAttr('disabled');
 						}else{
-						  $('.gt').css('visibility', 'hidden');
+							$('.gt').attr('disabled',''); 
 						 }
 						$('.currentSelected').text(selectedRow.length);
 						if(selectedRow.length==settings._iRecordsTotal){
