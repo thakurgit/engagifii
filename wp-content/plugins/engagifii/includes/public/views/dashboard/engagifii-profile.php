@@ -138,8 +138,12 @@ include 'sidebar_nav.php';
 			   if (count($dp[0]['positionHistory']) == 1 && $dp[0]['positionHistory'][0]['isCurrent']==true) {
 				  $department = $dp[0]['positionHistory'][0]['departmentName'] ?: '--';
 				  $position = $dp[0]['positionHistory'][0]['positionName'] ?: '--';
+          if(!$department=="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span>';
+          }
+          if(!$department=="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
+          }
 			   }else{ 
 				  $positions = $dp[0]['positionHistory'];
 				  $totalDepartments = 0;
