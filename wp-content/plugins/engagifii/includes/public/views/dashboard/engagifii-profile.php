@@ -283,7 +283,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     		 if($value->controlTypeId==12 && in_array($value->id, $profilePayloadFields)){ ?>
 <div class="col-12">
               <strong>Organization:</strong><br>
-
+ 
 <p class="mb-4 mt-2">
 <span class="text-primary mr-1">
 <?php if($peopleDATA->people->primaryOrganization->imageThumbUrl && filter_var($peopleDATA->people->primaryOrganization->imageThumbUrl, FILTER_VALIDATE_URL)){ ?>
