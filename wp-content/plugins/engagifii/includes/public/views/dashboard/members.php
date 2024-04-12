@@ -59,7 +59,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
             	<h4 class="mb-0 mr-2">
                 	<button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
-                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" style="visibility: hidden;"><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -263,10 +263,10 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 		   var thSelect= $(".people-select :checkbox");
 				$('.totalMembers').text(settings._iRecordsTotal);
 			   if(selectedRow.length > 0 || selectedRow =='all'){
-				  $('.gt').css('visibility', 'visible');
-			   }else{
-         		 $('.gt').css('visibility', 'hidden');
-			   }
+				$('.gt').removeAttr('disabled');
+				  }else{
+				$('.gt').attr('disabled',''); 
+         		  }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val()) || selectedRow =='all'){
 					$(this).prop('checked',true).change().parents('tr').addClass('selected');  
