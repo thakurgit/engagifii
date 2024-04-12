@@ -260,7 +260,7 @@ include 'sidebar_nav.php';
         </div>
   </div>
   <?php if($member_id){ ?>
-  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member"><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -1149,12 +1149,14 @@ curl_close($curl);
   var endDate = dates[1]; // End date
   //alert(selectedDateRange);
 	var logged_in_user = localStorage.getItem("logged_in_user");
+  var member_id = '<?php echo $member_id; ?>'; 
+  var memberIdsArray = [member_id]; 
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'generateDownloadsByMemberIds',
-			  memberIds: <?php echo $member_id; ?>,
+			  memberIds: memberIdsArray,
 			  selectedStartDate: startDate, 
 			  selectedEndDate: endDate, 
           },
