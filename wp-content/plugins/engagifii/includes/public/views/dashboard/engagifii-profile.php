@@ -1111,37 +1111,7 @@ function initializeAutocomplete() {
  if (!localStorage.getItem("logged_in_user")) {
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
 }
-
-</script>
-  <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-$payload = json_decode(file_get_contents("php://input"), true);	
-
-$peopleToken = $_SESSION['accesstoken'];
-$authentication1 = 'authorization: Bearer '.$peopleToken;
-$curl = curl_init();
-$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
-  curl_setopt_array($curl, array(
-  CURLOPT_URL => $url1,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_POST => true,  // Set request type to POST
-  CURLOPT_POSTFIELDS => json_encode($payload),  // Set the payload data
-  CURLOPT_HTTPHEADER => array(
-    "cache-control: no-cache",
-    "content-type: application/json",
-    "tenant-code:".$tenantCode,
-    $authentication1
-  ),
-));
-$response1 = curl_exec($curl);
-$updateDATA = json_decode($response1);
-//print_r($updateDATA);
-// Close the cURL session
-curl_close($curl);
-}
-?>
-<script>
-  $('.gtm').click(function(){
+$('.gtm').click(function(){
   //var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
@@ -1203,5 +1173,31 @@ $( '.clearDateFilter' ).click(function() {
 $( '.dateFilter button' ).click(function() {
 		 table.draw();
 });
-
 </script>
+  <?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+$payload = json_decode(file_get_contents("php://input"), true);	
+
+$peopleToken = $_SESSION['accesstoken'];
+$authentication1 = 'authorization: Bearer '.$peopleToken;
+$curl = curl_init();
+$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+  curl_setopt_array($curl, array(
+  CURLOPT_URL => $url1,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST => true,  // Set request type to POST
+  CURLOPT_POSTFIELDS => json_encode($payload),  // Set the payload data
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "tenant-code:".$tenantCode,
+    $authentication1
+  ),
+));
+$response1 = curl_exec($curl);
+$updateDATA = json_decode($response1);
+//print_r($updateDATA);
+// Close the cURL session
+curl_close($curl);
+}
+?>
