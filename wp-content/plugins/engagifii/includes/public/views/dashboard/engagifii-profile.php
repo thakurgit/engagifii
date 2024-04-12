@@ -227,7 +227,7 @@ include 'sidebar_nav.php';
 				$status = 'Active'; 
 				$statusColor = 'green';
 			  if($member_id) { ?>
-              <span class="mr-4 bg-white rounded py-1"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
+              <span class="mr-4 bg-white rounded py-1 d-none"><strong>Status:</strong> <span style="color:<?php echo $statusColor; ?>;"><?php echo $status; ?></span></span>
               <?php } } ?>
   </div>
         </div>
@@ -283,7 +283,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     		 if($value->controlTypeId==12 && in_array($value->id, $profilePayloadFields)){ ?>
 <div class="col-12">
               <strong>Organization:</strong><br>
-
+ 
 <p class="mb-4 mt-2">
 <span class="text-primary mr-1">
 <?php if($peopleDATA->people->primaryOrganization->imageThumbUrl && filter_var($peopleDATA->people->primaryOrganization->imageThumbUrl, FILTER_VALIDATE_URL)){ ?>
@@ -295,38 +295,44 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 </p>
                 </div>
                 <?php } } ?>
- </div>
-      </div>
-    </div>
-   </div> <?php 
+                
+ <div class="col-12 d-none">
+ <?php 
    foreach ($peopleDATA->peopleFields as $key => $value) {
     if ($value->controlTypeId == 12 && in_array($value->id, $profilePayloadFields)) {
+		echo '<strong>Organization:</strong><br>';
         $dp = json_decode($value->organizationValue, true);
         foreach ($dp as $organization) {
             $orgIcon = $organization['imageThumbUrl'];
             $orgName = $organization['name'];
-            if (!empty($orgImageThumbUrl)) {
-              //echo '<img src="' . $orgImageThumbUrl . '" alt="Organization Thumbnail">';
+			echo '<div class="py-2 d-flex align-items-start border-bottom ">';
+            if ($orgIcon && filter_var($orgIcon, FILTER_VALIDATE_URL)) {
+              echo '<img src="' . $orgIcon . '" alt="Organization Thumbnail" class="rounded-circle img-fluid mr-2" style="max-width: 30px; flex:0 0 30px">';
           } else {
-              //echo '<i class="far fa-landmark"></i>';
+              echo '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
           }
-            //echo '<h4>' . $orgName . '</h4>';
+            echo '<div><h6 class="mb-2">' . $orgName . '</h6>';
             $positions = $organization['positionHistory'];
             foreach ($positions as $position) {
                 if ($position['isCurrent'] == true) {
                     $department = $position['departmentName'] ?: '--';
                     $positionName = $position['positionName'] ?: '--';
-                    // Calculate total time worked (You need to implement this logic)
-                    $totalTimeWorked = "";//($position); // You need to implement this function
+                    $totalTimeWorked = "--";//($position); // You need to implement this function
 
-                   // echo '<p><strong>Department: </strong>' . $department . '</p>';
-                    //echo '<p><strong>Position: </strong>' . $positionName . '</p>';
-                    //echo '<p><strong>Total Time Worked: </strong>' . $totalTimeWorked . '</p>';
+                    echo '<strong>Department: </strong>' . $department . '<br>';
+                    echo '<strong>Position: </strong>' . $positionName . '<br>';
+                    echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked ; 
                 }
             }
+			echo '</div></div>';
         }
     }
 } ?>
+ </div>
+ </div>
+      </div>
+    </div>
+   </div> 
     <!--profile edit-->
    <style>
    .profile-tabs .nav-link {
