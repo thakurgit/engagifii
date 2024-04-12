@@ -28,6 +28,28 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
 	$tenantCode = $options['dashboard_apis']['tenant'];
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
+
+  $fiscalYear  = $obj->getFiscalYear();
+  $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
+  $largestStartDate = null;
+  $largestEndDate = null;
+  
+  foreach ($fiscalYearResponse as $fiscalYear) {
+      $startDate = strtotime($fiscalYear->startDate);
+      $endDate = strtotime($fiscalYear->endDate);
+  
+      if ($largestStartDate === null || $startDate > $largestStartDate) {
+          $largestStartDate = $startDate;
+           $largestFiscalYearName = $fiscalYear->name;
+     }
+  
+      if ($largestEndDate === null || $endDate > $largestEndDate) {
+          $largestEndDate = $endDate;
+      }
+  }
+  $fiscalStartDate = date('Y-m-d', $largestStartDate );
+  $fiscalEndDate = date('Y-m-d', $largestEndDate );
+  
 if($peopleDATA->isError==true) { 
 echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
 ?>
@@ -138,10 +160,10 @@ include 'sidebar_nav.php';
 			   if (count($dp[0]['positionHistory']) == 1 && $dp[0]['positionHistory'][0]['isCurrent']==true) {
 				  $department = $dp[0]['positionHistory'][0]['departmentName'] ?: '--';
 				  $position = $dp[0]['positionHistory'][0]['positionName'] ?: '--';
-          if(!$department=="--"){
+          if($department!="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span>';
           }
-          if(!$position=="--"){
+          if($position!="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
           }
 			   }else{ 
@@ -237,6 +259,37 @@ include 'sidebar_nav.php';
         </div>
         </div>
   </div>
+  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Generate Credits Earned Report</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group dateFilter">
+                        <label>Select Date Range</label>
+                        <div class="input-group mr-2" style="max-width:255px">
+                        <input type="text" class="form-control form-control-sm shadow-none" placeholder="Select Date Range">
+                      <div class="input-group-append">
+                        <span class="input-group-text bg-transparent clearDateFilter" style="cursor:pointer; display:none;"><i class="far fa-times"></i></span>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text "><i class="far fa-calendar-alt"></i></span>
+                      </div>
+                    </div>
+                    </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary gtm">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
   </div>
   <!-- Header -->
   <div class="container-fluid">
