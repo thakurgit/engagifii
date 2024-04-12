@@ -246,7 +246,7 @@ include 'sidebar_nav.php';
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
      <div class="col-md-4 mb-4 ">
- <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br> '.$address['addressLine2'].'<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];         
+ <Strong><?php echo $value->name;?>: </strong> <br><?php  echo $address['address'].',<br>'.$address['city'].', '.$address['state'].' '.$address['zipCode'].'<br>'.$address['country'];         
      echo "</div>"; } 
  }
 ?>
