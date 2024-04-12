@@ -141,7 +141,7 @@ include 'sidebar_nav.php';
           if(!$department=="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span>';
           }
-          if(!$department=="--"){
+          if(!$position=="--"){
 				  echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
           }
 			   }else{ 
