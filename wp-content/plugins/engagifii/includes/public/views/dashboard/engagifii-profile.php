@@ -259,6 +259,7 @@ include 'sidebar_nav.php';
         </div>
         </div>
   </div>
+  <?php if($member_id){ ?>
   <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
@@ -289,7 +290,7 @@ include 'sidebar_nav.php';
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> <?php } ?>
   </div>
   <!-- Header -->
   <div class="container-fluid">
@@ -1153,7 +1154,7 @@ curl_close($curl);
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'generateDownloadsByMemberIds',
-			  memberIds: selectedRow,
+			  memberIds: <?php echo $member_id; ?>,
 			  selectedStartDate: startDate, 
 			  selectedEndDate: endDate, 
           },
