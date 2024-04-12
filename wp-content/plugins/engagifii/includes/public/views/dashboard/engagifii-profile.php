@@ -598,6 +598,69 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 
     </div>
     <script>
+       $('.gtm').click(function(){
+  //var selectedIds = selectedRow.join();
+  var selectedDateRange = $('.dateFilter input').val();
+  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
+  var startDate = dates[0]; // Start date
+  var endDate = dates[1]; // End date
+  //alert(selectedDateRange);
+	var logged_in_user = localStorage.getItem("logged_in_user");
+	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'generateDownloadsByMemberIds',
+			  memberIds: <?php echo $member_id; ?>,
+			  selectedStartDate: startDate, 
+			  selectedEndDate: endDate, 
+          },
+          success: function(response) { 
+            $('#exampleModal').modal('hide') ;
+		  	$('#pdfcreated').modal('show')
+			
+		  }
+        });
+});
+
+ $( document ).ready(function() {
+   // $('input[name="createdbetween"]').val('');
+   $('.dateFilter input').val('');
+   <?php  if ($fiscalStartDate){ ?>
+      var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
+     var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
+    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
+   <?php }   ?>
+    
+    //$('.dateFilter input').val('');
+});
+//date filter
+$('.dateFilter input').daterangepicker({
+  // minDate:'<?php //echo $class_start_date; ?>',
+   // maxDate: '<?php //echo $class_end_date; ?>',
+    autoApply: true
+  }, function(start, end) {
+      var classDates = start.format('YYYY-MM-DD')+'to'+end.format('YYYY-MM-DD');
+		var classDate = classDates.split("to");
+	 	startDate = $.trim(classDate[0])+'T00:00:00';
+		endDate = $.trim(classDate[1])+'T00:00:00';
+    });
+	$('.dateFilter input').change(function(){
+		if($(this).val()!==''){
+			$( '.clearDateFilter' ).show();
+		}
+	});
+$( '.clearDateFilter' ).click(function() {
+		 $('.dateFilter input').val('');
+		 $(this).hide();
+ startDate = '1970-01-01T00:00:00';
+ endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
+		 table.draw();
+});
+$( '.dateFilter button' ).click(function() {
+		 table.draw();
+});
+
    	jQuery(document).ready(function(e){
 	jQuery('.edit-profile-btn').click(function(e){
 		jQuery('.profile-page').hide();
@@ -1111,68 +1174,7 @@ function initializeAutocomplete() {
  if (!localStorage.getItem("logged_in_user")) {
  localStorage.setItem("logged_in_user", "<?php echo $peopleDATA->people->id;?>");
 }
-$('.gtm').click(function(){
-  //var selectedIds = selectedRow.join();
-  var selectedDateRange = $('.dateFilter input').val();
-  var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
-  var startDate = dates[0]; // Start date
-  var endDate = dates[1]; // End date
-  //alert(selectedDateRange);
-	var logged_in_user = localStorage.getItem("logged_in_user");
-	   $.ajax({
-          type : "post",
-          url: engagifiiUrl_ajaxurl,
-          data:{
-              action:'generateDownloadsByMemberIds',
-			  memberIds: <?php echo $member_id; ?>,
-			  selectedStartDate: startDate, 
-			  selectedEndDate: endDate, 
-          },
-          success: function(response) { 
-            $('#exampleModal').modal('hide') ;
-		  	$('#pdfcreated').modal('show')
-			
-		  }
-        });
-});
 
- $( document ).ready(function() {
-   // $('input[name="createdbetween"]').val('');
-   $('.dateFilter input').val('');
-   <?php  if ($fiscalStartDate){ ?>
-      var defaultStartDate = '<?php echo date("m/d/Y", strtotime($fiscalStartDate)); ?>';
-     var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
-    $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
-   <?php }   ?>
-    
-    //$('.dateFilter input').val('');
-});
-//date filter
-$('.dateFilter input').daterangepicker({
-  // minDate:'<?php //echo $class_start_date; ?>',
-   // maxDate: '<?php //echo $class_end_date; ?>',
-    autoApply: true
-  }, function(start, end) {
-      var classDates = start.format('YYYY-MM-DD')+'to'+end.format('YYYY-MM-DD');
-		var classDate = classDates.split("to");
-	 	startDate = $.trim(classDate[0])+'T00:00:00';
-		endDate = $.trim(classDate[1])+'T00:00:00';
-    });
-	$('.dateFilter input').change(function(){
-		if($(this).val()!==''){
-			$( '.clearDateFilter' ).show();
-		}
-	});
-$( '.clearDateFilter' ).click(function() {
-		 $('.dateFilter input').val('');
-		 $(this).hide();
- startDate = '1970-01-01T00:00:00';
- endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
-		 table.draw();
-});
-$( '.dateFilter button' ).click(function() {
-		 table.draw();
-});
 </script>
   <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
