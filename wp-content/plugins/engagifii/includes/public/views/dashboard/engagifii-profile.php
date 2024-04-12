@@ -281,7 +281,7 @@ include 'sidebar_nav.php';
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
     		 if($value->controlTypeId==12 && in_array($value->id, $profilePayloadFields)){ ?>
-<div class="col-12">
+<div class="col-12 d-none">
               <strong>Organization:</strong><br>
  
 <p class="mb-4 mt-2">
@@ -296,7 +296,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 </div>
                 <?php } } ?>
                 
- <div class="col-12 d-none">
+ <div class="col-12">
  <?php 
    foreach ($peopleDATA->peopleFields as $key => $value) {
     if ($value->controlTypeId == 12 && in_array($value->id, $profilePayloadFields)) {
@@ -317,11 +317,11 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 if ($position['isCurrent'] == true) {
                     $department = $position['departmentName'] ?: '--';
                     $positionName = $position['positionName'] ?: '--';
-                    $totalTimeWorked = "--";//($position); // You need to implement this function
+                    $totalTimeWorked = "--";
 
                     echo '<strong>Department: </strong>' . $department . '<br>';
                     echo '<strong>Position: </strong>' . $positionName . '<br>';
-                    echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked ; 
+                    echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">' ; 
                 }
             }
 			echo '</div></div>';

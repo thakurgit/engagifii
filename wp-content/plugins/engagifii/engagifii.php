@@ -338,7 +338,7 @@ function insert_page_on_activation() {
 		),
 		array(
 			'slug' => 'welcome-to-dashboard',
-			'title' => 'Welcome to MyPSBA',
+			'title' => 'Welcome to Dashboard',
 			'content' => 'Welcome to My Profile Dashboard'
 		),
 		array(
