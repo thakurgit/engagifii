@@ -391,6 +391,16 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 		echo '<strong>Organization:</strong><br>';
         $dp = json_decode($value->organizationValue, true);
         foreach ($dp as $organization) {
+			$positions = $organization['positionHistory'];
+			$count = 0;
+			foreach ($positions as $position) {
+				if ($position['isCurrent'] == true) {
+					$count++;	
+				}
+			}
+			if($count==0){
+				continue;		
+			}
             $orgIcon = $organization['imageThumbUrl'];
             $orgName = $organization['name'];
 			$primary = $organization['isPrimary'] ==1 ? '<span class="badge badge-warning ml-3">Primary</span>' : '';
@@ -401,7 +411,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               echo '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
           }
             echo '<div><h6 class="mb-2">' . $orgName . $primary.'</h6>';
-            $positions = $organization['positionHistory'];
+            
             foreach ($positions as $position) {
                 if ($position['isCurrent'] == true) {
                     $department = $position['departmentName'] ?: '';
@@ -409,8 +419,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 					$startDate = $position['startDate'] ? date("M d, Y", strtotime($position['startDate'])).' - ' : '';
 					$endDate = $position['endDate'] ? date("M d, Y", strtotime($position['endDate'])) : date("M d, Y");
 					$endDate = $endDate == date("M d, Y") ? 'Current - ' : $endDate.' - ' ;
-					$years = $position['years'] > 0 ? $position['years'].' Years ' : '';
-					$months = $position['months'] > 0 ? $position['months'].' Months' : '';
+					$years = $position['years'] > -1 ? $position['years'].' Years ' : '';
+					$months = $position['months'] > -1 ? $position['months'].' Months' : '';
                     $totalTimeWorked = $startDate.$endDate.$years.$months;
 					$current = $position['isCurrent'] == true ? '<span class="badge badge-success ml-3">Current</span>' : '';
 
