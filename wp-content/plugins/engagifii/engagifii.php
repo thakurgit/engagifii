@@ -307,10 +307,10 @@ function insert_page_on_activation() {
         $page7_id = wp_insert_post($page7);
     }
 	// Parent page data
-	$parent_page_slug = 'engagifii-profile'; // Slug of the parent page
+	$parent_page_slug = 'my-profile'; // Slug of the parent page
 	$parent_page = array(
 		'post_type'     => 'page',
-		'post_title'    => 'Engagifii Profile',
+		'post_title'    => 'My Profile',
 		'post_content'  => '[engagifii-profile]',
 		'post_status'   => 'publish',
 		'post_author'   => 1,
@@ -338,7 +338,7 @@ function insert_page_on_activation() {
 		),
 		array(
 			'slug' => 'welcome-to-dashboard',
-			'title' => 'Welcome to MyPSBA',
+			'title' => 'Welcome to Dashboard',
 			'content' => 'Welcome to My Profile Dashboard'
 		),
 		array(

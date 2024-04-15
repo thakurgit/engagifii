@@ -1,5 +1,4 @@
 <?php
-
 $default_length = '10';
 $calendar_view = false;
 if(isset($attr['records'])){

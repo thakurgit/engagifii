@@ -97,10 +97,10 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
          $url = "http://";   
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'engagifii-profile') !== false ) {
-		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/'; 
-		$course_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';?>
-    <a href="<?php echo site_url().'/engagifii-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+if ( strpos($url,'my-profile') !== false ) {
+		$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/'; 
+		$course_detail_page_link= site_url() .'/my-profile/my-transcript/course-details/';?>
+    <a href="<?php echo site_url().'/my-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
@@ -185,7 +185,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			  //$tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom));
 			  ?>
 			<div class="mt-auto">	
-            <?php if ( strpos($url,'engagifii-profile') !== false ) { 
+            <?php if ( strpos($url,'my-profile') !== false ) { 
 				if($workflowid==''){
                     $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>

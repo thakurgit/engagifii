@@ -136,7 +136,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	}
 	public function engagifii_myHome(){
 		ob_start();
-		include $this->basePath.'includes/public/views/dashboard/welcome-to-psba.php';
+		include $this->basePath.'includes/public/views/dashboard/welcome-to-dashboard.php';
 		return ob_get_clean();
 	}
 	public function engagifii_members(){

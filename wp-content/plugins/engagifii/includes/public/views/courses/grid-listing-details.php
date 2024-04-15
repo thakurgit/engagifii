@@ -58,9 +58,9 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
          $url = "http://";   
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'engagifii-profile') !== false ) {
-	$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';?> 
-    <a href="<?php echo site_url().'/engagifii-profile/my-transcript/?tab=credits';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+if ( strpos($url,'my-profile') !== false ) {
+	$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';?> 
+    <a href="<?php echo site_url().'/my-profile/my-transcript/?tab=credits';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $courses_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
@@ -238,6 +238,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 			                       	</div>
 		                    	</div>
 					  		</div> -->
+							  <?php if(count($certifiedInsturctor)){ ?>
 			  			<div class="col-sm-12 mb-4">
 			  				<div class="border rounded box-shadow">
 			  					<div class="panel-title bg-light p-2 border-bottom">
@@ -282,6 +283,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($courses); ?></span>
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="course_<?php echo $key; ?>" style="max-height:250px; overflow:scroll">
+														  <h6 class="text-center mb-0 pb-2">Courses skilled to Teach</h6>
 														  	<?php
 														  			foreach ($courses as $index => $val) {
 														  	?>
@@ -303,6 +305,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($skills); ?></span>
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="skills_<?php echo $key; ?>" style="max-height:250px; overflow:scroll">
+														  <h6 class="text-center mb-0 pb-2">Courses Taught</h6>
 														  	<?php
 														  			foreach ($skills as $index => $val) {
 														  	?>
@@ -342,6 +345,7 @@ if ( strpos($url,'engagifii-profile') !== false ) {
 		                    	</div>
 		                	</div>
 			  			</div>
+						<?php } ?>
 			  		</div>
 			  	</div>
 			  	<div class="p-3 tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">

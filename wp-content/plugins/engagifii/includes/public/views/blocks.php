@@ -88,9 +88,9 @@ global $post;
   </style>';
     $html .= '<div class="container-fluid mb-4">
 	<div class="d-flex justify-content-center border-top border-bottom dashboard-nav h5">
-    	<a href="'.$site_url.'/engagifii-profile" class="py-3 mx-4 ' . ($post_slug == 'engagifii-profile' ? $active : '') . '">My Profile</a>
-        <a href="'.$site_url.'/engagifii-profile/my-transcript" class="py-3 mx-4 ' . ($post_slug == 'my-transcript' ? $active : '') . '">My Transcript</a>
-        <a href="'.$site_url.'/engagifii-profile/events" class="py-3 mx-4 ' . ($post_slug == 'events' ? $active : '') . '">Events</a>
+    	<a href="'.$site_url.'/my-profile" class="py-3 mx-4 ' . ($post_slug == 'my-profile' ? $active : '') . '">My Profile</a>
+        <a href="'.$site_url.'/my-profile/my-transcript" class="py-3 mx-4 ' . ($post_slug == 'my-transcript' ? $active : '') . '">My Transcript</a>
+        <a href="'.$site_url.'/my-profile/events" class="py-3 mx-4 ' . ($post_slug == 'events' ? $active : '') . '">Events</a>
         
     </div>
 </div>'; //<a href="'.$site_url.'/engagifii-profile/my-transactions" class="py-3 mx-4 ' . ($post_slug == 'my-transactions' ? $active : '') . '">Accounting Details</a>

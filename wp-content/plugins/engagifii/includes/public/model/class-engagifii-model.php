@@ -2193,8 +2193,8 @@ wp_die();
         $options = get_option('ebt_api_settings');
         $front_pages = $options['front_pages'];
         $courses_detail_page = $front_pages['courses_detail_page'];
-        $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
-		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
+        $courses_detail_page_link= site_url() .'/my-profile/my-transcript/course-details/';	 
+		$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';	
         
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
@@ -2204,7 +2204,7 @@ wp_die();
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $sortDirection = $_POST["order"][0]["dir"];
 		$postedData = '{"itemCount":100,"pageNumber":1,"pageSize":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","filterBody":{"filterRules":[],"searchText":"'.$title.'","startDate":"'.$startDate.'","endDate":"'.$endDate.'","groupById":"'.$_POST['profileId'].'","groupByType":3},"includeTotal":true}';
-        $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'mycourses');
+        $dataResponse = $this->submitApiRequest("CourseReport/CourseCreditPagingList", json_decode($postedData), "POST", 'reports');
 		//print_r($postedData); die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
@@ -2300,8 +2300,8 @@ wp_die();
         $options = get_option('ebt_api_settings');
         $front_pages = $options['front_pages'];
         $courses_detail_page = $front_pages['courses_detail_page'];
-        $courses_detail_page_link= site_url() .'/engagifii-profile/my-transcript/course-details/';	 
-		$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';	
+        $courses_detail_page_link= site_url() .'/my-profile/my-transcript/course-details/';	 
+		$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';	
 		$postedData = $this->_preparePeopleData();
         //print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
@@ -2321,7 +2321,7 @@ wp_die();
 			}else{
 				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['peoplename'] .= '<a class="text-nowrap" href="'.site_url().'/engagifii-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
+            $nestedData['peoplename'] .= '<a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
@@ -3144,7 +3144,7 @@ public function eventFilters(){
 	
 	$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
-	$events_detail_page_link= site_url() .'/engagifii-profile/events/event-detail/';	 
+	$events_detail_page_link= site_url() .'/my-profile/events/event-detail/';	 
 	     $postedData = $this->_prepareEventsData();
 		// print_r(json_encode($postedData));
 		//die;
