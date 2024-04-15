@@ -225,7 +225,7 @@ z-index:-1;
         </button>
       </div>
       <div class="modal-body">
-       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/engagifii-profile/my-transcript/downloads">My Downloads</a>. </p>
+       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/my-profile/my-transcript/downloads">My Downloads</a>. </p>
       </div>
       
     </div>
