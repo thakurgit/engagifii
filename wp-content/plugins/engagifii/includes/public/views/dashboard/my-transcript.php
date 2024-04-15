@@ -98,7 +98,7 @@ $awardDataCount = $awardDataCountNumber->totalCount;
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
-</svg></span> All Reports</button>
+</svg></span> All Reports <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
     </div>
     <ul class="nav nav-pills justify-content-center session-tab nav-fill" id="pills-tab" role="tablist">
     <?php 
@@ -175,7 +175,7 @@ z-index:-1;
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
-</svg></span>Report</span></span>
+</svg></span>Report<span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></span></span>
       </button>
             </h2>
             </div>
@@ -263,6 +263,7 @@ $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
 $('#allReports, .awardReport').click(function(e){
 	var awardId='';
 	awardId=$(this).attr('data-report');
+	$(this).attr('disabled','').find('span.spinner-border').show();
 		
 	   $.ajax({
           type : "post",
@@ -273,7 +274,8 @@ $('#allReports, .awardReport').click(function(e){
 			  awardId: awardId,
           },
           success: function(response) { 
-		  	$('#pdfcreated').modal('show')
+		  	$('#pdfcreated').modal('show');
+			$('#allReports, .awardReport').removeAttr('disabled').find('span.spinner-border').hide();
 			
 		  }
         });
