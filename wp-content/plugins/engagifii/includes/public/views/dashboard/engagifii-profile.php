@@ -363,7 +363,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         foreach ($dp as $organization) {
             $orgIcon = $organization['imageThumbUrl'];
             $orgName = $organization['name'];
-			echo '<div class="py-2 d-flex align-items-start border-bottom ">';
+			echo '<div class="py-3 d-flex align-items-start border-bottom ">';
             if ($orgIcon && filter_var($orgIcon, FILTER_VALIDATE_URL)) {
               echo '<img src="' . $orgIcon . '" alt="Organization Thumbnail" class="rounded-circle img-fluid mr-2" style="max-width: 30px; flex:0 0 30px">';
           } else {
@@ -373,12 +373,18 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             $positions = $organization['positionHistory'];
             foreach ($positions as $position) {
                 if ($position['isCurrent'] == true) {
-                    $department = $position['departmentName'] ?: '--';
-                    $positionName = $position['positionName'] ?: '--';
-                    $totalTimeWorked = "--";
+                    $department = $position['departmentName'] ?: '';
+                    $positionName = $position['positionName'] ?: '';
+					$startDate = $position['startDate'] ? date("M d, Y", strtotime($position['startDate'])).' - ' : '';
+					$endDate = $position['endDate'] ? date("M d, Y", strtotime($position['endDate'])) : date("M d, Y");
+					$endDate = $endDate == date("M d, Y") ? 'Current - ' : $endDate.' - ' ;
+					$years = $position['years'] > 0 ? $position['years'].' Years ' : '';
+					$months = $position['months'] > 0 ? $position['months'].' Months' : '';
+                    $totalTimeWorked = $startDate.$endDate.$years.$months;
+					$current = $position['isCurrent'] == true ? '<span class="badge badge-success ml-3">Current</span>' : '';
 
                     echo '<strong>Department: </strong>' . $department . '<br>';
-                    echo '<strong>Position: </strong>' . $positionName . '<br>';
+                    echo '<strong>Position: </strong>' . $positionName . $current.'<br>';
                     echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">' ; 
                 }
             }
