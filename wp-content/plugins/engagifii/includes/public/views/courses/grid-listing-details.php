@@ -58,9 +58,9 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
          $url = "http://";   
     $url.= $_SERVER['HTTP_HOST'];   
     $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'engagifii-profile') !== false ) {
-	$classes_detail_page_link= site_url() .'/engagifii-profile/my-transcript/class-detail/';?> 
-    <a href="<?php echo site_url().'/engagifii-profile/my-transcript/?tab=credits';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+if ( strpos($url,'my-profile') !== false ) {
+	$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';?> 
+    <a href="<?php echo site_url().'/my-profile/my-transcript/?tab=credits';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
     <a href="<?php echo $courses_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
