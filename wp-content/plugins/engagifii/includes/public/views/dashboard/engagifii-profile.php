@@ -393,13 +393,14 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         foreach ($dp as $organization) {
             $orgIcon = $organization['imageThumbUrl'];
             $orgName = $organization['name'];
+			$primary = $organization['isPrimary'] ==1 ? '<span class="badge badge-warning ml-3">Primary</span>' : '';
 			echo '<div class="py-3 d-flex align-items-start border-bottom ">';
             if ($orgIcon && filter_var($orgIcon, FILTER_VALIDATE_URL)) {
               echo '<img src="' . $orgIcon . '" alt="Organization Thumbnail" class="rounded-circle img-fluid mr-2" style="max-width: 30px; flex:0 0 30px">';
           } else {
               echo '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
           }
-            echo '<div><h6 class="mb-2">' . $orgName . '</h6>';
+            echo '<div><h6 class="mb-2">' . $orgName . $primary.'</h6>';
             $positions = $organization['positionHistory'];
             foreach ($positions as $position) {
                 if ($position['isCurrent'] == true) {
