@@ -82,6 +82,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                       </div>
                     </div>
                     </div>
+					<div>Note: The report will only show data of the members who have earned credits in the selected date range</div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -188,7 +189,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
         </button>
       </div>
       <div class="modal-body">
-       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/engagifii-profile/my-transcript/downloads">My Downloads</a>. </p>
+       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/my-profile/my-transcript/downloads">My Downloads</a>. </p>
       </div>
       
     </div>
