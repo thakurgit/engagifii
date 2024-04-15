@@ -145,7 +145,7 @@ include 'sidebar_nav.php';
     	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
     <?php } ?>
     </div>
-    <a href="<?php echo $site_url ?>/engagifii-profile/edit" class="btn btn-outline-dark btn-sm edit-profile-btn" style="z-index: 1;">
+    <a href="<?php echo $site_url ?>/my-profile/edit" class="btn btn-outline-dark btn-sm edit-profile-btn" style="z-index: 1;">
                 Edit profile
               </a>
   </div>
@@ -549,7 +549,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                <div class="form-group col-12 px-3">
                 	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
 
-                            <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/engagifii-profile">Cancel</a>
+                            <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/my-profile">Cancel</a>
 
                 </div>
                <!-- <div class="curl-message col-12  px-3" >
@@ -582,9 +582,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
      <?php  if($member_id){ ?>
-      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile/?member=<?php echo $member_id; ?>">User Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/my-profile/?member=<?php echo $member_id; ?>">User Profile</a></p>
       <?php } else { ?>
-        <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/engagifii-profile">My Profile</a></p>
+        <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/my-profile">My Profile</a></p>
         <?php } ?> 
       </div>
       
@@ -1056,7 +1056,7 @@ payload.push( Addressdata<?php echo $key;?> );
 		//jQuery('.curl-success').show().siblings().hide();
 		// setTimeout(function() {
     //            jQuery('.curl-success').hide();
-    //              window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
+    //              window.location.href = "<?php //echo $site_url; ?>/psba/my-profile";
     //          }, 5000);
     },
  });
