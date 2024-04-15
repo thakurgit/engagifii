@@ -1056,7 +1056,7 @@ payload.push( Addressdata<?php echo $key;?> );
 		//jQuery('.curl-success').show().siblings().hide();
 		// setTimeout(function() {
     //            jQuery('.curl-success').hide();
-    //              window.location.href = "<?php //echo $site_url; ?>/psba/engagifii-profile";
+    //              window.location.href = "<?php //echo $site_url; ?>/psba/my-profile";
     //          }, 5000);
     },
  });
