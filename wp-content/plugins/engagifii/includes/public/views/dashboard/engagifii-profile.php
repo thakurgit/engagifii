@@ -356,7 +356,37 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 
  <div class="col-12">
  <?php 
+ function addDurations($durations) {
+    $totalYears = 0;
+    $totalMonths = 0;
+
+    foreach ($durations as $duration) {
+		$years = 0;
+        $months = 0;
+        $parts = explode(" ", $duration);
+		if($parts[1] == 'Years'){
+      	  $years = intval($parts[0]);
+		}
+
+        if ($parts[1] == 'Months') {
+            $months = intval($parts[0]);
+        }else if($parts[3] == 'Months'){
+			$months = intval($parts[2]);
+		}
+
+        $totalYears += $years;
+        $totalMonths += $months;
+    }
+
+    // Adjust total years based on total months
+    $totalYears += floor($totalMonths / 12);
+    $totalMonths = $totalMonths % 12;
+	$totalYears = $totalYears > 0 ? $totalYears.' Years' : '';
+	$totalMonths = $totalMonths > 0 ? $totalMonths.' Months' : '';
+    return "$totalYears $totalMonths";
+}
    foreach ($peopleDATA->peopleFields as $key => $value) {
+	$durations=[];
     if ($value->controlTypeId == 12 && in_array($value->id, $profilePayloadFields)) {
 		echo '<strong>Organization:</strong><br>';
         $dp = json_decode($value->organizationValue, true);
@@ -386,12 +416,18 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                     echo '<strong>Department: </strong>' . $department . '<br>';
                     echo '<strong>Position: </strong>' . $positionName . $current.'<br>';
                     echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">'; 
+					$durations[]=$years.$months;
                 }
             }
+			if($durations){
+				echo 'Total time worked at this Organization: '.addDurations($durations);
+			}
 			echo '</div></div>';
         }
     }
-} ?>
+} 
+
+?>
  </div>
  </div>
       </div>
