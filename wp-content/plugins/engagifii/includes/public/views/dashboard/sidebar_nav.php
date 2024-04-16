@@ -74,9 +74,9 @@ global $post;
         foreach($userpermissionJson as $key => $permissionValue){
             $userPermissionArray[] = $permissionValue['name'];
         }
-        if(in_array('ViewOwnOrganizationMembers', $userPermissionArray)){
-            $showMemberList = true;
-        }
+        if (in_array('ViewAllPeopleList', $userPermissionArray) || in_array('ViewOwnOrganizationMembers', $userPermissionArray)) {
+			$showMemberList = true;
+		}
 	if($menus){
 		//print_r($menus);
 	echo '<ul class="list-unstyled sidebar-nav px-3 mt-4">';

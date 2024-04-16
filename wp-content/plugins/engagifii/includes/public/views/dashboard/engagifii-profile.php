@@ -88,6 +88,7 @@ if(!$member_id){
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
+print_r($showMemberList);
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
 	// $peopleDATA   = json_decode($pJSON);
