@@ -291,7 +291,7 @@ function ebt_api_url_setings(){
 	
 }
 
-function engagifii_font_family_render(){
+/*function engagifii_font_family_render(){
 	$options = get_option( 'ebt_api_settings_s2' );
 	include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
 	
@@ -332,8 +332,8 @@ function engagifii_apply_css_ebt_render($html_class){
 
     $_inputHtml = '<div class="m-tlr-20 bg-grey bordered '.$html_class.'"><input type="checkbox" id="engagii_custom_css" name="ebt_api_settings[engagifii_apply_css_ebt]" value="1" '.$checkedHtml.' >';
     $_inputHtml.= '<span> <strong>Enable Customize CSS</strong></span></div>';
-    //echo $_inputHtml;
-}
+    echo $_inputHtml;
+}*/
 
 
 function ebt_api_url_render(  ) {
@@ -388,22 +388,22 @@ function ebt_tenant_code_render(  ) {
     			<?php switch($tab) :
       			case 'settings':
       				$this->engagifii_api_settings('show');
-      				$this->engagifii_apply_css_ebt_render('hide');
+      				//$this->engagifii_apply_css_ebt_render('hide');
         		break;
       			case 'shortcode':
         			$this->ebt_api_shortocde_description();
         		break;
 				case 'page-settings':
         			$this->engagifii_api_settings('hide');
-        			$this->engagifii_apply_css_ebt_render('hide');
+        			//$this->engagifii_apply_css_ebt_render('hide');
         		break;
 				case 'profile-settings':
         			$this->engagifii_api_settings('hide');
-        			$this->engagifii_apply_css_ebt_render('hide');
+        			//$this->engagifii_apply_css_ebt_render('hide');
         		break;
       			default:
       				$this->engagifii_api_settings('hide');
-        			$this->engagifii_apply_css_ebt_render('show');
+        			//$this->engagifii_apply_css_ebt_render('show');
 
         		break;
     			endswitch; ?>
