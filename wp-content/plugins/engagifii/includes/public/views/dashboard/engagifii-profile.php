@@ -153,6 +153,7 @@ include 'sidebar_nav.php';
                 Edit profile
               </a>
               <?php } ?>
+              <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
   </div>
   <div class="flex-grow-1 ml-3 pt-3">
   	<p style="font-size:1.375rem; margin-top:15px; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
@@ -265,7 +266,7 @@ include 'sidebar_nav.php';
         </div>
   </div>
   <?php if($member_id){ ?>
-  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt d-flex justify-content-end px-3 mb-3"  title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
+  <!-- <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt d-flex justify-content-end px-3 mb-3"  title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button> -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
