@@ -136,7 +136,7 @@ include 'sidebar_nav.php';
       <div class="text-right"><span class="badge badge-warning">Profile Changes Pending for Approval</span> </div> 
    <?php } ?>
   <div class="py-3 px-4 rounded-sm">
-    	<div class="d-flex">
+    	<div class="d-flex ">
         	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
             	<span class="position-absolute <?php if($peopleDATA->people->isFavorite==true){ echo 'text-warning'; } ?>" style="left:-10px; top:-10px"><i class="fa fa-star"></i></span>	
@@ -153,10 +153,9 @@ include 'sidebar_nav.php';
                 Edit profile
               </a>
               <?php } ?>
-              <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
   </div>
-  <div class="flex-grow-1 ml-3 pt-3">
-  	<p style="font-size:1.375rem; margin-top:15px; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
+  <div class="flex-grow-1 ml-3 pt-4">
+  	<p style="font-size:1.375rem; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
     <div class="d-flex">    	
     <?php 
 	  foreach ($peopleDATA->peopleFields as $key => $value) {
@@ -263,10 +262,8 @@ include 'sidebar_nav.php';
               <?php } } ?>
   </div>
         </div>
-        </div>
-  </div>
-  <?php if($member_id){ ?>
-  <!-- <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt d-flex justify-content-end px-3 mb-3"  title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button> -->
+        <?php if($member_id){ ?>
+        <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -293,12 +290,11 @@ include 'sidebar_nav.php';
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary gtm">Submit</button>
+                        <button type="button" class="btn btn-primary gtm">Submit<span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2 mb-1"></span></button>
                       </div>
                     </div>
                   </div>
-                </div> <?php } ?>
-  </div>
+                </div> 
   <div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -331,6 +327,10 @@ include 'sidebar_nav.php';
     </div>
   </div>
 </div>
+		<?php } ?>
+        </div>
+  </div>
+  </div>
   <!-- Header -->
   <div class="container-fluid">
       <div class="card-body border rounded">
@@ -1234,6 +1234,7 @@ curl_close($curl);
 ?>
 <script>
   $('.gtm').click(function(){
+	$(this).attr('disabled','').find('span.spinner-border').show();
   //var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
@@ -1267,6 +1268,7 @@ curl_close($curl);
           success: function(response) { 
             $('#exampleModal').modal('hide') ;
 		  	$('#pdfcreated').modal('show');
+			$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
 			
 		  }
         });
@@ -1274,6 +1276,7 @@ curl_close($curl);
 	  else{
 		$('#exampleModal').modal('hide') ;
 		$('#nocredit').modal('show');
+			$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
 	  }
 	}
 });

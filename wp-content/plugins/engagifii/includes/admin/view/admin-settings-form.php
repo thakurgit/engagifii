@@ -12,13 +12,13 @@
     <?php
         $options = get_option( 'ebt_api_settings' );
             
-        if(isset($options['engagifii_apply_css_ebt'])){
+       /* if(isset($options['engagifii_apply_css_ebt'])){
             $engagifii_apply_css_ebt = $options['engagifii_apply_css_ebt'];
             }else{
            		$engagifii_apply_css_ebt = 0;
-           	}
+           	}*/
            $checkedHtml  = ' style="display:none"';
-      if( $tab === null)
+     		 if( $tab === null)
             {
             	$checkedHtml  = ' style="display:block"';
             }
