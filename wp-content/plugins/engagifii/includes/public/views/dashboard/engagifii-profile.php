@@ -18,8 +18,10 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
     $profilePayloadFields = $options['dashboard_fields']['fields']; 
     if($member_id){
       $memberid = $member_id;
+      $editProfilePermission = 'EditPersonProfileDetails';
     }else{
         $memberid ="";
+        $editProfilePermission = 'EditSelfProfileDetails';
     }
     $profilePayload = array(
       "id" => $memberid,
@@ -88,7 +90,7 @@ if(!$member_id){
 $getPendingRequest = $obj->getPendingRequestByPeopleId($peopleDATA->people->id);
 $isPendingRequest = json_decode($getPendingRequest['api_response']);
 include 'sidebar_nav.php';  
-print_r($showMemberList);
+
 	// $peopleurl = 'https://engagifiwebstg.wpengine.com/psba/wp-content/plugins/wp-front-end-profile/views/people.txt';
 	//$pJSON = file_get_contents($peopleurl);
 	// $peopleDATA   = json_decode($pJSON);
@@ -146,9 +148,11 @@ print_r($showMemberList);
     	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
     <?php } ?>
     </div>
+    <?php  if (in_array($editProfilePermission, $userPermissionArray)) {?>
     <a href="<?php echo $site_url ?>/my-profile/edit" class="btn btn-outline-dark btn-sm edit-profile-btn" style="z-index: 1;">
                 Edit profile
               </a>
+              <?php } ?>
   </div>
   <div class="flex-grow-1 ml-3 pt-3">
   	<p style="font-size:1.375rem; margin-top:15px; margin-bottom: 0px;"><?php echo $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName; ?></p>
