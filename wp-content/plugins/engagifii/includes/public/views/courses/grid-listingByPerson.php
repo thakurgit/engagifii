@@ -241,7 +241,7 @@ var endDate = $('.dateFilter input').attr('date-end');
 				 $('.gt').attr('data-original-title', 'Download PDF');  
 			   }else{
 				 $('.gt').attr('disabled',''); 
-				 $('.gt').attr('data-original-title', 'Download PDF'); 
+				 $('.gt').attr('data-original-title', 'Select Course'); 
 			   }
 			});	
 			});
@@ -271,6 +271,7 @@ var endDate = $('.dateFilter input').attr('date-end');
 	
 
 $('.gt').click(function(){
+	$(this).attr('disabled','').find('span.spinner-border').show();
 	var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
   var startDate = dates[0]; // Start date
@@ -288,7 +289,7 @@ $('.gt').click(function(){
           },
           success: function(response) { 
 		  	$('#pdfcreated').modal('show')
-			
+			$('.gt').removeAttr('disabled').find('span.spinner-border').hide();
 		  }
         });
 });

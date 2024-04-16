@@ -210,7 +210,7 @@ z-index:-1;
 </div>
 <button type="submit" class="btn btn-primary btn-sm ">Submit</button>
 </div>
-    <button  type="button" class="btn btn-primary btn-sm ml-3 gt ml-auto" data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF</button>
+    <button  type="button" class="btn btn-primary btn-sm ml-3 gt ml-auto" data-toggle="tooltip" data-placement="top" title="Select Course" disabled><i class="far fa-file-pdf mr-2"></i>Print PDF<span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
     </div>
   <?php include $this->basePath.'includes/public/views/courses/grid-listingByPerson.php'; ?>
   </div>
