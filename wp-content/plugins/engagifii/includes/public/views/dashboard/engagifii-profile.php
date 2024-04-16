@@ -260,7 +260,7 @@ include 'sidebar_nav.php';
         </div>
   </div>
   <?php if($member_id){ ?>
-  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt d-flex justify-content-end px-3 mb-3"  title="Select Member"><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+  <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt d-flex justify-content-end px-3 mb-3"  title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
