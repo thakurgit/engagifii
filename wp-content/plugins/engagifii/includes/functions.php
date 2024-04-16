@@ -1,7 +1,6 @@
 <?php
 function engagifii_scripts() { ?> 
 <script>
-console.log('test');
 		function moOAuthLoginNew(app_name) {
 			window.location.href = 'https://engagifiwebstg.wpengine.com/psba' + '/?option=oauthredirect&app_name=' + app_name;
 		}
@@ -49,3 +48,46 @@ window.location.href = "<?php echo site_url();?>/my-profile";
     <?php
 }
 add_action('wp_footer', 'engagifii_scripts');
+
+    $options  = get_option( 'ebt_api_settings' );
+    $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
+	if($tenant_url=='psba'){
+function custom_login_redirect( $redirect_to, $request, $user ) {
+    // Get the current user's role
+    $user_role = $user->roles[0];
+ 
+    // Set the URL to redirect users to based on their role
+    if ( $user_role == 'subscriber' ) {
+        $redirect_to = site_url().'/my-profile/';
+    } 
+ 
+    return $redirect_to;
+}
+add_filter( 'login_redirect', 'custom_login_redirect', 10, 3 );
+add_action('after_setup_theme', 'remove_admin_bar');
+function remove_admin_bar() {
+if (current_user_can('subscriber') && !is_admin()) {
+show_admin_bar(false);
+}
+
+//print_r("Access Token:");
+session_start();
+//print_r($_SESSION['accesstoken']);
+}
+
+//add_action('mo_oauth_logged_in_user_token', 'GetToken' , 10, 2);   
+
+function GetToken( $user, $token ){                
+ 
+		?>
+		ID Token
+		<?php
+		print_r($token['id_token']);
+
+}
+
+
+
+
+	}
+

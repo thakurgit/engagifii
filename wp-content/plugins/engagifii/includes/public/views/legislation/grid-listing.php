@@ -1,5 +1,4 @@
 <?php
-
 $actionType = '';
 $billnumber = '';
 $tagsRequest = '';

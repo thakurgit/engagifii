@@ -70,7 +70,7 @@ Final Class Engagifii {
 		register_uninstall_hook( __FILE__, array( 'Engagifii_Install','uninstall'));
 		//add_action( 'wp_print_styles', array($this,'dequeue_unnecessary_styles'));
 		add_action('init',array($this,'engagifii_load_js_script'));
-		add_action('init',array($this,'engagifii_load_css'));
+		add_action('wp_enqueue_scripts',array($this,'engagifii_load_css'),9999);
 		add_action('init', array( $this->engagifiiShortcode, 'init' ) );
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
 		define( 'ENGAGIFII_ASSETS_URL', esc_url( plugins_url( '/assets', __FILE__ ) ) );
@@ -174,10 +174,19 @@ wp_enqueue_script(
 	
 
 	public function engagifii_load_css(){
+		
 		if(!is_admin()){
+			if ( wp_style_is( 'jumpstart-child-style', 'registered' ) ) {
+			  $theme_css = 'jumpstart-child-style';
+			 // print_r('yes');
+			} else {
+			  $theme_css = '';
+			 // print_r('no');
+			}
+
 			 wp_enqueue_style( 'mcustomsrollbar', 'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css', array(  ), wp_get_theme()->get('Version')    );
 
-			wp_enqueue_style( 'engagifii', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii_merge.css', array('jumpstart-child-style'), $this->version, 'all' );
+			wp_enqueue_style( 'engagifii', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii_merge.css', array(), $this->version, 'all' );
 			//wp_enqueue_style( 'dt-bs', plugin_dir_url( __FILE__ ) . 'assets/css/dataTables.bootstrap4.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array('dt-bs'), $this->version, 'all' );
 			//wp_enqueue_style( 'dt-scheckbox', 'https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css', array('dt-bs'), $this->version, 'all' );
