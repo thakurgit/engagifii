@@ -2709,7 +2709,7 @@ wp_die();
 		$postData=array();
 		$responseArray = array();
 		$postData['participantsIds'] = $_POST['participantsIds'];
-        if($_POST['memberIds']=='all'){
+        if($_POST['participantsIds']=='all'){
             $postData['participantsIds'] = '';
         }
 		$postData['startDate'] = $_POST['startDate']; 
