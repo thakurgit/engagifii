@@ -2710,7 +2710,7 @@ wp_die();
 		$responseArray = array();
 		$postData['participantsIds'] = $_POST['participantsIds'];
         if($_POST['participantsIds']=='all'){
-            $postData['participantsIds'] = '';
+            $postData['participantsIds'] = [];
         }
 		$postData['startDate'] = $_POST['startDate']; 
 		$postData['endDate'] = $_POST['endDate']; 
