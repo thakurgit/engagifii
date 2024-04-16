@@ -110,6 +110,7 @@ Final Class Engagifii {
 			include_once( 'includes/admin/class-adm-data-col.php' );
 		}		 
 		$this->frontend_includes_ebt();
+		include_once('includes/functions.php');
 	}
 
 	/**

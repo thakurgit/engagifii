@@ -283,6 +283,7 @@ include 'sidebar_nav.php';
                       </div>
                     </div>
                     </div>
+                    <div>Note: The report will only show data of the members who have earned credits in the selected date range</div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
