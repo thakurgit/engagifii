@@ -22,8 +22,8 @@
             {
             	$checkedHtml  = ' style="display:block"';
             }
-            include( plugin_dir_path( __FILE__ ) . '/admin-fonts-sie.php');
-            include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
+            //include( plugin_dir_path( __FILE__ ) . '/admin-fonts-sie.php');
+            //include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
             $options = get_option( 'ebt_api_settings' );
         ?>
     <div class="wrap tab-content ff">
@@ -108,8 +108,27 @@
                     ?>
               </td>
         </tr>
-        </table>       
+        </table>  
+        <hr>
+        <div style="padding-left:7px"> 
+        <?php if(isset($options['include_bootstrap'])){
+    $include_bootstrap = $options['include_bootstrap']; 
+   }else{
+       $include_bootstrap = null;
+   }
+    $include_bootstrap_setting = '';
+    if($include_bootstrap==1)
+    {
+         $include_bootstrap_setting  = 'checked';
+    }?>
+        <div class="form-check form-switch">
+        	<input class="form-check-input" type="checkbox" name="ebt_api_settings[include_bootstrap]" id="include_bootstrap" value="1" <?php echo $include_bootstrap_setting; ?>> 
+       		 <label for="include_bootstrap" class="form-check-label"><strong>Include Bootstrap Files</strong></label>
+         	</div>
+           <i>Note: This Plugin works with <a href="https://getbootstrap.com/docs/4.6/getting-started/introduction/" target="_blank" rel="nofollow">Bootstrap 4</a>. If your theme doesn't have Bootstrap files, then enable checkbox to work this plugin properly.</i>
+        </div>
     </div>
+
     </div>
         
       

@@ -125,12 +125,7 @@ Final Class Engagifii {
 
 	public function engagifii_load_js_script(){
 		if(!is_admin()){			
-
-			
-			//wp_enqueue_script( 'engagifii-jquery-classlocation', plugin_dir_url( __FILE__ ) . 'assets/js/classlocation.js', array('jquery'), $this->version, false );
-
 			wp_enqueue_script( 'engagifii',  plugin_dir_url( __FILE__ ) . 'assets/js/engagifii.js', array("jquery"), $this->version, false );
-			//wp_enqueue_script( 'engagifii-tz-searchfilter',  plugin_dir_url( __FILE__ ) . 'assets/js/tzsearchfilter.js', array("jquery"), $this->version, false );
 wp_enqueue_script( 
 			'scrollbar', 
 			'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.concat.min.js', 
@@ -138,16 +133,8 @@ wp_enqueue_script(
 			'1.0.0', 
 			false  
 		);
-			//wp_enqueue_script( 'engagifii-select2jstz', plugin_dir_url( __FILE__ ) . 'assets/js/select2.min.js', array("jquery"), $this->version, false );
-			//wp_enqueue_script( 'engagifii-jquerydatatable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.dataTables.min.js', array("jquery"), $this->version, false );
-			//wp_enqueue_script( 'engagifii-datatable-bootstrap', plugin_dir_url( __FILE__ ) . 'assets/js/dataTables.bootstrap4.min.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'dt-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js', array('engagifii'), $this->version, false );
 			wp_enqueue_script( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js', array('engagifii'), $this->version, false );
-			//wp_enqueue_script( 'dt-fixedHeader', 'https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js', array('engagifii'), $this->version, false );
-			//wp_enqueue_script( 'dt-checkbox', 'https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
-			
-		//	wp_enqueue_script( 'dt-reorder', 'https://cdn.datatables.net/colreorder/1.6.1/js/dataTables.colReorder.min.js', array('engagifii-datatable-bootstrap'), $this->version, false );
-			//wp_enqueue_script( 'dt-date', 'https://cdn.datatables.net/plug-ins/1.12.1/sorting/date-eu.js', array('engagifii-jquerydatatable'), $this->version, false );
 			wp_enqueue_script( 'range-slider', 'https://code.jquery.com/ui/1.13.1/jquery-ui.js', array('jquery'), $this->version, false );
 			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBhzZaLGPYVrMO2zIyP0xkGy8WxnnUmPlc&libraries=places', array('jquery'), $this->version, false );
 			wp_enqueue_script( 'custom-engagifii', plugin_dir_url( __FILE__ ) . 'assets/js/custom-engagifii.js', array('jquery','engagifii'), '1.0.01', false );
@@ -176,24 +163,10 @@ wp_enqueue_script(
 	public function engagifii_load_css(){
 		
 		if(!is_admin()){
-			if ( wp_style_is( 'jumpstart-child-style', 'registered' ) ) {
-			  $theme_css = 'jumpstart-child-style';
-			 // print_r('yes');
-			} else {
-			  $theme_css = '';
-			 // print_r('no');
-			}
-
 			 wp_enqueue_style( 'mcustomsrollbar', 'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css', array(  ), wp_get_theme()->get('Version')    );
 
 			wp_enqueue_style( 'engagifii', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii_merge.css', array(), $this->version, 'all' );
-			//wp_enqueue_style( 'dt-bs', plugin_dir_url( __FILE__ ) . 'assets/css/dataTables.bootstrap4.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array('dt-bs'), $this->version, 'all' );
-			//wp_enqueue_style( 'dt-scheckbox', 'https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css', array('dt-bs'), $this->version, 'all' );
-			//wp_enqueue_style( 'sleect2css-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/select2.min.css', array(), $this->version, 'all' );
-			//wp_enqueue_style( 'cropper', plugin_dir_url( __FILE__ ) . 'assets/css/cropper.css', array(), $this->version, 'all' );
-			
-			
 			wp_deregister_style('font-awesome-5-all');
 			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css',array(),wp_get_theme()->get('Version')  );
 			wp_register_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css' );
@@ -207,9 +180,6 @@ wp_enqueue_script(
    			}else{
    			$specific_script = 0;
 			}
-
-
-
 				wp_enqueue_style( 'engagifii-ebt', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii.css', array(), $this->version, 'all' );
 			
 		}
