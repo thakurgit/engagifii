@@ -135,7 +135,7 @@ include 'sidebar_nav.php';
     <?php if($isPendingRequest==true){ ?>
       <div class="text-right"><span class="badge badge-warning">Profile Changes Pending for Approval</span> </div> 
    <?php } ?>
-  <div class="py-3 px-4 rounded-sm">
+  <div class="py-3  rounded-sm">
     	<div class="d-flex ">
         	<div class="flex-shrink-0 position-relative text-center">
             	<?php if($peopleDATA->people->isStarredMember==true) { ?>
