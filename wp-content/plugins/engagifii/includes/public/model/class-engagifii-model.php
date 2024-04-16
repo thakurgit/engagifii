@@ -2725,7 +2725,7 @@ wp_die();
         $sortDirection = $_POST["order"][0]["dir"];
 		$titleColumn = $_POST['titleColumn'];
 		$title = $_POST['columns'][$titleColumn]['search']['value'];
-		$postedData = '{"itemCount":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","pageNumber":"'.$pageNumber.'","sourceType" :2,"filterBody":{"reportName":"'.$title.'","status":[],"fromDate":"","toDate":""}}';
+		$postedData = '{"itemCount":10,"sortBy":"'.$sortBy.'","sortDirection":"'.$sortDirection.'","pageNumber":"'.$pageNumber.'","filterBody":{"sourceType" :2,"reportName":"'.$title.'","status":[],"fromDate":"","toDate":""}}';
         $dataResponse = $this->submitApiRequest("exportpeople/allreport", json_decode($postedData), "POST", 'dashboard');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
