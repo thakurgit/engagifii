@@ -645,7 +645,38 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     </div>
   </div>
 </div>
-  
+<div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/my-profile/my-transcript/downloads">My Downloads</a>. </p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="nocredit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">None of the selected members have earned credits in the selected date range.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
     
     	
     </form>
@@ -1205,6 +1236,18 @@ curl_close($curl);
 	var logged_in_user = localStorage.getItem("logged_in_user");
   var member_id = '<?php echo $member_id; ?>'; 
   var memberIdsArray = [member_id]; 
+  $.ajax({
+		type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'isCreditEarnedByParticipant',
+			  participantsIds: memberIdsArray,
+			  startDate: startDate, 
+			  endDate: endDate, 
+          },
+    success: function(response) { 
+		var jsonResponse = JSON.parse(response);
+      if (jsonResponse.api_status && jsonResponse.api_response === "true") { 
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -1216,10 +1259,18 @@ curl_close($curl);
           },
           success: function(response) { 
             $('#exampleModal').modal('hide') ;
-		  	$('#pdfcreated').modal('show')
+		  	$('#pdfcreated').modal('show');
 			
 		  }
         });
+	  }
+	  else{
+		$('#exampleModal').modal('hide') ;
+		$('#nocredit').modal('show');
+	  }
+	}
+});
+	  
 });
 
  $( document ).ready(function() {
