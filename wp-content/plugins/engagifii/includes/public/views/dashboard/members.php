@@ -410,7 +410,8 @@ $('.gtm').click(function(){
 			  endDate: endDate, 
           },
     success: function(response) { 
-      if (response === true) { 
+		var jsonResponse = JSON.parse(response);
+      if (jsonResponse.api_status && jsonResponse.api_response === "true") { 
 		$.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -428,6 +429,7 @@ $('.gtm').click(function(){
         });
 	  }
 	  else{
+		$('#exampleModal').modal('hide') ;
 		$('#nocredit').modal('show');
 	  }
 	}

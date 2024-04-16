@@ -2713,8 +2713,9 @@ wp_die();
 		$postData['endDate'] = $_POST['endDate']; 
 		$apiUrl = 'registration/IsCreditsAvailableByParticipants/';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
-		$responseArray = json_decode($response['api_response'], true);
-		return $response;
+		//$responseArray = json_decode($response['api_response'], true);
+		echo json_encode($response);
+        wp_die();
 	}
 
 	public function downloadDataByPerson(){
