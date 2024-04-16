@@ -126,7 +126,6 @@ Final Class Engagifii {
 	public function engagifii_load_js_script(){
 		if(!is_admin()){	
 			$options = get_option( 'ebt_api_settings' );
-			print_r($options['include_bootstrap'].'testt');
 			if($options['include_bootstrap']){
 				wp_enqueue_script( 'bootstrap-egf', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js', array(), $this->version, false );
 			}
