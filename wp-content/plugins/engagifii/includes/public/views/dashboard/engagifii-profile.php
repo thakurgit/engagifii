@@ -293,6 +293,38 @@ include 'sidebar_nav.php';
                   </div>
                 </div> <?php } ?>
   </div>
+  <div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/my-profile/my-transcript/downloads">My Downloads</a>. </p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="nocredit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">None of the selected members have earned credits in the selected date range.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
   <!-- Header -->
   <div class="container-fluid">
       <div class="card-body border rounded">
@@ -645,38 +677,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="pdfcreated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header pb-0 border-0">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       	<p class="text-center">Your file is being prepared. When the file is ready, it will be available under your <a target="_blank" href="<?php echo site_url(); ?>/my-profile/my-transcript/downloads">My Downloads</a>. </p>
-      </div>
-      
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="nocredit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header pb-0 border-0">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       	<p class="text-center">None of the selected members have earned credits in the selected date range.</p>
-      </div>
-      
-    </div>
-  </div>
-</div>
+
     
     	
     </form>
