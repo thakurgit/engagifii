@@ -2704,12 +2704,12 @@ wp_die();
         wp_die();
     }
 
-    public function isCreditEarnedByParticipant($profileId, $fiscalStartDate, $fiscalEndDate){
+    public function isCreditEarnedByParticipant(){
 		$postData=array();
 		$responseArray = array();
-		$postData['id'] = $profileId;
-		$postData['fiscalYearDateRange']['startDate'] = $fiscalStartDate;
-		$postData['fiscalYearDateRange']['endDate'] = $fiscalEndDate;
+		$postData['participantsIds'] = $_POST['participantsIds'];
+		$postData['startDate'] = $_POST['startDate']; 
+		$postData['endDate'] = $_POST['endDate']; 
 		$apiUrl = 'registration/IsCreditsAvailableByParticipants/';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
