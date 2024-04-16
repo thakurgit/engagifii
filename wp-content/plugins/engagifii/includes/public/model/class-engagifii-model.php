@@ -26,6 +26,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
+        ['isCreditEarnedByParticipant', 'isCreditEarnedByParticipant'],
         ['clearDownloads', 'clearDownloadsByPerson'],
         ['allReports', 'allReportsByPerson'],
         ['classes', 'classLoadGridData'],
@@ -2702,6 +2703,19 @@ wp_die();
         echo json_encode($dataResponse);
         wp_die();
     }
+
+    public function isCreditEarnedByParticipant($profileId, $fiscalStartDate, $fiscalEndDate){
+		$postData=array();
+		$responseArray = array();
+		$postData['id'] = $profileId;
+		$postData['fiscalYearDateRange']['startDate'] = $fiscalStartDate;
+		$postData['fiscalYearDateRange']['endDate'] = $fiscalEndDate;
+		$apiUrl = 'registration/GetCreditsByParticipantId/';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
+		$responseArray = json_decode($response['api_response'], true);
+		return $response;
+	}
+
 	public function downloadDataByPerson(){
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
 		$pageNumber = ($startPageNum);
