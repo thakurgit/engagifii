@@ -410,7 +410,7 @@ $('.gtm').click(function(){
 			  selectedEndDate: endDate, 
           },
     success: function(response) { 
-      if (response === true) { 
+      if (response === 'true') { 
 		$.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,

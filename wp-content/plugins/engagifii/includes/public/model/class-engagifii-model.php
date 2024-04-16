@@ -2710,7 +2710,7 @@ wp_die();
 		$postData['id'] = $profileId;
 		$postData['fiscalYearDateRange']['startDate'] = $fiscalStartDate;
 		$postData['fiscalYearDateRange']['endDate'] = $fiscalEndDate;
-		$apiUrl = 'registration/GetCreditsByParticipantId/';
+		$apiUrl = 'registration/IsCreditsAvailableByParticipants/';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;
