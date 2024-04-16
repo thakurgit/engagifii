@@ -2709,6 +2709,9 @@ wp_die();
 		$postData=array();
 		$responseArray = array();
 		$postData['participantsIds'] = $_POST['participantsIds'];
+        if($_POST['memberIds']=='all'){
+            $postData['participantsIds'] = '';
+        }
 		$postData['startDate'] = $_POST['startDate']; 
 		$postData['endDate'] = $_POST['endDate']; 
 		$apiUrl = 'registration/IsCreditsAvailableByParticipants/';
