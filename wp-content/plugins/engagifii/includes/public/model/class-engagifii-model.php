@@ -2666,7 +2666,7 @@ wp_die();
 		$postedData['itemCount']=0;
 		$postedData['sortBy']='name';
 		$postedData['sortDirection']='asc';
-        //$postedData['sourceType']=2;
+        $postedData['sourceType']=2;
 		$postedData['filterBody']['groupById']=$_POST['groupById'];
 		$postedData['filterBody']['filterRules'][0]['fieldId']='courses';
 		$postedData['filterBody']['filterRules'][0]['filterType']=1;
@@ -2686,6 +2686,7 @@ wp_die();
         $postedData['itemCount'] = 100;
         $postedData['sortBy'] = 'name';
         $postedData['sortDirection'] = 'asc';
+        $postedData['sourceType']=2;
         $postedData['filterBody']['groupByType'] = 4;
         $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
         $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
@@ -2704,13 +2705,13 @@ wp_die();
         wp_die();
     }
 
-    public function isCreditEarnedByParticipant($profileId, $fiscalStartDate, $fiscalEndDate){
+    public function isCreditEarnedByParticipant(){
 		$postData=array();
 		$responseArray = array();
-		$postData['id'] = $profileId;
-		$postData['fiscalYearDateRange']['startDate'] = $fiscalStartDate;
-		$postData['fiscalYearDateRange']['endDate'] = $fiscalEndDate;
-		$apiUrl = 'registration/GetCreditsByParticipantId/';
+		$postData['participantsIds'] = $_POST['participantsIds'];
+		$postData['startDate'] = $_POST['startDate']; 
+		$postData['endDate'] = $_POST['endDate']; 
+		$apiUrl = 'registration/IsCreditsAvailableByParticipants/';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
 		$responseArray = json_decode($response['api_response'], true);
 		return $response;

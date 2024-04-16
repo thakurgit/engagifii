@@ -405,9 +405,9 @@ $('.gtm').click(function(){
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'isCreditEarnedByParticipant',
-			  memberIds: selectedRow,
-			  selectedStartDate: startDate, 
-			  selectedEndDate: endDate, 
+			  participantsIds: selectedRow,
+			  startDate: startDate, 
+			  endDate: endDate, 
           },
     success: function(response) { 
       if (response === true) { 
