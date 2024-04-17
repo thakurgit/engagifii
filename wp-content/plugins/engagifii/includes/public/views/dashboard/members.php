@@ -647,6 +647,12 @@ $('#clear-all').click(function(){
 });
 }*/
 
+$('.input-group-append').click(function() {
+  // Trigger click event of the date input element
+  $(this).siblings('input').click();
+});
 
+// Adjust the position of the calendar icon in the date input group
+$('.input-group-append').css('cursor', 'pointer');
 
 </script> 
