@@ -54,6 +54,11 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 // print_r($fiscalStartDate);
 // print_r($fiscalEndDate);
 ?>
+<style>
+	th.peoplename, th.email {
+    min-width: 150px;
+}	
+</style>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
             	<h4 class="mb-0 mr-2">
@@ -655,4 +660,4 @@ $('.input-group-append').click(function() {
 // Adjust the position of the calendar icon in the date input group
 $('.input-group-append').css('cursor', 'pointer');
 
-</script> 
+</script>
