@@ -1620,7 +1620,7 @@ if (window.location.href.indexOf("sessionId") > -1){
 $(document).ready(function () {
 	$(".tz-dropdown-filter").each(function () {
 	//$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
-	$( '<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
+	$( '<li class="mb-1" style="list-style-type: none;"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
 });
 $(".tz-selectAll").change(function () {
 	if($(this).is(':checked')){
