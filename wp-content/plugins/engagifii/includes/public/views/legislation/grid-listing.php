@@ -1629,7 +1629,7 @@ $(".tz-selectAll").change(function () {
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',true);
 			$(this).addClass('liactive deftzselected');
-			$(this).parents('.filter-list').find('.heading-title span').text('('+$(this).siblings('li').length+')');
+      $(this).parents('.filter-list').find('.heading-title span').text('('+$(this).parent().children('li').length+')');
 		  }
 		});
 		
