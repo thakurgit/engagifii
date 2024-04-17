@@ -189,7 +189,7 @@ include 'sidebar_nav.php';
                     <div class="dropdown">
                         <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                         </a>
-                        <div class="dropdown-menu py-1" style="width:300px;">
+                        <div class="dropdown-menu py-1" style="width:350px;">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
                             <?php foreach ($positions as $item) {
                                 if ($item['isCurrent'] == true && !empty($item['departmentName'])) {
@@ -203,7 +203,7 @@ include 'sidebar_nav.php';
                 if ($totalPositions > 0) { ?>
                     <div class="dropdown">
                         <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
-                        <div class="dropdown-menu py-1" style="width:300px;">
+                        <div class="dropdown-menu py-1" style="width:350px;">
                             <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo $totalPositions; ?>)</h6>
                             <?php foreach ($positions as $item) {
                                 if ($item['isCurrent'] == true) {
@@ -239,7 +239,7 @@ include 'sidebar_nav.php';
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                     </a>
-                    <div class="dropdown-menu py-1" style="width:300px;">
+                    <div class="dropdown-menu py-1" style="width:350px;">
                         <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
                         <?php echo $totalDepartmentsName; ?>
                     </div>
@@ -249,7 +249,7 @@ include 'sidebar_nav.php';
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?>
                     </a>
-                    <div class="dropdown-menu py-1" style="width:300px;">
+                    <div class="dropdown-menu py-1" style="width:350px;">
                         <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo $totalPositions; ?>)</h6>
                         <?php echo $totalPositionsName; ?>
                     </div>
