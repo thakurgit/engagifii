@@ -187,7 +187,7 @@ include 'sidebar_nav.php';
                 if ($totalDepartments > 0) {
 ?>
                     <div class="dropdown">
-                        <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |
+                        <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                         </a>
                         <div class="dropdown-menu py-1" style="width:300px;">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
@@ -237,7 +237,7 @@ include 'sidebar_nav.php';
             }
             if ($totalDepartments > 0) { ?>
                 <div class="dropdown">
-                    <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |
+                    <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                     </a>
                     <div class="dropdown-menu py-1" style="width:300px;">
                         <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
