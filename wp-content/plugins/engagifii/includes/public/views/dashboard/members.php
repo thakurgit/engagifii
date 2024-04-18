@@ -133,7 +133,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                       <?php $ft++; } ?>
                     </div>
                     <div class="text-center py-2">
-                    <button class="btn btn-primary py-1" type="button" name="callmasterApi" id="apply-filter-data">Apply<span class="mx-1" id="countFilterResult"></span><div class="spinner-border spinner-border-sm d-none" role="status"><span class="sr-only">Loading...</span></div>      
+                    <button class="btn btn-primary py-1" type="button" name="callmasterApi" id="apply-filter-data">Apply<span class="mx-1" id="countFilterResult"></span><div class="spinner-border spinner-border-sm d-none mb-1" role="status"><span class="sr-only">Loading...</span></div>      
         </button></div>
                   </div>
                 </div>
@@ -226,6 +226,7 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
   var selectedRow=[];
   var val;
   var filterSubmitted = false;
+var selectAll = false;
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -526,6 +527,13 @@ function filterEvents(){
 		  	$('input', this).prop('checked', false);
 		  	var ftSelected = 0;
 		  	$('input', this).change(function() {
+					positions = $.map($('input[name="peoplePosition[]"]:checked'), function(c){return c.value; });
+					departments = $.map($('input[name="peopleDepartement[]"]:checked'), function(c){return c.value; });
+					orgs = $.map($('input[name="peopleOrganization[]"]:checked'), function(c){return c.value; });
+				  Status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
+				  if(!selectAll){
+					  countFilterData();
+				  }
 		  		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
 		  		if(ftSelected > 0) {
 		  			$(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('(' + ftSelected + ')');
@@ -540,11 +548,14 @@ function filterEvents(){
 		  });	
   //select/Deselect all checkbox in filter
   $('.select-all').change(function() {
+	  selectAll = true;
 	  if($(this).is(':checked')) {
 		  $(this).parent().siblings('ul').find('li input').prop('checked', true).change();
 	  } else {
 		  $(this).parent().siblings('ul').find('li input').prop('checked', false).change();
 	  }
+		countFilterData();
+	  selectAll = false;
   });
   //search list in filter
   $('.ft-list').each(function() {
@@ -604,13 +615,10 @@ $('#apply-filter-data').click(function(){
   	$('.po-filter').removeClass('ft-selected');	
   	$('.filter-toggle span').remove();
   }
-	//countFilterData();
       table.draw();
     });
 $('#clear-all').click(function(){
 	positions = [], departments = [], orgs=[], Status=[],totalTime=[];
-	$('#apply-filter-data').attr('disabled','');
-	$('#apply-filter-data .spinner-border').removeClass('d-none');
 	$('#countFilterResult').text('');
 	$('.filter-toggle span').remove();
 	$('.po-filter').removeClass('ft-selected');	
@@ -625,32 +633,36 @@ $('#clear-all').click(function(){
 	$('.timework input').val('');
 	$('.ft-active').removeClass('ft-active');
 	$('.ft-counter').text('');
-//countFilterData();
-	table.draw();	
+	table.draw();
 });
-/*function countFilterData(){
+function countFilterData(){
+	  $('#apply-filter-data .spinner-border').removeClass('d-none');
+	  $('#apply-filter-data').attr('disabled','')
   $.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
         action:'peoplefiltercountdata',
-        positions : positions,  
-        departments : departments,  
-        orgs : orgs,  
-    },
+		length:10,
+		start:1,
+		positions:positions,
+				departments:departments,
+				orgs:orgs,
+      			status:Status,
+				totalTime: totalTime,    
+		},
     success: function(response) {     
-	//console.log(response); 
+	console.log(response); 
       var element  = document.getElementById("countFilterResult");
 	  $('#apply-filter-data .spinner-border').addClass('d-none');
 	  $('#apply-filter-data').removeAttr('disabled')
       if(element)
       {
-          element.innerHTML = " ("+response.api_response +")";
-          //console.log(response.api_response);
+          element.innerHTML = " ("+response+")";
       }    
     }
 });
-}*/
+}
 
 $('.input-group-append').click(function() {
   // Trigger click event of the date input element

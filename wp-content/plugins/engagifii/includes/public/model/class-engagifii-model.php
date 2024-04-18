@@ -2587,16 +2587,14 @@ wp_die();
       
     return $postData;
     }
-	/* public function peoplefiltercountdata(){
-        $postData = array();
-        $postData['cityofResidence'] = $_POST['positions'];      
-        $postData['committee'] = $_POST['departments'];      
-        $postData['politicalParty'] = $_POST['orgs'];      
-        $dataResponse = $this->submitApiRequest("legislative/public-bills/elected/officials-all-tabs-list", $postedData, "POST", 'legislation');
+	 public function peoplefiltercountdata(){
+        $postedData = $this->_preparePeopleData();
+        $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         header("Content-Type: application/json");
-		echo json_encode($dataResponse);
+		echo json_encode($totalcount);
         wp_die();	 
-	 } */   
+	 }    
     public function peopleFilters(){
         $postData=array();
         $htmlArray = array();
