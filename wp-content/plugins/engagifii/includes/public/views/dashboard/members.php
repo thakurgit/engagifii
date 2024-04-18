@@ -604,7 +604,7 @@ $('#apply-filter-data').click(function(){
   	$('.po-filter').removeClass('ft-selected');	
   	$('.filter-toggle span').remove();
   }
-	countFilterData();
+	//countFilterData();
       table.draw();
     });
 $('#clear-all').click(function(){
@@ -625,10 +625,10 @@ $('#clear-all').click(function(){
 	$('.timework input').val('');
 	$('.ft-active').removeClass('ft-active');
 	$('.ft-counter').text('');
-countFilterData();
+//countFilterData();
 	table.draw();	
 });
-function countFilterData(){
+/*function countFilterData(){
   $.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
@@ -646,11 +646,11 @@ function countFilterData(){
       if(element)
       {
           element.innerHTML = " ("+response.api_response +")";
-          console.log(response.api_response);
+          //console.log(response.api_response);
       }    
     }
 });
-}
+}*/
 
 $('.input-group-append').click(function() {
   // Trigger click event of the date input element

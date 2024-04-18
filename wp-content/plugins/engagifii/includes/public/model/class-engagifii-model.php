@@ -2587,7 +2587,7 @@ wp_die();
       
     return $postData;
     }
-	 public function peoplefiltercountdata(){
+	/* public function peoplefiltercountdata(){
         $postData = array();
         $postData['cityofResidence'] = $_POST['positions'];      
         $postData['committee'] = $_POST['departments'];      
@@ -2596,7 +2596,7 @@ wp_die();
         header("Content-Type: application/json");
 		echo json_encode($dataResponse);
         wp_die();	 
-	 } 
+	 } */   
     public function peopleFilters(){
         $postData=array();
         $htmlArray = array();
