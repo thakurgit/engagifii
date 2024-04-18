@@ -362,7 +362,7 @@ var selectAll = false;
 				$(this).prop('checked',true).attr('disabled','').parents('tr').addClass('selected');
 			  });
 			  $('.currentSelected').text(settings._iRecordsTotal);
-			   $('.gt').css('visibility', 'visible');
+			   $('.gt').removeAttr('disabled');
 			});
 			$('.deSelectAll').click(function(){
 			  $(this).addClass('d-none');  
@@ -373,7 +373,7 @@ var selectAll = false;
 				$(this).removeAttr('disabled').prop('checked',false).parents('tr').removeClass('selected');
 			  });
 			  $('.currentSelected').text('0');
-			   $('.gt').css('visibility', 'hidden');
+			   $('.gt').attr('disabled','');
 			});
 
 			 $('#apply-filter-data .spinner-border').addClass('d-none');
@@ -451,8 +451,6 @@ $('.gtm').click(function(){
      var defaultEndDate = '<?php echo date("m/d/Y", strtotime($fiscalEndDate)); ?>';
     $('.dateFilter input').val(defaultStartDate + ' - ' + defaultEndDate);
    <?php }   ?>
-    
-    //$('.dateFilter input').val('');
 });
 //date filter
 $('.dateFilter input').daterangepicker({
@@ -475,9 +473,6 @@ $( '.clearDateFilter' ).click(function() {
 		 $(this).hide();
  startDate = '1970-01-01T00:00:00';
  endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
-		 table.draw();
-});
-$( '.dateFilter button' ).click(function() {
 		 table.draw();
 });
 
@@ -585,6 +580,7 @@ $('.timework .max').on('blur', function(){
 	if(parseInt($(this).val(),10) < parseInt($('.timework .min').val())){
 	  $(this).val($('.timework .min').val());	
 	}
+	countFilterData();
 });
 //filter submit
 $('#apply-filter-data').click(function(){
@@ -636,6 +632,10 @@ $('#clear-all').click(function(){
 	table.draw();
 });
 function countFilterData(){
+		totalTime=[];
+  if($('.timework .min').val()==parseInt($('.timework .min').val(), 10) && $('.timework .max').val()==parseInt($('.timework .max').val(), 10)){
+	 totalTime.push(parseInt($('.timework .min').val()), parseInt($('.timework .max').val())); 
+  }
 	  $('#apply-filter-data .spinner-border').removeClass('d-none');
 	  $('#apply-filter-data').attr('disabled','')
   $.ajax({
@@ -652,7 +652,6 @@ function countFilterData(){
 				totalTime: totalTime,    
 		},
     success: function(response) {     
-	console.log(response); 
       var element  = document.getElementById("countFilterResult");
 	  $('#apply-filter-data .spinner-border').addClass('d-none');
 	  $('#apply-filter-data').removeAttr('disabled')
