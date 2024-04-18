@@ -336,7 +336,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         </button>
       </div>
       <div class="modal-body">
-       	<p class="text-center">None of the selected members have earned credits in the selected date range.</p>
+       	<p class="text-center">There are no credits earned in the selected date range</p>
       </div>
       
     </div>
