@@ -379,14 +379,14 @@ var selectAll = false;
 
 			 $('#apply-filter-data .spinner-border').addClass('d-none');
 			 $('#apply-filter-data').removeAttr('disabled')
-			if(filterSubmitted){
+			//if(filterSubmitted){
 				 var element  = document.getElementById("countFilterResult");
 				if(element){
 					 element.innerHTML = " ("+settings._iRecordsTotal+")";
 				 } 
 				 filterSubmitted = false;
 				 $('.deSelectAll').trigger('click');
-			}
+			//}
          },
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
@@ -529,6 +529,7 @@ function filterEvents(){
 				  Status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
 				  if(!selectAll){
 					  countFilterData();
+table.draw();
 				  }
 		  		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
 		  		if(ftSelected > 0) {
@@ -551,6 +552,7 @@ function filterEvents(){
 		  $(this).parent().siblings('ul').find('li input').prop('checked', false).change();
 	  }
 		countFilterData();
+table.draw();
 	  selectAll = false;
   });
   //search list in filter
@@ -577,12 +579,19 @@ $(this).mCustomScrollbar({
 });
 });
 }
-$('.timework .max').on('blur', function(){
+/*$('.timework .max').on('blur', function(){
 	if(parseInt($(this).val(),10) < parseInt($('.timework .min').val())){
 	  $(this).val($('.timework .min').val());	
 	}
 	countFilterData();
-});
+});*/
+$( '.timework .max' ).on('input',delay(function (e) {
+	if(parseInt($(this).val(),10) < parseInt($('.timework .min').val())){
+	  $(this).val($('.timework .min').val());	
+	}
+	countFilterData();
+table.draw();
+  }, 500));
 //filter submit
 $('#apply-filter-data').click(function(){
 	totalTime=[];
@@ -639,7 +648,7 @@ function countFilterData(){
   }
 	  $('#apply-filter-data .spinner-border').removeClass('d-none');
 	  $('#apply-filter-data').attr('disabled','')
-  $.ajax({
+  /*$.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
@@ -662,7 +671,7 @@ function countFilterData(){
           element.innerHTML = " ("+response+")";
       }    
     }
-});
+});*/
 }
 
 $('.input-group-append').click(function() {
