@@ -238,7 +238,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 }
             }
             if ($totalDepartments == 1) { ?>
-                <span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong><?php echo $departments[0]; ?> | </span>
+                <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Department: </strong><?php echo $departments[0]; ?> | </span>
             <?php } elseif ($totalDepartments > 1) { ?>
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
@@ -250,7 +250,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 </div>
             <?php }
             if ($totalPositions == 1) { ?>
-                <span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong><?php echo $totalPositionsName; ?></span>
+                <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Position: </strong><?php echo $totalPositionsName; ?></span>
             <?php } elseif ($totalPositions > 1) { ?>
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
