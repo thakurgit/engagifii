@@ -22,7 +22,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
         ['peopleFilters', 'peopleFilters'],
-        ['peoplefiltercountdata', 'peoplefiltercountdata'],
+        //['peoplefiltercountdata', 'peoplefiltercountdata'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
@@ -2310,6 +2310,11 @@ wp_die();
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
         //print_r(json_encode($collection)); die;
+		if($_POST['countResult']=='true'){
+			echo json_encode($totalcount);
+        	wp_die();
+			return;		
+		}
         $request = $_GET;
         $data    = array();
         foreach ($collection as $key => $value) { 
@@ -2587,14 +2592,14 @@ wp_die();
       
     return $postData;
     }
-	 public function peoplefiltercountdata(){
+	/* public function peoplefiltercountdata(){
         $postedData = $this->_preparePeopleData();
         $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
         header("Content-Type: application/json");
 		echo json_encode($totalcount);
         wp_die();	 
-	 }    
+	 } */   
     public function peopleFilters(){
         $postData=array();
         $htmlArray = array();

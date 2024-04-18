@@ -642,9 +642,10 @@ function countFilterData(){
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
-        action:'peoplefiltercountdata',
+		action:'peopleList',
 		length:10,
 		start:1,
+		countResult :true,
 		positions:positions,
 				departments:departments,
 				orgs:orgs,
