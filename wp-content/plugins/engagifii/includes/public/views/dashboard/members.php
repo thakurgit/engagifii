@@ -364,7 +364,7 @@ var selectAll = false;
 			  $('.currentSelected').text(settings._iRecordsTotal);
 			   $('.gt').removeAttr('disabled');
 			});
-			$('.deSelectAll').click(function(){
+			$('.deSelectAll').click(function(e){
 			  $(this).addClass('d-none');  
 			  $('.selectAll').removeClass('d-none'); 
 			  selectedRow = [];
@@ -374,6 +374,7 @@ var selectAll = false;
 			  });
 			  $('.currentSelected').text('0');
 			   $('.gt').attr('disabled','');
+			   e.stopPropagation();
 			});
 
 			 $('#apply-filter-data .spinner-border').addClass('d-none');
