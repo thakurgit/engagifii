@@ -185,7 +185,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 }
                 $totalDepartments = count($departments); // Count the unique departments
                 if ($totalDepartments == 1) {
-                    echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong>' . $departments[0] . '</span> |';
+                    echo '<span class="py-0 pr-2" style="font-size:.875rem;"><strong>Department: </strong>' . $departments[0] . '</span> |';
                 } else if ($totalDepartments > 1) { ?>
                     <div class="dropdown">
                         <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
@@ -202,7 +202,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 <?php }
 
                 if ($totalPositions == 1) {
-                    echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong>' . $positions[0]['positionName'] . '</span>';
+                    echo '<span class="py-0 pr-2" style="font-size:.875rem;"><strong>Position: </strong>' . $positions[0]['positionName'] . '</span>';
                 } else if ($totalPositions > 1) { ?>
                     <div class="dropdown">
                         <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
@@ -238,7 +238,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 }
             }
             if ($totalDepartments == 1) { ?>
-                <span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong><?php echo $departments[0]; ?> | </span>
+                <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Department: </strong><?php echo $departments[0]; ?> | </span>
             <?php } elseif ($totalDepartments > 1) { ?>
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
@@ -250,7 +250,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 </div>
             <?php }
             if ($totalPositions == 1) { ?>
-                <span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong><?php echo $totalPositionsName; ?></span>
+                <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Position: </strong><?php echo $totalPositionsName; ?></span>
             <?php } elseif ($totalPositions > 1) { ?>
                 <div class="dropdown">
                     <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
@@ -336,7 +336,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
         </button>
       </div>
       <div class="modal-body">
-       	<p class="text-center">None of the selected members have earned credits in the selected date range.</p>
+       	<p class="text-center">There are no credits earned in the selected date range</p>
       </div>
       
     </div>
