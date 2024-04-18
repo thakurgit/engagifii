@@ -2322,7 +2322,7 @@ wp_die();
 			}else{
 				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['peoplename'] .= '<a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'">'.$value->people->fullName.'</a></div>';
+            $nestedData['peoplename'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->fullName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
