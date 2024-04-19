@@ -281,7 +281,6 @@ var selectAll = false;
 		 
      "drawCallback": function( settings ) {
             dt_dropdown();
-           dt_scroll();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 		   var thSelect= $(".people-select :checkbox");
 				$('.totalMembers').text(settings._iRecordsTotal);
@@ -390,6 +389,7 @@ var selectAll = false;
          },
 		  "initComplete": function(settings, json) {
 			//dt_filterActivate();
+			           dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
