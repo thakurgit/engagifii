@@ -1,9 +1,18 @@
 <?php 
 ini_set('session.gc_maxlifetime', 3600);
 if (! is_user_logged_in()) {
-    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
-    printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
-    echo '</h5></div>';
+	$login = 'moOAuthLoginNew("Engagifii")';
+    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center mb-0'>This page is restricted. Please";
+	echo "<a href='javascript:void' onclick='".$login."' > Login </a>";
+    //printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
+    echo 'to view this page.</h5></div>';
+	?>
+    <script>
+	document.addEventListener('DOMContentLoaded', function() {
+		clearAllCookies('false');
+	});
+    </script>
+    <?php
     return;
 }
 session_start();

@@ -37,7 +37,7 @@
 		echo '<div class="form-group"><label style="width: 142px;">Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
 	echo '</ul></div></div>';
 //dashboard navigation
-	$navdata ='[{"label":"Home","url":"my-profile/welcome-to-mypsba","icon":"fas fa-home"},{"label":"My Profile","url":"my-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"my-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Events","url":"my-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"my-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"my-profile/members","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
+	$navdata ='[{"label":"Home","url":"my-profile/welcome-to-dashboard","icon":"fas fa-home"},{"label":"My Profile","url":"my-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"my-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Events","url":"my-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"my-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"my-profile/members","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
 	$response = json_decode($navdata);
 
 	//$response = array();
@@ -69,6 +69,26 @@
 			$hidden ='';	
 		}
 		echo ' <h3>Set Dashboad Logo</h3><div><img style="max-width:150px;height:auto;padding-bottom:8px" src="'.wp_get_attachment_url( $dash_menus['logo'] ).'"><br></img><input type="hidden" name="ebt_api_settings[dash_menus][logo]" class="postbox" value="'.$dash_menus['logo'].'"><button class="remove_logo button '.$hidden.'">Remove Logo</button> <button class="set_logo button">Add Logo</button></div>';
+		echo '<br><hr>';?>
+                <div style="padding-left:7px"> 
+        <?php if(isset($dash_menus['login_btn'])){
+    $login_btn = $dash_menus['login_btn']; 
+   }else{
+       $login_btn = null;
+   }
+    $login_btn_setting = '';
+    if($login_btn==1)
+    {
+         $login_btn_setting  = 'checked';
+    }?>
+        <div class="form-check form-switch">
+        	<input class="form-check-input" type="checkbox" name="ebt_api_settings[dash_menus][login_btn]" id="login_btn" value="1" <?php echo $login_btn_setting; ?>> 
+       		 <label for="login_btn" class="form-check-label"><strong>Add LogIn/LogOut link to site menu</strong></label>
+         	</div>
+           <i>Note: If enabled. LogIn/LogOut button will be added to the menu with <a href="https://developer.wordpress.org/themes/functionality/navigation-menus/" target="_blank" rel="nofollow">theme location</a> 'Primary'.</i>
+        </div>
+
+        <?php
     	echo '</div>';
 		
 //manage dashboard fields	

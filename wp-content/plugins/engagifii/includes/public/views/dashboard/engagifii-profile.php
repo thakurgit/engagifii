@@ -4,9 +4,18 @@ session_set_cookie_params(86400);
 session_start();
 
 if (! is_user_logged_in()) {
-    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center'>";
-    printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
-    echo '</h5></div>';
+	$login = 'moOAuthLoginNew("Engagifii")';
+    echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center mb-0'>This page is restricted. Please";
+	echo "<a href='javascript:void' onclick='".$login."' > Login </a>";
+    //printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
+    echo 'to view this page.</h5></div>';
+	?>
+    <script>
+	document.addEventListener('DOMContentLoaded', function() {
+		clearAllCookies('false');
+	});
+    </script>
+    <?php
     return;
 }
 $user_id  = get_current_user_id();
@@ -56,7 +65,7 @@ if($peopleDATA->isError==true) {
 echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-center'>Session Timeout. <a href='".esc_url(wp_logout_url(''))."' onclick='clearAllCookies()' target='_blank'> Login again</a></h5></div>";
 ?>
 <script>
- function clearAllCookies() {
+ /*function clearAllCookies() {
 	  localStorage.clear();  
      var cookies = document.cookie.split(";");
    for (var i = 0; i < cookies.length; i++) {
@@ -72,7 +81,7 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 	  myWindow();
 	  }, 300);
 	
-}
+}*/
 </script> 
 <?php return;
 } 
