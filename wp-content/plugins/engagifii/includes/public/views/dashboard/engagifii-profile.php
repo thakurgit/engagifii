@@ -80,10 +80,10 @@ echo "<br><br><div class='alert alert-danger' role='alert'><h5 class='text-cente
 if(!$member_id){
   $loggedin_username = $peopleDATA->people->firstName.' '.$peopleDATA->people->middleName.' '.$peopleDATA->people->lastName;
   $loggedin_userdp = $peopleDATA->people->imageThumbUrl;
-  setcookie('pid', $peopleDATA->people->id, time() + (24 * 3600), '/');
-  setcookie('loggedin_username', $loggedin_username, time() + (24 * 3600), "/");
-  setcookie('loggedin_userdp', $loggedin_userdp, time() + (24 * 3600), "/"); // 86400 = 1 day
-   $_SESSION['pid']=$peopleDATA->people->id;
+  setcookie('pid', $peopleDATA->people->id, time() + (720 * 3600), '/');
+  setcookie('loggedin_username', $loggedin_username, time() + (720 * 3600), "/");
+  setcookie('loggedin_userdp', $loggedin_userdp, time() + (720 * 3600), "/"); // 86400 = 1 day
+  $_SESSION['pid']=$peopleDATA->people->id;
   $_SESSION['name']=$loggedin_username;
 	$_SESSION['dp']=$loggedin_userdp;
 }
