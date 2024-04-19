@@ -7,7 +7,7 @@ function engagifii_scripts() { ?>
     const accessToken = '<?php echo isset($_SESSION['accesstoken']) ? $_SESSION['accesstoken'] : ''; ?>';
     
     if (accessToken) {
-    document.cookie = 'peopleToken=' + encodeURIComponent(accessToken) + '; expires=' + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + '; path=/';
+    document.cookie = 'peopleToken=' + encodeURIComponent(accessToken) + '; expires=' + new Date(new Date().getTime() + 720 * 60 * 60 * 1000).toUTCString() + '; path=/';
         // Save the access token to localStorage
         const jsonValue = {
   		"id_token": accessToken
