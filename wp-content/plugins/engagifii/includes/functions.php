@@ -121,11 +121,15 @@ add_filter( 'wp_nav_menu_items', 'add_loginout_link', 10, 2 );
 function add_loginout_link( $items, $args ) {
 	$user = wp_get_current_user();
 	$user_role = $user->roles[0];
+	$options  = get_option( 'ebt_api_settings' );
+    $login_btn = $options['dash_menus']['login_btn'];
+
+	
 	$login = "moOAuthLoginNew('Engagifii')";
-    if (is_user_logged_in() && $args->theme_location == 'primary' ) {
+    if (is_user_logged_in() && $args->theme_location == 'primary' &&   $user_role == 'subscriber' && $login_btn ) {
         $items .= '<li class="nav-item"><a title="Logout" class="nav-link login-btn" onclick="clearAllCookies()" target="_blank" href="'. wp_logout_url() .'">Log Out</a></li>';
     }
-    elseif (!is_user_logged_in() && $args->theme_location == 'primary' ) {
+    elseif (!is_user_logged_in() && $args->theme_location == 'primary' && $login_btn ) {
         $items .= '<li class="nav-item"><a onClick="'.$login.'" class="nav-link login-btn" title="Login with Engagifii" href="javascript:void">Log In</a></li>';
     }
     return $items;
