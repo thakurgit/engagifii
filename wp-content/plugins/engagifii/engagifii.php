@@ -432,12 +432,7 @@ foreach ($child_pages_data as $child_data) {
         }
     }
 }
-
-	
-
 }
-
-
 
 /**
  * Main instance of EngagifiiAPI.
