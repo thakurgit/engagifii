@@ -1,7 +1,7 @@
 <?php
 function engagifii_scripts() { ?> 
 <style>
-.psba-login {
+.login-btn {
 	background: #ea8b2e;
 	color: white !important;
 	border-radius: 5px;
@@ -31,7 +31,7 @@ function clearAllCookies(newtab='') {
 
 		function moOAuthLoginNew(app_name) {
 			
-			window.location.href = 'https://engagifiwebstg.wpengine.com/psba' + '/?option=oauthredirect&app_name=' + app_name;
+			window.location.href = '<?php echo site_url(); ?>' + '/?option=oauthredirect&app_name=' + app_name;
 		}
     const accessToken = '<?php echo isset($_SESSION['accesstoken']) ? $_SESSION['accesstoken'] : ''; ?>';
     
@@ -123,10 +123,10 @@ function add_loginout_link( $items, $args ) {
 	$user_role = $user->roles[0];
 	$login = "moOAuthLoginNew('Engagifii')";
     if (is_user_logged_in() && $args->theme_location == 'primary' ) {
-        $items .= '<li class="nav-item"><a title="Logout" class="nav-link psba-login" onclick="clearAllCookies()" target="_blank" href="'. wp_logout_url() .'">Log Out</a></li>';
+        $items .= '<li class="nav-item"><a title="Logout" class="nav-link login-btn" onclick="clearAllCookies()" target="_blank" href="'. wp_logout_url() .'">Log Out</a></li>';
     }
     elseif (!is_user_logged_in() && $args->theme_location == 'primary' ) {
-        $items .= '<li class="nav-item"><a onClick="'.$login.'" class="nav-link psba-login" title="Login with Engagifii" href="javascript:void">Log In</a></li>';
+        $items .= '<li class="nav-item"><a onClick="'.$login.'" class="nav-link login-btn" title="Login with Engagifii" href="javascript:void">Log In</a></li>';
     }
     return $items;
 }
