@@ -212,7 +212,7 @@ if ( strpos($url,'my-profile') !== false ) {
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Classes</a>
 			  	</li>
-				<?php } if(($collection) && count($collection)){ ?>
+				<?php } if(($collections) && count($collections)){ ?>
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="session-tab" data-toggle="pill" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
 			  	</li>

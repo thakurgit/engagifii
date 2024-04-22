@@ -24,6 +24,7 @@ $userEmail = $user->user_email;
 $member_id = isset($_GET['member']) ? $_GET['member'] : null;
     $obj      =  new Engagifii_API();
     $options = get_option('ebt_api_settings'); 
+    $colNames = $options['people_fields']['fields']; 
     $profilePayloadFields = $options['dashboard_fields']['fields']; 
     if($member_id){
       $memberid = $member_id;
@@ -489,12 +490,14 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 
                     echo '<strong>Department: </strong>' . $department . '<br>';
                     echo '<strong>Position: </strong>' . $positionName . $current.'<br>';
-                    echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">'; 
+                    if(in_array('Total Time', $colNames)){
+                    //echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">'; 
+                    }
 					$durations[]=$years.$months;
                 }
             }
-			if($durations){
-				echo 'Total time worked at this Organization: '.addDurations($durations);
+			if(($durations) && (in_array('Total Time', $colNames))){
+				// echo 'Total time worked at this Organization: '.addDurations($durations);
 			}
 			echo '</div></div>';
         }

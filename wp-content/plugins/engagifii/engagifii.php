@@ -344,85 +344,95 @@ function insert_page_on_activation() {
 	);
 	
 	// Loop through child pages data to add each child page
-	foreach ($child_pages_data as $child_data) {
-		$child_page_slug = $child_data['slug'];
-		$child_page_title = $child_data['title'];
-		$child_page_content = $child_data['content'];
-		
-		$child_page = array(
-			'post_type'     => 'page',
-			'post_title'    => $child_page_title,
-			'post_content'  => $child_page_content,
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_name'     => $child_page_slug,
-			'post_parent'   => $parent_page_id // Set parent page ID here
-		);
-	
-		// Check if child page exists, if not, create it
-		if (!get_page_by_path($child_page_slug, OBJECT, 'page')) {
-			$child_page_id = wp_insert_post($child_page);
-			
-			// If this child page has further child pages
-			if ($child_page_slug == 'events' || $child_page_slug == 'my-transcript') {
-				// Adding child pages of 'events' and 'my-transcript'
-				$child_page_child_pages_data = array();
-				if ($child_page_slug == 'events') {
-					$child_page_child_pages_data = array(
-						array(
-							'slug' => 'event-detail',
-							'title' => 'Event Detail',
-							'content' => '[engagifii-myEvents-detail]'
-						)
-					);
-				} elseif ($child_page_slug == 'my-transcript') {
-					$child_page_child_pages_data = array(
-						array(
-							'slug' => 'class-detail',
-							'title' => 'Class Detail',
-							'content' => '[engagifii-myTranscript-class-detail]'
-						),
-						array(
-							'slug' => 'course-details',
-							'title' => 'Course Detail',
-							'content' => '[engagifii-myTranscript-detail]'
-						),
-						array(
-							'slug' => 'downloads',
-							'title' => 'My Downloads',
-							'content' => '[engagifii-myDownloads]'
-						)
-					);
-				}
-				
-				foreach ($child_page_child_pages_data as $child_page_child_data) {
-					$child_page_child_slug = $child_page_child_data['slug'];
-					$child_page_child_title = $child_page_child_data['title'];
-					$child_page_child_content = $child_page_child_data['content'];
-					
-					$child_page_child = array(
-						'post_type'     => 'page',
-						'post_title'    => $child_page_child_title,
-						'post_content'  => $child_page_child_content,
-						'post_status'   => 'publish',
-						'post_author'   => 1,
-						'post_name'     => $child_page_child_slug,
-						'post_parent'   => $child_page_id // Set parent page ID here
-					);
-					
-					// Check if child page exists, if not, create it
-					if (!get_page_by_path($child_page_child_slug, OBJECT, 'page')) {
-						wp_insert_post($child_page_child);
-					}
-				}
-			}
-		}
-	}
-	
-
+	// Function to check if a page with a given slug exists under a given parent page
+function is_page_unique($slug, $parent_id) {
+    global $wpdb;
+    $query = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_parent = %d AND post_type = 'page'", $slug, $parent_id);
+    $result = $wpdb->get_var($query);
+    return $result ? true : false;
 }
 
+foreach ($child_pages_data as $child_data) {
+    $child_page_slug = $child_data['slug'];
+    $child_page_title = $child_data['title'];
+    $child_page_content = $child_data['content'];
+    
+    $child_page = array(
+        'post_type'     => 'page',
+        'post_title'    => $child_page_title,
+        'post_content'  => $child_page_content,
+        'post_status'   => 'publish',
+        'post_author'   => 1,
+        'post_name'     => $child_page_slug,
+        'post_parent'   => $parent_page_id // Set parent page ID here
+    );
 
+    // Check if parent page exists
+    $parent_page = get_post($parent_page_id);
+    if (!$parent_page || $parent_page->post_type !== 'page') {
+        continue; // Skip this child page creation if parent page doesn't exist or is not a page
+    }
+
+    // Check if child page exists, if not, create it
+    if (!is_page_unique($child_page_slug, $parent_page_id)) {
+        $child_page_id = wp_insert_post($child_page);
+        
+        // If this child page has further child pages
+        if ($child_page_slug == 'events' || $child_page_slug == 'my-transcript') {
+            // Adding child pages of 'events' and 'my-transcript'
+            $child_page_child_pages_data = array();
+            if ($child_page_slug == 'events') {
+                $child_page_child_pages_data = array(
+                    array(
+                        'slug' => 'event-detail',
+                        'title' => 'Event Detail',
+                        'content' => '[engagifii-myEvents-detail]'
+                    )
+                );
+            } elseif ($child_page_slug == 'my-transcript') {
+                $child_page_child_pages_data = array(
+                    array(
+                        'slug' => 'class-detail',
+                        'title' => 'Class Detail',
+                        'content' => '[engagifii-myTranscript-class-detail]'
+                    ),
+                    array(
+                        'slug' => 'course-details',
+                        'title' => 'Course Detail',
+                        'content' => '[engagifii-myTranscript-detail]'
+                    ),
+                    array(
+                        'slug' => 'downloads',
+                        'title' => 'My Downloads',
+                        'content' => '[engagifii-myDownloads]'
+                    )
+                );
+            }
+            
+            foreach ($child_page_child_pages_data as $child_page_child_data) {
+                $child_page_child_slug = $child_page_child_data['slug'];
+                $child_page_child_title = $child_page_child_data['title'];
+                $child_page_child_content = $child_page_child_data['content'];
+                
+                $child_page_child = array(
+                    'post_type'     => 'page',
+                    'post_title'    => $child_page_child_title,
+                    'post_content'  => $child_page_child_content,
+                    'post_status'   => 'publish',
+                    'post_author'   => 1,
+                    'post_name'     => $child_page_child_slug,
+                    'post_parent'   => $child_page_id // Set parent page ID here
+                );
+                
+                // Check if parent page of subchild exists
+                if (!is_page_unique($child_page_child_slug, $child_page_id)) {
+                    wp_insert_post($child_page_child);
+                }
+            }
+        }
+    }
+}
+}
 
 /**
  * Main instance of EngagifiiAPI.
