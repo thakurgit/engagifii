@@ -160,12 +160,16 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 		    			foreach ($colNames as $key) {
 		    			$forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
                   if($key == 'People Name'){
-                    $columnSearch_key[0]['key'] = $i;
-                    $columnSearch_key[0]['placeholder'] = 'Search Member';
+					$searchObject=[];
+					$searchObject['key'] = $i;
+					$searchObject['placeholder'] = 'Search Member';
+					$columnSearch_key[]=$searchObject;
                   }
                   if($key == 'Email'){
-                    $columnSearch_key[1]['key'] = $i;
-                    $columnSearch_key[1]['placeholder'] = 'Search Office Email';
+					$searchObject=[];
+					$searchObject['key'] = $i;
+                    $searchObject['placeholder'] = 'Search Office Email';
+					$columnSearch_key[]=$searchObject;
                   }
                   if($key == 'Organization'){
                    $key = 'Current Organization';

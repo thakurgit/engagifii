@@ -56,6 +56,9 @@ if (isset($_REQUEST['sessionId']))
 }
 
 
+$options = get_option('ebt_api_settings');
+$tenant_url          = $options['lbt_tenant_code']['tenant_code'];
+$lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
 $obj = new Engagifii_API();
 $dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
 $collection = json_decode($dataResponse['api_response']);
@@ -63,14 +66,11 @@ if(!$collection){
 	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
-$options = get_option('ebt_api_settings');
-$tenant_url          = $options['lbt_tenant_code']['tenant_code'];
-$lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
+$filterParams=array_diff($lbt_visib_datacol_list, ["billNumber", "title","state","fileId"]);
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-
 $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
 //print_r($lbt_visible_column_list);
 $trackingResponse = $obj->getTrackingLevels();
@@ -989,6 +989,7 @@ array_splice( $seqColumns, $title_key+1, 0, $temp_array );*/
       <thead> 
              <tr>
                 <?php
+$columnSearch_key = [];
 $forDatatable = array();
 $i = 0;
 $sort_key = 1;
@@ -1008,7 +1009,17 @@ foreach ($seqColumns as $key => $row){
         if ($row->key == 'billNumber')
         {
             $sort_key = $i;
+			/*$searchObject=[];
+			$searchObject['key'] = $i;
+			$searchObject['placeholder'] = 'Eg: HB 0002 or SR 0980';
+			$columnSearch_key[]=$searchObject;*/
         }
+		if($row->key == 'title'){
+			$searchObject=[];
+			$searchObject['key'] = $i;
+			$searchObject['placeholder'] = 'Search title';
+			$columnSearch_key[]=$searchObject;
+		}
 
         $forDatatable[$i]['data'] = $row->key;
 		//unset($forDatatable[9]);
@@ -1295,6 +1306,8 @@ var tenant_code = "<?php echo $tenant_url; ?>";
 var titleColumn = '<?php echo $bill_title_key; ?>';
 var table_key = '<?php echo $bill_number_column_key; ?>';
 var title_key = '<?php echo $bill_title_key; ?>';
+var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
+ columnSearch = JSON.parse(columnSearch);
 if(tenant_code =="aasb"){
   var order = [[$('th.billNumber').index(), 'asc']];
 }else{
@@ -1511,45 +1524,16 @@ $('#bill_number + .clear-search').click(function(e){
    });
 }  
 
-if(titleColumn){
-	dt_titleSearch('Search title');
-  /*$('#ebtmaintable thead tr th:eq('+title_key+')').each( function (i) {
-        var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" placeholder="Search title" class="form-control form-control-sm search-endorsement pr-4 shadow-nonw" value="" id="searchclass"/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
- 
-       $( 'input', this ).keyup(delay(function (e) {
-		    var titlesearch = this.value;
-            if ( table.column(i).search() !== titlesearch ) {
-                table.column('1').search( titlesearch ).draw();
-            }
-        }, 500));
-		 $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$(this).siblings('.clear-search').show();
-			} else {
-				$(this).siblings('.clear-search').hide();
-			} 
- });
-$('#searchclass + div+ .clear-search').click(function(e){
-	 $('#searchclass').val('');
-	$(this).hide();
-	e.stopPropagation();
-	table.column('1').search('').draw();
- });
-		
-    } );
-$(document).ready(function (){    
-    $('#searchclass, #bill_number, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchclass, #bill_number').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-	 });*/
 
+<?php
+  if(count($columnSearch_key)>0){
+?>
+for (var i = 0; i < columnSearch.length; i++) {
+ dt_columnSearch(columnSearch[i].key,columnSearch[i].placeholder);
 }
+  <?php
+}
+  ?>
 
 <?php
 if (isset($_REQUEST['bill']))
@@ -1646,6 +1630,38 @@ $(".tz-selectAll").change(function () {
 	getUpdatedValues();
 });
 });
+<?php /*?>var colNames = <?php echo json_encode($filterParams); ?>;
+window.addEventListener("load", function () {
+	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='';
+  <?php if($get_tracking){ 
+	echo 'chkdTracking='.$get_tracking.';';  
+ } if($tagsRequest){
+	echo 'chkdTags='.$tagsRequest.';';  
+ } if($actionType){
+	echo 'chkdAction="'.$actionType.'";';  
+ } if($staffMember){
+	echo 'chkdAssign="'.$staffMember.'";';  
+ }?>
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'legilslationFilters',
+		   filterParams: colNames,
+		   chkdTracking :chkdTracking,
+		   chkdTags:chkdTags,
+		   chkdAction:chkdAction,
+		   chkdAssign:chkdAssign
+		},
+		success: function(response) {     
+			for (var key of Object.keys(JSON.parse(response))) {
+			var index = Object.keys(JSON.parse(response)).indexOf(key);
+			$('#filter-'+index+' ul').html(JSON.parse(response)[key]);
+		}
+		filterEvents();
+			}
+	  });
+});<?php */?>
 
 </script>      
 </div>
