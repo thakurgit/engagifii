@@ -489,12 +489,12 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 
                     echo '<strong>Department: </strong>' . $department . '<br>';
                     echo '<strong>Position: </strong>' . $positionName . $current.'<br>';
-                    echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">'; 
+                    // echo '<strong>Total Time Worked: </strong>' . $totalTimeWorked.'<hr class="my-2">'; 
 					$durations[]=$years.$months;
                 }
             }
 			if($durations){
-				echo 'Total time worked at this Organization: '.addDurations($durations);
+				// echo 'Total time worked at this Organization: '.addDurations($durations);
 			}
 			echo '</div></div>';
         }
