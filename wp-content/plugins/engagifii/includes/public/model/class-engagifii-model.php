@@ -18,6 +18,7 @@ class abstractModelEngagifii extends Engagifii_API
     $ajax_actions = [
         ['endorsement', 'endorsementLoadGridData'],
         ['legislation', 'legislationLoadGridData'],
+        ['legilslationFilters', 'legilslationFilters'],
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
@@ -3616,6 +3617,85 @@ public function eventFilters(){
 
         echo json_encode($json_data);
         wp_die();
+    }
+    public function legilslationFilters(){
+        $postData=array();
+        $htmlArray = array();
+          $filterParams = $_POST['filterParams'];
+		  $options = get_option('ebt_api_settings');
+		  $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
+		  $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
+		  $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
+		  $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
+          $apiUrl='';
+          $date = date('Y-m-d');
+          foreach ($filterParams as $keys => $values) {
+			  $response = '';
+			  $apiUrl = '';
+              if($values =='trackingLevel'){
+                $apiUrl='legislative/public-bills/trackinglevels/'; 
+              }else if($values =='billType'){
+                $apiUrl='legislative/public-bills/billtypes/';   
+              }else if($values =='status'){
+                $apiUrl='legislative/public-bills/status/';   
+              }else if($values =='sponsors'){
+                $apiUrl='legislative/public-bills/sponsors/';   
+              }else if($values =='houseCommittees'){
+                $apiUrl='legislative/public-bills/committees/house/';   
+              }else if($values =='senateCommittees'){
+                $apiUrl='legislative/public-bills/committees/senate/';   
+              }else if($values =='assignedto'){
+                $apiUrl='legislative/public-bills/filter/billusers';   
+              }else if($values =='tags'){
+                $apiUrl='legislative/public-bills/filter/tags';   
+              }else if($values =='lastActionOn'){
+                $apiUrl='legislative/public-bills/lastactions/';   
+              }else if($values =='introducedDate'){
+				  continue;
+			  }
+           	$response =  $this->submitApiRequestWithGet($apiUrl, $postData, 'legislation'); 
+			if($values =='trackingLevel'){
+            //print_r($response);
+			}
+              if($response['api_response']){
+                $response = json_decode($response['api_response'], true);                
+                if($response){
+                  foreach ($response as $key => $value) {
+                      if($values =='billType'){
+                          $html[$values].='<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><label class="d-none" for="item_id_'.$value['value'].'">bill type</label><input type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'" >'.$value['text'].'</li>';	
+                      }else if($values =='trackingLevel' && $value['count']>0){
+						  	$checked = $_POST['chkdTracking'] == $value['trackingLevelId'] && $_POST['chkdTracking'] != null ? 'checked disabled' : '';
+							$html[$values].= '<li data-count="'.$value['count'].'" data-title="'.$value['title'].'" data-id=""><input type="checkbox" name="enggafifilterdata[]" value="'.$value['trackingLevelId'].'" id="tracking_item_id_'.$value['trackingLevelId'].'"  '.$checked.'><span style="background-color:'.$value['colorCode'].'; width: 13px;height: 13px;border-radius: 50%;display: inline-block;margin-left: 8px;"></span>'.$value['title'].'</li>';	
+                      }else if($values=='status' || $values=='sponsors'){
+                        $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="'.$values.'_item_id_'.$value['value'].'" > '.$value['text'].'</li>';
+                      }else if($values=='houseCommittees' || $values =='senateCommittees'){
+                        $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'" > '. $value['text'].' '.'('.$value['count'].')'.' </li>';
+                      }else if($values=='tags'){
+						  if(in_array($value['tagId'], $lbt_visib_tags_list)){
+							$checked = $_POST['chkdTags'] == $value['tagId'] && $_POST['chkdTags'] != null ? 'checked disabled' : '';
+							$html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['tagId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" value="'.$value['tagId'].'" id="item_id_'.$value['tagId'].'">'.$value['text'].'</li>';
+						  }
+                      }else if($values=='lastActionOn'){
+						$checked = $_POST['chkdAction'] == $value['value'] && $_POST['chkdAction'] != null ? 'checked disabled' : '';
+                        $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'">'.$value['text'].'</li>';
+                      }else if($values=='assignedto'){
+						  if(in_array($value['personId'], $lbt_visib_members_list)){
+							$checked = $_POST['chkdAssign'] == $value['personId'] && $_POST['chkdAssign'] != null ? 'checked disabled' : '';
+							$html[$values].= '<li data-title="'.$value['fullName'].'" data-id="'.$value['personId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="members" value="'.$value['personId'].'" id="item_id_'.$value['personId'].'" >'.$value['fullName'].'</li>';
+						  }
+                      }
+                    }
+                  }else{
+                    $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+                  }
+                  } else {
+                    $html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+                }
+                $htmlArray=$html;
+          }
+            echo json_encode($htmlArray);
+            wp_die();
+        
     }
 
 //Public official Datatable

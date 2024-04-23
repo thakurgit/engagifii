@@ -1905,3 +1905,10 @@ input[type="checkbox"]{
 table tbody tr.selected {
 	background-color: #d5e9ff !important;
 }
+.dropdown-item.active, .dropdown-item:active {
+	background-color: var(--engagifii-color-hover);
+}
+.btn-primary.focus, .btn-primary:focus {
+	background-color: var(--engagifii-color-hover);
+	border-color: var(--engagifii-color-hover);
+}

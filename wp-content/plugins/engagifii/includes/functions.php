@@ -93,14 +93,19 @@ add_action('wp_footer', 'engagifii_scripts');
  
     return $redirect_to;
 }
-add_filter( 'login_redirect', 'custom_login_redirect', 10, 3 );
+add_filter( 'login_redirect', 'custom_login_redirect', 10, 3 );*/
+add_action('wp_logout','engagifii_logout');
+
+function engagifii_logout(){
+  wp_safe_redirect( home_url() );
+  exit;
+}
 add_action('after_setup_theme', 'remove_admin_bar');
 function remove_admin_bar() {
-if (current_user_can('subscriber') && !is_admin()) {
-show_admin_bar(false);
+  if (current_user_can('subscriber') && !is_admin()) {
+	show_admin_bar(false);
+  }
 }
-
-}*/
 session_start();
 //add_action('mo_oauth_logged_in_user_token', 'GetToken' , 10, 2);   
 

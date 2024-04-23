@@ -223,7 +223,7 @@ function delay(callback, ms) {
 function dt_columnSearch(key,placeholder){
   $('#ebtmaintable thead tr th:eq('+key+')').each( function () { 
   var title = $(this).text();
-  $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+  $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none h-100" style="right:21px; top:0px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
 	$( 'input', this ).keyup(delay(function (e) {
 		var titlesearch = this.value;
 			  if ( table.column(key).search() !== titlesearch ) {
