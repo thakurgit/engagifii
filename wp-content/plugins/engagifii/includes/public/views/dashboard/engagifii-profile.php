@@ -701,9 +701,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
      <?php  if($member_id){ ?>
-      <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/my-profile/?member=<?php echo $member_id; ?>">User Profile</a></p>
+      <p class="text-center">Your request is submitted successfully. Please return to <br><a href="<?php echo site_url(); ?>/my-profile/?member=<?php echo $member_id; ?>">User Profile.</a></p>
       <?php } else { ?>
-        <p class="text-center">Your request is submitted successfully. Please return to <a href="<?php echo site_url(); ?>/my-profile">My Profile</a></p>
+        <p class="text-center">Your request is submitted successfully. Please return to <br><a href="<?php echo site_url(); ?>/my-profile">My Profile.</a></p>
         <?php } ?> 
       </div>
       
