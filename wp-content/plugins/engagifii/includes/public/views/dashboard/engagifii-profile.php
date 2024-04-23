@@ -666,7 +666,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               
               </div>
                <div class="form-group col-12 px-3">
-                	        <button type="submit" id="updateProfile" class="btn btn-primary">Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
+                	        <button type="submit" id="updateProfile" class="btn btn-primary" disabled>Update Profile <span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2"></span></button>
 
                             <a class="btn btn-default border border-dark edit-profile-cancel" href="<?php echo $site_url ?>/my-profile">Cancel</a>
 
@@ -1354,4 +1354,18 @@ $('.input-group-append').click(function() {
 
 // Adjust the position of the calendar icon in the date input group
 $('.input-group-append').css('cursor', 'pointer');
+
+document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('.edit-profile');
+        const updateProfileBtn = document.getElementById('updateProfile');
+        const enableUpdateProfileBtn = () => {
+            updateProfileBtn.disabled = false;
+        };
+        form.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', enableUpdateProfileBtn);
+        });
+        form.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', enableUpdateProfileBtn);
+        });
+    });
 </script>
