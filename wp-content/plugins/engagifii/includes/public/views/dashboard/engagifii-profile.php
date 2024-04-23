@@ -1293,13 +1293,12 @@ curl_close($curl);
 			  selectedEndDate: endDate, 
           },
           success: function(response) { 
+            $('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
             $('#exampleModal').modal('hide') ;
-		  	$('#pdfcreated').modal('show');
-			$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
-			
+		  	$('#pdfcreated').modal('show');		
 		  }
         });
-	  }
+	    }
 	  else{
 		$('#exampleModal').modal('hide') ;
 		$('#nocredit').modal('show');

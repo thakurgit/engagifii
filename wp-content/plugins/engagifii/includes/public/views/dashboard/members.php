@@ -100,7 +100,7 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary gtm">Submit</button>
+                        <button type="button" class="btn btn-primary gtm">Submit<span style="display:none" role="status" aria-hidden="true" class="spinner-border spinner-border-sm ml-2 mb-1"></span></button>
                       </div>
                     </div>
                   </div>
@@ -442,6 +442,7 @@ $('.gtm').click(function(){
 			  selectedEndDate: endDate, 
           },
           success: function(response) { 
+			$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
             $('#exampleModal').modal('hide') ;
 		  	$('#pdfcreated').modal('show');
 			
@@ -451,6 +452,7 @@ $('.gtm').click(function(){
 	  else{
 		$('#exampleModal').modal('hide') ;
 		$('#nocredit').modal('show');
+		$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
 	  }
 	}
 });
