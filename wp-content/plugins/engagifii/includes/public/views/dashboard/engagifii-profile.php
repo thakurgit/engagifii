@@ -311,7 +311,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                       </div>
                     </div>
                     </div>
-                    <div>Note: The report will only show data of the members who have earned credits in the selected date range</div>
+                    <div>Note: The report will show data only if credits are earned in the selected date range.</div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
