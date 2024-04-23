@@ -316,6 +316,7 @@ var selectAll = false;
 						if(selectedRow.indexOf(val)===-1){
 							selectedRow.push(val);
 						}
+						$('.memberSelect').removeClass('d-none');
 					}else{
 						$(this).parents('tr').removeClass('selected');	
 						const index = selectedRow.indexOf($(this).val());
@@ -324,12 +325,13 @@ var selectAll = false;
 						}
 					}
 						if($('tr.selected').length==0){
-							 thSelect.prop("indeterminate", false).prop("checked", false);	
+							 thSelect.prop("indeterminate", false).prop("checked", false);
+							 $('.memberSelect').addClass('d-none');	
 						} else{
 							thSelect.prop("indeterminate", true);
 							if($('tr.selected').length==settings.aoData.length){
 								thSelect.prop("checked", true).prop("indeterminate", false);	
-								$('.memberSelect').removeClass('d-none');
+								//$('.memberSelect').removeClass('d-none');
 							}
 						}
 						if(selectedRow.length !== 0){
@@ -397,7 +399,7 @@ var selectAll = false;
 					 element.innerHTML = " ("+settings._iRecordsTotal+")";
 				 } 
 				 filterSubmitted = false;
-				 $('.deSelectAll').trigger('click');
+				// $('.deSelectAll').trigger('click'); 
 			//}
          },
 		  "initComplete": function(settings, json) {
@@ -490,7 +492,7 @@ $( '.clearDateFilter' ).click(function() {
 		 $(this).hide();
  startDate = '1970-01-01T00:00:00';
  endDate = '<?php echo date('Y-m-d').'T00:00:00';?>';
-		 table.draw();
+		 //table.draw();
 });
 
 <?php

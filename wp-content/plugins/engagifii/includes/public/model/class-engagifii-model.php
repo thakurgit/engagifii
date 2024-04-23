@@ -3389,7 +3389,6 @@ public function eventFilters(){
     // Events Grid End here
 
     public function legislationLoadGridData() {
-
         $postedData = $this->_prepareLegislationPostData();
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
@@ -4150,7 +4149,9 @@ if (isset($_POST['sessionIds'])) {
         $postData['title'] = $_POST['columns'][$titleColumn]['search']['value'];
 		$billColumn = $_POST['billColumn'];
         $postData['billNumber'] = $_POST['columns'][$billColumn]['search']['value'];
-
+		if(!$postData['billNumber']&&$_POST['chkdBillNo']){
+		  $postData['billNumber'] = $_POST['chkdBillNo'];
+		}
         $postData['searchText'] = '';
         $postData['lastActionStartDate'] = $datepickerstart;
         $postData['lastActionEndDate'] = $datepickerend;

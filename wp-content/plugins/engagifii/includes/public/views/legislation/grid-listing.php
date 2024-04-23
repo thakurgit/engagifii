@@ -22,7 +22,6 @@ if (isset($_REQUEST['bill']))
     $billnumber = $_REQUEST['bill'];
     echo '<h2 class="text-center">Search related to bill number '.$billnumber.' </h2>';
 }
-
 if (isset($_REQUEST['tag']))
 {
     $tagsRequest = $_REQUEST['tag'];
@@ -839,7 +838,9 @@ if (window.location.href.indexOf("sessionId") > -1){
         }
 
         $('.lead .bill-count').html('(Total '+response.api_response+' bills)');
-        $('.total-bill-text').html(sessionId);
+		if(sessionId){
+        	$('.total-bill-text').html(sessionId);
+		}
             
          }
     });
@@ -1009,10 +1010,10 @@ foreach ($seqColumns as $key => $row){
         if ($row->key == 'billNumber')
         {
             $sort_key = $i;
-			/*$searchObject=[];
+			$searchObject=[];
 			$searchObject['key'] = $i;
 			$searchObject['placeholder'] = 'Eg: HB 0002 or SR 0980';
-			$columnSearch_key[]=$searchObject;*/
+			$columnSearch_key[]=$searchObject;
         }
 		if($row->key == 'title'){
 			$searchObject=[];
@@ -1306,6 +1307,19 @@ var tenant_code = "<?php echo $tenant_url; ?>";
 var titleColumn = '<?php echo $bill_title_key; ?>';
 var table_key = '<?php echo $bill_number_column_key; ?>';
 var title_key = '<?php echo $bill_title_key; ?>';
+var chkdBillNo = '<?php echo $billnumber; ?>';
+	if (/\d/.test(chkdBillNo)) {
+	   var number = chkdBillNo.match(/\d+/)[0];
+	   if (number.length == 3) {
+		  number = '0' + number;
+		} else if (number.length == 2) {
+		  number = '00' + number;
+		}else if(number.length == 1) {
+		  number = '000' + number;
+		}
+	 chkdBillNo = chkdBillNo.replace(/\d+/, ' '+number);
+	 chkdBillNo = chkdBillNo.replace(/  +/g, ' '); 
+	}	
 var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
  columnSearch = JSON.parse(columnSearch);
 if(tenant_code =="aasb"){
@@ -1368,6 +1382,7 @@ var table = $('#ebtmaintable').DataTable( {
 			d.sessionIds = appl_sessionId1;
 			d.titleColumn = titleColumn;
 			d.billColumn = table_key;
+			d.chkdBillNo = chkdBillNo;
          },
             
          },
@@ -1472,7 +1487,7 @@ $('#ebtmaintable')
 });  
 
 // checking table column for serach feature
-var billNumber = '<?php echo $billnumber; ?>';
+/*var billNumber = '<?php //echo $billnumber; ?>';
 function delay(callback, ms) {
   var timer = 0;
   return function() {
@@ -1522,7 +1537,7 @@ $('#bill_number + .clear-search').click(function(e){
  });
 	  
    });
-}  
+} */ 
 
 
 <?php
@@ -1630,7 +1645,11 @@ $(".tz-selectAll").change(function () {
 	getUpdatedValues();
 });
 });
-<?php /*?>var colNames = <?php echo json_encode($filterParams); ?>;
+<?php if($billnumber){ ?>
+window.addEventListener("load", function () {
+$('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');	
+});
+<?php } /*?>var colNames = <?php echo json_encode($filterParams); ?>;
 window.addEventListener("load", function () {
 	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='';
   <?php if($get_tracking){ 
