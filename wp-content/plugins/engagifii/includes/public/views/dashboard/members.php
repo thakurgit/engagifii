@@ -232,8 +232,8 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
   </div>
 </div>
 <script type="text/javascript">
-var positions = [], departments = [], orgs=[], Status=[], totalTime=[];
-var titleColumn='', emailColumn='';
+var positions = [], departments = [], orgs=[], Status=[], totalTime=[], selectedRow=[];
+var titleColumn, emailColumn, val, totalRecords;
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
@@ -246,8 +246,6 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 	}
 } 
   var profileId = localStorage.getItem("logged_in_user");
-  var selectedRow=[];
-  var val;
   var filterSubmitted = false;
 var selectAll = false;
 	var table = $('#ebtmaintable').DataTable( {
@@ -304,7 +302,6 @@ var selectAll = false;
             dt_dropdown();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
 		   var thSelect= $(".people-select :checkbox");
-				$('.totalMembers').text(settings._iRecordsTotal);
 			   if(selectedRow.length > 0 || selectedRow =='all'){
 				$('.gt').removeAttr('disabled');
 				  }else{
@@ -324,7 +321,6 @@ var selectAll = false;
 						if(selectedRow.indexOf(val)===-1){
 							selectedRow.push(val);
 						}
-						$('.memberSelect').removeClass('d-none');
 					}else{
 						$(this).parents('tr').removeClass('selected');	
 						const index = selectedRow.indexOf($(this).val());
@@ -334,21 +330,21 @@ var selectAll = false;
 					}
 						if($('tr.selected').length==0){
 							 thSelect.prop("indeterminate", false).prop("checked", false);
-							 $('.memberSelect').addClass('d-none');	
 						} else{
 							thSelect.prop("indeterminate", true);
 							if($('tr.selected').length==settings.aoData.length){
 								thSelect.prop("checked", true).prop("indeterminate", false);	
-								//$('.memberSelect').removeClass('d-none');
 							}
 						}
+						$('.currentSelected').text(selectedRow.length);
 						if(selectedRow.length !== 0){
 							$('.gt').removeAttr('disabled');
+							$('.memberSelect').removeClass('d-none');
 						}else{
 							$('.gt').attr('disabled',''); 
+							$('.memberSelect').addClass('d-none');
 						 }
-						$('.currentSelected').text(selectedRow.length);
-						if(selectedRow.length==settings._iRecordsTotal){
+						if(selectedRow.length==totalRecords){
 							$('.deSelectAll').removeClass('d-none');
 							$('.selectAll').addClass('d-none');		
 						} else {
@@ -401,16 +397,18 @@ var selectAll = false;
 
 			 $('#apply-filter-data .spinner-border').addClass('d-none');
 			 $('#apply-filter-data').removeAttr('disabled')
-			//if(filterSubmitted){
+			if(filterSubmitted){
 				 var element  = document.getElementById("countFilterResult");
 				if(element){
 					 element.innerHTML = " ("+settings._iRecordsTotal+")";
 				 } 
 				 filterSubmitted = false;
 				// $('.deSelectAll').trigger('click'); 
-			//}
+			}
          },
 		  "initComplete": function(settings, json) {
+			  	totalRecords=settings._iRecordsTotal;
+				$('.totalMembers').text(totalRecords);
 			//dt_filterActivate();
 			           dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
@@ -555,7 +553,6 @@ function filterEvents(){
 				  Status = $.map($('input[name="peopleStatus[]"]:checked'), function(c){return c.value; });
 				  if(!selectAll){
 					  countFilterData();
-table.draw();
 				  }
 		  		ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
 		  		if(ftSelected > 0) {
@@ -578,7 +575,6 @@ table.draw();
 		  $(this).parent().siblings('ul').find('li input').prop('checked', false).change();
 	  }
 		countFilterData();
-table.draw();
 	  selectAll = false;
   });
   //search list in filter
@@ -616,7 +612,6 @@ $( '.timework .max' ).on('input',delay(function (e) {
 	  $(this).val($('.timework .min').val());	
 	}
 	countFilterData();
-table.draw();
   }, 500));
 //filter submit
 $('#apply-filter-data').click(function(){
@@ -674,7 +669,7 @@ function countFilterData(){
   }
 	  $('#apply-filter-data .spinner-border').removeClass('d-none');
 	  $('#apply-filter-data').attr('disabled','')
-  /*$.ajax({
+  $.ajax({
     type : "post",
     url: engagifiiUrl_ajaxurl,
     data:{
@@ -691,13 +686,13 @@ function countFilterData(){
     success: function(response) {     
       var element  = document.getElementById("countFilterResult");
 	  $('#apply-filter-data .spinner-border').addClass('d-none');
-	  $('#apply-filter-data').removeAttr('disabled')
+	  $('#apply-filter-data').removeAttr('disabled');
       if(element)
       {
           element.innerHTML = " ("+response+")";
       }    
     }
-});*/
+});
 }
 
 $('.input-group-append').click(function() {
