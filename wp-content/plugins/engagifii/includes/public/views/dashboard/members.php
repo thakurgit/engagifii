@@ -163,12 +163,14 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 					$searchObject=[];
 					$searchObject['key'] = $i;
 					$searchObject['placeholder'] = 'Search Member';
+					$searchObject['column'] = $key;
 					$columnSearch_key[]=$searchObject;
                   }
                   if($key == 'Email'){
 					$searchObject=[];
 					$searchObject['key'] = $i;
                     $searchObject['placeholder'] = 'Search Office Email';
+					$searchObject['column'] = $key;
 					$columnSearch_key[]=$searchObject;
                   }
                   if($key == 'Organization'){
@@ -231,10 +233,19 @@ $fiscalEndDate = date('Y-m-d', $largestEndDate );
 </div>
 <script type="text/javascript">
 var positions = [], departments = [], orgs=[], Status=[], totalTime=[];
+var titleColumn='', emailColumn='';
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
  var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
  columnSearch = JSON.parse(columnSearch);
+ for (let i = 0; i < columnSearch.length; i++) {
+ 	if(columnSearch[i].column=='People Name'){
+		titleColumn=columnSearch[i].key;
+	}if(columnSearch[i].column=='Email'){
+		emailColumn=columnSearch[i].key;
+	}
+} 
+ console.log(columnSearch);
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
@@ -281,10 +292,8 @@ var selectAll = false;
 				d.orgs=orgs; 
       			  d.status=Status;
 				d.totalTime= totalTime;
-				d.titleColumn = columnSearch[0]['key']; 
-				<?php if(in_array('Email', $colNames)){ ?>
-				d.emailColumn = columnSearch[1]['key']; 
-				<?php } ?>
+				d.titleColumn = titleColumn; 
+				d.emailColumn = emailColumn; 
             }, 
         },
         createdRow: function (row, data, index) { 
