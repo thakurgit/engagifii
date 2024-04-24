@@ -58,6 +58,13 @@ if (isset($_REQUEST['sessionId']))
 $options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['tenant_code'];
 $seqColumns = $options['lbt_visib_datacol_list'];
+//$obj = new Engagifii_API();
+//$dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
+//$collection = json_decode($dataResponse['api_response']);
+if(!$seqColumns){
+	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
+	return;
+}
 $lbt_visible_column_list = array();
 foreach($seqColumns as $key=>$cols){
 	if(!array_key_exists("key",$cols)){
@@ -69,13 +76,6 @@ foreach($seqColumns as $key=>$cols){
 $seqColumns = array_values($seqColumns);
 //print_r($lbt_visible_column_list);die;
 
-//$obj = new Engagifii_API();
-//$dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
-//$collection = json_decode($dataResponse['api_response']);
-if(!$seqColumns){
-	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
-	return;
-}
 $filterParams=array_diff($lbt_visible_column_list, ["billNumber", "title","state","fileId"]);
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
