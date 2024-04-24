@@ -8,6 +8,7 @@ session_start();
  if(!$dp){
 	$dp = $_SESSION['dp']; 
  }
+ 
  $site_url = site_url();?>
 <style>
  body{
@@ -63,7 +64,11 @@ global $post;
 	$options = get_option( 'ebt_api_settings' );
     $menus =$options['dash_menus']['items'];
 	$tenantCode = $options['dashboard_apis']['tenant'];
-	$loggedInUserId = $_SESSION['pid'];
+  //$loggedInUserId = $_SESSION['pid'];
+  if (isset($_COOKIE['pid'])) {
+    $loggedInUserId = $_COOKIE['pid'];
+  }
+	
 	$userPermissionArray = array();
         $postedDataPermission = array();
         $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
