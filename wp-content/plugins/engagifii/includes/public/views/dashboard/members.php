@@ -245,7 +245,6 @@ var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
 		emailColumn=columnSearch[i].key;
 	}
 } 
- console.log(columnSearch);
   var profileId = localStorage.getItem("logged_in_user");
   var selectedRow=[];
   var val;
