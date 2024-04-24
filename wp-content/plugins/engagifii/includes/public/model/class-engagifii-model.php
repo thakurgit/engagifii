@@ -3411,7 +3411,6 @@ public function eventFilters(){
 	}
         $lbt_api_url = $options['lbt_api_url'];
 
-        $lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
 
         $data = array();
         $sponsorsName = array();

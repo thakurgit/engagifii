@@ -34,7 +34,15 @@ if(isset($_REQUEST['billId'])){
   	$lbt_vsbl_tag_list = array();
   }
   $options = get_option('ebt_api_settings');
-  $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+$seqColumns = $options['lbt_visib_datacol_list'];
+$lbt_visible_column_list = array();
+foreach($seqColumns as $key=>$cols){
+	if(!array_key_exists("key",$cols)){
+		unset($seqColumns[$key]);
+		continue;
+	}
+	$lbt_visible_column_list[] =$cols['key']; 
+}
   $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
   //print_r($tenant_code);
 

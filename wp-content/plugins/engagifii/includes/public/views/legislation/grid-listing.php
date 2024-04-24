@@ -57,20 +57,31 @@ if (isset($_REQUEST['sessionId']))
 
 $options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['tenant_code'];
-$lbt_visib_datacol_list = $options['lbt_visib_datacol_list'];
-$obj = new Engagifii_API();
-$dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
-$collection = json_decode($dataResponse['api_response']);
-if(!$collection){
+$seqColumns = $options['lbt_visib_datacol_list'];
+$lbt_visible_column_list = array();
+foreach($seqColumns as $key=>$cols){
+	if(!array_key_exists("key",$cols)){
+		unset($seqColumns[$key]);
+		continue;
+	}
+	$lbt_visible_column_list[] =$cols['key']; 
+}
+$seqColumns = array_values($seqColumns);
+//print_r($lbt_visible_column_list);die;
+
+//$obj = new Engagifii_API();
+//$dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
+//$collection = json_decode($dataResponse['api_response']);
+if(!$seqColumns){
 	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
-$filterParams=array_diff($lbt_visib_datacol_list, ["billNumber", "title","state","fileId"]);
+$filterParams=array_diff($lbt_visible_column_list, ["billNumber", "title","state","fileId"]);
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-$lbt_visible_column_list = $options['lbt_visib_datacol_list'];
+//$lbt_visible_column_list = $options['lbt_visib_datacol_list'];
 //print_r($lbt_visible_column_list);
 $houseResponses=array();
 $senateResponses=array();
@@ -150,7 +161,9 @@ $senateResponses=array();
             <div class="col-sm-12 tz-areafix">
                <div class="filter-section">
                <!-- Tags -->
-               <?php  if(in_array('assignedto', $lbt_visible_column_list)) { ?>
+               <?php if(count(array_diff($lbt_visible_column_list,['billNumber','title']))==0){
+				   echo '<span class="text-center d-block">Filter parameters not found!</span>';
+			   } if(in_array('assignedto', $lbt_visible_column_list)) { ?>
                   <div class="filter-list border-bottom">
                      <div class="heading-title py-2 d-flex align-items-center">Assign To <span id="countviewbyassign" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
                      <div class="multiple-select">
@@ -1035,14 +1048,14 @@ if (array_key_exists("dt_darktheme",$options)){
   	$dt_class .= 'table-dark ';	
   }
 }
-if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
+/*if($lbt_visible_column_list && count($lbt_visible_column_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
-  $seqColumns=array_fill(0, count($lbt_visib_datacol_list), ''); //sequenced object array
+  $seqColumns=array_fill(0, count($lbt_visible_column_list), ''); //sequenced object array
   //compare columns with checked columns
   foreach($collection->columnList as $key => $value) {
-	  if (in_array($value->key, $lbt_visib_datacol_list)){
+	  if (in_array($value->key, $lbt_visible_column_list)){
 		  array_push($filteredColumns, $value);
 		  array_push($columnGroup, $value->key);	
 	  }
@@ -1050,11 +1063,11 @@ if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
   //sequence columns with checked columns
   foreach($filteredColumns as $key => $value) {
 		  array_push($tempColumn, $filteredColumns[array_search($value->key, $columnGroup)]);
-		  array_splice($seqColumns,array_search($value->key, $lbt_visib_datacol_list),1,$tempColumn);
+		  array_splice($seqColumns,array_search($value->key, $lbt_visible_column_list),1,$tempColumn);
 		  $tempColumn=[];
   }
-  $bill_number_column_key = array_search("billNumber", $lbt_visib_datacol_list);
-  $bill_title_key = array_search("title", $lbt_visib_datacol_list);
+  $bill_number_column_key = array_search("billNumber", $lbt_visible_column_list);
+  $bill_title_key = array_search("title", $lbt_visible_column_list);
 } else {
 	$seqColumns=$collection->columnList;
 	$searchTable=[]; 
@@ -1063,7 +1076,7 @@ if($lbt_visib_datacol_list && count($lbt_visib_datacol_list)>0){
 	}
 	$bill_number_column_key = array_search("billNumber", $searchTable);
 	$bill_title_key = array_search("title", $searchTable);
-}
+}*/
 /*$temp_array = array();
 foreach ($seqColumns as $key => $value) {
  
@@ -1090,45 +1103,47 @@ $forDatatable = array();
 $i = 0;
 $sort_key = 1;
 foreach ($seqColumns as $key => $row){
-   // if (in_array($row->key, $lbt_visib_datacol_list)){
+   // if (in_array($row->key, $lbt_visible_column_list)){
 
-        if ($row->key == 'introducedDate')
+        if ($row['key'] == 'introducedDate')
         {
-            $row->key = 'IntroducedDate';
+            $row['key'] = 'IntroducedDate';
         }
-        if ($row->key == 'billType')
+        if ($row['key'] == 'billType')
         {
-            $row->key = 'BillType';
+            $row['key'] = 'BillType';
 
         }
 
-        if ($row->key == 'billNumber')
+        if ($row['key'] == 'billNumber')
         {
+			$bill_number_column_key = $i;
             $sort_key = $i;
 			$searchObject=[];
 			$searchObject['key'] = $i;
 			$searchObject['placeholder'] = 'Eg: HB 0002 or SR 0980';
 			$columnSearch_key[]=$searchObject;
         }
-		if($row->key == 'title'){
+		if($row['key'] == 'title'){
+			$bill_title_key = $i;
 			$searchObject=[];
 			$searchObject['key'] = $i;
 			$searchObject['placeholder'] = 'Search title';
 			$columnSearch_key[]=$searchObject;
 		}
 
-        $forDatatable[$i]['data'] = $row->key;
+        $forDatatable[$i]['data'] = $row['key'];
 		//unset($forDatatable[9]);
 		
-		$class=strtolower($row->name);
+		$class=strtolower($row['label']);
 		
 ?>                       
-                  <th class="<?php echo $class; ?> <?php echo $row->key; ?>" scope="col">
-                    <?php if ($row->key == 'trackingLevel')
+                  <th class="<?php echo $class; ?> <?php echo $row['key']; ?>" scope="col">
+                    <?php if ($row['key'] == 'trackingLevel')
         {
             echo "Tracking\nLevel";
 		} else {
-            echo $row->name;
+            echo $row['label'];
         } ?>
                   </th>
                 <?php

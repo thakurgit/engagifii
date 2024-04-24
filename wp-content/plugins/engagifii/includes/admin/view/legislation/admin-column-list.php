@@ -61,10 +61,16 @@ if(isset($options['sessionsetting'])){
 <hr><p><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for columns.." class="large-text"></p>';
 		echo '<input type="hidden" class="cls" name="ebt_api_settings[lbt_col_order]" value="'.$options['lbt_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="legislationList" style="width:100%; display:block;" >';
 		$counter=1;
-
+		$legislation_columns = array();
+		foreach ($lbt_visib_datacol_list as $key=>$row) {
+			if(array_key_exists("key",$row)){
+				array_push($legislation_columns,$row['key']);	
+			}
+				
+		}
  		foreach ($response->columnList as $key => $row) {
  		$checked = "";
- 		if(in_array($row->key, $lbt_visib_datacol_list)){
+ 		if(in_array($row->key, $legislation_columns)){
  			$checked .= " checked";
  		}
  		if($row->key=='title' || $row->key == 'billNumber'){
@@ -72,7 +78,7 @@ if(isset($options['sessionsetting'])){
  		}
  		
 	 
- 		echo '<li  data-order="'.$counter.'"> <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="ebt_api_settings[lbt_visib_datacol_list][]" '.$checked.' value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
+ 		echo '<li  data-order="'.$counter.'"><input id="" class="" type="hidden" name="ebt_api_settings[lbt_visib_datacol_list]['.$key.'][label]" value="'.$row->name.'"> <input id="'.$row->key.'" class="'.$row->key.'" type="checkbox" name="ebt_api_settings[lbt_visib_datacol_list]['.$key.'][key]" '.$checked.' value='.$row->key.'><label for="'.$row->key.'">'.$row->name.'</label></li>'		;
 		$counter++;					  
 	}
 
