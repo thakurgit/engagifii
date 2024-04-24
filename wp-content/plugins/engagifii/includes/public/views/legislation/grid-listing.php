@@ -72,41 +72,43 @@ $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
 $lbt_visible_column_list = $options['lbt_visib_datacol_list'];
 //print_r($lbt_visible_column_list);
-$trackingResponse = $obj->getTrackingLevels();
-$trackingResponses = json_decode($trackingResponse['api_response']);
-//$countResponse = count($trackingResponses);
-$i = 0;
-
-/* House Committee */
-$houseResponse = $obj->houseCommiittee();
-$houseResponses = json_decode($houseResponse['api_response']);
-
-/* Senate Committee */
-$senateResponse = $obj->senateCommiittee();
-$senateResponses = json_decode($senateResponse['api_response']);
-/* Sponsors */
-$sponsorResponse = $obj->sponsorList();
-$sponsorResponses = json_decode($sponsorResponse['api_response']);
-
-/* Bill Type */
-$billResponse = $obj->billType();
-$billResponses = json_decode($billResponse['api_response']);
-
-/* Last Action */
-$lastResponse = $obj->lastAction();
-$lastResponses = json_decode($lastResponse['api_response']);
-
-/* Status */
-$statusResponse = $obj->statusFilter();
-$statusResponses = json_decode($statusResponse['api_response']);
-
-/* tags list for filters */
-$tags = $obj->legislationTagsFilter();
-
-/*assign to fietrs */
-$assignto = $obj->legislationAssignToFilter();
-$assigntoGroups = $obj->legislationGroupsFilter();
-$assignToTags = $obj->legislationAssignToTagFilter();
+$houseResponses=array();
+$senateResponses=array();
+//$trackingResponse = $obj->getTrackingLevels();
+//$trackingResponses = json_decode($trackingResponse['api_response']);
+////$countResponse = count($trackingResponses);
+//$i = 0;
+//
+///* House Committee */
+//$houseResponse = $obj->houseCommiittee();
+//$houseResponses = json_decode($houseResponse['api_response']);
+//
+///* Senate Committee */
+//$senateResponse = $obj->senateCommiittee();
+//$senateResponses = json_decode($senateResponse['api_response']);
+///* Sponsors */
+//$sponsorResponse = $obj->sponsorList();
+//$sponsorResponses = json_decode($sponsorResponse['api_response']);
+//
+///* Bill Type */
+//$billResponse = $obj->billType();
+//$billResponses = json_decode($billResponse['api_response']);
+//
+///* Last Action */
+//$lastResponse = $obj->lastAction();
+//$lastResponses = json_decode($lastResponse['api_response']);
+//
+///* Status */
+//$statusResponse = $obj->statusFilter();
+//$statusResponses = json_decode($statusResponse['api_response']);
+//
+///* tags list for filters */
+//$tags = $obj->legislationTagsFilter();
+//
+///*assign to fietrs */
+//$assignto = $obj->legislationAssignToFilter();
+//$assigntoGroups = $obj->legislationGroupsFilter();
+//$assignToTags = $obj->legislationAssignToTagFilter();
 
 ?>
 
@@ -158,7 +160,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
                         </div>
                         <div class="list-box">
                            <ul class="searchbyassignto tz-dropdown-filter list-unstyled" >
-                           <?php if(count($lbt_visib_members_list) > 0) {
+      	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+                          <?php /*?> <?php if(count($lbt_visib_members_list) > 0) {
                               foreach ($assignto as $assign){
                                  if (in_array($assign->personId, $lbt_visib_members_list)){
                            ?>
@@ -192,7 +197,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
                                  <?php } } 
 								 } else {
 									echo '<em>No data found!!</em>'; 
-								 }?>
+								 }?><?php */?>
                            </ul>
                         </div>
                      </div>
@@ -209,7 +214,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbybilltypes tz-dropdown-filter list-unstyled" >
-      <?php foreach ($billResponses as $bill)
+      	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+      <?php /*?><?php foreach ($billResponses as $bill)
 { ?>
         <li data-title="<?php echo $bill->text; ?>" data-id="<?php echo $bill->value; ?>">
           <label class="d-none" for="item_id_<?php echo $bill->value; ?>">bill type</label>
@@ -217,7 +225,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php echo $bill->text; ?>
         </li>
         <?php
-} ?>
+} ?><?php */?>
       </ul>
       </div>
     </div>
@@ -233,7 +241,11 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbyhousecommittee tz-dropdown-filter list-unstyled" >
-        <?php foreach ($houseResponses as $house)
+            	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+
+        <?php /*?><?php foreach ($houseResponses as $house)
 { ?>
         <li data-title="<?php echo $house->text; ?>" data-id="<?php echo $house->value; ?>">
           <label class="d-none" for="item_id_<?php echo $house->value; ?>">house committee</label>
@@ -241,7 +253,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php echo $house->text.' '.'('.$house->count.')'; ?>
         </li>
         <?php
-} ?>
+} ?><?php */?>
       </ul>
       </div>
 
@@ -274,7 +286,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
               </div>
     </div>
     </div>
-<?php } ?>
+
 
  
     <!-- Last Action Types -->
@@ -288,7 +300,11 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbylastactiontypes tz-dropdown-filter list-unstyled" >
-      <?php foreach ($lastResponses as $last)
+            	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+
+      <?php /*?><?php foreach ($lastResponses as $last)
 { ?>
         <li data-title="<?php echo $last->text; ?>" data-id="<?php echo $last->value; ?>"  <?php if ($actionType == $last->value)
     { ?> class="liactive" <?php
@@ -301,13 +317,13 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php echo $last->text; ?>
         </li>
         <?php
-} ?>
+} ?><?php */?>
       </ul>
       </div>
 
     </div>
     </div>
-
+<?php } ?>
     <!-- Senate Committee -->
     <?php  if(in_array('senateCommittees', $lbt_visible_column_list)) { ?> 
     <div class="filter-list border-bottom">
@@ -319,7 +335,11 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbysenatecommittee tz-dropdown-filter list-unstyled" >
-      <?php foreach ($senateResponses as $senate)
+            	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+
+     <?php /*?> <?php foreach ($senateResponses as $senate)
 { ?>
         <li data-title="<?php echo $senate->text; ?>" data-id="<?php echo $senate->value; ?>">
           <label class="d-none" for="item_id_<?php echo $senate->value; ?>">Senate Committee</label>
@@ -327,7 +347,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php echo $senate->text.' '.'('.$senate->count.')'; ?>
         </li>
         <?php
-} ?>
+} ?><?php */?>
       </ul>
       </div>
 
@@ -346,13 +366,16 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbysponsors tz-dropdown-filter list-unstyled" >
-      <?php foreach ($sponsorResponses as $sponsors){ ?>
+      	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+      <?php /*?><?php foreach ($sponsorResponses as $sponsors){ ?>
         <li data-title="<?php echo $sponsors->text; ?>" data-id="<?php echo $sponsors->value; ?>">
           <label class="d-none" for="sponsors_item_id_<?php echo $sponsors->value; ?>">Sponsors</label>
         <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $sponsors->value; ?>" id="sponsors_item_id_<?php echo $sponsors->value; ?>" >
         <?php echo $sponsors->text; ?>
         </li>
-        <?php } ?>
+        <?php } ?><?php */?>
       </ul>
       </div>
 
@@ -371,7 +394,11 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbytags tz-dropdown-filter list-unstyled" >
-      <?php foreach ($tags as $tag){
+            	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+
+      <?php /*?><?php foreach ($tags as $tag){
             if (in_array($tag->tagId, $lbt_visib_tags_list)){ ?>
               <li data-title="<?php echo $tag->text; ?>" data-id="<?php echo $tag->tagId; ?>">
               <label class="d-none" for="item_id_<?php echo $tag->tagId; ?>">Tags</label>
@@ -383,7 +410,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
               </li>
               <?php
               }
-            } ?>
+            } ?><?php */?>
       </ul>
       </div>
 
@@ -402,7 +429,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbytrackinglevels tz-dropdown-filter list-unstyled" >
-      <?php 
+      	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+      <?php /*?><?php 
       $is_tracking = 0;
       foreach ($trackingResponses as $tracking){
             if($tracking->count > 0) { 
@@ -416,7 +446,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php
             }
         }
-      ?>
+      ?><?php */?>
       </ul>
       </div>
 
@@ -461,7 +491,10 @@ $assignToTags = $obj->legislationAssignToTagFilter();
       </div>
       <div class="list-box">
       <ul class="searchbystatustypes tz-dropdown-filter list-unstyled" >
-      <?php foreach ($statusResponses as $status)
+      	 <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+      <?php /*?><?php foreach ($statusResponses as $status)
 { ?>
         <li data-title="<?php echo $status->text; ?>" data-id="<?php echo $status->value; ?>">
           <label class="d-none" for="status_item_id_<?php echo $status->value; ?>">Status</label>
@@ -469,7 +502,7 @@ $assignToTags = $obj->legislationAssignToTagFilter();
         <?php echo $status->text; ?>
         </li>
         <?php
-} ?>
+} ?><?php */?>
       </ul>
       </div>
 
@@ -510,7 +543,6 @@ var assignTags = [];
 var startDate=null;
 var endDate=null;
 
-
 function counFilterBlock()
 {
    var updateCount = document.getElementById("blockedchecked");
@@ -534,7 +566,7 @@ function counFilterBlock()
 function getCheckedHouseCommitteValues()
 {
   <?php
-    if(count($houseResponses) > 0){
+   // if(count($houseResponses) > 0){
   ?>
   var elements = window.document.getElementsByClassName("searchbyhousecommittee");  
   houseCommittees=[];
@@ -547,7 +579,7 @@ function getCheckedHouseCommitteValues()
     }  
   }
   <?php
-    }
+   // }
   ?>  
 
 }
@@ -556,7 +588,7 @@ function getCheckedSenateCommitteValues()
 {
 
   <?php
-     if(count($senateResponses)){
+     //if(count($senateResponses)){
   ?>
   var elements = window.document.getElementsByClassName("searchbysenatecommittee");  
   senateCommittees=[];
@@ -569,7 +601,7 @@ function getCheckedSenateCommitteValues()
     }  
   }
   <?php
-    }
+    //}
   ?>
 
 }
@@ -678,7 +710,7 @@ if(checkbox){
 function getCheckedTrackingLevelsValues()
 {
   <?php
-    if($is_tracking){
+    //if($is_tracking){
   ?>
   var elements = window.document.getElementsByClassName("searchbytrackinglevels");  
   trackingLevels=[];
@@ -693,7 +725,7 @@ function getCheckedTrackingLevelsValues()
 	}
   }
 <?php
-  }
+ // }
 ?>
 }
 
@@ -838,9 +870,9 @@ if (window.location.href.indexOf("sessionId") > -1){
         }
 
         $('.lead .bill-count').html('(Total '+response.api_response+' bills)');
-		if(sessionId){
+		/*if(sessionId){
         	$('.total-bill-text').html(sessionId);
-		}
+		}*/
             
          }
     });
@@ -879,7 +911,7 @@ document.getElementById("clear-all").addEventListener("click",function(){
 
 var engSelectedItesm = {};
      $(function() {
-      getCountSelected();
+     /* getCountSelected();
 
 
 var searchbyhousecommittee =  new pluginFilterData();
@@ -907,9 +939,72 @@ var searchbytrackinglevels =  new pluginFilterData();
 searchbytrackinglevels.applySearch({searchelement:"searchbytrackinglevels",itemselectedclass:"liactive" , countView:"countviewbytrackinglevels", clickCallback:getUpdatedValues});
 
 var searchbystatustypes =  new pluginFilterData();
-searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselectedclass:"liactive" , countView:"countviewbystatustypes", clickCallback:getUpdatedValues});  
+searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselectedclass:"liactive" , countView:"countviewbystatustypes", clickCallback:getUpdatedValues});  */
 
       });
+function filterEvents(){
+ getCountSelected();
+
+
+var searchbyhousecommittee =  new pluginFilterData();
+searchbyhousecommittee.applySearch({searchelement:"searchbyhousecommittee",itemselectedclass:"liactive", countView: "countviewhousecommittee", clickCallback:getUpdatedValues});
+
+var searchbysenatecommittee =  new pluginFilterData();
+searchbysenatecommittee.applySearch({searchelement:"searchbysenatecommittee",itemselectedclass:"liactive", countView:"countviewsenatecommittee", clickCallback:getUpdatedValues});
+
+var searchbysponsors =  new pluginFilterData();
+searchbysponsors.applySearch({searchelement:"searchbysponsors",itemselectedclass:"liactive" , countView:"countviewbysponsors", clickCallback:getUpdatedValues});
+
+var searchbytags=  new pluginFilterData();
+searchbytags.applySearch({searchelement:"searchbytags",itemselectedclass:"liactive" , countView:"countviewbytags", clickCallback:getUpdatedValues});
+
+var searchbyassignto = new pluginFilterData();
+searchbyassignto.applySearch({searchelement:"searchbyassignto",itemselectedclass:"liactive" , countView:"countviewbyassign", clickCallback:getUpdatedValues})
+
+var searchbybilltypes =  new pluginFilterData();
+searchbybilltypes.applySearch({searchelement:"searchbybilltypes",itemselectedclass:"liactive" , countView:"countviewbybilltypes", clickCallback:getUpdatedValues});
+
+var searchbylastactiontypes =  new pluginFilterData();
+searchbylastactiontypes.applySearch({searchelement:"searchbylastactiontypes",itemselectedclass:"liactive" , countView:"countviewbylastactiontypes", clickCallback:getUpdatedValues});
+
+var searchbytrackinglevels =  new pluginFilterData();
+searchbytrackinglevels.applySearch({searchelement:"searchbytrackinglevels",itemselectedclass:"liactive" , countView:"countviewbytrackinglevels", clickCallback:getUpdatedValues});
+
+var searchbystatustypes =  new pluginFilterData();
+searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselectedclass:"liactive" , countView:"countviewbystatustypes", clickCallback:getUpdatedValues});  	
+	$(".tz-dropdown-filter").each(function () {
+	//$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
+	if($(this).find('li').length>1){
+		$( '<li class="mb-1" style="list-style-type: none;"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
+	} else{
+		$(this).parents('.filter-list').find('.input-box').hide();
+	}
+});
+$(".tz-selectAll").change(function () {
+	if($(this).is(':checked')){
+		$(this).parent().siblings('ul').find('li').each(function(){
+		  if(!$(this).find('input').is(':checked')){
+			//$(this).trigger('click');
+			$(this).find('input').prop('checked',true);
+			$(this).addClass('liactive deftzselected');
+      $(this).parents('.filter-list').find('.heading-title span').text('('+$(this).parent().children('li').length+')');
+		  }
+		});
+		
+	}else{
+		$(this).parent().siblings('ul').find('li').each(function(){
+		  if($(this).find('input').is(':checked')){
+			//$(this).trigger('click');
+			$(this).find('input').prop('checked',false);
+			$(this).removeClass('liactive deftzselected');
+			$(this).parents('.filter-list').find('.heading-title span').text('');
+		  }
+		});
+	}
+	getUpdatedValues();
+});
+
+}
      // Extra Div for Tracking
 
 
@@ -1093,16 +1188,13 @@ function dateChanged(ev) {
 
     var startDAta= $( "#datepicker-start, #datepicker-start1" ).daterangepicker({opens: 'left',singleDatePicker: true,autoApply: true}, function(start, end) {
       
-      console.log(end.format('MM/DD/YYYY'));
       startDate = start.format('MM/DD/YYYY');
-      console.log(startDate);
       getUpdatedValues();
 
     }); 
   
    var endData= $( "#datepicker-end, #datepicker-end1" ).daterangepicker({opens: 'left',singleDatePicker: true, autoApply: true} , function(start, end) {
       endDate = start.format('MM/DD/YYYY');
-      console.log(endDate);
       getUpdatedValues();
 
     });
@@ -1617,39 +1709,13 @@ if (window.location.href.indexOf("sessionId") > -1){
 }
 
 $(document).ready(function () {
-	$(".tz-dropdown-filter").each(function () {
-	//$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
-	$( '<li class="mb-1" style="list-style-type: none;"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
-});
-$(".tz-selectAll").change(function () {
-	if($(this).is(':checked')){
-		$(this).parent().siblings('ul').find('li').each(function(){
-		  if(!$(this).find('input').is(':checked')){
-			//$(this).trigger('click');
-			$(this).find('input').prop('checked',true);
-			$(this).addClass('liactive deftzselected');
-      $(this).parents('.filter-list').find('.heading-title span').text('('+$(this).parent().children('li').length+')');
-		  }
-		});
-		
-	}else{
-		$(this).parent().siblings('ul').find('li').each(function(){
-		  if($(this).find('input').is(':checked')){
-			//$(this).trigger('click');
-			$(this).find('input').prop('checked',false);
-			$(this).removeClass('liactive deftzselected');
-			$(this).parents('.filter-list').find('.heading-title span').text('');
-		  }
-		});
-	}
-	getUpdatedValues();
-});
 });
 <?php if($billnumber){ ?>
 window.addEventListener("load", function () {
 $('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');	
 });
-<?php } /*?>var colNames = <?php echo json_encode($filterParams); ?>;
+<?php } ?>
+var colNames = <?php echo json_encode($filterParams); ?>;
 window.addEventListener("load", function () {
 	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='';
   <?php if($get_tracking){ 
@@ -1672,15 +1738,32 @@ window.addEventListener("load", function () {
 		   chkdAction:chkdAction,
 		   chkdAssign:chkdAssign
 		},
-		success: function(response) {     
-			for (var key of Object.keys(JSON.parse(response))) {
-			var index = Object.keys(JSON.parse(response)).indexOf(key);
-			$('#filter-'+index+' ul').html(JSON.parse(response)[key]);
-		}
+		success: function(response) {  
+			/*for (var key of Object.keys(JSON.parse(response))) {
+				var index = Object.keys(JSON.parse(response)).indexOf(key);
+				$('#filter-'+index+' ul').html(JSON.parse(response)[key]);
+			}*/
+			$('.searchbybilltypes').html(JSON.parse(response)['billType']);
+			$('.searchbysponsors').html(JSON.parse(response)['sponsors']);
+			$('.searchbytrackinglevels').html(JSON.parse(response)['trackingLevel']);
+			$('.searchbystatustypes').html(JSON.parse(response)['status']);
+			$('.searchbylastactiontypes').html(JSON.parse(response)['lastActionOn']);
+			$('.searchbyhousecommittee').html(JSON.parse(response)['houseCommittees']);
+			$('.searchbysenatecommittee').html(JSON.parse(response)['senateCommittees']);
+			if(JSON.parse(response)['assignedto']){
+			  $('.searchbyassignto').html(JSON.parse(response)['assignedto']);
+			}else{
+			  $('.searchbyassignto').html('<span class="text-center d-block">Data not found</span>');
+			}
+			if(JSON.parse(response)['tags']){
+			  $('.searchbytags').html(JSON.parse(response)['tags']);
+			}else{
+			  $('.searchbytags').html('<span class="text-center d-block">Data not found</span>');
+			}
 		filterEvents();
 			}
 	  });
-});<?php */?>
+});
 
 </script>      
 </div>
