@@ -594,8 +594,8 @@ table.class-table td:nth-child(1) {
 			  					<th>Session Name </th>
 			  					<th>Date/Time</th>
 			  					<th>Type</th>
-			  					<th>price</th>
-			  					<th>speakers</th>
+			  					<th>Price</th>
+			  					<th>Speakers</th>
 			  					<th>Session Status</th>
 			  					
 			  				</tr>
