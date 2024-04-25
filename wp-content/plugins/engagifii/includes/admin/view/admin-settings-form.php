@@ -148,6 +148,7 @@
   function getTenantCode(tenantCode, current) {    		
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
+    tCode =tCode.replace('http://', '');
 	  tCode =tCode.split('.')[0];
 	 tCode =tCode.replace(/([-,.€~!@#$%^&*()+=`{}\[\]\|\\:;'<>])+/g, '');
 	  jQuery(current).siblings('span').html(tCode);
@@ -298,6 +299,10 @@ jQuery(this).siblings('.cls').val('');
 			});
         }
     }
+	/*if(jQuery('.select-env').val()===''){
+		jQuery('.select-env').val('').change();	
+		console.log(jQuery('.authUrl').val());
+	}*/
     jQuery('.select-env').change( function() {
 		 $.ajax({url: "https://denaj.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", success: function(result){
 			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};

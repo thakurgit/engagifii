@@ -3715,7 +3715,7 @@ public function LegislationStaffanalysis(){
 		date_default_timezone_set($timezone);
 		$date = strtotime($analysis->createdDate.' UTC');
 		?>
-		<div class="row mb-3">
+		<div class="row mb-3 pb-3 border-bottom">
 			<div class="col-12 d-flex align-items-center pb-3">
                 	<?php $img = str_replace(' ', '%20', $analysis->createdByImage);
 					 if($img && filter_var($img, FILTER_VALIDATE_URL)) { ?>
@@ -3732,14 +3732,14 @@ public function LegislationStaffanalysis(){
 				<span class="btn btn-sm text-white ml-auto" style="background-color:<?php echo $analysis->billPositionColor; ?>"><?php echo $analysis->billPosition; ?></span>
 			</div>
 
-		<div class="col-sm-12 pb-3">
+		<div class="col-12 pb-3">
 				<div class="bill-detail-summary-content no-border">
 				   <p><?php echo $analysis->text;?></p>
 				</div>
 		</div>
 					<?php if(count($analysis->links) || count($analysis->files)){
 						if(count($analysis->files)){ ?>
-                          <div class="col-12 pb-3 border-top pt-3">
+                          <div class="col-12 py-2 border-top ">
                             <h6 class="mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</h6>
                           </div>
 					  <?php foreach ($analysis->files as  $file) {
