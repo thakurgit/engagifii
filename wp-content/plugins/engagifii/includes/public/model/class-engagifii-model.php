@@ -3697,7 +3697,8 @@ public function eventFilters(){
         
     }
 public function LegislationStaffanalysis(){
-		$html ='';
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
 	  $postData = array();
 	  $billid =  $_POST['billId'];
 	  $apiUrl = 'legislative/public-bills/'.$billid.'/analysis/';
@@ -3714,7 +3715,7 @@ public function LegislationStaffanalysis(){
 		date_default_timezone_set($timezone);
 		$date = strtotime($analysis->createdDate.' UTC');
 		?>
-		<div class="row  border-bottom mb-3">
+		<div class="row mb-3">
 			<div class="col-12 d-flex align-items-center pb-3">
                 	<?php $img = str_replace(' ', '%20', $analysis->createdByImage);
 					 if($img && filter_var($img, FILTER_VALIDATE_URL)) { ?>
@@ -3736,28 +3737,20 @@ public function LegislationStaffanalysis(){
 				   <p><?php echo $analysis->text;?></p>
 				</div>
 		</div>
-					<?php
-
-					if(count($analysis->links) || count($analysis->files)){
-
-					if(count($analysis->files))
-					{
-					  ?>
-
-					  <div class="col-sm-12 panel-title py-2">
-						<p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
-					  </div>
-					  
-					  <?php
-					  foreach ($analysis->files as  $file) {
+					<?php if(count($analysis->links) || count($analysis->files)){
+						if(count($analysis->files)){ ?>
+                          <div class="col-12 pb-3">
+                            <h6 class="mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</h6>
+                          </div>
+					  <?php foreach ($analysis->files as  $file) {
 						$file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
-						echo '<div class="col-4 pt-2"><i class="fa fa-file-pdf-o"></i> <a href="'.$file_url.'" target="_blank"> '. $file->displayName.'</a></div>';
+						echo '<div class="col-4 pt-2"><a href="'.$file_url.'" target="_blank"><i style="font-size: 19px;" class="far fa-file-pdf mr-2"></i> '. $file->displayName.'</a></div>';
 					  }
 					  
 					}
 					if(count($analysis->links)){
 						foreach ($analysis->links as  $attachment) {
-						  echo '<div class="col-4 pt-2"><i class="fa fa-link"></i><a href="'.$attachment->url.'" target="_blank">'.$attachment->title.'</a></div>';
+						  echo '<div class="col-4 pt-2"><a href="'.$attachment->url.'" target="_blank"><i style="font-size: 19px;" class="fa fa-link mr-2"></i>'.$attachment->title.'</a></div>';
 						}
 					  }
 					}
