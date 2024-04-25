@@ -3739,18 +3739,18 @@ public function LegislationStaffanalysis(){
 		</div>
 					<?php if(count($analysis->links) || count($analysis->files)){
 						if(count($analysis->files)){ ?>
-                          <div class="col-12 pb-3">
+                          <div class="col-12 pb-3 border-top pt-3">
                             <h6 class="mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</h6>
                           </div>
 					  <?php foreach ($analysis->files as  $file) {
 						$file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
-						echo '<div class="col-4 pt-2"><a href="'.$file_url.'" target="_blank"><i style="font-size: 19px;" class="far fa-file-pdf mr-2"></i> '. $file->displayName.'</a></div>';
+						echo '<div class="col-4 pb-2"><a href="'.$file_url.'" target="_blank"><i style="font-size: 19px;" class="far fa-file-pdf mr-2"></i> '. $file->displayName.'</a></div>';
 					  }
 					  
 					}
 					if(count($analysis->links)){
 						foreach ($analysis->links as  $attachment) {
-						  echo '<div class="col-4 pt-2"><a href="'.$attachment->url.'" target="_blank"><i style="font-size: 19px;" class="fa fa-link mr-2"></i>'.$attachment->title.'</a></div>';
+						  echo '<div class="col-4 pb-2"><a href="'.$attachment->url.'" target="_blank"><i style="font-size: 19px;" class="fa fa-link mr-2"></i>'.$attachment->title.'</a></div>';
 						}
 					  }
 					}
