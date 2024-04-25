@@ -66,7 +66,6 @@ foreach($seqColumns as $key=>$cols){
 	}
 	$lbt_visible_column_list[] =$cols['key']; 
 }
-$seqColumns = array_values($seqColumns);
 //$obj = new Engagifii_API();
 //$dataResponse = $obj->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
 //$collection = json_decode($dataResponse['api_response']);
@@ -74,6 +73,7 @@ if(!$seqColumns){
 	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
+$seqColumns = array_values($seqColumns);
 $filterParams=array_diff($lbt_visible_column_list, ["billNumber", "title","state","fileId"]);
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();

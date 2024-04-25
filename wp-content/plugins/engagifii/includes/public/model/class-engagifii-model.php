@@ -19,6 +19,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['endorsement', 'endorsementLoadGridData'],
         ['legislation', 'legislationLoadGridData'],
         ['legilslationFilters', 'legilslationFilters'],
+        ['LegislationStaffanalysis', 'LegislationStaffanalysis'],
         ['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
@@ -3695,7 +3696,15 @@ public function eventFilters(){
             wp_die();
         
     }
-
+public function LegislationStaffanalysis(){
+	  $postData = array();
+	  $billid =  $_POST('billId');
+	  $apiUrl = 'legislative/public-bills/'.int($billid).'/analysis/';
+	  $response = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  print_r($response);die;
+        echo json_encode($response);
+        wp_die();
+}
 //Public official Datatable
 public function publicOfficialTabs(){
 		$postData='{}';

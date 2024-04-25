@@ -126,7 +126,7 @@ Final Class Engagifii {
 	public function engagifii_load_js_script(){
 		if(!is_admin()){	
 			$options = get_option( 'ebt_api_settings' );
-			if($options['include_bootstrap']){
+			if(isset($options['include_bootstrap'])){
 				wp_deregister_script('jquery');	
 				wp_register_script('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js', false, '3.6.0', true);
 				wp_enqueue_script( 'bootstrap-egf', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js', array('jquery'), $this->version, false );
@@ -170,7 +170,7 @@ wp_enqueue_script(
 		
 		if(!is_admin()){
 			$options = get_option( 'ebt_api_settings' );
-			if($options['include_bootstrap']){
+			if(isset($options['include_bootstrap'])){
 			 wp_enqueue_style( 'bootstrap-egf', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css', array(  ), wp_get_theme()->get('Version')    );
 			}
 			 wp_enqueue_style( 'mcustomsrollbar', 'https://cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css', array(  ), wp_get_theme()->get('Version')    );

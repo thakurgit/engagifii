@@ -12,9 +12,14 @@ if(isset($_REQUEST['billId'])){
 
  if(!empty($billId)){
   $api =  new Engagifii_API();
-
-
+ }else{
+	echo '<h3 class="text-center">Bill number not found!</h3>';
+	return; 
+ }
 	$options = get_option('ebt_api_settings');
+  $tenant_code = $options['lbt_tenant_code']['tenant_code'];
+  $tenant_url = $options['lbt_tenant_code']['engagifii_url'];
+  $title_settings = $options['lbt_title_display_setting'];
 	$front_pages = $options['front_pages'];
     $bills_page = $front_pages['bills_page'];
     $bills_detail_page = $front_pages['bills_detail_page'];
@@ -29,11 +34,11 @@ if(isset($_REQUEST['billId'])){
 		$bills_detail_page_link= site_url() .'/engagifii-detail/';	
 	}
   $lbt_api_url = $options['lbt_api_url'];
-  $lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
-  if($lbt_vsbl_tag_list==null){
+  if($options['lbt_visib_tags_list']){
+	$lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
+  }else{
   	$lbt_vsbl_tag_list = array();
   }
-  $options = get_option('ebt_api_settings');
 $seqColumns = $options['lbt_visib_datacol_list'];
 $lbt_visible_column_list = array();
 foreach($seqColumns as $key=>$cols){
@@ -43,40 +48,31 @@ foreach($seqColumns as $key=>$cols){
 	}
 	$lbt_visible_column_list[] =$cols['key']; 
 }
-  $tenant_code          = $options['lbt_tenant_code']['tenant_code'];
-  //print_r($tenant_code);
-
-  //print_r($lbt_visible_column_list);
-
-  $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];
-  $title_settings      = $options['lbt_title_display_setting'];
-
-//print_r($tenant_url);
   /* Bill Detail*/
   $billResponse = $api->getBillDetails($billId);
   $billResponses = json_decode($billResponse['api_response']);
   if($billResponses->id == 0){
-    echo "<div class='engagifii-box border border-bottom-0'><div class='col-sm-12 d-lg-flex  p-2'>"._WORKSPACE_." isn't tracking this bill</div></div>";
-    echo "</div></div></div>";
- 
-  }
-  else{
+    echo "<h3 class='text-center p-2'>"._WORKSPACE_." isn't tracking this Bill number!</h3>";
+ 	return;
+  } 
 
   
   $bill_array = json_decode($_COOKIE['filterids'], true);
-  $bill_key = array_search ($_GET['billId'], $bill_array);
-  $bill_count = count($bill_array)-1;
-  if($bill_key == 0){
-      $prev = 0;
-      $next = $bill_array[$bill_key+1];
-  }
-  if($bill_key == $bill_count){
-     $next = 0;
-     $prev = $bill_array[$bill_key-1];
-  }
-  if($bill_key!= $bill_count){
-    $prev = $bill_array[$bill_key-1];
-    $next = $bill_array[$bill_key+1];
+  if($bill_array){
+  	$bill_key = array_search ($_GET['billId'], $bill_array);
+	$bill_count = count($bill_array)-1;
+	if($bill_key == 0){
+		$prev = 0;
+		$next = $bill_array[$bill_key+1];
+	}
+	if($bill_key == $bill_count){
+	   $next = 0;
+	   $prev = $bill_array[$bill_key-1];
+	}
+	if($bill_key!= $bill_count){
+	  $prev = $bill_array[$bill_key-1];
+	  $next = $bill_array[$bill_key+1];
+	}
   }
 
 
@@ -94,7 +90,7 @@ foreach($seqColumns as $key=>$cols){
   $intro_new_date = date('M d, Y',$last_intro); 
 
   /* get tabs with sequence */
-  $tabSequence = $api->legislationBillTabSequence();
+  //$tabSequence = $api->legislationBillTabSequence();
 
 
   /* Version */
@@ -113,8 +109,8 @@ foreach($seqColumns as $key=>$cols){
 
   
   /* Staff Analysis */
-  $analysisResponse = $api->staffAnalysis($billId);
-  $analysisResponses= json_decode($analysisResponse['api_response']); 
+  /*$analysisResponse = $api->staffAnalysis($billId);
+  $analysisResponses= json_decode($analysisResponse['api_response']); */
 
 /*Public Analysis */
 $publicanalysisResponse = $api->publicAnalysis($billId);
@@ -200,7 +196,7 @@ $siteURL= site_url();
           <?php
               }
             }
-            if ($siteURL == "https://engagifiiweb.com/capitolreports-nc"){ 
+            if ($tenant_code=='capitolreports-nc'){ 
               ?>
         <?php  if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
           <div class="pt-1 text-size-medium">
@@ -247,9 +243,7 @@ $siteURL= site_url();
                   if (in_array($tagMatch, $lbt_vsbl_tag_list)){
                     $countTag = $countTag+1;
                      echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.$bills_page_link.'?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
-						
                   }
-                
                     }
 					echo '<span class="order-1 mx-1">'.$countTag.'</span>';
 					 ?>
@@ -315,16 +309,15 @@ $siteURL= site_url();
               ?>
             </div>
             <div class="">
-              <span class="btn btn-sm btn-danger tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
+              <span class="btn btn-sm text-white tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
             </div>
             <?php  if(in_array('fileId', $lbt_visible_column_list)) { ?>
             <div class="d-flex align-items-center justify-content-lg-end py-3">
               
-              <a class="text-underline pl-3  download-detail order-2 " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>">Download Full Text</a>
-              <img class="inline-block  " src="<?php echo ENGAGIFII_ASSETS_URL.'/images/pdf.png';?>" alt="pdf">
+              <a class="text-underline pl-3  download-detail " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>"><i class="fas fa-file-pdf mr-2 d-inline-block vertical-middle" style="font-size:28px"></i>Download Full Text</a>
             </div>
  <?php }
-              if ($siteURL == "https://engagifiiweb.com/maco"){ 
+              if ($tenant_code=='maco'){ 
                 $siteLink = $quicklinkResponses[0]->url;
                 
                 ?>
@@ -344,7 +337,7 @@ $siteURL= site_url();
                 <div class="engagifii-box border p-2 p-lg-4 bg-light">             
                   <div class="border bg-white class-detail-main-nav">
                     <ul class="nav nav-pills mb-0 border-bottom engagifii-tabs" id="pills-tab" role="tablist">
-                            <!-- <?php
+                            <?php /*?><?php
 							if($tabSequence){
                             array_multisort(array_column($tabSequence, 'sequence'), SORT_ASC, $tabSequence);
 							}
@@ -359,9 +352,33 @@ $siteURL= site_url();
                                 }
                               }
                             }
-                            ?> -->
-                            <?php 
-                            //$site = site_url();
+                            ?><?php */?>
+                            <?php $tenantAnalysis  ='Staff';
+							if($tenant_code == 'accg') {
+								$tenantAnalysis  ='ACCG';
+							} if($tenant_code == 'baltimorecountymd'){ 
+							  $tenantAnalysis  ='Baltimore City';
+							} if($tenant_code == 'princegeorgescountymd'){
+							   $tenantAnalysis  ='Prince Georges County';
+							} if($tenant_code == 'howardcountymd'){
+								$tenantAnalysis  ='Howard County';
+							} if($tenant_code == 'mcmd'){
+								$tenantAnalysis  ='Montgomery County';
+							}?>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                              <?php  if ($tenant_code != 'aasb') {?>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Analysis</a></li>
+                              <?php } ?>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                            <?php if($tenant_code == 'baltimorecountymd' || $tenant_code == 'princegeorgescountymd' || $tenant_code == 'howardcountymd' || $tenant_code == 'mcmd'){ ?>
+                            	 <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
+                            <?php } ?>
+                              
+                              
+                           <?php /*?> <?php 
                             if($tenant_code == 'accg') {?>
                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
@@ -428,11 +445,10 @@ $siteURL= site_url();
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" >History</a></li>
                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" >Quick Links</a></li>
-                            <!--li class="nav-item"><a class="nav-link lbt-link" data-toggle="tab" href="javascript:void(0)" id="macoanalysis">MACo Analysis</a></li-->
 
                             <?php
                               }
-                            ?>
+                            ?><?php */?>
                            
                         </ul>
                         <div class="p-3">
@@ -905,11 +921,30 @@ $siteURL= site_url();
           $(document).ready(function() {
             var tenant = '<?php echo $tenant_code; ?>';
             if (tenant == 'accg') {
-             $('#staffanalysis').addClass('active show');
+				 $('a[href="#staffanalysis"]').tab('show');
               } else {
-                  $('#summary').addClass('active show');
+				 $('a[href="#summary"]').tab('show');
               }
           });
+		  $('a[data-toggle="pill"]').on('shown.bs.tab', function (event) {
+			  if($(this).attr('href')=='#staffanalysis'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationStaffanalysis',
+						billId:'<?php echo $billId;?>',
+					  },
+					  success: function(response) {       
+						//var obj = JSON.parse(response);
+						}
+					});
+  
+			  }
+			event.target; // newly activated tab
+			event.relatedTarget; // previous active tab
+		  });
+
 
           $(document).ready(function() {
             <?php
@@ -1022,4 +1057,3 @@ $siteURL= site_url();
           } );
         </script>
 
-<?php }}?>        
