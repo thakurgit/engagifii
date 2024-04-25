@@ -3697,12 +3697,75 @@ public function eventFilters(){
         
     }
 public function LegislationStaffanalysis(){
+		$html ='';
 	  $postData = array();
-	  $billid =  $_POST('billId');
-	  $apiUrl = 'legislative/public-bills/'.int($billid).'/analysis/';
-	  $response = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
-	  print_r($response);die;
-        echo json_encode($response);
+	  $billid =  $_POST['billId'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/analysis/';
+	  $analysisResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $analysisResponses= json_decode($analysisResponse['api_response']);
+	   if(!empty($analysisResponses)){
+		  $analysis = $analysisResponses[0];
+		foreach($analysisResponses as $analysis){
+		  $new_Date = date('m/d/Y',strtotime($analysis->createdDate));
+		$ip =$_SERVER['REMOTE_ADDR'];  
+		$ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+		$ipInfo = json_decode($ipInfo);
+		$timezone = $ipInfo->timezone;
+		date_default_timezone_set($timezone);
+		$date = strtotime($analysis->createdDate.' UTC');
+		?>
+		<div class="row  border-bottom mb-3">
+			<div class="col-12 d-flex align-items-center pb-3">
+                	<?php $img = str_replace(' ', '%20', $analysis->createdByImage);
+					 if($img && filter_var($img, FILTER_VALIDATE_URL)) { ?>
+                    <span class="overflow-hidden rounded-circle mr-3 " style="flex :0 0 60px; height:60px; max-width:60px">
+						<img class="img-fluid" src="<?php echo $analysis->createdByImage;?>" alt="instructor">
+                     </span>
+                    <?php } else { ?>
+                    	<span class="mr-3 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:35px; background:#d0d0d0"><i class="fa fa-user"></i></span>
+                    <?php } ?>
+                    <div>
+				<h5><?php echo $analysis->createdBy;?></h5>
+				<span class="text-muted"><?php echo date('m/d/Y', $date); ?> at <?php echo date('h:i A', $date); ?></span>
+                </div>
+				<span class="btn btn-sm text-white ml-auto" style="background-color:<?php echo $analysis->billPositionColor; ?>"><?php echo $analysis->billPosition; ?></span>
+			</div>
+
+		<div class="col-sm-12 pb-3">
+				<div class="bill-detail-summary-content no-border">
+				   <p><?php echo $analysis->text;?></p>
+				</div>
+		</div>
+					<?php
+
+					if(count($analysis->links) || count($analysis->files)){
+
+					if(count($analysis->files))
+					{
+					  ?>
+
+					  <div class="col-sm-12 panel-title py-2">
+						<p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
+					  </div>
+					  
+					  <?php
+					  foreach ($analysis->files as  $file) {
+						$file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
+						echo '<div class="col-4 pt-2"><i class="fa fa-file-pdf-o"></i> <a href="'.$file_url.'" target="_blank"> '. $file->displayName.'</a></div>';
+					  }
+					  
+					}
+					if(count($analysis->links)){
+						foreach ($analysis->links as  $attachment) {
+						  echo '<div class="col-4 pt-2"><i class="fa fa-link"></i><a href="'.$attachment->url.'" target="_blank">'.$attachment->title.'</a></div>';
+						}
+					  }
+					}
+				   ?>
+	  </div>
+	  <?php } } else {?>  
+		  <div class="p-2"> Data not available</div>
+	  <?php }
         wp_die();
 }
 //Public official Datatable

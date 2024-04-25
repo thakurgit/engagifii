@@ -556,12 +556,22 @@ $siteURL= site_url();
                           
                           </div>
                           <div class="tab-pane fade " id="staffanalysis">
-                          
-
                           <div class="bill-detail-summary-tab staff-analysis-editor">
-                              <div class="col-sm-12">
-
-                                  <?php 
+                          	<div class="row">
+                            	<div class="col-12">
+                            	<span style="flex:0 0 60px; max-width:60px; height:60px" class="mr-3 content-loader rounded-circle"></span>
+                                <span class="content-loader mt-2" style="width:200px"></span>
+                                </div>
+                                <div class="col-12 pt-4">
+                                  <span class="content-loader mb-2 d-block" style="width:200px"></span>
+                                  <span class="content-loader mb-2 d-block" style="width:670px"></span>
+                                  <span class="content-loader mb-2 d-block" style="width:490px"></span>
+                                </div>
+                            </div>
+									<!--<div class="loaders text-center py-3">
+            <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+          </div>-->
+                                  <?php /*?><?php 
 
                                   if(!empty($analysisResponses)){
                                     $analysis = $analysisResponses[0];
@@ -648,9 +658,8 @@ $siteURL= site_url();
                                 </div>
                                 <?php }} else {?>  
                                     <div class="bill-detail-summary-content no-border"> None</div>
-                                <?php }?>   
+                                <?php }?>  <?php */?> 
 
-                              </div>
                           </div>
                             </div>
                            
@@ -933,11 +942,11 @@ $siteURL= site_url();
 					  url: engagifiiUrl_ajaxurl,
 					  data:{
 						action:'LegislationStaffanalysis',
-						billId:'<?php echo $billId;?>',
+						billId:<?php echo $billId;?>,
 					  },
-					  success: function(response) {       
-						//var obj = JSON.parse(response);
-						}
+					  success: function(response) {  
+					  	$('#staffanalysis>div').html(response);     
+					}
 					});
   
 			  }
