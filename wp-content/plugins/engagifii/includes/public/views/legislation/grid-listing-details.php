@@ -94,18 +94,18 @@ foreach($seqColumns as $key=>$cols){
 
 
   /* Version */
-  $versionResponse = $api->getVersion($billId);
-  $versionResponses = json_decode($versionResponse['api_response']);
+  /*$versionResponse = $api->getVersion($billId);
+  $versionResponses = json_decode($versionResponse['api_response']);*/
 
 
   /* Action History */
-  $historyResponse = $api->getActionHistory($billId);
-  $historyResponses = json_decode($historyResponse['api_response']);
+  /*$historyResponse = $api->getActionHistory($billId);
+  $historyResponses = json_decode($historyResponse['api_response']);*/
 
 
   /* Quick Links */
-  $quicklinkResponse   = $api->getQuickLinks($billId);
-  $quicklinkResponses = json_decode($quicklinkResponse['api_response']);
+  /*$quicklinkResponse   = $api->getQuickLinks($billId);
+  $quicklinkResponses = json_decode($quicklinkResponse['api_response']);*/
 
   
   /* Staff Analysis */
@@ -113,13 +113,13 @@ foreach($seqColumns as $key=>$cols){
   $analysisResponses= json_decode($analysisResponse['api_response']); */
 
 /*Public Analysis */
-$publicanalysisResponse = $api->publicAnalysis($billId);
-$publicanalysisResponses= json_decode($publicanalysisResponse['api_response']);
+/*$publicanalysisResponse = $api->publicAnalysis($billId);
+$publicanalysisResponses= json_decode($publicanalysisResponse['api_response']);*/
 
 
   /* Rollcall Votes */
-  $voteResponse = $api->votesrollCall($billId);
-  $voteResponses= json_decode($voteResponse['api_response']);
+  /*$voteResponse = $api->votesrollCall($billId);
+  $voteResponses= json_decode($voteResponse['api_response']);*/
 
 function sort_associative_array($a, $b) {
     return strcmp(ucfirst(trim($a->text)), ucfirst(trim($b->text)));
@@ -455,6 +455,7 @@ $siteURL= site_url();
                         <div class="tab-content" id="pills-tabContent">
                           <div class="tab-pane fade "  role="tabpanel" id="summary">
                               <div class="row">
+                              	
                                   <div class="col-md-4 order-2">
                                   <div class="border rounded shadow-sm h-100">
                                   <?php  if(in_array('houseCommittees', $lbt_visible_column_list)) { ?>
@@ -665,7 +666,7 @@ $siteURL= site_url();
                            
                             <div class="tab-pane fade " id="versions">
                                     <table class="table table-bordered border-0 table-striped" id="">
-                                        <thead>
+                                        <thead class="bg-primary text-white">
                                             <tr>
                                                 <th>Version</th>
                                                 <th>Date</th>
@@ -674,8 +675,26 @@ $siteURL= site_url();
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
 
-                                            <?php 
+                                            <?php /*?><?php 
                                                 if(!empty($versionResponses)){
                                                 foreach ($versionResponses as $version => $allVersions) { 
                                                   if($allVersions->billDraftDateTime != ""){
@@ -701,30 +720,52 @@ $siteURL= site_url();
                                                 
                                                
                                               </tr>
-                                              <?php }} ?> 
+                                              <?php }} ?> <?php */?>
                                         </tbody>
                                     </table>
                                 </div>
                             <div class="tab-pane fade" id="votes">
                                     <table class="table table-bordered border-0  table-striped" id="">
-                                        <thead>
+                                        <thead class="bg-primary text-white">
                                             <tr>
-                                                <th class="alpha-teal">Chamber</th>
-                                                <th class="alpha-teal">Vote</th>
-                                                <th class="alpha-teal">Date</th>
-                                                <th class="text-center alpha-teal">Yea</th>
-                                                <th class="text-center alpha-teal">Nay</th>
-                                                <th class="text-center alpha-teal">NV</th>
-                                                <th class="text-center alpha-teal">Abs</th>
-                                                <th class="text-center alpha-teal">Total</th>
-                                                <th class="text-center alpha-teal">Result</th>
-                                                <th class="text-center alpha-teal">Source</th>
+                                                <th class="">Chamber</th>
+                                                <th class="">Vote</th>
+                                                <th class="">Date</th>
+                                                <th class="text-center ">Yea</th>
+                                                <th class="text-center ">Nay</th>
+                                                <th class="text-center ">NV</th>
+                                                <th class="text-center ">Abs</th>
+                                                <th class="text-center ">Total</th>
+                                                <th class="text-center ">Result</th>
+                                                <th class="text-center ">Source</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          
-
-                                          <?php 
+                                         <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                         <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                          <?php /*?><?php 
                                           if(!empty($voteResponses)){
                                           foreach($voteResponses as $vote){ 
                                             $defaulget_Date = $vote->dateOfRollCall;
@@ -744,25 +785,42 @@ $siteURL= site_url();
                                                 <td> <a href="<?php echo $vote->sourceUrl;?>" target="_blank"><?php echo $vote->sourceUrl;?></a></td>
                                             </tr>
 
-                                          <?php }} ?>
-                                            
-
-
+                                          <?php }} ?><?php */?>
                                         </tbody>
                                     </table>
                                 </div>
                             <div class="tab-pane fade" id="history">
                                     <table class="table table-bordered border-0 table-striped" id="">
-                                        <thead>
+                                        <thead class="bg-primary text-white">
                                             <tr>
-                                                <th class="alpha-teal" width="150">Date</th>
-                                                <th class="alpha-teal" width="45%">Chamber</th>
-                                                <th class="alpha-teal">Action</th>
+                                                <th class="" width="150">Date</th>
+                                                <th class="" width="45%">Chamber</th>
+                                                <th class="">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
 
-                                          <?php
+                                         <?php /*?> <?php
                                            if(!empty($historyResponses)){
                                            foreach ($historyResponses as $history => $histories) {
                                              $defaulget_Date = $histories->actionDate;
@@ -774,7 +832,7 @@ $siteURL= site_url();
                                                 <td> <?php echo $histories->billChamberType;?> </td>
                                                 <td> <?php echo $histories->actionText;?> </td>
                                             </tr>
-                                          <?php }} ?> 
+                                          <?php }} ?> <?php */?>
                                             
                                           </tbody>
                                         </table>
@@ -783,15 +841,26 @@ $siteURL= site_url();
                             <div class="tab-pane fade" id="quick">
                                         
                                         <table class="table table-bordered border-0 table-striped" id="">
-                                            <thead>
+                                            <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th>Type</th>
                                                     <th>Source</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                               
-                                                  <?php 
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        	<td><span class="content-loader " style="width:200px"></span></td>
+                                        </tr>
+                                                 <?php /*?> <?php 
                                                   if(!empty($quicklinkResponses)){
                                                   foreach($quicklinkResponses as $links){?>
                                                     <tr>
@@ -800,121 +869,29 @@ $siteURL= site_url();
                                                         <a target="_blank" href="<?php echo $links->url;?>"><?php echo $links->url;?>  </a>
                                                       </td>
                                                     </tr>
-                                                <?php }} ?>
+                                                <?php }} ?><?php */?>
 
                                             </tbody>
                                         </table>
                             </div>
-<!-- public analysis -->
-<div class="collapse macoPanel" id="macoanalysis">
-                          
-
+                          <!-- public analysis -->
+                          <div class="tab-pane fade" id="macoanalysis">
                           <div class="bill-detail-summary-tab staff-analysis-editor2">
-                              <div class="col-sm-12">
-
-                                 <?php if(!empty($publicanalysisResponses)){
-                                  $trackingColor = $publicanalysisResponses->publicTrackingLevelColor;
-                                  $trackingLevel = $publicanalysisResponses->publicTrackingLevelText;
-                                  if($trackingColor!='' && $trackingLevel!=''){
-                                  ?>
-                                   <div class="col-sm-8 mb-10"><span  style="font-weight: bold;">MACo Tracking Level: </span>
-                                   <span class="p-1 m-1" style="background-color:<?php echo $trackingColor; ?>"></span>
-                                   <span><?php echo $trackingLevel; ?></span>
-                                  </div>
-                                  </div>
-                                  
-                               <?php } }
-
-                                  if(!empty($publicanalysisResponses->clientBillAnalysis)){
-                                  $analysis = $publicanalysisResponses->clientBillAnalysis[0];
-                                  //foreach($analysisResponses as $analysis){
-
-                                    $new_Date = date('m/d/Y',strtotime($analysis->createdDate));
-
-                                     if($analysis->createdByImage)
-                                  {
-                                      if (filter_var($analysis->createdByImage, FILTER_VALIDATE_URL)) { 
-                                          $instructor_img = $analysis->createdByImage;
-                                      }
-                                      else
-                                      {
-                                          $instructor_img = $tenant_url.$analysis->createdByImage;
-                                      }
-                                      
-                                  }
-                                  else
-                                  {
-                                      $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
-
-                                  }
-                       
-                                  $ip =$_SERVER['REMOTE_ADDR'];  
-                                  $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
-                                  $ipInfo = json_decode($ipInfo);
-                                  $timezone = $ipInfo->timezone;
-                                  date_default_timezone_set($timezone);
-                                  $date = strtotime($analysis->createdDate.' UTC');
-                                  //echo $date->format('Y-m-d h:i:s A'); 
-
-                                  ?>
-                              <div class="col-sm-12">
-                                  <div class="row">
-                                      <div class="col-sm-10">
-                                          <a href="javascript:void(0)">
-                                              <img class="img-circle img-xs mx-1 inline-block" src="<?php echo $instructor_img;?>" alt="instructor">
-                                              <span class="text mx-1"><?php echo $analysis->createdBy;?></span>
-                                          </a>
-                                          <div class="text-muted mx-5 pt-2 pb-2"><?php echo date('m/d/Y', $date); ?> at <?php echo date('h:i A', $date); ?></div>
-                                          
-                                      </div>
-                                      <div class="col-sm-2">
-                                          <div class="p-2 m-2 text-white text-center" style="background-color:<?php echo $analysis->billPositionColor; ?>"><?php echo $analysis->billPosition; ?></div>
-                                      </div>
-                          
-                                  <div class="col-sm-12">
-                                      <div class="lead" >
-                                          <div class="bill-detail-summary-content no-border mx-5" style="height: 100%;">
-                                             <p class="no-margin"><?php echo $analysis->text;?></p>
-                                             
-                                          </div>
-                                      </div>
-                                  </div>
-
-                                              <?php
-
-                                              if(count($analysis->links) || count($analysis->files)){
-
-                                              if(count($analysis->files))
-                                              {
-                                                ?>
-
-                                                <div class="col-sm-12 panel-title p-2 border-bottom mt-2">
-                                                  <p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
-                                                </div>
-                                                
-                                                <?php
-                                                foreach ($analysis->files as  $file) {
-                                                  $file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
-                                                  echo '<div class="col-4 pt-2"><i class="fa fa-file-pdf-o"></i> <a href="'.$file_url.'" target="_blank"> '. $file->displayName.'</a></div>';
-                                                }
-                                                
-                                              }
-                                              if(count($analysis->links)){
-                                                  foreach ($analysis->links as  $attachment) {
-                                                    echo '<div class="col-4 pt-2"><i class="fa fa-link"></i><a href="'.$attachment->url.'" target="_blank">'.$attachment->title.'</a></div>';
-                                                  }
-                                                }
-                                              }
-                                             ?>
+                          	<div class="row">
+                            	<div class="col-12">
+                            	<span style="flex:0 0 60px; max-width:60px; height:60px" class="mr-3 content-loader rounded-circle"></span>
+                                <span class="content-loader mt-2" style="width:200px"></span>
                                 </div>
-                                <?php } else {?>  
-                                    <!-- <div class="bill-detail-summary-content no-border"> MACo has not provided an analysis yet.</div> -->
-                                <?php }?>   
-
-                              </div>
+                                <div class="col-12 pt-4">
+                                  <span class="content-loader mb-2 d-block" style="width:200px"></span>
+                                  <span class="content-loader mb-2 d-block" style="width:670px"></span>
+                                  <span class="content-loader mb-2 d-block" style="width:490px"></span>
+                                </div>
+                            </div>
+                                
                           </div>
                             </div>
-<!-- -->
+
                         </div>
                         </div>
                 </div>
@@ -949,14 +926,79 @@ $siteURL= site_url();
 					}
 					});
   
+			  }  if($(this).attr('href')=='#versions'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationVersions',
+						billId:<?php echo $billId;?>,
+						fileid:<?php echo $billResponses->fileId;?>
+					  },
+					  success: function(response) {  
+					  	$('#versions table tbody').html(response);     
+					}
+					});
+  
+			  } if($(this).attr('href')=='#votes'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationVotes',
+						billId:<?php echo $billId;?>,
+					  },
+					  success: function(response) {  
+					  	$('#votes table tbody').html(response);     
+					}
+					});
+  
+			  } if($(this).attr('href')=='#history'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationHistory',
+						billId:<?php echo $billId;?>,
+					  },
+					  success: function(response) {  
+					  	$('#history table tbody').html(response);     
+					}
+					});
+  
+			  } if($(this).attr('href')=='#quick'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationQuick',
+						billId:<?php echo $billId;?>,
+					  },
+					  success: function(response) {  
+					  	$('#quick table tbody').html(response);     
+					}
+					});
+  
+			  } if($(this).attr('href')=='#macoanalysis'){
+				  $.ajax({
+					  type : "post",
+					  url: engagifiiUrl_ajaxurl,
+					  data:{
+						action:'LegislationMaco',
+						billId:<?php echo $billId;?>,
+					  },
+					  success: function(response) {  
+					  	$('#macoanalysis > div').html(response);     
+					}
+					});
 			  }
-			event.target; // newly activated tab
-			event.relatedTarget; // previous active tab
+			//event.target; // newly activated tab
+			//event.relatedTarget; // previous active tab
 		  });
 
 
           $(document).ready(function() {
-            <?php
+           <?php /*?> <?php
             if(!isset($_COOKIE['filterids'])){
               //alert("hello here");
 
@@ -993,9 +1035,9 @@ $siteURL= site_url();
               });
             <?php
               }
-            ?>
+            ?><?php */?>
 
-              $('#versiontable').DataTable({
+            /*  $('#versiontable').DataTable({
                 "pageLength": 10,
                 "dom": '<"row"<"col-sm-12 pull-left"f">>ti<"row"<"col-sm-5 pt-2"l><"col-sm-7 text-right"p>>',
                 "bInfo":false,
@@ -1061,7 +1103,7 @@ $siteURL= site_url();
                     searchPlaceholder: "Search here"
                   
                 },
-                "ordering":true,});
+                "ordering":true,});*/
 
           } );
         </script>

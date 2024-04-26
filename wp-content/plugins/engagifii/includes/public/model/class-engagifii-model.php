@@ -20,7 +20,12 @@ class abstractModelEngagifii extends Engagifii_API
         ['legislation', 'legislationLoadGridData'],
         ['legilslationFilters', 'legilslationFilters'],
         ['LegislationStaffanalysis', 'LegislationStaffanalysis'],
-        ['courses', 'courseLoadGridData'],
+        ['LegislationVersions', 'LegislationVersions'],
+		['LegislationVotes', 'LegislationVotes'],
+		['LegislationHistory', 'LegislationHistory'],
+		['LegislationQuick', 'LegislationQuick'],
+		['LegislationMaco', 'LegislationMaco'],
+		['courses', 'courseLoadGridData'],
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
         ['peopleFilters', 'peopleFilters'],
@@ -3759,6 +3764,216 @@ public function LegislationStaffanalysis(){
 	  <?php } } else {?>  
 		  <div class="p-2"> Data not available</div>
 	  <?php }
+        wp_die();
+}
+public function LegislationVersions(){
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
+	  $postData = array();
+	  $billid =  $_POST['billId'];
+	  $fileid =  $_POST['fileid'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/version/';
+	  $versionResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $versionResponses= json_decode($versionResponse['api_response']);
+	  if(!empty($versionResponses)){
+	  foreach ($versionResponses as $version => $allVersions) { 
+		if($allVersions->billDraftDateTime != ""){
+		$defaulget_Date = $allVersions->billDraftDateTime;
+		$convert_Date = strtotime($defaulget_Date);
+		$new_Date = date('M d, Y', $convert_Date);
+		}else{
+		  $new_Date ="Date Not Available";
+		}
+  ?>
+  <tr>
+	  <td> <?php echo $allVersions->type;?> </td>
+	  <td> <?php echo $new_Date;?> </td>
+	  <td class="text-center">
+		<a  class="text-underline" target="_blank" href="<?php echo $allVersions->url;?>"><?php echo $allVersions->url;?></a>
+	  </td>
+	  <td class="text-center">
+		<a class="text-underline" target="_blank" href="<?php echo $lbt_api_url;?>/file/<?php echo $fileid;?>">Download Text</a>
+	  </td>
+	</tr>
+	<?php }} 
+        wp_die();
+}
+public function LegislationVotes(){
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
+	  $postData = array();
+	  $billid =  $_POST['billId'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/rollcall/';
+	  $voteResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $voteResponses= json_decode($voteResponse['api_response']);
+	  if(!empty($voteResponses)){
+	  foreach($voteResponses as $vote){ 
+		$defaulget_Date = $vote->dateOfRollCall;
+		$convert_Date = strtotime($defaulget_Date);
+		$new_Date = date('M d, Y', $convert_Date);
+		?>
+		<tr>
+			<td> <?php echo $vote->chamberType;?></td>
+			<td> <?php echo $vote->totalVoteCount;?></td>
+			<td> <?php echo $new_Date;?></td>
+			<td> <?php echo $vote->votesCountInFavor;?></td>
+			<td> <?php echo $vote->votesCountAgainst;?></td>
+			<td> <?php echo $vote->countOfNoVotes;?></td>
+			<td> <?php echo $vote->countOfAbsentess;?></td>
+			<td> <?php echo $vote->totalVoteCount;?></td>
+			<td> <?php echo $vote->rollCallPassed;?></td>
+			<td> <a href="<?php echo $vote->sourceUrl;?>" target="_blank"><?php echo $vote->sourceUrl;?></a></td>
+		</tr>
+
+	  <?php }} 
+        wp_die();
+}
+public function LegislationHistory(){
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
+	  $postData = array();
+	  $billid =  $_POST['billId'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/actionhistory/';
+	  $historyResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $historyResponses= json_decode($historyResponse['api_response']);
+	   if(!empty($historyResponses)){
+	   foreach ($historyResponses as $history => $histories) {
+		 $defaulget_Date = $histories->actionDate;
+		 $convert_Date = strtotime($defaulget_Date);
+		 $new_date = date('M d, Y',$convert_Date); //$new_Date = date('M d, Y', $convert_Date);
+	  ?>
+		<tr>
+			<td> <?php echo $new_date;?></td>
+			<td> <?php echo $histories->billChamberType;?> </td>
+			<td> <?php echo $histories->actionText;?> </td>
+		</tr>
+	  <?php }}  
+        wp_die();
+}
+public function LegislationQuick(){
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
+	  $postData = array();
+	  $billid =  $_POST['billId'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/source/';
+	  $quicklinkResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $quicklinkResponses= json_decode($quicklinkResponse['api_response']);
+	  if(!empty($quicklinkResponses)){
+	  foreach($quicklinkResponses as $links){?>
+		<tr>
+		  <td> <?php echo $links->type;?> </td>
+		  <td>
+			<a target="_blank" href="<?php echo $links->url;?>"><?php echo $links->url;?>  </a>
+		  </td>
+		</tr>
+	<?php }}   
+        wp_die();
+}
+public function LegislationMaco(){
+	$options = get_option('ebt_api_settings');
+	$lbt_api_url = $options['lbt_api_url'];
+	  $postData = array();
+	  $billid =  $_POST['billId'];
+	  $apiUrl = 'legislative/public-bills/'.$billid.'/maco/publicanalysis';
+	  $publicanalysisResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
+	  $publicanalysisResponses= json_decode($publicanalysisResponse['api_response']);
+ 		if(!empty($publicanalysisResponses)){
+			  $trackingColor = $publicanalysisResponses->publicTrackingLevelColor;
+			  $trackingLevel = $publicanalysisResponses->publicTrackingLevelText;
+			  if($trackingColor!='' && $trackingLevel!=''){
+			  ?>
+			<div class="col-sm-12 mb-4">
+				<span  style="font-weight: bold;">MACo Tracking Level: </span>
+				<span class="p-1 m-1" style="background-color:<?php echo $trackingColor; ?>"></span>
+				<span><?php echo $trackingLevel; ?></span>
+			  </div>
+			  
+		   <?php } }   if(!empty($publicanalysisResponses->clientBillAnalysis)){
+			  $analysis = $publicanalysisResponses->clientBillAnalysis[0];
+			  //foreach($analysisResponses as $analysis){
+
+				$new_Date = date('m/d/Y',strtotime($analysis->createdDate));
+
+				 if($analysis->createdByImage)
+			  {
+				  if (filter_var($analysis->createdByImage, FILTER_VALIDATE_URL)) { 
+					  $instructor_img = $analysis->createdByImage;
+				  }
+				  else
+				  {
+					  $instructor_img = $tenant_url.$analysis->createdByImage;
+				  }
+				  
+			  }
+			  else
+			  {
+				  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
+
+			  }
+   
+			  $ip =$_SERVER['REMOTE_ADDR'];  
+			  $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+			  $ipInfo = json_decode($ipInfo);
+			  $timezone = $ipInfo->timezone;
+			  date_default_timezone_set($timezone);
+			  $date = strtotime($analysis->createdDate.' UTC');
+			  //echo $date->format('Y-m-d h:i:s A'); 
+
+			  ?>
+		  <div class="col-sm-12">
+			  <div class="row">
+				  <div class="col-sm-10">
+					  <a href="javascript:void(0)">
+						  <img class="img-circle img-xs mx-1 inline-block" src="<?php echo $instructor_img;?>" alt="instructor">
+						  <span class="text mx-1"><?php echo $analysis->createdBy;?></span>
+					  </a>
+					  <div class="text-muted mx-5 pt-2 pb-2"><?php echo date('m/d/Y', $date); ?> at <?php echo date('h:i A', $date); ?></div>
+					  
+				  </div>
+				  <div class="col-sm-2">
+					  <div class="p-2 m-2 text-white text-center" style="background-color:<?php echo $analysis->billPositionColor; ?>"><?php echo $analysis->billPosition; ?></div>
+				  </div>
+	  
+				  <div class="col-sm-12">
+					  <div class="lead" >
+						  <div class="bill-detail-summary-content no-border mx-5" style="height: 100%;">
+							 <p class="no-margin"><?php echo $analysis->text;?></p>
+							 
+						  </div>
+					  </div>
+				  </div>
+
+						  <?php
+
+						  if(count($analysis->links) || count($analysis->files)){
+
+						  if(count($analysis->files))
+						  {
+							?>
+
+							<div class="col-sm-12 panel-title p-2 border-bottom mt-2">
+							  <p class="d-inline mb-0">Attachments (<?php echo count($analysis->files) + count($analysis->links); ?>)</p>
+							</div>
+							
+							<?php
+							foreach ($analysis->files as  $file) {
+							  $file_url = $lbt_api_url.'/resource/view/'.$file->id.'/'.$file->displayName;
+							  echo '<div class="col-4 pt-2"><i class="fa fa-file-pdf-o"></i> <a href="'.$file_url.'" target="_blank"> '. $file->displayName.'</a></div>';
+							}
+							
+						  }
+						  if(count($analysis->links)){
+							  foreach ($analysis->links as  $attachment) {
+								echo '<div class="col-4 pt-2"><i class="fa fa-link"></i><a href="'.$attachment->url.'" target="_blank">'.$attachment->title.'</a></div>';
+							  }
+							}
+						  }
+					} else {?>  
+				<div class="col-12"> MACo has not provided an analysis yet.</div> 
+			<?php }?>   
+			</div>
+		  </div>
+  <?php
         wp_die();
 }
 //Public official Datatable
