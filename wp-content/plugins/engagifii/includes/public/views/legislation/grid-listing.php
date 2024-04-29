@@ -3,6 +3,8 @@ $actionType = '';
 $billnumber = '';
 $tagsRequest = '';
 $staffMember = '';
+$staffMemberGroup='';
+$staffMemberTags='';
 $get_tracking = '';
 if (isset($_REQUEST['tracking']))
 {
@@ -998,7 +1000,7 @@ $(".tz-selectAll").change(function () {
 			//$(this).trigger('click');
 			$(this).find('input').prop('checked',true);
 			$(this).addClass('liactive deftzselected');
-      $(this).parents('.filter-list').find('.heading-title span').text('('+$(this).parent().children('li').length+')');
+     		$(this).parents('.filter-list').find('.heading-title span').text('('+$(this).parent().children('li').length+')');
 		  }
 		});
 		
@@ -1006,7 +1008,7 @@ $(".tz-selectAll").change(function () {
 		$(this).parent().siblings('ul').find('li').each(function(){
 		  if($(this).find('input').is(':checked')){
 			//$(this).trigger('click');
-			$(this).find('input').prop('checked',false);
+			$(this).find('input:enabled').prop('checked',false);
 			$(this).removeClass('liactive deftzselected');
 			$(this).parents('.filter-list').find('.heading-title span').text('');
 		  }
@@ -1730,7 +1732,7 @@ $('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');
 <?php } ?>
 var colNames = <?php echo json_encode($filterParams); ?>;
 window.addEventListener("load", function () {
-	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='';
+	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='',chkdAssignGroups='',chkdAssignTags='';
   <?php if($get_tracking){ 
 	echo 'chkdTracking='.$get_tracking.';';  
  } if($tagsRequest){
@@ -1739,6 +1741,10 @@ window.addEventListener("load", function () {
 	echo 'chkdAction="'.$actionType.'";';  
  } if($staffMember){
 	echo 'chkdAssign="'.$staffMember.'";';  
+ }if($staffMemberGroup){
+	echo 'chkdAssignGroups="'.$staffMemberGroup.'";';  
+ }if($staffMemberTags){
+	echo 'chkdAssignTags="'.$staffMemberTags.'";';  
  }?>
   $.ajax({
 		type : "post",
@@ -1749,7 +1755,9 @@ window.addEventListener("load", function () {
 		   chkdTracking :chkdTracking,
 		   chkdTags:chkdTags,
 		   chkdAction:chkdAction,
-		   chkdAssign:chkdAssign
+		   chkdAssign:chkdAssign,
+		   chkdAssignGroups:chkdAssignGroups,
+		   chkdAssignTags:chkdAssignTags
 		},
 		success: function(response) {  
 			/*for (var key of Object.keys(JSON.parse(response))) {

@@ -3626,6 +3626,10 @@ public function eventFilters(){
         $postData=array();
         $htmlArray = array();
           $filterParams = $_POST['filterParams'];
+		  if(in_array("assignedto", $filterParams)){
+			$filterParams[]='assignedtoGroups';  
+			$filterParams[]='assignedtoTags';
+		  }
 		  $options = get_option('ebt_api_settings');
 		  $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 		  $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
@@ -3649,7 +3653,11 @@ public function eventFilters(){
               }else if($values =='senateCommittees'){
                 $apiUrl='legislative/public-bills/committees/senate/';   
               }else if($values =='assignedto'){
-                $apiUrl='legislative/public-bills/filter/billusers';   
+               $apiUrl='legislative/public-bills/filter/billusers';   
+              }else if($values =='assignedtoGroups'){
+				 $apiUrl='legislative/public-bills/filter/groups'; 
+              }else if($values =='assignedtoTags'){
+				 $apiUrl='legislative/public-bills/filter/billusertags'; 
               }else if($values =='tags'){
                 $apiUrl='legislative/public-bills/filter/tags';   
               }else if($values =='lastActionOn'){
@@ -3658,10 +3666,23 @@ public function eventFilters(){
 				  continue;
 			  }
            	$response =  $this->submitApiRequestWithGet($apiUrl, $postData, 'legislation'); 
-			if($values =='trackingLevel'){
-            //print_r($response);
-			}
-              if($response['api_response']){
+             /*if($values =='assignedto'){
+				$response =[
+                'api_response' => '[
+                    {
+                        "id" : "1",
+                        "name" : "Active"
+				 },
+                    {
+                        "id" : "2",
+                        "name" : "Deactivated"
+					}
+                ]'
+            ]; 
+			 }else{
+           		 $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+			 }*/
+            if($response['api_response']){
                 $response = json_decode($response['api_response'], true);                
                 if($response){
                   foreach ($response as $key => $value) {
@@ -3687,18 +3708,28 @@ public function eventFilters(){
 							$checked = $_POST['chkdAssign'] == $value['personId'] && $_POST['chkdAssign'] != null ? 'checked disabled' : '';
 							$html[$values].= '<li data-title="'.$value['fullName'].'" data-id="'.$value['personId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="members" value="'.$value['personId'].'" id="item_id_'.$value['personId'].'"> '.$value['fullName'].'</li>';
 						  }
+                      }else if($values=='assignedtoGroups'){
+						  if(in_array($value['value'], $lbt_visib_groups_list)){
+							$checked = $_POST['chkdAssignGroups'] == $value['value'] && $_POST['chkdAssignGroups'] != null ? 'checked disabled' : '';
+							$html['assignedto'].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="groups" value="'.$value['value'].'" id="item_id_'.$value['value'].'"> '.$value['text'].'</li>';
+						  }
+                      }else if($values=='assignedtoTags'){
+						  if(in_array($value['value'], $lbt_visib_members_tags_list)){
+							$checked = $_POST['chkdAssignTags'] == $value['value'] && $_POST['chkdAssignTags'] != null ? 'checked disabled' : '';
+							$html['assignedto'].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="tags" value="'.$value['value'].'" id="item_id_'.$value['value'].'"> '.$value['text'].'</li>';
+						  }
                       }
                     }
-                  }else{
+                 }else{
                     $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
-                  }
-                  } else {
-                    $html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
-                }
-                $htmlArray=$html;
-          }
-            echo json_encode($htmlArray);
-            wp_die();
+                 }
+			} else {
+				$html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+			}
+			  $htmlArray=$html;
+		}
+		  echo json_encode($htmlArray);
+		  wp_die();
         
     }
 public function LegislationStaffanalysis(){

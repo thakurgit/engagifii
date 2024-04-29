@@ -114,9 +114,10 @@ if(isset($options['sessionsetting'])){
 <hr>
 <?php $tags = $obj->legislationTagsFilter();
 if($tags){
-		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationTags" style="width:100%; display:block; height:200px; overflow:auto;">';
+		$dataCountable=0;
+		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationTags" style="width:100%; display:block; max-height:200px; overflow:auto;">';
          $site_url = site_url();
-         if($site_url == 'http://engagifiiweb.com')
+        /* if($site_url == 'http://engagifiiweb.com')
          {
             foreach ($tags as  $tag) {
                 if($tag->count > 0){
@@ -129,7 +130,7 @@ if($tags){
                 }             
             }
          }
-         else{
+         else{*/
             foreach ($tags as  $tag) {
                 if($tag->count > 0){
                     $checked = "";
@@ -138,14 +139,16 @@ if($tags){
                     $checked = " checked";
                 }
                 echo '<li style=""> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_tags_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.'('.$tag->count.') </label></li>'; 
-                }             
+				$dataCountable++;          
+                }   
             }
-         }
-		
-
+         //}
+	if($dataCountable==0){
+	  echo '<b style="color:red"><i>No any assigned tags available!</i></b>';	
+	}
 	echo '</ul>';		
 }else{
-echo '<b style="color:red"><i>No data found!</i></b>';	
+  echo '<b style="color:red"><i>No data found!</i></b>';	
 }
 ?>
 
@@ -162,15 +165,15 @@ $members = $obj->legislationAssignToFilter();
  		{
  			$checked .= " checked";
  		}
-        if($site_url== 'http://engagifiiweb.com'){
+       // if($site_url== 'http://engagifiiweb.com'){
             if($member->count){
-                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$member->personId.'" class="'.$member->personId.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_list][]" '.$checked.' value='.$member->personId.'><label for="'.$member->personId.'">'.$member->fullName.'('.$member->count.')</label></li><input type="hidden" name="ebt_api_settings[members_list][]" value="'.$member->personId.'"></li>'     ;   
+                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$member->personId.'" class="'.$member->personId.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_list][]" '.$checked.' value='.$member->personId.'><label for="'.$member->personId.'">'.$member->fullName.'('.$member->count.')</label></li>'     ;   
             }
 
-        }else
-        {
+      //  }
+		/*else  {
             echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$member->personId.'" class="'.$member->personId.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_list][]" '.$checked.' value='.$member->personId.'><label for="'.$member->personId.'">'.$member->fullName.'</label></li>'     ;   
-        }
+        }*/
  					  
 	}
 		}else {
@@ -183,26 +186,31 @@ $members = $obj->legislationAssignToFilter();
 <hr>
 <?php
 $groups = $obj->legislationGroupsFilter();
+	$dataCountable=0;
 		echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationMembers" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($groups){
-    foreach ($groups as  $group) {
-            
-        $checked = "";
-        if(in_array($group->value, $lbt_visib_groups_list))
-        {
-            $checked .= " checked";
-        }
-        if($site_url== 'http://engagifiiweb.com'){
-            if($group->count){
-                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$group->value.'" class="'.$group->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_groups_list][]" '.$checked.' value='.$group->value.'><label for="'.$group->value.'">'.$group->text.'('.$group->count.')</label></li><input type="hidden" name="ebt_api_settings[groups_list][]" value="'.$group->value.'"></li>'       ;
-            }
-        }
-        else
-        {
-            echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$group->value.'" class="'.$group->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_groups_list][]" '.$checked.' value='.$group->value.'><label for="'.$group->value.'">'.$group->text.'</label></li>'       ;
-        }
-                         
-    }
+		  foreach ($groups as  $group) {
+				  
+			  $checked = "";
+			  if(in_array($group->value, $lbt_visib_groups_list))
+			  {
+				  $checked .= " checked";
+			  }
+			//  if($site_url== 'http://engagifiiweb.com'){
+				  if($group->count){
+					  echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$group->value.'" class="'.$group->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_groups_list][]" '.$checked.' value='.$group->value.'><label for="'.$group->value.'">'.$group->text.'('.$group->count.')</label></li>' ; 
+					  $dataCountable++;     ;
+				  }
+			 // }
+			 /* else
+			  {
+				  echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$group->value.'" class="'.$group->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_groups_list][]" '.$checked.' value='.$group->value.'><label for="'.$group->value.'">'.$group->text.'</label></li>'       ;
+			  }*/
+							   
+		  }
+		  if($dataCountable==0){
+	  echo '<b style="color:red"><i>No any assigned groups available!</i></b>';	
+	}
 		}else {
 			echo '<b style="color:red"><i>No data found!</i></b>';	
 		}
@@ -221,16 +229,14 @@ $assignTags = $obj->legislationAssignToTagFilter();
         {
             $checked .= " checked";
         }
-        if($site_url== 'http://engagifiiweb.com'){
+       // if($site_url== 'http://engagifiiweb.com'){
             if($assign->count){
                 echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$assign->value.'" class="'.$assign->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_tags_list][]" '.$checked.' value="'.$assign->value.'"><label for="'.$assign->value.'">'.$assign->text.'('.$assign->count.')</label></li><input type="hidden" name="ebt_api_settings[member_tags_list][]" value="'.$assign->value.'"></li>'       ;
             }
 
-        }
-        else
-        {
+       /* }  else{
             echo '<li style=""> <input id="'.$assign->value.'" class="'.$assign->value.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_tags_list][]" '.$checked.' value="'.$assign->value.'"><label for="'.$assign->value.'">'.$assign->text.'</label></li>'       ;
-        }
+        }*/
                          
     }
 		}else {
@@ -243,7 +249,8 @@ $assignTags = $obj->legislationAssignToTagFilter();
 <?php
 $tags = $obj->legislationTagsFilter();
 if($tags){
-        echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationIssue" style="width:100%; display:block; height:200px; overflow:auto;">';
+		$dataCountable=0;
+        echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationIssue" style="width:100%; display:block; max-height:200px; overflow:auto;">';
         foreach ($tags as  $tag) {
         
             if($tag->count > 0){
@@ -253,10 +260,14 @@ if($tags){
                     $checked .= " checked";
                 }
                 echo '<li style=""> <input id="'.$tag->tagId.'" class="'.$tag->tagId.'" type="checkbox" name="ebt_api_settings[lbt_visib_legislative_list][]" '.$checked.' value='.$tag->tagId.'><label for="'.$tag->tagId.'">'.$tag->text.' ('.$tag->count.') </label></li>'     ;                 
+				$dataCountable++;          
             }
        
     }
 
+	if($dataCountable==0){
+	  echo '<b style="color:red"><i>No any assigned issues available!</i></b>';	
+	}
     echo '</ul>'; 
 }else {
 			echo '<b style="color:red"><i>No data found!</i></b>';	
