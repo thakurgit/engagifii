@@ -439,8 +439,14 @@ function ebt_tenant_code_render(  ) {
 			<div class="<?php echo $html_class; ?>">
 			<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">API URLs <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
             <div class="engagifii-setting api-urls accordion-content" style="display:none;">
-            	<h4>Training & Accreditation API Settings</h4>
-                <div class="form-group">
+            <?php
+			$options = get_option( 'ebt_api_settings' );
+			$engagifii_apis=array();
+			if(isset($options['engagifii_apis'])){
+				$engagifii_apis = $options['engagifii_apis']; 
+			}
+			?>
+                <div class="form-group" style="display:none">
       					<label style="width: 150px;">Select Environment</label>
                         <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env" >
                         	 <?php
@@ -456,11 +462,12 @@ function ebt_tenant_code_render(  ) {
 								];
 							  
 								foreach ($envs as $value => $label) {
-								  $selected = $dashboard_apis['environment'] === $value ? ' selected' : '';
+								  $selected = $engagifii_apis['environment'] === $value ? ' selected' : '';
 								  echo "<option value='$value'$selected>$label</option>";
 								}
 							?>
                         </select>
+                        <span class="env-loading" style="display:none"><img style="max-width:100%" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/loader.gif';?>" alt=""></span><span class="env-loading-msg"></span>
                         <?php
 						  $inputFields = [
 							'crmUrl' => 'ebt_api_settings[engagifii_apis][crmUrl]',
@@ -479,6 +486,12 @@ function ebt_tenant_code_render(  ) {
 						  }
 						  ?>
   					</div>
+                <div class="form-group" style="display:none">
+      					<label>Tenant Code</label>
+                       <input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[engagifii_apis][tenant]" class="postbox" value="<?php echo $engagifii_apis['tenant'];?>">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview"><?php echo $engagifii_apis['tenant'];?></span><input type="hidden"  class="postbox"  name="ebt_api_settings[engagifii_apis][tenant]" id="" value="<?php echo $engagifii_apis['tenant'];?>" required>
+  					</div>
+                <div class="form-group">
+            	<h4>Training & Accreditation API Settings</h4>
                 <div class="form-group">
       					<label>API URL</label>
   						<?php $this->ebt_api_url_render(); ?>

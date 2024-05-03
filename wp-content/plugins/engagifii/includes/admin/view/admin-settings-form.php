@@ -299,11 +299,9 @@ jQuery(this).siblings('.cls').val('');
 			});
         }
     }
-	/*if(jQuery('.select-env').val()===''){
-		jQuery('.select-env').val('').change();	
-		console.log(jQuery('.authUrl').val());
-	}*/
     jQuery('.select-env').change( function() {
+			$('.env-loading').show();
+			$('.env-loading-msg').text('').removeClass('error success');;
 		 $.ajax({url: "https://accg.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
 		 success: function(result){
 			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};
@@ -315,12 +313,21 @@ jQuery(this).siblings('.cls').val('');
 					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
 				}
 			}
+			$('.env-loading').hide();
+			$('.env-loading-msg').text('API Urls updated!').addClass('success');;
 			},
 			 error: function(xhr, textStatus, errorThrown) {
-			  console.log(xhr, textStatus, errorThrown);
+			  //console.log(xhr, textStatus, errorThrown);
+				$('.env-loading').hide();
+				$('.env-loading-msg').text('Oops! API Urls update failed!').addClass('error');
 			}
 		});
 	});
-	
+	if(jQuery('.select-env').val()===''){
+		jQuery('.select-env').val('').change();	
+		setTimeout(function() {
+		  jQuery('.env-loading-msg').text('');
+		}, 1000); 
+	}
 });
 </script>
