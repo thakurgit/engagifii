@@ -3640,6 +3640,43 @@ public function eventFilters(){
           foreach ($filterParams as $keys => $values) {
 			  $response = '';
 			  $apiUrl = '';
+			 /* switch ($values) {
+            case 'trackingLevel':
+                $apiUrl = 'legislative/public-bills/trackinglevels/';
+                break;
+            case 'billType':
+                $apiUrl = 'legislative/public-bills/billtypes/';
+                break;
+            case 'status':
+                $apiUrl = 'legislative/public-bills/status/';
+                break;
+            case 'sponsors':
+                $apiUrl = 'legislative/public-bills/sponsors/';
+                break;
+            case 'houseCommittees':
+                $apiUrl = 'legislative/public-bills/committees/house/';
+                break;
+            case 'senateCommittees':
+                $apiUrl = 'legislative/public-bills/committees/senate/';
+                break;
+            case 'assignedto':
+                $apiUrl = 'legislative/public-bills/filter/billusers';
+                break;
+            case 'assignedtoGroups':
+                $apiUrl = 'legislative/public-bills/filter/groups';
+                break;
+            case 'assignedtoTags':
+                $apiUrl = 'legislative/public-bills/filter/billusertags';
+                break;
+            case 'tags':
+                $apiUrl = 'legislative/public-bills/filter/tags';
+                break;
+            case 'lastActionOn':
+                $apiUrl = 'legislative/public-bills/lastactions/';
+                break;
+            case 'introducedDate':
+                continue;
+        } */
               if($values =='trackingLevel'){
                 $apiUrl='legislative/public-bills/trackinglevels/'; 
               }else if($values =='billType'){

@@ -441,6 +441,45 @@ function ebt_tenant_code_render(  ) {
             <div class="engagifii-setting api-urls accordion-content" style="display:none;">
             	<h4>Training & Accreditation API Settings</h4>
                 <div class="form-group">
+      					<label style="width: 150px;">Select Environment</label>
+                        <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env" >
+                        	 <?php
+								$envs = [
+								  '' => 'Production',
+								  '-qa' => 'QA',
+								  '-support' => 'Support',
+								  '-hotfix' => 'Hotfix',
+								  '-preview3' => 'Preview3',
+								  '-preview4' => 'Preview4',
+								  '-preview6' => 'Preview6',
+								  '-preview9' => 'Preview9'
+								];
+							  
+								foreach ($envs as $value => $label) {
+								  $selected = $dashboard_apis['environment'] === $value ? ' selected' : '';
+								  echo "<option value='$value'$selected>$label</option>";
+								}
+							?>
+                        </select>
+                        <?php
+						  $inputFields = [
+							'crmUrl' => 'ebt_api_settings[engagifii_apis][crmUrl]',
+							'reportUrl' => 'ebt_api_settings[engagifii_apis][reportUrl]',
+							'revenueUrl' => 'ebt_api_settings[engagifii_apis][revenueUrl]',
+							'doUrl' => 'ebt_api_settings[engagifii_apis][doUrl]',
+							'authUrl' => 'ebt_api_settings[engagifii_apis][authUrl]',
+							'tnaUrl' => 'ebt_api_settings[engagifii_apis][tnaUrl]',
+							'eventUrl' => 'ebt_api_settings[engagifii_apis][eventUrl]',
+							'legisUrl' => 'ebt_api_settings[engagifii_apis][legisUrl]'
+						  ];
+						  
+						  foreach ($inputFields as $name => $id) {
+							$value = htmlspecialchars($dashboard_apis[$name], ENT_QUOTES, 'UTF-8');
+							echo "<input name='$id' class='$name' type='hidden' value='$value' />";
+						  }
+						  ?>
+  					</div>
+                <div class="form-group">
       					<label>API URL</label>
   						<?php $this->ebt_api_url_render(); ?>
   					</div>
