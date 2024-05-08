@@ -409,6 +409,7 @@ function ebt_tenant_code_render(  ) {
     			endswitch; ?>
     		</div>
   		</div>
+        <!--API Urls accordion ends--> 
     <?php
 	}
 
@@ -490,7 +491,7 @@ function ebt_tenant_code_render(  ) {
       					<label>Tenant Code</label>
                        <input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[engagifii_apis][tenant]" class="postbox" value="<?php echo $engagifii_apis['tenant'];?>">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview"><?php echo $engagifii_apis['tenant'];?></span><input type="hidden"  class="postbox"  name="ebt_api_settings[engagifii_apis][tenant]" id="" value="<?php echo $engagifii_apis['tenant'];?>" required>
   					</div>
-                <div class="form-group">
+               
             	<h4>Training & Accreditation API Settings</h4>
                 <div class="form-group">
       					<label>API URL</label>
