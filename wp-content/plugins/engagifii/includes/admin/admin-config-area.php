@@ -342,7 +342,7 @@ function ebt_api_url_render(  ) {
       $ebt_api_url = $options['ebt_api_url'];
     else
       $ebt_api_url ='';
-    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_api_url]" class="postbox" value="'.$ebt_api_url.'">';
+    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_api_url]" class="postbox tnaUrl" value="'.$ebt_api_url.'">';
       echo $_inputHtml;
 }
 
@@ -361,7 +361,7 @@ function ebt_tenant_code_render(  ) {
 
     $_inputHtmlHidden ='<input type="hidden" name="ebt_api_settings[ebt_tenant_code][tenant_code]" class="postbox" id="ebt_tenant_code_text" value="'.$code.'">';
 
-    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_tenant_code][engagifii_url]" class="postbox" value="'.$engagifii_url.'"  oninput="getTenantCode(this.value, this)" >&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$code.'</span>';
+    $_inputHtml = '<input type="text" name="ebt_api_settings[ebt_tenant_code][engagifii_url]" class="postbox tenantCode" value="'.$engagifii_url.'"  oninput="getTenantCode(this.value, this)" >&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$code.'</span>';
 
       echo $_inputHtml.$_inputHtmlHidden;
 }
@@ -379,9 +379,9 @@ function ebt_tenant_code_render(  ) {
     		<nav class="nav-tab-wrapper wp-clearfix">
       			<a href="?page=engagifii-module-api" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>">Customize CSS</a>
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
-      			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
                 <a href="?page=engagifii-module-api&tab=page-settings" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
                 <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a>
+      			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
     		</nav>
 
     		<div class="tab-content">
@@ -418,7 +418,7 @@ function ebt_tenant_code_render(  ) {
     $lbt_api_url = '';
     if(isset($options['lbt_api_url']))
       $lbt_api_url = $options['lbt_api_url']; 
-    $_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[lbt_api_url]" value="'.$lbt_api_url.'">';
+    $_inputHtml = '<input type="text"  class="postbox legisUrl"  name="ebt_api_settings[lbt_api_url]" value="'.$lbt_api_url.'">';
       echo $_inputHtml;
 	}
 
@@ -428,7 +428,7 @@ function ebt_tenant_code_render(  ) {
 		$evt_api_url = '';
 		if(isset($options['evt_api_url']))
 		  $evt_api_url = $options['evt_api_url']; 
-		$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[evt_api_url]" value="'.$evt_api_url.'">';
+		$_inputHtml = '<input type="text"  class="postbox eventUrl"  name="ebt_api_settings[evt_api_url]" value="'.$evt_api_url.'">';
 		  echo $_inputHtml;
 		}
 	//
@@ -437,61 +437,60 @@ function ebt_tenant_code_render(  ) {
 	function engagifii_api_settings($html_class)
 	{
 		?>
-			<div class="<?php echo $html_class; ?>">
+			<div class="<?php echo $html_class; ?>" data-tab="settings">
 			<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">API URLs <i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
             <div class="engagifii-setting api-urls accordion-content" style="display:none;">
             <?php
 			$options = get_option( 'ebt_api_settings' );
-			$engagifii_apis=array();
-			if(isset($options['engagifii_apis'])){
-				$engagifii_apis = $options['engagifii_apis']; 
-			}
+			$engagifii_apis = $options['engagifii_apis']?? [];
+			$engagifii_apis['tenant']=$engagifii_apis['tenant']??'';
+			$update_manually = $engagifii_apis['update_manually'] ?? null;
+    		$update_manually_setting = ($update_manually == 1) ? 'checked' : '';
 			?>
-                <div class="form-group" style="display:none">
-      					<label style="width: 150px;">Select Environment</label>
-                        <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env" >
-                        	 <?php
-								$envs = [
-								  '' => 'Production',
-								  '-qa' => 'QA',
-								  '-support' => 'Support',
-								  '-hotfix' => 'Hotfix',
-								  '-preview3' => 'Preview3',
-								  '-preview4' => 'Preview4',
-								  '-preview6' => 'Preview6',
-								  '-preview9' => 'Preview9'
-								];
-							  
-								foreach ($envs as $value => $label) {
-								  $selected = $engagifii_apis['environment'] === $value ? ' selected' : '';
-								  echo "<option value='$value'$selected>$label</option>";
-								}
-							?>
-                        </select>
-                        <span class="env-loading" style="display:none"><img style="max-width:100%" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/loader.gif';?>" alt=""></span><span class="env-loading-msg"></span>
-                        <?php
-						  $inputFields = [
-							'crmUrl' => 'ebt_api_settings[engagifii_apis][crmUrl]',
-							'reportUrl' => 'ebt_api_settings[engagifii_apis][reportUrl]',
-							'revenueUrl' => 'ebt_api_settings[engagifii_apis][revenueUrl]',
-							'doUrl' => 'ebt_api_settings[engagifii_apis][doUrl]',
-							'authUrl' => 'ebt_api_settings[engagifii_apis][authUrl]',
-							'tnaUrl' => 'ebt_api_settings[engagifii_apis][tnaUrl]',
-							'eventUrl' => 'ebt_api_settings[engagifii_apis][eventUrl]',
-							'legisUrl' => 'ebt_api_settings[engagifii_apis][legisUrl]'
-						  ];
-						  
-						  foreach ($inputFields as $name => $id) {
-							$value = htmlspecialchars($dashboard_apis[$name], ENT_QUOTES, 'UTF-8');
-							echo "<input name='$id' class='$name' type='hidden' value='$value' />";
-						  }
-						  ?>
-  					</div>
-                <div class="form-group" style="display:none">
-      					<label>Tenant Code</label>
-                       <input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[engagifii_apis][tenant]" class="postbox" value="<?php echo $engagifii_apis['tenant'];?>">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview"><?php echo $engagifii_apis['tenant'];?></span><input type="hidden"  class="postbox"  name="ebt_api_settings[engagifii_apis][tenant]" id="" value="<?php echo $engagifii_apis['tenant'];?>" required>
-  					</div>
-               
+            	<div style=" position:relative; ">
+                <div <?php if($update_manually == 1){ echo 'style="display:none"'; } ?>>
+                  <div class="form-group">
+                          <label style="width: 150px;">Select Environment</label>
+                          <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env" >
+                               <?php
+                                  $envs = [
+                                    '' => 'Production',
+                                    '-qa' => 'QA',
+                                    '-support' => 'Support',
+                                    '-hotfix' => 'Hotfix',
+                                    '-preview3' => 'Preview3',
+                                    '-preview4' => 'Preview4',
+                                    '-preview6' => 'Preview6',
+                                    '-preview9' => 'Preview9'
+                                  ];
+                                
+                                  foreach ($envs as $value => $label) {
+                                    $selected = $engagifii_apis['environment'] === $value ? ' selected' : '';
+                                    echo "<option value='$value'$selected>$label</option>";
+                                  }
+                              ?>
+                          </select>
+                          <span class="env-loading" style="display:none"><img style="max-width:100%" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/loader.gif';?>" alt=""></span><span class="env-loading-msg"></span>
+                          <?php
+                              $apiSettings = ['crmUrl','reportUrl','revenueUrl','doUrl', 'authUrl','tnaUrl','eventUrl','legisUrl'];
+                              foreach ($apiSettings as $settingName) {
+                                  $value = htmlspecialchars($engagifii_apis[$settingName], ENT_QUOTES, 'UTF-8');
+                                  $inputField = "<input name='ebt_api_settings[engagifii_apis][$settingName]' class='$settingName' type='hidden' value='$value' />";
+                                  echo $inputField;
+                              }
+                              ?>
+                      </div>
+                  <div class="form-group" >
+                          <label style="width: 142px;">Tenant Code</label>
+                         <input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[engagifii_apis][tenant]" class="postbox tenantInput" value="<?php echo $engagifii_apis['tenant'];?>">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview"><?php echo $engagifii_apis['tenant'];?></span><input type="hidden"  class="postbox"  name="ebt_api_settings[engagifii_apis][tenant]" id="" value="<?php echo $engagifii_apis['tenant'];?>" required>
+                      </div>
+                 </div>
+                 <div class="form-check form-switch" style="position:absolute; top:0; right:0">
+                  <input class="form-check-input" type="checkbox" name="ebt_api_settings[engagifii_apis][update_manually]" id="update_manually" value="1" <?php echo $update_manually_setting; ?>> 
+                   <label style="float:none" for="update_manually" class="form-check-label"><strong>update APIs separately</strong></label>
+                </div>
+               </div>
+               <div class="apiUrls" <?php if($update_manually != 1){ echo 'style="display:none"'; } ?>>
             	<h4>Training & Accreditation API Settings</h4>
                 <div class="form-group">
       					<label>API URL</label>
@@ -521,6 +520,13 @@ function ebt_tenant_code_render(  ) {
   						<label>Tenant code</label>
   						<?php $this->evt_tenant_code_render(); ?>
   					</div>
+                    <hr>
+                    <h4>Dashboard API Settings</h4>
+  					<div class="form-group">
+  						<label>Tenant code</label>
+  						<?php echo '<input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_tenant_code][tenant_code]" class="postbox tenantCode" value="'.$options['dashboard_tenant_code']['tenant_code'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$options['dashboard_tenant_code']['tenant_code'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_tenant_code][tenant_code]" id="" value="'.$options['dashboard_tenant_code']['tenant_code'].'" required>'; ?>
+  					</div>
+                </div>
             </div>
             
 
@@ -540,7 +546,7 @@ function ebt_tenant_code_render(  ) {
       }
     	
     	$_inputHtmlHidden ='<input type="hidden"  class="postbox"  name="ebt_api_settings[lbt_tenant_code][tenant_code]" id="lbt_tenant_code_text" value="'.$code.'">';
-    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[lbt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" oninput="getTenantCode(this.value, this)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="lbt_tenantcode_preview">'.$code.'</span>';
+    	$_inputHtml = '<input type="text"  class="postbox tenantCode"  name="ebt_api_settings[lbt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" oninput="getTenantCode(this.value, this)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="lbt_tenantcode_preview">'.$code.'</span>';
       	echo $_inputHtml.$_inputHtmlHidden;
 	}
 
@@ -558,7 +564,7 @@ function ebt_tenant_code_render(  ) {
       }
     	
     	$_inputHtmlHidden ='<input type="hidden"  class="postbox"  name="ebt_api_settings[evt_tenant_code][tenant_code]" id="evt_tenant_code_text" value="'.$code.'">';
-    	$_inputHtml = '<input type="text"  class="postbox"  name="ebt_api_settings[evt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" oninput="getTenantCode(this.value, this)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="evt_tenantcode_preview">'.$code.'</span>';
+    	$_inputHtml = '<input type="text"  class="postbox tenantCode"  name="ebt_api_settings[evt_tenant_code][engagifii_url]" value="'.$engagifii_url.'" oninput="getTenantCode(this.value, this)">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="evt_tenantcode_preview">'.$code.'</span>';
       	echo $_inputHtml.$_inputHtmlHidden;
 	}
 

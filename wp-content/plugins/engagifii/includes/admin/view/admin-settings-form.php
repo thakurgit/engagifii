@@ -26,8 +26,8 @@
             //include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
             $options = get_option( 'ebt_api_settings' );
         ?>
-    <div class="wrap tab-content ff">
-    <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
+    <div class="wrap tab-content " >
+    <div class="engagifi_style_group engagifii-setting m-tlr-20" data-tab="" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
         <tr>
         	<td colspan="4"><h3>Theme Colors</h3><hr></td>
@@ -157,9 +157,6 @@
 	
   jQuery('.accordion-btn').click(function(){
 		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
-		
-		
-	
 });
 jQuery( '.shortcode-list code' ).click( function( event ) {
 			var range = document.createRange();
@@ -302,7 +299,7 @@ jQuery(this).siblings('.cls').val('');
     jQuery('.select-env').change( function() {
 			$('.env-loading').show();
 			$('.env-loading-msg').text('').removeClass('error success');;
-		 $.ajax({url: "https://accg.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
+		 $.ajax({url: "https://engagifii.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
 		 success: function(result){
 			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};
 			 for (var key in apiUrls) {
@@ -311,6 +308,9 @@ jQuery(this).siblings('.cls').val('');
 						apiUrls[key] = apiUrls[key]+'/api/v1';	
 					}
 					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
+					if (!$('#update_manually').is(':checked') || jQuery('input.'+key+'[type="text"]').val()=='') {
+					  jQuery('input.'+key+'[type="text"]').val(apiUrls[key]);
+					}
 				}
 			}
 			$('.env-loading').hide();
@@ -329,5 +329,40 @@ jQuery(this).siblings('.cls').val('');
 		  jQuery('.env-loading-msg').text('');
 		}, 1000); 
 	}
+	$('#update_manually').change(function(){
+		if (this.checked) {
+			$(this).parent().siblings().hide();	
+			$('.apiUrls').show();	
+		}else{
+			$(this).parent().siblings().show();	
+			$('.apiUrls').hide();	
+		}
+	});
+	$('.tenantInput').on('input',function(){
+		$('.tenantCode').val($(this).siblings('input').val()).trigger('input');
+	});
+	
+//tab switch
+  $('.nav-tab-wrapper > a').click(function(e) {
+	const url =$(this).attr('href');
+	const urlParams = new URLSearchParams(url.split('?')[1]);
+	const tabValue = urlParams.get('tab');
+	if(tabValue=='shortcode' || jQuery('.nav-tab-active').index() ==$('.nav-tab-wrapper > a').length-1){
+		return true;
+	}
+	$(this).addClass('nav-tab-active').siblings().removeClass('nav-tab-active');
+	
+	$("div[data-tab]").each(function() {
+		if($(this).attr('data-tab')==tabValue){
+		  $(this).show().removeClass('hide');	
+		} else{
+		  $(this).hide().addClass('hide');	
+		  if(tabValue==null){
+			$('div[data-tab=""]').show().removeClass('hide'); 
+		  }
+		}
+	});
+	e.preventDefault();
+  });	
 });
 </script>
