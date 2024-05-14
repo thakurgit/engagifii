@@ -301,11 +301,15 @@ jQuery(this).siblings('.cls').val('');
 			$('.env-loading-msg').text('').removeClass('error success');;
 		 $.ajax({url: "https://engagifii.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
 		 success: function(result){
-			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};
+			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl,'resourceUrl':result.resourceBaseUrl};
 			 for (var key in apiUrls) {
 				if (apiUrls.hasOwnProperty(key)) {
 					if(apiUrls[key].indexOf('api') == -1){
-						apiUrls[key] = apiUrls[key]+'/api/v1';	
+						if(key=='resourceUrl'){
+						  apiUrls[key] = apiUrls[key]+'/api/upload';	
+						} else {
+						  apiUrls[key] = apiUrls[key]+'/api/v1';	
+						}
 					}
 					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
 					if (!$('#update_manually').is(':checked') || jQuery('input.'+key+'[type="text"]').val()=='') {

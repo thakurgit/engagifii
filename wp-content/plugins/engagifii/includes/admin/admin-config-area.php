@@ -444,7 +444,7 @@ function ebt_tenant_code_render(  ) {
 			$options = get_option( 'ebt_api_settings' );
 			$engagifii_apis = $options['engagifii_apis']?? [];
 			$engagifii_apis['tenant']=$engagifii_apis['tenant']??'';
-			$update_manually = $engagifii_apis['update_manually'] ?? null;
+			$update_manually = $engagifii_apis['update_manually'] ?? 1;
     		$update_manually_setting = ($update_manually == 1) ? 'checked' : '';
 			?>
             	<div style=" position:relative; ">
@@ -472,7 +472,7 @@ function ebt_tenant_code_render(  ) {
                           </select>
                           <span class="env-loading" style="display:none"><img style="max-width:100%" src="<?php echo ENGAGIFII_ASSETS_URL.'/images/loader.gif';?>" alt=""></span><span class="env-loading-msg"></span>
                           <?php
-                              $apiSettings = ['crmUrl','reportUrl','revenueUrl','doUrl', 'authUrl','tnaUrl','eventUrl','legisUrl'];
+                              $apiSettings = ['crmUrl','reportUrl','revenueUrl','doUrl', 'authUrl','tnaUrl','eventUrl','legisUrl','resourceUrl'];
                               foreach ($apiSettings as $settingName) {
                                   $value = htmlspecialchars($engagifii_apis[$settingName], ENT_QUOTES, 'UTF-8');
                                   $inputField = "<input name='ebt_api_settings[engagifii_apis][$settingName]' class='$settingName' type='hidden' value='$value' />";
