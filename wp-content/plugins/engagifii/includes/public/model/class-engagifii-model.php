@@ -3169,7 +3169,7 @@ public function eventFilters(){
     $loggedInUserId = $_SESSION['pid'];
     //$tenantCode = $options['ebt_tenant_code']['tenant_code'];
 	$tenantCode = $options['dashboard_tenant_code'];
-	$env = $options['engagifii_apis']['environment']? '-'. $options['engagifii_apis']['environment'] : '';
+	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
     //print_r($loggedInUserId); die;
 	
 	$front_pages = $options['front_pages'];
