@@ -47,7 +47,9 @@
 	$options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
 	$loggedInUserId = $_SESSION['pid'];
-    $tenantCode = $options['ebt_tenant_code']['tenant_code'];
+    //$tenantCode = $options['ebt_tenant_code']['tenant_code'];
+	$tenantCode = $options['dashboard_tenant_code'];
+	$env = $options['engagifii_apis']['environment']? '-'. $options['engagifii_apis']['environment'] : '';
 	$contactPersons = $response->contacts;
 	$userPermissionArray = array();
         $postedDataPermission = array();
@@ -189,8 +191,8 @@ if ( strpos($url,'my-profile') !== false ) {
 				if($workflowid==''){
                     $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
-                 <?php } else{ ?>			
-			<a class="btn btn-primary " target="_blank" href="https://psba.engagifii-preview4.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
+                 <?php } else{ ?>
+			<a class="btn btn-primary " target="_blank" href="https://<?php echo $tenantCode;?>.engagifii<?php echo $env;?>.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
             <?php } }
 			else { ?>
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
