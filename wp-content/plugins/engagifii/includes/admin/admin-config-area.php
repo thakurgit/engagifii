@@ -524,7 +524,7 @@ function ebt_tenant_code_render(  ) {
                     <h4>Dashboard API Settings</h4>
   					<div class="form-group">
   						<label>Tenant code</label>
-  						<?php echo '<input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_tenant_code][tenant_code]" class="postbox tenantCode" value="'.$options['dashboard_tenant_code']['tenant_code'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$options['dashboard_tenant_code']['tenant_code'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_tenant_code][tenant_code]" id="" value="'.$options['dashboard_tenant_code']['tenant_code'].'" required>'; ?>
+  						<?php echo '<input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_tenant_code]" class="postbox tenantCode" value="'.$options['dashboard_tenant_code'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$options['dashboard_tenant_code'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_tenant_code]" id="" value="'.$options['dashboard_tenant_code'].'" required>'; ?>
   					</div>
                 </div>
             </div>

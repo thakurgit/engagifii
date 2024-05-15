@@ -37,7 +37,8 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
-	$tenantCode = $options['dashboard_apis']['tenant'];
+	//$tenantCode = $options['dashboard_apis']['tenant'];
+	$tenantCode = $options['dashboard_tenant_code'];
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 

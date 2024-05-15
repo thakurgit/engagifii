@@ -3,10 +3,10 @@
 <?php 
 //API setting
 	$options = get_option( 'ebt_api_settings' );
-	$tenant_code = $options['dashboard_apis']['tenant'];	
+	$tenant_code = $options['dashboard_tenant_code'];	
+	/*$tenant_code = $options['dashboard_apis']['tenant'];	
 	$dashboard_apis = $options['dashboard_apis'] ?? [];
 	echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Dashboard API Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content api-urls" style="display:none">';
-		/*echo '<div class="form-group"><label>API URL</label><input type="text" name="ebt_api_settings[dashboard_apis][url]" class="postbox" value="'.$dashboard_apis['url'].'"></div><!--API URL end-->';*/
 		echo '<div class="form-group"><label style="width: 150px;">Select Environment</label><select name="ebt_api_settings[dashboard_apis][environment]" class="select-env">';
 	echo '<option value="" ' . ($dashboard_apis['environment'] == '' ? 'selected' : '') . '>Production</option>';
 	echo '<option value="-qa" ' . ($dashboard_apis['environment'] == '-qa' ? 'selected' : '') . '>QA</option>';
@@ -28,7 +28,7 @@
 	';
 		
 		echo '<div class="form-group"><label style="width: 142px;">Tenant Code</label><input oninput="getTenantCode(this.value, this)" type="text" name="ebt_api_settings[dashboard_apis][tenant]" class="postbox" value="'.$dashboard_apis['tenant'].'">&nbsp;&nbsp;<strong>Tenant Code:</strong><span id="ebt_tenantcode_preview">'.$dashboard_apis['tenant'].'</span><input type="hidden"  class="postbox"  name="ebt_api_settings[dashboard_apis][tenant]" id="" value="'.$dashboard_apis['tenant'].'" required></div>';
-	echo '</ul></div></div>';
+	echo '</ul></div></div>';*/
 //dashboard navigation
 	//$navdata ='[{"label":"Home","url":"my-profile/welcome-to-dashboard","icon":"fas fa-home"},{"label":"My Profile","url":"my-profile","icon":"fas fa-user"},{"label":"My Downloads","url":"my-profile/my-transcript/downloads","icon":"fas fa-download"},	{"label":"Events","url":"my-profile/events","icon":"far fa-calendar-alt"},{"label":"My Transcript","url":"my-profile/my-transcript","icon":"fas fa-file"},{"label":"Members","url":"my-profile/members","icon":"fas fa-child"},	{"label":"Resources","url":"","icon":"fas fa-book"},	{"label":"Signature Events","url":"","icon":"far fa-calendar-alt"}]';
 	$navdata = file_get_contents(__DIR__ . '/navigation-data.json');
@@ -150,7 +150,7 @@ if(count($order)<count($fielddata1)){
    echo '<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">People Fields Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3><div class="engagifii-setting accordion-content" style="display:none"><h3>Manage People field items</h3> <i>Check the field items that should be visible on the People List View and drag the field items to the order in which they should be displayed.</i><hr><input type="hidden" class="cls" name="ebt_api_settings[people_fields][order]" value="'.$people_fields['order'].'" /><ul class="ebt-grid-column-list sortable-list" id="">'; 
 
    if(!$tenant_code){
-	echo '<b style="color:red">oops! People Tenant code not found.</b>';	
+	echo '<b style="color:red">oops! Dashboard Tenant code not found.</b>';	
 }else{
 	if(!$fielddata1){
 		echo '<b style="color:red">oops! data not found.</b>';
