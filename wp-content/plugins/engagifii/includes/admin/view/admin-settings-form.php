@@ -270,6 +270,7 @@ jQuery(this).siblings('.cls').val('');
           
        
   } );
+  	  	var envOnload=false;
   jQuery(document).ready(function() {
     var $ = jQuery;
     if ($('.set_logo').length > 0) {
@@ -311,10 +312,9 @@ jQuery(this).siblings('.cls').val('');
 						  apiUrls[key] = apiUrls[key]+'/api/v1';	
 						}
 					}
-					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
-					if (!$('#update_manually').is(':checked') || jQuery('input.'+key+'[type="text"]').val()=='') {
-					  jQuery('input.'+key+'[type="text"]').val(apiUrls[key]);
-					}
+					//jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
+					jQuery('input.'+key).val(apiUrls[key]);
+					
 				}
 			}
 			$('.env-loading').hide();
@@ -327,7 +327,8 @@ jQuery(this).siblings('.cls').val('');
 			}
 		});
 	});
-	if(jQuery('.select-env').val()===''){
+	//if(jQuery('.select-env').val()===''){
+	if(jQuery('.select-env').hasClass('nullenv') || jQuery('input.crmUrl[type="hidden"]').val()==''){
 		jQuery('.select-env').val('').change();	
 		setTimeout(function() {
 		  jQuery('.env-loading-msg').text('');
@@ -335,10 +336,10 @@ jQuery(this).siblings('.cls').val('');
 	}
 	$('#update_manually').change(function(){
 		if (this.checked) {
-			$(this).parent().siblings().hide();	
+			//$(this).parent().siblings().hide();	
 			$('.apiUrls').show();	
 		}else{
-			$(this).parent().siblings().show();	
+			//$(this).parent().siblings().show();	
 			$('.apiUrls').hide();	
 		}
 	});

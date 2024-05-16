@@ -444,14 +444,14 @@ function ebt_tenant_code_render(  ) {
 			$options = get_option( 'ebt_api_settings' );
 			$engagifii_apis = $options['engagifii_apis']?? [];
 			$engagifii_apis['tenant']=$engagifii_apis['tenant']??'';
-			$update_manually = $engagifii_apis['update_manually'] ?? 1;
+			$update_manually = $engagifii_apis['update_manually'] ?? null;
     		$update_manually_setting = ($update_manually == 1) ? 'checked' : '';
 			?>
             	<div style=" position:relative; ">
-                <div <?php if($update_manually == 1){ echo 'style="display:none"'; } ?>>
+                <div <?php //if($update_manually == 1){ echo 'style="display:none"'; } ?>>
                   <div class="form-group">
                           <label style="width: 150px;">Select Environment</label>
-                          <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env" >
+                          <select name="ebt_api_settings[engagifii_apis][environment]" class="select-env <?php if(!$options) { echo 'nullenv'; } ?>" >
                                <?php
                                   $envs = [
                                     '' => 'Production',
@@ -491,6 +491,7 @@ function ebt_tenant_code_render(  ) {
                 </div>
                </div>
                <div class="apiUrls" <?php if($update_manually != 1){ echo 'style="display:none"'; } ?>>
+               <hr>
             	<h4>Training & Accreditation API Settings</h4>
                 <div class="form-group">
       					<label>API URL</label>
