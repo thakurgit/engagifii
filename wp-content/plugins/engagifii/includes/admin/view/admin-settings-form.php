@@ -7,7 +7,6 @@
         settings_fields( 'engagifiiPlugin' );
         do_settings_sections( 'engagifiiPlugin' );
         
-        //@do_settings_sections( 'engagifiiPluginTwo');
 		?>
     <?php
         $options = get_option( 'ebt_api_settings' );
@@ -24,7 +23,7 @@
             }
             //include( plugin_dir_path( __FILE__ ) . '/admin-fonts-sie.php');
             //include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
-            $options = get_option( 'ebt_api_settings' );
+           // $options = get_option( 'ebt_api_settings' );
         ?>
     <div class="wrap tab-content " >
     <div class="engagifi_style_group engagifii-setting m-tlr-20" data-tab="" <?php echo $checkedHtml ?>>
@@ -133,9 +132,11 @@
         
       
 <?php
+	if($tab!= 'shortcode'){
       do_action('engagifiiGetColumnList');
 	   do_action('engagifiiCustomizer');
         do_action('profileSettings');
+	}
 		?>
     <div class="ebt-submit-btn">
         <?php 
