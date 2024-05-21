@@ -37,18 +37,30 @@ class ebtAdminConfigSettings {
  	// }
      function show_datatable_column() {
         $tab = $_GET['tab'] ?? null;
-        
-        $views = [
+        /*$views = [
           'endorsement/admin-column-list.php',
           'courses/admin-column-list.php',
           'classes/admin-column-list.php',
           'events/admin-column-list.php',
           'legislation/admin-column-list.php'
-        ];
-      
-        foreach ($views as $view) {
-          include_once(__DIR__ . '/view/' . $view);
-        }
+        ];*/
+        $enabledModules = get_option('engagifii_modules');
+		if(!$enabledModules || in_array('training-and-accreditation',$enabledModules)){
+			$views[] = 'endorsement/admin-column-list.php';
+			$views[] = 'courses/admin-column-list.php';
+			$views[] = 'classes/admin-column-list.php';
+		}
+		if(!$enabledModules || in_array('events',$enabledModules)){
+			$views[] = 'events/admin-column-list.php';
+		}
+		if(!$enabledModules || in_array('legislation',$enabledModules)){
+			$views[] = 'legislation/admin-column-list.php';
+		}
+      	if (isset($views)) {
+		  foreach ($views as $view) {
+			include_once(__DIR__ . '/view/' . $view);
+		  }
+		}
       }
       
 	function engagifii_Customizer()
@@ -61,7 +73,10 @@ class ebtAdminConfigSettings {
  	{
 		
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-		include_once( __DIR__.'/view/dashboard-settings.php' );
+		$enabledModules = get_option('engagifii_modules');
+		if(!$enabledModules || in_array('dashboard',$enabledModules)){
+		  include_once( __DIR__.'/view/dashboard-settings.php' );
+		}
  	}
 	function ebt_api_add_admin_menu() {
 	//$options = get_option( 'ebt_api_settings' );

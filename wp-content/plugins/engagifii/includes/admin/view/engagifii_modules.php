@@ -11,27 +11,26 @@
                 <td>
                 	<fieldset>
                    <?php
-					  $checkedModules = get_option('engagifii_modules', []);
-					  $modules = [
+					  $enabledModules = is_array(get_option('engagifii_modules')) ? get_option('engagifii_modules') : [];
+					  $moduleOptions = [
 						  'Training & Accreditation' => 'training-and-accreditation',
 						  'Legislation' => 'legislation',
 						  'Events' => 'events',
 						  'Dashboard' => 'dashboard'
 					  ];
 					  
-					  foreach ($modules as $label => $value) {
-						  $checked = in_array(htmlspecialchars($value, ENT_QUOTES, 'UTF-8'), $checkedModules) ? ' checked' : '';
-					  
-						  $checkBoxField = sprintf(
+					  foreach ($moduleOptions as $moduleLabel  => $moduleValue) {
+						  $isChecked = in_array(htmlspecialchars($moduleValue, ENT_QUOTES, 'UTF-8'), $enabledModules) ? ' checked' : '';
+						  $checkboxHtml = sprintf(
 							  '<label for="%s"><input name="engagifii_modules[]" type="checkbox" value="%s" id="%s" %s />%s</label><br>',
-							  htmlspecialchars($value, ENT_QUOTES, 'UTF-8'),
-							  htmlspecialchars($value, ENT_QUOTES, 'UTF-8'),
-							  htmlspecialchars($value, ENT_QUOTES, 'UTF-8'),
-							  $checked,
-							  htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
+								htmlspecialchars($moduleValue, ENT_QUOTES, 'UTF-8'),
+								htmlspecialchars($moduleValue, ENT_QUOTES, 'UTF-8'),
+								htmlspecialchars($moduleValue, ENT_QUOTES, 'UTF-8'),
+								$isChecked,
+								htmlspecialchars($moduleLabel, ENT_QUOTES, 'UTF-8')
 						  );
 					  
-						  echo $checkBoxField;
+						  echo $checkboxHtml;
 					  }
 					  ?>
                     </fieldset>
