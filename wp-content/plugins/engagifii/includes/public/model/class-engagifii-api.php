@@ -51,27 +51,27 @@ class Engagifii_API{
 					$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
 				}
 				//$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTI1OTQ2MzUsImV4cCI6MTcxMjYwMTgzNSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSIsIlVzZXJzQVBJIl0sImNsaWVudF9pZCI6InBzYmEiLCJzdWIiOiIzZWJhNGY1Mi1iOTBiLTRjODAtYWJiMy01MTliMGE3NzIwZWUiLCJhdXRoX3RpbWUiOjE3MTI1OTQ2MzQsImlkcCI6ImxvY2FsIiwic3MtcGlkIjoiMDYyNDY0YWEtNTkxZS00NTg0LTkyMjQtNzFmZmM2MTJlYzI4IiwicGljdHVyZSI6IiIsInBpY3R1cmUtc21hbGwiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIiLCJlbWFpbCI6ImpjcmF3bGV5QHlvcG1haWwuY29tIiwibGFzdC1sb2dpbiI6IjA0LzA4LzIwMjQgMTY6Mzc6NDEiLCJjdXJyZW50LWxvZ2luIjoiMDQvMDgvMjAyNCAxNjo0Mzo1NCIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIiwicHJvZmlsZSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiLCJVc2Vyc0FQSSJdLCJhbXIiOlsicHdkIl19.rm4gELOWw__ZDJvev-252dIoZd1O48HTn6-cLZbF2FdsD83iKGdePaNBQHqCU_3XgQUq9_-lBtSQVWTgmxekqpHSyQEqsW_bNf8diDDWF8y0FXw_0Oxc5TwBbBztnS2jKDAA1hUYwWeBFU7T_hckhmLxljDO3BIbKiP65r9dtCgnKgcdVt8YxZUTthfQIFMGKOxxiwSJw6TkaprWf3IJXHrC6FQ9cqXxO9V7uhaRtl3MFzRoUkWYKN-BtZFsIb97dnFnlrT39P25GHJQVfmHRHybDtCIpyolNQh-Ujb7O61qlspWGGrNALWRhk1qrTd0csbt3PdRxYlaEtrwoDf5lg';
-				$ebt_tenant_code ['tenant_code'] = $options['dashboard_apis']['tenant'];
+				$ebt_tenant_code ['tenant_code'] = $options['dashboard_tenant_code'];
 				if($module == 'event'){
 					if($options['evt_tenant_code']['tenant_code']){
 						$ebt_tenant_code = $options['evt_tenant_code'];
 					}
 					$ebt_api_url = $options['evt_api_url'];
 					if(!$ebt_api_url){
-					  $ebt_api_url = $options['dashboard_apis']['eventUrl'];	
+					  $ebt_api_url = $options['engagifii_apis']['eventUrl'];	
 					}
 				}else if($module == 'reports'){
-					$ebt_api_url = $options['dashboard_apis']['reportUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['reportUrl'];	
 				}else if($module == 'dashboard'){
-					$ebt_api_url = $options['dashboard_apis']['crmUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['crmUrl'];	
 				}else if($module == 'awards'){
-					$ebt_api_url = $options['dashboard_apis']['tnaUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['tnaUrl'];	
 				}else if($module == 'revenue'){
-					$ebt_api_url = $options['dashboard_apis']['revenueUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['revenueUrl'];	
 				}else if($module == 'dynamicobject'){
-					$ebt_api_url = $options['dashboard_apis']['doUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['doUrl'];	
 				}else if($module == 'auth'){
-					$ebt_api_url = $options['dashboard_apis']['authUrl'];	
+					$ebt_api_url = $options['engagifii_apis']['authUrl'];	
 				}
 			}
 			/*else if($module == 'event'){

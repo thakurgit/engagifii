@@ -63,7 +63,8 @@ global $post;
 		$active = 'active';
 	$options = get_option( 'ebt_api_settings' );
     $menus =$options['dash_menus']['items'];
-	$tenantCode = $options['dashboard_apis']['tenant'];
+	//$tenantCode = $options['dashboard_apis']['tenant'];
+	$tenantCode = $options['dashboard_tenant_code'];
   $loggedInUserId = $_SESSION['pid'];
   if (isset($_COOKIE['pid'])) {
     $loggedInUserId = $_COOKIE['pid'];

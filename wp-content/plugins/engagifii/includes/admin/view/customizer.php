@@ -1,4 +1,4 @@
-<div class="wrap eng-customizer <?php if($tab == 'page-settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<div data-tab="page-settings" class="wrap eng-customizer <?php if($tab == 'page-settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <div class="engagifii-setting m-tlr-20">
 <?php 
 $options = get_option( 'ebt_api_settings' );

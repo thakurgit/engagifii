@@ -37,7 +37,8 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
-	$tenantCode = $options['dashboard_apis']['tenant'];
+	//$tenantCode = $options['dashboard_apis']['tenant'];
+	$tenantCode = $options['dashboard_tenant_code'];
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 
@@ -832,7 +833,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 			"Module": 'crm',
 		 };
 		 profiledpdata = JSON.stringify(profiledpdata ); 
-            $.ajax('https://engagifiiresource.azurewebsites.net/api/upload', {
+           // $.ajax('https://engagifiiresource.azurewebsites.net/api/upload', {
+            $.ajax("<?php echo $options['engagifii_apis']['resourceUrl'];?>", {
               method: 'POST',
       			data: profiledpdata,
               processData: false,
@@ -844,7 +846,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 					"imageThumbUrl": response,
 				   };
 				  jQuery('#blah').attr('src',response);
-				  $.ajax('https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>', {
+				  //$.ajax('https://engagifii-preview4-crm.azurewebsites.net/api/v1/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>', {
+					  
+				  $.ajax("<?php echo $options['engagifii_apis']['crmUrl'];?>/People/UpdatePersonHeader/<?php echo $peopleDATA->people->id; ?>", {
 					method: 'PUT',
 					  data: JSON.stringify(imageThumbpayload),
 					processData: false,
@@ -1239,7 +1243,8 @@ $payload = json_decode(file_get_contents("php://input"), true);
 $peopleToken = $_SESSION['accesstoken'];
 $authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
-$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+//$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
+$url1 =$options['engagifii_apis']['crmUrl'].'PeopleApproval/CreateRequest';
   curl_setopt_array($curl, array(
   CURLOPT_URL => $url1,
   CURLOPT_RETURNTRANSFER => true,

@@ -7,7 +7,6 @@
         settings_fields( 'engagifiiPlugin' );
         do_settings_sections( 'engagifiiPlugin' );
         
-        //@do_settings_sections( 'engagifiiPluginTwo');
 		?>
     <?php
         $options = get_option( 'ebt_api_settings' );
@@ -24,10 +23,10 @@
             }
             //include( plugin_dir_path( __FILE__ ) . '/admin-fonts-sie.php');
             //include( plugin_dir_path( __FILE__ ) . '/admin-fonts.php');
-            $options = get_option( 'ebt_api_settings' );
+           // $options = get_option( 'ebt_api_settings' );
         ?>
-    <div class="wrap tab-content ff">
-    <div class="engagifi_style_group engagifii-setting m-tlr-20" <?php echo $checkedHtml ?>>
+    <div class="wrap tab-content " >
+    <div class="engagifi_style_group engagifii-setting m-tlr-20" data-tab="" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
         <tr>
         	<td colspan="4"><h3>Theme Colors</h3><hr></td>
@@ -133,9 +132,11 @@
         
       
 <?php
+	if($tab!= 'shortcode'){
       do_action('engagifiiGetColumnList');
 	   do_action('engagifiiCustomizer');
         do_action('profileSettings');
+	}
 		?>
     <div class="ebt-submit-btn">
         <?php 
@@ -157,9 +158,6 @@
 	
   jQuery('.accordion-btn').click(function(){
 		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
-		
-		
-	
 });
 jQuery( '.shortcode-list code' ).click( function( event ) {
 			var range = document.createRange();
@@ -273,6 +271,7 @@ jQuery(this).siblings('.cls').val('');
           
        
   } );
+  	  	var envOnload=false;
   jQuery(document).ready(function() {
     var $ = jQuery;
     if ($('.set_logo').length > 0) {
@@ -302,15 +301,21 @@ jQuery(this).siblings('.cls').val('');
     jQuery('.select-env').change( function() {
 			$('.env-loading').show();
 			$('.env-loading-msg').text('').removeClass('error success');;
-		 $.ajax({url: "https://accg.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
+		 $.ajax({url: "https://engagifii.engagifii"+jQuery(this).val()+".com/assets/environment-config-1.0.json", 
 		 success: function(result){
-			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl};
+			 var apiUrls = {'crmUrl':result.crmBaseUrl,'reportUrl':result.courseReporturl,'authUrl':result.authPolicyDevUrl,'revenueUrl':result.revenueBaseUrl,'doUrl':result.dynamicObjectApprovalUrl,'tnaUrl':result.baseUrl,'eventUrl':result.eventBaseUrl,'legisUrl':result.legislationBaseUrl,'resourceUrl':result.resourceBaseUrl};
 			 for (var key in apiUrls) {
 				if (apiUrls.hasOwnProperty(key)) {
 					if(apiUrls[key].indexOf('api') == -1){
-						apiUrls[key] = apiUrls[key]+'/api/v1';	
+						if(key=='resourceUrl'){
+						  apiUrls[key] = apiUrls[key]+'/api/upload';	
+						} else {
+						  apiUrls[key] = apiUrls[key]+'/api/v1';	
+						}
 					}
-					jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
+					//jQuery('.select-env').siblings('.'+key).val(apiUrls[key]);
+					jQuery('input.'+key).val(apiUrls[key]);
+					
 				}
 			}
 			$('.env-loading').hide();
@@ -323,11 +328,47 @@ jQuery(this).siblings('.cls').val('');
 			}
 		});
 	});
-	if(jQuery('.select-env').val()===''){
+	//if(jQuery('.select-env').val()===''){
+	if(jQuery('.select-env').hasClass('nullenv') || jQuery('input.crmUrl[type="hidden"]').val()==''){
 		jQuery('.select-env').val('').change();	
 		setTimeout(function() {
 		  jQuery('.env-loading-msg').text('');
 		}, 1000); 
 	}
+	$('#update_manually').change(function(){
+		if (this.checked) {
+			//$(this).parent().siblings().hide();	
+			$('.apiUrls').show();	
+		}else{
+			//$(this).parent().siblings().show();	
+			$('.apiUrls').hide();	
+		}
+	});
+	$('.tenantInput').on('input',function(){
+		$('.tenantCode').val($(this).siblings('input').val()).trigger('input');
+	});
+	
+//tab switch
+  $('.nav-tab-wrapper > a').click(function(e) {
+	const url =$(this).attr('href');
+	const urlParams = new URLSearchParams(url.split('?')[1]);
+	const tabValue = urlParams.get('tab');
+	if(tabValue=='shortcode' || jQuery('.nav-tab-active').index() ==$('.nav-tab-wrapper > a').length-1){
+		return true;
+	}
+	$(this).addClass('nav-tab-active').siblings().removeClass('nav-tab-active');
+	
+	$("div[data-tab]").each(function() {
+		if($(this).attr('data-tab')==tabValue){
+		  $(this).show().removeClass('hide');	
+		} else{
+		  $(this).hide().addClass('hide');	
+		  if(tabValue==null){
+			$('div[data-tab=""]').show().removeClass('hide'); 
+		  }
+		}
+	});
+	e.preventDefault();
+  });	
 });
 </script>

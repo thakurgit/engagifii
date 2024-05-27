@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Home",
+    "url": "my-profile/welcome-to-dashboard",
+    "icon": "fas fa-home"
+  },
+  {
+    "label": "My Profile",
+    "url": "my-profile",
+    "icon": "fas fa-user"
+  },
+  {
+    "label": "My Downloads",
+    "url": "my-profile/my-transcript/downloads",
+    "icon": "fas fa-download"
+  },
+  {
+    "label": "Events",
+    "url": "my-profile/events",
+    "icon": "far fa-calendar-alt"
+  },
+  {
+    "label": "My Transcript",
+    "url": "my-profile/my-transcript",
+    "icon": "fas fa-file"
+  },
+  {
+    "label": "Members",
+    "url": "my-profile/members",
+    "icon": "fas fa-child"
+  },
+  {
+    "label": "Resources",
+    "url": "",
+    "icon": "fas fa-book"
+  },
+  {
+    "label": "Signature Events",
+    "url": "",
+    "icon": "far fa-calendar-alt"
+  }
+]

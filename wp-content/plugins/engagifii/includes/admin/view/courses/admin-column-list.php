@@ -1,4 +1,4 @@
-<div class="wrap course-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<div data-tab="settings" class="wrap course-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Courses Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
