@@ -109,31 +109,32 @@
 		echo '<b style="color:red">oops! Dashboard Tenant code not found.</b>';	
 	}else{
 		if($fielddata){
-		if(array_key_exists("isError",json_decode($fielddata,true)) && json_decode($fielddata,true)['isError']==true){
-			echo '<b style="color:red">oops! data not found.</b>';
-		} else{
-			$counter=1;
-			//$allowedFields=['Cell Phone','Home Phone','Office Phone','Office Address','Address','Personal Email','Office Email','Organization'];
-			$allowedFields=[9,10,11,12];
-			foreach(json_decode($fielddata,true) as $key=>$row){
-				if(!in_array($row['controlTypeId'], $allowedFields)){
-					continue;
-				}
-		
-			$checked = "";
-			if(count($dashboard_fields_list)>0){
-				if(in_array($row['fieldId'], $dashboard_fields_list)){
-					$checked .= " checked";
-				}
-			}else{
-				$checked .= " checked";
-			}
-			echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'&type='.$row['controlTypeId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'&type='.$row['controlTypeId'].'">'.$row['fieldName'].'</label></li>';	
-			$counter++;	
-		}	
+		  if(array_key_exists("isError",json_decode($fielddata,true)) && json_decode($fielddata,true)['isError']==true){
+			  echo '<b style="color:red">oops! data not found.</b>';
+		  } else{
+			  $counter=1;
+			  //$allowedFields=['Cell Phone','Home Phone','Office Phone','Office Address','Address','Personal Email','Office Email','Organization'];
+			  $allowedFields=[9,10,11,12];
+			  foreach(json_decode($fielddata,true) as $key=>$row){
+				  if(!in_array($row['controlTypeId'], $allowedFields)){
+					  continue;
+				  }
+		  
+			  $checked = "";
+			  if(count($dashboard_fields_list)>0){
+				  if(in_array($row['fieldId'], $dashboard_fields_list)){
+					  $checked .= " checked";
+				  }
+			  }else{
+				  $checked .= " checked";
+			  }
+			  echo '<li  data-order="'.$counter.'"><input  id="'.$row['fieldId'].'&type='.$row['controlTypeId'].'" class="" type="checkbox" name="ebt_api_settings[dashboard_fields][fields][]" '.$checked.' value="'.$row['fieldId'].'"><label for="'.$row['fieldId'].'&type='.$row['controlTypeId'].'">'.$row['fieldName'].'</label></li>';	
+			  $counter++;	
+		  }	
+		  }
+		}else{
+			 echo '<b style="color:red">oops! data not found.</b>';
 		}
-	
-	}
 	}
 	
 echo '</ul></div>';
