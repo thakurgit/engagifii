@@ -2802,11 +2802,24 @@ wp_die();
 	public function allReportsByPerson(){
 		$postedData =array();
 		if($_POST['awardId']){
-        $postedData = '{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
+        //$postedData = '{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
+        $postedData['filterBody']['sourceType']= 2;
+		$postedData['filterBody']['peopleId'] =$_POST['profileId'];
+		$postedData['filterBody']['awardId']=$_POST['awardId'];
+        $postedData['filterBody']['courseSortDirection'] = "asc";
        	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport", $postedData, "POST", 'awards');
 		}else{
-        $postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false, sourceType:2}}';
-       	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
+        //$postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false, sourceType:2}}';
+        $postedData['pageNumber'] = 1; 
+        $postedData['pageSize'] = 10; 
+        $postedData['itemCount'] = 100; 
+        $postedData['sortBy'] = 'name'; 
+        $postedData['sortDirection'] = 'asc';         
+        $postedData['filterBody']['peopleId'] = $_POST['profileId'];
+		$postedData['courseSortDirection'] = 'asc';
+        $postedData['isFiscalYearAvailable']  = "false";
+        $postedData['filterBody']['sourceType']= 2;
+        $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
 		}
          //print_r($postedData); die;
         $response = json_decode($dataResponse['api_response']);
