@@ -2802,13 +2802,16 @@ wp_die();
 	public function allReportsByPerson(){
 		$postedData =array();
 		if($_POST['awardId']){
-        $postedData = '{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
+        $postedData = `{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}`; 
        	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport", $postedData, "POST", 'awards');
 		}else{
-        $postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{sourceType:2, "peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false}}';
+        $postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false, sourceType:2}}';
        	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
 		}
+         //print_r($postedData); die;
         $response = json_decode($dataResponse['api_response']);
+       
+        //print_r($dataResponse); die;
         return $response;
         wp_die();
     }
@@ -6144,4 +6147,3 @@ public function date_range($first, $last, $step = '+1 day', $output_format = 'Y-
 
 
 }
-
