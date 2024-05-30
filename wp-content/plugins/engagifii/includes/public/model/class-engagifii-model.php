@@ -2802,7 +2802,7 @@ wp_die();
 	public function allReportsByPerson(){
 		$postedData =array();
 		if($_POST['awardId']){
-        $postedData = `{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}`; 
+        $postedData = '{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
        	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport", $postedData, "POST", 'awards');
 		}else{
         $postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false, sourceType:2}}';
