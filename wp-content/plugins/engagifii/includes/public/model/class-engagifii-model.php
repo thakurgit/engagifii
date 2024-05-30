@@ -2802,9 +2802,11 @@ wp_die();
 	public function allReportsByPerson(){
 		$postedData =array();
 		if($_POST['awardId']){
-       	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport/".$_POST['profileId']."/".$_POST['awardId']."", $postedData, "GET", 'awards');
+        $postedData = '{"filterBody":{"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
+       	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport", $postedData, "POST", 'awards');
 		}else{
-       	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "GET", 'awards');
+        $postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false}}';
+       	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
 		}
         $response = json_decode($dataResponse['api_response']);
         return $response;
