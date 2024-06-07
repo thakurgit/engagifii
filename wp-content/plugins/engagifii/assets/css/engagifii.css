@@ -1898,13 +1898,16 @@ border-bottom-color:white ;
 input[type="checkbox"]{
 	accent-color:var(--engagifii-color)
 }
+.people-select input[type="checkbox"]{
+	accent-color:white;
+}
 #ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
   background: var(--engagifii-color);
   color:white;
 }
-table tbody tr.selected {
+/*table tbody tr.selected {
 	background-color: #d5e9ff !important;
-}
+}*/
 .dropdown-item.active, .dropdown-item:active {
 	background-color: var(--engagifii-color-hover);
 }
