@@ -199,7 +199,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                     echo '<span class="py-0 pr-2" style="font-size:.875rem;"><strong>Department: </strong>' . $departments[0] . '</span> |';
                 } else if ($totalDepartments > 1) { ?>
                     <div class="dropdown">
-                        <a class="py-1 px-1" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
+                        <a class="py-1 px-1" style="font-size:.875rem;" href="" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                         </a> 
                         <div class="dropdown-menu py-1" style="width:350px;">
                             <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
@@ -216,7 +216,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                     echo '<span class="py-0 pr-2" style="font-size:.875rem;"><strong>Position: </strong>' . $positions[0]['positionName'] . '</span>';
                 } else if ($totalPositions > 1) { ?>
                     <div class="dropdown">
-                        <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
+                        <a class="py-0 px-0" style="font-size:.875rem;" href="" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
                         <div class="dropdown-menu py-1" style="width:350px;">
                             <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo $totalPositions; ?>)</h6>
                             <?php foreach ($positions as $item) {
@@ -252,7 +252,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Department: </strong><?php echo $departments[0]; ?> | </span>
             <?php } elseif ($totalDepartments > 1) { ?>
                 <div class="dropdown">
-                    <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
+                    <a class="py-0 px-0" style="font-size:.875rem;" href="" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';" data-toggle="dropdown" aria-expanded="false"><?php echo $totalDepartments . ' Departments'; ?> |&nbsp;
                     </a>
                     <div class="dropdown-menu py-1" style="width:350px;">
                         <h6 class="bg-light text-center py-1 mb-1">Departments (<?php echo $totalDepartments; ?>)</h6>
@@ -264,7 +264,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 <span class="py-0 pr-2" style="font-size:.875rem;"><strong>Position: </strong><?php echo $totalPositionsName; ?></span>
             <?php } elseif ($totalPositions > 1) { ?>
                 <div class="dropdown">
-                    <a class="py-0 px-0" style="font-size:.875rem;" href="" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
+                    <a class="py-0 px-0" style="font-size:.875rem;" href="" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';" data-toggle="dropdown" aria-expanded="false"><?php echo $totalPositions . ' Positions'; ?></a>
                     <div class="dropdown-menu py-1" style="width:350px;">
                         <h6 class="bg-light text-center py-1 mb-1">Positions (<?php echo $totalPositions; ?>)</h6>
                         <?php echo $totalPositionsName; ?>
