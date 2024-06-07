@@ -150,6 +150,7 @@ class Engagifii_API{
 				CURLOPT_ENCODING 		=> "",   
 				CURLOPT_CUSTOMREQUEST 	=> $requestType,
 				CURLOPT_POSTFIELDS 		=> json_encode($requestData),
+				CURLOPT_TIMEOUT=>10,
 				CURLOPT_HTTPHEADER 		=> array(
 					"cache-control: no-cache",
 					"content-type: application/json",   
@@ -160,6 +161,13 @@ class Engagifii_API{
 			));
 			if($tenant_code!=""){
 							$response = curl_exec($curl);
+							if (curl_exec($curl) === false) {
+								// cURL error
+								//echo 'Curl error: ' . curl_error($curl);
+							} else {
+								// cURL executed without errors
+								//echo 'Received data: ' . $response;
+							}
 				}
 			$err = curl_error($curl);
 			curl_close($curl);
