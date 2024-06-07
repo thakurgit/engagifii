@@ -2335,7 +2335,7 @@ wp_die();
 				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
             $nestedData['peoplename'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->fullName.'</a></div>';
-            $nestedData['email'] = '<a href="mailto:'.$value->people->email.'">'.$value->people->email.'</a>';
+            $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
             $nestedData['currentdepartment'] ='';	
 			$nestedData['persontype'] =$value->people->personTypes[0]->name;
             $nestedData['status'] =$value->people->status;
@@ -2415,7 +2415,7 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['position'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
+					 $nestedData['position'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Positions</a>'.$classPopover.'</div>';
 					//organizations
 					$classPopover = dd_header('Organizations');
 					$subItems = "";
@@ -2429,7 +2429,7 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
+					 $nestedData['organization'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
@@ -2466,7 +2466,7 @@ wp_die();
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['department'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
+					 $nestedData['department'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peopleDepartment).' Departments</a>'.$classPopover.'</div>';
 					
 					//$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
 					// $nestedData['organization'] = '<div class="dropdown"><a href="" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
@@ -2802,11 +2802,29 @@ wp_die();
 	public function allReportsByPerson(){
 		$postedData =array();
 		if($_POST['awardId']){
-       	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport/".$_POST['profileId']."/".$_POST['awardId']."", $postedData, "GET", 'awards');
+        //$postedData = '{"filterBody":{sourceType:2,"peopleId":"'.$_POST['profileId'].'","awardId":"'.$_POST['awardId'].'","courseSortDirection":"asc"}}'; 
+        $postedData['filterBody']['sourceType']= 2;
+		$postedData['filterBody']['peopleId'] =$_POST['profileId'];
+		$postedData['filterBody']['awardId']=$_POST['awardId'];
+        $postedData['filterBody']['courseSortDirection'] = "asc";
+       	 $dataResponse = $this->submitApiRequest("Awards/generateCertificationPDFReport", $postedData, "POST", 'awards');
 		}else{
-       	 $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "GET", 'awards');
+        //$postedData ='{"pageNumber":1,"pageSize":10,"itemCount":100,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$_POST['profileId'].'","courseSortDirection":"asc","isFiscalYearAvailable":false, sourceType:2}}';
+        $postedData['pageNumber'] = 1; 
+        $postedData['pageSize'] = 10; 
+        $postedData['itemCount'] = 100; 
+        $postedData['sortBy'] = 'name'; 
+        $postedData['sortDirection'] = 'asc';         
+        $postedData['filterBody']['peopleId'] = $_POST['profileId'];
+		$postedData['courseSortDirection'] = 'asc';
+        $postedData['isFiscalYearAvailable']  = "false";
+        $postedData['filterBody']['sourceType']= 2;
+        $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
 		}
+         //print_r($postedData); die;
         $response = json_decode($dataResponse['api_response']);
+       
+        //print_r($dataResponse); die;
         return $response;
         wp_die();
     }
@@ -6142,4 +6160,3 @@ public function date_range($first, $last, $step = '+1 day', $output_format = 'Y-
 
 
 }
-
