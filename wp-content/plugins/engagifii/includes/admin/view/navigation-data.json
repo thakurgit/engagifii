@@ -20,7 +20,7 @@
     "icon": "far fa-calendar-alt"
   },
   {
-    "label": "My Transcript",
+    "label": "My Transcripts",
     "url": "my-profile/my-transcript",
     "icon": "fas fa-file"
   },
