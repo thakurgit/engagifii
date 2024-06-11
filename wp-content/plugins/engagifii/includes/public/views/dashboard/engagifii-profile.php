@@ -718,6 +718,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 
     </div>
     <script>
+      <?php 
+      $peopleToken = $_SESSION['accesstoken'];
+      ?>
    	jQuery(document).ready(function(e){
 	jQuery('.edit-profile-btn').click(function(e){
 		jQuery('.profile-page').hide();
@@ -854,7 +857,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 					processData: false,
 					headers: {
 					  'Content-Type': 'application/json',
-					  'Authorization':'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTAxNjM4NjAsImV4cCI6MTc0MTY5OTg2MCwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiVXNlcnNBUEkiLCJBY2NyZWRpdGF0aW9uQVBJIiwiQmlsbHRyYWNraW5nQXBpIiwiQ29tbWVudEFwaSIsIk5vdGVzQXBpIl0sImNsaWVudF9pZCI6Im5nLkVuZ2FnaWZpaVVJIiwic3ViIjoiM2ViYTRmNTItYjkwYi00YzgwLWFiYjMtNTE5YjBhNzcyMGVlIiwiYXV0aF90aW1lIjoxNzEwMTYzODYwLCJpZHAiOiJsb2NhbCIsInNzLXBpZCI6IjA2MjQ2NGFhLTU5MWUtNDU4NC05MjI0LTcxZmZjNjEyZWMyOCIsInBpY3R1cmUiOiIiLCJwaWN0dXJlLXNtYWxsIjoiIiwicGljdHVyZS1pY29uIjoiIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIiwiZW1haWwiOiJqY3Jhd2xleUB5b3BtYWlsLmNvbSIsImxhc3QtbG9naW4iOiIwMy8xMS8yMDI0IDEzOjMwOjAwIiwiY3VycmVudC1sb2dpbiI6IjAzLzExLzIwMjQgMTM6MzE6MDAiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJVc2Vyc0FQSSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiXSwiYW1yIjpbInB3ZCJdfQ.rRBS-695ziRsJNb1d4eGlostYFdsfOKF3b-Lj_9nUCGdxA95lHlsFxI1Qk-oLrBvNzRDBf_sbKisOQQ3fjw05V3d5flg7FXViUe48ekeDn-dIZWqa33btFT_-6Ukt-4rMjP-ZFSi7FscHiHW1vAbjx8vKAkDrEdhTR1yvLKy2Bnfkocgr225Om-1ATby8lXRy-3Xq1wofjrg25EUfgl7QzPv_s3LK_pT0eS1pdYuEw39UoZB8yWwtzQ4sqhaQihA6b63IBJqDKTO_Mda__dTqQndmheqfFcgZ-VvZF9EWl6_O8fu3g5CmrFXryDFO3vLeovvVm3L_HlDqEkyZUoh9g',
+					  'Authorization': '<?php echo $peopleToken; ?>',
 					  'tenant-code':'<?php echo $tenantCode; ?>'
 					},
 					success: function (response) {
