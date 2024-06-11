@@ -144,7 +144,7 @@ include 'sidebar_nav.php';
   <div class="profile-page">
   <div class="container-fluid  mb-4 ">
     <?php if($isPendingRequest==true){ ?>
-      <div class="text-right"><span class="badge badge-warning">Profile Changes Pending for Approval</span> </div> 
+      <div class="text-right"><span class="badge badge-warning">Profile Changes Pending Approval</span> </div> 
    <?php } ?>
   <div class="py-3  rounded-sm">
     	<div class="d-flex ">
@@ -535,9 +535,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             <?php if (str_contains($peopleDATA->people->imageThumbUrl, 'http')) { ?>
     	<img src="<?php echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  >
     <?php } else { ?>
-    	<i class="fa fa-user text-secondary" style="font-size:110px"></i>
+    	<i class="fa fa-user text-secondary placeholder-dp" style="font-size:110px"></i>
+    <img src="" alt="" class="img-fluid h-100" id="blah"> 
     <?php } ?>
-    <!-- <img src="<?php //echo $peopleDATA->people->imageThumbUrl; ?>" alt="..." class="img-fluid h-100" id="blah"  > -->
     <span class="position-absolute w-100 h-100 top-0 start-0 text-white d-flex align-items-center flex-column justify-content-center" style="background:rgba(0,0,0,0.6); opacity:0; top:0; left:0"><i class="fa fa-image"></i><br>Upload</span>
     <input type="file" class="position-absolute top-0 start-0 w-100 h-100 z-1" style="opacity:0; top:0; left:0" accept="image/*" id="imgInp" onchange=""> 
     <style>
@@ -688,6 +688,13 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </button>
     </div>
       </div>
+  <div id="liveToast-error" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+<div class="toast-body" style="background:#F0C6C6">
+      Profile didn't update!.<button type="button" data-dismiss="toast" aria-label="Close" class="ml-4  close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+      </div>
 </div>
          
 <div class="modal fade" id="requestSubmitted" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -828,6 +835,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             width: 130,
             height: 130,
           });
+		  jQuery('.placeholder-dp').remove();
           initialAvatarURL = avatar.src;
           avatar.src = canvas.toDataURL();
           canvas.toBlob(function (blob) {
@@ -865,6 +873,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 					},
 	  
 					error: function () {
+						jQuery("#liveToast-error").toast("show");
 					},
 	  
 					complete: function () {
