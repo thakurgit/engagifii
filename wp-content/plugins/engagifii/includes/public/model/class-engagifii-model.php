@@ -2420,16 +2420,23 @@ wp_die();
 					$classPopover = dd_header('Organizations');
 					$subItems = "";
 					$li=1;
+                    $orgCount = "";
+                    $seenOrgs = [] ;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
-                       $class='';
+                        $rowData->organizationName = array_unique($rowData->organizationName);
+						$class='';
 						if($li%2==1){
 						  $class='bg-light';	
 						}
-						$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">'.$rowData->organizationName.'</li>';
+						if (!in_array($rowData->organizationName, $seenOrgs)) {
+                            $subItems .= ' <li class="px-2 py-1 border-bottom  small ' . $class . '">' . $rowData->organizationName . '</li>';
+                            $seenOrgs[] = $rowData->organizationName; // add org name to the array
+                            $orgCount++;
+                        }
 						$li++;
 					}
 					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['organization'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.count($value->people->peoplePosition).' Organizations</a>'.$classPopover.'</div>';
+					 $nestedData['organization'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.$orgCount.' Organizations</a>'.$classPopover.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
