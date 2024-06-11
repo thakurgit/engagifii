@@ -2421,7 +2421,7 @@ wp_die();
 					$subItems = "";
 					$li=1;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
-						$class='';
+                       $class='';
 						if($li%2==1){
 						  $class='bg-light';	
 						}
