@@ -2435,8 +2435,17 @@ wp_die();
                         }
 						$li++;
 					}
-					$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-					 $nestedData['organization'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.$orgCount.' Organizations</a>'.$classPopover.'</div>';
+                    if($orgCount>1){
+                        $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+                        $nestedData['organization'] = '<div class="dropdown"><a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" data-offset="60,0" data-toggle="dropdown" class="class_'.$key.' " data-placement="left">'.$orgCount.' Organizations</a>'.$classPopover.'</div>';
+                    }else{
+                                $nestedData['organization']='<div class="d-flex align-items-center">';	
+                            if($rowData->imageThumbUrl && filter_var($rowData->peoplePosition[0]->imageThumbUrl, FILTER_VALIDATE_URL)){
+                                $nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$rowData->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$rowData->imageThumbUrl.'">';	
+                            }else{
+                                $nestedData['organization'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                            }
+                            $nestedData['organization'] .=$rowData->organizationName.'</div>';
 				}
 			}else{
 				$nestedData['organization'] ='--';
