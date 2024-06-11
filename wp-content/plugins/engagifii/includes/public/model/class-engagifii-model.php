@@ -2420,7 +2420,7 @@ wp_die();
 					$classPopover = dd_header('Organizations');
 					$subItems = "";
 					$li=1;
-                    $orgCount = "";
+                    $orgCount = 0;
                     $seenOrgs = [] ;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
                         $rowData->organizationName = array_unique($rowData->organizationName);
@@ -2441,11 +2441,12 @@ wp_die();
                     }else{
                                 $nestedData['organization']='<div class="d-flex align-items-center">';	
                             if($rowData->imageThumbUrl && filter_var($rowData->imageThumbUrl, FILTER_VALIDATE_URL)){
-                                $nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$rowData->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$rowData->imageThumbUrl.'">';	
+                                $nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$seenOrgs[0].'" class="rounded-circle img-fluid mr-2" src="'.$rowData->imageThumbUrl.'">';	
                             }else{
                                 $nestedData['organization'].='<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
                             }
-                            $nestedData['organization'] .=$rowData->organizationName.'</div>';
+                            $nestedData['organization'] .=$seenOrgs[0].'</div>';
+                        }
 				}
 			}else{
 				$nestedData['organization'] ='--';
