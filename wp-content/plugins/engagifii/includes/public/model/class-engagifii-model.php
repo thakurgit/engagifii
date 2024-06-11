@@ -2423,8 +2423,7 @@ wp_die();
                     $orgCount = 0;
                     $seenOrgs = [] ;
 					foreach ($value->people->peoplePosition as $key => $rowData) {
-                        $rowData->organizationName = array_unique($rowData->organizationName);
-						$class='';
+                      	$class='';
 						if($li%2==1){
 						  $class='bg-light';	
 						}
