@@ -654,9 +654,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 	<input type="text" name="" class="form-control text-start country" id="country" data-value ="<?php  echo  $address['country'];?>" value="<?php  echo  $address['country'];?>"/>
                     </div>
                      <div class="">
-                	<!--<input type="hidden" name="" class="form-control text-start" id="lat" data-value ="<?php  echo  $address['lat'];?>" value="<?php  echo  $address['lat'];?>"/>
-                	<input type="hidden" name="" class="form-control text-start" id="lng" data-value ="<?php  echo  $address['lng'];?>" value="<?php  echo  $address['lng'];?>"/>
-                    </div> -->
+                	<?php /*?><input type="hidden" name="" class="form-control text-start" id="lat" data-value ="<?php  echo  $address['lat'];?>" value="<?php  echo  $address['lat'];?>"/>
+                	<input type="hidden" name="" class="form-control text-start" id="lng" data-value ="<?php  echo  $address['lng'];?>" value="<?php  echo  $address['lng'];?>"/><?php */?>
+                    </div> 
                     	
                 </div>
                 </div>
@@ -1179,7 +1179,7 @@ payload.push( Addressdata<?php echo $key;?> );
 		
     },
  });*/
- $.ajax({
+ /*$.ajax({
     url: window.location.href,
     type: "POST",
     contentType: "application/json",
@@ -1194,7 +1194,34 @@ payload.push( Addressdata<?php echo $key;?> );
     //              window.location.href = "<?php //echo $site_url; ?>/psba/my-profile";
     //          }, 5000);
     },
- });
+ });*/
+ 	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'updateProfile',
+			  payload: JSON.stringify(payload),
+          },
+          success: function(response) { 
+       $('#requestSubmitted').modal('show');
+       $('#updateProfile').removeAttr('disabled').find('span').hide();
+			
+		  }
+        });
+
+ /*$.ajax({
+	 url: "https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest", 
+	 type: "POST",
+    contentType: "application/json",
+	headers: {"Authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MTgwODQxNTEsImV4cCI6MTc0OTYyMDE1MSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiaHR0cHM6Ly9lbmdhZ2lmaWktcHJldmlldzQtaWRlbnRpdHkuYXp1cmV3ZWJzaXRlcy5uZXQvcmVzb3VyY2VzIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSIsIlVzZXJzQVBJIl0sImNsaWVudF9pZCI6InBzYmEiLCJzdWIiOiI3ZDU0MWY0My0zMWExLTRkODYtYmQxMC04MmIxMDY1YWFhY2YiLCJhdXRoX3RpbWUiOjE3MTgwODQxNTAsImlkcCI6ImxvY2FsIiwic3MtcGlkIjoiNDE4NzA5NGMtNDMzMy1lYzExLTk0NTgtMDA1MDU2YWYxN2UzIiwicGljdHVyZSI6IiIsInBpY3R1cmUtc21hbGwiOiIiLCJwaWN0dXJlLWljb24iOiIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIiLCJlbWFpbCI6InBhdWxhLmdpb3JkYW5vQHlvcG1haWwuY29tIiwibGFzdC1sb2dpbiI6IjA2LzExLzIwMjQgMDU6MjA6NDUiLCJjdXJyZW50LWxvZ2luIjoiMDYvMTEvMjAyNCAwNTozNTo1MCIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIiwicHJvZmlsZSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiLCJVc2Vyc0FQSSJdLCJhbXIiOlsicHdkIl19.LMvzUUk6FSkSpsa3j5Yma7uynfcUrkjrWx0JdrAMs0gDDMbwR6GtbP5HyLsNpabDglRWYoI7xdX9pdx8OzUmxhZXeSQEYG6KokBWqxU-_NWTDjZDp62yyaW86X6kLImRY4sfOBFGWuANv5P8nMDz_6X7KxzEl5_tipdyYNMgQzf5eeJUQy_tzM-i-XBi60NaEjeylF7_l-be6C1MtNsja3datbvfnSqcr9vkvblvUr3tiwUaE9TSfxlFAjlVkIbXfZWVONaTP_7LeQ4MSsqYFilBM9MB3neooAVyzOtb0jaX3tKZX9RYzp_HOmcaCz4AUto0ySb-15KHupnivtPkDg" },
+    data: JSON.stringify(payload),
+		 success: function(result){
+			 console.log(result);
+			},
+			 error: function(xhr, textStatus, errorThrown) {
+			  //console.log(xhr, textStatus, errorThrown);
+			}
+		});*/
  
 
   
@@ -1249,14 +1276,14 @@ function initializeAutocomplete() {
 
 </script>
   <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+/*if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $payload = json_decode(file_get_contents("php://input"), true);	
 
 $peopleToken = $_SESSION['accesstoken'];
 $authentication1 = 'authorization: Bearer '.$peopleToken;
 $curl = curl_init();
 //$url1 ='https://engagifii-preview4-dynamicobjectapproval.azurewebsites.net/api/v1/PeopleApproval/CreateRequest';
-$url1 =$options['engagifii_apis']['crmUrl'].'PeopleApproval/CreateRequest';
+$url1 =$options['engagifii_apis']['doUrl'].'PeopleApproval/CreateRequest'; 
   curl_setopt_array($curl, array(
   CURLOPT_URL => $url1,
   CURLOPT_RETURNTRANSFER => true,
@@ -1274,7 +1301,7 @@ $updateDATA = json_decode($response1);
 //print_r($updateDATA);
 // Close the cURL session
 curl_close($curl);
-}
+}*/
 ?>
 <script>
   $('.gtm').click(function(){

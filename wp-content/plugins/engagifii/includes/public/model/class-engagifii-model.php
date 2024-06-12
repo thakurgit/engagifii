@@ -36,6 +36,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['isCreditEarnedByParticipant', 'isCreditEarnedByParticipant'],
         ['clearDownloads', 'clearDownloadsByPerson'],
         ['allReports', 'allReportsByPerson'],
+        ['updateProfile', 'updateProfileByMember'],
         ['classes', 'classLoadGridData'],
         ['classesJS', 'classesDataJS'],
         ['classsearch', 'classSearchLoadGridData'],
@@ -2841,6 +2842,16 @@ wp_die();
         $response = json_decode($dataResponse['api_response']);
        
         //print_r($dataResponse); die;
+        return $response;
+        wp_die();
+    }
+	public function updateProfileByMember(){
+		$postedData =array();
+		$postedData =stripslashes($_POST['payload']);
+		$postedData = json_decode($postedData, true);
+         //print_r($postedData); die;
+       	 $dataResponse = $this->submitApiRequest("PeopleApproval/CreateRequest", $postedData, "POST", 'dynamicobject');
+        $response = json_decode($dataResponse);
         return $response;
         wp_die();
     }
