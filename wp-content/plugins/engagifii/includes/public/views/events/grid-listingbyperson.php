@@ -543,7 +543,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
 	  $(document).on('click', function (e) {
  $('.filter-area').addClass('d-none');
 });
-$(document).on('click', '.filter-area', function (e) {
+$(document).on('click', '.filter-area, .td-dropdown', function (e) {
   e.stopPropagation();
 });
 $(document).on('click', 'th.prev', function (e) {

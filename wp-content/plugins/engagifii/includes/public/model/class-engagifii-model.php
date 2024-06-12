@@ -2767,10 +2767,10 @@ wp_die();
             $nestedData = array();
             
 			if($value->reportLink){
-			$nestedData['download-select']='<div class="dropdown"><button type="button"  class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod" style="width:20px;"/ ></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2" target="_blank" href="'.$value->reportLink.'">Download</a><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
+			$nestedData['download-select']='<div class="dropdown"><button type="button"  class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod" style="width:20px;"/ ></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2" target="_blank" style="color:#2196F3;"  href="'.$value->reportLink.'">Download</a><a class="dropdown-item px-2 deleteReport" href="" style="color:#2196F3;"  report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = '<a class="d-flex align-items-center" target="_blank" href="'.$value->reportLink.'">'.$value->reportName.'</a>';
 			}else{
-			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod" style="width:20px;"/ ></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2 deleteReport" href="" report-id="'.$value->id.'">Delete</a></div></div>';
+			$nestedData['download-select']='<div class="dropdown"><button type="button" report-id="'.$value->id.'" class="btn btn-sm shadow-none" data-toggle="dropdown"><img src="'.$download_icon.'" class="img-icon-lg rounded-circle img-fluid mr-2" alt="downlaod" style="width:20px;"/ ></button><div class="dropdown-menu py-1"><a class="dropdown-item px-2 deleteReport" style="color:#2196F3;"  href="" report-id="'.$value->id.'">Delete</a></div></div>';
             $nestedData['filename'] = $value->reportName;
 			}
             $nestedData['requested'] = date('M d, Y', strtotime($value->createdDate)).' at '.date('g:i A', strtotime($value->createdDate));
@@ -5013,7 +5013,7 @@ $li=1;
 			$class='bg-light';	
 			}
 		  if($rowData->city){
-		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><div data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Address:</b><br>' .$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</div>';
+		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Address:</b><br>' .$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</span><i class="fa fa-chevron-down"></i></a>'; 
 		  if($rowData->latitude){
 		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
 		  }
