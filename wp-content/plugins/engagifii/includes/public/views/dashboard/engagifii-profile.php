@@ -702,7 +702,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     <div class="modal-content">
       <div class="modal-header pb-0 border-0">
         <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+        <button type="button" class="close p-2 edit-profile-cancel" data-dismiss="modal" aria-label="Close" style="z-index:9">
           <span aria-hidden="true">&times;</span>
         </button>
 
@@ -711,7 +711,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
      <?php  if($member_id){ ?>
       <p class="text-center">Your request is submitted successfully. Please return to <br><a href="<?php echo site_url(); ?>/my-profile/?member=<?php echo $member_id; ?>">User Profile.</a></p>
       <?php } else { ?>
-        <p class="text-center">Your request is submitted successfully. Please return to <br><a href="<?php echo site_url(); ?>/my-profile">My Profile.</a></p>
+        <p class="text-center">Your request is submitted successfully.</a></p>
         <?php } ?> 
       </div>
       
