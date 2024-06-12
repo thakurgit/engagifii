@@ -310,7 +310,7 @@ var table = $('#ebtmaintable').DataTable( {
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
+		  { className: "text-left", "targets": ["tags","register","eventType","eventDates","city"] },
 		  <?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
 		  {'targets': <?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
