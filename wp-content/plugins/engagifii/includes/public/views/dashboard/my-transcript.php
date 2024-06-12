@@ -179,8 +179,8 @@ z-index:-1;
 		<div class="card mb-4 border rounded-sm " data-content="<?php echo $class; ?>">
         	<div class="card-header position-relative p-0" id="headingTwo">
         	<h2 class="mb-0">
-            	<button class="btn btn-link d-flex w-100  text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
-        <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1 awardReport" data-report="<?php echo  $award->awardId;?>"><span class="mr-1"><svg width="10" height="12" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            	<button class="btn btn-link d-flex w-100  text-left  <?php if($i!=0){ echo 'collapsed1'; }?>" style="cursor: default;" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">
+        <?php echo $award->name; ?><span class="ml-auto"><?php echo $status; ?> <span class="btn btn-primary btn-sm py-0 px-2 ms-1 awardReport" style="cursor: default;" data-report="<?php echo  $award->awardId;?>"><span class="mr-1"><svg width="10" height="12" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.4921 0.484375H0.3302V12.8754H1.24805V1.40223H10.4921V0.484375Z" fill="white"/>
 <path d="M11.1884 12.2853H9.70539V13.7683L11.1884 12.2853Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.18895H2.10034V14.5144H8.78753V11.3675H12V2.18895ZM8.65641 3.76241H5.37838V4.74582H8.65641V3.76241ZM10.2954 5.40143H3.6738V6.38484H10.2954V5.40143ZM3.6738 6.97489H10.2954V7.9583H3.6738V6.97489ZM10.2954 8.61391H3.6738V9.59732H10.2954V8.61391Z" fill="white"/>
