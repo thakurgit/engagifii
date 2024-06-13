@@ -1,5 +1,6 @@
 <?php 
 ini_set('session.gc_maxlifetime', 3600);
+date_default_timezone_set('America/Chicago');
 if (! is_user_logged_in()) {
 	$login = 'moOAuthLoginNew("Engagifii")';
     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center mb-0'>This page is restricted. Please";
