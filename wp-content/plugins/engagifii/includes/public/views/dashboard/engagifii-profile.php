@@ -734,18 +734,16 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 		jQuery('.profile-edit-modal').removeClass('d-none');
 		e.preventDefault();	
 	});
-	jQuery('.edit-profile-cancel').click(function(e){
+	jQuery('.edit-profile-cancel,.edit-profile-redirect').click(function(e){
 		jQuery('.profile-page').show();
 		jQuery('.profile-edit-modal').addClass('d-none');
 		e.preventDefault();	
-	});
-  jQuery('.edit-profile-redirect').click(function(e){
-		jQuery('.profile-page').show();
-		jQuery('.profile-edit-modal').addClass('d-none');
-		e.preventDefault();	
-    setTimeout(function() {
-        location.reload();
-    }, 100); 
+		 if ($(this).hasClass('edit-profile-redirect')) {
+			 $('body').removeClass('loaded');
+			setTimeout(function() {
+			  location.reload();
+			}, 10);
+		  }
 	});
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
@@ -1094,7 +1092,38 @@ payload.push( middleNamedata );
 
 payload.push( lastNamedata );  
   }
+<?php /*?>var fields = [
+  { selector: '.firstName', fieldName: 'firstName', originalValue:'<?php echo $peopleDATA->people->firstName; ?>' },
+  { selector: '.middleName', fieldName: 'middleName', originalValue:'<?php echo $peopleDATA->people->middleName; ?>' },
+  { selector: '.lastName', fieldName: 'lastName', originalValue:'<?php echo $peopleDATA->people->lastName; ?>' }
+];
+ fields.forEach(function(field) {
+  var currentValue = jQuery(field.selector).val();
+  var originalValue = field.originalValue;
   
+  if (currentValue !== originalValue) {
+    var newData = {
+      "tabId": null,
+      "tabGroupId": null,
+      "tabGroupFieldId": null,
+      "loggedInUserId": loggedInUserId,
+      "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+      "isHeader": true,
+      "headerFieldName": field.fieldName,
+      "smartDropDownRequest": "",
+      "fieldChangeValues": [
+        {
+          "oldValue": originalValue,
+          "newValue": currentValue,
+          "primary": false
+        }
+      ],
+      "isValueChanged": false
+    };
+    
+    payload.push(newData);
+  }
+});<?php */?>
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
@@ -1412,11 +1441,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const enableUpdateProfileBtn = () => {
             updateProfileBtn.disabled = false;
         };
-        form.querySelectorAll('input, textarea').forEach(input => {
+        /*form.querySelectorAll('input, textarea').forEach(input => {
             input.addEventListener('input', enableUpdateProfileBtn);
         });
         form.querySelectorAll('select').forEach(select => {
             select.addEventListener('change', enableUpdateProfileBtn);
-        });
+        });*/
+		form.addEventListener('input', enableUpdateProfileBtn);
+		form.addEventListener('change', enableUpdateProfileBtn);
     });
 </script>
