@@ -5013,10 +5013,11 @@ private function _popOverEventsData($id, $eventsData){
 	public function _popOverLocationData($id, $locationData){
 		$rowName = array();
      
- $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search Locations.."/></div>';
+ $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"></div>';
 	 $subItems = "";
 $li=1;
 	  foreach ($locationData as $key => $rowData) {
+        $days = $key+1;
         $sessionStart_Date = strtotime($rowData->sessionStartTime);
 		$startDate = date('M d, Y', $sessionStart_Date);
 		$startTime = date('g:i A', $sessionStart_Date);
@@ -5030,10 +5031,10 @@ $li=1;
 			$class='bg-light';	
 			}
 		  if($rowData->city){
-		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Day 1</b><br></span><i class="fa fa-chevron-down"></i></a>'; 
-          $subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
+		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Day '.$days.'</b><br></span><i class="fa fa-chevron-down"></i></a>'; 
+          //$subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
 		  if($rowData->latitude){
-		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
+		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'">'.$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
 		  }
 		  $subItems .= '</li>';
           }
