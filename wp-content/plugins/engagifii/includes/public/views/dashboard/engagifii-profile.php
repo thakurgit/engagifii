@@ -1023,7 +1023,7 @@ var tagsdata = {
 };
 payload.push( tagsdata );  
 }
-  if(jQuery('.firstName').val()!='<?php echo $peopleDATA->people->firstName; ?>'){
+ <?php /*?> if(jQuery('.firstName').val()!='<?php echo $peopleDATA->people->firstName; ?>'){
 	  var newfirstName = jQuery('.firstName').val();
 	  	var firstNamedata = {
     "tabId": null,
@@ -1091,8 +1091,8 @@ payload.push( middleNamedata );
 };
 
 payload.push( lastNamedata );  
-  }
-<?php /*?>var fields = [
+  }<?php */?>
+var fields = [
   { selector: '.firstName', fieldName: 'firstName', originalValue:'<?php echo $peopleDATA->people->firstName; ?>' },
   { selector: '.middleName', fieldName: 'middleName', originalValue:'<?php echo $peopleDATA->people->middleName; ?>' },
   { selector: '.lastName', fieldName: 'lastName', originalValue:'<?php echo $peopleDATA->people->lastName; ?>' }
@@ -1123,7 +1123,7 @@ payload.push( lastNamedata );
     
     payload.push(newData);
   }
-});<?php */?>
+});
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
