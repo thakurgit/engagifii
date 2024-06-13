@@ -5030,7 +5030,8 @@ $li=1;
 			$class='bg-light';	
 			}
 		  if($rowData->city){
-		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Address:</b><br>' .$sessionStart_Date.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</span><i class="fa fa-chevron-down"></i></a>'; 
+		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Day 1</b><br></span><i class="fa fa-chevron-down"></i></a>'; 
+          $subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
 		  if($rowData->latitude){
 		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
 		  }
