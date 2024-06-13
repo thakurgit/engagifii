@@ -5017,6 +5017,12 @@ private function _popOverEventsData($id, $eventsData){
 	 $subItems = "";
 $li=1;
 	  foreach ($locationData as $key => $rowData) {
+        $sessionStart_Date = strtotime($rowData->sessionStartTime);
+		$startDate = date('M d, Y', $sessionStart_Date);
+		$startTime = date('g:i A', $sessionStart_Date);
+		$sessionEnd_Date = strtotime($rowData->sessionEndTime);
+		$endDate = date('M d, Y', $sessionEnd_Date);
+		$endTime = date('g:i A', $sessionEnd_Date);
 		  
 		  $rowName[$rowData->id] = $rowData->city;
 		    $class='';
@@ -5024,7 +5030,7 @@ $li=1;
 			$class='bg-light';	
 			}
 		  if($rowData->city){
-		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Address:</b><br>' .$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</span><i class="fa fa-chevron-down"></i></a>'; 
+		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><span><b>Address:</b><br>' .$sessionStart_Date.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</span><i class="fa fa-chevron-down"></i></a>'; 
 		  if($rowData->latitude){
 		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
 		  }
