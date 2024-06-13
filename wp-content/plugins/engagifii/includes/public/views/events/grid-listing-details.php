@@ -340,7 +340,7 @@ if ( strpos($url,'my-profile') !== false ) {
 												<?php echo $value->addressLine." ".$value->city." ".$value->state." ".$value->zip; ?>, <?php echo $value->country; ?></li>
 												<?php } 
 												if($value->latitude && $value->longitude){
-												echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$value->latitude.','.$value->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
+												echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$value->latitude.','.$value->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
 												}
 												?>
 												
