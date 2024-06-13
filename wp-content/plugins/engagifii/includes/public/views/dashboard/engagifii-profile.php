@@ -702,7 +702,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     <div class="modal-content">
       <div class="modal-header pb-0 border-0">
         <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close p-2 edit-profile-cancel" data-dismiss="modal" aria-label="Close" style="z-index:9">
+        <button type="button" class="close p-2 edit-profile-redirect" data-dismiss="modal" aria-label="Close" style="z-index:9">
           <span aria-hidden="true">&times;</span>
         </button>
 
@@ -738,6 +738,14 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 		jQuery('.profile-page').show();
 		jQuery('.profile-edit-modal').addClass('d-none');
 		e.preventDefault();	
+	});
+  jQuery('.edit-profile-redirect').click(function(e){
+		jQuery('.profile-page').show();
+		jQuery('.profile-edit-modal').addClass('d-none');
+		e.preventDefault();	
+    setTimeout(function() {
+        location.reload();
+    }, 100); 
 	});
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
