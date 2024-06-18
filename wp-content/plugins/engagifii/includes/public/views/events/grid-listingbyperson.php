@@ -230,7 +230,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here events-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
+    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here events-page <?php echo  $dt_class; ?>" style="width: 100% !important; ">
     <thead> 
       <tr>                
         <?php 
@@ -274,8 +274,9 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
  .ebtmaintable-tbl-container{
    position: relative;
  }
-
-
+.custom-scroll #ebtmaintable, .custom-scroll {
+	 overflow: visible; 
+}
  
 </style>
 
