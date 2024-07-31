@@ -67,6 +67,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['poFilter', 'poFilter'], //public offcial filter
         ['publicOfficial', 'publicOfficialLoadData'], //public offcial datatable
         ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
+        ['apisJson', 'apisJson'], //apis json url
         //end here
     ];
 
@@ -75,7 +76,14 @@ class abstractModelEngagifii extends Engagifii_API
         add_action('wp_ajax_' . $action[0], [$this, $action[1]]);
     }
 }
-
+public function apisJson(){
+	$env = $_POST['env'];
+        $dataResponse = "https://engagifii.engagifii".$env.".com/assets/environment-config-1.0.json";
+		$pJSON = file_get_contents($dataResponse);
+        header("Content-Type: application/json");
+		echo $pJSON;
+        wp_die();	
+}
 /*
  * Generate months options list for select box
  */
