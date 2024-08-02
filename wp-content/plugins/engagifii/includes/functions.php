@@ -40,6 +40,22 @@ function clearCookies() {
     }
 	}
 
+    // Hook into the logout action to handle additional logout processes
+function custom_logout_redirect() {
+    wp_redirect('https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=https://engagifiwebstg.wpengine.com/psba/');
+    exit();
+}
+add_action('wp_logout', 'custom_logout_redirect');
+
+// Customize the logout URL to include the custom redirect URL
+function custom_logout_url( $logout_url, $redirect ) {
+    $custom_redirect = 'https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=https://engagifiwebstg.wpengine.com/psba/';
+    return add_query_arg('redirect_to', urlencode($custom_redirect), $logout_url);
+}
+add_filter('logout_url', 'custom_logout_url', 10, 2);
+
+
+
 		function moOAuthLoginNew(app_name) {
 			
 			window.location.href = '<?php echo site_url(); ?>' + '/?option=oauthredirect&app_name=' + app_name;
