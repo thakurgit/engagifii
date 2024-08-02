@@ -792,7 +792,7 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		return $response;
 	}
 	public function engagifiiProfileAwards($profileId,$awardDataCount){
-		$postData='{"itemCount":'.$awardDataCount.',"pageNumber":1,"sortBy":"name","sortDirection":"asc","filterBody":{}}';
+		$postData='{"itemCount":'.$awardDataCount.',"pageNumber":1,"sortBy":"name","sortDirection":"asc","filterBody":{"peopleId":"'.$profileId.'"}}';
 		$responseArray = array();
 		$apiUrl = 'Awards/AwardsCertificationsByPeople/'.$profileId;
 		$response =  $this->submitApiRequest($apiUrl, json_decode($postData), 'POST', 'awards');
