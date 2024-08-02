@@ -133,7 +133,7 @@ function add_loginout_link( $items, $args ) {
         $items .= '<li class="nav-item"><a title="Logout" class="nav-link login-btn" onclick="clearAllCookies()" target="_blank" href="'. wp_logout_url() .'">Log Out</a></li>';
     }
     elseif (!is_user_logged_in() && $args->theme_location == 'primary' && $login_btn ) {
-        $items .= '<li class="nav-item"><a onClick="'.$login.'" class="nav-link login-btn" title="Login with Engagifii" href="javascript:void">Log In</a></li>';
+        $items .= '<li class="nav-item"><a onClick="clearAllCookies();'.$login.'" class="nav-link login-btn" title="Login with Engagifii" href="javascript:void">Log In</a></li>';
     }
     return $items;
 }
