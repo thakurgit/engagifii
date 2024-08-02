@@ -3012,7 +3012,7 @@ wp_die();
 		$events_detail_page_link= site_url() .'/event-detail/';	 
 	    }
         $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii-preview4.com';
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii-qa.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
@@ -3266,7 +3266,7 @@ public function eventFilters(){
         $request = $_GET;
 
         $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii-preview4.com';
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii-qa.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
