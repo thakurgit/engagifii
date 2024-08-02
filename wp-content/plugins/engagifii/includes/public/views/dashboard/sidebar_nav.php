@@ -32,7 +32,7 @@ transition:0.3s all ease-in-out;
     <a class="dropdown-item" href="<?php echo $site_url ?>/my-profile/">My Profile</a>
     <!-- <a class="dropdown-item" href="<?php echo $site_url ?>/engagifii-profile/edit">Edit Profile</a> -->
      <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>" onclick="clearAllCookies()" target="_blank">Logout</a>
+    <a class="dropdown-item" href="<?php echo esc_url(wp_logout_url('')); ?>" onclick="clearAllCookies()" >Logout</a>
   </div>
 </div>
     
