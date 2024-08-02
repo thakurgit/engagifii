@@ -18,15 +18,15 @@ function clearAllCookies(newtab='') {
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     }
-	if(newtab==''){
-	function myWindow(){
-		 //window.open('https://engagifii-preview4-identity.azurewebsites.net/Account/SignOut?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dng.EngagifiiUI%26redirect_uri%3Dhttps%253A%252F%252Fpsba.engagifii-preview4.com%252Fauth-callback%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520email%2520UsersAPI%2520AccreditationAPI%2520BilltrackingApi%2520CommentApi%2520NotesApi%26state%3D2f9558adbd6147b0acdd08d1aa46c79c%26nonce%3D43ea3bf67eef475ca04ea79b328fd000','_self');
-			 window.open('https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dng.EngagifiiUI%26redirect_uri%3Dhttps%253A%252F%252Fpsba.engagifii-qa.com%252Fauth-callback%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520email%2520UsersAPI%2520AccreditationAPI%2520BilltrackingApi%2520CommentApi%2520NotesApi%26state%3D2f9558adbd6147b0acdd08d1aa46c79c%26nonce%3D43ea3bf67eef475ca04ea79b328fd000','_self');
-}
-  setTimeout(function() {
-	  myWindow();
-	  }, 300);
-	}
+// 	if(newtab==''){
+// 	function myWindow(){
+// 		 //window.open('https://engagifii-preview4-identity.azurewebsites.net/Account/SignOut?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dng.EngagifiiUI%26redirect_uri%3Dhttps%253A%252F%252Fpsba.engagifii-preview4.com%252Fauth-callback%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520email%2520UsersAPI%2520AccreditationAPI%2520BilltrackingApi%2520CommentApi%2520NotesApi%26state%3D2f9558adbd6147b0acdd08d1aa46c79c%26nonce%3D43ea3bf67eef475ca04ea79b328fd000','_self');
+// 			 window.open('https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dng.EngagifiiUI%26redirect_uri%3Dhttps%253A%252F%252Fpsba.engagifii-qa.com%252Fauth-callback%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520email%2520UsersAPI%2520AccreditationAPI%2520BilltrackingApi%2520CommentApi%2520NotesApi%26state%3D2f9558adbd6147b0acdd08d1aa46c79c%26nonce%3D43ea3bf67eef475ca04ea79b328fd000','_self');
+// }
+//   setTimeout(function() {
+// 	  myWindow();
+// 	  }, 300);
+// 	}
 	
 }
 function clearCookies() {
@@ -39,7 +39,20 @@ function clearCookies() {
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     }
 	}
-    
+    // Hook into the logout action to handle additional logout processes
+function custom_logout_redirect() {
+    wp_redirect('https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=https://engagifiwebstg.wpengine.com/psba/');
+    exit();
+}
+add_action('wp_logout', 'custom_logout_redirect');
+
+// Customize the logout URL to include the custom redirect URL
+function custom_logout_url( $logout_url, $redirect ) {
+    $custom_redirect = 'https://engagifii-qa-identity.azurewebsites.net/Account/SignOut?ReturnUrl=https://engagifiwebstg.wpengine.com/psba/';
+    return add_query_arg('redirect_to', urlencode($custom_redirect), $logout_url);
+}
+add_filter('logout_url', 'custom_logout_url', 10, 2);
+
 
 		function moOAuthLoginNew(app_name) {
 			
