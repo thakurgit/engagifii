@@ -177,10 +177,10 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 $department = $dp[0]['positionHistory'][0]['departmentName'] ?: '--';
                 $position = $dp[0]['positionHistory'][0]['positionName'] ?: '--';
                 if ($department != "--") {
-                    echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span> |';
+                    echo '<span class="py-1 pr-2" style="font-size:.875rem;"><strong>Department: </strong>' . $department . '</span> |';
                 }
                 if ($position != "--") {
-                    echo '<span class="py-1 pr-4" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
+                    echo '<span class="py-1 pl-2 pr-2" style="font-size:.875rem;"><strong>Position: </strong>' . $position . '</span>';
                 }
             } else {
                 $positions = $dp[0]['positionHistory'];
