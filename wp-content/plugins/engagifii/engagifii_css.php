@@ -121,5 +121,11 @@ a:hover, .btn-link:hover, .dropdown-item:hover, .dropdown-item:focus {
 .bg-primary{
 	background-color: var(--engagifii-color) !important;
 }
+.dropdown-menu.dropdown-menu-right.td-dropdown.pb-0.pt-2.mCustomScrollbar._mCS_1.mCS-autoHide.mCS_no_scrollbar.show {
+    transform: none !important;
+    align-content: initial;
+	top:20px !important;
+	left: -250px !important;
+}
 <?php }?>
 </style>
