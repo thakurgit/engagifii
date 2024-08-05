@@ -192,8 +192,8 @@ if ( strpos($url,'my-profile') !== false ) {
                     $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
                  <?php } else{ ?>
-			<a class="btn btn-primary " target="_blank" href="https://<?php echo $tenantCode;?>.engagifii<?php echo $env;?>.com/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken'];?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview">Register</a></div>  
-            <?php } }
+			            <button data-url="https://psba.engagifii-qa.com/auth-callback/pages/home#access_token=&amp;source=external&amp;tpath=pages/events/d3977486-0d72-4e93-504b-08dcb25504d2/437/1584/eventregpub/signup/overview" class="btn btn-primary px-3 py-1 open-pop">Register</button>
+			<?php } }
 			else { ?>
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
             <?php } 
@@ -758,5 +758,38 @@ table.class-table td:nth-child(1) {
 		   	},
 			"ordering":false,
 			});
+	});
+	$('.open-pop').click(function(e){
+		var tpath = $(this).attr('data-url');
+		//popup
+			var childWindow;
+       // function openChildWindow() {
+            // Open the child window and store the reference
+            childWindow = window.open(tpath, '', 'width=1300, height=700');
+            // Optional: Center the child window (not reliable for all browsers)
+            if (childWindow) {
+                var screenWidth = window.screen.width;
+                var screenHeight = window.screen.height;
+                var left = (screenWidth - 1000) / 2;
+                var top = (screenHeight - 650) / 2;
+                childWindow.moveTo(left, top);
+            }
+            // Set an interval to periodically check the child window status
+            var checkChildWindow = setInterval(function() {
+                if (childWindow && childWindow.closed) {
+                    // Update button text to indicate the parent window is refreshing
+                    //document.getElementById('openChildButton').innerText = 'Refreshing...';
+                    // Refresh the parent window when the child window is closed
+                    //location.reload();
+					table.draw();
+                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
+                }
+            }, 500); // Adjust the interval as needed
+			
+        //}
+
+		
+		
+		e.preventDefault();
 	});
 </script>
