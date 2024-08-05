@@ -1447,7 +1447,14 @@ document.addEventListener('DOMContentLoaded', function () {
         form.querySelectorAll('select').forEach(select => {
             select.addEventListener('change', enableUpdateProfileBtn);
         });*/
-		form.addEventListener('input', enableUpdateProfileBtn);
-		form.addEventListener('change', enableUpdateProfileBtn);
+			//form.addEventListener('input', enableUpdateProfileBtn);
+			//form.addEventListener('change', enableUpdateProfileBtn);
     });
+	$('form input').on('input',function(){
+	  if ($('.invalid-feedback').is(':visible')) {
+		$('#updateProfile').attr('disabled',''); 
+	  }else{
+		$('#updateProfile').removeAttr('disabled'); 
+	  }
+	});
 </script>
