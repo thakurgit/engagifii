@@ -2,6 +2,7 @@
 	$id 		= $_REQUEST['endId'] ?? null;
 	$workflowid 		= $_REQUEST['wId'] ?? null;
 	$roleid 		= $_REQUEST['rId'] ?? null;
+	$attendeesCount 		= $_REQUEST['attendeeCount'] ?? null;
 	$obj 			=  new Engagifii_API();
 	$response       =  $obj->getEventDetailsByID($id);
 	$postData=array();
@@ -191,9 +192,15 @@ if ( strpos($url,'my-profile') !== false ) {
 				if($workflowid==''){
                     $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
-                 <?php } else{ ?>
+                 <?php } else{ 
+					if($response->registrantsCapacity > $attendeesCount){ 
+						?>
 			            <button data-url="https://psba.engagifii-qa.com/auth-callback/pages/home#access_token=&amp;source=external&amp;tpath=pages/events/d3977486-0d72-4e93-504b-08dcb25504d2/437/1584/eventregpub/signup/overview" class="btn btn-primary px-3 py-1 open-pop">Register</button>
-			<?php } }
+			<?php } 
+			else{
+				$tooltip = 'Sold out'; ?>
+				<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
+			<?php }}}
 			else { ?>
 			<a class="btn btn-primary " target="_blank" href="<?php echo $tenant_url.'/pages/events/'. $id .'/general'; ?>">Register</a></div>  
             <?php } 
