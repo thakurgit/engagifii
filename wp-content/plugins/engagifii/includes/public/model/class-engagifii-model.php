@@ -2846,6 +2846,7 @@ wp_die();
         $postedData['filterBody']['sourceType']= 2;
         $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
 		}
+		
          //print_r($postedData); die;
         $response = json_decode($dataResponse['api_response']);
        

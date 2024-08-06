@@ -161,7 +161,7 @@ class Engagifii_API{
 			));
 			if($tenant_code!=""){
 							$response = curl_exec($curl);
-							if (curl_exec($curl) === false) {
+							if ($response === false) {
 								// cURL error
 								//echo 'Curl error: ' . curl_error($curl);
 							} else {
