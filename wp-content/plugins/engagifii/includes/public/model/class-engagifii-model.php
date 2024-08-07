@@ -3267,7 +3267,7 @@ public function eventFilters(){
         $request = $_GET;
 
         $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii-qa.com';
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
 
         $data = array();
