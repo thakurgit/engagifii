@@ -737,6 +737,11 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	jQuery('.edit-profile-cancel,.edit-profile-redirect').click(function(e){
 		jQuery('.profile-page').show();
 		jQuery('.profile-edit-modal').addClass('d-none');
+		jQuery('.edit-profile input[type="text"]').each(function(){
+			if(jQuery(this).val()!==jQuery(this).attr('value')){
+				jQuery(this).val(jQuery(this).attr('value'));	
+			}
+		});
 		e.preventDefault();	
 		 if ($(this).hasClass('edit-profile-redirect')) {
 			 $('body').removeClass('loaded');
