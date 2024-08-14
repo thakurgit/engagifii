@@ -3,9 +3,6 @@
 <?php
     $obj =  new adminDataColumn();
     $response = $obj->getColumnData();
-	if(!$response){
-		echo 'est';
-	}
     $options = get_option( 'ebt_api_settings' );
     $ebt_visib_datacol_list = array();
     if(isset($options['ebt_visib_datacol_list'])){
