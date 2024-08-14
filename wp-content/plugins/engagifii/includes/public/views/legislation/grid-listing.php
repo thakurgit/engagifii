@@ -1434,7 +1434,20 @@ if(tenant_code =="aasb"){
 }else{
   var order = [[$('th.title').index(), 'desc']];
 }
-
+if (tenant_code === 'aasb') {
+  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
+  if (sessionId == 5245 || sessionId === null) {
+    $('th.status').text('Pre-filed');
+	$('.status-heading-title').contents().filter(function() {
+	  return this.nodeType === 3; // Node.TEXT_NODE
+	}).each(function() {
+	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
+	});
+	 localStorage.setItem("sessionAasb", 2025); 
+  }else{
+	 localStorage.setItem("sessionAasb", ''); 
+  }
+}
 var table = $('#ebtmaintable').DataTable( {
     	<?php if($tenant_url =="gsba") {?>
       "pageLength": 100,

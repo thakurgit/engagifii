@@ -911,6 +911,9 @@ $siteURL= site_url();
               } else {
 				 $('a[href="#summary"]').tab('show');
               }
+      if(tenant == 'aasb' && localStorage.getItem("sessionAasb")==2025){
+				 $('.status-label strong').text('Pre-filed:');
+			 }
           });
 		  $('a[data-toggle="pill"]').on('shown.bs.tab', function (event) {
 			  if($(this).attr('href')=='#staffanalysis'){
