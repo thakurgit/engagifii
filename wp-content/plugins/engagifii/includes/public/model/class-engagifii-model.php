@@ -2401,7 +2401,7 @@ wp_die();
 			//$nestedData['organization'] = $value->people->organization->name;
 			if($value->people->peoplePosition){
 				if(count($value->people->peoplePosition)==1){
-					$nestedData['organization']='<div class="d-flex align-items-center">';	
+					$nestedData['organization']='<div class="d-flex align-items-center" data-orgId="'.$value->people->peoplePosition[0]->organizationId.'">';
 					if($value->people->peoplePosition[0]->imageThumbUrl && filter_var($value->people->peoplePosition[0]->imageThumbUrl, FILTER_VALIDATE_URL)){
 						$nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->peoplePosition[0]->organizationName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->peoplePosition[0]->imageThumbUrl.'">';	
 					}else{
@@ -2722,10 +2722,12 @@ wp_die();
         $postedData['sortBy'] = 'name';
         $postedData['sortDirection'] = 'asc';
         $postedData['sourceType']=2;
-        $postedData['filterBody']['groupByType'] = 4;
-        $postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
-        $postedData['filterBody']['filterRules'][0]['filterType'] = 1;
-        $postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
+        $postedData['filterBody']['groupByType'] = 1;
+        $postedData['filterBody']['reporttype'] = 2;
+        //$postedData['filterBody']['filterRules'][0]['fieldId'] = 'peopleids';
+        //$postedData['filterBody']['filterRules'][0]['filterType'] = 1;
+        $postedData['filterBody']['groupById'] = $_POST['molOrgId'];
+        //$postedData['filterBody']['filterRules'][0]['selectedValues'] = $_POST['memberIds'];
 		if($_POST['memberIds']=='all'){
 			$postedData['filterBody']['filterRules'][0]['selectedValues']='';	
 			$postedData['filterBody']['filterRules'][0]['fieldId'] = '';

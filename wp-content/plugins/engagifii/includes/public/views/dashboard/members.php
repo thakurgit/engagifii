@@ -316,6 +316,8 @@ var selectAll = false;
 					}
 				}
 				$(this).change(function(){
+					var orgId = $(this).parents('tr').find('td div[data-orgId]').attr('data-orgId');
+					localStorage.setItem('orgId', orgId);
 					if ($(this).is(':checked')) {
 						$(this).parents('tr').addClass('selected');	
 						val =$(this).val();
@@ -423,6 +425,8 @@ $(document).on('click', '.po-filter .dropdown-menu', function (e) {
     } ).dataTable();	
 $('.gtm').click(function(){
 	$(this).attr('disabled','').find('span.spinner-border').show();
+	var molOrgId = '';
+	molOrgId = localStorage.getItem('orgId');
   //var selectedIds = selectedRow.join();
   var selectedDateRange = $('.dateFilter input').val();
   var dates = selectedDateRange.split('-'); // Split the selectedDateRange by '-' delimiter
@@ -450,6 +454,7 @@ $('.gtm').click(function(){
 			  memberIds: selectedRow,
 			  selectedStartDate: startDate, 
 			  selectedEndDate: endDate, 
+			  molOrgId:molOrgId
           },
           success: function(response) { 
 			$('.gtm').removeAttr('disabled').find('span.spinner-border').hide();
