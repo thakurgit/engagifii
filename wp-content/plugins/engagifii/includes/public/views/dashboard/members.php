@@ -57,9 +57,10 @@ foreach ($fiscalYearResponse as $fiscalYear) {
         $largestEndDate = $endDate;
     }
 }
-$fiscalStartDate = date('Y-m-d', $largestStartDate );
-$fiscalEndDate = date('Y-m-d', $largestEndDate );
-
+//$fiscalStartDate = date('Y-m-d', $largestStartDate );
+//$fiscalEndDate = date('Y-m-d', $largestEndDate );
+$fiscalStartDate = $largestStartDate ? date('Y-m-d', $largestStartDate) : '2024-01-01';
+$fiscalEndDate = $largestEndDate ? date('Y-m-d', $largestEndDate) : date('Y-m-d');
 // print_r($fiscalStartDate);
 // print_r($fiscalEndDate);
 ?>
