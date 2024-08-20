@@ -586,7 +586,7 @@ function getCheckedHouseCommitteValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       houseCommittees.push(chkval);
     }  
@@ -608,7 +608,7 @@ function getCheckedSenateCommitteValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       senateCommittees.push(chkval);
     }  
@@ -622,12 +622,13 @@ function getCheckedSenateCommitteValues()
 
 function getCheckedSponsersValues()
 {
+
   var elements = window.document.getElementsByClassName("searchbysponsors");  
   sponsors=[];
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       sponsors.push(chkval);
     }  
@@ -645,7 +646,7 @@ function getCheckedtagsValues()
   for (var n = 0; n < elements.length; ++n) {
     var element = elements[n]; 
     var checkbox = element.querySelector("input[type='checkbox']:not(.tz-selectAll)");
-    if (checkbox.checked == true){      
+    if (checkbox && checkbox.checked == true){      
       var chkval = checkbox.value;
       tags.push(chkval);
     }  
@@ -830,6 +831,7 @@ if(isset($_REQUEST['membertags'])){
 }
 ?>
 
+  var appl_sessionId = '0';
 function getCountSelected()
 {
   
@@ -842,7 +844,6 @@ for (var i = 0; i < eletitle; i++) {
     }
   var eltzdatasearch = document.getElementsByName("tzdatasearch");
   var tzdatasearch = "";
-  var appl_sessionId = '0';
 if (window.location.href.indexOf("sessionId") > -1){
 	appl_sessionId = window.location.href.split('sessionId=')[1];
 }
@@ -1448,6 +1449,22 @@ if (tenant_code === 'aasb') {
 	 localStorage.setItem("sessionAasb", ''); 
   }
 }
+if (tenant_code === 'aasb') {
+	  $('.sessionname').remove();
+var sessionId;
+  window.addEventListener("load", function () {
+	  if (window.location.href.indexOf("sessionId") > -1){
+		  const urlParams = new URLSearchParams(window.location.search);
+		  const sessionIds = urlParams.get('sessionId');
+		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
+	  }else{
+		sessionId = $('.session-tab li:first-child button').attr('id');
+		$('.session-tab li:first-child button').trigger('click') ; 
+		appl_sessionId1 = sessionId;
+		appl_sessionId = sessionId;
+	  }
+  });
+}
 var table = $('#ebtmaintable').DataTable( {
     	<?php if($tenant_url =="gsba") {?>
       "pageLength": 100,
@@ -1545,8 +1562,27 @@ var table = $('#ebtmaintable').DataTable( {
     },
 		 
       });
-   
- 
+ if (tenant_code === 'aasb') {  
+	var href  = window.location.href;
+ $('.session-tab li button').click(function(){
+			sessionId = $(this).attr('id');
+			//if (window.location.href.indexOf("sessionId") > -1){
+				 const currentUrl = window.location.href;
+				  const newSessionId = sessionId;
+				  const urlParams = new URLSearchParams(window.location.search);
+				  urlParams.set("sessionId", newSessionId);
+				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
+				  window.history.pushState({}, "", newUrl);
+			/*} else{
+			 const newUrl = href+'?sessionId='+sessionId;
+			 window.history.replaceState({}, "", newUrl);
+			}*/
+			appl_sessionId1 = sessionId;
+			table.draw();
+	appl_sessionId = sessionId;
+	getCountSelected(); 
+		});
+ }
 $('#ebtmaintable')
     .on( 'processing.dt', function ( e, settings, processing ) {
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );

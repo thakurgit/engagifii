@@ -5,7 +5,7 @@ session_start();
 if (! is_user_logged_in()) {
 	$login = 'moOAuthLoginNew("Engagifii")';
     echo "<br><br><div class='alert alert-warning' role='alert'><h5 class='text-center mb-0'>This page is restricted. Please";
-	echo "<a href='javascript:void' onclick='".$login."' > Login </a>";
+	echo "<a href='javascript:void' class='btn btn-warning mx-2 px-2 py-0' onclick='".$login."' > Login </a>";
     //printf(esc_attr('This page is restricted. Please %s to view this page.', 'wpfep'), wp_loginout('', false));
     echo 'to view this page.</h5></div>';
 	?>
