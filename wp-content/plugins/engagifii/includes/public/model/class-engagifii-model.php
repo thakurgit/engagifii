@@ -3783,10 +3783,10 @@ public function eventFilters(){
                       }
                     }
                  }else{
-                    $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+                    $html[$values] ='<h6 class="text-center mt-3">Data not found</h6>';
                  }
 			} else {
-				$html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+				$html[$values]='<h6 class="text-center mt-3">Data not found</h6>';	
 			}
 			  $htmlArray=$html;
 		}

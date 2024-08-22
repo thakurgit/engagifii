@@ -989,8 +989,12 @@ searchbystatustypes.applySearch({searchelement:"searchbystatustypes",itemselecte
 	$(".tz-dropdown-filter").each(function () {
 	//$(this).prepend('<li class="mb-1"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>');
 	if($(this).find('li').length>1){
-		$( '<li class="mb-1" style="list-style-type: none;"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
+		if($(this).siblings('li').find('.tz-selectAll').length==0){
+			$( '<li class="mb-1" style="list-style-type: none;"><input class="tz-selectAll" type="checkbox" name="" value="" id=""><b> Select All</b></li>' ).insertBefore($(this) );
+		}
+		$(this).parents('.filter-list').find('.input-box').show();
 	} else{
+		$(this).siblings('li').remove();
 		$(this).parents('.filter-list').find('.input-box').hide();
 	}
 });
@@ -1755,6 +1759,9 @@ window.addEventListener("load", function () {
 	appl_sessionId1 = appl_sessionId = sessionId;
 	table.draw();
 	//getCountSelected(); 
+	$('.tz-dropdown-filter').html('<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>');
+	$('.tz-dropdown-filter').siblings('li').remove();
+	$('.tz-dropdown-filter').parents('.filter-list').find('.input-box').hide();
 	billFilters();
 	aasbEvents();
   });
