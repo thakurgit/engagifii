@@ -1708,15 +1708,18 @@ function createLBTcssClass(className,backgroundColor)
 }  
 
 // activate/deactvate filter icon
+var fv='';
+	function filterRestore(){
+  	fv = parseInt($('#blockedchecked').text().replace(/[^0-9]/gi, ''),10);
+	  if(fv>0){
+		$('.filter-icon').addClass('active bg-primary text-white').removeClass('bg-light'); 
+		$('.filter-icon span').text(fv); 
+	  } else {
+		$('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light');
+	  }
+	}
 $("#apply-filter-data").click(function () {
-
-  var fv = parseInt($('#blockedchecked').text().replace(/[^0-9]/gi, ''),10);
-  if(fv>0){
-    $('.filter-icon').addClass('active bg-primary text-white').removeClass('bg-light'); 
-    $('.filter-icon span').text(fv); 
-  } else {
-    $('.filter-icon').removeClass('active bg-primary text-white').addClass('bg-light');
-  }
+	filterRestore();
 });  
  
 <?php if($billnumber){ ?>
@@ -1757,11 +1760,36 @@ window.addEventListener("load", function () {
 	const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
 	window.history.pushState({}, "", newUrl);  
 	appl_sessionId1 = appl_sessionId = sessionId;
-	table.draw();
-	//getCountSelected(); 
+	 trackingLevels=[];
+ sponsors=[];
+ houseCommittees=[];
+ senateCommittees=[];
+ lastActionTypes=[];
+ billTypes=[];
+ statusTypes=[];
+ tags = [];
+ assignedto  = [];
+ assignGroups = [];
+ assignTags = [];
+  appl_trackingLevels=[];
+ appl_sponsors=[];
+ appl_houseCommittees=[];
+ appl_senateCommittees=[];
+ appl_lastActionTypes=[];
+ appl_billTypes=[];
+ appl_statusTypes=[];
+ appl_tags =[];
+ appl_assignto  = [];
+ appl_assignGroups = [];
+ appl_assignTags   = [];
 	$('.tz-dropdown-filter').html('<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>');
 	$('.tz-dropdown-filter').siblings('li').remove();
 	$('.tz-dropdown-filter').parents('.filter-list').find('.input-box').hide();
+	$('.heading-title').find('span').text('');
+	$('#blockedchecked').text('');
+	fv ='';
+	table.draw();
+	filterRestore();
 	billFilters();
 	aasbEvents();
   });
@@ -1780,57 +1808,6 @@ window.addEventListener("load", function () {
   }
   aasbEvents();
 });
-
-//if (window.location.href.indexOf("sessionId1") > -1){
-//	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
-//  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
-//  if (sessionId == 5245 || sessionId === null) {
-//    $('th.status').text('Pre-filed');
-//	$('.status-heading-title').contents().filter(function() {
-//	  return this.nodeType === 3; // Node.TEXT_NODE
-//	}).each(function() {
-//	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
-//	});
-//	 localStorage.setItem("sessionAasb", 2025); 
-//  }else{
-//	 localStorage.setItem("sessionAasb", ''); 
-//  }
-//	  $('.sessionname').remove();
-////var sessionId;
-//  window.addEventListener("load", function () {
-//	  if (window.location.href.indexOf("sessionId") > -1){
-//		  const urlParams = new URLSearchParams(window.location.search);
-//		  const sessionIds = urlParams.get('sessionId');
-//		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
-//	  }else{
-//		sessionId = $('.session-tab li:first-child button').attr('id');
-//		$('.session-tab li:first-child button').trigger('click') ; 
-//		appl_sessionId1 = sessionId;
-//		appl_sessionId = sessionId;
-//	  }
-//  });
-//  	var href  = window.location.href;
-// $('.session-tab li button').click(function(){
-//			sessionId = $(this).attr('id');
-//			//if (window.location.href.indexOf("sessionId") > -1){
-//				 const currentUrl = window.location.href;
-//				  const newSessionId = sessionId;
-//				  const urlParams = new URLSearchParams(window.location.search);
-//				  urlParams.set("sessionId", newSessionId);
-//				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
-//				  window.history.pushState({}, "", newUrl);
-//			/*} else{
-//			 const newUrl = href+'?sessionId='+sessionId;
-//			 window.history.replaceState({}, "", newUrl);
-//			}*/
-//			appl_sessionId1 = sessionId;
-//			table.draw();
-//	appl_sessionId = sessionId;
-//	getCountSelected(); 
-//	billFilters();
-//		});
-//
-//}
 
 var colNames = <?php echo json_encode($filterParams); ?>;
 function billFilters(){
@@ -1889,7 +1866,7 @@ function billFilters(){
 	  });	
 }
 window.addEventListener("load", function () {
-	billFilters();
+		billFilters();
 });
 
 </script>      
