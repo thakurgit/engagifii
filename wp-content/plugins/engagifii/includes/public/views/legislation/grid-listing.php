@@ -1435,36 +1435,6 @@ if(tenant_code =="aasb"){
 }else{
   var order = [[$('th.title').index(), 'desc']];
 }
-if (tenant_code === 'aasb') {
-  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
-  if (sessionId == 5245 || sessionId === null) {
-    $('th.status').text('Pre-filed');
-	$('.status-heading-title').contents().filter(function() {
-	  return this.nodeType === 3; // Node.TEXT_NODE
-	}).each(function() {
-	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
-	});
-	 localStorage.setItem("sessionAasb", 2025); 
-  }else{
-	 localStorage.setItem("sessionAasb", ''); 
-  }
-}
-if (tenant_code === 'aasb') {
-	  $('.sessionname').remove();
-var sessionId;
-  window.addEventListener("load", function () {
-	  if (window.location.href.indexOf("sessionId") > -1){
-		  const urlParams = new URLSearchParams(window.location.search);
-		  const sessionIds = urlParams.get('sessionId');
-		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
-	  }else{
-		sessionId = $('.session-tab li:first-child button').attr('id');
-		$('.session-tab li:first-child button').trigger('click') ; 
-		appl_sessionId1 = sessionId;
-		appl_sessionId = sessionId;
-	  }
-  });
-}
 var table = $('#ebtmaintable').DataTable( {
     	<?php if($tenant_url =="gsba") {?>
       "pageLength": 100,
@@ -1562,27 +1532,6 @@ var table = $('#ebtmaintable').DataTable( {
     },
 		 
       });
- if (tenant_code === 'aasb') {  
-	var href  = window.location.href;
- $('.session-tab li button').click(function(){
-			sessionId = $(this).attr('id');
-			//if (window.location.href.indexOf("sessionId") > -1){
-				 const currentUrl = window.location.href;
-				  const newSessionId = sessionId;
-				  const urlParams = new URLSearchParams(window.location.search);
-				  urlParams.set("sessionId", newSessionId);
-				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
-				  window.history.pushState({}, "", newUrl);
-			/*} else{
-			 const newUrl = href+'?sessionId='+sessionId;
-			 window.history.replaceState({}, "", newUrl);
-			}*/
-			appl_sessionId1 = sessionId;
-			table.draw();
-	appl_sessionId = sessionId;
-	getCountSelected(); 
-		});
- }
 $('#ebtmaintable')
     .on( 'processing.dt', function ( e, settings, processing ) {
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
@@ -1766,21 +1715,73 @@ $("#apply-filter-data").click(function () {
   }
 });  
  
-
-
-if (window.location.href.indexOf("sessionId") > -1){
-	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
-}
-
-$(document).ready(function () {
-});
 <?php if($billnumber){ ?>
 window.addEventListener("load", function () {
 $('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');	
 });
 <?php } ?>
+
+
+
+
+if (window.location.href.indexOf("sessionId") > -1){
+	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
+  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
+  if (sessionId == 5245 || sessionId === null) {
+    $('th.status').text('Pre-filed');
+	$('.status-heading-title').contents().filter(function() {
+	  return this.nodeType === 3; // Node.TEXT_NODE
+	}).each(function() {
+	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
+	});
+	 localStorage.setItem("sessionAasb", 2025); 
+  }else{
+	 localStorage.setItem("sessionAasb", ''); 
+  }
+	  $('.sessionname').remove();
+//var sessionId;
+  window.addEventListener("load", function () {
+	  if (window.location.href.indexOf("sessionId") > -1){
+		  const urlParams = new URLSearchParams(window.location.search);
+		  const sessionIds = urlParams.get('sessionId');
+		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
+	  }else{
+		sessionId = $('.session-tab li:first-child button').attr('id');
+		$('.session-tab li:first-child button').trigger('click') ; 
+		appl_sessionId1 = sessionId;
+		appl_sessionId = sessionId;
+	  }
+  });
+  	var href  = window.location.href;
+ $('.session-tab li button').click(function(){
+			sessionId = $(this).attr('id');
+			//if (window.location.href.indexOf("sessionId") > -1){
+				 const currentUrl = window.location.href;
+				  const newSessionId = sessionId;
+				  const urlParams = new URLSearchParams(window.location.search);
+				  urlParams.set("sessionId", newSessionId);
+				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
+				  window.history.pushState({}, "", newUrl);
+			/*} else{
+			 const newUrl = href+'?sessionId='+sessionId;
+			 window.history.replaceState({}, "", newUrl);
+			}*/
+			appl_sessionId1 = sessionId;
+			table.draw();
+	appl_sessionId = sessionId;
+	getCountSelected(); 
+	billFilters();
+		});
+
+}
+
 var colNames = <?php echo json_encode($filterParams); ?>;
-window.addEventListener("load", function () {
+function billFilters(){
+	var session='';
+if (window.location.href.indexOf("sessionId") > -1){
+	const urlParams = new URLSearchParams(window.location.search);
+	session = urlParams.get('sessionId');
+}
 	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='',chkdAssignGroups='',chkdAssignTags='';
   <?php if($get_tracking){ 
 	echo 'chkdTracking='.$get_tracking.';';  
@@ -1806,7 +1807,8 @@ window.addEventListener("load", function () {
 		   chkdAction:chkdAction,
 		   chkdAssign:chkdAssign,
 		   chkdAssignGroups:chkdAssignGroups,
-		   chkdAssignTags:chkdAssignTags
+		   chkdAssignTags:chkdAssignTags,
+		   session:session
 		},
 		success: function(response) {  
 			/*for (var key of Object.keys(JSON.parse(response))) {
@@ -1832,7 +1834,10 @@ window.addEventListener("load", function () {
 			}
 		filterEvents();
 			}
-	  });
+	  });	
+}
+window.addEventListener("load", function () {
+	billFilters();
 });
 
 </script>      
