@@ -496,7 +496,7 @@ $senateResponses=array();
     <!-- Status types -->
     <?php  if(in_array('status', $lbt_visible_column_list)) { ?>  
     <div class="filter-list border-bottom">
-      <div class="heading-title py-2 d-flex align-items-center">Status <span id="countviewbystatustypes" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
+      <div class="heading-title status-heading-title py-2 d-flex align-items-center">Status <span id="countviewbystatustypes" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select"> 
       <div class="input-box">
         <label class="d-none" for="searchbystatustypes">Search</label>
@@ -1720,68 +1720,113 @@ window.addEventListener("load", function () {
 $('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');	
 });
 <?php } ?>
-
-
-
-
-if (window.location.href.indexOf("sessionId") > -1){
-	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
-  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
-  if (sessionId == 5245 || sessionId === null) {
-    $('th.status').text('Pre-filed');
-	$('.status-heading-title').contents().filter(function() {
-	  return this.nodeType === 3; // Node.TEXT_NODE
-	}).each(function() {
-	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
-	});
-	 localStorage.setItem("sessionAasb", 2025); 
-  }else{
-	 localStorage.setItem("sessionAasb", ''); 
-  }
-	  $('.sessionname').remove();
-//var sessionId;
-  window.addEventListener("load", function () {
-	  if (window.location.href.indexOf("sessionId") > -1){
-		  const urlParams = new URLSearchParams(window.location.search);
-		  const sessionIds = urlParams.get('sessionId');
-		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
-	  }else{
-		sessionId = $('.session-tab li:first-child button').attr('id');
-		$('.session-tab li:first-child button').trigger('click') ; 
-		appl_sessionId1 = sessionId;
-		appl_sessionId = sessionId;
-	  }
-  });
-  	var href  = window.location.href;
- $('.session-tab li button').click(function(){
-			sessionId = $(this).attr('id');
-			//if (window.location.href.indexOf("sessionId") > -1){
-				 const currentUrl = window.location.href;
-				  const newSessionId = sessionId;
-				  const urlParams = new URLSearchParams(window.location.search);
-				  urlParams.set("sessionId", newSessionId);
-				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
-				  window.history.pushState({}, "", newUrl);
-			/*} else{
-			 const newUrl = href+'?sessionId='+sessionId;
-			 window.history.replaceState({}, "", newUrl);
-			}*/
-			appl_sessionId1 = sessionId;
-			table.draw();
-	appl_sessionId = sessionId;
-	getCountSelected(); 
-	billFilters();
+//aasb
+function aasbEvents(){
+  if (tenant_code == "aasb") {
+	  if(sessionId == 5245 || sessionId == ''){
+		$('th.status').text('Pre-filed');  
+		$('.status-heading-title').contents().filter(function() {
+		  return this.nodeType === 3;
+		}).each(function() {
+		  this.textContent = this.textContent.replace('Status', 'Pre-filed');
 		});
-
+		localStorage.setItem("sessionAasb", 2025);
+	  } else {
+		$('th.status').text('Status');  
+		$('.status-heading-title').contents().filter(function() {
+		  return this.nodeType === 3; 
+		}).each(function() {
+		  this.textContent = this.textContent.replace('Pre-filed','Status' );
+		});
+		localStorage.setItem("sessionAasb", ''); 
+	  }
+  }
 }
+var sessionId='';
+window.addEventListener("load", function () {
+  $('.session-tab li button').click(function(){
+	sessionId = $(this).attr('id');	
+	const currentUrl = window.location.href;
+	const newSessionId = sessionId;
+	const urlParams = new URLSearchParams(window.location.search);
+	urlParams.set("sessionId", newSessionId);
+	const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
+	window.history.pushState({}, "", newUrl);  
+	appl_sessionId1 = appl_sessionId = sessionId;
+	table.draw();
+	//getCountSelected(); 
+	billFilters();
+	aasbEvents();
+  });
+  if (window.location.href.indexOf("sessionId") > -1){
+	const urlParams = new URLSearchParams(window.location.search);
+	const sessionIds = urlParams.get('sessionId');
+	$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
+	sessionId = window.location.href.split('sessionId=')[1];
+	if($('.session-tab').length==0){
+	  $('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
+	}
+  } else {
+	if($('.session-tab').length>0){
+	  $('.session-tab li:first-child button').trigger('click') ;	  
+	}
+  }
+  aasbEvents();
+});
+
+//if (window.location.href.indexOf("sessionId1") > -1){
+//	$('.sessionname').html(' ('+ localStorage.getItem("sessionname")+')');
+//  const sessionId = new URL(window.location.href).searchParams.get("sessionId");
+//  if (sessionId == 5245 || sessionId === null) {
+//    $('th.status').text('Pre-filed');
+//	$('.status-heading-title').contents().filter(function() {
+//	  return this.nodeType === 3; // Node.TEXT_NODE
+//	}).each(function() {
+//	  this.textContent = this.textContent.replace('Status', 'Pre-filed');
+//	});
+//	 localStorage.setItem("sessionAasb", 2025); 
+//  }else{
+//	 localStorage.setItem("sessionAasb", ''); 
+//  }
+//	  $('.sessionname').remove();
+////var sessionId;
+//  window.addEventListener("load", function () {
+//	  if (window.location.href.indexOf("sessionId") > -1){
+//		  const urlParams = new URLSearchParams(window.location.search);
+//		  const sessionIds = urlParams.get('sessionId');
+//		$('.session-tab li button[id="'+sessionIds+'"]').addClass('active') ; 
+//	  }else{
+//		sessionId = $('.session-tab li:first-child button').attr('id');
+//		$('.session-tab li:first-child button').trigger('click') ; 
+//		appl_sessionId1 = sessionId;
+//		appl_sessionId = sessionId;
+//	  }
+//  });
+//  	var href  = window.location.href;
+// $('.session-tab li button').click(function(){
+//			sessionId = $(this).attr('id');
+//			//if (window.location.href.indexOf("sessionId") > -1){
+//				 const currentUrl = window.location.href;
+//				  const newSessionId = sessionId;
+//				  const urlParams = new URLSearchParams(window.location.search);
+//				  urlParams.set("sessionId", newSessionId);
+//				  const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}`;
+//				  window.history.pushState({}, "", newUrl);
+//			/*} else{
+//			 const newUrl = href+'?sessionId='+sessionId;
+//			 window.history.replaceState({}, "", newUrl);
+//			}*/
+//			appl_sessionId1 = sessionId;
+//			table.draw();
+//	appl_sessionId = sessionId;
+//	getCountSelected(); 
+//	billFilters();
+//		});
+//
+//}
 
 var colNames = <?php echo json_encode($filterParams); ?>;
 function billFilters(){
-	var session='';
-if (window.location.href.indexOf("sessionId") > -1){
-	const urlParams = new URLSearchParams(window.location.search);
-	session = urlParams.get('sessionId');
-}
 	var chkdTracking='', chkdTags='', chkdAction='', chkdAssign='',chkdAssignGroups='',chkdAssignTags='';
   <?php if($get_tracking){ 
 	echo 'chkdTracking='.$get_tracking.';';  
@@ -1808,7 +1853,7 @@ if (window.location.href.indexOf("sessionId") > -1){
 		   chkdAssign:chkdAssign,
 		   chkdAssignGroups:chkdAssignGroups,
 		   chkdAssignTags:chkdAssignTags,
-		   session:session
+		   session:sessionId
 		},
 		success: function(response) {  
 			/*for (var key of Object.keys(JSON.parse(response))) {

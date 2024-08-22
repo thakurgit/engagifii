@@ -223,7 +223,7 @@ $siteURL= site_url();
             <?php } if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
             <span class=""><strong>Introduced Date:</strong> <?php echo $intro_new_date;?> </span><br>
             <?php } if(in_array('status', $lbt_visible_column_list)) { ?>
-            <span class=""><strong>Status:</strong> <?php echo $billResponses->status; ?></span><br>
+            <span class="status-label"><strong>Status:</strong> <?php echo $billResponses->status; ?></span><br>
          <?php } ?>
             <span class=""><strong>Session:</strong> <?php echo $billResponses->session; ?></span>
           </div>
