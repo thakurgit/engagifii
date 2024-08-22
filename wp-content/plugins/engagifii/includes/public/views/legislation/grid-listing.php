@@ -1784,6 +1784,7 @@ window.addEventListener("load", function () {
  appl_assignto  = [];
  appl_assignGroups = [];
  appl_assignTags   = [];
+  $('.lead .bill-count').html('<span class="content-loader"></span>');
 	$('.tz-dropdown-filter').html('<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>');
 	$('.tz-dropdown-filter').siblings('li').remove();
 	$('.tz-dropdown-filter').parents('.filter-list').find('.input-box').hide();
