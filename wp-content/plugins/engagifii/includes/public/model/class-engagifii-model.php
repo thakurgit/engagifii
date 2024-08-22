@@ -3703,11 +3703,11 @@ public function eventFilters(){
 			  $response = '';
 			  $apiUrl = '';
               if($values =='trackingLevel'){
-                $apiUrl='legislative/public-bills/trackinglevels/'; 
+                $apiUrl='legislative/public-bills/trackinglevels'.$session;  
               }else if($values =='billType'){
                 $apiUrl='legislative/public-bills/billtypes'.$session;   
               }else if($values =='status'){
-                $apiUrl='legislative/public-bills/status/';   
+                $apiUrl='legislative/public-bills/status'.$session;     
               }else if($values =='sponsors'){
                 $apiUrl='legislative/public-bills/sponsors'.$session;   
               }else if($values =='houseCommittees'){
@@ -3715,11 +3715,11 @@ public function eventFilters(){
               }else if($values =='senateCommittees'){
                 $apiUrl='legislative/public-bills/committees/senate'.$session;   
               }else if($values =='assignedto'){
-               $apiUrl='legislative/public-bills/filter/billusers';   
+               $apiUrl='legislative/public-bills/filter/billusers'.$session;  
               }else if($values =='assignedtoGroups'){
-				 $apiUrl='legislative/public-bills/filter/groups'; 
+				 $apiUrl='legislative/public-bills/filter/groups'.$session; 
               }else if($values =='assignedtoTags'){
-				 $apiUrl='legislative/public-bills/filter/billusertags'; 
+				 $apiUrl='legislative/public-bills/filter/billusertags'.$session; 
               }else if($values =='tags'){
                 $apiUrl='legislative/public-bills/filter/tags'.$session;  
               }else if($values =='lastActionOn'){
