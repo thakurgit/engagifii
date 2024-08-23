@@ -488,7 +488,7 @@ $('.ga').click(function(){
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'checkPeopleRegistered',
-			  participantsIds: selectedRow,
+			  peopleId: selectedRow,
 			 },
     success: function(response) { 
 		console.log(response);

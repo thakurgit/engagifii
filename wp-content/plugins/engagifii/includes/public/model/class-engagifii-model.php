@@ -2784,9 +2784,9 @@ wp_die();
     public function checkPeopleRegistered(){
 		$postData=array();
 		$responseArray = array();
-		$postData['participantsIds'] = $_POST['participantsIds'];
-        if($_POST['participantsIds']=='all'){
-            $postData['participantsIds'] = [];
+		$postData['peopleId'] = $_POST['peopleId'];
+        if($_POST['peopleId']=='all'){
+            $postData['peopleId'] = [];
         }
 		$apiUrl = 'AwardsRegistration/CheckPeopleRegistered/';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
