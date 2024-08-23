@@ -74,7 +74,7 @@ $fiscalEndDate = $largestEndDate ? date('Y-m-d', $largestEndDate) : date('Y-m-d'
             	<h4 class="mb-0 mr-2">
                 	<button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
-                <button  type="button" class="btn btn-primary btn-sm  ml-auto ga"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Awards Report</button>
+                <button  type="button" class="btn btn-primary btn-sm  ml-auto ga"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Badges Report</button>
 				<button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-2 gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
@@ -483,6 +483,17 @@ $('.ga').click(function(){
 	$(this).attr('disabled','').find('span.spinner-border').show();
 	//var selectedIds = selectedRow.join();
 	var logged_in_user = localStorage.getItem("logged_in_user");
+	$.ajax({
+		type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'checkPeopleRegistered',
+			  participantsIds: selectedRow,
+			 },
+    success: function(response) { 
+		console.log(response);
+		var jsonResponse = JSON.parse(response);
+      if (jsonResponse.api_status && jsonResponse.api_response === "true") { 
 		  $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -496,8 +507,14 @@ $('.ga').click(function(){
 			
 		  }
         });
+	}else{
+		$('#exampleModal').modal('hide') ;
+		$('#nocredit').modal('show');
+		$('.ga').removeAttr('disabled').find('span.spinner-border').hide();
+	}
+}
 	  });	  
-	
+});
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');

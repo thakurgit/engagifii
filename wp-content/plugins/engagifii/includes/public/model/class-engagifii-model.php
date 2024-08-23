@@ -35,6 +35,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
         ['generateAwardsDownloadsByMemberIds', 'generateAwardsDownloadsByMemberIds'],
         ['isCreditEarnedByParticipant', 'isCreditEarnedByParticipant'],
+        ['checkPeopleRegistered', 'checkPeopleRegistered'],
         ['clearDownloads', 'clearDownloadsByPerson'],
         ['allReports', 'allReportsByPerson'],
         ['updateProfile', 'updateProfileByMember'],
@@ -2757,7 +2758,7 @@ wp_die();
         $postedData['filterBody']['sourceType']= 2;
         //print_r(json_encode($postedData));
 		//die;
-        $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
+        $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationForPeoplePDFReport", $postedData, "POST", 'awards');
         $collection = json_decode($dataResponse['api_response'])->result;
         echo json_encode($dataResponse);
         wp_die();
@@ -2778,7 +2779,22 @@ wp_die();
 		//$responseArray = json_decode($response['api_response'], true);
 		echo json_encode($response);
         wp_die();
+	} 
+    
+    public function checkPeopleRegistered(){
+		$postData=array();
+		$responseArray = array();
+		$postData['participantsIds'] = $_POST['participantsIds'];
+        if($_POST['participantsIds']=='all'){
+            $postData['participantsIds'] = [];
+        }
+		$apiUrl = 'AwardsRegistration/CheckPeopleRegistered/';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'POST', 'awards');
+		//$responseArray = json_decode($response['api_response'], true);
+		echo json_encode($response);
+        wp_die();
 	}
+    
 
 	public function downloadDataByPerson(){
         $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
