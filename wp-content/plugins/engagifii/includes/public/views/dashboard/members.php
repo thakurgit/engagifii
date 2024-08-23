@@ -233,6 +233,22 @@ $fiscalEndDate = $largestEndDate ? date('Y-m-d', $largestEndDate) : date('Y-m-d'
     </div>
   </div>
 </div>
+<div class="modal fade" id="noawards" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">None of the selected members have earned awards.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
 var positions = [], departments = [], orgs=[], Status=[], totalTime=[], selectedRow=[];
 var titleColumn, emailColumn, val, totalRecords;
@@ -491,10 +507,14 @@ $('.ga').click(function(){
 			  peopleId: selectedRow,
 			 },
     success: function(response) { 
-		console.log(response);
 		var jsonResponse = JSON.parse(response);
-      if (jsonResponse.api_status && jsonResponse.api_response === "true") { 
-		  $.ajax({
+		var apiResponse = Array.isArray(jsonResponse.api_response) 
+        ? jsonResponse.api_response 
+        : JSON.parse(jsonResponse.api_response || '[]');
+    var isAnyRegistered = apiResponse.some(item => item.isRegistered);
+console.log(isAnyRegistered);
+    if (jsonResponse.api_status && isAnyRegistered) {
+      	  $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
@@ -515,6 +535,7 @@ $('.ga').click(function(){
 }
 	  });	  
 });
+
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
