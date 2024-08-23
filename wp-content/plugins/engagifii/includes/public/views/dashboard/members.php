@@ -529,7 +529,7 @@ console.log(isAnyRegistered);
         });
 	}else{
 		$('#exampleModal').modal('hide') ;
-		$('#nocredit').modal('show');
+		$('#noawards').modal('show');
 		$('.ga').removeAttr('disabled').find('span.spinner-border').hide();
 	}
 }

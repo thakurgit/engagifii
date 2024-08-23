@@ -289,7 +289,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
   </div>
         </div>
         <?php if($member_id){ ?>
-        <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
+        <button type="button" class="btn btn-primary btn-sm  ml-auto mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Badges Report</button>
+        <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-2 mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -348,6 +349,22 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
       </div>
       <div class="modal-body">
        	<p class="text-center">There are no credits earned in the selected date range</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="noawards" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close p-2" data-dismiss="modal" aria-label="Close" style="z-index:9">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<p class="text-center">None of the selected members have earned awards.</p>
       </div>
       
     </div>
@@ -1394,6 +1411,50 @@ curl_close($curl);
 });
 	  
 });
+
+$('.ga').click(function(){
+	$(this).attr('disabled','').find('span.spinner-border').show();
+	//var selectedIds = selectedRow.join();
+	var logged_in_user = localStorage.getItem("logged_in_user");
+  var member_id = '<?php echo $member_id; ?>'; 
+  var memberIdsArray = [member_id]; 
+	$.ajax({
+		type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'checkPeopleRegistered',
+			  peopleId: memberIdsArray,
+			 },
+    success: function(response) { 
+		var jsonResponse = JSON.parse(response);
+		var apiResponse = Array.isArray(jsonResponse.api_response) 
+        ? jsonResponse.api_response 
+        : JSON.parse(jsonResponse.api_response || '[]');
+    var isAnyRegistered = apiResponse.some(item => item.isRegistered);
+console.log(isAnyRegistered);
+    if (jsonResponse.api_status && isAnyRegistered) {
+      	  $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'generateAwardsDownloadsByMemberIds',
+			  memberIds: memberIdsArray,
+			  },
+          success: function(response) { 
+			$('.ga').removeAttr('disabled').find('span.spinner-border').hide();
+            $('#pdfcreated').modal('show');
+			
+		  }
+        });
+	}else{
+		$('#exampleModal').modal('hide') ;
+		$('#noawards').modal('show');
+		$('.ga').removeAttr('disabled').find('span.spinner-border').hide();
+	}
+}
+	  });	  
+});
+
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
