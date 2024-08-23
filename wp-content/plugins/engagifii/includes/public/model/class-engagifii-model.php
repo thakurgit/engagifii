@@ -2747,7 +2747,7 @@ wp_die();
         $postedData['pageNumber'] = 1; 
         $postedData['pageSize'] = 10; 
         $postedData['itemCount'] = 100; 
-        $postedData['sortBy'] = 'name'; 
+        $postedData['sortBy'] = 'asc'; 
         $postedData['sortDirection'] = 'asc';         
         $postedData['filterBody']['peopleIds'] = $_POST['memberIds'];
         if($_POST['memberIds']=='all'){

@@ -481,7 +481,7 @@ $('.gtm').click(function(){
 });
 $('.ga').click(function(){
 	$(this).attr('disabled','').find('span.spinner-border').show();
-	var selectedIds = selectedRow.join();
+	//var selectedIds = selectedRow.join();
 	var logged_in_user = localStorage.getItem("logged_in_user");
 		  $.ajax({
           type : "post",
