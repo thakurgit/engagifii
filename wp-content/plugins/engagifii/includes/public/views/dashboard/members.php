@@ -74,8 +74,8 @@ $fiscalEndDate = $largestEndDate ? date('Y-m-d', $largestEndDate) : date('Y-m-d'
             	<h4 class="mb-0 mr-2">
                 	<button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
                 <h5 class="mb-0">Members</h5>                
-                <button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto ga"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Awards Report</button>
-				<button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-auto gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
+                <button  type="button" class="btn btn-primary btn-sm  ml-auto ga"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Awards Report</button>
+				<button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-2 gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -306,8 +306,10 @@ var selectAll = false;
 		   var thSelect= $(".people-select :checkbox");
 			   if(selectedRow.length > 0 || selectedRow =='all'){
 				$('.gt').removeAttr('disabled');
+				$('.ga').removeAttr('disabled');
 				  }else{
 				$('.gt').attr('disabled',''); 
+				$('.ga').attr('disabled',''); 
          		  }
 			$('.select-row').each(function(){
 				if(selectedRow.includes($(this).val()) || selectedRow =='all'){
@@ -343,9 +345,11 @@ var selectAll = false;
 						$('.currentSelected').text(selectedRow.length);
 						if(selectedRow.length !== 0){
 							$('.gt').removeAttr('disabled');
+							$('.ga').removeAttr('disabled');
 							$('.memberSelect').removeClass('d-none');
 						}else{
 							$('.gt').attr('disabled',''); 
+							$('.ga').attr('disabled','');
 							$('.memberSelect').addClass('d-none');
 						 }
 						if(selectedRow.length==totalRecords){
@@ -385,6 +389,7 @@ var selectAll = false;
 			  });
 			  $('.currentSelected').text(settings._iRecordsTotal);
 			   $('.gt').removeAttr('disabled');
+			   $('.ga').removeAttr('disabled');
 			});
 			$('.deSelectAll').click(function(e){
 			  $(this).addClass('d-none');  
@@ -396,6 +401,7 @@ var selectAll = false;
 			  });
 			  $('.currentSelected').text('0');
 			   $('.gt').attr('disabled','');
+			   $('.ga').attr('disabled','');
 			   e.stopPropagation();
 			});
 
@@ -472,6 +478,7 @@ $('.gtm').click(function(){
 	  }
 	}
 });
+});
 $('.ga').click(function(){
 	$(this).attr('disabled','').find('span.spinner-border').show();
 	var selectedIds = selectedRow.join();
@@ -490,8 +497,7 @@ $('.ga').click(function(){
 		  }
         });
 	  });	  
-
-}); 
+	
 
  $( document ).ready(function() {
    // $('input[name="createdbetween"]').val('');
