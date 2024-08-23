@@ -33,6 +33,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
         ['generateDownloadsByMemberIds', 'generateDownloadsByMemberIds'],
+        ['generateAwardsDownloadsByMemberIds', 'generateAwardsDownloadsByMemberIds'],
         ['isCreditEarnedByParticipant', 'isCreditEarnedByParticipant'],
         ['clearDownloads', 'clearDownloadsByPerson'],
         ['allReports', 'allReportsByPerson'],
@@ -2740,7 +2741,28 @@ wp_die();
         $collection = json_decode($dataResponse['api_response'])->result;
         echo json_encode($dataResponse);
         wp_die();
+    } 
+    public function generateAwardsDownloadsByMemberIds(){
+        $postedData = array();
+        $postedData['pageNumber'] = 1; 
+        $postedData['pageSize'] = 10; 
+        $postedData['itemCount'] = 100; 
+        $postedData['sortBy'] = 'name'; 
+        $postedData['sortDirection'] = 'asc';         
+        $postedData['filterBody']['peopleIds'] = $_POST['memberIds'];
+        if($_POST['memberIds']=='all'){
+			$postedData['filterBody']['peopleIds']='';	
+		} 
+		$postedData['isFiscalYearAvailable']  = "false";
+        $postedData['filterBody']['sourceType']= 2;
+        //print_r(json_encode($postedData));
+		//die;
+        $dataResponse = $this->submitApiRequest("Awards/GenerateAllCertificationPDFReport/".$_POST['profileId']."", $postedData, "POST", 'awards');
+        $collection = json_decode($dataResponse['api_response'])->result;
+        echo json_encode($dataResponse);
+        wp_die();
     }
+    
 
     public function isCreditEarnedByParticipant(){
 		$postData=array();
