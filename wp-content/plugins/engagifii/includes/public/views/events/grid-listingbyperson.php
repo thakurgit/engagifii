@@ -377,41 +377,110 @@ dt_titleSearch('Search Events');
   <?php
 }
   ?>
-  function eventRegPopUp(tpath){
-	$('.open-pop').click(function(e){
-		var tpath = $(this).attr('data-url');
-		//popup
-			var childWindow;
-       // function openChildWindow() {
-            // Open the child window and store the reference
-            childWindow = window.open(tpath, '', 'width=1300, height=700');
-            // Optional: Center the child window (not reliable for all browsers)
-            if (childWindow) {
-                var screenWidth = window.screen.width;
-                var screenHeight = window.screen.height;
-                var left = (screenWidth - 1000) / 2;
-                var top = (screenHeight - 650) / 2;
-                childWindow.moveTo(left, top);
-            }
-            // Set an interval to periodically check the child window status
-            var checkChildWindow = setInterval(function() {
-                if (childWindow && childWindow.closed) {
-                    // Update button text to indicate the parent window is refreshing
-                    //document.getElementById('openChildButton').innerText = 'Refreshing...';
-                    // Refresh the parent window when the child window is closed
-                    //location.reload();
-					table.draw();
-                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
-                }
-            }, 500); // Adjust the interval as needed
+  // function eventRegPopUp(tpath){
+	// $('.open-pop').click(function(e){
+	// 	var tpath = $(this).attr('data-url');
+	// 	//popup
+	// 		var childWindow;
+  //      // function openChildWindow() {
+  //           // Open the child window and store the reference
+  //           childWindow = window.open(tpath, '', 'width=1300, height=700');
+  //           // Optional: Center the child window (not reliable for all browsers)
+  //           if (childWindow) {
+  //               var screenWidth = window.screen.width;
+  //               var screenHeight = window.screen.height;
+  //               var left = (screenWidth - 1000) / 2;
+  //               var top = (screenHeight - 650) / 2;
+  //               childWindow.moveTo(left, top);
+  //           }
+  //           // Set an interval to periodically check the child window status
+  //           var checkChildWindow = setInterval(function() {
+  //               if (childWindow && childWindow.closed) {
+  //                   // Update button text to indicate the parent window is refreshing
+  //                   //document.getElementById('openChildButton').innerText = 'Refreshing...';
+  //                   // Refresh the parent window when the child window is closed
+  //                   //location.reload();
+	// 				table.draw();
+  //                   clearInterval(checkChildWindow); // Stop checking once the child window is closed
+  //               }
+  //           }, 500); // Adjust the interval as needed
 			
-        //}
+  //       //}
 
 		
 		
-		e.preventDefault();
-	});
-  }
+	// 	e.preventDefault();
+	// });
+  // }
+  function eventRegPopUp() {
+    $('.open-pop').click(function(e) {
+        var tpath = $(this).attr('data-url');
+        $('#iframeContainer').remove();
+        var iframe = $('<iframe>', {
+            src: tpath,
+            id: 'iframeContainer',
+            width: 1000,
+            height: 700,
+            frameborder: 0,
+            scrolling: 'auto'
+        });
+        
+        // Optionally create a modal or div to append the iframe
+        var modalContainer = $('<div>', {
+            id: 'modalContainer',
+            css: {
+                'width': '1000px',
+                'height': '700px',
+                'position': 'fixed',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)',
+                'background': '#fff',
+                'z-index': 9999,
+                'padding': '20px',
+                'box-shadow': '0 0 10px rgba(0,0,0,0.5)',
+                'overflow': 'hidden'
+            }
+        });
+ var closeButton = $('<button>', {
+            text: 'X',
+            css: {
+                'position': 'absolute',
+                'top': '10px',
+                'right': '10px',
+                'padding': '5px 10px',
+                'background-color': '#f44336',
+                'color': '#fff',
+                'border': 'none',
+                'cursor': 'pointer',
+                'font-size': '16px',
+                'border-radius': '5px'
+            },
+            click: function() {
+                // Remove modal when the close button is clicked
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        // Append iframe to modalContainer
+        modalContainer.append(closeButton);
+        modalContainer.append(iframe);
+        
+        // Append modalContainer to the body
+        $('body').append(modalContainer);
+        
+        // Close modal logic when clicking outside the iframe (optional)
+        modalContainer.click(function(e) {
+            if (!$(e.target).is('iframe')) {
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        e.preventDefault();
+    });
+}
 	$('div.flt-btn').html('<?php echo $filter_content; ?>');
 
  
