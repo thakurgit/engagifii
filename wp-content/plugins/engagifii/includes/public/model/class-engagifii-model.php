@@ -46,6 +46,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['eventFilters', 'eventFilters'],
         ['eventsbyperson', 'eventsLoadGridDataByPerson'],
         ['eventfiltercountdata', 'eventCountFilterData'],
+        ['eventClassFilterData', 'eventClassCountFilterData'],
         ['filtercountdata', 'countFilterData'],
         ['coursecountdata', 'courseCountFilterData'],
         ['classcountdata', 'classCountFilterData'],
@@ -70,6 +71,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['publicOfficial', 'publicOfficialLoadData'], //public offcial datatable
         ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
         ['apisJson', 'apisJson'], //apis json url
+        ['trainingCalendarGridData', 'trainingCalendarGridData'], 
         //end here
     ];
 
@@ -1283,6 +1285,7 @@ wp_die();
         echo json_encode($dataResponse);
         wp_die();
     }
+   
 	 public function _eventsPostCountData(){
 
          $searchValue = '';
@@ -1357,6 +1360,93 @@ wp_die();
         $postData['selectedDate'] = $getCurrentdate;
         return $postData;
     }
+    public function eventClassCountFilterData()
+    {
+
+        //$postedData = $this->_eventsClassPostCountData();
+        $postedData = $this->_prepareTrainingCalendarData();
+		//print_r(json_encode($postedData)); die;
+        $dataResponse = $this->submitApiRequest("Public/EventAndClassFilteredCount", $postedData, "POST", 'classes');
+        header("Content-Type: application/json");   
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+    
+    public function _eventsClassPostCountData(){
+       
+        $searchValue = '';
+       if (strlen($_POST['search']['value']) > 1) {
+           $searchValue = $_POST['search']['value'];
+       }
+       
+       $startPageNum = 1;//(int) (($_POST['start'] / $_POST['length']) + 1);
+       //print_r("tesst");die;
+       $columnsData = [];
+       foreach ($_POST['columns'] as $key => $value) {
+           if ($value['orderable'] == "true") {
+               $columnsData[$value['data']] = $value['data'];
+           }
+       }
+      
+       if ($columnsData["sectionname"] == "sectionname") {
+           $sortBy = "sectionname";
+       }else if ($columnsData["startdate"] == "startdate") {
+           $sortBy = "startdate";
+       }else if ($columnsData["credithours"] == "credithours") {
+           $sortBy = "credithours";
+       }else {
+           $sortBy = "";
+       }
+       
+       
+       $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+       if($allEvents==1){
+       $allEvents = 'false';	
+       }else{
+           $allEvents = 'true';
+       }
+       $postData = array();
+       $postData['title'] = $searchValue;            
+       $postData['searchText'] = $searchText;      
+       $postData['lastActionStartDate'] = $datepickerstart;
+       $postData['lastActionEndDate'] = $datepickerend;
+       $postData['sortBy'] = $sortBy;
+       $postData['pageNumber'] = $startPageNum;
+       $postData['onlyUpcoming'] = $allEvents;
+       if(!empty($_POST['eventStartDate'])){
+           $postData['EventStartDate'] = date('m-d-Y',strtotime($_POST['eventStartDate']));
+       }
+       if(!empty($_POST['eventEndDate'])){
+           $postData['EventEndDate'] = date('m-d-Y',strtotime($_POST['eventEndDate']));;
+       }
+      // $postData['pageSize'] = $_POST['length'];
+
+       if(!empty($_POST['tags']))
+       {
+           $postData['tags'] = $_POST['tags'];
+       }
+       if(!empty($_POST['types']))
+       {
+           $postData['types'] = $_POST['types'];
+       }
+       if(!empty($_POST['locations']))
+       {
+           $postData['locations'] = $_POST['locations'];
+       }
+     
+
+       if(!empty($_POST['createdDate']))
+       {
+           $dateRange = explode("-", $_POST['createdDate']);
+           $postData['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+           $postData['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+       }
+
+       $getCurrentdate = date("Y-m-d");
+       $postData['selectedDate'] = $getCurrentdate;
+       
+       return $postData;
+   }
     public function countFilterData()
     {
 
@@ -3210,7 +3300,207 @@ wp_die();
         echo json_encode($json_data);
         wp_die();
     }
+    public function trainingCalendarGridData(){
+        $postedData = $this->_prepareTrainingCalendarData();
+        
+        $dataResponse = $this->submitApiRequest("public/EventClassPagingList", $postedData, "POST", 'classes');
+       //print_r(json_encode($postedData)); die;
+        $collection = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        //print_r(json_encode($collection)); die;
+        
+        header("Content-Type: application/json");
+        $request = $_GET;
 
+        $options = get_option('ebt_api_settings');
+        $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+	    $front_pages = $options['front_pages'];
+        $events_detail_page = $front_pages['events_detail_page'];
+	    if($events_detail_page){
+		$events_detail_page_link=get_permalink( $events_detail_page );	
+	    }else{
+		$events_detail_page_link= site_url() .'/event-detail/';	 
+	    }
+        $classes_detail_page = $front_pages['classes_detail_page'];
+	if($classes_detail_page){
+		$classes_detail_page_link=get_permalink( $classes_detail_page );	
+	}else{
+		$classes_detail_page_link= site_url() .'/class-details/';	
+	}
+        $endorsement_api_url = $options['ebt_api_url'];
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'com';
+        $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
+
+        $data = array(); 
+        $nestedData = array();
+ //print_r($classes_detail_page_link); die;
+
+ foreach ($collection as $key => $row) {
+   // print_r($row->entity);die;
+    $contactPopOver = '';
+    $locationPopOver = '';
+    $entity = $row->entity;
+    $locationCount = 0;
+    foreach($row->eventDates as $key => $location) {
+        if($location->cityName){
+            $locationCount += 1;
+        }
+    }
+if($entity=="Event"){
+    if(count($row->eventDates)) {
+       $locationPopOver = $this->_popOverTrainingCalLocationData($key, $row->eventDates);
+       $classPopover = $this->_popOverTrainingData1($key, $row->eventDates);
+    }
+}else{  
+   if (count($row->classSessions)) {
+       $classPopoverClass = $this->_popOverClassData1($key, $row->classSessions);
+       
+   }
+}
+   
+    $default_Title = $row->name;
+    $default_Id = $row->id;
+    $default_Detailpage = '<div class="d-flex align-items-center">
+                           <img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="Image icon">';
+                           
+            if ($entity == 'Event') {
+                $default_Detailpage .= '<a href="' . $events_detail_page_link . '?endId=' . $default_Id . '">' . $default_Title . '</a>';
+            } elseif ($entity == 'Class') {
+                $default_Detailpage .= '<a href="' . $classes_detail_page_link . '?classId=' . $default_Id . '">' . $default_Title . '</a>';
+            }
+
+$default_Detailpage .= '</div>';
+
+    $nestedData['name'] = $default_Title ? $default_Detailpage : "N/A";
+    $nestedData['Type'] = $row->type;
+    $nestedData['entity'] = $entity;
+    
+    //$nestedData['eventWithClass'] = "<span class='text-center'>".$eventDetails->eventWithClass."</span>";
+    //$nestedData['class'] = '<div class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '">
+                           // <img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" alt="class-icon" class="img-icon-lg">
+                            //<span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$value->courseClassesCount.'</span></div>'.$classPopover;
+
+    // Dates processing
+    if ($row->startDateTime) {
+        $startDate = date('M d, Y', strtotime($row->startDateTime));
+        $startTime = date('g:i A', strtotime($row->startDateTime));
+    }
+    if ($row->endDateTime) {
+        $endDate = date('M d, Y', strtotime($row->endDateTime));
+        $endTime = date('g:i A', strtotime($row->endDateTime));
+    }
+    //$nestedData['startDateTime'] = '<span style="display:none;">'.strtotime($startDate).'</span>'. $startDate." at ".$startTime." - ".$endDate." at ".$endTime;
+    if($entity=="Event"){
+    $nestedData['startDateTime'] = '<span style="display:none;">' . strtotime(date('M d, Y', strtotime($startDateTime))) . '</span>
+<div class="dropdown">
+   <div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_1" data-placement="left" data-containerid="" id="">
+       <img src="' . ENGAGIFII_ASSETS_URL . '/images/class.png" class="img-icon-lg img-fluid" alt="class-icon">
+       <span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">' . count($row->eventDates) . '</span>
+   </div>' . $classPopover . '
+</div>';
+    }
+    else{
+if (count($row->classSessions)) {
+           $nestedData['startDateTime'] = '<span style="display:none;">' . strtotime(date('M d, Y', strtotime($classSessionStartDate))) . '</span>
+               <div class="dropdown">
+                   <div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_' . $key . '" data-placement="left" data-containerid="' . $key . '" id="' . $key . '">
+                       <img src="' . ENGAGIFII_ASSETS_URL . '/images/class.png" class="img-icon-lg img-fluid" alt="class-icon">
+                       <span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">' . count($row->classSessions) . '</span>
+                   </div>' . $classPopoverClass . '
+               </div>';
+       }
+       else{
+        $nestedData['startDateTime'] = '<span style="display:none;">' . strtotime(date('M d, Y', strtotime($classSessionStartDate))) . '</span>
+               <div class="dropdown">
+                   <div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_' . $key . '" data-placement="left" data-containerid="' . $key . '" id="' . $key . '">
+                       <img src="' . ENGAGIFII_ASSETS_URL . '/images/class.png" class="img-icon-lg img-fluid" alt="class-icon">
+                       <span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">' . count($row->classSessions) . '</span>
+                   </div>' . $classPopoverClass . '
+               </div>';
+       }
+    }
+    if($locationCount>0){
+        $nestedData['city'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
+
+    }
+    else{
+    $nestedData['city'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
+    }
+    // Courses and status
+    //$nestedData['courseCount'] = $eventDetails->courses ?: '<div class="course-badge"><img src="'.ENGAGIFII_ASSETS_URL.'/images/course-icon.png" class="img-circle" alt="course-icon"></div>';
+    $nestedData['eventStatus'] = preg_replace('/(?<!\ )[A-Z]/', ' $0', $row->status);
+    //print_r($eventDetails->eventStatus);die;
+    // Registration button logic
+    $registration_state = $row->registrationState;
+    $event_status = $nestedData['eventStatus'];
+    $default_RegisterBtn = '';
+    if($entity=="Event"){
+    if ($event_status == 'Completed' || in_array($registration_state, ['RegistrationClosed', 'RegistrationNotStarted'])) {
+        $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $registration_state);
+        $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'">
+                                 <button type="button" id="eventsregister" class="btn btn-primary px-3 py-1" disabled style="pointer-events: none;">Register</button></span>';
+    } else {
+        $default_RegisterBtn .= '<a href="'.$tenant_url.'/pages/events/'. $default_Id .'/general" target="_blank" class="btn btn-primary px-3 py-1">Register</a>';
+    }
+    $nestedData['register'] = $default_RegisterBtn;
+    }
+    if($entity=="Class"){
+         # Registration Button Logic
+         if($row->isClassRegistrationAllow ) //|| $row->registrationWorkFlowId
+         {
+           if($row->registrationState !== 'Registration Not Setup' && $row->registrationState !== 'Registration Closed' && $row->registrationState!== 'Sold Out' && $row->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+           {
+                if($row->locationType->name=="onlocation")
+                   { 
+                   $nestedData['register'] = '<a href="'.$row->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                   //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                   }
+                   elseif($row->locationType->name=="online"){
+                       $nestedData['register'] = '<a href="'.$row->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                   }
+                   elseif($row->locationType->name=="onlocationandonline"){
+                   $nestedData['register'] = '<a style="white-space:nowrap" href="'.$row->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
+                   }
+               else{
+                   $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+               }
+           }
+           else{
+           $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$row->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+           }
+       }else{
+         $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$row->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+         //$data[] = $nestedData;    
+       }
+    }
+
+    // Tags processing
+    // $filter = $eventDetails->tags;
+    // $allTags = array_diff($filter, ['PUBLIC', 'public', 'Public']);
+    // if (count($allTags)) {
+    //     $nestedData['tags'] = $this->_generateTagPopover($key, $allTags);
+    // } else {
+    //     $nestedData['tags'] = "";
+    // }
+
+    $data[] = $nestedData;
+
+ }
+   // print_r($data); die;
+        $draw           = $_POST['draw'];
+        $start          = $_POST['start']; //0, 5
+        $length         = $_POST['length']; //5, 10 per page.
+
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+
+        echo json_encode($json_data);
+        wp_die();
+    }
 //events filters
 public function eventFilters(){
 	$postData=array();
@@ -4989,6 +5279,41 @@ $popOverHtml .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No
         return $popOverHtml . $vars;
     }
 
+    private function _popOverTrainingData1($id, $trainingData){
+        $rowName = array();
+        $popOverHtml .= dd_header('Dates');
+        $subItems = "";
+        $li=1;
+        foreach ($trainingData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->id;
+            $classTime = '';
+            if($rowData->startDateTime)
+                
+            $classTime = date('M d Y', strtotime($rowData->startDateTime)).' At '.date('g:i A', strtotime($rowData->startDateTime)).' - '.date('g:i A', strtotime($rowData->endDateTime));;
+			$class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
+			$li++;
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+
+        $vars = "";
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+    
 //Popover events class data
 
 private function _popOverEventsData($id, $eventsData){
@@ -5024,6 +5349,53 @@ private function _popOverEventsData($id, $eventsData){
     $popOverHtml .= '</div> ';
 
     return $popOverHtml . $vars;
+}
+
+public function _popOverTrainingCalLocationData($id, $locationData){
+    $rowName = array();
+ 
+$popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"></div>';
+ $subItems = "";
+$li=1;
+  foreach ($locationData as $key => $rowData) {
+    $days = $key+1;
+    $sessionStart_Date = strtotime($rowData->startDateTime);
+    $startDate = date('M d, Y', $sessionStart_Date);
+    $startTime = date('g:i A', $sessionStart_Date);
+    $sessionEnd_Date = strtotime($rowData->endDateTime);
+    $endDate = date('M d, Y', $sessionEnd_Date);
+    $endTime = date('g:i A', $sessionEnd_Date);
+      
+      $rowName[$rowData->id] = $rowData->cityName;
+        $class='';
+        if($li%2==1){
+        $class='bg-light';	
+        }
+      if($rowData->cityName){
+      $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Day '.$days.'</b><i class="fa fa-chevron-down ml-auto"></i></a>'; 
+      //$subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
+      if($rowData->latitude){
+          $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'">'.$rowData->addressLine.', '.$rowData->cityName.', '.$rowData->stateName.', '.$rowData->zip.', '.$rowData->country.'<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
+      }
+      $subItems .= '</li>';
+      }
+      $li++;
+  }
+
+  $popOverHtml .= $subItems;
+  $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+
+  $vars = "";
+
+  $popOverHtml .= '</span>';
+  $popOverHtml .= '</div>';
+
+  $popOverHtml .= '</div>';
+  $popOverHtml .= '</div>';
+  $popOverHtml .= '</div> ';
+
+  return $popOverHtml . $vars;
+
 }
 
 	//Events Date popover 
@@ -5334,6 +5706,83 @@ $li=1;
         return $postData;
     }
 
+    public function _prepareTrainingCalendarData(){ //_prepareTrainingCalendarsData
+        $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
+        if($allEvents==1){
+        $allEvents = 'false';	
+        }else{
+            $allEvents = 'true';
+        }
+
+        $columnsData = [];
+        foreach ($_POST['columns'] as $key => $value) {
+            if ($value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
+        }
+        $startPageNum = 1;
+        if($_POST['start']){
+            $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+        }
+        
+
+        $isAsscend = $_POST["order"][0]["dir"];
+
+        if ($isAsscend == 'desc') {
+            $isAsscending = false;
+        } else {
+            $isAsscending = true;
+        }
+        
+		$titleColumn=$_POST['titleColumn'];
+        $title = $_POST['columns'][$titleColumn]['search']['value'];
+
+        if (strlen($_POST['search']['value']) > 1) {
+            $title = $_POST['search']['value'];
+        }
+        $postData = array();
+        $sortByColumn = $_POST['order'][0]['column'];
+        $sortBy       = $_POST['columns'][$sortByColumn]['data'];
+        $postData['itemCount'] = isset($_POST['length']) ? $_POST['length'] : 0;
+        //$postData['isUpcoming'] = false; //$allEvents;
+        $postData['sortBy'] = "";//ucfirst($sortBy)"";
+        $postData['sortDirection'] = 'asc';
+        $postData['pageNumber'] = ($startPageNum);
+        $postData['pageSize'] = ((int) $_POST['length']);
+		$postData['text'] = $title;
+        //$postData['sortDirection'] = $_POST["order"][0]["dir"];
+        
+        $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
+        $postData['filterBody']['isUpcoming'] = false; //$allEvents;
+        $postData['filterBody']['category'] = $_POST['category']; //$allEvents;
+       
+        if(!empty($_POST['tags']))
+        {
+            $postData['tags'] = $_POST['tags'];
+        }
+        if(!empty($_POST['types']))
+        {
+            $postData['filterBody']['typeId'] = $_POST['types'];
+        }
+		 if(!empty($_POST['locations']))
+        {
+            $postData['filterBody']['venueId'] = $_POST['locations'];
+        }
+         if(!empty($_POST['createdDate']))
+        {
+            $dateRange = explode("-", $_POST['createdDate']);
+            $postData['filterBody']['createdDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['filterBody']['createdDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+        if(!empty($_POST['classDate']))
+        {
+            $dateRange = explode("-", $_POST['classDate']);
+            $postData['filterBody']['registrationDateRange']['startDate'] = date('m-d-Y',strtotime($dateRange[0]));
+            $postData['filterBody']['registrationDateRange']['endDate'] = date('m-d-Y',strtotime($dateRange[1]));
+        }
+    //print_r(json_encode($postData)); die;
+        return $postData;
+    }
 
     public function _classPostCountData(){
         $year = $_POST['year'];

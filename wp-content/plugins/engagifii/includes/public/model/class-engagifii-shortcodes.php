@@ -80,6 +80,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-myDownloads' => 'engagifii_myDownloads',
 			'engagifii-myHome' => 'engagifii_myHome',
 			'people-list' => 'people_list',
+			'training-calendar' => 'training_calendar'
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -458,6 +459,13 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	{
 		ob_start();
 		include $this->basePath.'includes/public/views/events/grid-listing.php';
+		return ob_get_clean();
+	}
+	
+	public function training_calendar()
+	{
+		ob_start();
+		include $this->basePath.'includes/public/views/trainingcalendar/grid-listing.php';
 		return ob_get_clean();
 	}
 	/*public function event_grid_view_person()

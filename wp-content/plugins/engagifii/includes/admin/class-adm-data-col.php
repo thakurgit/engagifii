@@ -90,6 +90,18 @@ class adminDataColumn extends Engagifii_API{
 		
     	
 	}
+	public function getAllCommonColumnList(){
+
+		$dataResponse = $this->submitApiRequest("Public/AllCommonColumnList",array(),"GET",'classes');
+		if(isset($dataResponse['api_response'])){
+			$collection   = json_decode($dataResponse['api_response']);
+		return $collection;
+		}
+		else
+			return array();
+		
+    	
+	}
 	
 	public function getSessionsData(){
 		$postData = array();

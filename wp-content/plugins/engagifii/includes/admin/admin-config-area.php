@@ -53,6 +53,9 @@ class ebtAdminConfigSettings {
 		if(!$enabledModules || in_array('events',$enabledModules)){
 			$views[] = 'events/admin-column-list.php';
 		}
+        if(!$enabledModules || in_array('events',$enabledModules)){
+			$views[] = 'trainingcalendar/admin-column-list.php';
+		}
 		if(!$enabledModules || in_array('legislation',$enabledModules)){
 			$views[] = 'legislation/admin-column-list.php';
 		}
@@ -461,10 +464,12 @@ function ebt_tenant_code_render(  ) {
                                     '-qa' => 'QA',
                                     '-support' => 'Support',
                                     '-hotfix' => 'Hotfix',
+                                    '-preview2' => 'Preview2',
                                     '-preview3' => 'Preview3',
                                     '-preview4' => 'Preview4',
                                     '-preview6' => 'Preview6',
-                                    '-preview9' => 'Preview9'
+                                    '-preview9' => 'Preview9',
+                                    '-staging' => 'Staging'
                                   ];
                                 
                                   foreach ($envs as $value => $label) {

@@ -996,6 +996,15 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
+	public function eventClassdateFilters($date){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'Public/GetMinMaxEventAndClassRegDate/'.$date;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+		$responseArray = json_decode($response['api_response'], true);
+		//print_r($responseArray); die;
+		return $responseArray;
+	}
 
 	public function classRegDateFilters($date){
 		$postData=array();
@@ -1005,6 +1014,7 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$responseArray = json_decode($response['api_response'], true);
 		return $responseArray;
 	}
+	
 
 	public function getAllClassCourses($date){
 		$postData=array();
