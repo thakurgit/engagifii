@@ -51,6 +51,7 @@ if(!$dataResponse){
  	   $class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
   	 $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
      $class_start_date = date("Y-m-d",strtotime ( '-1 day' , strtotime ( $class_start_date ) )) ;	
+     $class_end_date = date('m/d/Y',strtotime( '+1 day' , strtotime ( $class_end_date ) )) ;	
     //print_r($classdateRange);die;
 ?>
 
