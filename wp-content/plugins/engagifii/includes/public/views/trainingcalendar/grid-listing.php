@@ -621,7 +621,7 @@ category = (function() {
 			city='';
       category='';
             createdDate = '';
-            classdate = '';
+            classDate = '';
             table.draw();
 
       })
