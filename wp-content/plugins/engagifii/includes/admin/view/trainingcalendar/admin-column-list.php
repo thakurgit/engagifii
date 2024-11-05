@@ -21,7 +21,7 @@
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';	
 		} else if(is_array ($response)){
 			echo '<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for list views only.</i><hr>'; 
-    	echo '<input type="block" class="cls" name="ebt_api_settings[event_class_col_order]" value="'.$options['event_class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="eventList">';
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[event_class_col_order]" value="'.$options['event_class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="eventList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
 			if(in_array($row->colName, $required_column_array)){
@@ -57,7 +57,7 @@
 			{
 				 $all_events_class = 'checked';
 			}
-		echo '<h3>Manage Event Listing</h3><hr>';	
+		echo '<h3>Manage Listing</h3><hr>';	
 		echo '<span><input type="checkbox" name="ebt_api_settings[allEventsClass]" id="allEventsClass" value="1" '.$all_events_class.'/> <strong>Show All Events & Class</strong></span>
 		<br><i>Note: When unchecked, only upcoming events & classes will be displayed.</i>';	
     }
