@@ -46,20 +46,20 @@
 		}
     	}
     	echo '</ul>';
-		if(isset($options['allEvents'])){
-			$allEvents = $options['allEvents'];
+		if(isset($options['allEventsClass'])){
+			$allEventsClass = $options['allEventsClass'];
 		   }else{
-			   $allEvents = null;
+			   $allEventsClass = null;
 		   }
 		
-			$all_events = '';
-			if($allEvents==1)
+			$all_events_class = '';
+			if($allEventsClass==1)
 			{
-				 $all_events = 'checked';
+				 $all_events_class = 'checked';
 			}
 		echo '<h3>Manage Event Listing</h3><hr>';	
-		echo '<span><input type="checkbox" name="ebt_api_settings[allEvents]" id="allEvents" value="1" '.$all_events.'/> <strong>Show All Events</strong></span>
-		<br><i>Note: When unchecked, only upcoming events will be displayed.</i>';	
+		echo '<span><input type="checkbox" name="ebt_api_settings[allEventsClass]" id="allEventsClass" value="1" '.$all_events_class.'/> <strong>Show All Events & Class</strong></span>
+		<br><i>Note: When unchecked, only upcoming events & classes will be displayed.</i>';	
     }
 		echo '</div>';
 		

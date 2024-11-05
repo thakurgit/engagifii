@@ -5707,13 +5707,14 @@ $li=1;
     }
 
     public function _prepareTrainingCalendarData(){ //_prepareTrainingCalendarsData
-        $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
-        if($allEvents==1){
-        $allEvents = 'false';	
+        $allEventsClass = get_option( 'ebt_api_settings' )['allEventsClass'];
+        
+        if($allEventsClass==1){
+        $allEventsClass = 'false';	
         }else{
-            $allEvents = 'true';
+            $allEventsClass = 'true';
         }
-
+        //print_r($allEventsClass);die;
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
             if ($value['orderable'] == "true") {
@@ -5744,7 +5745,7 @@ $li=1;
         $sortByColumn = $_POST['order'][0]['column'];
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = isset($_POST['length']) ? $_POST['length'] : 0;
-        //$postData['isUpcoming'] = false; //$allEvents;
+        //$postData['isUpcoming'] = $allEventsClass;
         $postData['sortBy'] = "";//ucfirst($sortBy)"";
         $postData['sortDirection'] = 'asc';
         $postData['pageNumber'] = ($startPageNum);
@@ -5753,7 +5754,7 @@ $li=1;
         //$postData['sortDirection'] = $_POST["order"][0]["dir"];
         
         $postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
-        $postData['filterBody']['isUpcoming'] = false; //$allEvents;
+        $postData['filterBody']['isUpcoming'] = $allEventsClass; //$allEvents;
         $postData['filterBody']['category'] = $_POST['category']; //$allEvents;
        
         if(!empty($_POST['tags']))
