@@ -44,6 +44,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['classsearch', 'classSearchLoadGridData'],
         ['events', 'eventsLoadGridData'],
         ['eventFilters', 'eventFilters'],
+        ['eventClassFilters', 'eventClassFilters'],
         ['eventsbyperson', 'eventsLoadGridDataByPerson'],
         ['eventfiltercountdata', 'eventCountFilterData'],
         ['eventClassFilterData', 'eventClassCountFilterData'],
@@ -3547,6 +3548,52 @@ public function eventFilters(){
 	
 }
 
+public function eventClassFilters(){
+	$postData=array();
+	$htmlArray = array();
+	  $filterParams = $_POST['filterParams'];
+      
+	  $apiUrl='';
+	  $date = date('Y-m-d');
+	  foreach ($filterParams as $keys => $values) {
+		  if($values =='startDateTime'){
+			$apiUrl='event/GetMinMaxEventDate/'.$date; 
+		  }else if($values =='tags'){
+			$apiUrl='public/tags/1/1';  
+		  }else if($values =='Type'){
+			$apiUrl='public/event-type';  
+		  }else if($values =='city'){
+			$apiUrl='public/venues';  
+		  }
+		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		  if($response['api_response']){
+			$response = json_decode($response['api_response'], true);
+			if($response){
+			  foreach ($response as $key => $value) {
+				  if($values=='startDateTime'){
+					  $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
+					  $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
+				  }else if($values =='tags'){
+					  $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				  }else if($values =='city'){
+					  $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';	
+				  }else if($values=='Type'){
+					$html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+				  }
+				}
+			  }else{
+				$html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+			  }
+	  		} else {
+				$html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+			}
+			$htmlArray=$html;
+	  }
+      //print_r($htmlArray); die;
+		echo json_encode($htmlArray);
+        wp_die();
+	
+}
 
     //Load event list by person
     public function eventsLoadGridDataByPerson(){

@@ -42,8 +42,10 @@ if(!$dataResponse){
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
     $tags = $obj->eventsAllTags();
     $eventTypes = $obj->eventTypes($date);
+    $classTypes = $obj->classTypes($date);
+
     $eventLocations = $obj->eventLocation();
-    //print_r($eventTypes);
+    //print_r($classTypes); die;
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -150,19 +152,42 @@ ob_start();
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
+        <div class="content-area city-filter d-none"><ul class="list-group m-0">
+        <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
           <?php
-		  if($eventTypes){
-            foreach ($eventTypes as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
-            }
-            }
+		  // if($eventTypes){
+      //       foreach ($eventTypes as $key => $value) {
+      //         echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+      //       }
+      //       }
           ?>  
         </ul></div>
       </div>
       
       <?php
         }
+        if(in_array('Type', $events_visible_column_list) && array_search('Type', $ebt_visib_datacol_list)){
+          ?>
+           <div class="filter-list border-bottom">
+            <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Types <i class="far fa-angle-down"></i></div>
+            <div class="content-area d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+              <?php
+          // if($classTypes){
+          //       foreach ($classTypes as $key => $value) {
+          //         echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+          //       }
+          //       }
+              ?>  
+            </ul></div>
+          </div>
+          
+          <?php
+            }
       
       
       if(in_array('city', $events_visible_column_list)) {
@@ -170,13 +195,16 @@ ob_start();
           ?>
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
-            <div class="content-area d-none"><ul class="list-group m-0">
+            <div class="content-area city-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
               <?php
-			  if($eventLocations){
-                foreach ($eventLocations as $key => $value) {
-           echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
-                }
-                }
+			  // if($eventLocations){
+        //         foreach ($eventLocations as $key => $value) {
+        //    echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
+        //         }
+        //         }
               ?>  
             </ul></div>
           </div>
@@ -189,12 +217,15 @@ ob_start();
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none"><ul class="list-group m-0">
+        <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
           <?php
-		  if($tags){
-            foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
-            }
-            }
+		  // if($tags){
+      //       foreach ($tags as $key => $value) {
+      //         echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+      //       }
+      //       }
           ?>  
         </ul></div>
       </div>
@@ -553,6 +584,50 @@ $( '.cleardate' ).click(function() {
 		$(this).next('.content-area').toggleClass('d-none');
 		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
 	});*/
+  window.addEventListener("load", function () {
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'eventClassFilters',
+		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
+		},
+		success: function(response) { 
+		for (var key of Object.keys(JSON.parse(response))) {
+			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
+		}
+		dt_filterActivate();
+		var dates = JSON.parse(response)['startDateTime'];
+		filterEvents(dates['minStartDate'],dates['maxEndDate']); 
+			}
+	  });
+});
+function filterEvents(minDate,maxDate){
+   $('input[name="createdbetween"]').daterangepicker({
+   minDate:minDate,
+    maxDate: maxDate,
+    autoApply: true
+  }, function(start, end) {
+      createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
+	  startdate=start.format('MM/DD/YYYY');
+	  enddate=end.format('MM/DD/YYYY');
+		  if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
+      countFilterData();
+
+    });
+  startdate='';
+  enddate='';
+  $('input[name="createdbetween"]').val('');
+  $('.filter-list input[type=checkbox]').change(function(){
+	  if($('#apply-filter-data .spinner-border').length==0){
+		  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+	  }
+	  
+	  countFilterData();
+  })
+}
 
    $('input[name="createdbetween"]').daterangepicker({
    minDate:'<?php echo $min_date; ?>',

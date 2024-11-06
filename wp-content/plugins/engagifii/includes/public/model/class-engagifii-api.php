@@ -925,11 +925,20 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 		$apiUrl = 'public/event-type';
 		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
 		$responseArray = json_decode($response['api_response'], true);
+		//print_r($response); die;
+		return $responseArray;
+	}
+	public function classTypes($date){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/GetObjectTypesForFilter/'.$date;
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+		$responseArray = json_decode($response['api_response'], true);
+		//print_r($response); die;
 		return $responseArray;
 	}
 
 	public function eventLocation(){
-
 		$postData=array();
 		$responseArray = array();
 		$apiUrl = 'public/venues';
