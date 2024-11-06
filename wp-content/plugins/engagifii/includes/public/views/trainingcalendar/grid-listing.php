@@ -152,7 +152,7 @@ ob_start();
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
-        <div class="content-area city-filter d-none"><ul class="list-group m-0">
+        <div class="content-area Type-filter d-none"><ul class="list-group m-0">
         <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
@@ -173,15 +173,15 @@ ob_start();
            <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Types <i class="far fa-angle-down"></i></div>
             <div class="content-area d-none"><ul class="list-group m-0">
-            <div class="loaders text-center py-3">
+            <!-- <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-            </div>
+            </div> -->
               <?php
-          // if($classTypes){
-          //       foreach ($classTypes as $key => $value) {
-          //         echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
-          //       }
-          //       }
+          if($classTypes){
+                foreach ($classTypes as $key => $value) {
+                  echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                }
+                }
               ?>  
             </ul></div>
           </div>
@@ -456,7 +456,7 @@ var table = $('#ebtmaintable').DataTable( {
          },
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
-			  dt_filterActivate();
+			  //dt_filterActivate();
     },
     });
 

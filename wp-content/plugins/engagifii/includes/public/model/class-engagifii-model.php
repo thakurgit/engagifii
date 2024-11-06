@@ -3565,6 +3565,9 @@ public function eventClassFilters(){
 		  }else if($values =='city'){
 			$apiUrl='public/venues';  
 		  }
+          elseif($values =='classType'){
+			$apiUrl='public/GetObjectTypesForFilter/'.$date;
+		  }
 		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
 		  if($response['api_response']){
 			$response = json_decode($response['api_response'], true);
@@ -5419,11 +5422,12 @@ $li=1;
         $class='bg-light';	
         }
       if($rowData->cityName){
-      $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Day '.$days.'</b><i class="fa fa-chevron-down ml-auto"></i></a>'; 
-      //$subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
-      if($rowData->latitude){
-          $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'">'.$rowData->addressLine.', '.$rowData->cityName.', '.$rowData->stateName.', '.$rowData->zip.', '.$rowData->country.'<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
-      }
+      //$subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Day '.$days.'</b><i class="fa fa-chevron-down ml-auto"></i></a>'; 
+      $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><div data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Address:</b><br>' .$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'</div>';
+       if($rowData->latitude){
+          //$subItems .= '<div class="collapse" id="loc-'.$rowData->id.'">'.$rowData->addressLine.', '.$rowData->cityName.', '.$rowData->stateName.', '.$rowData->zip.', '.$rowData->country.'<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
+            $subItems .=  '<div class="collapse" id="loc-'.$rowData->id.'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
+        }
       $subItems .= '</li>';
       }
       $li++;
