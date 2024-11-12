@@ -5797,8 +5797,9 @@ $li=1;
         $sortBy       = $_POST['columns'][$sortByColumn]['data'];
         $postData['itemCount'] = isset($_POST['length']) ? $_POST['length'] : 0;
         //$postData['isUpcoming'] = $allEventsClass;
-        $postData['sortBy'] = "";//ucfirst($sortBy)"";
-        $postData['sortDirection'] = 'asc';
+        $postData['sortBy'] = ucfirst($sortBy);
+        $postData['sortDirection'] = $isAsscend === 'desc' ? 'desc' : 'asc';
+
         $postData['pageNumber'] = ($startPageNum);
         $postData['pageSize'] = ((int) $_POST['length']);
 		$postData['text'] = $title;
