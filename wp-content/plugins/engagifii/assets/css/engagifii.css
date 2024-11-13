@@ -352,6 +352,7 @@ div.dataTables_filter input,
 */
 .list-box ul li {
 	font-size: 12px;
+	line-height: 18px;
 }
 .click-filter {
 	cursor: pointer;
@@ -1567,8 +1568,9 @@ position: relative;
 .list-box ul li {
 	position: relative;
 }
-.list-box ul li>input {
+.list-box ul li>input, .tz-selectAll {
 	opacity: 1;
+	height: auto;
 }
 .list-box ul li>span {
 	left: 4px;
