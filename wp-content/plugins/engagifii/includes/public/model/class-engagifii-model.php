@@ -3834,6 +3834,7 @@ public function eventClassFilters(){
         $postedData = $this->_prepareLegislationPostData();
 		$dataResponse = $this->submitApiRequest("legislative/public-bills/list",$postedData,"POST",'legislation');
         $collection = json_decode($dataResponse['api_response']);
+        //print_r($dataResponse); die;
         header("Content-Type: application/json");
         $request = $_GET;
 
@@ -3854,6 +3855,7 @@ public function eventClassFilters(){
 	}
     if($tenantCode=="clemson"){
         $bill_detail_link="https://www.scstatehouse.gov/billsearch.php";
+        //$billIdText = ""
     }
         $lbt_api_url = $options['lbt_api_url'];
 
@@ -3862,57 +3864,57 @@ public function eventClassFilters(){
         $sponsorsName = array();
         $bill_array   = array();
         foreach ($collection->collection as $key => $row) {
-
+            $fBillNumber = preg_replace('/[^0-9]/', '', $row->billNumber);
+        
             $nestedData = array();
-			if($row->lastActionOn==null){
-    $lastActionOnnew_Date ='';
-}else{
-    $lastActionOndefault_Date = $row->lastActionOn;
-    $lastActionOnconvert_Date = strtotime($lastActionOndefault_Date);
-    $lastActionOnnew_Date = date('M d, Y', $lastActionOnconvert_Date);
-}
-
+            if ($row->lastActionOn == null) {
+                $lastActionOnnew_Date = '';
+            } else {
+                $lastActionOndefault_Date = $row->lastActionOn;
+                $lastActionOnconvert_Date = strtotime($lastActionOndefault_Date);
+                $lastActionOnnew_Date = date('M d, Y', $lastActionOnconvert_Date);
+            }
+        
             $default_Date = $row->introducedDate;
             $convert_Date = strtotime($default_Date);
             $new_Date = date('M d, Y', $convert_Date);
-
+        
             $bill_array[$key] = $row->id;
-            
+        
             $billHtml = "";
-
-            if(isset($options['lbt_title_display_setting']))
-            {
-                if($options['lbt_title_display_setting'] == 'alternate'){
-                    if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->alternateTitle . '</a>';
-                    }
-                    else
-                    {
-                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
-                    }
-                    
-
-                }elseif($options['lbt_title_display_setting'] == 'alternate-top'){
-                    if($row->alternateTitle){
-                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->alternateTitle . '<br/>'.$row->title.'</a>';
-                    }
-                    else
-                    {
-                        $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->title . '</a>';
-                    }
-
-                }elseif($options['lbt_title_display_setting'] == 'title-top'){
-                    $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id .' >' . $row->title . '<br/>'.$row->alternateTitle.'</a>';
-
-                }
-                elseif($options['lbt_title_display_setting'] == 'title'){
-                    $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
-                }
+        
+            // Check if tenantCode is 'clemson'
+            if ($tenantCode == "clemson") {
+                $billIdParam = $fBillNumber;
+                $billQueryParam = 'billnumbers';
+            } else {
+                $billIdParam = $row->id;
+                $billQueryParam = 'billId';
             }
-            else
-            {
-                $billHtml = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >' . $row->title . '</a>';
+        
+            if (isset($options['lbt_title_display_setting'])) {
+                if ($options['lbt_title_display_setting'] == 'alternate') {
+                    if ($row->alternateTitle) {
+                        $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->alternateTitle . '</a>';
+                    } else {
+                        $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->title . '</a>';
+                    }
+                } elseif ($options['lbt_title_display_setting'] == 'alternate-top') {
+                    if ($row->alternateTitle) {
+                        $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->alternateTitle . '<br/>' . $row->title . '</a>';
+                    } else {
+                        $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->title . '</a>';
+                    }
+                } elseif ($options['lbt_title_display_setting'] == 'title-top') {
+                    $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->title . '<br/>' . $row->alternateTitle . '</a>';
+                } elseif ($options['lbt_title_display_setting'] == 'title') {
+                    $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->title . '</a>';
+                }
+            } else {
+                $billHtml = '<a class="bill-title" href="' . $bill_detail_link . '?' . $billQueryParam . '=' . $billIdParam . '" >' . $row->title . '</a>';
             }
+        
+        
             
             $pdf = '<a href=' . $lbt_api_url . '/file/' . $row->fileId . '> <img class="full-text-img" alt="pdf-icon" src="' . ENGAGIFII_ASSETS_URL . '/images/pdf.png' . '"> </a>';
 
@@ -3949,7 +3951,12 @@ public function eventClassFilters(){
 
             $nestedData["trackingLevelColorCode"] = $row->trackingLevelColorCode;
             $nestedData["BillType"] = $row->billTypeAbbr;
-            $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
+            if($tenantCode=="clemson"){
+                $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billnumbers=' . $fBillNumber . ' >'.$row->billNumber.'</a>';
+            }else{
+                $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
+            }
+           
             $nestedData["state"] = $row->state;
             $nestedData["fileId"] = $pdf;
             $nestedData["title"] = $billHtml;
