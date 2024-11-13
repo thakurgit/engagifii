@@ -3838,6 +3838,7 @@ public function eventClassFilters(){
         $request = $_GET;
 
         $options = get_option('ebt_api_settings');
+        $tenantCode = $options['dashboard_tenant_code'];
 	$front_pages = $options['front_pages'];
     $bills_page = $front_pages['bills_page'];
     $bills_detail_page = $front_pages['bills_detail_page'];
@@ -3851,6 +3852,9 @@ public function eventClassFilters(){
 	}else{
 	$bill_detail_link= site_url() .'/engagifii-detail/';	
 	}
+    if($tenantCode=="clemson"){
+        $bill_detail_link="https://www.scstatehouse.gov/billsearch.php";
+    }
         $lbt_api_url = $options['lbt_api_url'];
 
 
