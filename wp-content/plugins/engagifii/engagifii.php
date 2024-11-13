@@ -178,7 +178,9 @@ wp_enqueue_script(
 			wp_enqueue_style( 'engagifii', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii_merge.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array(), $this->version, 'all' );
 			wp_deregister_style('font-awesome-5-all');
-			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css',array(),wp_get_theme()->get('Version')  );
+			wp_deregister_style('fontawesome');
+             wp_deregister_style('v4-shims');            
+			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css');
 			wp_register_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css' );
 			wp_enqueue_style('datepicker-css');
 			wp_register_style( 'range-selector', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css' );
