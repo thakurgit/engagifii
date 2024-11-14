@@ -1568,7 +1568,7 @@ position: relative;
 .list-box ul li {
 	position: relative;
 }
-.list-box ul li>input, .tz-selectAll {
+.list-box ul li>input, .tz-selectAll, .form-check-input {
 	opacity: 1;
 	height: auto;
 }
