@@ -3552,7 +3552,7 @@ public function eventClassFilters(){
 	$postData=array();
 	$htmlArray = array();
 	  $filterParams = $_POST['filterParams'];
-      
+      $module = "event";
 	  $apiUrl='';
 	  $date = date('Y-m-d');
 	  foreach ($filterParams as $keys => $values) {
@@ -3561,14 +3561,15 @@ public function eventClassFilters(){
 		  }else if($values =='tags'){
 			$apiUrl='public/tags/1/1';  
 		  }else if($values =='Type'){
-			$apiUrl='public/event-type';  
+			$apiUrl='public/GetEventClassTypesForFilter/'.$date;
+            $module = "classes";
 		  }else if($values =='city'){
 			$apiUrl='public/venues';  
 		  }
           elseif($values =='classType'){
-			$apiUrl='public/GetObjectTypesForFilter/'.$date;
+			//$apiUrl='public/GetObjectTypesForFilter/'.$date;
 		  }
-		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', $module);
 		  if($response['api_response']){
 			$response = json_decode($response['api_response'], true);
 			if($response){
@@ -3581,7 +3582,7 @@ public function eventClassFilters(){
 				  }else if($values =='city'){
 					  $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';	
 				  }else if($values=='Type'){
-					$html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
+					$html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['text'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
 				  }
 				}
 			  }else{
@@ -4588,7 +4589,7 @@ foreach ($seqColumns as $key => $value) {
 				  }
 			   $data  .='<div class="card">'; 
 			   $data  .='<div class="card-header px-0 " id="heading'.$value['id'] .'">
-					  <h2 class="mb-0">
+					  <h2 class="mb-0 mt-0">
 						<button class="btn btn-link btn-block text-left py-0 d-flex align-items-center" type="button" data-toggle="collapse" data-target="#collapse'.$value['id'] .'" aria-expanded="true" aria-controls="collapseOne">
 						  <i class="fal fa-plus mr-3"></i>'.$value['name'] .'<span class="text-dark ml-auto">'.$counterTab.' Public Officials</span>
 						</button>
@@ -5826,7 +5827,7 @@ $li=1;
         }
         if(!empty($_POST['types']))
         {
-            $postData['filterBody']['typeId'] = $_POST['types'];
+            $postData['filterBody']['type'] = $_POST['types'];
         }
 		 if(!empty($_POST['locations']))
         {
