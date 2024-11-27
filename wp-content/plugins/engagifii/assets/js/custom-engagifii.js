@@ -274,3 +274,6 @@ $('.input-group-append').click(function() {
 
 // Adjust the position of the calendar icon in the date input group
 $('.input-group-append').css('cursor', 'pointer');
+window.addEventListener("resize", function() {
+    $(window).resize();
+});
