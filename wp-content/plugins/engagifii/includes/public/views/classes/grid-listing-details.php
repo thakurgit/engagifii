@@ -66,7 +66,7 @@ if ( strpos($url,'my-profile') !== false ) {
 	$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';?> 
     <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
-    <a href="<?php echo $classes_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+    <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;"  class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
 ?>
 </div>
@@ -201,7 +201,7 @@ if ( strpos($url,'my-profile') !== false ) {
                                       <?php
                                       }?>
                                       </table>
-                                  <p><strong>Total sessions:</strong> <?php echo count($response->classSessions); ?></p>
+                                 <?php if($response->classSessions){ ?> <p><strong>Total sessions:</strong> <?php echo count($response->classSessions); }?></p>
                                  
                               </div>
                               </div>

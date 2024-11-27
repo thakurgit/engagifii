@@ -52,6 +52,7 @@
 	$tenantCode = $options['dashboard_tenant_code'];
 	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
 	$contactPersons = $response->contacts;
+	if($loggedInUserId){
 	$userPermissionArray = array();
         $postedDataPermission = array();
         $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
@@ -73,7 +74,8 @@
         else{
             $registerOverride = 'false';
         }
-	
+	}
+	if($_COOKIE['courseids']){
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
   $class_key = array_search ($_GET['courseId'], $class_array);
   $class_count = count($class_array)-1;
@@ -89,7 +91,7 @@
     $prev = $class_array[$class_key-1];
     $next = $class_array[$class_key+1];
   }
-   
+}
 
 ?>
 <div class="mb-2">
@@ -105,7 +107,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		$course_detail_page_link= site_url() .'/my-profile/my-transcript/course-details/';?>
     <a href="<?php echo site_url().'/my-profile/events/';?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } else { ?>
-    <a href="<?php echo $events_page;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+    <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <?php } 
 ?>
 
