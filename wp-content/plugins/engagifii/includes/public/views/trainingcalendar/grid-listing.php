@@ -26,7 +26,7 @@ if(!$dataResponse){
 	if($options['training_calendar_visible_column_list']){
   	  $ebt_visib_datacol_list = $options['training_calendar_visible_column_list'];
 	}
-//print_r($events_visible_column_list); die;
+//print_r("hello"); die;
     /* Get Tags list */
     $payloadData = array();
     $getCurrentdate = date("Y-m-d");
@@ -151,7 +151,7 @@ ob_start();
       if(in_array('Type', $events_visible_column_list) && array_search('Type', $ebt_visib_datacol_list)){
       ?>
        <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Types <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Type <i class="far fa-angle-down"></i></div>
         <div class="content-area Type-filter d-none"><ul class="list-group m-0">
         <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
