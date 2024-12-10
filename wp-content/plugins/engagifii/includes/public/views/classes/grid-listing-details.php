@@ -187,9 +187,9 @@ if ( strpos($url,'my-profile') !== false ) {
                                       
                                       <?php } } 
                                       else{
-                                        $classStartDateTime = $response->classSessionSettings[0]->sessionStartTime;
+                                        $classStartDateTime = $response->parentCourse->classes[0]->startDate;
                                         $classStartTimeVal = date('g:i A',strtotime($classStartDateTime));
-                                        $classEndDateTime = $response->classSessionSettings[0]->sessionEndTime;
+                                        $classEndDateTime = $response->parentCourse->classes[0]->endDate;
                                         $classEndTimeVal = date('g:i A',strtotime($classEndDateTime));
                                        
 
