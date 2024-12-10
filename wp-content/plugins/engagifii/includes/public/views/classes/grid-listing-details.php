@@ -245,7 +245,15 @@ if ( strpos($url,'my-profile') !== false ) {
                                   ?>
                                   <div class="summary-content-para-engagiigii row">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Registration Dates:</strong></div>
-                                      <div class="col-md-8 col-xl-9"><?php echo date('M d, Y g:i A',strtotime($response->classRegistrationSetting->registrationStartDateTime)).' to '.date('M d, Y g:i A',strtotime($response->classRegistrationSetting->regularRegistrationEndDateTime)); ?></div>
+                                      <div class="col-md-8 col-xl-9">
+                                        <?php 
+                                        if (!empty($response->classRegistrationSetting->registrationStartDateTime)) {
+                                            echo date('M d, Y g:i A', strtotime($response->classRegistrationSetting->registrationStartDateTime)) 
+                                                . ' to ' 
+                                                . date('M d, Y g:i A', strtotime($response->classRegistrationSetting->regularRegistrationEndDateTime));
+                                        } 
+                                        ?>
+                                    </div>
                                   </div>
                               </div>
                               </div>
