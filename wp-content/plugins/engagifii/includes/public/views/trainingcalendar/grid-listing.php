@@ -40,12 +40,11 @@ if(!$dataResponse){
     $postedData = $payloadData;
     $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    $tags = $obj->eventsAllTags();
-    $eventTypes = $obj->eventTypes($date);
-    $classTypes = $obj->classTypes($date);
-
+    //$tags = $obj->eventsAllTags();
+    // $eventTypes = $obj->eventTypes($date);
+    // $classTypes = $obj->classTypes($date);
     $eventLocations = $obj->eventLocation();
-    //print_r($classTypes); die;
+    //print_r($eventLocations); die;
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -389,7 +388,7 @@ var table = $('#ebtmaintable').DataTable( {
     
         
        "pageLength": 10,
-       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50]],
+       "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        "bInfo":false,
        "processing": true,
