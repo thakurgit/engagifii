@@ -13,8 +13,12 @@
 		$postData['eventId']              = $id;
 		$postData['sortBy']        = 'StartDateTime';
 	
-	$classesData        = $obj->getRelatedClassByEvents($id, count($response->eventClasses)); 
-	$bundleData       = $obj->getRelatedBundleByEvents($id, count($response->eventBundles)); //needs to apply condition for public events later
+		$eventClassesCount = isset($response->eventClasses) && is_array($response->eventClasses) ? count($response->eventClasses) : 0;
+	
+	$classesData = $obj->getRelatedClassByEvents($id, $eventClassesCount);
+	$eventBundlesCount = isset($response->eventBundles) && is_array($response->eventBundles) ? count($response->eventBundles) : 0;
+
+	$bundleData = $obj->getRelatedBundleByEvents($id, $eventBundlesCount);
 	$dataResponse = $this->submitApiRequest("public/eventactivity/list",$postData,"POST",'event');
 	$collections  = json_decode($dataResponse['api_response'])->collection;
 	
@@ -227,7 +231,7 @@ if ( strpos($url,'my-profile') !== false ) {
 			  	<li class="nav-item">
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="session-tab" data-toggle="pill" href="#session" role="tab" aria-controls="session" aria-selected="false">Sessions</a>
 			  	</li>
-				<?php } if(($bundleData) && count($bundleData)){?>
+				<?php } if(($bundleData)){?>
 				  <li class="nav-item">
 				  <a class="nav-link rounded-0 px-0 mx-3 text-dark" id="bundles-tab" data-toggle="pill" href="#bundles" role="tab" aria-controls="bundle" aria-selected="false">Bundles</a>
 			    	
@@ -325,8 +329,10 @@ if ( strpos($url,'my-profile') !== false ) {
 			                        </div>
                                    <div class="p-3">
                                    	<?php
-									if(in_array('startDateTime', $events_visible_column_list) && count($response->eventDates)){
-		                    			
+									//if(in_array('startDateTime', $events_visible_column_list) && count($response->eventDates)){
+										if (is_array($events_visible_column_list) && in_array('startDateTime', $events_visible_column_list) &&
+											isset($response->eventDates) && is_array($response->eventDates) && count($response->eventDates)
+										) {	
 		                    			foreach ($response->eventDates as $key => $value) {
 		                    				$position  = $value->position;
 		                    				$department = $value->$department;

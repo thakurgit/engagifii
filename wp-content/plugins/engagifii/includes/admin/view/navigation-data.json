@@ -20,6 +20,11 @@
     "icon": "far fa-calendar-alt"
   },
   {
+    "label": "Classes",
+    "url": "my-profile/classes",
+    "icon": "far fa-calendar-alt"
+  },
+  {
     "label": "My Transcripts",
     "url": "my-profile/my-transcript",
     "icon": "fas fa-file"

@@ -2,13 +2,22 @@
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
+	$date = date('Y-m-d');
     $response = $obj->getClassColumnData();
+	$classTypes = $obj->classTypes($date);
+	//print_r($classTypes);
     $options = get_option( 'ebt_api_settings' );
     $class_visible_column_list = array();
     if(isset($options['class_visible_column_list'])){
     	$class_visible_column_list = $options['class_visible_column_list'];   
 	}
+	$class_type_visible_column_list = array();
+    if(isset($options['class_type_visible_column_list']))
+	{
+	$class_type_visible_column_list = $options['class_type_visible_column_list'];   
+	}
 	$class_col_order   = isset($options['class_col_order']) ? $options['class_col_order']: array();
+	$class_type_col_order   = isset($options['class_type_col_order']) ? $options['class_type_col_order']: array();
    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
@@ -32,6 +41,31 @@
 			$counter++;	  
     	}
     	echo '</ul>';
+		echo '<h3>Manage Class Type Visibility</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for list views only.</i><hr>'; 
+    	echo '<input type="hidden" class="cls" name="ebt_api_settings[class_type_col_order]" value="'.$options['class_type_col_order'].'" /><ul class="ebt-grid-column-list " id="">';
+    	//$counter=1;
+		
+		foreach ($classTypes as $key => $row) {
+			//if(in_array($row['text'], $required_column_array)){
+			//print_r($row->colName)."<br>";
+			
+			$checked = "";
+			if(in_array($row['id'], $class_type_visible_column_list))
+			{
+				$checked .= " checked";
+			}
+			// if($row->text=='name')
+			// {
+			// 	$checked .= " checked readonly";
+			// }
+			
+		
+			echo '<li  data-order="'.$counter.'"> <input id="'.$row['name'].'" class="'.$row['name'].'" type="checkbox" name="ebt_api_settings[class_type_visible_column_list][]" '.$checked.' value='.$row['id'].'><label for="'.$row['name'].'">'.$row['name'].'</label></li>'		;
+				
+				$counter++;
+		//}
+    	}
+		echo '</ul>';
 		if(isset($options['allClasses'])){
 			$allClasses = $options['allClasses'];
 		   }else{

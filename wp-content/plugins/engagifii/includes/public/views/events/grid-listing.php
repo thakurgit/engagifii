@@ -26,6 +26,9 @@ if(!$dataResponse['api_response']){
 	if($options['events_visible_column_list']){
   	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
 	}
+  if($options['events_type_visible_column_list']){
+    $eventTypeIds = $options['events_type_visible_column_list'];
+}
 
     /* Get Tags list */
     $payloadData = array();
@@ -40,9 +43,21 @@ if(!$dataResponse['api_response']){
     $postedData = $payloadData;
     $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    $tags = $obj->eventsAllTags();
-    $eventTypes = $obj->eventTypes($date);
-    $eventLocations = $obj->eventLocation();
+    //$tags = $obj->eventsAllTags();
+    //$eventTypes = $obj->eventTypes($date); 
+if (!isset($eventTypeIds) || !is_array($eventTypeIds)) {
+    $eventTypeIds = []; 
+}
+
+$filteredEventTypes = array_filter($eventTypes, function ($event) use ($eventTypeIds) {
+    return in_array($event['value'], $eventTypeIds); 
+});
+
+$eventTypes = array_values($filteredEventTypes); 
+
+//print_r($eventTypes); die;
+
+    //$eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));

@@ -77,6 +77,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 			'engagifii-members' => 'engagifii_members',
 			'engagifii-myEvents' => 'engagifii_myEvents',
 			'engagifii-myEvents-detail' => 'engagifii_myEvents_detail',
+			'engagifii-myClasses' => 'engagifii_myclasses',
+			'engagifii-myClasses-detail' => 'engagifii_myClasses_detail',
 			'engagifii-myDownloads' => 'engagifii_myDownloads',
 			'engagifii-myHome' => 'engagifii_myHome',
 			'people-list' => 'people_list',
@@ -128,6 +130,16 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	public function engagifii_myEvents_detail(){
 		ob_start();
 		include $this->basePath.'includes/public/views/dashboard/events-detail.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_myClasses(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/classes.php';
+		return ob_get_clean();
+	}	
+	public function engagifii_myClasses_detail(){
+		ob_start();
+		include $this->basePath.'includes/public/views/dashboard/classes-detail.php';
 		return ob_get_clean();
 	}	
 	public function engagifii_myDownloads(){

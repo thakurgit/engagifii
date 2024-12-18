@@ -250,7 +250,7 @@ $fiscalEndDate = $largestEndDate ? date('Y-m-d', $largestEndDate) : date('Y-m-d'
   </div>
 </div>
 <script type="text/javascript">
-var positions = [], departments = [], orgs=[], Status=[], totalTime=[], selectedRow=[];
+var positions = [], departments = [], orgs=[], Status=['active'], totalTime=[], selectedRow=[];
 var titleColumn, emailColumn, val, totalRecords;
 var startDate = '1970-01-01T00:00:00';
 var endDate = '<?php echo date('Y-m-d').'T23:59:59';?>';
