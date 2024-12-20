@@ -3643,7 +3643,7 @@ public function classesLoadGridDataByPerson(){
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
-		$classes_detail_page_link= site_url() .'/my-profile/class/class-details/';	
+		$classes_detail_page_link= site_url() .'/my-profile/classes/class-details/';	
 	}
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
