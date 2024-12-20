@@ -139,7 +139,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii{
 	}	
 	public function engagifii_myClasses_detail(){
 		ob_start();
-		include $this->basePath.'includes/public/views/dashboard/classes-detail.php';
+		include $this->basePath.'includes/public/views/dashboard/class-detail.php';
 		return ob_get_clean();
 	}	
 	public function engagifii_myDownloads(){

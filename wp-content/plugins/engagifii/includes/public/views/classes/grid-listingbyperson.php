@@ -2,6 +2,16 @@
   button#calendar {
     display: none;
 }
+.new-search.form-inline {
+    display: none;
+}
+.btn-group.view-m {
+    display: none;
+}
+.flt-btn.mr-3.mr-xl-5 {
+    display: block !important;
+}
+
 </style>
 <?php
 
@@ -250,7 +260,12 @@ if(!$dataResponse['api_response']){
     $title_key = -1;
     
 ?>
-   <?php $placeholder_text = 'Search by class name';
+   <?php echo '<div class="row"><div class="col-6"><div class="d-flex align-items-center">
+   <h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> 
+   <i class="fas fa-sync"></i></button><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-fluid img-icon-lg" alt="award-icon"></h4>
+   <h5 class="mb-0">Classes</h5></div></div>
+  </div>';  
+$placeholder_text = 'Search by class name';
    echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]');  ?>
 <?php
 
