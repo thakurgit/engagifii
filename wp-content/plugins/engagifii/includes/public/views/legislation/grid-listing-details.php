@@ -789,6 +789,23 @@ $siteURL= site_url();
                                         </tbody>
                                     </table>
                                 </div>
+                                 <div id="popup-container" style="display: none;">
+                                      <div id="popup-content">
+                                          <div id="popup-header">
+                                              <span id="popup-title">Popup Title</span> 
+                                              <button id="popup-close">X</button>
+                                          </div>
+                                          <div id="popup-data">
+                                              <!-- Dynamic content will be injected here -->
+                                          </div>
+                                          <div id="popup-footer" style="padding: 10px; padding-right: 27px; text-align: right; border-top: 1px solid #e5e5e5;">
+                                          <span id="popup-close-text" style="color: #333; cursor: pointer; text-decoration: none;">Close</span>
+
+    </div>
+                                      </div>
+                                  </div>
+
+
                             <div class="tab-pane fade" id="history">
                                     <table class="table table-bordered border-0 table-striped" id="">
                                         <thead class="bg-primary text-white">
@@ -1109,5 +1126,43 @@ $siteURL= site_url();
                 "ordering":true,});*/
 
           } );
+          jQuery(document).ready(function ($) {
+    $(document).on('click', '.view-details', function () {
+        var id = $(this).data('id');
+        var description = $(this).text();
+
+        // Show popup immediately with a loading message
+        $('#popup-title').text(description);
+        $('#popup-data').html('<p style="padding: 15px;">Loading details, please wait...</p>'); // Placeholder message
+        $('#popup-overlay').show();
+        $('#popup-container').show();
+        $('#popup-close-text').hide();
+        // Fetch data via AJAX
+        $.ajax({
+            url: '<?php echo admin_url('admin-ajax.php'); ?>',
+            method: 'POST',
+            data: {
+                action: 'get_rollcall_details',
+                rollCallId: id,
+                description: description
+            },
+            success: function (response) {
+                // Update popup with fetched data
+                $('#popup-data').html(response);
+                $('#popup-close-text').show();
+            },
+            error: function () {
+                // Show error message if the request fails
+                $('#popup-data').html('<p>Failed to fetch details. Please try again later.</p>');
+            }
+        });
+    });
+   
+    $(document).on('click', '#popup-close, #popup-overlay, #popup-close-text',function () {
+        $('#popup-overlay').hide();
+        $('#popup-container').hide();
+    });
+});
+
         </script>
 

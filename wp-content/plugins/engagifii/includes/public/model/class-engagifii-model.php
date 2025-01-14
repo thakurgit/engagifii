@@ -22,6 +22,7 @@ class abstractModelEngagifii extends Engagifii_API
         ['LegislationStaffanalysis', 'LegislationStaffanalysis'],
         ['LegislationVersions', 'LegislationVersions'],
 		['LegislationVotes', 'LegislationVotes'],
+        ['get_rollcall_details', 'get_rollcall_details'],
 		['LegislationHistory', 'LegislationHistory'],
 		['LegislationQuick', 'LegislationQuick'],
 		['LegislationMaco', 'LegislationMaco'],
@@ -1995,7 +1996,8 @@ wp_die();
     }
     public function _prepareClassData(){
         $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
-        //print_r($_POST['classTypes']); die;
+        $allclass = get_option( 'ebt_api_settings' )['allClasses'];
+        //print_r($allclass); die;
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
             if ($value['orderable'] == "true") {
@@ -2051,7 +2053,7 @@ wp_die();
         $postData['filterBody']['registrationDateRange']['endDate'] = isset($_POST['maxReg']) ? $_POST['maxReg'] : '';
         $postData['filterBody']['createdDateRange']['startDate'] = isset($_POST['class_start_date']) ? $_POST['class_start_date'] : '';
         $postData['filterBody']['createdDateRange']['endDate'] = isset($_POST['class_end_date']) ? $_POST['class_end_date'] : '';
-        $postData['filterBody']['classStates'] = isset($_POST['classStates']) ? $_POST['classStates'] : '';
+        $postData['filterBody']['classStates'] = $allclass;
         $postData['filterBody']['creditHour']['min'] = isset($_POST['minRange']) ? $_POST['minRange'] : '';
         $postData['filterBody']['creditHour']['max'] = isset($_POST['maxRange']) ? $_POST['maxRange'] : '';
         //print_r(json_encode($postData)); die;
@@ -4490,7 +4492,11 @@ public function LegislationVotes(){
 		?>
 		<tr>
 			<td> <?php echo $vote->chamberType;?></td>
-			<td> <?php echo $vote->totalVoteCount;?></td>
+			<td> <a href="javascript:void(0);" 
+                       class="view-details" 
+                       data-id="<?php echo $vote->id; ?>">
+                        <?php echo $vote->description; ?>
+                    </a></td>
 			<td> <?php echo $new_Date;?></td>
 			<td> <?php echo $vote->votesCountInFavor;?></td>
 			<td> <?php echo $vote->votesCountAgainst;?></td>
@@ -4498,12 +4504,71 @@ public function LegislationVotes(){
 			<td> <?php echo $vote->countOfAbsentess;?></td>
 			<td> <?php echo $vote->totalVoteCount;?></td>
 			<td> <?php echo $vote->rollCallPassed;?></td>
-			<td> <a href="<?php echo $vote->sourceUrl;?>" target="_blank"><?php echo $vote->sourceUrl;?></a></td>
+			<td> <a href="<?php echo "$vote->sourceUrl";?>" target="_blank"><?php echo "Source";?></a></td>
 		</tr>
 
 	  <?php }} 
         wp_die();
 }
+
+function get_rollcall_details() {
+    $options = get_option('ebt_api_settings');
+    $lbt_api_url = $options['lbt_api_url'];
+    $postData = array();
+    $rollCallId = $_POST['rollCallId']; 
+    $description = $_POST['description']; 
+    $apiUrl = 'legislative/public-bills/rollcall/' . $rollCallId . '/detail';
+    $responseJson =  $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');    
+    $response = json_decode($responseJson['api_response']);
+    $voteDetails = $response->voteDetails;
+    $rollcallDetails = $response->legislativeRollcallDetail;
+
+if (!empty($rollcallDetails)) {    
+    echo '<div style="max-height: 450px; overflow-y: auto; padding: 10px;">';
+    // Summary Table
+    echo '<table style="width: 100%; margin-bottom: 20px; border-collapse: collapse; border: 1px solid #ddd;">';
+    echo '<thead style="background-color: #007BFF; text-align: center; color: white; border: 1px solid #00897b;">';
+    echo '<tr>';
+    echo '<th>Yea</th>'; echo '<th>Nay</th>'; echo '<th>NV</th>'; echo '<th>Abs</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+    echo '<tr style="text-align:center;">';
+    echo '<td>' . htmlspecialchars($voteDetails->yea, ENT_QUOTES, 'UTF-8') . '</td>';
+    echo '<td>' . htmlspecialchars($voteDetails->nay, ENT_QUOTES, 'UTF-8') . '</td>';
+    echo '<td>' . htmlspecialchars($voteDetails->nv, ENT_QUOTES, 'UTF-8') . '</td>';
+    echo '<td>' . htmlspecialchars($voteDetails->abs, ENT_QUOTES, 'UTF-8') . '</td>';
+    echo '</tr>';
+    echo '</tbody>';
+    echo '</table>';
+
+    // Detailed Table
+    echo '<table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">';
+    echo '<thead style="background-color: #007BFF; color: white; border: 1px solid #00897b;">';
+    echo '<tr>';
+    echo '<th style="padding-left: 20px; text-align: left;">Name</th>';
+    echo '<th style="padding-left: 20px; text-align: left;">Response</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+    foreach ($rollcallDetails as $detail) {
+        $name = !empty($detail->name) ? $detail->name : $detail->firstName . ' ' . $detail->lastName;
+        $voteType = $detail->voteType;
+        echo '<tr style="line-height: .5;">';
+        echo '<td style="padding-left: 20px; border: 1px solid #ddd;">' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '</td>';
+        echo '<td style="padding-left: 20px; border: 1px solid #ddd;">' . htmlspecialchars($voteType, ENT_QUOTES, 'UTF-8') . '</td>';
+        echo '</tr>';
+    }
+    echo '</tbody>';
+    echo '</table>';
+
+    echo '</div>'; 
+} else {
+    echo '<p>No data available for the selected roll call.</p>';
+}
+    wp_die();
+}
+
 public function LegislationHistory(){
 	$options = get_option('ebt_api_settings');
 	$lbt_api_url = $options['lbt_api_url'];
