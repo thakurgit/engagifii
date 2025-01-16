@@ -8,7 +8,7 @@ function engagifii_scripts() { ?>
 	padding: 5px 10px !important;
 }	
 </style>
-<script>
+<script>    
 function clearAllCookies(newtab='') {
 	  localStorage.clear();  
      var cookies = document.cookie.split(";");
@@ -83,6 +83,16 @@ window.location.href = "<?php echo site_url();?>/my-profile";
         });
     }
 });*/
+document.addEventListener('DOMContentLoaded', function () {
+    const links = document.querySelectorAll('a[id^="macosession-"]');
+    links.forEach(link => {
+        link.addEventListener('click', function (event) {
+            const id = this.id;
+            const year = id.split('-')[1];
+            localStorage.setItem('sessionname', (year - 1) + ' Regular Session');
+            });
+    });
+});
 </script>
     <?php
 }
@@ -131,7 +141,7 @@ function GetToken( $user, $token ){
 
 add_filter( 'wp_nav_menu_items', 'add_loginout_link', 10, 2 );
 function add_loginout_link( $items, $args ) {
-	$user = wp_get_current_user();
+    $user = wp_get_current_user();
 	$user_role = $user->roles[0];
 	$options  = get_option( 'ebt_api_settings' );
     $login_btn = $options['dash_menus']['login_btn'];

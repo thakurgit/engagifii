@@ -104,8 +104,8 @@ foreach($seqColumns as $key=>$cols){
 
 
   /* Quick Links */
-  /*$quicklinkResponse   = $api->getQuickLinks($billId);
-  $quicklinkResponses = json_decode($quicklinkResponse['api_response']);*/
+  $quicklinkResponse   = $api->getQuickLinks($billId);
+  $quicklinkResponses = json_decode($quicklinkResponse['api_response']);
 
   
   /* Staff Analysis */
