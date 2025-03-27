@@ -4178,7 +4178,7 @@ public function classesLoadGridDataByPerson(){
                         else{
                             $house_name = $row->houseCommittees[0];
                         }
-                        $houseCom = '<div class="flex-1" > '.$house_name . '</div>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  house_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $houseCommitteesCount . ' </span>' . $houseLists;
+                         $houseCom = '<div class="d-flex align-items-center"><div class="flex-1 pr-2" > '.$house_name . '</div>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-auto  house_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $houseCommitteesCount . ' </span></div>' . $houseLists;
 
 
                         $nestedData["houseCommittees"] = $houseCom;
@@ -4205,7 +4205,7 @@ public function classesLoadGridDataByPerson(){
                             $senate_name = $row->senateCommittees[0];
                         }
 
-                        $senateCom = '<div class="d-flex justify-content-center"><div class="flex-1"> '.$senate_name . '</div>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-2  senate_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $senateCommitteesCount . ' </span></div>' . $senateLists;
+                        $senateCom = '<div class="d-flex align-items-center"><div class="flex-1 pr-2"> '.$senate_name . '</div>' . '<span class="badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle ml-auto  senate_' . $row->id . '" data-placement="left" data-containerid="' . $row->id . '" id=' . $row->id . '> +' . $senateCommitteesCount . ' </span></div>' . $senateLists;
 
 
                         $nestedData["senateCommittees"] = $senateCom;
