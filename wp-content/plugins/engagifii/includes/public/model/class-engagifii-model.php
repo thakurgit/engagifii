@@ -3265,39 +3265,38 @@ wp_die();
            
                 $nestedData['register'] = $default_RegisterBtn;
            
-            // $filter = $row->tags;
+             $filterTag = $row->tags;
             // $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
             // $filterTag = array_values($allTags);
-            // $default_Tags = array();
-            // if (count($filterTag)) {
+             $default_Tags = array();
+             if (is_array($filterTag) && count($filterTag)) {
 
-            //     $allTags = array();
+                 $allTags = array();
                 
-            //     foreach ($filterTag as $index => $tag) {
-
-            //         $default_Tags[$index]->tagName = $tag;
-            //         $default_Tags[$index]->id =$index;
-            //     }
+                 foreach ($filterTag as $index => $tag) {
+						$default_Tags[$index] = new stdClass();
+                     $default_Tags[$index]->tagName = $tag;
+                     $default_Tags[$index]->id =$index;
+                 }
                 
-            //     foreach ($default_Tags as $index => $value) {
+                 foreach ($default_Tags as $index => $value) {
                    
-            //         if(count($default_Tags) > 1 && $index == 0)
-            //         {   
+                     if(count($default_Tags) > 1 && $index == 0)
+                     {   
                         
-            //             $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
-            //              $tagCount   = count($default_Tags) - 1;
-       		// 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+                         $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                          $tagCount   = count($default_Tags) - 1;
+       		 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
 					
-            //         }
-            //         elseif(count($default_Tags) == 1)
-            //             $allTags[] = $value->tagName;
+                     }
+                     elseif(count($default_Tags) == 1)
+                         $allTags[] = $value->tagName;
 
-            //     }
-            //    $nestedData['tags'] = $allTags;
-            // }else{
-            //     $nestedData['tags'] = "";
-            // }
-
+                 }
+                $nestedData['tags'] = $allTags;
+             }else{
+                 $nestedData['tags'] = [];
+             }
             $data[] = $nestedData;
         }
         
