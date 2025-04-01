@@ -111,6 +111,7 @@ Final Class Engagifii {
 		}		 
 		$this->frontend_includes_ebt();
 		include_once('includes/functions.php');
+		require_once('includes/variable.php');
 	}
 
 	/**

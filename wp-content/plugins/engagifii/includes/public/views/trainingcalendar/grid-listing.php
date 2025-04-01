@@ -1,7 +1,7 @@
 <?php
 
 $default_length = '10';
-$calendar_view = false;
+$calendar_view = true;
 if(isset($attr['records'])){
   $default_length = $attr['records'];
 }
@@ -40,11 +40,12 @@ if(!$dataResponse){
     $postedData = $payloadData;
     $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    //$tags = $obj->eventsAllTags();
-    // $eventTypes = $obj->eventTypes($date);
-    // $classTypes = $obj->classTypes($date);
+    $tags = $obj->eventsAllTags();
+    $eventTypes = $obj->eventTypes($date);
+    $classTypes = $obj->classTypes($date);
+
     $eventLocations = $obj->eventLocation();
-    //print_r($eventLocations); die;
+    //print_r($classTypes); die;
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -59,11 +60,11 @@ if(!$dataResponse){
 <div class="containerEngagii">
 <?php
   if($calendar_view){
-	  $placeholder_text = 'Search by event name';
+	  $placeholder_text = 'Search by event/class name';
 echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]');
 ?>
 <div class="container-fluid">
-  <?php echo do_shortcode('[events-calendar]'); ?>
+  <?php include $this->basePath.'includes/public/views/trainingcalendar/calendar.php'; ?>
 </div>
 <?php
   } else {
@@ -723,9 +724,13 @@ var category = (function() {
 	if($('html').height()<$(window).height()){
 		$('#site-footer').css('marginTop',$(window).height()-$('html').height()+$('#site-footer').outerHeight()+15);	
 	}
-	if(localStorage.getItem("view_mode")=='list'){
-		$('#list').trigger("click");
-	}
+	const viewMode = localStorage.getItem("view_mode");
+
+if (!viewMode || viewMode === 'list') {
+    $('#list').trigger("click");
+} else {
+    $('#calendar').trigger("click");
+}
 });
 </script> 
 <script>
