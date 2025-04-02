@@ -6621,7 +6621,7 @@ if(!empty($_POST['minRange']))
 					  //$sessionEndTime = date('Y-m-d', strtotime($value->endDateTime));
 						 $endDate = date('Y-m-d', strtotime($value->endDateTime));
 						 $data['entity'] = $value->entity;
-						 $data['title'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
+						 $data['title'] = '<a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->name.'</a>';
 						 $data['titleNoLink'] = $value->name;
 						 $data['id']    = $value->id;
 						 $data['start'] = date('Y-m-d', strtotime($value->startDateTime));
@@ -6846,9 +6846,7 @@ public function geteventsClasscalendar(){
                                                    <tr><td><strong>Duration : </strong></td><td><?php echo $filteredItems[$fi]['classDuration']; ?></td></tr>
                                                    <?php } if(in_array('eventType', $events_visible_column_list)){ ?>
                                                    <tr><td><strong>Type : </strong></td><td><?php echo $filteredItems[$fi]['objectType']; ?></td></tr>
-                                                  <?php } if($filteredItems[$fi]['entity']=='Event' ) { ?>
-                                                   <tr><td><strong>Price :</strong></td><td> <?php echo '$'.$filteredItems[$fi]['price']; ?></td></tr>
-                                                   <?php } ?>
+                                                  <?php }  ?>
                                                    <tr><td><strong>Tags :</strong></td><td>
 														<?php $tags = $filteredItems[$fi]['endorsementTag'];
 													  if (is_array($tags) && count($tags) === 1 && $tags[0] === "NA") {
