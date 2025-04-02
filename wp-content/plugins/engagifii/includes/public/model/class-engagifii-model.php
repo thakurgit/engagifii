@@ -3320,10 +3320,9 @@ wp_die();
         $postedData = $this->_prepareTrainingCalendarData();
         
         $dataResponse = $this->submitApiRequest("public/EventClassPagingList", $postedData, "POST", 'classes');
-       //print_r(json_encode($postedData)); die;
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-        //print_r(json_encode($postedData)); die;
+       //print_r(json_encode($collection)); die;
         
         header("Content-Type: application/json");
         $request = $_GET;
@@ -3483,7 +3482,7 @@ if (count($row->classSessions)) {
                        $nestedData['register'] = '<a href="'.$row->registrationUrlOnLine.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                    }
                    elseif($row->locationType->name=="onlocationandonline"){
-                   $nestedData['register'] = '<a style="white-space:nowrap" href="'.$row->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
+                   $nestedData['register'] = '<a style="white-space:nowrap" href="'.$row->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$row->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
                    }
                else{
                    $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
