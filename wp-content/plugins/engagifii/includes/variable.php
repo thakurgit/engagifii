@@ -19,5 +19,12 @@
 	}
 		define('EVENT_DETAIL_LINK', $events_detail_page_link);
 //class and Events columns
-	$events_class_columns = $options['training_calendar_visible_column_list'];
+	$events_class_columns = isset($options['training_calendar_visible_column_list']) ? $options['training_calendar_visible_column_list'] : [];  
 	define('EVENTS_CLASS_COLS', $events_class_columns);
+//event columns
+	$events_visible_column_list = isset($options['events_visible_column_list']) ? $options['events_visible_column_list'] : [];  	
+	define('EVENTS_COLS', $events_visible_column_list);
+//class columns
+	 $class_visible_column_list = isset($options['class_visible_column_list']) ? $options['class_visible_column_list'] : [];  
+	define('CLASS_COLS', $class_visible_column_list);
+	

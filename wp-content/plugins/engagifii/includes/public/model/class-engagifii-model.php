@@ -6669,7 +6669,9 @@ if(!empty($_POST['minRange']))
            }
 		   //print_r(json_encode($endorsementData));
 		   //die;
+		   
            return $endorsementData; 
+		   
        }
 public function geteventsClasscalendar(){
     $year = $_POST['year'];
@@ -6690,6 +6692,7 @@ public function geteventsClasscalendar(){
     
     $options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
+	
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); ?>
@@ -6730,7 +6733,6 @@ public function geteventsClasscalendar(){
                            return $currentDate >=$item['start'] && $currentDate <=$item['start'] ;
                         });
                        sort($filteredItems);
-					   
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
@@ -6847,6 +6849,18 @@ public function geteventsClasscalendar(){
                                                   <?php } if($filteredItems[$fi]['entity']=='Event' ) { ?>
                                                    <tr><td><strong>Price :</strong></td><td> <?php echo '$'.$filteredItems[$fi]['price']; ?></td></tr>
                                                    <?php } ?>
+                                                   <tr><td><strong>Tags :</strong></td><td>
+														<?php $tags = $filteredItems[$fi]['endorsementTag'];
+													  if (is_array($tags) && count($tags) === 1 && $tags[0] === "NA") {
+														  echo "N/A";
+													  } 
+													  elseif (is_array($tags) && isset($tags[0]->tagName)) {  
+														  $tagNames = array_map(fn($tag) => $tag->tagName, $tags); 
+														  echo implode(", ", $tagNames);
+													  } 
+                                                        ?>
+                                                    </td></tr>
+                                                   
                                                    <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
                                             </table>
                                         </div>

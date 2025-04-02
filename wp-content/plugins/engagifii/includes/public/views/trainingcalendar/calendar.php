@@ -171,7 +171,7 @@ aside .box {
   	<div id="calendarsearch_div" class="position-relative container-fluid" style="display:none">
     
     <?php echo do_shortcode('[events-calendar-search]'); ?>
-    
+   
         </div>
     <script>
       
@@ -244,10 +244,10 @@ aside .box {
                     if(value['endorsementTag'].length > 1)  {
                     	var more = parseInt(value['endorsementTag'].length) - 1;
                     	tags += '<div class="btn-group">';
-						          tags += '<div class="px-1">'+value['endorsementTag'][0]+'</div><div class="tag text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ..'+more+' more</div>';
+						          tags += '<div class="px-1">'+value['endorsementTag'][0].tagName+'</div><div class="tag text-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ..'+more+' more</div>';
 						          tags += '<ul class="dropdown-menu dropdown-menu-right w-100">';
 						  	     value['endorsementTag'].forEach(function(tag, key) {
-						    		    tags += '<li class="dropdown-item text-break" style="white-space:normal;">'+tag+'</li>';
+						    		    tags += '<li class="dropdown-item text-break" style="white-space:normal;">'+tag.tagName+'</li>';
 						 	        })
 						          tags += '</ul>';
 						          tags += '</div>';
@@ -272,7 +272,7 @@ aside .box {
                       $('#event_list').addClass('col-12');
                    }
 				   if(value['entity']=='Class'){
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><?php if(in_array('startDateTime', $events_visible_column_list)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php } ?> <div class="col-12 py-1 text-left"><span class=" text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><?php if(in_array('tags', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', $events_visible_column_list)){ ?> '+value['register']+'</div><?php } ?></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div> <div class="col-12 py-1 text-left"><span class=" text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+value['register']+'</div></div></div>';
 				   }else{
                     class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><?php if(in_array('startDateTime', $events_visible_column_list)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php } ?> <div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><?php if(in_array('tags', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', $events_visible_column_list)){ ?> '+value['register']+'</div><?php } ?></div></div>';
 				   }
