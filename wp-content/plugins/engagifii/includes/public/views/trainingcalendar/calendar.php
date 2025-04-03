@@ -149,20 +149,7 @@ aside .box {
         justify-content: flex-start;
 }
 	</style>
-  <?php
-    $obj      =  new Engagifii_API();
-    $date           =   date('Y-m-d');
-    $tags = $obj->eventsAllTags($date);
-    $options = get_option('ebt_api_settings');
-	$events_visible_column_list   =  array();
-	if($options['events_visible_column_list']){
-    $events_visible_column_list = $options['events_visible_column_list'];
-	}
-   // print_r($tags);
-
-    
-   
-  ?>
+  
 
 
  <div id="calendar_div" class="position-relative container-fluid" style="display:none">
@@ -274,7 +261,7 @@ aside .box {
 				   if(value['entity']=='Class'){
                     class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div> <div class="col-12 py-1 text-left"><span class=" text-muted">Duration: </span><span>'+value["classDuration"]+'</span></div><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><div class="col-12 text-center py-3">'+value['viewdetails']+value['register']+'</div></div></div>';
 				   }else{
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><?php if(in_array('startDateTime', $events_visible_column_list)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php }  if(in_array('tags', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', $events_visible_column_list)){ ?> '+value['register']+'</div><?php } ?></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2">'+value['title']+'<span class="badge badge-secondary ml-auto">'+value['entity']+'</span></div><?php if(in_array('startDateTime', EVENTS_COLS)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', EVENTS_COLS)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php }  if(in_array('tags', EVENTS_COLS)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', EVENTS_COLS)){ ?> '+value['register']+'</div><?php } ?></div></div>';
 				   }
 
                 });
@@ -310,20 +297,6 @@ aside .box {
             
         }
 		
-		
-
-       /* $('.clear-all-cal').click(function(){
-            $('input[type=checkbox]').prop('checked',false);
-            $('#countFilterResultCal').html(' ');
-            fv = 0;
-          $('.filter-icon-cal').removeClass('active');  
-
-            courses = '';
-            tags = '';
-            getEventsCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), '');
-
-
-      })*/
 
         $(document).on({
     		ajaxStart: function(){
@@ -389,69 +362,7 @@ aside .box {
           getEventsCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(),day);
         })
 
-       <?php /*?>  $('#apply-filter-data-cal').click(function(){
-            //courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
-            tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){ return c.value; });
-            
-            $(".filter-area-cal").toggleClass('d-none');
-            getEventsCalendar('calendar_div', $('.year-dropdown').val(), $('.month-dropdown').val(), day);
-
-        });
-        $('.heading-title').click(function(){$(this).next('.content-area-cal').toggleClass('d-none')});
-        $(document).on('click', function (e) {
-            var container = $(".filter-border-cal");
-            // If the target of the click isn't the container
-            console.log(e.target.className);
-            if(!container.is(e.target) && container.has(e.target).length === 0  && (e.target.className == 'prev available' || e.target.className == 'next available' )){
-              container.hide();
-              $('.filter-area-cal').addClass('d-none');
-            }
-        });
-
-      	$('.filter-list-cal input[type=checkbox]').change(function(){
-        	countFilterDataCal();
-      	})
-    	function countFilterDataCal()
-    	{
-
-      		//var courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
-      		var tags = $.map($('input[name="endorsementTags[]"]:checked'), function(c){alert (c.value); return c.value; });
-          	$.ajax({
-          		type : "post",
-          		url: engagifiiUrl_ajaxurl,
-          		data:{
-              		action:'eventfiltercountdata',
-              		//courses : courses,
-              		tags : tags,  
-          		},
-          		success: function(response) {      
-               console.log(tags); 
-            		var element  = document.getElementById("countFilterResultCal");
-            		if(element)
-            		{
-              			element.innerHTML = " ("+response.api_response +")";
-                    console.log(response.api_response);
-            		}    
-          		}
-        	});
-      	}
-
-       	$("#apply-filter-data-cal").click(function () {
- 			        $('.filter-list-cal').each(function() {
-                  if ($(this).find('input[type=checkbox]').is(':checked')) {
-                    $(this).addClass('checked');
-                  } else {
-                    $(this).removeClass('checked');
-                  }
-  		      	});
-  			    fv = $('.filter-list-cal.checked').length;
-              if(fv>0){
-                $('.filter-icon-cal').addClass('active'); 
-                $('.filter-icon-cal span').text(fv); 
-              } else {
-                $('.filter-icon-cal').removeClass('active');  
-              }
- 		});<?php */?>
+      
 
 
 
