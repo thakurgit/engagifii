@@ -32,10 +32,7 @@
  .tabb-content .tabb-pane.active {
      display: block;
  }
- .separator {
-     border-bottom: 1px solid #ccc;
-     margin: 8px 0 8px 0;
- }
+
  img.img-viewdetail {
          height: 60%;
  }

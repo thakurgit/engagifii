@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category    Class
  * @author      Engagifii
  */ 
-class Engagifii_Shortcodes extends abstractModelEngagifii{
+class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		/**
 	 * Init shortcode
 	 */

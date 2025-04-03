@@ -65,10 +65,7 @@ foreach ($reportsResponses as $value) {
         .tab-content .tab-pane.active {
             display: block;
         }
-		.separator {
-            border-bottom: 1px solid #ccc;
-            margin: 8px 0 8px 0;
-        }
+		
 		img.img-viewdetail {
    			 height: 60%;
 		}
@@ -111,7 +108,7 @@ foreach ($reportsResponses as $value) {
                             <span class="details">View Details </span><img src="<?php echo $site_url . '/wp-content/plugins/engagifii/assets/images/Union.png'; ?>" alt="..." class="img-viewdetail">
                         </div>
                     </div></a>
-                    <div class="separator"></div>
+                    <div class="mb-2 border-bottom"></div>
 				<?php
 			}
 			?>

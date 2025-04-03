@@ -119,7 +119,7 @@ Final Class Engagifii {
 	 */
 	public function frontend_includes_ebt() {
 		include_once('includes/public/model/class-engagifii-model.php');
-		
+		include_once('includes/public/model/class-engagifii-model-v2.php');
 		include_once('includes/public/model/class-engagifii-shortcodes.php');
 		include_once('includes/public/views/blocks.php');
 	}
