@@ -1995,6 +1995,11 @@ wp_die();
     public function _prepareClassData(){
         $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
         $allclass = get_option( 'ebt_api_settings' )['allClasses'];
+		if (empty($allclass)) {
+    $allclass = ["Upcoming"];
+} elseif ($allclass == 1) {
+    $allclass = [];
+}
         //print_r($allclass); die;
         $columnsData = [];
         foreach ($_POST['columns'] as $key => $value) {
@@ -3141,7 +3146,9 @@ wp_die();
 
     // Events Grid Data
     public function eventsLoadGridData(){
-        $postedData = $this->_prepareEventsData();        
+        $postedData = $this->_prepareEventsData();   
+		//print_r(json_encode($postedData));
+		//die;     
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postedData, "POST", 'event');
         $collection = json_decode($dataResponse['api_response'])->collection;
         $totalcount   = json_decode($dataResponse['api_response'])->pagingModel->totalRecords;
@@ -3315,11 +3322,10 @@ wp_die();
     }
     public function trainingCalendarGridData(){
         $postedData = $this->_prepareTrainingCalendarData();
-        
+      // print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("public/EventClassPagingList", $postedData, "POST", 'classes');
         $collection = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-       //print_r(json_encode($collection)); die;
         
         header("Content-Type: application/json");
         $request = $_GET;
