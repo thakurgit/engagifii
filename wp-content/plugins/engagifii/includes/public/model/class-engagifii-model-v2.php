@@ -38,20 +38,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$eventsClassCount = $dataResponse['api_response'];
         $postData = array();    
         $postData['itemCount'] = $eventsClassCount;
-        $postData['sortBy'] = 'sectionname';
-        $postData['isUpcoming'] = $allEventsClass;
+        $postData['sortBy'] = 'Name';
         $postData['pageNumber'] = 1;
         $postData['pageSize'] = ((int) $eventsClassCount);
         $postData['sortDirection'] = 'asc';
-        if(!empty($_POST['courses']))
-        {
-            $postData['courses'] = $_POST['courses'];
-        }
-        if(!empty($_POST['instructors']))
-        {
-            $postData['instructors'] = $_POST['instructors'];
-        }
-        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
+        
+        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'), 'isUpcoming' => $allEventsClass, 'category' => null);
         $dataResponse = $this->submitApiRequest("public/EventClassPagingList", $postData, "POST", 'classes');
         $collection   = json_decode($dataResponse['api_response'])->result;
            $data         = array();
