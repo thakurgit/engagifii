@@ -66,6 +66,19 @@
 		//}
     	}
 		echo '</ul>';
+		if(isset($options['tLMSClasses'])){
+			$tLMSClasses = $options['tLMSClasses'];
+		   }else{
+			   $tLMSClasses = null;
+		   }
+		
+			$tLMS_Classes = '';
+			if($tLMSClasses==1)
+			{
+				 $tLMS_Classes  = 'checked';
+			}
+			
+		
 		if(isset($options['allClasses'])){
 			$allClasses = $options['allClasses'];
 		   }else{
@@ -78,8 +91,12 @@
 				 $all_classes  = 'checked';
 			}
 			echo '<h3>Manage Class Listing</h3><hr>';
+			//echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[tLMSClasses]" id="tLMSClasses" value="1" '.$all_classes.'/> <strong>Include Talent LMS Linked Classes</strong><br></div>';
 		echo '<div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" '.$all_classes.'/> <strong>Show All classes</strong><br><i>Note: When unchecked, only upcoming classes will be displayed.</i></div>';
+
+		
     }
+	
 		echo '</div>';				
 ?>
 
