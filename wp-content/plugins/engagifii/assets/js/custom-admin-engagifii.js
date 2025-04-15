@@ -19,19 +19,14 @@ jQuery(document).ready(function(){
       }
 
    });
-   
+    const facheckbox = document.getElementById('include_fontawesome');
+    const faversionWrapper = document.getElementById('fa-version-wrapper');
+
+    facheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            faversionWrapper.style.display = '';
+        } else {
+            faversionWrapper.style.display = 'none';
+        }
+    });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

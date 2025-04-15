@@ -166,7 +166,6 @@ wp_enqueue_script(
 			}
 	}
 	
-
 	public function engagifii_load_css(){
 		
 		if(!is_admin()){
@@ -178,10 +177,16 @@ wp_enqueue_script(
 
 			wp_enqueue_style( 'engagifii', plugin_dir_url( __FILE__ ) . 'assets/css/engagifii_merge.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'dt-bs-responsive', 'https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css', array(), $this->version, 'all' );
-			wp_deregister_style('font-awesome-5-all');
-			wp_deregister_style('fontawesome');
-             wp_deregister_style('v4-shims');            
-			wp_enqueue_style( 'fontawesome','https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css');
+			$include_fontawesome = isset($options['include_fontawesome']) ? $options['include_fontawesome'] : null;
+			if (!is_array($include_fontawesome)) {
+				$include_fontawesome = ['enabled' => $include_fontawesome, 'version' => '5.15.4'];
+			}
+			$enabled = isset($include_fontawesome['enabled']) ? $include_fontawesome['enabled'] : 1;
+			$version = isset($include_fontawesome['version']) ? $include_fontawesome['version'] : '5.15.4';
+			if ($enabled == 1 || !isset($options['include_fontawesome'])) {
+				$fa_url = "https://kit-pro.fontawesome.com/releases/v{$version}/css/pro.min.css";
+				wp_enqueue_style('ef-fontawesome', $fa_url, [], $version);
+			}
 			wp_register_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css' );
 			wp_enqueue_style('datepicker-css');
 			wp_register_style( 'range-selector', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css' );

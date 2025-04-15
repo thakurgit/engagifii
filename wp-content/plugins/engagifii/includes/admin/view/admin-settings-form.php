@@ -126,6 +126,35 @@
          	</div>
            <i>Note: This Plugin works with <a href="https://getbootstrap.com/docs/4.6/getting-started/introduction/" target="_blank" rel="nofollow">Bootstrap 4</a>. If your theme doesn't have Bootstrap files, then enable checkbox to work this plugin properly.</i>
         </div>
+        
+        <div style="padding-left:7px; margin-top:20px"> 
+        <?php $include_fontawesome = isset($options['include_fontawesome']) ? $options['include_fontawesome'] : ['enabled' => 1, 'version' => '5.15.4'];
+if (!is_array($include_fontawesome)) {
+    $include_fontawesome = [
+        'enabled' => $include_fontawesome,
+        'version' => '5.15.4'
+    ];
+}
+$enabled = isset($include_fontawesome['enabled']) ? $include_fontawesome['enabled'] : 1;
+$version = isset($include_fontawesome['version']) ? $include_fontawesome['version'] : '5.15.4';
+$include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
+print_r($options);
+?>
+<div class="form-check form-switch">
+	<input type="hidden" name="ebt_api_settings[include_fontawesome][enabled]" value="0">
+    <input class="form-check-input" type="checkbox" name="ebt_api_settings[include_fontawesome][enabled]" id="include_fontawesome" value="1" <?php echo $include_fontawesome_setting; ?>> 
+    <label for="include_fontawesome" class="form-check-label"><strong>Include FontAwesome Icons</strong></label>
+</div>
+
+<div class="form-group" id="fa-version-wrapper" style=" <?php echo ($enabled == 1) ? '' : 'display: none;'; ?>">
+    <label style="width: 150px;">Select FontAwesome Version</label>
+    <select name="ebt_api_settings[include_fontawesome][version]" class="select-fa-ver">
+        <option value="5.15.4" <?php echo ($version === '5.15.4') ? 'selected' : ''; ?>>5.15.4</option>
+        <option value="6.7.2" <?php echo ($version === '6.7.2') ? 'selected' : ''; ?>>6.7.2</option>
+    </select>
+</div> 
+           <i>Note: Uncheck this option if your theme already includes the FontAwesome icon library to prevent duplication.</i>
+        </div>
     </div>
 
     </div>
