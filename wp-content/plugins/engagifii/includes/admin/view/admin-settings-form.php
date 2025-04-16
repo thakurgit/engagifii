@@ -138,7 +138,6 @@ if (!is_array($include_fontawesome)) {
 $enabled = isset($include_fontawesome['enabled']) ? $include_fontawesome['enabled'] : 1;
 $version = isset($include_fontawesome['version']) ? $include_fontawesome['version'] : '5.15.4';
 $include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
-print_r($options);
 ?>
 <div class="form-check form-switch">
 	<input type="hidden" name="ebt_api_settings[include_fontawesome][enabled]" value="0">

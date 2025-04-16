@@ -1,20 +1,15 @@
 <?php
-/**
+ /**
  * Plugin Name: Engagifii Module
- * Description: Engagifii API to fetch blling details, courses and classes
- * Version: 1.2.0
- * Date: 12-04-2023
- * Author: Engagifii
- * Requires at least: 4.4
- * Tested up to: 6.2
- *
+ * Description: Engagifii API to fetch Bills, events, courses and classes
+ * Plugin URI:  https://engagifii.com/
+ * Author:      Engagifii
+ * Author URI:  https://engagifii.com/
+ * Version:     1.3.0
  * Text Domain: engagifii
- *
- * @package engagifii-api
- * @category wordpress
- * @author Engagifii
+ * Domain Path: /languages/
+ * License:     GPLv3 or later (license.txt)
  */
- 
 
 if ( ! defined( 'ABSPATH' ) ) { 
     exit; // Exit if accessed directly
@@ -112,6 +107,7 @@ Final Class Engagifii {
 		$this->frontend_includes_ebt();
 		include_once('includes/functions.php');
 		require_once('includes/variable.php');
+		require_once ('includes/updater.php');
 	}
 
 	/**
@@ -208,7 +204,6 @@ wp_enqueue_script(
 }
 //create pages
 define( 'PLUGIN_FILE_PATH', __FILE__ );
- 
 register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
  
 function insert_page_on_activation() {
@@ -454,3 +449,6 @@ function initializeEngagifii() {
 
 // Global for backwards compatibility.
 $GLOBALS['engagifii'] = initializeEngagifii();
+
+
+
