@@ -602,7 +602,7 @@ $filter_content = removeWhitespace($filter_content);
          "drawCallback": function( settings ) {
 			 
 			 dt_dropdown();
-			 
+			 eventRegPopUp();
 			// dt_titleSearch();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
@@ -932,6 +932,77 @@ $(document).on('click', '.daterangepicker ', function (e) {
           }
         });
       }
+
+      function eventRegPopUp() {
+    $('.open-pop').click(function(e) {
+        var tpath = $(this).attr('data-url');
+        $('#iframeContainer').remove();
+        var iframe = $('<iframe>', {
+            src: tpath,
+            id: 'iframeContainer',
+            width: 1000,
+            height: 700,
+            frameborder: 0,
+            scrolling: 'auto'
+        });
+        
+        // Optionally create a modal or div to append the iframe
+        var modalContainer = $('<div>', {
+            id: 'modalContainer',
+            css: {
+                'width': '1000px',
+                'height': '700px',
+                'position': 'fixed',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)',
+                'background': '#fff',
+                'z-index': 9999,
+                'padding': '20px',
+                'box-shadow': '0 0 10px rgba(0,0,0,0.5)',
+                'overflow': 'hidden'
+            }
+        });
+ var closeButton = $('<button>', {
+            text: 'X',
+            css: {
+                'position': 'absolute',
+                'top': '10px',
+                'right': '10px',
+                'padding': '5px 10px',
+                'background-color': '#f44336',
+                'color': '#fff',
+                'border': 'none',
+                'cursor': 'pointer',
+                'font-size': '16px',
+                'border-radius': '5px'
+            },
+            click: function() {
+                // Remove modal when the close button is clicked
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        // Append iframe to modalContainer
+        modalContainer.append(closeButton);
+        modalContainer.append(iframe);
+        
+        // Append modalContainer to the body
+        $('body').append(modalContainer);
+        
+        // Close modal logic when clicking outside the iframe (optional)
+        modalContainer.click(function(e) {
+            if (!$(e.target).is('iframe')) {
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        e.preventDefault();
+    });
+}
+
 $(document).ready(function(){
   <?php
   if($calendar_view || $calendar_view_classname){

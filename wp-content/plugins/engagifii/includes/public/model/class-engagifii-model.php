@@ -3630,7 +3630,7 @@ public function eventClassFilters(){
 }
 public function classesLoadGridDataByPerson(){
     $siteURL= site_url();
-        
+    $loggedInUserId = $_SESSION['pid'];
         $postedData  = $this->_prepareClassData();
 		// print_r(json_encode($postedData));
 		// die;
@@ -3652,6 +3652,7 @@ public function classesLoadGridDataByPerson(){
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
         $tenantCode = $options['dashboard_tenant_code'];
+        $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
          foreach ($collection as $key => $value) {
             
             #nested data
