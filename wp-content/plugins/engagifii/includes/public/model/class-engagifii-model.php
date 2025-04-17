@@ -3651,7 +3651,7 @@ public function classesLoadGridDataByPerson(){
 	}
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-        
+        $tenantCode = $options['dashboard_tenant_code'];
          foreach ($collection as $key => $value) {
             
             #nested data
@@ -3758,8 +3758,8 @@ public function classesLoadGridDataByPerson(){
                    if($value->locationType->name=="onlocation")
                       { 
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
-                        $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
-                          $nestedData['register'] = '<a href="'.$default_RegisterBtn.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
+                        $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
+                        $nestedData['register'] = '<a href="'.$url.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       //$nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       }
