@@ -950,7 +950,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
         var modalContainer = $('<div>', {
             id: 'modalContainer',
             css: {
-                'width': '1000px',
+                'width': '1050px',
                 'height': '700px',
                 'position': 'fixed',
                 'top': '50%',
