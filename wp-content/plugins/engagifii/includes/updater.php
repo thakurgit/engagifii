@@ -58,17 +58,13 @@ function engagifii_plugin_info( $res, $action, $args ){
 
 }
 add_filter('pre_set_site_transient_update_plugins', 'engaifii_plugin_update');
-function engaifii_plugin_update($transient) {
-   /* if (is_admin()) {
-       return $transient;
-    }*/
-    $current_version = '1.3.0'; 
+function engaifii_plugin_update($transient) { 
     $response = wp_remote_get('https://engagifiiweb.com/engagifii_plugins/engagifii/plugin-update.json');
     if (is_wp_error($response)) {
         return $transient;
     }
     $data = json_decode(wp_remote_retrieve_body($response)); 
-    if (version_compare($current_version, $data->version, '<')) {
+    if (version_compare(ENGAGIFII_VERSION, $data->version, '<')) {
         $transient->response[plugin_basename(PLUGIN_FILE_PATH)] = (object) array(
             'slug' => 'engagifii', //plugin folder name
             'plugin' => plugin_basename(PLUGIN_FILE_PATH),
