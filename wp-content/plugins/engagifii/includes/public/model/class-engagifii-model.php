@@ -3760,19 +3760,19 @@ public function classesLoadGridDataByPerson(){
                       { 
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/signup/online/overview';
                         $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
-                        $nestedData['register'] = '<a href="'.$url.'" class="btn btn-primary px-3 py-1 open-pop" target="_blank">Register</a>';
+                        $nestedData['register'] = $default_RegisterBtn;
                       //$nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       }
                       elseif($value->locationType->name=="online"){
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/signup/online/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
-                          $nestedData['register'] = '<a href="'.$default_RegisterBtn.'" class="btn btn-primary px-3 py-1 open-pop" target="_blank">Register</a>';
+                          $nestedData['register'] = $default_RegisterBtn;
                       }
                       elseif($value->locationType->name=="onlocationandonline"){
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/signup/onlocationandonline/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
-                          $nestedData['register'] = '<a href="'.$default_RegisterBtn.'" class="btn btn-primary px-3 py-1 open-pop" target="_blank">Register</a>';
+                          $nestedData['register'] = $default_RegisterBtn;
                       //$nestedData['register'] = '<a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
                       }
                   else{
