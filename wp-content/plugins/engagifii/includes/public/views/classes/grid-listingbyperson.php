@@ -630,7 +630,9 @@ $filter_content = removeWhitespace($filter_content);
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
-
+    $('.refresh').click(function(){
+		table.draw();
+	});
 
 
 <?php
