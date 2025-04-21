@@ -81,6 +81,8 @@ wp-content/mysql.sql
 /wp-content/plugins/elementor-widgets*
 /wp-content/plugins/TommusRhodus-Framework-master*
 /wp-content/plugins/wordpress-importer*
+/wp-content/plugins/engagifii-sso*
+/wp-content/plugins/engagifii_addon_buddyboss*
 
 
 # large/disallowed file types
