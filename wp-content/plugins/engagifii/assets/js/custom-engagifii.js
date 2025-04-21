@@ -1,3 +1,4 @@
+  window.$ = jQuery.noConflict();
     function __addExtraDiv(title)
     {
       var span_Ext = $(document).find(".select2-search").find("h6.engwarpper").length;
