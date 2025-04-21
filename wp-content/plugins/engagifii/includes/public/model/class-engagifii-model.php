@@ -3634,7 +3634,7 @@ public function classesLoadGridDataByPerson(){
         $postedData  = $this->_prepareClassData();
 		// print_r(json_encode($postedData));
 		// die;
-        $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postedData, "POST", 'classes');
+        $dataResponse = $this->submitApiRequest("Classes/UpcomingClassPagingListLite", $postedData, "POST", 'classes');
         
         $collection   = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
