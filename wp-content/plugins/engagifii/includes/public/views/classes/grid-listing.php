@@ -204,6 +204,7 @@ if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
     $date           =   date('Y-m-d');
     //print_r($date);
     $options  = get_option( 'ebt_api_settings' );
+    $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
 	$class_visible_column_list   =  array();
 	if($options['class_visible_column_list']){
   	  $class_visible_column_list = $options['class_visible_column_list'];
@@ -225,6 +226,7 @@ if(!$dataResponse['api_response']){
     unset($collection[8]);
 
     $classes = $obj->getAllClassCourses($date);
+    $classesTypes = $obj->classTypes($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);
     $instructor = $obj->classAllInstructors($date);
     $dateRange  = $obj->classRegDateFilters($date);
@@ -385,6 +387,18 @@ ob_start();
           </ul>
         </div>
       </div>
+<?php } if($classesTypes){ ?>
+      <div class="filter-list border-bottom px-2">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Type <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none">
+          <ul class="list-group m-0">
+          <?php foreach ($classesTypes as $key => $value) { 
+            if (in_array($value['id'], $classTypesShow)) {
+              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="classType_'.$key.'" name="classType[]" value="'.addslashes($value['id']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} 
+              }?>
+          </ul>
+        </div>
+      </div>
 <?php } //credit Hour filters
  if(in_array('credithours', $class_visible_column_list)){ ?>
 <div class="filter-list border-bottom px-2">
@@ -440,7 +454,7 @@ $filter_content = removeWhitespace($filter_content);
 <script type="text/javascript">
   var courses = '';
   var instructor = '';
- 
+  var classTypes ='';
   var class_start_date     = '<?php echo $class_start_date; ?>';
   var class_end_date     = '<?php echo $class_end_date; ?>';
   var classDates     = '';
@@ -548,6 +562,7 @@ $filter_content = removeWhitespace($filter_content);
 			d.class_end_date = class_end_date;
 			d.classStates=classStates;
 			d.titleColumn = titleColumn;
+      d.classTypes = classTypes;
             }, 
 			
         },
@@ -758,6 +773,7 @@ $('.clear-all').click(function(){
           $('.filter-icon').removeClass('active');  
             courses = '';
             instructor = '';
+            classTypes ='';
             minReg = '<?php echo $min_date; ?>';
 			maxReg = '<?php echo $max_date; ?>';
             minRange = '<?php echo (int)$creditFilter['minRange']; ?>';
@@ -774,6 +790,7 @@ $('.clear-all').click(function(){
     $('#apply-filter-data').click(function(){
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+      classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
 	  if($('input[name="createdbetween"]').val()!=''){
 		var regDate = $('input[name="createdbetween"]').val().split("-");
 	 	  minReg = $.trim(regDate[0]);
@@ -855,6 +872,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+      var classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
 	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
@@ -873,7 +891,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
 			  class_end_date : class_end_date,   
               minRange : minRange,
 			  maxRange:maxRange,
-			  classStates:classStates
+			  classStates:classStates,
+        classTypes: classTypes
         
           },
           success: function(response) {       

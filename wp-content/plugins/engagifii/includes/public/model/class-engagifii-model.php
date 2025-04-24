@@ -163,6 +163,7 @@ public function calendar_mode(){
 
 <?php  }
      public function classCalendar(){
+        $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
@@ -193,11 +194,11 @@ public function calendar_mode(){
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-		 $classStates = $options['allClasses'];
-        if($classStates==1){
-       	 $upcomingClasses = [];	
-        }else{
-            $upcomingClasses = ["Upcoming"];
+		 $allclass = get_option( 'ebt_api_settings' )['allClasses'];
+		if (empty($allclass)) {
+            $allclass = ["Upcoming"];
+            } elseif ($allclass == 1) {
+                $allclass = [];
         }
         $postedData = $this->_classPostCountData();
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
@@ -210,7 +211,7 @@ public function calendar_mode(){
         $postData['pageSize'] = 1;//((int) $classCount);
         
         $postData['sortDirection'] = 'asc';
-        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'),'classStates'=>$upcomingClasses);
+        $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'),'classStates'=>$allclass);
         $postData['filterBody'] ['sessionDateRange'] = array('startDate'=>$first_date, 'endDate'=>$last_date) ;
     
         if(!empty($_POST['courses']))
@@ -222,7 +223,16 @@ public function calendar_mode(){
             $postData['filterBody']['instructors'] = $_POST['instructors'];
            
         }
-		
+		$postData['filterBody']['classTypes'] = $classTypesShow;
+        if (!empty($_POST['classTypes'])) {
+            $filteredTypes = [];
+            foreach ($classTypesShow as $type) {
+                if (in_array($type, $_POST['classTypes'])) {
+                    $filteredTypes[] = $type;
+                }
+            }
+            $postData['filterBody']['classTypes'] = $filteredTypes;
+        }
       
         $dataResponse = $this->submitApiRequest("Public/ClassPagingList", $postData, "POST", 'classes');
         $collection   = json_decode($dataResponse['api_response'])->result;
@@ -6323,7 +6333,8 @@ if(!empty($_POST['minRange']))
     //Events : Get data - Added by Gurpreet
 
     public function eventsCalendar(){
-	        $options = get_option('ebt_api_settings');
+    $eventTypesShow = get_option( 'ebt_api_settings' )['events_type_visible_column_list'];
+	$options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
 	if($events_detail_page){
@@ -6359,7 +6370,18 @@ if(!empty($_POST['minRange']))
         {
             $postData['instructors'] = $_POST['instructors'];
         }
+        $postData['types'] = $eventTypesShow;
+        if (!empty($_POST['types'])) {
+            $filteredTypes = [];
+            foreach ($eventTypesShow as $type) {
+                if (in_array($type, $_POST['types'])) {
+                    $filteredTypes[] = $type;
+                }
+            }
+            $postData['types'] = $filteredTypes;
+        }
         $postData['filterBody'] = array('searchText'=>'',  'selectedDate' => date('Y-m-d'));
+       // print_r($postData);die;
         $dataResponse = $this->submitApiRequest("public/listEventsByFilter", $postData, "POST", 'event');
         $collection   = json_decode($dataResponse['api_response'])->collection;
            $data         = array();
