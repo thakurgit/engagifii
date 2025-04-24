@@ -124,8 +124,6 @@ Final Class Engagifii {
 		if(!is_admin()){	
 			$options = get_option( 'ebt_api_settings' );
 			if(isset($options['include_bootstrap'])){
-				wp_deregister_script('jquery');	
-				wp_register_script('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js', false, '3.6.0', true);
 				wp_enqueue_script( 'bootstrap-egf', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js', array('jquery'), $this->version, false );
 			}
 			wp_enqueue_script( 'engagifii',  plugin_dir_url( __FILE__ ) . 'assets/js/engagifii.js', array("jquery"), $this->version, false );
