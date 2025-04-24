@@ -471,6 +471,7 @@ function ebt_tenant_code_render(  ) {
                                     '-preview2' => 'Preview2',
                                     '-preview3' => 'Preview3',
                                     '-preview4' => 'Preview4',
+                                    '-preview5' => 'Preview5',
                                     '-preview6' => 'Preview6',
                                     '-preview9' => 'Preview9',
                                     '-staging' => 'Staging'
