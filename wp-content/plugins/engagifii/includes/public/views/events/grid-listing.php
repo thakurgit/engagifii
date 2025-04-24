@@ -43,8 +43,8 @@ if(!$dataResponse['api_response']){
     $postedData = $payloadData;
     $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    //$tags = $obj->eventsAllTags();
-    //$eventTypes = $obj->eventTypes($date); 
+    $tags = $obj->eventsAllTags();
+    $eventTypes = $obj->eventTypes($date); 
 if (!isset($eventTypeIds) || !is_array($eventTypeIds)) {
     $eventTypeIds = []; 
 }
@@ -57,7 +57,7 @@ $eventTypes = array_values($filteredEventTypes);
 
 //print_r($eventTypes); die;
 
-    //$eventLocations = $obj->eventLocation();
+    $eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
