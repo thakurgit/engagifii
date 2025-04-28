@@ -3640,8 +3640,32 @@ public function eventClassFilters(){
 }
 public function classesLoadGridDataByPerson(){
     $siteURL= site_url();
+    $endorsement_api_url = $options['ebt_api_url'];
+    $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
+    $tenantCode = $options['dashboard_tenant_code'];
+    $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
     $loggedInUserId = $_SESSION['pid'];
         $postedData  = $this->_prepareClassData();
+        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
+        $userPermissionResponse = $userPermission['api_response'];
+        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+        //print_r($userpermissionJson); die;
+        foreach($userpermissionJson as $key => $permissionValue){
+            $userPermissionArray[] = $permissionValue['name'];
+        }
+        if(in_array('RegisterMembersfromOwnOrganization', $userPermissionArray)){
+            $registerOthers = 'true';
+        }
+        else{
+            $registerOthers = 'false';
+        }
+        if(in_array('OverrideRegistration', $userPermissionArray)){
+            $registerOverride = 'true';
+        }
+        else{
+            $registerOverride = 'false';
+        }
 		// print_r(json_encode($postedData));
 		// die;
         $dataResponse = $this->submitApiRequest("Classes/UpcomingClassPagingListLite", $postedData, "POST", 'classes');
@@ -3659,10 +3683,7 @@ public function classesLoadGridDataByPerson(){
 	}else{
 		$classes_detail_page_link= site_url() .'/my-profile/classes/class-details/';	
 	}
-        $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-        $tenantCode = $options['dashboard_tenant_code'];
-        $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+       
          foreach ($collection as $key => $value) {
             
             #nested data
