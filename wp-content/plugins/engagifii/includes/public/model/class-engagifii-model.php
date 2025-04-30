@@ -3639,11 +3639,20 @@ public function eventClassFilters(){
 	
 }
 public function classesLoadGridDataByPerson(){
+    $options = get_option('ebt_api_settings');
     $siteURL= site_url();
     $endorsement_api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
     $tenantCode = $options['dashboard_tenant_code'];
     $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+    $allclass =  $options['allClasses'];
+    $classAPIUrl = "Classes/UpcomingClassPagingListLite"
+		if (empty($allclass)) {
+            $allclass = ["Upcoming"];
+            } elseif ($allclass == 1) {
+                $allclass = [];
+                $classAPIUrl = "Classes/ClassPagingListLite"
+            }
     $loggedInUserId = $_SESSION['pid'];
         $postedData  = $this->_prepareClassData();
         $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
@@ -3668,7 +3677,7 @@ public function classesLoadGridDataByPerson(){
         }
 		// print_r(json_encode($postedData));
 		// die;
-        $dataResponse = $this->submitApiRequest("Classes/UpcomingClassPagingListLite", $postedData, "POST", 'classes');
+        $dataResponse = $this->submitApiRequest($classAPIUrl, $postedData, "POST", 'classes');
         
         $collection   = json_decode($dataResponse['api_response'])->result;
         $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
@@ -3734,9 +3743,11 @@ public function classesLoadGridDataByPerson(){
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
-			
+			if($value->onDemandValidityType!=""){
             $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
-
+            }else{
+                $nestedData['startdate'] = 'On-Demand';
+            }
 			if(count($value->classSessions)){
 				 foreach ($value->classSessions as $key => $rowData) {
             
@@ -3785,8 +3796,8 @@ public function classesLoadGridDataByPerson(){
             $nestedData['classTag'] = implode(" ", $allTags);
             if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
             {
-              if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
-              {
+              if($value->registrationState !== 'Registration Not Setup' && ($value->registrationState !== 'Registration Closed' || $registerOverride == true)  && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
+               {
                    if($value->locationType->name=="onlocation")
                       { 
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
