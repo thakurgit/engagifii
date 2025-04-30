@@ -3743,7 +3743,7 @@ public function classesLoadGridDataByPerson(){
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
-			if($value->onDemandValidityType!=""){
+			if(!$value->onDemandValidityType){
             $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
             }else{
                 $nestedData['startdate'] = 'On-Demand';
