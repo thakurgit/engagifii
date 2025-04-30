@@ -3646,12 +3646,12 @@ public function classesLoadGridDataByPerson(){
     $tenantCode = $options['dashboard_tenant_code'];
     $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
     $allclass =  $options['allClasses'];
-    $classAPIUrl = "Classes/UpcomingClassPagingListLite"
+    $classAPIUrl = "Classes/UpcomingClassPagingListLite";
 		if (empty($allclass)) {
             $allclass = ["Upcoming"];
             } elseif ($allclass == 1) {
                 $allclass = [];
-                $classAPIUrl = "Classes/ClassPagingListLite"
+                $classAPIUrl = "Classes/ClassPagingListLite";
             }
     $loggedInUserId = $_SESSION['pid'];
         $postedData  = $this->_prepareClassData();
