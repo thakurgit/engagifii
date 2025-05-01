@@ -73,6 +73,7 @@ class abstractModelEngagifii extends Engagifii_API {
         ['publicOfficialCount', 'publicOfficialFilterCount'], //public offcial filter count
         ['apisJson', 'apisJson'], //apis json url
         ['trainingCalendarGridData', 'trainingCalendarGridData'], 
+        ['byPersonClassFilters', 'byPersonClassFilters'],
         //end here
     ];
 
@@ -3536,6 +3537,59 @@ if (count($row->classSessions)) {
 
         echo json_encode($json_data);
         wp_die();
+    }
+
+    //classbypersonfilters
+    public function byPersonClassFilters(){
+        $postData=array();
+        $htmlArray = array();
+          $filterParams = $_POST['filterParams'];
+          $apiUrl='';
+          $date = date('Y-m-d');
+          foreach ($filterParams as $keys => $values) {
+              if($values =='startDateTime'){
+                $apiUrl='Public/Class/GetMinMaxClassDate/'.$date;
+              }elseif($values =='sectionname'){
+                $apiUrl='Public/Class/GetAllClassCourses/'.$date;
+              }else if($values =='classInstructorsCount'){
+                $apiUrl='Public/Class/GetAllClassInstructors/'.$date; 
+              }else if($values =='objectType'){
+                $apiUrl='public/GetObjectTypesForFilter/'.$date;             
+              }elseif($values =='sessions'){
+                $apiUrl='Public/Class/GetMinMaxClassRegDate/'.$date;
+              }elseif($values =='classDuration'){
+                $apiUrl='public/GetObjectTypesForFilter/'.$date;
+              }elseif($values =='credithours'){
+                $apiUrl='Public/Class/GetCreditHoursRange/'.$date;
+              }
+              $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+              if($response['api_response']){
+                $response = json_decode($response['api_response'], true);
+                if($response){
+                  foreach ($response as $key => $value) {
+                      if($values=='startDateTime'){
+                          $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
+                          $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
+                      }else if($values =='sectionname'){
+                          $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values =='classInstructorsCount'){
+                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
+                      }else if($values=='objectType'){
+                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                      }
+                    }
+                  }else{
+                    $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+                  }
+                  } else {
+                    $html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+                }
+                $htmlArray=$html;
+          }
+          //print_r($htmlArray); die;
+            echo json_encode($htmlArray);
+            wp_die();
+        
     }
 //events filters
 public function eventFilters(){
