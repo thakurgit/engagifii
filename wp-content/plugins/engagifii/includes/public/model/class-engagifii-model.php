@@ -3795,7 +3795,7 @@ public function classesLoadGridDataByPerson(){
             $nestedData['classTag'] = implode(" ", $allTags);
             if($value->classLinkTypeId == 1 ){
                 $nestedData['talentLms'] = '<a href="https://training.psba.org/learner/courseinfo/id:'.$value->locationUrlId.',credits:1" target="_blank">
-                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" alt="tlms">
+                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" style="max-width: 120px;alt="tlms">
             </a>';
             }else{
                 $nestedData['talentLms'] = '<a href="#" style="pointer-events: none; opacity: 0.5;">
