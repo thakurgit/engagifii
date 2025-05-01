@@ -401,21 +401,34 @@ ob_start();
     <div class="">
       <input type="hidden" id="isApplyACtive" value="0">
       <?php if(in_array('sessions', $class_visible_column_list)){ ?>
-      <div class="filter-list border-bottom px-2">
+        <div class="filter-list border-bottom">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Types <i class="far fa-angle-down"></i></div>
+        <div class="content-area classType-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+            </ul></div>
+      </div>
+      <!-- <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
           <input type="text" name="classdates" id="classdates"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
-      </div>
+      </div> -->
       <?php } if($classes){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none">
+        <div class="content-area courseClass-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+            </ul></div>
+        <!-- <div class="content-area d-none">
           <ul class="list-group m-0">
-          <?php foreach ($classes as $key => $value) { echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="class_'.$key.'" name="courseClass[]" value="'.addslashes($value['name']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} ?>
+          <?php //foreach ($classes as $key => $value) { echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="class_'.$key.'" name="courseClass[]" value="'.addslashes($value['name']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} ?>
           </ul>
-        </div>
+        </div> -->
       </div>
 <?php } if($classesTypes){ ?>
       <div class="filter-list border-bottom px-2">
@@ -834,7 +847,50 @@ $('.clear-all').click(function(){
 			
 
       });
+      window.addEventListener("load", function () {
+  $.ajax({
+		type : "post",
+		url: engagifiiUrl_ajaxurl,
+		data:{
+		   action:'byPersonClassFilters',
+		   filterParams:<?php echo json_encode($class_visible_column_list);?>,
+		},
+		success: function(response) { 
+		for (var key of Object.keys(JSON.parse(response))) {
+			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
+		}
+		dt_filterActivate();
+		var dates = JSON.parse(response)['startDateTime'];
+		filterClasses(dates['minStartDate'],dates['maxEndDate']); 
+			}
+	  });
+});
+function filterClasses(minDate,maxDate){
+   $('input[name="createdbetween"]').daterangepicker({
+   minDate:minDate,
+    maxDate: maxDate,
+    autoApply: true
+  }, function(start, end) {
+      createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
+	  startdate=start.format('MM/DD/YYYY');
+	  enddate=end.format('MM/DD/YYYY');
+		  if($('#apply-filter-data .spinner-border').length==0){
+			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  }
+      countFilterData();
 
+    });
+  startdate='';
+  enddate='';
+  $('input[name="createdbetween"]').val('');
+  $('.filter-list input[type=checkbox]').change(function(){
+	  if($('#apply-filter-data .spinner-border').length==0){
+		  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+	  }
+	  
+	  countFilterData();
+  })
+}
 //filter
     $('#apply-filter-data').click(function(){
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
