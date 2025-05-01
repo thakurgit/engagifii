@@ -440,7 +440,23 @@ ob_start();
           ?>  
         </div>
       </div>
-      <?php } 
+      <?php if(in_array('talentLms', $class_visible_column_list)) { ?>
+<div class="filter-list border-bottom px-2">
+    <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Linked to LMS <i class="far fa-angle-down"></i></div>
+    <div class="content-area d-none">
+        <ul class="list-group m-0">
+            <li class="d-flex align-items-start">
+                <input class="mr-2 mt-1" type="checkbox" id="linkedLms_1" name="linkedLms" value="1">
+                <label for="linkedLms_1"><small>Is linked to LMS</small></label>
+            </li>
+            <li class="d-flex align-items-start">
+                <input class="mr-2 mt-1" type="checkbox" id="linkedLms_0" name="linkedLms" value="0">
+                <label for="linkedLms_0"><small>Is NOT linked to LMS</small></label>
+            </li>
+        </ul>
+    </div>
+</div>
+<?php }
 	  if(in_array('classInstructorsCount', $class_visible_column_list)){
 	  ?>
       <div class="filter-list border-bottom px-2">
