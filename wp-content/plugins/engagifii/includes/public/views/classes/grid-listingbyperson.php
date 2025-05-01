@@ -440,7 +440,7 @@ ob_start();
           ?>  
         </div>
       </div>
-      <?php if(in_array('talentLms', $class_visible_column_list)) { ?>
+      <?php } if(in_array('talentLms', $class_visible_column_list)) { ?>
 <div class="filter-list border-bottom px-2">
     <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Linked to LMS <i class="far fa-angle-down"></i></div>
     <div class="content-area d-none">
