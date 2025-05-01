@@ -3567,12 +3567,14 @@ if (count($row->classSessions)) {
                 $response = json_decode($response['api_response'], true);
                 if($response){
                   foreach ($response as $key => $value) {
-                      if($values=='startDateTime'){
-                          $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
-                          $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
-                      }else if($values =='sectionname'){
+                      if($values =='sectionname'){
                           $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-                      }else if($values =='classInstructorsCount'){
+                      }
+                    //   else if($values=='startDateTime'){
+                    //     $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
+                    //     $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
+                    // }
+                    else if($values =='classInstructorsCount'){
                           $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
                       }else if($values=='objectType'){
                         $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';

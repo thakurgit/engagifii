@@ -416,7 +416,7 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div> -->
-      <?php } if($classes){ ?>
+      <?php } if(in_array('sectionname', $class_visible_column_list)){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area courseClass-filter d-none"><ul class="list-group m-0">
