@@ -3799,7 +3799,7 @@ public function classesLoadGridDataByPerson(){
             </a>';
             }else{
                 $nestedData['talentLms'] = '<a href="#" style="pointer-events: none; opacity: 0.5;">
-                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" alt="tlms" style="filter: grayscale(100%);"></a>';
+                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" alt="tlms" style="filter: grayscale(100%); max-width: 120px;"></a>';
             }
             if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
             {
