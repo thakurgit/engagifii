@@ -4,6 +4,14 @@
     $obj =  new adminDataColumn();
 	$date = date('Y-m-d');
     $response = $obj->getClassColumnData();
+	
+	$talentLmsObj = new stdClass();
+$talentLmsObj->colName = "talentLms";
+$talentLmsObj->displayName = "Access Class";
+
+// Append the object to the array
+$response[] = $talentLmsObj;
+	print_r($response);
 	$classTypes = $obj->classTypes($date);
 	//print_r($classTypes);
     $options = get_option( 'ebt_api_settings' );

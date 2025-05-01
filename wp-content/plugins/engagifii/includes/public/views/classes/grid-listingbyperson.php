@@ -242,7 +242,12 @@ if(!$dataResponse['api_response']){
     unset($collection[1]);
     unset($collection[7]);
     unset($collection[8]);
-
+    $talentLmsObj = new stdClass();
+    $talentLmsObj->colName = "talentLms";
+    $talentLmsObj->displayName = "Access Class";
+    
+    // Append the object to the array
+    $collection[] = $talentLmsObj;
     $classes = $obj->getAllClassCourses($date);
     $classesTypes = $obj->classTypes($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);

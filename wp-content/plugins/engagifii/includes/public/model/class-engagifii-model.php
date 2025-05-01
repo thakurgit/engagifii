@@ -3743,9 +3743,9 @@ public function classesLoadGridDataByPerson(){
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
-			if(!$value->onDemandValidityType){
+			if (!$value->onDemandValidityType && (!count($value->classSessions))) {
             $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
-            }else{
+            }else{ 
                 $nestedData['startdate'] = 'On-Demand';
             }
 			if(count($value->classSessions)){
@@ -3792,8 +3792,12 @@ public function classesLoadGridDataByPerson(){
                     elseif(count($classTag) == 1)
                         $allTags[] = $tag->tagName;
             }
-
             $nestedData['classTag'] = implode(" ", $allTags);
+            if($value->classLinkTypeId == 1 ){
+                $nestedData['talentLms'] = '<a href="https://training.psba.org/learner/courseinfo/id:'.$value->locationUrlId.',credits:1" target="_blank">
+                <img src="'.ENGAGIFII_ASSETS_URL.'/images/talentlms.png" class="img-icon-lg img-fluid" alt="instructor-icon">
+            </a>';
+            }
             if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
             {
               if($value->registrationState !== 'Registration Not Setup' && ($value->registrationState !== 'Registration Closed' || $registerOverride == true)  && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
