@@ -11,7 +11,7 @@ $talentLmsObj->displayName = "Access Class";
 
 // Append the object to the array
 $response[] = $talentLmsObj;
-	print_r($response);
+	
 	$classTypes = $obj->classTypes($date);
 	//print_r($classTypes);
     $options = get_option( 'ebt_api_settings' );
