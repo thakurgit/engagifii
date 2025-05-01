@@ -3547,7 +3547,7 @@ if (count($row->classSessions)) {
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {
-              if($values =='startDateTime'){
+              if($values =='sessions'){
                 $apiUrl='Public/Class/GetMinMaxClassDate/'.$date;
               }elseif($values =='sectionname'){
                 $apiUrl='Public/Class/GetAllClassCourses/'.$date;
@@ -3555,7 +3555,7 @@ if (count($row->classSessions)) {
                 $apiUrl='Public/Class/GetAllClassInstructors/'.$date; 
               }else if($values =='objectType'){
                 $apiUrl='public/GetObjectTypesForFilter/'.$date;             
-              }elseif($values =='sessions'){
+              }elseif($values =='sessions1'){
                 $apiUrl='Public/Class/GetMinMaxClassRegDate/'.$date;
               }elseif($values =='classDuration'){
                 $apiUrl='public/GetObjectTypesForFilter/'.$date;
@@ -3570,10 +3570,10 @@ if (count($row->classSessions)) {
                       if($values =='sectionname'){
                           $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
                       }
-                    //   else if($values=='startDateTime'){
-                    //     $html[$values]['minStartDate']=date('m/d/Y',strtotime($response['minStartDate']));		
-                    //     $html[$values]['maxEndDate']=date('m/d/Y',strtotime($response['maxEndDate']));	;		
-                    // }
+                      else if($values=='sessions'){
+                        $html[$values]['minStartDate']=date('m/d/Y',strtotime($value['minStartDate']));		
+                        $html[$values]['maxEndDate']=date('m/d/Y',strtotime($$value['maxEndDate']));	;		
+                    }
                     else if($values =='classInstructorsCount'){
                           $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
                       }else if($values=='objectType'){

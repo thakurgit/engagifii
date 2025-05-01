@@ -402,7 +402,7 @@ ob_start();
       <input type="hidden" id="isApplyACtive" value="0">
       <?php if(in_array('sessions', $class_visible_column_list)){ ?>
         <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Types <i class="far fa-angle-down"></i></div>
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Date <i class="far fa-angle-down"></i></div>
         <div class="content-area classType-filter d-none"><ul class="list-group m-0">
             <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
@@ -419,7 +419,7 @@ ob_start();
       <?php } if(in_array('sectionname', $class_visible_column_list)){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
-        <div class="content-area courseClass-filter d-none"><ul class="list-group m-0">
+        <div class="content-area sectionname-filter d-none"><ul class="list-group m-0">
             <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
@@ -491,6 +491,13 @@ ob_start();
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
           <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
+          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+        </div>
+      </div>
+      <div class="filter-list border-bottom px-2">
+        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Date <i class="far fa-angle-down"></i></div>
+        <div class="content-area d-none position-relative pb-2">
+          <input type="text" name="classcreatedbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
@@ -856,11 +863,12 @@ $('.clear-all').click(function(){
 		   filterParams:<?php echo json_encode($class_visible_column_list);?>,
 		},
 		success: function(response) { 
+      console.log(response);
 		for (var key of Object.keys(JSON.parse(response))) {
 			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
 		}
 		dt_filterActivate();
-		var dates = JSON.parse(response)['startDateTime'];
+		var dates = JSON.parse(response)['sessions'];
 		filterClasses(dates['minStartDate'],dates['maxEndDate']); 
 			}
 	  });
