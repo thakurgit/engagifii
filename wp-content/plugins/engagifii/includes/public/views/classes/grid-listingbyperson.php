@@ -241,18 +241,15 @@ ob_start();
           </ul>
         </div> -->
       </div>
-<?php } if($classesTypes){ ?>
+<?php } if(in_array('objectType', $class_visible_column_list)){ ?>
       <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Type <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none">
-          <ul class="list-group m-0">
-          <?php foreach ($classesTypes as $key => $value) { 
-            if (in_array($value['id'], $classTypesShow)) {
-              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="classType_'.$key.'" name="classType[]" value="'.addslashes($value['id']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} 
-              }?>
-          </ul>
-        </div>
-      </div>
+      <div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Type<i class="far fa-angle-down"></i></div>
+        <div class="content-area sectionname-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+            </ul></div>      
+      </div>       
 <?php }//credit Hour filters
  if(in_array('credithours', $class_visible_column_list)){ ?>
 <div class="filter-list border-bottom px-2">
