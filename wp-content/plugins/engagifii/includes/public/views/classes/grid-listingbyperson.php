@@ -282,12 +282,12 @@ ob_start();
 	  ?>
     <div class="filter-list border-bottom px-2">
       <div class="heading-title py-2 d-flex align-items-center justify-content-between">Instructors<i class="far fa-angle-down"></i></div>
-        <div class="content-area courseInstrutor-filter d-none"><ul class="list-group m-0">
+        <div class="content-area classInstructorsCount-filter d-none"><ul class="list-group m-0">
             <div class="loaders text-center py-3">
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
             </ul></div>      
-      </div>
+      </div> 
      
 	<?php } ?>
       
