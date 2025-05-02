@@ -280,17 +280,15 @@ ob_start();
 <?php }
 	  if(in_array('classInstructorsCount', $class_visible_column_list)){
 	  ?>
-      <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructors <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-
-            foreach ($instructor as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="instructor_'.$key.'" name="courseInstrutor[]" value="'.$value['id'].'"> <label  for="instructor_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';
-            }
-          ?>  
-        </ul></div>
+    <div class="filter-list border-bottom px-2">
+      <div class="heading-title py-2 d-flex align-items-center justify-content-between">Instructors<i class="far fa-angle-down"></i></div>
+        <div class="content-area courseInstrutor-filter d-none"><ul class="list-group m-0">
+            <div class="loaders text-center py-3">
+              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+            </ul></div>      
       </div>
+     
 	<?php } ?>
       
       

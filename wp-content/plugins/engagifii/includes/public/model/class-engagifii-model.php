@@ -3567,7 +3567,7 @@ if (count($row->classSessions)) {
                 if($response){
                   foreach ($response as $key => $value) {
                       if($values =='sectionname'){
-                          $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+                          $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="courseClass[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
                       }
                       else if($values=='sessions'){
 						  if($key == 'minStartDate'){
@@ -3582,9 +3582,9 @@ if (count($row->classSessions)) {
                         	$html['classRegDates'][$key].=date('m/d/Y',strtotime($value)); 
 						  } 
                     }  else if($values =='classInstructorsCount'){
-                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
+                          $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="courseInstrutor[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
                       }else if($values=='objectType'){
-                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
+                        $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="classType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
                       }
 					  else if($values=='credithours'){
 						 $html['creditHours'][$key].=$value;
