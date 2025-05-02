@@ -3544,24 +3544,23 @@ if (count($row->classSessions)) {
         $postData=array();
         $htmlArray = array();
           $filterParams = $_POST['filterParams'];
+		  $filterParams[] = 'classRegDates'; 
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {
               if($values =='sessions'){
-                $apiUrl='Public/Class/GetMinMaxClassDate/'.$date;
+                $apiUrl='Classes/GetMinMaxClassDate/'.$date;
               }elseif($values =='sectionname'){
-                $apiUrl='Public/Class/GetAllClassCourses/'.$date;
+                $apiUrl='Classes/GetAllClassCourses/'.$date;
               }else if($values =='classInstructorsCount'){
-                $apiUrl='Public/Class/GetAllClassInstructors/'.$date; 
+                $apiUrl='Classes/GetAllClassInstructors/'.$date; 
               }else if($values =='objectType'){
-                $apiUrl='public/GetObjectTypesForFilter/'.$date;             
-              }elseif($values =='sessions1'){
-                $apiUrl='Public/Class/GetMinMaxClassRegDate/'.$date;
-              }elseif($values =='classDuration'){
-                $apiUrl='public/GetObjectTypesForFilter/'.$date;
+                $apiUrl='Classes/GetObjectTypesForFilter/'.$date;             
               }elseif($values =='credithours'){
-                $apiUrl='Public/Class/GetCreditHoursRange/'.$date;
-              }
+                $apiUrl='Classes/GetCreditHoursRange/'.$date;
+              } else if($values== 'classRegDates') {
+				$apiUrl='Classes/GetMinMaxClassRegistrationDate/'.$date;
+			  }
               $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
               if($response['api_response']){
                 $response = json_decode($response['api_response'], true);
@@ -3571,14 +3570,25 @@ if (count($row->classSessions)) {
                           $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
                       }
                       else if($values=='sessions'){
-                        $html[$values]['minStartDate']=date('m/d/Y',strtotime($value['minStartDate']));		
-                        $html[$values]['maxEndDate']=date('m/d/Y',strtotime($$value['maxEndDate']));	;		
-                    }
-                    else if($values =='classInstructorsCount'){
+						  if($key == 'minStartDate'){
+							$html['classDates'][$key].=date("m/d/Y",strtotime ( '-1 day' , strtotime ($value ) )) ;	
+						  } else {
+                        	$html['classDates'][$key].=date('m/d/Y',strtotime($value)); 
+						  } 
+                    } else if($values=='classRegDates'){
+						  if($key == 'minStartDate'){
+							$html['classRegDates'][$key].=date("m/d/Y",strtotime ( '-1 day' , strtotime ($value ) )) ;	
+						  } else {
+                        	$html['classRegDates'][$key].=date('m/d/Y',strtotime($value)); 
+						  } 
+                    }  else if($values =='classInstructorsCount'){
                           $html[$values].= '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['name']).'</small></label></li>';	
                       }else if($values=='objectType'){
                         $html[$values].= '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
                       }
+					  else if($values=='credithours'){
+						 $html['creditHours'][$key].=$value;
+					  }
                     }
                   }else{
                     $html[$values] ='<h6 class="text-center mt-3">data not found</h6>';

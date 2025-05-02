@@ -15,193 +15,11 @@
 </style>
 <?php
 
-  $datatableJS=false;
     $options  = get_option( 'ebt_api_settings' );
   $classStates =['Upcoming'];
   if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { 
   	$classStates = [];
    }
-function classdataJS($classStates){  
-    $postData = array();  
-    $postData['itemCount'] = 1000;
-    $postData['sortBy'] = '';    
-    $postData['pageNumber'] = 1;    
-    $postData['sortDirection'] = "desc";
-    $postData['filterBody'] = array('searchText'=>'','selectedDate' => date('Y-m-d'),'classStates'=>$classStates); //'searchText'=>$title,  
-    return $postData;
-}
-	$classdatJS =classdataJS($classStates);
-    
-     $classdatJS = $this->submitApiRequest("Public/ClassPagingList",  $classdatJS, "POST", 'classes');
-    //print_r($classdatJS);die;
-	// $url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
-	//$JSON = file_get_contents($url);
-	// $classdatJS   = json_decode($JSON)->result;
-	 $classdatJS   = json_decode($classdatJS['api_response'])->result;
-	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		//$datatableJS=true;
-	}
-	//datatable JS data
-if($datatableJS){
-//echo json_decode($xxx['api_response'])->totalCount;
-
-$dataa=array();
-$k=1;
-$counter = 0; 
-function registrationEnabled($registrationurl='',$registrationBtn='Register'){
-	return '<a style="white-space:nowrap" href="'.$registrationurl.'" class="btn btn-primary px-3 py-1" target="_blank">'.$registrationBtn.'</a>';	
-}
-function registrationDisabled($registrationTitle='',$registrationBtn='Register'){ 
-	return '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registrationTitle.'"><button type="button" id="" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">'.$registrationBtn.'</button></span>';
-}
-if($classdatJS){	
-foreach ($classdatJS as $key => $value) {
-$nestedData = array();
-//class name
-$class_icon = $value->parentCourse->iconReference;
-if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
-  $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
-}
-$class_schedule = date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate));
-if(count($value->classSessions)){
-  foreach ($value->classSessions as $key => $rowData) {
-	$counter = 0; 
-	$class_schedule = '';
-	$classSessionTime = '';
-	if( $counter == 0 ) {         
-		$classSessionStartTime = $rowData->startTime;
-		$classSessionStartDate = $rowData->sessionDate;
-	}                  
-	if( $counter == count( $value->classSessions ) - 1) {
-		 $classSessionEndTime = $rowData->endTime;
-		 $classSessionEndDate = $rowData->sessionDate;
-	}
-	$classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-	$class_schedule = $classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime;
-	$counter = $counter + 1;
-  }
- // $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';
-}
-  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span><small class="d-block" style="white-space:normal;">'.$class_schedule.'</small></div></div>';
-//class duration
-$nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-//class type
-$nestedData['objectType'] = $value->objectType;
-//session dropdown
-if(count($value->classSessions)){
-  $li=1;
-  $classPopover  =  dd_header('Class Dates');
-  $subItems = "";
-  foreach ($value->classSessions as $key => $rowData) {
-	if( $li == 1 ) {         
-		$classSessionStartDate = $rowData->sessionDate;
-	}                  
-	$rowName[$rowData->id] = $rowData->id;
-	$classTime = '';
-	if($rowData->sessionDate){
-	  $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
-	}
-	$class='';
-	if($li%2==1){
-	  $class='bg-light';	
-	}
-	$subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
-	$li++;
-  }
-  $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-$nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
-}else {
-  $nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';	
-}
-//class instructors
-if($value->classInstructorsCount>0){
-  $instructorDropdown =  dd_header('Instructors','Search Instructors..');
-  $subItems = "";
-  $li=1;
-  foreach ($value->classInstructors as $key => $rowData) {
-	$rowName[$rowData->id] = $rowData->fullName;
-	if($rowData->thumbnailUrl){
-	  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
-		$instructor_img = $rowData->thumbnailUrl;
-	  }	else	{
-		$instructor_img = $options['ebt_tenant_code']['engagifii_url'].$rowData->thumbnailUrl;
-	  }
-	}	else	{
-	  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
-	}
-	$class='';
-	if($li%2==1){
-	  $class='bg-light';	
-	}
-	$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
-	$li++;
-  }
-  $instructorDropdown .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-$nestedData['classInstructorsCount']= '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorDropdown.'</div>';  
-} else {
-$nestedData['classInstructorsCount']= '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
-}
-//class credit hours
-$nestedData['credithours']= number_format($value->courseCreditMapping[0]->credits, 2);      
-//class tags 
-$classTag = $value->classTag;
-$allTags = array();
-if($classTag){
-  if(count($classTag)>1){
-	$tagPopover = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2 shadow" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
-	$subItems = "";
-	$li=1;
-	foreach ($classTag as $index => $tag) {
-	  $rowName[$tag->id] = $tag->tagName;
-	  $class='';
-	  if($li%2==1){
-		$class='bg-light';	
-	  }
-	  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $tag->tagName .  '</li>';
-	  $li++;
-	}
-	$tagPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$classTag{0}->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($classTag)-1) .'</span>'.$tagPopover.'</div>';
-  }else if(count($classTag)==1){
-	$allTags[] = $tag->tagName;
-  }
-  $nestedData['classTag']= implode(" ", $allTags);
-}else {
-  $nestedData['classTag']='<em class="opacity-50">N/A</em>';
-}
-//class register button
-if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
-	  if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out'){
-	  if($value->locationType->name=="onlocation")	{ 
-		 	$nestedData['register']= registrationEnabled($value->registrationUrlOnLocation);
-		}
-		elseif($value->locationType->name=="online"){
-			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine);
-		}elseif($value->locationType->name=="onlocationandonline"){
-			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine,'Register Online');
-			$nestedData['register'].= '<div class="mb-2"></div>';
-			$nestedData['register'].= registrationEnabled($value->registrationUrlOnLocation,'Register in person');;
-		}
-		else{
-			$nestedData['register']= registrationDisabled('Class Location not defined');
-		}
-	  }
-	  else{
-	    $nestedData['register']= registrationDisabled($value->registrationState);
-	  }
-}else{
-  		$nestedData['register']= registrationDisabled($value->registrationState);
-}
- $k++;
- $dataa[] = $nestedData;
-
-}
-}
-}
-	
-	
-
-
 
 
   $default_length = '10';
@@ -248,20 +66,22 @@ if(!$dataResponse['api_response']){
     
     // Append the object to the array
     $collection[] = $talentLmsObj;
-    $classes = $obj->getAllClassCourses($date);
+   /* $classes = $obj->getAllClassCourses($date);
     $classesTypes = $obj->classTypes($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);
-    $instructor = $obj->classAllInstructors($date);
-    $dateRange  = $obj->classRegDateFilters($date);
+    $instructor = $obj->classAllInstructors($date);*/
+    //$dateRange  = $obj->classRegDateFilters($date);
     //print_r($classesTypes);  
-    $min_date = date('m/d/Y', strtotime($dateRange['minStartDate'] . ' -1 day'));
-    $max_date = date('m/d/Y', strtotime($dateRange['maxEndDate'] . ' +1 day'));
-    $classdateRange  = $obj->classdateFilters($date);
- 	   $class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
-  	 $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
-     $class_start_date = date("Y-m-d",strtotime ( '-1 day' , strtotime ( $class_start_date ) )) ;	
-     //print_r($class_start_date);
-	
+   // $min_date = date('m/d/Y', strtotime($dateRange['minStartDate'] . ' -1 day'));
+    //$max_date = date('m/d/Y', strtotime($dateRange['maxEndDate'] . ' +1 day'));
+   // $classdateRange  = $obj->classdateFilters($date);
+ 	   //$class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
+  	// $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
+    // $class_start_date = date("m/d/Y",strtotime ( '-1 day' , strtotime ( $class_start_date ) )) ;	
+  	 $class_end_date = date('01/01/2100');
+     $class_start_date = date('01/01/1970');	 
+  $min_date = date('01/01/1970');
+    $max_date = date('01/01/2100');
     $title_key = -1;
     
 ?>
@@ -400,23 +220,14 @@ ob_start();
     </div>
     <div class="">
       <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('sessions', $class_visible_column_list)){ ?>
-        <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Date <i class="far fa-angle-down"></i></div>
-        <div class="content-area classType-filter d-none"><ul class="list-group m-0">
-            <div class="loaders text-center py-3">
-              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-            </div>
-            </ul></div>
-      </div>
-      <!-- <div class="filter-list border-bottom px-2">
+   <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
           <input type="text" name="classdates" id="classdates"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
-      </div> -->
-      <?php } if(in_array('sectionname', $class_visible_column_list)){ ?>
+      </div> 
+      <?php if(in_array('sectionname', $class_visible_column_list)){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
         <div class="content-area sectionname-filter d-none"><ul class="list-group m-0">
@@ -494,13 +305,7 @@ ob_start();
           <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
         </div>
       </div>
-      <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Date <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative pb-2">
-          <input type="text" name="classcreatedbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
-        </div>
-      </div>
+     
 
       
     </div>
@@ -527,8 +332,10 @@ $filter_content = removeWhitespace($filter_content);
   var classDates     = '';
   //var endDate     = '';
   var createdDate = '';
-  var minRange ='<?php echo (int)$creditFilter['minRange']; ?>';
-  var maxRange ='<?php echo (int)$creditFilter['maxRange']; ?>';
+  //var minRange ='<?php //echo (int)$creditFilter['minRange']; ?>';
+  //var maxRange ='<?php //echo (int)$creditFilter['maxRange']; ?>';
+  var minRange =0;
+  var maxRange =10000;
   var minReg ='<?php echo $min_date; ?>';
   var maxReg ='<?php echo $max_date; ?>';
   var titleColumn = '<?php echo $title_key; ?>';
@@ -653,7 +460,7 @@ $filter_content = removeWhitespace($filter_content);
 		 
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
-			  dt_filterActivate();
+			//  dt_filterActivate();
 		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
 		 $('.dataTables_filter input').keyup(function(){
 			if($(this).val()==''){
@@ -781,9 +588,9 @@ $('#searchclass').on("keydown", function(event) {
     $('input[name="createdbetween"]').val('');
 	$('input[name="classdates"]').val('');
 });
-$('input[name="createdbetween"]').daterangepicker({
-   minDate:'<?php echo $min_date; ?>',
-    maxDate: '<?php echo $max_date; ?>',
+/*$('input[name="createdbetween"]').daterangepicker({
+   minDate:'<?php //echo $min_date; ?>',
+    maxDate: '<?php //echo $max_date; ?>',
     autoApply: true
   }, function(start, end) {
       createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
@@ -794,11 +601,11 @@ $('input[name="createdbetween"]').daterangepicker({
  if($('#apply-filter-data .spinner-border').length==0){
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
-    });
+    });*/
 <?php  if(in_array('sessions', $class_visible_column_list)) { ?>
-$('input[name="classdates"]').daterangepicker({
-   minDate:'<?php echo $class_start_date; ?>',
-    maxDate: '<?php echo $class_end_date; ?>',
+/*$('input[name="classdates"]').daterangepicker({
+   minDate:'<?php //echo $class_start_date; ?>',
+    maxDate: '<?php //echo $class_end_date; ?>',
     autoApply: true
   }, function(start, end) {
       classDates = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
@@ -809,7 +616,7 @@ $('input[name="classdates"]').daterangepicker({
  if($('#apply-filter-data .spinner-border').length==0){
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
-    });
+    });*/
 <?php } ?>
 $( '.cleardate' ).click(function() {
 	if($(this).siblings().attr('id')=='createdbetween'){
@@ -863,41 +670,85 @@ $('.clear-all').click(function(){
 		   filterParams:<?php echo json_encode($class_visible_column_list);?>,
 		},
 		success: function(response) { 
-      console.log(response);
 		for (var key of Object.keys(JSON.parse(response))) {
 			$('.'+key+'-filter ul').html(JSON.parse(response)[key]);
 		}
 		dt_filterActivate();
-		var dates = JSON.parse(response)['sessions'];
-		filterClasses(dates['minStartDate'],dates['maxEndDate']); 
+		var dates = JSON.parse(response)['classDates'];
+		var regDates = JSON.parse(response)['classRegDates'];
+		var creditHours = JSON.parse(response)['creditHours'];
+		if(dates && typeof dates === 'object'){
+			filterClasses(dates['minStartDate'], dates['maxEndDate'], 'classdates'); 
+		}
+		if(regDates && typeof regDates === 'object'){
+		  filterClasses(regDates['minStartDate'], regDates['maxEndDate'], 'createdbetween'); 
+		  }
+		  if(creditHours && typeof creditHours === 'object'){
+		  filtercreditHours(parseInt(creditHours['minRange']), parseInt(creditHours['maxRange'])); 
+		  }
 			}
 	  });
 });
-function filterClasses(minDate,maxDate){
-   $('input[name="createdbetween"]').daterangepicker({
-   minDate:minDate,
+function filtercreditHours(minRange, maxRange) { 
+		  $("#slider-range").slider({
+			  range: true,
+			  min: minRange,
+			  max: maxRange,
+			  values: [minRange, maxRange],
+			  step: 1,
+			  
+		   slide: function(event, ui ) {
+			  $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
+			},
+		   stop: function(event, ui ) {
+			  if($('#apply-filter-data .spinner-border').length==0){
+					$('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+				}
+			countFilterData(); 
+			
+	  
+			}
+	  
+	  });
+    $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
+       $( "#slider-range" ).slider( "values", 1 ) );
+}
+function filterClasses(minDate, maxDate, inputName) { 
+  const selector = `input[name="${inputName}"]`;
+
+  $(selector).daterangepicker({
+    minDate: minDate,
     maxDate: maxDate,
     autoApply: true
   }, function(start, end) {
-      createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
-	  startdate=start.format('MM/DD/YYYY');
-	  enddate=end.format('MM/DD/YYYY');
-		  if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
-      countFilterData();
+    const createdDate = start.format('MM/DD/YYYY') + '-' + end.format('MM/DD/YYYY');
+    const startdate = start.format('MM/DD/YYYY');
+    const enddate = end.format('MM/DD/YYYY');
 
-    });
-  startdate='';
-  enddate='';
-  $('input[name="createdbetween"]').val('');
-  $('.filter-list input[type=checkbox]').change(function(){
-	  if($('#apply-filter-data .spinner-border').length==0){
-		  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-	  }
-	  
-	  countFilterData();
-  })
+    if ($('#apply-filter-data .spinner-border').length === 0) {
+      $('#apply-filter-data')
+        .attr('disabled', '')
+        .prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    }
+
+    countFilterData();
+  });
+
+  // Reset values on init
+  $(selector).val('');
+  let startdate = '';
+  let enddate = '';
+
+  // Re-bind filter checkbox event inside the function
+  $('.filter-list input[type=checkbox]').off('change').on('change', function () {
+    if ($('#apply-filter-data .spinner-border').length === 0) {
+      $('#apply-filter-data')
+        .attr('disabled', '')
+        .prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    }
+
+    countFilterData();
+  });
 }
 //filter
     $('#apply-filter-data').click(function(){
@@ -910,7 +761,7 @@ function filterClasses(minDate,maxDate){
 		maxReg = $.trim(regDate[1]);
 	  }
 	  <?php if(in_array('sessions', $class_visible_column_list)) { ?>
-	  if($('input[name="classdates"]').val()!=''){
+	  if($('input[name="classdates"]').val()!=''){ 
 		var classDate = $('input[name="classdates"]').val().split("-");
 	 	  class_start_date = $.trim(classDate[0]);
 		class_end_date = $.trim(classDate[1]);
@@ -1106,13 +957,13 @@ $(document).ready(function(){
 });
 
 <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
-$(document).ready(function(){
+/*$(document).ready(function(){
 
 $("#slider-range").slider({
         range: true,
-        min: <?php echo (int)$creditFilter['minRange']; ?>,
-        max: <?php echo (int)$creditFilter['maxRange']; ?>,
-        values: [<?php echo (int)$creditFilter['minRange']; ?>, <?php echo (int)$creditFilter['maxRange']; ?>],
+        min: <?php //echo (int)$creditFilter['minRange']; ?>,
+        max: <?php //echo (int)$creditFilter['maxRange']; ?>,
+        values: [<?php //echo (int)$creditFilter['minRange']; ?>, <?php //echo (int)$creditFilter['maxRange']; ?>],
 		step: 1,
         
      slide: function(event, ui ) {
@@ -1126,12 +977,6 @@ $("#slider-range").slider({
 	  
 	  
 	  
-	     /* $.fn.dataTable.ext.search.push(
-      function(settings, data, dataIndex) {  
-         return data[5] >=  ui.values[ 0 ] && data[5] <= ui.values[ 1]
-      }
-    )
-  table.draw();*/
 
 
  
@@ -1141,6 +986,6 @@ $("#slider-range").slider({
 });
     $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
        $( "#slider-range" ).slider( "values", 1 ) );
-});
+});*/
 <?php } ?>
 </script>
