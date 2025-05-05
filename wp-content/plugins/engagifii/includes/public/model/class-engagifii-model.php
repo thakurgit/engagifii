@@ -3709,9 +3709,9 @@ public function classesLoadGridDataByPerson(){
     $siteURL= site_url();
     $endorsement_api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-    $tenantCode = $options['dashboard_tenant_code'];
-    $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
-    $allclass =  $options['allClasses'];
+    $tenantCode = isset($options['dashboard_tenant_code']) ? $options['dashboard_tenant_code'] : ''; 
+    $env = isset($options['engagifii_apis']['environment']) ? $options['engagifii_apis']['environment'] : '';
+    $allclass = isset($options['allClasses']) ? $options['allClasses'] : null;
     $classAPIUrl = "Classes/UpcomingClassPagingList";
 		if (empty($allclass)) {
             $allclass = ["Upcoming"];
@@ -3719,7 +3719,9 @@ public function classesLoadGridDataByPerson(){
                 $allclass = [];
                 $classAPIUrl = "Classes/ClassPagingList";
             }
-    $loggedInUserId = $_SESSION['pid'];
+    $loggedInUserId = isset($_SESSION['pid']) ? $_SESSION['pid'] : null;
+    $postedDataPermission = [];
+    $userPermissionArray = [];
         $postedData  = $this->_prepareClassData();
         $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
         $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
@@ -3752,7 +3754,7 @@ public function classesLoadGridDataByPerson(){
 
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
-    $classes_detail_page = $front_pages['classes_detail_page'];
+    $classes_detail_page = isset($front_pages['classes_detail_page']) ? $front_pages['classes_detail_page'] : null;
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
@@ -3871,15 +3873,13 @@ public function classesLoadGridDataByPerson(){
             {
               if($value->registrationState !== 'Registration Not Setup' && ($value->registrationState !== 'Registration Closed' || $registerOverride == true)  && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
                {
-                   if($value->locationType->name=="onlocation")
+                if (isset($value->locationType->name) && $value->locationType->name == "onlocation") {
                       { 
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
                         $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
                         $nestedData['register'] = $default_RegisterBtn;
-                      //$nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       }
-                      elseif($value->locationType->name=="online"){
+                      elseif (isset($value->locationType->name) && $value->locationType->name == "online") {
                         if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
                             $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }else{
@@ -3889,25 +3889,24 @@ public function classesLoadGridDataByPerson(){
                         }
                       
                       }
-                      elseif($value->locationType->name=="onlocationandonline"){
+                      elseif (isset($value->locationType->name) && $value->locationType->name == "onlocationandonline") {
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/onlocationandonline/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
                           $nestedData['register'] = $default_RegisterBtn;
-                      //$nestedData['register'] = '<a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
-                      }
-                  else{
-                      $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-                  }
-              }
-              else{
-              $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-              }
-          }else{
-            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-            //$data[] = $nestedData;    
-          }
-          $data[] = $nestedData;
-      }
+                        }
+                        else{
+                         $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                            }
+                        }
+                        else{
+                            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                            }
+                }else{
+                            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                            //$data[] = $nestedData;    
+                        }
+                        $data[] = $nestedData;
+                    }
         
        
         $draw           = $_POST['draw'];
