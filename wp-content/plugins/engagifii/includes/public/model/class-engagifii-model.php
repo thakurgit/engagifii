@@ -3713,46 +3713,36 @@ public function classesLoadGridDataByPerson(){
     $env = isset($options['engagifii_apis']['environment']) ? $options['engagifii_apis']['environment'] : '';
     $allclass = isset($options['allClasses']) ? $options['allClasses'] : null;
     $classAPIUrl = "Classes/UpcomingClassPagingList";
-		if (empty($allclass)) {
+		
+    if (empty($allclass)) {
             $allclass = ["Upcoming"];
-            } elseif ($allclass == 1) {
+    } elseif ($allclass == 1) {
                 $allclass = [];
                 $classAPIUrl = "Classes/ClassPagingList";
-            }
+    }
     $loggedInUserId = isset($_SESSION['pid']) ? $_SESSION['pid'] : null;
     $postedDataPermission = [];
     $userPermissionArray = [];
-        $postedData  = $this->_prepareClassData();
-        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
-        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
-        $userPermissionResponse = $userPermission['api_response'];
-        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
-        //print_r($userpermissionJson); die;
-        foreach($userpermissionJson as $key => $permissionValue){
-            $userPermissionArray[] = $permissionValue['name'];
-        }
-        if(in_array('RegisterMembersfromOwnOrganization', $userPermissionArray)){
-            $registerOthers = 'true';
-        }
-        else{
-            $registerOthers = 'false';
-        }
-        if(in_array('OverrideRegistration', $userPermissionArray)){
-            $registerOverride = 'true';
-        }
-        else{
-            $registerOverride = 'false';
-        }
-		// print_r(json_encode($postedData));
-		// die;
-        $dataResponse = $this->submitApiRequest($classAPIUrl, $postedData, "POST", 'classes');
         
-        $collection   = json_decode($dataResponse['api_response'])->result;
-        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-        $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
-        $data         = array();
+    $postedData  = $this->_prepareClassData();
+    $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+    $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
+    $userPermissionResponse = $userPermission['api_response'];
+    $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+       
+    foreach($userpermissionJson as $key => $permissionValue){
+        $userPermissionArray[] = $permissionValue['name'];
+    }
+    $registerOthers = in_array('RegisterMembersfromOwnOrganization', $userPermissionArray) ? 'true' : 'false';
+    $registerOverride = in_array('OverrideRegistration', $userPermissionArray) ? 'true' : 'false';
+		
+    $dataResponse = $this->submitApiRequest($classAPIUrl, $postedData, "POST", 'classes');
+    $collection   = json_decode($dataResponse['api_response'])->result;
+    $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+    $totalRecords  = json_decode($dataResponse['api_response'])->itemCount;
+    $data         = array();
 
-        $options = get_option('ebt_api_settings');
+    $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $classes_detail_page = isset($front_pages['classes_detail_page']) ? $front_pages['classes_detail_page'] : null;
 	if($classes_detail_page){
@@ -3769,11 +3759,6 @@ public function classesLoadGridDataByPerson(){
             $classPopover      = '';
 
             $class_icon = $value->parentCourse->iconReference;
-            if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
-                $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
-                
-            }
-
             if(count($value->classInstructors)){
                 $instructorPopOver = $this->_popOverInstructorData1($key, $value->classInstructors);
 			}
@@ -3781,9 +3766,6 @@ public function classesLoadGridDataByPerson(){
                 $classPopover  = $this->_popOverClassData1($key, $value->classSessions);
                 
 			}
-
-            
-
             ## row data
             $class_schedule = '';
             $counter = 0; 
@@ -3800,7 +3782,6 @@ public function classesLoadGridDataByPerson(){
                          $classSessionEndTime = $rowData->endTime;
                          $classSessionEndDate = $rowData->sessionDate;
                     }
-                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
                     $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
@@ -3811,40 +3792,40 @@ public function classesLoadGridDataByPerson(){
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
-			if (!$value->onDemandValidityType && (!count($value->classSessions))) {
-            $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
-            }else{ 
-                $nestedData['startdate'] = 'On-Demand';
-            }
-			if(count($value->classSessions)){
-				 foreach ($value->classSessions as $key => $rowData) {
-            
-                    $classSessionTime = '';
-                    if( $counter == 0 ) {         
-                        $classSessionStartTime = $rowData->startTime;
-                        $classSessionStartDate = $rowData->sessionDate;
-                    }                  
-                    if( $counter == count( $value->classSessions ) - 1) {
-                         $classSessionEndTime = $rowData->endTime;
-                         $classSessionEndDate = $rowData->sessionDate;
-                    }
-                    //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
-                    $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-                    $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
-                    $counter = $counter + 1;
+                if (!$value->onDemandValidityType && (!count($value->classSessions))) {
+                $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';
+                }else{ 
+                    $nestedData['startdate'] = 'On-Demand';
                 }
-            	 $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
-			}
+                if(count($value->classSessions)){
+                    foreach ($value->classSessions as $key => $rowData) {
+                
+                        $classSessionTime = '';
+                        if( $counter == 0 ) {         
+                            $classSessionStartTime = $rowData->startTime;
+                            $classSessionStartDate = $rowData->sessionDate;
+                        }                  
+                        if( $counter == count( $value->classSessions ) - 1) {
+                            $classSessionEndTime = $rowData->endTime;
+                            $classSessionEndDate = $rowData->sessionDate;
+                        }
+                        //$classSessionTime = date('M d, Y', strtotime($rowData->sessionDate)).' At '.$classSessionStartTime.' - '.$classSessionEndTime;
+                        $classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
+                        $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
+                        $counter = $counter + 1;
+                    }
+                    $nestedData['startdate'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
+                }
 			
-			$nestedData['classInstructorsCount']='<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
-			if($value->classInstructorsCount>0){
-				$nestedData['classInstructorsCount'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
-			}
-            if($value->isCreditTypeSingle =="true"){
-            $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);//($value->courseCreditMapping[0]->credits);          
-            }else{
-                $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);      
-            }
+			        $nestedData['classInstructorsCount']='<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
+                if($value->classInstructorsCount>0){
+                    $nestedData['classInstructorsCount'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorPopOver.'</div>';  
+                }
+                if($value->isCreditTypeSingle =="true"){
+                    $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);//($value->courseCreditMapping[0]->credits);          
+                }else{
+                    $nestedData['credithours'] = number_format($value->courseCreditMapping[0]->credits, 2);      
+                }
             $classTag = $value->classTag;
             $allTags = array();
             foreach ($classTag as $index => $tag) {
@@ -3861,14 +3842,14 @@ public function classesLoadGridDataByPerson(){
                         $allTags[] = $tag->tagName;
             }
             $nestedData['classTag'] = implode(" ", $allTags);
-            if($value->classLinkTypeId == 1 && $value->isAlreadyRegistered == true){
-                $nestedData['talentLms'] = '<a href="https://training.psba.org/learner/courseinfo/id:'.$value->locationUrlId.',credits:1" target="_blank">
-                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" style="max-width: 120px;alt="tlms">
-            </a>';
-            }else{
-                $nestedData['talentLms'] = '<a href="#" style="pointer-events: none; opacity: 0.5;">
-                <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" alt="tlms" style="filter: grayscale(100%); max-width: 120px;"></a>';
-            }
+                if($value->classLinkTypeId == 1 && $value->isAlreadyRegistered == true){
+                    $nestedData['talentLms'] = '<a href="https://training.psba.org/learner/courseinfo/id:'.$value->locationUrlId.',credits:1" target="_blank">
+                    <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" style="max-width: 120px;alt="tlms">
+                </a>';
+                }else{
+                    $nestedData['talentLms'] = '<a href="#" style="pointer-events: none; opacity: 0.5;">
+                    <img src="'.ENGAGIFII_ASSETS_URL.'/images/tlms-btn-logo.png" class="talent-lms-logo" alt="tlms" style="filter: grayscale(100%); max-width: 120px;"></a>';
+                }
             if($value->isClassRegistrationAllow || $value->registrationWorkFlowId)
             {
               if($value->registrationState !== 'Registration Not Setup' && ($value->registrationState !== 'Registration Closed' || $registerOverride == true)  && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
@@ -3878,36 +3859,31 @@ public function classesLoadGridDataByPerson(){
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
                         $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
                         $nestedData['register'] = $default_RegisterBtn;
-                      //$nestedData['register'] = '<a href="'.$value->registrationUrlOnLocation.'" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
-                      //$nestedData['register'] = '<a href="'.$tenant_url.'/pages/classes/'. $value->id .'/signup/onlocation/overview" class="btn btn-primary px-3 py-1" target="_blank">Register</a>';
                       }
                       elseif($value->locationType->name=="online"){
-                        if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
-                            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-                        }else{
-                            $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
-                            $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
-                              $nestedData['register'] = $default_RegisterBtn;
-                        }
-                      
+                                if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
+                                    $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                                }else{
+                                    $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
+                                    $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
+                                    $nestedData['register'] = $default_RegisterBtn;
+                                }
                       }
                       elseif($value->locationType->name=="onlocationandonline"){
                         $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/onlocationandonline/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
                           $nestedData['register'] = $default_RegisterBtn;
-                      //$nestedData['register'] = '<a style="white-space:nowrap" href="'.$value->registrationUrlOnLine.'" id="onlineclass" class="btn btn-primary px-3 py-1 mb-2" target="_blank" >Register Online</a><br/><a style="white-space:nowrap" href="'.$value->registrationUrlOnLocation.'" id="onlocation" class="btn btn-primary px-3 py-1" target="_blank" >Register in person</a>';
                       }
-                  else{
-                      $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-                  }
-              }
-              else{
-              $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-              }
-          }else{
-            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
-            //$data[] = $nestedData;    
-          }
+                        else{
+                            $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                        }
+                }
+                    else{
+                    $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                    }
+                }else{
+                    $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                   }
           $data[] = $nestedData;
       }
         
@@ -3926,6 +3902,7 @@ public function classesLoadGridDataByPerson(){
         echo json_encode($json_data);
         wp_die();
     }
+    
     //Load event list by person
     public function eventsLoadGridDataByPerson(){
     $options = get_option('ebt_api_settings');
