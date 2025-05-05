@@ -647,8 +647,8 @@ $('.clear-all').click(function(){
             classTypes ='';
             minReg = '<?php echo $min_date; ?>';
 			maxReg = '<?php echo $max_date; ?>';
-            minRange = '<?php echo (int)$creditFilter['minRange']; ?>';
-			 maxRange = '<?php echo (int)$creditFilter['maxRange']; ?>';
+            minRange = 0;
+			 maxRange = 10000;
 			class_start_date     = '<?php echo $class_start_date; ?>';
 			class_end_date     = '<?php echo $class_end_date; ?>';
 			  $(".filter-area").toggleClass('d-none');
