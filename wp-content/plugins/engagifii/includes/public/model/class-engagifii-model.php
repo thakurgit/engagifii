@@ -3893,6 +3893,8 @@ public function classesLoadGridDataByPerson(){
                   else{
                       $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                   }
+              }else if (($$value->isAlreadyRegistered) && ($registerOthers=='false')) {
+                $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
               }
               else{
               $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$value->registrationState.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
