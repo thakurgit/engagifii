@@ -6321,9 +6321,8 @@ $li=1;
             $postData['registrationDateRange']['startDate'] = $_POST['minReg'];
             $postData['registrationDateRange']['endDate'] = $_POST['maxReg'];
         }
-        if(!empty($_POST['talentLms']))
-        {
-          $postData['talentLms'] = $_POST['talentLms'];           
+        if (isset($_POST['classLinkTypeId'])) {
+            $postData['classLinkTypeId'] = $_POST['classLinkTypeId'];
         }
 
 if(!empty($_POST['minRange']))

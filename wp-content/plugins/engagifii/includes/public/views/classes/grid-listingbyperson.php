@@ -267,12 +267,12 @@ ob_start();
     <div class="content-area d-none">
         <ul class="list-group m-0">
             <li class="d-flex align-items-start">
-                <input class="mr-2 mt-1" type="checkbox" id="linkedLms_1" name="linkedLms" value="1">
-                <label for="linkedLms_1"><small>Is linked to LMS</small></label>
+                <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_1" name="classLinkTypeId" value="1">
+                <label for="classLinkTypeId_1"><small>Is linked to LMS</small></label>
             </li>
             <li class="d-flex align-items-start">
-                <input class="mr-2 mt-1" type="checkbox" id="linkedLms_0" name="linkedLms" value="0">
-                <label for="linkedLms_0"><small>Is NOT linked to LMS</small></label>
+                <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_0" name="classLinkTypeId" value="0">
+                <label for="classLinkTypeId_0"><small>Is NOT linked to LMS</small></label>
             </li>
         </ul>
     </div>
@@ -321,7 +321,7 @@ $filter_content = removeWhitespace($filter_content);
   var courses = '';
   var instructor = '';
   var classTypes ='';
- 
+ var classLinkTypeId ='';
   var class_start_date     = '<?php echo $class_start_date; ?>';
   var class_end_date     = '<?php echo $class_end_date; ?>';
   var classDates     = '';
@@ -423,6 +423,7 @@ $filter_content = removeWhitespace($filter_content);
               d.courses = courses;
               d.instructors = instructor;  
               d.classTypes = classTypes;
+              d.classLinkTypeId = classLinkTypeId;
              // d.createdDate = createdDate;   
 			   d.minRange = minRange; 
             d.maxRange = maxRange;
@@ -645,6 +646,7 @@ $('.clear-all').click(function(){
             courses = '';
             instructor = '';
             classTypes ='';
+            classLinkTypeId ='';
             minReg = '<?php echo $min_date; ?>';
 			maxReg = '<?php echo $max_date; ?>';
             minRange = 0;
@@ -750,6 +752,7 @@ function filterClasses(minDate, maxDate, inputName) {
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
+      classLinkTypeId = $.map($('input[name="linkedLms"]:checked'), function(c){return c.value; });
 	  if($('input[name="createdbetween"]').val()!=''){
 		var regDate = $('input[name="createdbetween"]').val().split("-");
 	 	  minReg = $.trim(regDate[0]);
@@ -832,6 +835,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
+      var classLinkTypeId = $.map($('input[name="linkedLms"]:checked'), function(c){return c.value; });
 	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
@@ -851,7 +855,8 @@ $(document).on('click', '.daterangepicker ', function (e) {
               minRange : minRange,
 			  maxRange:maxRange,
 			  classStates:classStates, 
-        classTypes: classTypes
+        classTypes: classTypes,
+        classLinkTypeId: classLinkTypeId,
         
           },
           success: function(response) {       
