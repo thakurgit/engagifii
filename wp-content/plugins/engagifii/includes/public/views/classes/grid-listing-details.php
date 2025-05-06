@@ -1,5 +1,6 @@
 <?php
-	
+	ini_set('session.gc_maxlifetime', 3600);
+    session_start();
 	$id 		= $_REQUEST['classId'] ?? null;
 	$options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
@@ -23,7 +24,10 @@
 	}
 	$class_visible_column_list = $options['class_visible_column_list'];
 	//print_r($class_visible_column_list);
-
+    $loggedInUserId = $_SESSION['pid'];   
+	$tenantCode = $options['dashboard_tenant_code'];
+	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+    $evn_url = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
 	$obj 			=  new Engagifii_API();
 	$response       =  $obj->getClassDetailsByID($id);
 	$classesData        = $obj->getRelatedClassByClass($response->parentCourse->id, $id,10);
@@ -45,6 +49,29 @@
     $prev = $class_array[$class_key-1];
     $next = $class_array[$class_key+1];
   }
+  if($loggedInUserId){
+	$userPermissionArray = array();
+        $postedDataPermission = array();
+        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
+        $userPermissionResponse = $userPermission['api_response'];
+        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
+        foreach($userpermissionJson as $key => $permissionValue){
+            $userPermissionArray[] = $permissionValue['name'];
+        }
+        if(in_array('RegisterMembersfromOwnOrganization', $userPermissionArray)){
+            $registerOthers = 'true';
+        }
+        else{
+            $registerOthers = 'false';
+        }
+        if(in_array('OverrideRegistration', $userPermissionArray)){
+            $registerOverride = 'true';
+        }
+        else{
+            $registerOverride = 'false';
+        }
+	}
   $siteURL= site_url();
   $class_icon = $response->parentCourse->icon->iconReference;
   if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
@@ -111,37 +138,93 @@ if ( strpos($url,'my-profile') !== false ) {
             
           </div>
           <?php
-          	if($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)){
-
-				if($response->registrationState !== 'Registration Not Setup' && $response->registrationState !== 'Registration Closed' && $response->registrationState!== 'Sold Out' && $response->registrationState !== 'Registration Scheduled' && $response->registrationState !== 'Early Sold Out' && $response->registrationState !== 'Standard Sold Out')
-				{
-				 ?>
-				 <div class="mt-auto">
-				 <?php 
-				   if($response->classLocationType->name=="onlocation"){ ?>
-				   <a class="btn btn-primary" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register</a>
-				   <?php }
-				   elseif($response->classLocationType->name=="online"){
-					   ?>
-					   <a class="btn btn-primary" target="_blank" href="<?php echo $response->registrationUrlOnLine?>">Register </a>
-					   <?php
-					   }
-					   elseif($response->classLocationType->name=="onlocationandonline"){ 
-						   ?>
-						   <span id="locationButon" style="display:grid;">
-						 <!-- <a class="btn btn-primary px-3 py-1"  id="hybridLocation" style="color:white;">Register <i class='fa-greater-than'></i></a> -->
-						 <a class="btn btn-primary"  style="margin-top: 5px; margin-bottom: 5px;" id="onlineclass" target="_blank" href="<?php echo $response->registrationUrlOnLine?>">Register Online</a> 
-						 <a class="btn btn-primary "  id="onlocation" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register In Person</a> 
-					   </span>
-					 <?php
-					   }
-				   } 
-				   ?>
-				   <!-- <a class="btn btn-primary px-3 py-1" target="_blank" href="<?php echo $tenant_url;  ?>/pages/classes/<?php echo $id; ?>/signup/online/overview">Register</a> -->
-				 </div>
-				 <?php 
-				 }
-			 
+          $isAlreadyRegistered = $response->isAlreadyRegistered;
+          if ($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)) {
+            $registration_state = $response->registrationState;
+        
+            if (($registration_state == 'Completed' || $registration_state == 'Registration Closed' || $registration_state == 'Registration Not Setup' || $registration_state == 'Registration Scheduled' || $registration_state == 'Early Sold Out' || $registration_state == 'Standard Sold Out') && ($registerOverride == 'false')) {
+                
+                if ($registration_state == 'Registration Scheduled') {
+                    $tooltip = 'Registration opens from ' . date('M d, Y', strtotime($response->registrationStartFrom)); ?>
+                    <div class="mt-auto">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>">
+                            <button type="button" class="btn btn-primary px-3 py-1" disabled>Register</button>
+                        </span>
+                    </div>
+                <?php } else {
+                    $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $registration_state); ?>
+                    <div class="mt-auto">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>">
+                            <button type="button" class="btn btn-primary px-3 py-1" disabled>Register</button>
+                        </span>
+                    </div>
+                <?php }
+        
+            } else if ($isAlreadyRegistered && $registerOthers == 'false') {
+                $alreadyRegisteredText = "Already Registered";
+                $tooltip = preg_replace('/(?<!\ )[A-Z]/', ' $0', $alreadyRegisteredText); ?>
+                <div class="mt-auto">
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>">
+                        <button type="button" class="btn btn-primary px-3 py-1" disabled style="pointer-events: none;">Register</button>
+                    </span>
+                </div>
+            <?php } else {
+                // Check for my-profile in URL
+                if (strpos($url, 'my-profile') !== false) {
+                    if ($response->registrantsCapacity <= $response->classAttendeesCount) {
+                        $tooltip = 'Sold out'; ?>
+                        <div class="mt-auto">
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip; ?>">
+                                <button type="button" class="btn btn-primary px-3 py-1" disabled style="pointer-events: none;">Register</button>
+                            </span>
+                        </div>
+                    <?php } else {
+                        // Show registration buttons
+                        ?>
+                        <div class="mt-auto">
+                            <?php if ($response->classLocationType->name == "onlocation") { ?>
+                                 <button 
+                                    data-url="<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken']; ?>&source=external&tpath=pages/classes/<?php echo $id; ?>/classregpub/signup/onlocation/overview" 
+                                    class="btn btn-primary px-3 py-1 open-pop">
+                                    Register
+                                </button>
+                            <?php } elseif ($response->classLocationType->name == "online") { ?>
+                                <button 
+                                    data-url="<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken']; ?>&source=external&tpath=pages/classes/<?php echo $id; ?>/classregpub/signup/online/overview" 
+                                    class="btn btn-primary px-3 py-1 open-pop">
+                                    Register
+                                </button>
+                            <?php } elseif ($response->classLocationType->name == "onlocationandonline") { ?>
+                                <span id="locationButon" style="display:grid;">
+                                <button 
+                                    data-url="<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken']; ?>&source=external&tpath=pages/classes/<?php echo $id; ?>/classregpub/signup/onlocation/overview" 
+                                    class="btn btn-primary px-3 py-1 open-pop">
+                                    Register In Person
+                                </button>
+                                <button 
+                                    data-url="<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken']; ?>&source=external&tpath=pages/classes/<?php echo $id; ?>/classregpub/signup/online/overview" 
+                                    class="btn btn-primary px-3 py-1 open-pop">
+                                    Register Online
+                                </button>
+                                </span>
+                            <?php } ?>
+                        </div>
+                    <?php }
+                } else {
+                    if ($response->classLocationType->name == "onlocation") { ?>
+                        <a class="btn btn-primary" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register</a>
+                    <?php } elseif ($response->classLocationType->name == "online") { ?>
+                        <a class="btn btn-primary" target="_blank" href="<?php echo $response->registrationUrlOnLine ?>">Register</a>
+                    <?php } elseif ($response->classLocationType->name == "onlocationandonline") { ?>
+                        <span id="locationButon" style="display:grid;">
+                            <a class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" id="onlineclass" target="_blank" href="<?php echo $response->registrationUrlOnLine ?>">Register Online</a>
+                            <a class="btn btn-primary" id="onlocation" target="_blank" href="<?php echo $response->registrationUrlOnLocation ?>">Register In Person</a>
+                        </span>
+                    <?php }
+                }
+            }
+        }
+               			 
 		   ?>
 
 	 </div>
@@ -592,4 +675,71 @@ table#ebtmaintable td:nth-child(1) {
 				   },
 			});
 	});
+    $('.open-pop').click(function(e) {
+        var tpath = $(this).attr('data-url');
+        $('#iframeContainer').remove();
+        var iframe = $('<iframe>', {
+            src: tpath,
+            id: 'iframeContainer',
+            width: 1280,
+            height: 700,
+            frameborder: 0,
+            scrolling: 'auto'
+        });
+        
+        // Optionally create a modal or div to append the iframe
+        var modalContainer = $('<div>', {
+            id: 'modalContainer',
+            css: {
+                'width': '1280px',
+                'height': '700px',
+                'position': 'fixed',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)',
+                'background': '#fff',
+                'z-index': 9999,
+                'padding': '20px',
+                'box-shadow': '0 0 10px rgba(0,0,0,0.5)',
+                'overflow': 'hidden'
+            }
+        });
+ var closeButton = $('<button>', {
+            text: 'X',
+            css: {
+                'position': 'absolute',
+                'top': '10px',
+                'right': '10px',
+                'padding': '5px 10px',
+                'background-color': '#f44336',
+                'color': '#fff',
+                'border': 'none',
+                'cursor': 'pointer',
+                'font-size': '16px',
+                'border-radius': '5px'
+            },
+            click: function() {
+                // Remove modal when the close button is clicked
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        // Append iframe to modalContainer
+        modalContainer.append(closeButton);
+        modalContainer.append(iframe);
+        
+        // Append modalContainer to the body
+        $('body').append(modalContainer);
+        
+        // Close modal logic when clicking outside the iframe (optional)
+        modalContainer.click(function(e) {
+            if (!$(e.target).is('iframe')) {
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        e.preventDefault();
+    });
 </script>

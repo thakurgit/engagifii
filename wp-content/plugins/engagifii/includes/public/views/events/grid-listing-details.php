@@ -1,4 +1,6 @@
 <?php
+ini_set('session.gc_maxlifetime', 3600);
+session_start();
 	$id 		= $_REQUEST['endId'] ?? null;
 	$workflowid 		= $_REQUEST['wId'] ?? null;
 	$roleid 		= $_REQUEST['rId'] ?? null;
@@ -207,7 +209,11 @@ if ( strpos($url,'my-profile') !== false ) {
                  <?php } else{ 
 					if($response->registrantsCapacity > $attendeesCount){ 
 						?>
-			            <button data-url="https://<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=&amp;source=external&amp;tpath=pages/events/d3977486-0d72-4e93-504b-08dcb25504d2/437/1584/eventregpub/signup/overview" class="btn btn-primary px-3 py-1 open-pop">Register</button>
+			           <button 
+        data-url="<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=<?php echo $_SESSION['accesstoken']; ?>&source=external&tpath=pages/events/<?php echo $id; ?>/<?php echo $workflowid; ?>/<?php echo $roleid; ?>/eventregpub/signup/overview" 
+        class="btn btn-primary px-3 py-1 open-pop">
+        Register
+    </button>
 			<?php } 
 			else{
 				$tooltip = 'Sold out'; ?>
@@ -780,37 +786,71 @@ table.class-table td:nth-child(1) {
 			"ordering":false,
 			});
 	});
-	$('.open-pop').click(function(e){
-		var tpath = $(this).attr('data-url');
-		//popup
-			var childWindow;
-       // function openChildWindow() {
-            // Open the child window and store the reference
-            childWindow = window.open(tpath, '', 'width=1300, height=700');
-            // Optional: Center the child window (not reliable for all browsers)
-            if (childWindow) {
-                var screenWidth = window.screen.width;
-                var screenHeight = window.screen.height;
-                var left = (screenWidth - 1000) / 2;
-                var top = (screenHeight - 650) / 2;
-                childWindow.moveTo(left, top);
+	$('.open-pop').click(function(e) {
+        var tpath = $(this).attr('data-url');
+        $('#iframeContainer').remove();
+        var iframe = $('<iframe>', {
+            src: tpath,
+            id: 'iframeContainer',
+            width: 1280,
+            height: 700,
+            frameborder: 0,
+            scrolling: 'auto'
+        });
+        
+        // Optionally create a modal or div to append the iframe
+        var modalContainer = $('<div>', {
+            id: 'modalContainer',
+            css: {
+                'width': '1280px',
+                'height': '700px',
+                'position': 'fixed',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)',
+                'background': '#fff',
+                'z-index': 9999,
+                'padding': '20px',
+                'box-shadow': '0 0 10px rgba(0,0,0,0.5)',
+                'overflow': 'hidden'
             }
-            // Set an interval to periodically check the child window status
-            var checkChildWindow = setInterval(function() {
-                if (childWindow && childWindow.closed) {
-                    // Update button text to indicate the parent window is refreshing
-                    //document.getElementById('openChildButton').innerText = 'Refreshing...';
-                    // Refresh the parent window when the child window is closed
-                    //location.reload();
-					table.draw();
-                    clearInterval(checkChildWindow); // Stop checking once the child window is closed
-                }
-            }, 500); // Adjust the interval as needed
-			
-        //}
+        });
+ var closeButton = $('<button>', {
+            text: 'X',
+            css: {
+                'position': 'absolute',
+                'top': '10px',
+                'right': '10px',
+                'padding': '5px 10px',
+                'background-color': '#f44336',
+                'color': '#fff',
+                'border': 'none',
+                'cursor': 'pointer',
+                'font-size': '16px',
+                'border-radius': '5px'
+            },
+            click: function() {
+                // Remove modal when the close button is clicked
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
 
-		
-		
-		e.preventDefault();
-	});
+        // Append iframe to modalContainer
+        modalContainer.append(closeButton);
+        modalContainer.append(iframe);
+        
+        // Append modalContainer to the body
+        $('body').append(modalContainer);
+        
+        // Close modal logic when clicking outside the iframe (optional)
+        modalContainer.click(function(e) {
+            if (!$(e.target).is('iframe')) {
+                $('#modalContainer').remove();
+                table.draw();
+            }
+        });
+
+        e.preventDefault();
+    });
 </script>
