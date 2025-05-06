@@ -48,7 +48,13 @@
 		$course_detail_page_link= site_url() .'/course-details/';	
 	}
     $api_url = $options['ebt_api_url'];
+	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
+	$evn_url = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
+	$tenantCode = $options['ebt_tenant_code']['tenant_code'];
+	
+	$apiUrl = $api_url.$env.'/public/eventactivity/list';
+	$postData['pageNumber'] = 1;
 	$options = get_option('ebt_api_settings');
     $events_visible_column_list = $options['events_visible_column_list'];
 	$loggedInUserId = $_SESSION['pid'];
@@ -201,7 +207,7 @@ if ( strpos($url,'my-profile') !== false ) {
                  <?php } else{ 
 					if($response->registrantsCapacity > $attendeesCount){ 
 						?>
-			            <button data-url="https://psba.engagifii-qa.com/auth-callback/pages/home#access_token=&amp;source=external&amp;tpath=pages/events/d3977486-0d72-4e93-504b-08dcb25504d2/437/1584/eventregpub/signup/overview" class="btn btn-primary px-3 py-1 open-pop">Register</button>
+			            <button data-url="https://<?php echo $evn_url; ?>/auth-callback/pages/home#access_token=&amp;source=external&amp;tpath=pages/events/d3977486-0d72-4e93-504b-08dcb25504d2/437/1584/eventregpub/signup/overview" class="btn btn-primary px-3 py-1 open-pop">Register</button>
 			<?php } 
 			else{
 				$tooltip = 'Sold out'; ?>
