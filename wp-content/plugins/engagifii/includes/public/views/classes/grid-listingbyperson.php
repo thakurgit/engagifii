@@ -841,7 +841,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'classcountdata',
+              action:'classCountFilterDataByPerson',
               courses : courses,
               instructors : instructor,
               minReg : minReg,

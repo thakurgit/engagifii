@@ -51,6 +51,7 @@ class abstractModelEngagifii extends Engagifii_API {
         ['filtercountdata', 'countFilterData'],
         ['coursecountdata', 'courseCountFilterData'],
         ['classcountdata', 'classCountFilterData'],
+        ['classCountFilterDataByPerson', 'classCountFilterDataByPerson'],
         ['legislationfiltercountdata', 'countLegislationFilterData'],
         ['legislativeissuedata', 'legislativeIssues'],
         ['legislativetagsdata', 'legislativeTags'],
@@ -1546,6 +1547,14 @@ wp_die();
         $postedData = $this->_classPostCountData();
         //print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("Public/Class/FilteredRecordCount", $postedData, "POST", 'classes');
+        header("Content-Type: application/json");   
+        echo json_encode($dataResponse);
+        wp_die();
+    }
+    public function classCountFilterDataByPerson(){
+        $postedData = $this->_classPostCountData();
+        print_r(json_encode($postedData)); die;
+        $dataResponse = $this->submitApiRequest("Class/FilteredRecordCount", $postedData, "POST", 'classes');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
         wp_die();
@@ -3902,7 +3911,7 @@ public function classesLoadGridDataByPerson(){
         echo json_encode($json_data);
         wp_die();
     }
-    
+
     //Load event list by person
     public function eventsLoadGridDataByPerson(){
     $options = get_option('ebt_api_settings');
@@ -6311,6 +6320,10 @@ $li=1;
            // $dateRange = explode("-", $_POST['createdDate']);
             $postData['registrationDateRange']['startDate'] = $_POST['minReg'];
             $postData['registrationDateRange']['endDate'] = $_POST['maxReg'];
+        }
+        if(!empty($_POST['talentLms']))
+        {
+          $postData['talentLms'] = $_POST['talentLms'];           
         }
 
 if(!empty($_POST['minRange']))

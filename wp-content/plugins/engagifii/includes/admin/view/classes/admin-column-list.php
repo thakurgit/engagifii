@@ -4,17 +4,17 @@
     $obj =  new adminDataColumn();
 	$date = date('Y-m-d');
     $response = $obj->getClassColumnData();
+	$options = get_option('ebt_api_settings');
+   	$tenantCode = $options['dashboard_tenant_code'];
+	if($tenantCode == 'psba'){
+		$talentLmsObj = new stdClass();
+		$talentLmsObj->colName = "talentLms";
+		$talentLmsObj->displayName = "Access Class";
+		$response[] = $talentLmsObj;
+	}
 	
-	$talentLmsObj = new stdClass();
-$talentLmsObj->colName = "talentLms";
-$talentLmsObj->displayName = "Access Class";
-
-// Append the object to the array
-$response[] = $talentLmsObj;
 	
-	$classTypes = $obj->classTypes($date);
-	//print_r($classTypes);
-    $options = get_option( 'ebt_api_settings' );
+	$classTypes = $obj->classTypes($date);	
     $class_visible_column_list = array();
     if(isset($options['class_visible_column_list'])){
     	$class_visible_column_list = $options['class_visible_column_list'];   
