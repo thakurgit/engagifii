@@ -2053,7 +2053,9 @@ wp_die();
         $postData['sortDirection'] = $_POST["order"][0]["dir"];
        
 		$postData['filterBody'] = array('searchText'=>$title,  'selectedDate' => date('Y-m-d'));
-        
+        if (!empty($_POST['classLinkTypeId'])) {
+            $postData['filterBody']['classLinkTypeId'] = $_POST['classLinkTypeId'];
+        }
         if(!empty($_POST['courses']))
         {
             $postData['filterBody']['courses'] = $_POST['courses'];
@@ -6321,7 +6323,7 @@ $li=1;
             $postData['registrationDateRange']['startDate'] = $_POST['minReg'];
             $postData['registrationDateRange']['endDate'] = $_POST['maxReg'];
         }
-        if (isset($_POST['classLinkTypeId'])) {
+        if (!empty($_POST['classLinkTypeId'])) {
             $postData['classLinkTypeId'] = $_POST['classLinkTypeId'];
         }
 
