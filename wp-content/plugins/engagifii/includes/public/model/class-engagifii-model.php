@@ -1553,7 +1553,7 @@ wp_die();
     }
     public function classCountFilterDataByPerson(){
         $postedData = $this->_classPostCountData();
-        print_r(json_encode($postedData)); die;
+        //print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("Class/FilteredRecordCount", $postedData, "POST", 'classes');
         header("Content-Type: application/json");   
         echo json_encode($dataResponse);
