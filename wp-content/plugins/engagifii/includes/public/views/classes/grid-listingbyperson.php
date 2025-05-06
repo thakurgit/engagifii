@@ -752,7 +752,7 @@ function filterClasses(minDate, maxDate, inputName) {
       courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
-      classLinkTypeId = $.map($('input[name="linkedLms"]:checked'), function(c){return c.value; });
+      classLinkTypeId = $.map($('input[name="classLinkTypeId"]:checked'), function(c){return c.value; });
 	  if($('input[name="createdbetween"]').val()!=''){
 		var regDate = $('input[name="createdbetween"]').val().split("-");
 	 	  minReg = $.trim(regDate[0]);
@@ -835,7 +835,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
-      var classLinkTypeId = $.map($('input[name="linkedLms"]:checked'), function(c){return c.value; });
+      var classLinkTypeId = $.map($('input[name="classLinkTypeId"]:checked'), function(c){return c.value; });
 	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
