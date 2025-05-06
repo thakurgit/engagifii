@@ -3866,11 +3866,15 @@ public function classesLoadGridDataByPerson(){
               if($value->registrationState !== 'Registration Not Setup' && ($value->registrationState !== 'Registration Closed' || $registerOverride == true)  && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out')
                {
                    if($value->locationType->name=="onlocation")
-                      { 
-                        $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/online/overview';
-                        $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
-                        $nestedData['register'] = $default_RegisterBtn;
-                      }
+                      {
+                        if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
+                        $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                                 }else{
+                                     $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/onlocation/overview';
+                                     $default_RegisterBtn = '<button data-url="'.$url.'" class="btn btn-primary px-3 py-1 open-pop">Register</button>';
+                                     $nestedData['register'] = $default_RegisterBtn;
+                                 }
+                     }
                       elseif($value->locationType->name=="online"){
                                 if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
                                     $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
@@ -3881,10 +3885,14 @@ public function classesLoadGridDataByPerson(){
                                 }
                       }
                       elseif($value->locationType->name=="onlocationandonline"){
-                        $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/onlocationandonline/overview';
-                        $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
-                          $nestedData['register'] = $default_RegisterBtn;
-                      }
+                        if($value->isAlreadyRegistered == true && $registerOthers== 'false'){
+                              $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Already Registered"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
+                                }else{
+                                     $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/classes/'. $value->id .'/classregpub/signup/onlocationandonline/overview';
+                                     $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
+                                     $nestedData['register'] = $default_RegisterBtn;
+                                 }
+                     }
                         else{
                             $nestedData['register'] = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Class Location not defined"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                         }
