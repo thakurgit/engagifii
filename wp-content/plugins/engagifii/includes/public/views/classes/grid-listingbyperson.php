@@ -347,8 +347,10 @@ $filter_content = removeWhitespace($filter_content);
   var createdDate = '';
   //var minRange ='<?php //echo (int)$creditFilter['minRange']; ?>';
   //var maxRange ='<?php //echo (int)$creditFilter['maxRange']; ?>';
-  var minRange =0;
-  var maxRange =10000;
+  var minRange = 0,
+    maxRange = 10000,
+    fetchedMinRange = minRange,
+    fetchedMaxRange = maxRange;
   var minReg ='<?php echo $min_date; ?>';
   var maxReg ='<?php echo $max_date; ?>';
   var titleColumn = '<?php echo $title_key; ?>';
@@ -649,16 +651,15 @@ $( '.cleardate' ).click(function() {
 		  }
     countFilterData();
 });
-$('.clear-all').click(function(){
+$('.clear-all').click(function(){ 
             $('input[type=checkbox]').prop('checked',false);
             $('#isApplyACtive').val(0);
             $('input[name="createdbetween"]').val('');
 			$('input[name="classdates"]').val('');
-
-            $('input[name="creditFilter"]').val('<?php echo (int)$creditFilter['minRange']; ?>'+'-'+'<?php echo (int)$creditFilter['maxRange']; ?>');
+            $('input[name="creditFilter"]').val(fetchedMinRange+'-'+fetchedMaxRange);
 			var $slider = $("#slider-range");
-  				$slider.slider("values", 0, <?php echo (int)$creditFilter['minRange']; ?>);
-  				$slider.slider("values", 1, <?php echo (int)$creditFilter['maxRange']; ?>);
+  				$slider.slider("values", 0, fetchedMinRange);
+  				$slider.slider("values", 1, fetchedMaxRange);
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active');  
@@ -668,8 +669,8 @@ $('.clear-all').click(function(){
             classLinkTypeId ='';
             minReg = '<?php echo $min_date; ?>';
 			maxReg = '<?php echo $max_date; ?>';
-            minRange = 0;
-			 maxRange = 10000;
+            minRange = fetchedMinRange;
+			 maxRange = fetchedMaxRange;
 			class_start_date     = '<?php echo $class_start_date; ?>';
 			class_end_date     = '<?php echo $class_end_date; ?>';
 			  $(".filter-area").toggleClass('d-none');
@@ -703,7 +704,9 @@ $('.clear-all').click(function(){
 		  filterClasses(regDates['minStartDate'], regDates['maxEndDate'], 'createdbetween'); 
 		  }
 		  if(creditHours && typeof creditHours === 'object'){
-		  filtercreditHours(parseInt(creditHours['minRange']), parseInt(creditHours['maxRange'])); 
+			  fetchedMinRange = parseInt(creditHours['minRange']);
+			  fetchedMaxRange = parseInt(creditHours['maxRange']);
+		  	filtercreditHours(fetchedMinRange, fetchedMaxRange); 
 		  }
       $('#filter-loader').hide(); // Hide loader
             $('.filter-content').fadeIn(); // Show filter content
@@ -731,8 +734,7 @@ function filtercreditHours(minRange, maxRange) {
 			}
 	  
 	  });
-    $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
-       $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+ $( "#slider-range" ).slider( "values", 1 ) );
 }
 function filterClasses(minDate, maxDate, inputName) { 
   const selector = `input[name="${inputName}"]`;
@@ -836,7 +838,6 @@ $(document).on('click', '.daterangepicker ', function (e) {
   if($('input[name="classdates"]').val()!=''){
 	fv += 1;  
   }
-  console.log(fv);
   if(fv>0){
 	$('.filter-icon').addClass('active');
 	$('.filter-icon span').text(fv); 
