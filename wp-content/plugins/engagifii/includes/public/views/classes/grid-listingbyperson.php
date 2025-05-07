@@ -11,7 +11,18 @@
 .flt-btn.mr-3.mr-xl-5 {
     display: block !important;
 }
+#filter-content-wrapper {
+    display: none;
+}
 
+#filter-loader {
+    text-align: center;
+    padding: 20px;
+}
+
+.filter-content {
+    display: none;
+}
 </style>
 <?php
 
@@ -201,6 +212,12 @@ function removeWhitespace($buffer)
 
 ob_start();
 ?>
+<div id="filter-content-wrapper" style="display: none;">
+<div id="filter-loader" class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 <div class="filter-content">
 	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
   <div class="filter-border">
@@ -310,6 +327,7 @@ ob_start();
         </button>
       </div>
   </div>
+</div>
 </div>
 </div>
 <?php
@@ -456,6 +474,7 @@ $filter_content = removeWhitespace($filter_content);
 		 
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
+        $('#filter-content-wrapper').fadeIn();
 			//  dt_filterActivate();
 		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
 		 $('.dataTables_filter input').keyup(function(){
@@ -659,6 +678,9 @@ $('.clear-all').click(function(){
 
       });
       window.addEventListener("load", function () {
+        $('#filter-loader').show(); // Show loader
+    $('.filter-content').hide(); // Hide filter content
+
   $.ajax({
 		type : "post",
 		url: engagifiiUrl_ajaxurl,
@@ -683,6 +705,8 @@ $('.clear-all').click(function(){
 		  if(creditHours && typeof creditHours === 'object'){
 		  filtercreditHours(parseInt(creditHours['minRange']), parseInt(creditHours['maxRange'])); 
 		  }
+      $('#filter-loader').hide(); // Hide loader
+            $('.filter-content').fadeIn(); // Show filter content
 			}
 	  });
 });
