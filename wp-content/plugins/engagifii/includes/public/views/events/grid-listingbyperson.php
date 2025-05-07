@@ -1,3 +1,17 @@
+<style>
+ #filter-content-wrapper {
+    display: none;
+}
+
+#filter-loader {
+    text-align: center;
+    padding: 20px;
+}
+
+.filter-content {
+    display: none;
+}
+</style>
 <?php
 $default_length = '10';
 $calendar_view = false;
@@ -77,6 +91,12 @@ function removeWhitespace($buffer)
 
 ob_start();
 ?>
+<div id="filter-content-wrapper" style="display: none;">
+<div id="filter-loader" class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 <div class="filter-content" id="filterdp1">
 	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div>
   <div class="filter-border">
@@ -181,6 +201,7 @@ ob_start();
   </div>
 </div>
 </div>
+    </div>
 <?php
 $filter_content =ob_get_contents();
 ob_end_clean();
@@ -502,6 +523,8 @@ $( '.cleardate' ).click(function() {
     countFilterData();
 });
 window.addEventListener("load", function () {
+  $('#filter-loader').show(); // Show loader
+  $('.filter-content').hide(); // Hide filter content
   $.ajax({
 		type : "post",
 		url: engagifiiUrl_ajaxurl,
@@ -517,6 +540,8 @@ window.addEventListener("load", function () {
 		var dates = JSON.parse(response)['startDateTime'];
 		filterEvents(dates['minStartDate'],dates['maxEndDate']); 
 			}
+      $('#filter-loader').hide(); // Hide loader
+      $('.filter-content').fadeIn(); // Show filter content
 	  });
 });
 function filterEvents(minDate,maxDate){
