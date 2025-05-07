@@ -41,7 +41,7 @@ if ($class_key !== null) {
     $prev = $class_key > 0 ? $class_array[$class_key - 1] : 0;
     $next = $class_key < $class_count ? $class_array[$class_key + 1] : 0;
 }
-$permissions = getUserPermissions($tenantCode, $loggedInUserId);
+$permissions = $obj->getUserPermissions($tenantCode, $loggedInUserId); 
 
 $registerOthers = $permissions['registerOthers'];
 $registerOverride = $permissions['registerOverride'];
