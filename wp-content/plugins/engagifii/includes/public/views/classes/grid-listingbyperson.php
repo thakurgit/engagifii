@@ -398,7 +398,7 @@ $filter_content = removeWhitespace($filter_content);
 		"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
 		 <?php } ?>
         "columnDefs": [ 
-          { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
+          { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register', 'talentLms'],
             "orderable": false
           },
           //{ width: 200, targets: 3 },
