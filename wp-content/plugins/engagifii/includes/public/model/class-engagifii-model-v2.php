@@ -540,5 +540,28 @@ public function geteventsClasscalendar(){
 <?php
 wp_die();
 }
+function getUserPermissions($tenantCode, $loggedInUserId) {
+    $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
+    $postedDataPermission = [];
+    $userPermissionArray = [];
 
+    // Fetch user permissions from the API
+    $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');
+    $userPermissionResponse = $userPermission['api_response'];
+    $userpermissionJson = json_decode($userPermissionResponse, true)['permissions'];
+
+    // Extract permission names
+    foreach ($userpermissionJson as $key => $permissionValue) {
+        $userPermissionArray[] = $permissionValue['name'];
+    }
+
+    // Check specific permissions
+    $registerOthers = in_array('RegisterMembersfromOwnOrganization', $userPermissionArray) ? 'true' : 'false';
+    $registerOverride = in_array('OverrideRegistration', $userPermissionArray) ? 'true' : 'false';
+
+    return [
+        'registerOthers' => $registerOthers,
+        'registerOverride' => $registerOverride,
+    ];
+}
  }

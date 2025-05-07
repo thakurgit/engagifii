@@ -41,31 +41,28 @@ if ($class_key !== null) {
     $prev = $class_key > 0 ? $class_array[$class_key - 1] : 0;
     $next = $class_key < $class_count ? $class_array[$class_key + 1] : 0;
 }
+$permissions = getUserPermissions($tenantCode, $loggedInUserId);
+
+$registerOthers = $permissions['registerOthers'];
+$registerOverride = $permissions['registerOverride'];
 
   $siteURL= site_url();
   $class_icon = $response->parentCourse->icon->iconReference;
-  if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
-      $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
-      
-  }
-//print_r(json_encode($response));
-  
-	//$documentData  =  $obj->getCourseDocument($id, $response->name);
+ 
 ?>
 <div class="mb-2">
-<?php if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
-         $url = "https://";   
-    else  
-         $url = "http://";   
-    $url.= $_SERVER['HTTP_HOST'];   
-    $url.= $_SERVER['REQUEST_URI'];    
-if ( strpos($url,'my-profile') !== false ) {
-	$classes_detail_page_link= site_url() .'/my-profile/my-transcript/class-detail/';?> 
-    <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
-<?php } else { ?>
-    <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;"  class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
-<?php } 
-?>
+    <?php
+    // Determine the current URL
+    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+    // Set the classes detail page link based on the URL
+    if (strpos($url, 'my-profile') !== false) {
+        $classes_detail_page_link = site_url() . '/my-profile/my-transcript/class-detail/';
+    }
+    ?>
+    <a onclick="window.history.back();" style="cursor: pointer; color: #2568EF;" class="go-back">
+        <i class="fal fa-arrow-left mr-2"></i> Go Back
+    </a>
 </div>
 
 <div class="engagifii-box border border-bottom-0 p-2 p-lg-3">
