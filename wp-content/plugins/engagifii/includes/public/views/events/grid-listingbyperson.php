@@ -383,6 +383,7 @@ var table = $('#ebtmaintable').DataTable( {
          },
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
+        $('#filter-content-wrapper').fadeIn();
 			 // dt_filterActivate();
     },
     });
@@ -539,9 +540,10 @@ window.addEventListener("load", function () {
 		dt_filterActivate();
 		var dates = JSON.parse(response)['startDateTime'];
 		filterEvents(dates['minStartDate'],dates['maxEndDate']); 
-			}
-      $('#filter-loader').hide(); // Hide loader
+ $('#filter-loader').hide(); // Hide loader
       $('.filter-content').fadeIn(); // Show filter content
+			}
+     
 	  });
 });
 function filterEvents(minDate,maxDate){
