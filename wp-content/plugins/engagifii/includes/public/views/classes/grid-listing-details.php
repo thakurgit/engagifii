@@ -721,7 +721,7 @@ table#ebtmaintable td:nth-child(1) {
             click: function() {
                 // Remove modal when the close button is clicked
                 $('#modalContainer').remove();
-                table.draw();
+                location.reload();
             }
         });
 

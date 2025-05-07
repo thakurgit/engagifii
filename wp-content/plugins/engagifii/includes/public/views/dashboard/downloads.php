@@ -1,5 +1,6 @@
 <?php 
-ini_set('session.gc_maxlifetime', 3600);
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 session_start();
 if (! is_user_logged_in()) {
 	$login = 'moOAuthLoginNew("Engagifii")';

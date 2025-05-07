@@ -1,5 +1,5 @@
 <?php
-ini_set('session.gc_maxlifetime', 3600);
+ini_set('session.gc_maxlifetime', 86400);
 session_start();
 	$id 		= $_REQUEST['endId'] ?? null;
 	$workflowid 		= $_REQUEST['wId'] ?? null;
@@ -847,7 +847,7 @@ table.class-table td:nth-child(1) {
         modalContainer.click(function(e) {
             if (!$(e.target).is('iframe')) {
                 $('#modalContainer').remove();
-                table.draw();
+                location.reload();
             }
         });
 
