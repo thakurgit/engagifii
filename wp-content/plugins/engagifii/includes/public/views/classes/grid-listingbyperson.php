@@ -1,208 +1,175 @@
 <style>
   button#calendar {
     display: none;
-}
-.new-search.form-inline {
+  }
+  .new-search.form-inline {
     display: none;
-}
-.btn-group.view-m {
+  }
+  .btn-group.view-m {
     display: none;
-}
-.flt-btn.mr-3.mr-xl-5 {
+  }
+  .flt-btn.mr-3.mr-xl-5 {
     display: block !important;
-}
-#filter-content-wrapper {
+  }
+  #filter-content-wrapper {
     display: none;
-}
-
-#filter-loader {
+  }
+  #filter-loader {
     text-align: center;
     padding: 20px;
-}
-
-.filter-content {
+  }
+  .filter-content {
     display: none;
-}
+  }
 </style>
+
 <?php
-
-    $options  = get_option( 'ebt_api_settings' );
-  $classStates =['Upcoming'];
-  if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { 
-  	$classStates = [];
-   }
-
-
-  $default_length = '10';
-  $calendar_view = false;
-  $calendar_view_classname = false;
-  if(isset($attr['records'])){
-    $default_length = $attr['records'];
-  }
-  if(isset($attr['calendar'])){
-    $calendar_view = $attr['calendar'];
-  }
-  if(isset($attr['calendarclassname'])){
-    $calendar_view_classname = $attr['calendarclassname'];
-  }
-  
-  $obj      =  new Engagifii_API();
-  $collection   = array();
-    $forDatatable   =   array();
-    $date           =   date('Y-m-d');
-    //print_r($date);
-    $options  = get_option( 'ebt_api_settings' );
-	$class_visible_column_list   =  array();
-	if($options['class_visible_column_list']){
-  	  $class_visible_column_list = $options['class_visible_column_list'];
-	}
-  $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
-//print_r($options['upcomingClasses']);
-	//die;
-   // print_r($class_visible_column_list);
-    $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
-if(!$dataResponse['api_response']){
-	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
-	return;
+$options = get_option('ebt_api_settings');
+$classStates = ['Upcoming'];
+if (array_key_exists('allClasses', $options) && $options['allClasses'] == 1) {
+  $classStates = [];
 }
 
-    $collection   = json_decode($dataResponse['api_response']);
-    unset($collection[0]);
-    unset($collection[1]);
-    unset($collection[7]);
-    unset($collection[8]);
-    $talentLmsObj = new stdClass();
-    $talentLmsObj->colName = "talentLms";
-    $talentLmsObj->displayName = "Access Class";
-    
-    // Append the object to the array
-    $collection[] = $talentLmsObj;
-   /* $classes = $obj->getAllClassCourses($date);
-    $classesTypes = $obj->classTypes($date);
-    $creditFilter    = $obj->getCreditHoursFilter($date);
-    $instructor = $obj->classAllInstructors($date);*/
-    //$dateRange  = $obj->classRegDateFilters($date);
-    //print_r($classesTypes);  
-   // $min_date = date('m/d/Y', strtotime($dateRange['minStartDate'] . ' -1 day'));
-    //$max_date = date('m/d/Y', strtotime($dateRange['maxEndDate'] . ' +1 day'));
-   // $classdateRange  = $obj->classdateFilters($date);
- 	   //$class_start_date   = date('m/d/Y',strtotime($classdateRange['minStartDate']));
-  	// $class_end_date = date('m/d/Y',strtotime($classdateRange['maxEndDate']));
-    // $class_start_date = date("m/d/Y",strtotime ( '-1 day' , strtotime ( $class_start_date ) )) ;	
-  	 $class_end_date = date('01/01/2100');
-     $class_start_date = date('01/01/1970');	 
-  $min_date = date('01/01/1970');
-    $max_date = date('01/01/2100');
-    $title_key = -1;
-    
+$default_length = '10';
+$calendar_view = false;
+$calendar_view_classname = false;
+if (isset($attr['records'])) {
+  $default_length = $attr['records'];
+}
+if (isset($attr['calendar'])) {
+  $calendar_view = $attr['calendar'];
+}
+if (isset($attr['calendarclassname'])) {
+  $calendar_view_classname = $attr['calendarclassname'];
+}
+
+$obj = new Engagifii_API();
+$collection = array();
+$forDatatable = array();
+$date = date('Y-m-d');
+$options = get_option('ebt_api_settings');
+$class_visible_column_list = array();
+if ($options['class_visible_column_list']) {
+  $class_visible_column_list = $options['class_visible_column_list'];
+}
+$classTypesShow = get_option('ebt_api_settings')['class_type_visible_column_list'];
+$dataResponse = $this->submitApiRequest("Public/ClassColumnList", array(), "GET", 'classes');
+if (!$dataResponse['api_response']) {
+  echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete. Please contact your administrator.</em></strong><h5>';
+  return;
+}
+
+$collection = json_decode($dataResponse['api_response']);
+unset($collection[0]);
+unset($collection[1]);
+unset($collection[7]);
+unset($collection[8]);
+$talentLmsObj = new stdClass();
+$talentLmsObj->colName = "talentLms";
+$talentLmsObj->displayName = "Access Class";
+
+// Append the object to the array
+$collection[] = $talentLmsObj;
+$class_end_date = date('01/01/2100');
+$class_start_date = date('01/01/1970');
+$min_date = date('01/01/1970');
+$max_date = date('01/01/2100');
+$title_key = -1;
 ?>
-   <?php echo '<div class="row"><div class="col-6"><div class="d-flex align-items-center">
+
+<?php echo '<div class="row"><div class="col-6"><div class="d-flex align-items-center">
    <h4 class="mb-0 mr-3"><button type="button" title="Refresh Downloads" class="refresh btn shadow-none p-2 mr-2"> 
-   <i class="fas fa-sync"></i></button><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-fluid img-icon-lg" alt="award-icon"></h4>
+   <i class="fas fa-sync"></i></button><img src="' . ENGAGIFII_ASSETS_URL . '/images/class.png" class="img-fluid img-icon-lg" alt="award-icon"></h4>
    <h5 class="mb-0">Classes</h5></div></div>
-  </div>';  
+  </div>';
 $placeholder_text = 'Search by class name';
-   echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]');  ?>
-<?php
+echo do_shortcode('[view_mode search="on" placeholder="' . $placeholder_text . '"]'); ?>
 
-  if($calendar_view){
+<?php
+if ($calendar_view) {
+  // echo do_shortcode('[class-calendar]');
+} else if ($calendar_view_classname) {
+  echo do_shortcode('[classes-list]');
+}
 ?>
 
-  <?php //echo do_shortcode('[class-calendar]'); ?>
 <?php
-  }
-  else if($calendar_view_classname){
-	  
-    ?>
-    
-      <?php echo do_shortcode('[classes-list]'); ?>
-    <?php 
-      }
-      
-?>
-<?php 
-$dt_class=' ';
+$dt_class = ' ';
 $dt_respnsive = '';
 $dt_darktheme = '';
-if (array_key_exists("dt_responsive",$options)){
-	$dt_respnsive = $options['dt_responsive'];
-	if($dt_respnsive==1){
-		$dt_class = 'dt-responsive nowrap ';	
-	}
+if (array_key_exists("dt_responsive", $options)) {
+  $dt_respnsive = $options['dt_responsive'];
+  if ($dt_respnsive == 1) {
+    $dt_class = 'dt-responsive nowrap ';
+  }
 }
-if (array_key_exists("dt_darktheme",$options)){
+if (array_key_exists("dt_darktheme", $options)) {
   $dt_darktheme = $options['dt_darktheme'];
-  if($dt_darktheme==1){
-  	$dt_class .= 'table-dark ';	
+  if ($dt_darktheme == 1) {
+    $dt_class .= 'table-dark ';
   }
 }
-if($class_visible_column_list && count($class_visible_column_list)>0){
-  $filteredColumns=[]; //object array filtered from columnList
-  $columnGroup=[]; //array of keys from filtered objects 
-  $tempColumn=[];  //temporary object from filtered objects
-  $seqColumns=array_fill(0, count($class_visible_column_list), ''); //sequenced object array
-  //compare columns with checked columns
-  foreach($collection as $key => $value) {
-	  if (in_array($value->colName, $class_visible_column_list)){
-		  array_push($filteredColumns, $value);
-		  array_push($columnGroup, $value->colName);	
-	  }
+if ($class_visible_column_list && count($class_visible_column_list) > 0) {
+  $filteredColumns = []; // object array filtered from columnList
+  $columnGroup = []; // array of keys from filtered objects
+  $tempColumn = []; // temporary object from filtered objects
+  $seqColumns = array_fill(0, count($class_visible_column_list), ''); // sequenced object array
+  // compare columns with checked columns
+  foreach ($collection as $key => $value) {
+    if (in_array($value->colName, $class_visible_column_list)) {
+      array_push($filteredColumns, $value);
+      array_push($columnGroup, $value->colName);
+    }
   }
-  //sequence columns with checked columns
-  foreach($filteredColumns as $key => $value) {
-		  array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
-		  array_splice($seqColumns,array_search($value->colName, $class_visible_column_list),1,$tempColumn);
-		  $tempColumn=[];
+  // sequence columns with checked columns
+  foreach ($filteredColumns as $key => $value) {
+    array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
+    array_splice($seqColumns, array_search($value->colName, $class_visible_column_list), 1, $tempColumn);
+    $tempColumn = [];
   }
 } else {
-	$seqColumns=$collection;
+  $seqColumns = $collection;
 }
 ?>
-<div class="containerEngagii ff" id="list_div" <?php if($calendar_view || $calendar_view_classname){ echo 'style="display:none"'; } ?>>
-  <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
-    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here classes-page <?php echo  $dt_class; ?>" style="width: 100% !important;">
-      <thead> 
-        <tr>        
+
+<div class="containerEngagii ff" id="list_div" <?php if ($calendar_view || $calendar_view_classname) {
+  echo 'style="display:none"';
+} ?>>
+  <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if ($dt_respnsive == '') {
+    echo 'px-xl-5';
+  } ?>">
+    <table id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here classes-page <?php echo $dt_class; ?>" style="width: 100% !important;">
+      <thead>
+        <tr>
           <?php
-            //if(is_array($seqColumns) && count($seqColumns)>0){
-              $i = 0;
-              foreach ($seqColumns as $key => $value) {
-                // if(in_array($value->colName, $class_visible_column_list)){
-                
-                  if($value->displayName == 'Class Type')
-                  {
-                     $value->displayName = "Type";
-                  }
-                  if($value->colName == 'sessions')
-                  {
-                      $value->colName = 'startdate';
-                  }
-				  if($value->displayName == 'Class dates')
-                  {
-                      $value->displayName = 'Class Dates';
-                  }
-
-                  if($value->colName == 'sectionname'){
-                    $title_key = $i;
-                  }
-                  $forDatatable[]['data'] = $value->colName;
-                ?>
-                  <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
-            <?php  echo $value->displayName; ?>
+          $i = 0;
+          foreach ($seqColumns as $key => $value) {
+            if ($value->displayName == 'Class Type') {
+              $value->displayName = "Type";
+            }
+            if ($value->colName == 'sessions') {
+              $value->colName = 'startdate';
+            }
+            if ($value->displayName == 'Class dates') {
+              $value->displayName = 'Class Dates';
+            }
+            if ($value->colName == 'sectionname') {
+              $title_key = $i;
+            }
+            $forDatatable[]['data'] = $value->colName;
+          ?>
+            <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
+              <?php echo $value->displayName; ?>
             </th>
-                <?php
-                $i++;
-                //}
-              }
-            //}
-          ?>    
-
-        </tr> 
+          <?php
+            $i++;
+          }
+          ?>
+        </tr>
       </thead>
     </table>
     <div id="eng-overlay"><span class="spinner"></span></div>
-</div>
-
+  </div>
 </div>
 <?php
 function removeWhitespace($buffer)
@@ -213,122 +180,145 @@ function removeWhitespace($buffer)
 ob_start();
 ?>
 <div id="filter-content-wrapper" style="display: none;">
-<div id="filter-loader" class="text-center py-3">
+    <div id="filter-loader" class="text-center py-3">
         <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-<div class="filter-content">
-	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div> 
-  <div class="filter-border">
-  <div class="filter-area d-none">
-    <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
-    <div class="row">
-      <div class="col-6 text-left">
-        <span class="filter-title">
-          <i class="far fa-filter mr-2"></i> Filter
-          <span id="blockedchecked"></span> 
-        </span>
-      </div>
-      <div class="col-6 text-right">
-        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i> </span>
-      </div>
-      </div>
-    </div>
-    <div class="">
-      <input type="hidden" id="isApplyACtive" value="0">
-   <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative pb-2">
-          <input type="text" name="classdates" id="classdates"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+    <div class="filter-content">
+        <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
+            <i class="far fa-filter click-filter"></i>
+            <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
         </div>
-      </div> 
-      <?php if(in_array('sectionname', $class_visible_column_list)){ ?>
-      <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between">Course Name <i class="far fa-angle-down"></i></div>
-        <div class="content-area sectionname-filter d-none"><ul class="list-group m-0">
-            <div class="loaders text-center py-3">
-              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="filter-border">
+            <div class="filter-area d-none">
+                <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <span class="filter-title">
+                                <i class="far fa-filter mr-2"></i> Filter
+                                <span id="blockedchecked"></span>
+                            </span>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="clear-all" id="clear-all">
+                                <i class="fal fa-sync"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <input type="hidden" id="isApplyACtive" value="0">
+                    <div class="filter-list border-bottom px-2">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                            Class Dates <i class="far fa-angle-down"></i>
+                        </div>
+                        <div class="content-area d-none position-relative pb-2">
+                            <input type="text" name="classdates" id="classdates" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
+                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2">
+                                <i class="fal fa-times"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <?php if (in_array('sectionname', $class_visible_column_list)) { ?>
+                        <div class="filter-list border-bottom px-2">
+                            <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                                Course Name <i class="far fa-angle-down"></i>
+                            </div>
+                            <div class="content-area sectionname-filter d-none">
+                                <ul class="list-group m-0">
+                                    <div class="loaders text-center py-3">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if (in_array('objectType', $class_visible_column_list)) { ?>
+                        <div class="filter-list border-bottom px-2">
+                            <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                                Class Type <i class="far fa-angle-down"></i>
+                            </div>
+                            <div class="content-area objectType-filter d-none">
+                                <ul class="list-group m-0">
+                                    <div class="loaders text-center py-3">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if (in_array('credithours', $class_visible_column_list)) { ?>
+                        <div class="filter-list border-bottom px-2">
+                            <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter">
+                                Credit Hours <i class="far fa-angle-down"></i>
+                            </div>
+                            <div class="content-area d-none">
+                                <?php
+                                echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm mb-3 shadow-none" readonly value="" data-slider-min="' . $creditFilter['minRange'] . '" data-slider-max="' . $creditFilter['maxRange'] . '" data-slider-step="5" data-slider-value="[' . $creditFilter['minRange'] . ',' . $creditFilter['maxRange'] . ']"/><div id="slider-range" class="mx-2"></div>';
+                                ?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if (in_array('talentLms', $class_visible_column_list)) { ?>
+                        <div class="filter-list border-bottom px-2">
+                            <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                                Linked to LMS <i class="far fa-angle-down"></i>
+                            </div>
+                            <div class="content-area d-none">
+                                <ul class="list-group m-0">
+                                    <li class="d-flex align-items-start">
+                                        <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_1" name="classLinkTypeId" value="1">
+                                        <label for="classLinkTypeId_1"><small>Is linked to LMS</small></label>
+                                    </li>
+                                    <li class="d-flex align-items-start">
+                                        <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_0" name="classLinkTypeId" value="0">
+                                        <label for="classLinkTypeId_0"><small>Is NOT linked to LMS</small></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if (in_array('classInstructorsCount', $class_visible_column_list)) { ?>
+                        <div class="filter-list border-bottom px-2">
+                            <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                                Instructors <i class="far fa-angle-down"></i>
+                            </div>
+                            <div class="content-area classInstructorsCount-filter d-none">
+                                <ul class="list-group m-0">
+                                    <div class="loaders text-center py-3">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <div class="filter-list border-bottom px-2">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between">
+                            Registration Date <i class="far fa-angle-down"></i>
+                        </div>
+                        <div class="content-area d-none position-relative pb-2">
+                            <input type="text" name="createdbetween" id="createdbetween" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
+                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2">
+                                <i class="fal fa-times"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="apply-filter">
+                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">
+                        Apply <span id="countFilterResult"></span>
+                    </button>
+                </div>
             </div>
-            </ul></div>
-        <!-- <div class="content-area d-none">
-          <ul class="list-group m-0">
-          <?php //foreach ($classes as $key => $value) { echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="class_'.$key.'" name="courseClass[]" value="'.addslashes($value['name']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} ?>
-          </ul>
-        </div> -->
-      </div>
-<?php } if(in_array('objectType', $class_visible_column_list)){ ?>
-      <div class="filter-list border-bottom px-2">
-      <div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Type<i class="far fa-angle-down"></i></div>
-        <div class="content-area objectType-filter d-none"><ul class="list-group m-0">
-            <div class="loaders text-center py-3">
-              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-            </div>
-            </ul></div>      
-      </div>       
-<?php }//credit Hour filters
- if(in_array('credithours', $class_visible_column_list)){ ?>
-<div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
-        <div class="content-area d-none">
-          <?php
-
-              echo '<input id="creditFilter" name="creditFilter" type="text" class="span2 form-control form-control-sm mb-3 shadow-none" readonly value="" data-slider-min="'.$creditFilter['minRange'].'" data-slider-max="'.$creditFilter['maxRange'].'" data-slider-step="5" data-slider-value="['.$creditFilter['minRange'].','.$creditFilter['maxRange'].']"/><div id="slider-range" class="mx-2"></div>';
-          ?>  
         </div>
-      </div>
-      <?php } if(in_array('talentLms', $class_visible_column_list)) { ?>
-<div class="filter-list border-bottom px-2">
-    <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Linked to LMS <i class="far fa-angle-down"></i></div>
-    <div class="content-area d-none">
-        <ul class="list-group m-0">
-            <li class="d-flex align-items-start">
-                <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_1" name="classLinkTypeId" value="1">
-                <label for="classLinkTypeId_1"><small>Is linked to LMS</small></label>
-            </li>
-            <li class="d-flex align-items-start">
-                <input class="mr-2 mt-1" type="checkbox" id="classLinkTypeId_0" name="classLinkTypeId" value="0">
-                <label for="classLinkTypeId_0"><small>Is NOT linked to LMS</small></label>
-            </li>
-        </ul>
     </div>
-</div>
-<?php }
-	  if(in_array('classInstructorsCount', $class_visible_column_list)){
-	  ?>
-    <div class="filter-list border-bottom px-2">
-      <div class="heading-title py-2 d-flex align-items-center justify-content-between">Instructors<i class="far fa-angle-down"></i></div>
-        <div class="content-area classInstructorsCount-filter d-none"><ul class="list-group m-0">
-            <div class="loaders text-center py-3">
-              <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-            </div>
-            </ul></div>      
-      </div> 
-     
-	<?php } ?>
-      
-      
-
-      <div class="filter-list border-bottom px-2">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative pb-2">
-          <input type="text" name="createdbetween" id="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
-        </div>
-      </div>
-     
-
-      
-    </div>
-    <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
-          <span id="countFilterResult"></span>
-        </button>
-      </div>
-  </div>
-</div>
-</div>
 </div>
 <?php
 $filter_content =ob_get_contents();
@@ -415,14 +405,7 @@ $filter_content = removeWhitespace($filter_content);
            $(td).attr('data-order', cell ); 
        		 }
     	 },
-		 /*{'targets': <?php //echo array_search('sectionname',$class_visible_column_list);?>, 
-		  		'createdCell':  function (td, cellData, rowData, row, col) {
-			  var html = $(cellData);
-			  var editor = $("<p>").append(html);
-			  var cell = editor.find("span:first-child a").text().toLowerCase();
-           $(td).attr('data-order', cell.replace(/\s/g, '') ); 
-       		 }
-    	 }*/
+		 
 		 <?php } ?>
         ],
         "language": {
@@ -444,15 +427,14 @@ $filter_content = removeWhitespace($filter_content);
               d.instructors = instructor;  
               d.classTypes = classTypes;
               d.classLinkTypeId = classLinkTypeId;
-             // d.createdDate = createdDate;   
-			   d.minRange = minRange; 
-            d.maxRange = maxRange;
-			d.minReg = minReg;
-			d.maxReg = maxReg;
-			d.class_start_date = class_start_date;
-			d.class_end_date = class_end_date;
-			d.classStates=classStates;
-			d.titleColumn = titleColumn;
+              d.minRange = minRange; 
+              d.maxRange = maxRange;
+			        d.minReg = minReg;
+			        d.maxReg = maxReg;
+			        d.class_start_date = class_start_date;
+			        d.class_end_date = class_end_date;
+			        d.classStates=classStates;
+			        d.titleColumn = titleColumn;
             }, 
 			
         },
@@ -460,14 +442,14 @@ $filter_content = removeWhitespace($filter_content);
 		"data": <?php echo json_encode($dataa);  ?>,
 		<?php } ?>
         createdRow: function (row, data, index) { 
-             //$(row).addClass( 'bg-white' );
+          
         },  
         "columns":<?php echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
 			 
 			 dt_dropdown();
 			 eventRegPopUp();
-			// dt_titleSearch();
+		
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>
@@ -477,17 +459,7 @@ $filter_content = removeWhitespace($filter_content);
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
         $('#filter-content-wrapper').fadeIn();
-			//  dt_filterActivate();
-		/* $('.dataTables_filter label').append('<button type="button" class="btn text-muted shadow-none bg-transparent position-absolute blank"><i class="fa fa-times"></button>');
-		 $('.dataTables_filter input').keyup(function(){
-			if($(this).val()==''){
-				$(this).parent('label').removeClass('has-data');
-			} else {
-				$(this).parent('label').addClass('has-data');
-			}
-		 });
-		 */
-
+			
     },
     });
 	
@@ -504,137 +476,19 @@ $filter_content = removeWhitespace($filter_content);
   if($title_key > -1){
 ?>
 dt_titleSearch('Search classes');
- /* $('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
-$('.list-search-btn').click(function(e){
-	var ttitle= $('.list-search').val();
-	if(ttitle!=''){
-		$('#list').trigger('click');	
-		table.column(titleColumn).search(ttitle).draw();
-		 $( '#searchclass' ).val($('.list-search').val());
-		$('.clear-search').show();
-	} else {
-		alert("search field can't be empty");	
-	}
-	e.stopPropagation();
- });
-$('.list-search').on("keydown", function(event) {
-  if(event.which == 13){
-	$('.list-search-btn').trigger('click');  
-  }  
-});
- 
-         var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt"><input type="text" id="searchclass" placeholder="Search classes" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:3;display:none"><i class="fal fa-times"></i></button></div>' );
 
-function delay(callback, ms) {
-  var timer = 0;
-  return function() {
-    var context = this, args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      callback.apply(context, args);
-    }, ms || 0);
-  };
-}
-  $( 'input', this ).keyup(delay(function (e) {
-	  var titlesearch = this.value;
-            if ( table.column(titleColumn).search() !== titlesearch ) {
-				table.column(titleColumn).search(titlesearch).draw();
-            }
-}, 500));
-
-
- $( 'input', this ).keyup(function(e){
-	if(this.value.length!=0){
-				$('.clear-search').show();
-			} else {
-				$('.clear-search').hide();
-			} 
- });
-$('th .clear-search').click(function(e){
-	 $('#searchclass').val('');
-	$('.clear-search').hide();
-	e.stopPropagation();
-	table.column(titleColumn).search('').draw();
- });
-
-    } );
-	
-	$(document).ready(function (){    
-    $('#searchclass, .search-dt span').on('click', function(e){
-       e.stopPropagation();    
-    });
-$('#searchclass').on("keydown", function(event) {
-  if(event.which == 13){
-       return false;   
-  }  
-});
-});*/
   <?php
 }
   ?>
 
-   	/*$('body').on('click', '.blank', function(){
-			$('.dataTables_filter input[type=search]').val('').keyup(); 
-			$(this).parent('label').removeClass('has-data');
-			table.draw();
-		});*/
   $('div.flt-btn').html('<?php echo $filter_content; ?>');
-
-
-
-    /* $('.filter-icon').click(function(e){
-        e.stopPropagation();
-        $('.filter-border').show();
-        $('.filter-area').toggleClass('d-none');
-        $('#isApplyACtive').val(1);
-		jQuery(".filter-area .list-group").mCustomScrollbar({
-		 	 scrollButtons:{enable:true},
-					theme:"minimal-dark",
-		 			scrollbarPosition:"outside"
-		 			});
-    });
-
-   $('.heading-title').click(function(){
-		$(this).next('.content-area').toggleClass('d-none');
-		$(this).parent().siblings('.filter-list').find('.content-area').addClass('d-none');
-	});*/
-
   
  $( document ).ready(function() {
     $('input[name="createdbetween"]').val('');
 	$('input[name="classdates"]').val('');
 });
-/*$('input[name="createdbetween"]').daterangepicker({
-   minDate:'<?php //echo $min_date; ?>',
-    maxDate: '<?php //echo $max_date; ?>',
-    autoApply: true
-  }, function(start, end) {
-      createdDate = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
-		var regDate = createdDate.split("-");
-	 	  minReg = $.trim(regDate[0]);
-		maxReg = $.trim(regDate[1]);
-     countFilterData();
- if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
-    });*/
-<?php  if(in_array('sessions', $class_visible_column_list)) { ?>
-/*$('input[name="classdates"]').daterangepicker({
-   minDate:'<?php //echo $class_start_date; ?>',
-    maxDate: '<?php //echo $class_end_date; ?>',
-    autoApply: true
-  }, function(start, end) {
-      classDates = start.format('MM/DD/YYYY')+'-'+end.format('MM/DD/YYYY');
-		var classDate = classDates.split("-");
-	 	  class_start_date = $.trim(classDate[0]);
-		class_end_date = $.trim(classDate[1]);
-     countFilterData();
- if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
-    });*/
-<?php } ?>
+
+
 $( '.cleardate' ).click(function() {
 	if($(this).siblings().attr('id')=='createdbetween'){
 		 $('input[name="createdbetween"]').val('');	
@@ -679,8 +533,8 @@ $('.clear-all').click(function(){
 
       });
       window.addEventListener("load", function () {
-        $('#filter-loader').show(); // Show loader
-    $('.filter-content').hide(); // Hide filter content
+        $('#filter-loader').show(); 
+    $('.filter-content').hide(); 
 
   $.ajax({
 		type : "post",
@@ -708,8 +562,8 @@ $('.clear-all').click(function(){
 			  fetchedMaxRange = parseInt(creditHours['maxRange']);
 		  	filtercreditHours(fetchedMinRange, fetchedMaxRange); 
 		  }
-      $('#filter-loader').hide(); // Hide loader
-            $('.filter-content').fadeIn(); // Show filter content
+      $('#filter-loader').hide(); 
+            $('.filter-content').fadeIn(); 
 			}
 	  });
 });
@@ -982,35 +836,6 @@ $(document).ready(function(){
 });
 
 <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
-/*$(document).ready(function(){
 
-$("#slider-range").slider({
-        range: true,
-        min: <?php //echo (int)$creditFilter['minRange']; ?>,
-        max: <?php //echo (int)$creditFilter['maxRange']; ?>,
-        values: [<?php //echo (int)$creditFilter['minRange']; ?>, <?php //echo (int)$creditFilter['maxRange']; ?>],
-		step: 1,
-        
-     slide: function(event, ui ) {
-	    $( "#creditFilter" ).val(  ui.values[ 0 ] +'-'+  ui.values[ 1 ] );
-      },
-     stop: function(event, ui ) {
-		if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
-      countFilterData(); 
-	  
-	  
-	  
-
-
- 
-
-      }
-
-});
-    $( "#creditFilter" ).val(  $( "#slider-range" ).slider( "values", 0 ) +'-'+
-       $( "#slider-range" ).slider( "values", 1 ) );
-});*/
 <?php } ?>
 </script>
