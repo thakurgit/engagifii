@@ -288,7 +288,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
 
 <script type="text/javascript">
 
-  var tags       = '';
+  var tags       = [];
   var types       = '';
   var city       = '';
  var createdDate = '';
@@ -532,6 +532,9 @@ $( '.cleardate' ).click(function() {
         }
       ?><?php */?>
 tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(tags.length==0){
+tags= [];	
+}
 types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
      // createdDate = $('input[name="createdbetween"]').val();
@@ -556,7 +559,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active'); 
-            tags = '';
+            tags = [];
 			types='';
 			city='';
             createdDate = '';
@@ -603,6 +606,9 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
 //var courses = $.map($('input[name="courseClassCal[]"]:checked'), function(c){return c.value; });
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
+if(tags.length==0){
+tags= [];	
+}
 var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });
   $.ajax({

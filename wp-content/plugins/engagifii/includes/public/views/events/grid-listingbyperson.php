@@ -303,7 +303,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
 
 <script type="text/javascript">
 
-  var tags       = ['portal'];
+  var tags       = [];
   var types       = '';
   var city       = '';
  var createdDate = '';
@@ -600,7 +600,7 @@ function filterEvents(minDate,maxDate){
 
 tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
 if(tags.length==0){
-tags= ['portal'];	
+tags= [];	
 }
 
 types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
@@ -626,7 +626,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
             $('#countFilterResult').html(' ');
             fv = 0;
           $('.filter-icon').removeClass('active'); 
-            tags = ['portal'];
+            tags = [];
 			types='';
 			city='';
             createdDate = '';
@@ -658,7 +658,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
 
 var tags = $.map($('input[name="eventsTags[]"]:checked'), function(c){return c.value; });
 if(tags.length==0){
-tags= ['portal'];	
+tags= [];	
 }
 var types = $.map($('input[name="eventsType[]"]:checked'), function(c){return c.value; });
 var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.value; });

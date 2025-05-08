@@ -3731,10 +3731,7 @@ public function classesLoadGridDataByPerson(){
                 $allclass = [];
                 $classAPIUrl = "Classes/ClassPagingList";
     }
-    $loggedInUserId = isset($_SESSION['pid']) ? $_SESSION['pid'] : null;
-    $postedDataPermission = [];
-    $userPermissionArray = [];
-        
+    $loggedInUserId = isset($_SESSION['pid']) ? $_SESSION['pid'] : null;         
     $postedData  = $this->_prepareClassData();
     $permissions = $this->getUserPermissions($tenantCode, $loggedInUserId); 
     $registerOthers = $permissions['registerOthers'];
@@ -3930,27 +3927,9 @@ public function classesLoadGridDataByPerson(){
 	     $postedData = $this->_prepareEventsData();
 		// print_r(json_encode($postedData));
 		// die;
-        $userPermissionArray = array();
-        $postedDataPermission = array();
-        $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
-        $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
-        $userPermissionResponse = $userPermission['api_response'];
-        $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
-        foreach($userpermissionJson as $key => $permissionValue){
-            $userPermissionArray[] = $permissionValue['name'];
-        }
-        if(in_array('RegisterMembersfromOwnOrganization', $userPermissionArray)){
-            $registerOthers = 'true';
-        }
-        else{
-            $registerOthers = 'false';
-        }
-        if(in_array('OverrideRegistration', $userPermissionArray)){
-            $registerOverride = 'true';
-        }
-        else{
-            $registerOverride = 'false';
-        }
+        $permissions = $this->getUserPermissions($tenantCode, $loggedInUserId); 
+        $registerOthers = $permissions['registerOthers'];
+        $registerOverride = $permissions['registerOverride'];
         //$dataResponse = $this->submitApiRequest("event/list", $postedData, "POST", 'event');
 		 //print_r($userPermissionArray);
 		 //die;
@@ -4094,38 +4073,36 @@ public function classesLoadGridDataByPerson(){
            
                 $nestedData['register'] = $default_RegisterBtn;
            
-            // $filter = $row->tags;
-            // $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
-            // $filterTag = array_values($allTags);
-            // $default_Tags = array();
-            // if (count($filterTag)) {
-
-            //     $allTags = array();
-                
-            //     foreach ($filterTag as $index => $tag) {
-
-            //         $default_Tags[$index]->tagName = $tag;
-            //         $default_Tags[$index]->id =$index;
-            //     }
-                
-            //     foreach ($default_Tags as $index => $value) {
-                   
-            //         if(count($default_Tags) > 1 && $index == 0)
-            //         {   
+                $filterTag = $row->tags;
+                $default_Tags = array();
+                 if (is_array($filterTag) && count($filterTag)) {
+    
+                     $allTags = array();
+                    
+                     foreach ($filterTag as $index => $tag) {
+                            $default_Tags[$index] = new stdClass();
+                         $default_Tags[$index]->tagName = $tag;
+                         $default_Tags[$index]->id =$index;
+                     }
+                    
+                     foreach ($default_Tags as $index => $value) {
+                       
+                         if(count($default_Tags) > 1 && $index == 0)
+                         {   
+                            
+                             $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                              $tagCount   = count($default_Tags) - 1;
+                        $allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
                         
-            //             $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
-            //              $tagCount   = count($default_Tags) - 1;
-       		// 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
-					
-            //         }
-            //         elseif(count($default_Tags) == 1)
-            //             $allTags[] = $value->tagName;
-
-            //     }
-            //    $nestedData['tags'] = $allTags;
-            // }else{
-            //     $nestedData['tags'] = "";
-            // }
+                         }
+                         elseif(count($default_Tags) == 1)
+                             $allTags[] = $value->tagName;
+    
+                     }
+                    $nestedData['tags'] = $allTags;
+                 }else{
+                     $nestedData['tags'] = [];
+                 }
 
             $data[] = $nestedData;
         }
