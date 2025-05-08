@@ -3736,16 +3736,9 @@ public function classesLoadGridDataByPerson(){
     $userPermissionArray = [];
         
     $postedData  = $this->_prepareClassData();
-    $requestedURL = "Subject/GetAssignedRolesPermission?tenantCode=$tenantCode&userId=$loggedInUserId";
-    $userPermission = $this->submitApiRequest($requestedURL, $postedDataPermission, "GET", 'auth');  
-    $userPermissionResponse = $userPermission['api_response'];
-    $userpermissionJson = json_decode($userPermissionResponse,true)['permissions'];
-       
-    foreach($userpermissionJson as $key => $permissionValue){
-        $userPermissionArray[] = $permissionValue['name'];
-    }
-    $registerOthers = in_array('RegisterMembersfromOwnOrganization', $userPermissionArray) ? 'true' : 'false';
-    $registerOverride = in_array('OverrideRegistration', $userPermissionArray) ? 'true' : 'false';
+    $permissions = $this->getUserPermissions($tenantCode, $loggedInUserId); 
+    $registerOthers = $permissions['registerOthers'];
+    $registerOverride = $permissions['registerOverride'];
 		
     $dataResponse = $this->submitApiRequest($classAPIUrl, $postedData, "POST", 'classes');
     $collection   = json_decode($dataResponse['api_response'])->result;
