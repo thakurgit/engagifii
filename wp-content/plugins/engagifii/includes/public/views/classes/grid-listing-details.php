@@ -25,10 +25,16 @@ $loggedInUserId = $_SESSION['pid'] ?? null;
 $tenantCode = $options['dashboard_tenant_code'] ?? '';
 $env = $options['engagifii_apis']['environment'] ?? '';
 $evn_url = 'https://' . ($options['evt_tenant_code']['engagifii_url'] ?? '') . '.engagifii' . $env . '.com';
-
+$siteURL= site_url();
+$isMyProfile = strpos($url, 'my-profile') !== false;
 // Fetch class details
 $obj = new Engagifii_API();
-$response = $obj->getClassDetailsByID($id);
+if($isMyProfile){
+    $response = $obj->getClassDetailsByIDForPerson($id);
+}else{
+    $response = $obj->getClassDetailsByID($id);
+}
+
 $classesData = $obj->getRelatedClassByClass($response->parentCourse->id, $id, 10);
 
 // Handle navigation for previous and next classes
@@ -46,7 +52,7 @@ $permissions = $obj->getUserPermissions($tenantCode, $loggedInUserId);
 $registerOthers = $permissions['registerOthers'];
 $registerOverride = $permissions['registerOverride'];
 
-  $siteURL= site_url();
+ 
   $class_icon = $response->parentCourse->icon->iconReference;
  
 ?>
@@ -106,6 +112,7 @@ $registerOverride = $permissions['registerOverride'];
           </div>
           <?php
           $isAlreadyRegistered = $response->isAlreadyRegistered;
+          print_r($response);
           if ($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)) {
             $registration_state = $response->registrationState;
             

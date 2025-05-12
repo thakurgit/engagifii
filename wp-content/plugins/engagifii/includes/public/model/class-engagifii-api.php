@@ -1115,6 +1115,15 @@ public function getEventDetailsByID($id)
 		$responseArray = json_decode($response['api_response']);
 		return $responseArray;
 	}
+	public function getClassDetailsByIDForPerson($id)
+	{
+		$postData = array();
+		$responseArray = array();
+		$apiUrl = 'Public/getClassById/'.$id;
+		$response= $this->submitApiRequest($apiUrl,$postData, 'GET', 'classes');
+		$responseArray = json_decode($response['api_response']);
+		return $responseArray;
+	}
 
 	public function getCertifiedInstructor($id)
 	{
