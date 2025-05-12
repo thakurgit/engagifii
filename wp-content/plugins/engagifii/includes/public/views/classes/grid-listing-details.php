@@ -26,6 +26,7 @@ $tenantCode = $options['dashboard_tenant_code'] ?? '';
 $env = $options['engagifii_apis']['environment'] ?? '';
 $evn_url = 'https://' . ($options['evt_tenant_code']['engagifii_url'] ?? '') . '.engagifii' . $env . '.com';
 $siteURL= site_url();
+$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $isMyProfile = strpos($url, 'my-profile') !== false;
 // Fetch class details
 $obj = new Engagifii_API();
@@ -59,7 +60,7 @@ $registerOverride = $permissions['registerOverride'];
 <div class="mb-2">
     <?php
     // Determine the current URL
-    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+   
 
     // Set the classes detail page link based on the URL
     if (strpos($url, 'my-profile') !== false) {
@@ -112,7 +113,7 @@ $registerOverride = $permissions['registerOverride'];
           </div>
           <?php
           $isAlreadyRegistered = $response->isAlreadyRegistered;
-          print_r($response);
+          //print_r($response);
           if ($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)) {
             $registration_state = $response->registrationState;
             

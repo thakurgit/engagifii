@@ -1119,7 +1119,7 @@ public function getEventDetailsByID($id)
 	{
 		$postData = array();
 		$responseArray = array();
-		$apiUrl = 'Public/getClassById/'.$id;
+		$apiUrl = 'Classes/'.$id;
 		$response= $this->submitApiRequest($apiUrl,$postData, 'GET', 'classes');
 		$responseArray = json_decode($response['api_response']);
 		return $responseArray;
