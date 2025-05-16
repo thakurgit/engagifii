@@ -442,7 +442,9 @@ $filter_content = removeWhitespace($filter_content);
 		"data": <?php echo json_encode($dataa);  ?>,
 		<?php } ?>
         createdRow: function (row, data, index) { 
-          
+          if (index === $('#ebtmaintable').DataTable().data().length - 1) {
+            $(row).css('padding-bottom', '50px');
+        }
         },  
         "columns":<?php echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
