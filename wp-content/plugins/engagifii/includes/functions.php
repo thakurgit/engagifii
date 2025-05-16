@@ -10,8 +10,6 @@ function engagifii_scripts() { ?>
 </style>
 <script>    
 function clearAllCookies(newtab='') {
-    $options  = get_option( 'ebt_api_settings' );
-    $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
 	  localStorage.clear();  
      var cookies = document.cookie.split(";");
    for (var i = 0; i < cookies.length; i++) {
