@@ -6433,6 +6433,7 @@ if(!empty($_POST['minRange']))
         }else{
             $allEvents = 'true';
         }
+        
         $postedData = $this->_eventsPostCountData();
        $dataResponse = $this->submitApiRequest("public/count", $postedData, "POST", 'event');
         $classCount = $dataResponse['api_response'];
@@ -6508,9 +6509,9 @@ if(!empty($_POST['minRange']))
                    // $data['firstcondition'] = $i++;
                     $data['location'] = $value->location;
                    $class_schedule = '';
-                   $eventsTag = $value->tags;
-                   $allTags = array_diff($eventsTag, array('PUBLIC', 'public', 'Public'));
-                    $filterTag = array_values($allTags);
+                   $filterTag = $value->tags;
+                //    $allTags = array_diff($eventsTag, array('PUBLIC', 'public', 'Public'));
+                //     $filterTag = array_values($allTags);
                    $allTags = array();
                    if($filterTag){
                     foreach ($filterTag as $index => $tag) {
