@@ -51,6 +51,8 @@ class Engagifii_API{
 				if (isset($_COOKIE['peopleToken'])) {
 					$peopleTokenFromCookie = $_COOKIE['peopleToken'];						
 					$authentication = 'authorization: Bearer ' . $peopleTokenFromCookie;
+				}else{
+					$authentication = 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjczQ0Q4NERGRUJGQzk4NUU4RUZGOTU0QjY2NTg0OEFBMTYzNDExNkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJjODJFMy12OG1GNk9fNVZMWmxoSXFoWTBFV3MifQ.eyJuYmYiOjE3MzA4NjY1NzUsImV4cCI6MTc2MjQwMjU3NSwiaXNzIjoiaHR0cHM6Ly9lbmdhZ2lmaWktaWRlbnRpdHktbGl2ZS5henVyZXdlYnNpdGVzLm5ldCIsImF1ZCI6WyJodHRwczovL2VuZ2FnaWZpaS1pZGVudGl0eS1saXZlLmF6dXJld2Vic2l0ZXMubmV0L3Jlc291cmNlcyIsIlVzZXJzQVBJIiwiQWNjcmVkaXRhdGlvbkFQSSIsIkJpbGx0cmFja2luZ0FwaSIsIkNvbW1lbnRBcGkiLCJOb3Rlc0FwaSJdLCJjbGllbnRfaWQiOiJuZy5FbmdhZ2lmaWlVSSIsInN1YiI6IjcxOWU4MDk4LTk4NGEtNDkwZi04YjVhLTNjOTE5NGQ5Njc4ZiIsImF1dGhfdGltZSI6MTczMDg2NjU3NSwiaWRwIjoibG9jYWwiLCJzcy1waWQiOiIiLCJwaWN0dXJlIjoiIiwicGljdHVyZS1zbWFsbCI6IiIsInBpY3R1cmUtaWNvbiI6IiIsImdpdmVuX25hbWUiOiJFbmdhZ2lmaWkiLCJmYW1pbHlfbmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBjcmVzY2VyYW5jZS5jb20iLCJsYXN0LWxvZ2luIjoiMTEvNi8yMDI0IDE6MzI6NDQgQU0iLCJjdXJyZW50LWxvZ2luIjoiMTEvNi8yMDI0IDQ6MTY6MTUgQU0iLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJVc2Vyc0FQSSIsIkFjY3JlZGl0YXRpb25BUEkiLCJCaWxsdHJhY2tpbmdBcGkiLCJDb21tZW50QXBpIiwiTm90ZXNBcGkiXSwiYW1yIjpbInB3ZCJdfQ.IwSMPHZY2MT3tko7Z53ASHqgitWwZQFdAIpTcoVyIWtTCDvMAm92UHlOpRY-TUs1q7x7SbZj2qZrpllDSGO7xWhlZF7wWNxN79xpDLo-DVw4Y6HE1ywXGWq0Z0WO2jC5wCqZf411Yf9tV8gS-hf4UVg2YFM2ZhXaPLRuZH7FcT447jukzH6bWCQLWYKOwqS2I6M2jmdZx6W7ra1PvRWhDIQBaX1v_IQ_lLHtTz4KIXYUn7-f3JtPrsmufEs-Y-9SR7DtslyZYlSFJmSEbUimR3RGLuS3XTgVoFjnaYiS_gf8Dk15MZKEQZxXzlVvP2i8smJI-gAcZ6Arb3hTI5I5Cg';
 				}
 				
 				$ebt_tenant_code ['tenant_code'] = $options['dashboard_tenant_code'];
@@ -1218,6 +1220,9 @@ public function getEventDetailsByID($id)
         'registerOverride' => $registerOverride,
     ];
 }
-
+public function getPeopleByGroups() {
+	$dataResponse = $this->submitApiRequest("groups/get/peoples/lite/6a1ade2a-f696-4126-c9b3-08dd3f84fb04", $postedData, "GET", 'dashboard');
+        return $dataResponse;
+}
 
 }
