@@ -6,20 +6,53 @@
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
     $colNames = ['Full Name', 'Email', 'Position', 'Organization'];
-	
-    //print_r($filterParams);
+	$groupList = $obj->getGroupsList();
+    //print_r($groupList);
     $columnSearch_key = [];
-  
-//print_r($fiscalYear); 
+   $groupTabs = array_slice($groupList, 0, 5);
+$result = json_decode($groupTabs['api_response'])->result;
 
 
-
-// print_r($fiscalEndDate);
+ print_r($result);
 ?>
 <style>
 	th.peoplename, th.email {
-    min-width: 150px;
+    min-width: 150px;	
 }	
+/* Modern pill-style tabs */
+.group-tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    border-bottom: none;
+    justify-content: flex-start;
+    margin-bottom: 32px;
+    background: transparent;
+}
+.group-tabs .nav-link {
+    border-radius: 8px;
+    border: 2px solid #2196f3;
+    color: #2196f3;
+    background: #fff;
+    padding: 12px 36px;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    transition: background 0.2s, color 0.2s;
+    min-width: 180px;
+    text-align: center;
+}
+.group-tabs .nav-link.active,
+.group-tabs .nav-link:focus,
+.group-tabs .nav-link:hover {
+    background: #2196f3;
+    color: #fff;
+    border-color: #2196f3;
+    outline: none;
+}
+.group-tabs .nav-item {
+    margin: 0 !important;
+}
 </style>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
@@ -31,6 +64,16 @@
                 </div>
         </div>
 </div>
+<!-- Group Tabs -->
+<ul class="nav nav-tabs group-tabs" id="groupTabs" role="tablist">
+    <?php foreach($result as $idx => $group): ?>
+        <li class="nav-item">
+            <a class="nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->groupView->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
+                <?php echo htmlspecialchars($group->groupView->title); ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
 
 	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">

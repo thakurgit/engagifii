@@ -1220,9 +1220,10 @@ public function getEventDetailsByID($id)
         'registerOverride' => $registerOverride,
     ];
 }
-public function getPeopleByGroups() {
-	$dataResponse = $this->submitApiRequest("groups/get/peoples/lite/6a1ade2a-f696-4126-c9b3-08dd3f84fb04", $postedData, "GET", 'dashboard');
-        return $dataResponse;
+public function getGroupsList() {
+	$postedData = '{"itemCount":1000,"sortBy":"name","sortDirection":"asc","pageNumber":1,"filterBody":{"selectedDate":"2025-05-22","pageNumber":1,"pageSize":10,"searchText":""}}';
+		$dataResponse = $this->submitApiRequest("groups/list", json_decode($postedData), "POST", 'dashboard');
+		return $dataResponse;	
 }
 
 }
