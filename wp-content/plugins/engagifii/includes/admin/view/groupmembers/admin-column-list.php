@@ -54,29 +54,43 @@
 		
 		
     } ?>
-	<h3>Filter Settings (Group List) <span> <input type="text" id="searchGroups" onkeyup="searchGroups()" placeholder="Search..." class="regular-text"></span></h3>
+	<h3>Filter Settings (Group List) <span> <input type="text" id="searchGroups" onkeyup="searchGroup()" placeholder="Search..." class="regular-text"></span></h3>
 <hr>
 <?php
 $groupList = $obj->getGroupsList();
 $result = json_decode($groupList['api_response'])->result;
-//print_r($result);
+//print_r(($options));
 		  echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="searchGroups" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($result){
 		foreach ($result as  $groupList) {
 	 		
  		$checked = "";
- 		// {
- 		// 	$checked .= " checked";
- 		// }
-       // if($site_url== 'http://engagifiiweb.com'){
-            
-                echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$groupList->groupView->id.'" class="'.$groupList->groupView->id.'" type="checkbox" name="ebt_api_settings[$ebt_visible_group_list][]" '.$checked.' value='.$groupList->groupView->id.'><label for="'.$groupList->groupView->title.'"></label> '.$groupList->groupView->title.'</li>'     ;   
-            
+ 		$visible_group_data = isset($options['ebt_visible_group_list']) ? $options['ebt_visible_group_list'] : [];
+$visible_group_ids = [];
 
-      //  }
-		/*else  {
-            echo '<li style="width:31%; display:inline-block;word-break:break-word;"> <input id="'.$member->personId.'" class="'.$member->personId.'" type="checkbox" name="ebt_api_settings[lbt_visib_members_list][]" '.$checked.' value='.$member->personId.'><label for="'.$member->personId.'">'.$member->fullName.'</label></li>'     ;   
-        }*/
+
+
+$checked = "";
+if (in_array($groupList->groupView->id, $visible_group_ids)) {
+    $checked = " checked";
+}       
+              echo '<li style="width:31%; display:inline-block;word-break:break-word;">
+    <input id="'.$groupList->groupView->id.'" 
+           class="'.$groupList->groupView->id.'" 
+           type="checkbox" 
+           name="ebt_api_settings[ebt_visible_group_list][groupFields][]" 
+           '.$checked.' 
+           value=\'' . 
+           htmlspecialchars(json_encode([
+               'id' => $groupList->groupView->id,
+               'title' => $groupList->groupView->title
+           ]), ENT_QUOTES, 'UTF-8') . 
+           '\'>
+    <label for="'.$groupList->groupView->title.'"></label> 
+    '.$groupList->groupView->title.'
+</li>';
+
+   
  					  
 	}
 		}else {
@@ -92,10 +106,11 @@ $result = json_decode($groupList['api_response'])->result;
 
 
 </div>
-<script>
-	function searchGroups() {
-    var input, filter, ul, li, a, i, txtValue;
+<script type="text/javascript">
+	function searchGroup() {
+	var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("searchGroups");
+	console.log(input);
     filter = input.value.toUpperCase();
     ul = document.getElementById("searchGroups");
     li = ul.getElementsByTagName("li");
