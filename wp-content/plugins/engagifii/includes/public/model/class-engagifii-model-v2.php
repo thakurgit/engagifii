@@ -564,13 +564,13 @@ wp_die();
         foreach ($collection as $key => $value) { 
             $nestedData = array();
             $classPopover      = '';
-			$nestedData['fullname']='<div class="d-flex align-items-center">';
+			$nestedData['name']='<div class="d-flex align-items-center">';
 			if($value->people->imageThumbUrl && filter_var($value->people->imageThumbUrl, FILTER_VALIDATE_URL)){
-				$nestedData['peoplename'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
+				$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
 			}else{
-				$nestedData['peoplename'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
+				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['fullname'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->firstName.' '.$value->people->lastName.'</a></div>';
+            $nestedData['name'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->firstName.' '.$value->people->lastName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
             $nestedData['position'] =$value->people->position;	
             $nestedData['organization'] =$value->people->organization;	

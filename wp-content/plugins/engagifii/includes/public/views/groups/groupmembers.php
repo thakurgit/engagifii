@@ -8,19 +8,18 @@
     $colNames = ['Full Name', 'Email', 'Position', 'Organization'];
 	$groupList = $obj->getGroupsList();
     //print_r($groupList);
-    $columnSearch_key = [];
+  //  $columnSearch_key = [];
    $groupTabs = array_slice($groupList, 0, 5);
 $result = json_decode($groupTabs['api_response'])->result;
 
 
- print_r($result);
 ?>
 <style>
 	th.peoplename, th.email {
     min-width: 150px;	
 }	
 /* Modern pill-style tabs */
-.group-tabs {
+/*.group-tabs {
     display: flex;
     flex-direction: row;
     gap: 24px;
@@ -52,7 +51,7 @@ $result = json_decode($groupTabs['api_response'])->result;
 }
 .group-tabs .nav-item {
     margin: 0 !important;
-}
+}*/
 </style>
 <div class="container-fluid mb-3">
     	<div class="d-flex align-items-center">
@@ -65,24 +64,24 @@ $result = json_decode($groupTabs['api_response'])->result;
         </div>
 </div>
 <!-- Group Tabs -->
-<ul class="nav nav-tabs group-tabs" id="groupTabs" role="tablist">
+<ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
     <?php foreach($result as $idx => $group): ?>
-        <li class="nav-item">
-            <a class="nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->groupView->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
+        <li class="nav-item mr-3">
+            <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->groupView->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
                 <?php echo htmlspecialchars($group->groupView->title); ?>
             </a>
         </li>
     <?php endforeach; ?>
 </ul>
 
-	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5">
+	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5 w-100">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
-		    	 <?php foreach ($colNames as $key):
+		    	 <?php foreach (GROUP_MEMBERS_COLS as $key):
 				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
 				  ?>
-            <th class="<?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
+            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
         <?php endforeach; ?>
  		    
 
@@ -103,9 +102,9 @@ $result = json_decode($groupTabs['api_response'])->result;
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": '',//[[<?php //echo array_search('People Name',$colNames);?>, 'asc']],
+		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['people-select','email','position', 'status', 'officephone', 'lastlogin', 'lastupdated', 'persontype', 'currentorganization','department','totaltimeworked','primaryorganization'],
+          { "targets": ['email','position', 'organization'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
