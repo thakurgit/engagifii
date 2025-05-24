@@ -57,28 +57,37 @@ foreach ($groupJsonStrings as $json) {
     margin: 0 !important;
 }*/
 </style>
-<div class="container-fluid mb-3">
-    	<div class="d-flex align-items-center">
-            	<h4 class="mb-0 mr-2">
-                	<button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
-                <h5 class="mb-0">Members</h5>                
-               
-                  </div>
-                </div>
+<div class="container-fluid ">
+	<div class="row">
+    	<div class="col-6"> 
+          <div class="d-flex align-items-center">
+                  <h4 class="mb-0 mr-2">
+                      <button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
+                  <h5 class="mb-0">Members</h5>                
+                 
+                    </div>
         </div>
-</div>
+    	<div class="col-6 justify-content-end d-flex">
+          <div class="btn-group view-mode" role="group" aria-label="">
+            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid"></i></button>
+            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list"></i></button> 
+          </div>
+        </div>
+        <div class="col-12 mb-4"></div>
 <!-- Group Tabs -->
-<ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto w-100" id="groupTabs" role="tablist">
-    <?php foreach($groups as $idx => $group): ?>
-        <li class="nav-item mr-3">
-            <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
-                <?php echo htmlspecialchars($group->title); ?>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+<div class="col-12">
+  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
+      <?php foreach($groups as $idx => $group): ?>
+          <li class="nav-item mr-3">
+              <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
+                  <?php echo htmlspecialchars($group->title); ?>
+              </a>
+          </li>
+      <?php endforeach; ?>
+  </ul>
+</div>
 
-	<div class="engagifii-box engagifii-main-cotainer position-relative px-xl-5 w-100">
+	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
@@ -94,16 +103,45 @@ foreach ($groupJsonStrings as $json) {
   	</table>
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
+<div class="col-12 grid-view" style="display:none">
+	<div class="row">
+    	
+    </div>
+    <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
+</div>
 
-
+</div>
 </div>
 
 <script type="text/javascript">
 var groupId = $('#groupTabs li:first-child a').attr('id');
+var viewMode='list';
 $('#groupTabs a').click(function(){
 	groupId = $(this).attr('id');
-	$('#eng-overlay').show();
-	table.draw();
+	if(viewMode=='grid'){
+		groupMembers();	
+	} else {
+	  $('#eng-overlay').show();
+	  table.draw();
+	}
+});
+$('.view-mode button').click(function(){
+	var selectedMode = $(this).attr('view-mode');
+
+	if (selectedMode === viewMode) return;
+
+	viewMode = selectedMode;
+	$(this).addClass('active').siblings().removeClass('active');
+
+	if(viewMode === 'grid'){
+		$('.list-view').hide();
+		$('.grid-view').show();
+		groupMembers();
+	} else {
+		$('.list-view').show();
+		$('.grid-view').hide();
+		table.draw();
+	}
 });
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
@@ -166,6 +204,54 @@ $('#groupTabs a').click(function(){
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
+	function groupMembers(){
+		 $('.grid-view #eng-overlay').show();
+		  $('.grid-view .row').css('opacity','.3');
+	   $.ajax({
+          type : "post",
+          url: engagifiiUrl_ajaxurl,
+          data:{
+              action:'peopleloadGridDataByGroups',
+			  groupId:groupId,
+			  viewMode:'Grid',
+          },
+         success: function(response) {
+	  		 $('.grid-view #eng-overlay').hide();
+			  $('.grid-view .row').css('opacity','1');
+			try {
+			  var data = JSON.parse(response);
+			  renderGroupGrid(data);
+			} catch (e) {
+			  console.error('Error parsing response:', e);
+			}
+		  },
+		  error: function() {
+			$('.grid-view #eng-overlay').hide();
+			 $('.grid-view .row').css('opacity','1');
+			console.error('AJAX request failed');
+		  }
+        });
+	}
+	function renderGroupGrid(data) {
+	  var container = $('.grid-view .row');
+	  container.empty(); // Clear previous content
+	
+	  data.forEach(function(item) {
+		var person = item.people;
+var card = '<div class="col-md-3 mb-4">\
+  <div class="card h-100 shadow p-3">\
+    <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '"><hr>\
+    <div class="card-body p-2">\
+      <h5 class="card-title">' + person.fullName + '</h5>\
+      <p class="card-text mb-1"><i class="fas fa-envelope mr-1"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
+      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + person.organization + '</p>\
+      <p class="card-text"><strong>Position:</strong> ' + person.position + '</p>\
+    </div>\
+  </div>\
+</div>';	
+		container.append(card); 
+	  });
+} 
 </script>
 
 

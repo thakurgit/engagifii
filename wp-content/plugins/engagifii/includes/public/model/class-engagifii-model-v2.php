@@ -548,6 +548,7 @@ wp_die();
         //$postedData = $this->_preparePeopleData();
         $postedData =array();
         $groupId = $_POST['groupId'];
+        $viewMode = $_POST['viewMode'];
         $dataResponse = $this->submitApiRequest("groups/get/peoples/lite/".$groupId, $postedData, "GET", 'dashboard'); 
         $collection = json_decode($dataResponse['api_response']);
        // print_r(count($collection)); die;
@@ -561,6 +562,10 @@ wp_die();
 		}*/
         $request = $_GET;
         $data    = array();
+		if($viewMode=='Grid'){ 
+		  echo json_encode($collection);
+		  wp_die();
+		}
         foreach ($collection as $key => $value) { 
             $nestedData = array();
             $classPopover      = '';
@@ -746,7 +751,6 @@ wp_die();
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-
         echo json_encode($json_data);
         wp_die();
     }
