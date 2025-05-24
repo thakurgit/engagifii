@@ -547,8 +547,8 @@ wp_die();
         $front_pages = $options['front_pages'];
         //$postedData = $this->_preparePeopleData();
         $postedData =array();
-        
-        $dataResponse = $this->submitApiRequest("groups/get/peoples/lite/6a1ade2a-f696-4126-c9b3-08dd3f84fb04", $postedData, "GET", 'dashboard');
+        $groupId = $_POST['groupId'];
+        $dataResponse = $this->submitApiRequest("groups/get/peoples/lite/".$groupId, $postedData, "GET", 'dashboard'); 
         $collection = json_decode($dataResponse['api_response']);
        // print_r(count($collection)); die;
         $totalcount   = count($collection);

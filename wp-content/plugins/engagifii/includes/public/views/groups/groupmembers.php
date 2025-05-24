@@ -99,6 +99,12 @@ foreach ($groupJsonStrings as $json) {
 </div>
 
 <script type="text/javascript">
+var groupId = $('#groupTabs li:first-child a').attr('id');
+$('#groupTabs a').click(function(){
+	groupId = $(this).attr('id');
+	$('#eng-overlay').show();
+	table.draw();
+});
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -135,8 +141,8 @@ foreach ($groupJsonStrings as $json) {
             "type": "POST",
             "data": function(d) {  
             	d.action='peopleloadGridDataByGroups'; 
-				/*d.positions=positions; 
-				d.departments=departments; 
+				d.groupId=groupId; 
+				/*d.departments=departments; 
 				d.orgs=orgs; 
       			  d.status=Status;
 				d.totalTime= totalTime;
@@ -152,6 +158,7 @@ foreach ($groupJsonStrings as $json) {
      "drawCallback": function( settings ) {
             dt_dropdown();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
+			    $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 		   
          },
 		  "initComplete": function(settings, json) {

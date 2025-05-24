@@ -28,6 +28,6 @@
 	 $class_visible_column_list = isset($options['class_visible_column_list']) ? $options['class_visible_column_list'] : [];  
 	define('CLASS_COLS', $class_visible_column_list);
 //Group members columns
-	 $group_members_visible_column_list = isset($options['group_member_visible_column_list']) ? $options['group_member_visible_column_list'] : [];  
+	 $group_members_visible_column_list = isset($options['group_members_settings']['visible_column_list']) ? $options['group_members_settings']['visible_column_list'] : [];  
 	define('GROUP_MEMBERS_COLS', $group_members_visible_column_list);
  
