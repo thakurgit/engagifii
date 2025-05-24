@@ -104,9 +104,15 @@ foreach ($groupJsonStrings as $json) {
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
 <div class="col-12 grid-view" style="display:none">
-	<div class="row">
+	<div class="row mb-4">
     	
     </div>
+    <nav aria-label="Page navigation example">
+  <ul class="pagination pagination-sm justify-content-center grid-pagination">
+    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
 
@@ -116,6 +122,8 @@ foreach ($groupJsonStrings as $json) {
 <script type="text/javascript">
 var groupId = $('#groupTabs li:first-child a').attr('id');
 var viewMode='list';
+var start = 0;
+var length = 8;
 $('#groupTabs a').click(function(){
 	groupId = $(this).attr('id');
 	if(viewMode=='grid'){
@@ -152,7 +160,7 @@ $('.view-mode button').click(function(){
        	"ordering":true,
 		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['email','position', 'organization'],
+          { "targets": ['email','position', 'organization','phone'],
             "orderable": false
           },
 		  <?php if(in_array('People Name', $colNames)){ ?>
@@ -205,6 +213,7 @@ $('.view-mode button').click(function(){
     },
     });
 	function groupMembers(){
+		console.log(start);
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
 	   $.ajax({
@@ -214,13 +223,17 @@ $('.view-mode button').click(function(){
               action:'peopleloadGridDataByGroups',
 			  groupId:groupId,
 			  viewMode:'Grid',
+			  length:length,
+			  start:start
           },
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
 			  $('.grid-view .row').css('opacity','1');
 			try {
-			  var data = JSON.parse(response);
+			   var parsedResponse = JSON.parse(response);
+			  var data = parsedResponse.data || [];
 			  renderGroupGrid(data);
+			  renderPagination(parsedResponse.count, start, length);
 			} catch (e) {
 			  console.error('Error parsing response:', e);
 			}
@@ -252,6 +265,57 @@ var card = '<div class="col-md-3 mb-4">\
 		container.append(card); 
 	  });
 } 
+/*$(document).on('click', '.grid-pagination .page-link', function (e) {
+  e.preventDefault();
+  const page = $(this).text();
+  if (page) {
+    start = (page - 1) * length;
+    groupMembers(); 
+  }
+});*/
+function renderPagination(totalCount, start, length) {
+  var currentPage = Math.floor(start / length) + 1;
+  var totalPages = Math.ceil(totalCount / length);
+  var $pagination = $('.grid-pagination');
+  
+  $pagination.find('li.page-number').remove();
+
+  for (let i = 1; i <= totalPages; i++) {
+    const activeClass = (i === currentPage) ? 'active' : '';
+    const $pageItem = $('<li class="page-item page-number '+activeClass+'"><a class="page-link" href="#">'+i+'</a></li>');
+
+    $pagination.find('li').last().before($pageItem);
+  }
+
+  $pagination.find('li:first-child').toggleClass('disabled', currentPage === 1);
+  $pagination.find('li:last-child').toggleClass('disabled', currentPage === totalPages);
+
+  $pagination.find('li.page-item a').off('click').on('click', function (e) {
+    e.preventDefault();
+    var selectedPage = parseInt($(this).text());
+    if (selectedPage !== currentPage) {
+      start = (selectedPage - 1) * length;
+	console.log(start);
+      groupMembers(); 
+    }
+  });
+
+  $pagination.find('li:first-child a').off('click').on('click', function (e) {
+    e.preventDefault();
+    if (currentPage > 1) {
+      start -= length;
+      groupMembers();
+    }
+  });
+  $pagination.find('li:last-child a').off('click').on('click', function (e) {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      start += length;
+      groupMembers();
+    }
+  });
+}
+
 </script>
 
 

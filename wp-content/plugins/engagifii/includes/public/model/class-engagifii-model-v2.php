@@ -546,14 +546,46 @@ wp_die();
         $options = get_option('ebt_api_settings');
         $front_pages = $options['front_pages'];
         //$postedData = $this->_preparePeopleData();
-        $postedData =array();
         $groupId = $_POST['groupId'];
         $viewMode = $_POST['viewMode'];
-        $dataResponse = $this->submitApiRequest("groups/get/peoples/lite/".$groupId, $postedData, "GET", 'dashboard'); 
-        $collection = json_decode($dataResponse['api_response']);
-       // print_r(count($collection)); die;
-        $totalcount   = count($collection);
-        $totalRecords  = count($collection);
+       $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
+$postedData = '{
+  "groupId": "' . $groupId . '",
+  "itemCount": ' . $_POST['length'] . ',
+  "sortBy": "name",
+  "sortDirection": "' . $sortDirection . '",
+  "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
+  "filterBody": {
+    "pageSize": 10,
+    "pageNumber": 1,
+	"searchText":""
+  },
+  "fields": [
+    {"fieldId": "isFavorite", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "firstName", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "title", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "email", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "phone", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "department", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "position", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "terms", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "status", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "createdDate", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "modifiedDate", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "userStatus", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "roles", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "lastLogin", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "totalTimeWorked", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "organization", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "personas", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "tags", "controlTypeId": 0, "isCustom": false},
+    {"fieldId": "action", "controlTypeId": 0, "isCustom": false}
+  ]
+}';
+        $dataResponse = $this->submitApiRequest("groups/GroupPeopleListLite/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
+        $collection   = json_decode($dataResponse['api_response'])->result;
+        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
+        $totalRecords  = json_decode($dataResponse['api_response'])->totalCount;
         //print_r(json_encode($collection)); die;
 		/*if($_POST['countResult']=='true'){
 			echo json_encode($totalcount);
@@ -563,7 +595,11 @@ wp_die();
         $request = $_GET;
         $data    = array();
 		if($viewMode=='Grid'){ 
-		  echo json_encode($collection);
+		  $response = [
+			  'count' => $totalcount,
+			  'data' => $collection
+		  ];
+		  echo json_encode($response);
 		  wp_die();
 		}
         foreach ($collection as $key => $value) { 
@@ -577,8 +613,16 @@ wp_die();
 			}
             $nestedData['name'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->firstName.' '.$value->people->lastName.'</a></div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
-            $nestedData['position'] =$value->people->position;	
-            $nestedData['organization'] =$value->people->organization;	
+            $nestedData['position'] =$value->people->peoplePosition[0]->positionName;	
+			$nestedData['organization']='<div class="d-flex align-items-center">';
+			if($value->people->organization->imageThumbUrl && filter_var($value->people->organization->imageThumbUrl, FILTER_VALIDATE_URL)){
+				$nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
+			}else{
+				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
+			}
+            $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
+            $nestedData['phone'] = !empty($value->people->primaryPhoneNumber->value) ? 
+    '<a href="tel:' . $value->people->primaryPhoneNumber->value . '" style="text-decoration: none;">' . $value->people->primaryPhoneNumber->value . '</a>' : 'N/A';
 			/*$nestedData['persontype'] =$value->people->personTypes[0]->name;
             $nestedData['status'] =$value->people->status;
             if($value->people->primaryPhoneNumber->value){
