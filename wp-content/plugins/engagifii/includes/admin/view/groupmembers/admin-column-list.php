@@ -16,11 +16,11 @@
 	//print_r($response);
 	
     $group_member_visible_column_list = array();
-    if(isset($options['group_member_visible_column_list']))
+    if(isset($options['group_members_settings']['visible_column_list']))
 	{
-	$group_member_visible_column_list = $options['group_member_visible_column_list'];   
+	$group_member_visible_column_list = $options['group_members_settings']['visible_column_list'];   
 	}
-	$event_class_col_order   = isset($options['event_class_col_order']) ? $options['event_class_col_order']: array();
+	//$event_class_col_order   = isset($options['event_class_col_order']) ? $options['event_class_col_order']: array();
 	//print_r(json_encode($group_member_visible_column_list));
     
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
@@ -45,7 +45,7 @@
 			}
 			
 		
-			echo '<li  data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[group_member_visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			echo '<li  data-order="'.$counter.'"> <input id="'.$row->colName.'" class="" type="checkbox" name="ebt_api_settings[group_members_settings][visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 				
 				$counter++;
 		}
@@ -62,32 +62,30 @@ $result = json_decode($groupList['api_response'])->result;
 //print_r(($options));
 		  echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="searchGroups" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($result){
+			$selectedGroups = isset($options['group_members_settings']['groupFields']) ? $options['group_members_settings']['groupFields'] : [];
 		foreach ($result as  $groupList) {
-	 		
- 		$checked = "";
- 		$visible_group_data = isset($options['ebt_visible_group_list']) ? $options['ebt_visible_group_list'] : [];
-$visible_group_ids = [];
-
-
-
-$checked = "";
-if (in_array($groupList->groupView->id, $visible_group_ids)) {
-    $checked = " checked";
-}       
+			  $isChecked = '';
+			  foreach ($selectedGroups as $savedGroup) {
+				  $savedData = json_decode(html_entity_decode($savedGroup), true);
+				  if (isset($savedData['id']) && $savedData['id'] == $groupList->groupView->id) {
+					  $isChecked = ' checked';
+					  break;
+				  }
+			  }
               echo '<li style="width:31%; display:inline-block;word-break:break-word;">
     <input id="'.$groupList->groupView->id.'" 
-           class="'.$groupList->groupView->id.'" 
+           class="" 
            type="checkbox" 
-           name="ebt_api_settings[ebt_visible_group_list][groupFields][]" 
-           '.$checked.' 
+           name="ebt_api_settings[group_members_settings][groupFields][]" 
+           '.$isChecked.' 
            value=\'' . 
            htmlspecialchars(json_encode([
                'id' => $groupList->groupView->id,
                'title' => $groupList->groupView->title
            ]), ENT_QUOTES, 'UTF-8') . 
            '\'>
-    <label for="'.$groupList->groupView->title.'"></label> 
-    '.$groupList->groupView->title.'
+    <label for="'.$groupList->groupView->id.'">'.$groupList->groupView->title.'</label> 
+    
 </li>';
 
    

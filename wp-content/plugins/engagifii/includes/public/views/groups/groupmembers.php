@@ -6,19 +6,23 @@
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
     $colNames = ['Full Name', 'Email', 'Position', 'Organization'];
-	$groupList = $obj->getGroupsList();
+	//$groupList = $obj->getGroupsList();
     //print_r($groupList);
   //  $columnSearch_key = [];
-   $groupTabs = array_slice($groupList, 0, 5);
-$result = json_decode($groupTabs['api_response'])->result;
-
-
-?>
+  // $groupTabs = array_slice($groupList, 0, 5);
+$groupJsonStrings = $options['group_members_settings']['groupFields'];
+$groups = [];
+foreach ($groupJsonStrings as $json) {
+    $decoded = json_decode($json);
+    if ($decoded) {
+        $groups[] = $decoded;
+    }
+}?>
 <style>
-	th.peoplename, th.email {
+/*	th.peoplename, th.email {
     min-width: 150px;	
 }	
-/* Modern pill-style tabs */
+ Modern pill-style tabs */
 /*.group-tabs {
     display: flex;
     flex-direction: row;
@@ -64,11 +68,11 @@ $result = json_decode($groupTabs['api_response'])->result;
         </div>
 </div>
 <!-- Group Tabs -->
-<ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
-    <?php foreach($result as $idx => $group): ?>
+<ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto w-100" id="groupTabs" role="tablist">
+    <?php foreach($groups as $idx => $group): ?>
         <li class="nav-item mr-3">
-            <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->groupView->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
-                <?php echo htmlspecialchars($group->groupView->title); ?>
+            <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
+                <?php echo htmlspecialchars($group->title); ?>
             </a>
         </li>
     <?php endforeach; ?>
