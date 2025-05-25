@@ -549,6 +549,7 @@ wp_die();
         $groupId = $_POST['groupId'];
         $viewMode = $_POST['viewMode'];
        $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
+	   $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
 $postedData = '{
   "groupId": "' . $groupId . '",
   "itemCount": ' . $_POST['length'] . ',
@@ -558,7 +559,7 @@ $postedData = '{
   "filterBody": {
     "pageSize": 10,
     "pageNumber": 1,
-	"searchText":""
+	"searchText":"'.$searchText.'"
   },
   "fields": [
     {"fieldId": "isFavorite", "controlTypeId": 0, "isCustom": false},

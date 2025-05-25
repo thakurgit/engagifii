@@ -1,15 +1,9 @@
 <?php 
 
-	$obj 			=  new Engagifii_API();
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
-    $colNames = ['Full Name', 'Email', 'Position', 'Organization'];
-	//$groupList = $obj->getGroupsList();
-    //print_r($groupList);
-  //  $columnSearch_key = [];
-  // $groupTabs = array_slice($groupList, 0, 5);
 $groupJsonStrings = $options['group_members_settings']['groupFields'];
 $groups = [];
 foreach ($groupJsonStrings as $json) {
@@ -18,45 +12,6 @@ foreach ($groupJsonStrings as $json) {
         $groups[] = $decoded;
     }
 }?>
-<style>
-/*	th.peoplename, th.email {
-    min-width: 150px;	
-}	
- Modern pill-style tabs */
-/*.group-tabs {
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    border-bottom: none;
-    justify-content: flex-start;
-    margin-bottom: 32px;
-    background: transparent;
-}
-.group-tabs .nav-link {
-    border-radius: 8px;
-    border: 2px solid #2196f3;
-    color: #2196f3;
-    background: #fff;
-    padding: 12px 36px;
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0;
-    transition: background 0.2s, color 0.2s;
-    min-width: 180px;
-    text-align: center;
-}
-.group-tabs .nav-link.active,
-.group-tabs .nav-link:focus,
-.group-tabs .nav-link:hover {
-    background: #2196f3;
-    color: #fff;
-    border-color: #2196f3;
-    outline: none;
-}
-.group-tabs .nav-item {
-    margin: 0 !important;
-}*/
-</style>
 <div class="container-fluid ">
 	<div class="row">
     	<div class="col-6"> 
@@ -91,11 +46,15 @@ foreach ($groupJsonStrings as $json) {
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
-		    	 <?php foreach (GROUP_MEMBERS_COLS as $key):
+		    	 <?php  $i = 0;
+				  foreach (GROUP_MEMBERS_COLS as $key){
+					  if($key == 'name'){
+                    	$title_key = $i;
+                 	 }
 				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
 				  ?>
             <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
-        <?php endforeach; ?>
+        <?php } ?>
  		    
 
 		    </tr> 
@@ -120,37 +79,38 @@ foreach ($groupJsonStrings as $json) {
 </div>
 
 <script type="text/javascript">
-var groupId = $('#groupTabs li:first-child a').attr('id');
-var viewMode='list';
-var start = 0;
-var length = 8;
-$('#groupTabs a').click(function(){
-	groupId = $(this).attr('id');
-	if(viewMode=='grid'){
-		groupMembers();	
-	} else {
-	  $('#eng-overlay').show();
-	  table.draw();
-	}
-});
-$('.view-mode button').click(function(){
-	var selectedMode = $(this).attr('view-mode');
-
-	if (selectedMode === viewMode) return;
-
-	viewMode = selectedMode;
-	$(this).addClass('active').siblings().removeClass('active');
-
-	if(viewMode === 'grid'){
-		$('.list-view').hide();
-		$('.grid-view').show();
-		groupMembers();
-	} else {
-		$('.list-view').show();
-		$('.grid-view').hide();
+  var groupId = $('#groupTabs li:first-child a').attr('id');
+  var viewMode='list';
+  var start = 0;
+  var length = 8;
+  var titleColumn = '<?php echo $title_key; ?>';
+  $('#groupTabs a').click(function(){
+	  groupId = $(this).attr('id');
+	  if(viewMode=='grid'){
+		  groupMembers(start);	
+	  } else {
+		$('#eng-overlay').show();
 		table.draw();
-	}
-});
+	  }
+  });
+  $('.view-mode button').click(function(){
+	  var selectedMode = $(this).attr('view-mode');
+  
+	  if (selectedMode === viewMode) return;
+  
+	  viewMode = selectedMode;
+	  $(this).addClass('active').siblings().removeClass('active');
+  
+	  if(viewMode === 'grid'){
+		  $('.list-view').hide();
+		  $('.grid-view').show();
+		  groupMembers(start);
+	  } else {
+		  $('.list-view').show();
+		  $('.grid-view').hide();
+		  table.draw();
+	  }
+  });
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -188,11 +148,11 @@ $('.view-mode button').click(function(){
             "data": function(d) {  
             	d.action='peopleloadGridDataByGroups'; 
 				d.groupId=groupId; 
+				d.titleColumn = titleColumn; 
 				/*d.departments=departments; 
 				d.orgs=orgs; 
       			  d.status=Status;
 				d.totalTime= totalTime;
-				d.titleColumn = titleColumn; 
 				d.emailColumn = emailColumn;*/ 
             }, 
         },
@@ -212,8 +172,12 @@ $('.view-mode button').click(function(){
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
-	function groupMembers(){
-		console.log(start);
+	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
+        $('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
+    } ).dataTable();
+	
+	//fetch group members
+	function groupMembers(start){ 
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
 	   $.ajax({
@@ -233,7 +197,7 @@ $('.view-mode button').click(function(){
 			   var parsedResponse = JSON.parse(response);
 			  var data = parsedResponse.data || [];
 			  renderGroupGrid(data);
-			  renderPagination(parsedResponse.count, start, length);
+			 renderPagination(parsedResponse.count, start, length);
 			} catch (e) {
 			  console.error('Error parsing response:', e);
 			}
@@ -245,77 +209,120 @@ $('.view-mode button').click(function(){
 		  }
         });
 	}
+	
+	//grid layout
 	function renderGroupGrid(data) {
 	  var container = $('.grid-view .row');
 	  container.empty(); // Clear previous content
-	
+		if (data.length === 0) {
+			container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>'); 
+		  return;
+		}
 	  data.forEach(function(item) {
 		var person = item.people;
+		if(isValidUrl(person.imageThumbUrl)){
+			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '">';
+		}else {
+			var personPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
+		}
+		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
+		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
+		var personPhone = person.primaryPhoneNumber && person.primaryPhoneNumber.value  ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value + '</a>'  : 'N/A';
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
-    <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '"><hr>\
+    '+personPhoto+'<hr>\
     <div class="card-body p-2">\
       <h5 class="card-title">' + person.fullName + '</h5>\
       <p class="card-text mb-1"><i class="fas fa-envelope mr-1"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
-      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + person.organization + '</p>\
-      <p class="card-text"><strong>Position:</strong> ' + person.position + '</p>\
+      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
+      <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
+      <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
     </div>\
   </div>\
 </div>';	
 		container.append(card); 
 	  });
 } 
-/*$(document).on('click', '.grid-pagination .page-link', function (e) {
-  e.preventDefault();
-  const page = $(this).text();
-  if (page) {
-    start = (page - 1) * length;
-    groupMembers(); 
-  }
-});*/
+
+//grid pagination
 function renderPagination(totalCount, start, length) {
-  var currentPage = Math.floor(start / length) + 1;
-  var totalPages = Math.ceil(totalCount / length);
-  var $pagination = $('.grid-pagination');
-  
+  const $pagination = $('.grid-pagination');
+  const currentPage = Math.floor(start / length) + 1;
+  const totalPages = Math.ceil(totalCount / length);
+
+  // Clear existing page numbers (except First & Last <li>)
   $pagination.find('li.page-number').remove();
 
-  for (let i = 1; i <= totalPages; i++) {
-    const activeClass = (i === currentPage) ? 'active' : '';
-    const $pageItem = $('<li class="page-item page-number '+activeClass+'"><a class="page-link" href="#">'+i+'</a></li>');
+  const visiblePages = [];
+  
+  // Always show first page
+  visiblePages.push(1);
 
-    $pagination.find('li').last().before($pageItem);
+  // Pages before current
+  for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+    if (i > 1 && i < totalPages) {
+      visiblePages.push(i);
+    }
   }
 
+  // Always show last page if not already in list
+  if (totalPages > 1) {
+    visiblePages.push(totalPages);
+  }
+
+  // Remove duplicates and sort
+  const uniquePages = [...new Set(visiblePages)].sort((a, b) => a - b);
+
+  // Render pages with ellipsis
+  for (let i = 0; i < uniquePages.length; i++) {
+    if (i > 0 && uniquePages[i] !== uniquePages[i - 1] + 1) {
+      $pagination.find('li.page-item').last().before('<li class="page-item disabled page-number"><span class="page-link">...</span></li>');
+    }
+
+    const pageNum = uniquePages[i];
+    const activeClass = pageNum === currentPage ? 'active' : '';
+    const $pageItem = $('<li class="page-item page-number ' + activeClass + '"><a class="page-link" href="#">' + pageNum + '</a></li>');
+    $pagination.find('li.page-item').last().before($pageItem);
+  }
+
+  // Enable/Disable Previous and Next
   $pagination.find('li:first-child').toggleClass('disabled', currentPage === 1);
   $pagination.find('li:last-child').toggleClass('disabled', currentPage === totalPages);
 
+  // Click handlers
   $pagination.find('li.page-item a').off('click').on('click', function (e) {
     e.preventDefault();
-    var selectedPage = parseInt($(this).text());
-    if (selectedPage !== currentPage) {
-      start = (selectedPage - 1) * length;
-	console.log(start);
-      groupMembers(); 
-    }
-  });
+    const text = $(this).text();
+    let newPage = currentPage;
 
-  $pagination.find('li:first-child a').off('click').on('click', function (e) {
-    e.preventDefault();
-    if (currentPage > 1) {
-      start -= length;
-      groupMembers();
-    }
-  });
-  $pagination.find('li:last-child a').off('click').on('click', function (e) {
-    e.preventDefault();
-    if (currentPage < totalPages) {
-      start += length;
-      groupMembers();
+    if (text === 'Previous' && currentPage > 1) newPage = currentPage - 1;
+    else if (text === 'Next' && currentPage < totalPages) newPage = currentPage + 1;
+    else if (!isNaN(parseInt(text))) newPage = parseInt(text);
+
+    if (newPage !== currentPage) {
+      start = (newPage - 1) * length;
+      groupMembers(start); // re-fetch new data
     }
   });
 }
 
+//check if url is valid
+function isValidUrl(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+//search members
+<?php
+  if($title_key > -1){
+?>
+dt_titleSearch('Search Members');
+  <?php
+}
+  ?>
 </script>
 
 
