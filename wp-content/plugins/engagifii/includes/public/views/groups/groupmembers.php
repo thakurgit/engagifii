@@ -24,36 +24,20 @@ foreach ($groupJsonStrings as $json) {
         <div class="col-12 mb-4"></div>
 <!-- Group Tabs -->
 <style>
-
-
-.tab-scroll-container {
-  overflow-x: auto;
-  white-space: nowrap;
-  scroll-behavior: smooth;
-}
-
-/*.nav-tabs-wrapper {
-  display: flex;
-  flex-wrap: nowrap;
-}*/
-
-.scroll-btn {
- 
+.prv, .nxt {
   top: 9px;
- 
+}
+#groupTabs {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE 10+ */
 }
 
-/*.scroll-btn.left {
-  left: 0;
+#groupTabs::-webkit-scrollbar {
+  display: none;                  /* Chrome, Safari, Opera */
 }
-
-.scroll-btn.right {
-  right: 0;
-}*/
-
 </style>
-<div class="col-12 overflow-hidden">
-	<span class="scroll-btn left prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
+<div class="col-12">
+	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
   <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
   <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
       <?php foreach($groups as $idx => $group): ?>
@@ -65,13 +49,13 @@ foreach ($groupJsonStrings as $json) {
       <?php endforeach; ?>
   </ul>
   </div>
-  <span class="scroll-btn right nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
+  <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
 </div>
 <!-- Group Title -->
 <div class="col-12">
     <h2 id="currentGroupTitle" class="mb-5 text-center"><?php echo isset($groups[0]) ? htmlspecialchars($groups[0]->title) : ''; ?></h3>
 </div>
-	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
+	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
@@ -200,7 +184,7 @@ foreach ($groupJsonStrings as $json) {
 		   
          },
 		  "initComplete": function(settings, json) {
-			           dt_scroll();
+			         //  dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
@@ -356,46 +340,53 @@ dt_titleSearch('Search Members');
 }
 
   ?>
-  const container = document.getElementById('tabScrollContainer');
-  const scrollLeftBtn = document.getElementById('scrollLeftBtn');
-  const scrollRightBtn = document.getElementById('scrollRightBtn');
+  //grup list scroller
+$(document).ready(function () {
+  const $container = $('#groupTabs');
+  const $scrollLeftBtn = $('#scrollLeftBtn');
+  const $scrollRightBtn = $('#scrollRightBtn');
+  const $wrapper = $container.parent();
 
   function updateScrollButtons() {
-    const scrollLeft = container.scrollLeft;
-    const scrollWidth = container.scrollWidth;
-    const clientWidth = container.clientWidth;
+    const scrollLeft = $container.scrollLeft();
+    const scrollWidth = $container[0].scrollWidth;
+    const clientWidth = $container.outerWidth();
+    const overflow = scrollWidth > clientWidth;
+    const atStart = scrollLeft <= 0;
+    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
 
-     // Toggle left button
-	  if (scrollLeft > 0) {
-		scrollLeftBtn.classList.remove('d-none');
-		scrollLeftBtn.classList.add('d-xl-inline-flex');
-	  } else {
-		scrollLeftBtn.classList.remove('d-xl-inline-flex');
-		scrollLeftBtn.classList.add('d-none');
-	  }
-	
-	  // Toggle right button
-	  if (scrollLeft + clientWidth < scrollWidth - 1) {
-		scrollRightBtn.classList.remove('d-none');
-		scrollRightBtn.classList.add('d-xl-inline-flex');
-	  } else {
-		scrollRightBtn.classList.remove('d-xl-inline-flex');
-		scrollRightBtn.classList.add('d-none');
-	  }
+    // Only show buttons if overflow exists
+    if (overflow) {
+      $scrollLeftBtn.removeClass('d-none').addClass('d-xl-inline-flex')
+                    .toggleClass('disabled', atStart);
+      $scrollRightBtn.removeClass('d-none').addClass('d-xl-inline-flex')
+                     .toggleClass('disabled', atEnd);
+      $wrapper.addClass('px-4 mx-2');
+    } else {
+      $scrollLeftBtn.addClass('d-none').removeClass('d-xl-inline-flex disabled');
+      $scrollRightBtn.addClass('d-none').removeClass('d-xl-inline-flex disabled');
+      $wrapper.removeClass('px-5');
+    }
   }
 
-  function scrollTabs(distance) {
-    container.scrollBy({ left: distance, behavior: 'smooth' });
-  }
+	function scrollTabs(direction) {
+	  const distance = $container.outerWidth() * 0.75; // 75% of visible width
+	  const scrollAmount = direction === 'left' ? -distance : distance;
+	  $container.animate({ scrollLeft: $container.scrollLeft() + scrollAmount }, 300);
+	}
+  $scrollLeftBtn.on('click', () => {
+    if (!$scrollLeftBtn.hasClass('disabled')) scrollTabs('left');
+  });
 
-  scrollLeftBtn.onclick = () => scrollTabs(-200);
-  scrollRightBtn.onclick = () => scrollTabs(200);
+  $scrollRightBtn.on('click', () => {
+    if (!$scrollRightBtn.hasClass('disabled')) scrollTabs('right');
+  });
 
-  container.addEventListener('scroll', updateScrollButtons);
-  window.addEventListener('resize', updateScrollButtons);
+  $container.on('scroll', updateScrollButtons);
+  $(window).on('resize', updateScrollButtons);
 
-  // Initial check after DOM is ready
-  document.addEventListener('DOMContentLoaded', updateScrollButtons);
+  updateScrollButtons(); // Initial check
+});
 
 </script>
 
