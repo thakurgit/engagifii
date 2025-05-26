@@ -60,7 +60,7 @@
 $groupList = $obj->getGroupsList();
 $result = json_decode($groupList['api_response'])->result;
 //print_r(($options));
-		  echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="searchGroups" style="width:100%; display:block; max-height:200px; overflow:auto;">';
+		  echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="searchGroupsList" style="width:100%; display:block; max-height:200px; overflow:auto;">';
 		if($result){
 			$selectedGroups = isset($options['group_members_settings']['groupFields']) ? $options['group_members_settings']['groupFields'] : [];
 		foreach ($result as  $groupList) {
@@ -108,9 +108,8 @@ $result = json_decode($groupList['api_response'])->result;
 	function searchGroup() {
 	var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("searchGroups");
-	console.log(input);
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("searchGroups");
+	filter = input.value.toUpperCase();
+    ul = document.getElementById("searchGroupsList");
     li = ul.getElementsByTagName("li");
     for (i = 0; i < li.length; i++) {
         a = li[i].getElementsByTagName("label")[0];
