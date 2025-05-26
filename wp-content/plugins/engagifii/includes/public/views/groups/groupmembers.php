@@ -14,15 +14,8 @@ foreach ($groupJsonStrings as $json) {
 }?>
 <div class="container-fluid ">
 	<div class="row">
-    	<div class="col-6"> 
-          <div class="d-flex align-items-center">
-                  <h4 class="mb-0 mr-2">
-                      <button type="button" title="Refresh Members" class="refresh btn shadow-none p-2 mr-1"> <i class="fas fa-sync"></i></button><?php echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/Member-Icon.png" class="img-fluid" alt="member-icon" style="max-width:40px" >'; ?></h4>
-                  <h5 class="mb-0">Members</h5>                
-                 
-                    </div>
-        </div>
-    	<div class="col-6 justify-content-end d-flex">
+    	
+    	<div class="col-12 justify-content-end d-flex">
           <div class="btn-group view-mode" role="group" aria-label="">
             <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid"></i></button>
             <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list"></i></button> 
@@ -74,7 +67,10 @@ foreach ($groupJsonStrings as $json) {
   </div>
   <span class="scroll-btn right nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
 </div>
-
+<!-- Group Title -->
+<div class="col-12">
+    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php echo isset($groups[0]) ? htmlspecialchars($groups[0]->title) : ''; ?></h3>
+</div>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
@@ -119,6 +115,9 @@ foreach ($groupJsonStrings as $json) {
   var titleColumn = '<?php echo $title_key; ?>';
   $('#groupTabs a').click(function(){
 	  groupId = $(this).attr('id');
+     var groupTitle = $(this).text();
+    $('#currentGroupTitle').text(groupTitle);
+
 	  if(viewMode=='grid'){
 		  groupMembers(start);	
 	  } else {
@@ -156,14 +155,14 @@ foreach ($groupJsonStrings as $json) {
           { "targets": ['email','position', 'organization','phone'],
             "orderable": false
           },
-		  <?php if(in_array('People Name', $colNames)){ ?>
-		  	{ width: 350, targets: <?php echo array_search('People Name',$colNames);?> },
-		  <?php } if(in_array('Email', $colNames)){ ?>
-		  { width: 150, targets: <?php echo array_search('Email',$colNames);?> },
-		  <?php } ?>
-		  { className: "text-center", "targets": ['people-select'] },
+		  <?php //if(in_array('People Name', $colNames)){ ?>
+		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
+		  <?php //} if(in_array('Email', $colNames)){ ?>
+		//  { width: 150, targets: <?php //echo array_search('Email',$colNames);?> },
+		  <?php // } ?>
+		 // { className: "text-center", "targets": ['people-select'] },
 		   
-        ],
+      ],
 		
         "language": {
           processing: '<span>&nbsp;</span>',
@@ -355,6 +354,7 @@ function isValidUrl(url) {
 dt_titleSearch('Search Members');
   <?php
 }
+
   ?>
   const container = document.getElementById('tabScrollContainer');
   const scrollLeftBtn = document.getElementById('scrollLeftBtn');
