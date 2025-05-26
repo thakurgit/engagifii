@@ -30,8 +30,39 @@ foreach ($groupJsonStrings as $json) {
         </div>
         <div class="col-12 mb-4"></div>
 <!-- Group Tabs -->
-<div class="col-12">
-  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
+<style>
+
+
+.tab-scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+/*.nav-tabs-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}*/
+
+.scroll-btn {
+ 
+  top: 9px;
+ 
+}
+
+/*.scroll-btn.left {
+  left: 0;
+}
+
+.scroll-btn.right {
+  right: 0;
+}*/
+
+</style>
+<div class="col-12 overflow-hidden">
+	<span class="scroll-btn left prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
+  <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
+  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
       <?php foreach($groups as $idx => $group): ?>
           <li class="nav-item mr-3">
               <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
@@ -40,6 +71,8 @@ foreach ($groupJsonStrings as $json) {
           </li>
       <?php endforeach; ?>
   </ul>
+  </div>
+  <span class="scroll-btn right nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
 </div>
 
 	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
@@ -323,6 +356,47 @@ dt_titleSearch('Search Members');
   <?php
 }
   ?>
+  const container = document.getElementById('tabScrollContainer');
+  const scrollLeftBtn = document.getElementById('scrollLeftBtn');
+  const scrollRightBtn = document.getElementById('scrollRightBtn');
+
+  function updateScrollButtons() {
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+
+     // Toggle left button
+	  if (scrollLeft > 0) {
+		scrollLeftBtn.classList.remove('d-none');
+		scrollLeftBtn.classList.add('d-xl-inline-flex');
+	  } else {
+		scrollLeftBtn.classList.remove('d-xl-inline-flex');
+		scrollLeftBtn.classList.add('d-none');
+	  }
+	
+	  // Toggle right button
+	  if (scrollLeft + clientWidth < scrollWidth - 1) {
+		scrollRightBtn.classList.remove('d-none');
+		scrollRightBtn.classList.add('d-xl-inline-flex');
+	  } else {
+		scrollRightBtn.classList.remove('d-xl-inline-flex');
+		scrollRightBtn.classList.add('d-none');
+	  }
+  }
+
+  function scrollTabs(distance) {
+    container.scrollBy({ left: distance, behavior: 'smooth' });
+  }
+
+  scrollLeftBtn.onclick = () => scrollTabs(-200);
+  scrollRightBtn.onclick = () => scrollTabs(200);
+
+  container.addEventListener('scroll', updateScrollButtons);
+  window.addEventListener('resize', updateScrollButtons);
+
+  // Initial check after DOM is ready
+  document.addEventListener('DOMContentLoaded', updateScrollButtons);
+
 </script>
 
 
