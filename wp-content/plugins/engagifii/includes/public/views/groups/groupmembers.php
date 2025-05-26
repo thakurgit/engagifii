@@ -340,7 +340,7 @@ dt_titleSearch('Search Members');
 }
 
   ?>
-  //grup list scroller
+  //group list scroller
 $(document).ready(function () {
   const $container = $('#groupTabs');
   const $scrollLeftBtn = $('#scrollLeftBtn');
