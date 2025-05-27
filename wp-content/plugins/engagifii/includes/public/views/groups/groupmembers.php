@@ -357,22 +357,22 @@ $(document).ready(function () {
 
     // Only show buttons if overflow exists
     if (overflow) {
-      $scrollLeftBtn.removeClass('d-none').addClass('d-xl-inline-flex')
+      $scrollLeftBtn.removeClass('d-none').addClass('d-inline-flex')
                     .toggleClass('disabled', atStart);
-      $scrollRightBtn.removeClass('d-none').addClass('d-xl-inline-flex')
+      $scrollRightBtn.removeClass('d-none').addClass('d-inline-flex')
                      .toggleClass('disabled', atEnd);
       $wrapper.addClass('px-4 mx-2');
     } else {
-      $scrollLeftBtn.addClass('d-none').removeClass('d-xl-inline-flex disabled');
-      $scrollRightBtn.addClass('d-none').removeClass('d-xl-inline-flex disabled');
-      $wrapper.removeClass('px-5');
+      $scrollLeftBtn.addClass('d-none').removeClass('d-inline-flex disabled');
+      $scrollRightBtn.addClass('d-none').removeClass('d-inline-flex disabled');
+      $wrapper.removeClass('px-4 mx-2');
     }
   }
 
 	function scrollTabs(direction) {
 	  const distance = $container.outerWidth() * 0.75; // 75% of visible width
 	  const scrollAmount = direction === 'left' ? -distance : distance;
-	  $container.animate({ scrollLeft: $container.scrollLeft() + scrollAmount }, 300);
+	   $container[0].scrollBy({ left: scrollAmount, behavior: 'smooth' });  
 	}
   $scrollLeftBtn.on('click', () => {
     if (!$scrollLeftBtn.hasClass('disabled')) scrollTabs('left');
