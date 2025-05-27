@@ -35,6 +35,9 @@ foreach ($groupJsonStrings as $json) {
 #groupTabs::-webkit-scrollbar {
   display: none;                  /* Chrome, Safari, Opera */
 }
+.group-card .card-text {
+font-size: 14px;	
+}
 </style>
 <div class="col-12">
 	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
@@ -237,7 +240,7 @@ foreach ($groupJsonStrings as $json) {
 	  data.forEach(function(item) {
 		var person = item.people;
 		if(isValidUrl(person.imageThumbUrl)){
-			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '">';
+			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">';
 		}else {
 			var personPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
 		}
@@ -247,7 +250,7 @@ foreach ($groupJsonStrings as $json) {
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
     '+personPhoto+'<hr>\
-    <div class="card-body p-2">\
+    <div class="card-body p-0 pt-3 group-card">\
       <h5 class="card-title">' + person.fullName + '</h5>\
       <p class="card-text mb-1"><i class="fas fa-envelope mr-1"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
       <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
