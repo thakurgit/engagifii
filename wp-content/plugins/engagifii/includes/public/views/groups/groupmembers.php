@@ -38,6 +38,14 @@ foreach ($groupJsonStrings as $json) {
 .group-card .card-text {
 font-size: 14px;	
 }
+.grid-view .card .img-default { 
+font-size: 260px;
+}
+@media screen and (max-width: 1080px) {
+  .grid-view .card .img-default {
+    font-size: 150px;
+  }
+}
 </style>
 <div class="col-12">
 	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
@@ -242,7 +250,7 @@ font-size: 14px;
 		if(isValidUrl(person.imageThumbUrl)){
 			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">';
 		}else {
-			var personPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
+			var personPhoto = '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
 		}
 		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
 		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
@@ -392,6 +400,3 @@ $(document).ready(function () {
 });
 
 </script>
-
-
-
