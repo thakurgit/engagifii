@@ -5,7 +5,6 @@
 	$response = [
     (object)['colName' => 'name',          'displayName' => 'Full Name'],
     (object)['colName' => 'position',      'displayName' => 'Position'],
-    (object)['colName' => 'imageThumbUrl', 'displayName' => 'Photo'],
     (object)['colName' => 'organization',  'displayName' => 'Organization'],
     (object)['colName' => 'email',         'displayName' => 'Email'],
     (object)['colName' => 'phone',         'displayName' => 'Phone'],
