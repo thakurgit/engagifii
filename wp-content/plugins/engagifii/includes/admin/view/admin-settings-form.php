@@ -214,7 +214,7 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 		var tid =0;
 		jQuery('.ebt-grid-column-list').each(function() {
     if(jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').length > 0) {
-        jQuery(this).prepend('<li class="toggleAll"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
+        jQuery(this).prepend('<li class="toggleAll" style="width: 98%;"><input type="checkbox" id="toggleAll_'+tid+'"/><label for="toggleAll_'+tid+'"><b><u>Select/Deselect all</u></b></label></li>');
 		jQuery('#toggleAll_'+tid).each(function(){
 		  if(jQuery(this).parent().siblings('li').find('input[type="checkbox"]').length==jQuery(this).parent().siblings('li').find('input:checked').length) {
 			 jQuery(this).prop('checked',true);

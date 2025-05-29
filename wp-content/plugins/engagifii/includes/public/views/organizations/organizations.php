@@ -4,7 +4,7 @@
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
-$groupJsonStrings = $options['group_members_settings']['groupFields'];
+$groupJsonStrings = $options['organization_settings']['orgFields'];
 $groups = [];
 foreach ($groupJsonStrings as $json) {
     $decoded = json_decode($json);
@@ -22,32 +22,19 @@ foreach ($groupJsonStrings as $json) {
           </div>
         </div>
         <div class="col-12 mb-4"></div>
-<!-- Group Tabs -->
-<div class="col-12">
-  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
-      <?php foreach($groups as $idx => $group): ?>
-          <li class="nav-item mr-3">
-              <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
-                  <?php echo htmlspecialchars($group->title); ?>
-              </a>
-          </li>
-      <?php endforeach; ?>
-  </ul>
-</div>
+
 <!-- Group Title -->
-<div class="col-12">
-    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php echo isset($groups[0]) ? htmlspecialchars($groups[0]->title) : ''; ?></h3>
-</div>
+
 	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
 		    	 <?php  $i = 0;
-				  foreach (GROUP_MEMBERS_COLS as $key){
-					  if($key == 'name'){
+				  foreach (ORGANIZATION_COLS as $key){
+					  if($key == 'OrganizationName'){
                     	$title_key = $i;
                  	 }
-				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
+				 $forDatatable[]['data'] = $key
 				  ?>
             <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
         <?php } ?>
@@ -117,9 +104,9 @@ foreach ($groupJsonStrings as $json) {
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
+		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['email','position', 'organization','phone'],
+          { "targets": ['Active/totalmember','Location', 'Tags','Status', 'OrganizationType'],
             "orderable": false
           },
 		  <?php //if(in_array('People Name', $colNames)){ ?>
@@ -129,8 +116,7 @@ foreach ($groupJsonStrings as $json) {
 		  <?php // } ?>
 		 // { className: "text-center", "targets": ['people-select'] },
 		   
-      ],
-		
+      ],		
         "language": {
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
@@ -145,9 +131,8 @@ foreach ($groupJsonStrings as $json) {
             "url": engagifiiUrl_ajaxurl,
             "type": "POST",
             "data": function(d) {  
-            	d.action='peopleloadGridDataByGroups'; 
-				d.groupId=groupId; 
-				d.titleColumn = titleColumn; 
+            	d.action='getOrganizations'; 			
+				      d.titleColumn = titleColumn; 
 				/*d.departments=departments; 
 				d.orgs=orgs; 
       			  d.status=Status;
@@ -183,8 +168,7 @@ foreach ($groupJsonStrings as $json) {
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'peopleloadGridDataByGroups',
-			  groupId:groupId,
+              action:'getOrganizations',			 
 			  viewMode:'Grid',
 			  length:length,
 			  start:start
@@ -218,29 +202,27 @@ foreach ($groupJsonStrings as $json) {
 		  return;
 		}
 	  data.forEach(function(item) {
-		var person = item.people;
-		if(isValidUrl(person.imageThumbUrl)){
-			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '">';
+		var org = item;
+		if(isValidUrl(org.imageThumbUrl)){
+			var orgPhoto = ' <img src="' + org.imageThumbUrl + '" class="card-img-top" alt="' + org.name + '">';
 		}else {
-			var personPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
+			var orgPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
 		}
-		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
-		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
-		var personPhone = person.primaryPhoneNumber && person.primaryPhoneNumber.value  ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value + '</a>'  : 'N/A';
+		var orgTotalMember = org.totalMembers ;
+    var orgActiveMember = org.activeMembers;
+		var orgStatus = org.status;
+    var orgType = org.organizationType ? org.organizationType : 'N/A';
+		var orgTag = org.Tags ? org.Tags : 'N/A';
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
-    '+personPhoto+'<hr>\
+    '+orgPhoto+'<hr>\
     <div class="card-body p-2">\
-      <h5 class="card-title">' + person.fullName + '</h5>\
-      <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
-      <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
-      <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
-      <?php } if(in_array('phone', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
-      <?php } ?>
+      <h5 class="card-title">' + org.name + '</h5>\
+       <p class="card-text mb-1"><strong>Total Members:</strong> ' + orgTotalMember + '</p>\
+          <p class="card-text mb-1"><strong>Active Members:</strong> ' + orgActiveMember + '</p>\
+          <p class="card-text mb-1"><strong>Status:</strong> ' + orgStatus + '</p>\
+          <p class="card-text mb-1"><strong>Type:</strong> ' + orgType + '</p>\
+          <p class="card-text"><strong>Tags:</strong> ' + orgTag + '</p>\
     </div>\
   </div>\
 </div>';	

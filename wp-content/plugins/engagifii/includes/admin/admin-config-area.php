@@ -59,6 +59,7 @@ class ebtAdminConfigSettings {
 		if(!$enabledModules || in_array('legislation',$enabledModules)){
 			$views[] = 'legislation/admin-column-list.php';
             $views[] = 'groupmembers/admin-column-list.php';
+             $views[] = 'organizations/admin-column-list.php';
 		}
       	if (isset($views)) {
 		  foreach ($views as $view) {

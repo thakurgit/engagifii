@@ -83,6 +83,33 @@ wp-content/mysql.sql
 /wp-content/plugins/wordpress-importer*
 /wp-content/plugins/engagifii-sso*
 /wp-content/plugins/engagifii_addon_buddyboss*
+/wp-content/plugins/advanced-custom-fields*
+/wp-content/plugins/akismet*
+/wp-content/plugins/Change Logger*
+/wp-content/plugins/cmb2*
+/wp-content/plugins/contact-form-7*
+/wp-content/plugins/easy-wp-smtp*
+/wp-content/plugins/elementor*
+/wp-content/plugins/elementor-widgets*
+/wp-content/plugins/give*
+/wp-content/plugins/mailchimp-for-wp*
+/wp-content/plugins/one-click-demo-import*
+/wp-content/plugins/ova-dep*
+/wp-content/plugins/ova-dir*
+/wp-content/plugins/ova-doc*
+/wp-content/plugins/ova-events*
+/wp-content/plugins/ova-framework*
+/wp-content/plugins/ova-portfolio*
+/wp-content/plugins/ova-sev*
+/wp-content/plugins/ova-team*
+/wp-content/plugins/pending plugin updates alert*
+/wp-content/plugins/recent-posts-widget-with-thumbnails*
+/wp-content/plugins/revslider*
+/wp-content/plugins/Site Status Notification*
+/wp-content/plugins/widget-importer-exporter*
+/wp-content/plugins/woocommerce*
+/wp-content/plugins/wordpress-importer*
+
 
 
 # large/disallowed file types
