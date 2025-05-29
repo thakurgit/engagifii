@@ -613,7 +613,7 @@ $postedData = '{
 			}else{
 				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['name'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->people->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->firstName.' '.$value->people->lastName.'</a></div>';
+            $nestedData['name'] .= '<div>'.$value->people->firstName.' '.$value->people->lastName.'</div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
             $nestedData['position'] =$value->people->peoplePosition[0]->positionName;	
 			$nestedData['organization']='<div class="d-flex align-items-center">';

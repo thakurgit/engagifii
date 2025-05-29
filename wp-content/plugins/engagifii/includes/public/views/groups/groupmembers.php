@@ -23,8 +23,34 @@ foreach ($groupJsonStrings as $json) {
         </div>
         <div class="col-12 mb-4"></div>
 <!-- Group Tabs -->
+<style>
+.prv, .nxt {
+  top: 9px;
+}
+#groupTabs {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE 10+ */
+}
+
+#groupTabs::-webkit-scrollbar {
+  display: none;                  /* Chrome, Safari, Opera */
+}
+.group-card .card-text {
+font-size: 14px;	
+}
+.grid-view .card .img-default { 
+font-size: 260px;
+}
+@media screen and (max-width: 1080px) {
+  .grid-view .card .img-default {
+    font-size: 150px;
+  }
+}
+</style>
 <div class="col-12">
-  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto overflow-x-auto" id="groupTabs" role="tablist">
+	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
+  <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
+  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
       <?php foreach($groups as $idx => $group): ?>
           <li class="nav-item mr-3">
               <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
@@ -33,12 +59,14 @@ foreach ($groupJsonStrings as $json) {
           </li>
       <?php endforeach; ?>
   </ul>
+  </div>
+  <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
 </div>
 <!-- Group Title -->
 <div class="col-12">
     <h2 id="currentGroupTitle" class="mb-5 text-center"><?php echo isset($groups[0]) ? htmlspecialchars($groups[0]->title) : ''; ?></h3>
 </div>
-	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
+	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
@@ -167,7 +195,7 @@ foreach ($groupJsonStrings as $json) {
 		   
          },
 		  "initComplete": function(settings, json) {
-			           dt_scroll();
+			         //  dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
@@ -220,9 +248,9 @@ foreach ($groupJsonStrings as $json) {
 	  data.forEach(function(item) {
 		var person = item.people;
 		if(isValidUrl(person.imageThumbUrl)){
-			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top" alt="' + person.fullName + '">';
+			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">';
 		}else {
-			var personPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
+			var personPhoto = '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
 		}
 		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
 		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
@@ -230,7 +258,7 @@ foreach ($groupJsonStrings as $json) {
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
     '+personPhoto+'<hr>\
-    <div class="card-body p-2">\
+    <div class="card-body p-0 pt-3 group-card">\
       <h5 class="card-title">' + person.fullName + '</h5>\
       <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
@@ -328,7 +356,52 @@ dt_titleSearch('Search Members');
 }
 
   ?>
+  //group list scroller
+$(document).ready(function () {
+  const $container = $('#groupTabs');
+  const $scrollLeftBtn = $('#scrollLeftBtn');
+  const $scrollRightBtn = $('#scrollRightBtn');
+  const $wrapper = $container.parent();
+
+  function updateScrollButtons() {
+    const scrollLeft = $container.scrollLeft();
+    const scrollWidth = $container[0].scrollWidth;
+    const clientWidth = $container.outerWidth();
+    const overflow = scrollWidth > clientWidth;
+    const atStart = scrollLeft <= 0;
+    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
+
+    // Only show buttons if overflow exists
+    if (overflow) {
+      $scrollLeftBtn.removeClass('d-none').addClass('d-inline-flex')
+                    .toggleClass('disabled', atStart);
+      $scrollRightBtn.removeClass('d-none').addClass('d-inline-flex')
+                     .toggleClass('disabled', atEnd);
+      $wrapper.addClass('px-4 mx-2');
+    } else {
+      $scrollLeftBtn.addClass('d-none').removeClass('d-inline-flex disabled');
+      $scrollRightBtn.addClass('d-none').removeClass('d-inline-flex disabled');
+      $wrapper.removeClass('px-4 mx-2');
+    }
+  }
+
+	function scrollTabs(direction) {
+	  const distance = $container.outerWidth() * 0.75; // 75% of visible width
+	  const scrollAmount = direction === 'left' ? -distance : distance;
+	   $container[0].scrollBy({ left: scrollAmount, behavior: 'smooth' });  
+	}
+  $scrollLeftBtn.on('click', () => {
+    if (!$scrollLeftBtn.hasClass('disabled')) scrollTabs('left');
+  });
+
+  $scrollRightBtn.on('click', () => {
+    if (!$scrollRightBtn.hasClass('disabled')) scrollTabs('right');
+  });
+
+  $container.on('scroll', updateScrollButtons);
+  $(window).on('resize', updateScrollButtons);
+
+  updateScrollButtons(); // Initial check
+});
+
 </script>
-
-
-
