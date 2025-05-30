@@ -1,5 +1,11 @@
 <?php 
-
+if (isset($groupId) && !empty($groupId)) {
+    $groupId = $groupId;
+	$viewMode = $viewMode;
+} else {
+    echo '<h3 class="text-center text-muted">Group ID not found</h3>';
+	return;
+} 
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
@@ -11,30 +17,35 @@ foreach ($groupJsonStrings as $json) {
     if ($decoded) {
         $groups[] = $decoded;
     }
-}?>
+}
+$allowedViewMode = isset($attr['viewmode']) && trim($attr['viewmode']) !== ''
+    ? strtolower($attr['viewmode'])
+    : 'both'; ?>
 <div class="container-fluid ">
 	<div class="row">
-    	
+          <?php if ($allowedViewMode === 'both'){ ?>
     	<div class="col-12 justify-content-end d-flex">
           <div class="btn-group view-mode" role="group" aria-label="">
-            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid"></i></button>
-            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list"></i></button> 
+            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
+            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
           </div>
         </div>
+            
         <div class="col-12 mb-4"></div>
+        <?php } ?>
 <!-- Group Tabs -->
 <style>
-.prv, .nxt {
+/*.prv, .nxt {
   top: 9px;
 }
 #groupTabs {
-  scrollbar-width: none;          /* Firefox */
-  -ms-overflow-style: none;       /* IE 10+ */
+  scrollbar-width: none;          
+  -ms-overflow-style: none;       
 }
 
 #groupTabs::-webkit-scrollbar {
-  display: none;                  /* Chrome, Safari, Opera */
-}
+  display: none;                  
+}*/
 .group-card .card-text {
 font-size: 14px;	
 }
@@ -47,7 +58,7 @@ font-size: 260px;
   }
 }
 </style>
-<div class="col-12">
+<?php /*?><div class="col-12">
 	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
   <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
   <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
@@ -61,11 +72,24 @@ font-size: 260px;
   </ul>
   </div>
   <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
-</div>
+</div><?php */?>
 <!-- Group Title -->
 <div class="col-12">
-    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php echo isset($groups[0]) ? htmlspecialchars($groups[0]->title) : ''; ?></h3>
+    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php  $currentTitle = '';
+        if (isset($groupId) && $groupId) {
+            foreach ($groups as $group) {
+                if ($group->id == $groupId) {
+                    $currentTitle = htmlspecialchars($group->title);
+                    break;
+                }
+            }
+        }
+        if (!$currentTitle && isset($groups[0])) {
+            $currentTitle = htmlspecialchars($groups[0]->title);
+        }
+        echo $currentTitle; ?></h3>
 </div>
+<?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
@@ -86,7 +110,8 @@ font-size: 260px;
   	</table>
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
-<div class="col-12 grid-view" style="display:none">
+<?php } if ($allowedViewMode === 'grid' ||$allowedViewMode === 'both' ){?>
+<div class="col-12 grid-view" <?php if($allowedViewMode === 'both') { ?>style="display:none" <?php } ?>>
 	<div class="row mb-4">
     	
     </div>
@@ -98,17 +123,20 @@ font-size: 260px;
 </nav>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
-
+<?php } ?>
 </div>
 </div>
 
 <script type="text/javascript">
-  var groupId = $('#groupTabs li:first-child a').attr('id');
-  var viewMode='list';
+  var groupId = '<?php echo $groupId;?>';
+  var viewMode='<?php echo $allowedViewMode; ?>';
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
-  $('#groupTabs a').click(function(){
+  <?php  if ($allowedViewMode === 'grid' ){?>
+  groupMembers(start);
+  <?php } ?>
+  /*$('#groupTabs a').click(function(){
 	  groupId = $(this).attr('id');
      var groupTitle = $(this).text();
     $('#currentGroupTitle').text(groupTitle);
@@ -119,7 +147,7 @@ font-size: 260px;
 		$('#eng-overlay').show();
 		table.draw();
 	  }
-  });
+  });*/
   $('.view-mode button').click(function(){
 	  var selectedMode = $(this).attr('view-mode');
   
@@ -352,7 +380,7 @@ dt_titleSearch('Search Members');
 
   ?>
   //group list scroller
-$(document).ready(function () {
+/*$(document).ready(function () {
   const $container = $('#groupTabs');
   const $scrollLeftBtn = $('#scrollLeftBtn');
   const $scrollRightBtn = $('#scrollRightBtn');
@@ -398,5 +426,5 @@ $(document).ready(function () {
 
   updateScrollButtons(); // Initial check
 });
-
+*/
 </script>
