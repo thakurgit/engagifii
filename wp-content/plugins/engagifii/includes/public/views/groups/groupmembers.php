@@ -294,7 +294,7 @@ var card = '<div class="col-md-3 mb-4">\
     <div class="card-body p-0 pt-3 group-card">\
       <h5 class="card-title">' + person.fullName + '</h5>\
       <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
+      <p class="card-text mb-1"><i class="fas fa-envelope mr-2"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
       <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
       <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
