@@ -367,7 +367,7 @@ $siteURL= site_url();
 							}?>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                               <?php if ($tenant_code != 'aasb' && $tenant_code != 'mha') { ?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Aanalysis</a></li>
+                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Analysis</a></li>
                               <?php } ?>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
