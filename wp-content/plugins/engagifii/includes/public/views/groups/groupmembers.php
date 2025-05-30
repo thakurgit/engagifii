@@ -16,7 +16,7 @@ foreach ($groupJsonStrings as $json) {
     $decoded = json_decode($json);
     if ($decoded) {
         $groups[] = $decoded;
-    }
+    } 
 }
 $allowedViewMode = isset($attr['viewmode']) && trim($attr['viewmode']) !== ''
     ? strtolower($attr['viewmode'])
@@ -288,15 +288,10 @@ var card = '<div class="col-md-3 mb-4">\
     '+personPhoto+'<hr>\
     <div class="card-body p-0 pt-3 group-card">\
       <h5 class="card-title">' + person.fullName + '</h5>\
-      <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
-      <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
+      <p class="card-text mb-1"><i class="fas fa-envelope mr-1"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
       <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
-      <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
-      <?php } if(in_array('phone', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
-      <?php } ?>
     </div>\
   </div>\
 </div>';	

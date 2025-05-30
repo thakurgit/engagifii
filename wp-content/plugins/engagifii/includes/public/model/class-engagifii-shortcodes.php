@@ -532,7 +532,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
     include $this->basePath . 'includes/public/views/groups/groupmembers.php';
     return ob_get_clean();
 }
-
+ 
 	public function get_organization(){
 		ob_start();
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
