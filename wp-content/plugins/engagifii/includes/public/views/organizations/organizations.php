@@ -1,105 +1,40 @@
 <?php 
-if (isset($groupId) && !empty($groupId)) {
-    $groupId = $groupId;
-	$viewMode = $viewMode;
-} else {
-    echo '<h3 class="text-center text-muted">Group ID not found</h3>';
-	return;
-} 
+
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
-$groupJsonStrings = $options['group_members_settings']['groupFields'];
+$groupJsonStrings = $options['organization_settings']['orgFields'];
 $groups = [];
 foreach ($groupJsonStrings as $json) {
     $decoded = json_decode($json);
     if ($decoded) {
         $groups[] = $decoded;
     }
-}
-$allowedViewMode = isset($attr['viewmode']) && trim($attr['viewmode']) !== ''
-    ? strtolower($attr['viewmode'])
-    : 'both'; ?>
+}?>
 <div class="container-fluid ">
 	<div class="row">
-          <?php if ($allowedViewMode === 'both'){ ?>
+    	
     	<div class="col-12 justify-content-end d-flex">
           <div class="btn-group view-mode" role="group" aria-label="">
-            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
-            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
+            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid"></i></button>
+            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list"></i></button> 
           </div>
         </div>
-            
         <div class="col-12 mb-4"></div>
-        <?php } ?>
-<!-- Group Tabs -->
-<style>
-/*.prv, .nxt {
-  top: 9px;
-}
-#groupTabs {
-  scrollbar-width: none;          
-  -ms-overflow-style: none;       
-}
 
-#groupTabs::-webkit-scrollbar {
-  display: none;                  
-}*/
-.group-card .card-text {
-font-size: 14px;	
-}
-.grid-view .card .img-default { 
-font-size: 260px;
-}
-@media screen and (max-width: 1080px) {
-  .grid-view .card .img-default {
-    font-size: 150px;
-  }
-}
-</style>
-<?php /*?><div class="col-12">
-	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
-  <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
-  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
-      <?php foreach($groups as $idx => $group): ?>
-          <li class="nav-item mr-3">
-              <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
-                  <?php echo htmlspecialchars($group->title); ?>
-              </a>
-          </li>
-      <?php endforeach; ?>
-  </ul>
-  </div>
-  <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
-</div><?php */?>
 <!-- Group Title -->
-<div class="col-12">
-    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php  $currentTitle = '';
-        if (isset($groupId) && $groupId) {
-            foreach ($groups as $group) {
-                if ($group->id == $groupId) {
-                    $currentTitle = htmlspecialchars($group->title);
-                    break;
-                }
-            }
-        }
-        if (!$currentTitle && isset($groups[0])) {
-            $currentTitle = htmlspecialchars($groups[0]->title);
-        }
-        echo $currentTitle; ?></h3>
-</div>
-<?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
-	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
+
+	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
 		    	 <?php  $i = 0;
-				  foreach (GROUP_MEMBERS_COLS as $key){
-					  if($key == 'name'){
+				  foreach (ORGANIZATION_COLS as $key){
+					  if($key == 'OrganizationName'){
                     	$title_key = $i;
                  	 }
-				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
+				 $forDatatable[]['data'] = $key
 				  ?>
             <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
         <?php } ?>
@@ -110,8 +45,7 @@ font-size: 260px;
   	</table>
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
-<?php } if ($allowedViewMode === 'grid' ||$allowedViewMode === 'both' ){?>
-<div class="col-12 grid-view" <?php if($allowedViewMode === 'both') { ?>style="display:none" <?php } ?>>
+<div class="col-12 grid-view" style="display:none">
 	<div class="row mb-4">
     	
     </div>
@@ -123,20 +57,17 @@ font-size: 260px;
 </nav>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
-<?php } ?>
+
 </div>
 </div>
 
 <script type="text/javascript">
-  var groupId = '<?php echo $groupId;?>';
-  var viewMode='<?php echo $allowedViewMode; ?>';
+  var groupId = $('#groupTabs li:first-child a').attr('id');
+  var viewMode='list';
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
-  <?php  if ($allowedViewMode === 'grid' ){?>
-  groupMembers(start);
-  <?php } ?>
-  /*$('#groupTabs a').click(function(){
+  $('#groupTabs a').click(function(){
 	  groupId = $(this).attr('id');
      var groupTitle = $(this).text();
     $('#currentGroupTitle').text(groupTitle);
@@ -147,7 +78,7 @@ font-size: 260px;
 		$('#eng-overlay').show();
 		table.draw();
 	  }
-  });*/
+  });
   $('.view-mode button').click(function(){
 	  var selectedMode = $(this).attr('view-mode');
   
@@ -173,9 +104,9 @@ font-size: 260px;
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
+		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['email','position', 'organization','phone'],
+          { "targets": ['Active/totalmember','Location', 'Tags','Status', 'OrganizationType'],
             "orderable": false
           },
 		  <?php //if(in_array('People Name', $colNames)){ ?>
@@ -185,8 +116,7 @@ font-size: 260px;
 		  <?php // } ?>
 		 // { className: "text-center", "targets": ['people-select'] },
 		   
-      ],
-		
+      ],		
         "language": {
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
@@ -201,9 +131,8 @@ font-size: 260px;
             "url": engagifiiUrl_ajaxurl,
             "type": "POST",
             "data": function(d) {  
-            	d.action='peopleloadGridDataByGroups'; 
-				d.groupId=groupId; 
-				d.titleColumn = titleColumn; 
+            	d.action='getOrganizations'; 			
+				      d.titleColumn = titleColumn; 
 				/*d.departments=departments; 
 				d.orgs=orgs; 
       			  d.status=Status;
@@ -223,7 +152,7 @@ font-size: 260px;
 		   
          },
 		  "initComplete": function(settings, json) {
-			         //  dt_scroll();
+			           dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
@@ -239,8 +168,7 @@ font-size: 260px;
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
-              action:'peopleloadGridDataByGroups',
-			  groupId:groupId,
+              action:'getOrganizations',			 
 			  viewMode:'Grid',
 			  length:length,
 			  start:start
@@ -274,29 +202,27 @@ font-size: 260px;
 		  return;
 		}
 	  data.forEach(function(item) {
-		var person = item.people;
-		if(isValidUrl(person.imageThumbUrl)){
-			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">';
+		var org = item;
+		if(isValidUrl(org.imageThumbUrl)){
+			var orgPhoto = ' <img src="' + org.imageThumbUrl + '" class="card-img-top" alt="' + org.name + '">';
 		}else {
-			var personPhoto = '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
+			var orgPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
 		}
-		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
-		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
-		var personPhone = person.primaryPhoneNumber && person.primaryPhoneNumber.value  ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value + '</a>'  : 'N/A';
+		var orgTotalMember = org.totalMembers ;
+    var orgActiveMember = org.activeMembers;
+		var orgStatus = org.status;
+    var orgType = org.organizationType ? org.organizationType : 'N/A';
+		var orgTag = org.Tags ? org.Tags : 'N/A';
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
-    '+personPhoto+'<hr>\
-    <div class="card-body p-0 pt-3 group-card">\
-      <h5 class="card-title">' + person.fullName + '</h5>\
-      <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
-      <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
-      <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
-      <?php } if(in_array('phone', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
-      <?php } ?>
+    '+orgPhoto+'<hr>\
+    <div class="card-body p-2">\
+      <h5 class="card-title">' + org.name + '</h5>\
+       <p class="card-text mb-1"><strong>Total Members:</strong> ' + orgTotalMember + '</p>\
+          <p class="card-text mb-1"><strong>Active Members:</strong> ' + orgActiveMember + '</p>\
+          <p class="card-text mb-1"><strong>Status:</strong> ' + orgStatus + '</p>\
+          <p class="card-text mb-1"><strong>Type:</strong> ' + orgType + '</p>\
+          <p class="card-text"><strong>Tags:</strong> ' + orgTag + '</p>\
     </div>\
   </div>\
 </div>';	
@@ -384,52 +310,7 @@ dt_titleSearch('Search Members');
 }
 
   ?>
-  //group list scroller
-/*$(document).ready(function () {
-  const $container = $('#groupTabs');
-  const $scrollLeftBtn = $('#scrollLeftBtn');
-  const $scrollRightBtn = $('#scrollRightBtn');
-  const $wrapper = $container.parent();
-
-  function updateScrollButtons() {
-    const scrollLeft = $container.scrollLeft();
-    const scrollWidth = $container[0].scrollWidth;
-    const clientWidth = $container.outerWidth();
-    const overflow = scrollWidth > clientWidth;
-    const atStart = scrollLeft <= 0;
-    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
-
-    // Only show buttons if overflow exists
-    if (overflow) {
-      $scrollLeftBtn.removeClass('d-none').addClass('d-inline-flex')
-                    .toggleClass('disabled', atStart);
-      $scrollRightBtn.removeClass('d-none').addClass('d-inline-flex')
-                     .toggleClass('disabled', atEnd);
-      $wrapper.addClass('px-4 mx-2');
-    } else {
-      $scrollLeftBtn.addClass('d-none').removeClass('d-inline-flex disabled');
-      $scrollRightBtn.addClass('d-none').removeClass('d-inline-flex disabled');
-      $wrapper.removeClass('px-4 mx-2');
-    }
-  }
-
-	function scrollTabs(direction) {
-	  const distance = $container.outerWidth() * 0.75; // 75% of visible width
-	  const scrollAmount = direction === 'left' ? -distance : distance;
-	   $container[0].scrollBy({ left: scrollAmount, behavior: 'smooth' });  
-	}
-  $scrollLeftBtn.on('click', () => {
-    if (!$scrollLeftBtn.hasClass('disabled')) scrollTabs('left');
-  });
-
-  $scrollRightBtn.on('click', () => {
-    if (!$scrollRightBtn.hasClass('disabled')) scrollTabs('right');
-  });
-
-  $container.on('scroll', updateScrollButtons);
-  $(window).on('resize', updateScrollButtons);
-
-  updateScrollButtons(); // Initial check
-});
-*/
 </script>
+
+
+

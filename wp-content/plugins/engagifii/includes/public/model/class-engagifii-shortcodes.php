@@ -83,7 +83,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 			'engagifii-myHome' => 'engagifii_myHome',
 			'people-list' => 'people_list',
 			'training-calendar' => 'training_calendar',
-			'group-members-list' => 'group_members_list',
+			'group_members_list' => 'group_members_list',
+			'get_organization' => 'get_organization',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -531,6 +532,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
     include $this->basePath . 'includes/public/views/groups/groupmembers.php';
     return ob_get_clean();
 }
+
+	public function get_organization(){
+		ob_start();
+		include $this->basePath.'includes/public/views/organizations/organizations.php';
+		return ob_get_clean();
+	}
 
 	//end here
 }

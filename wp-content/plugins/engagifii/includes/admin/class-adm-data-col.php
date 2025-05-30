@@ -115,5 +115,11 @@ class adminDataColumn extends Engagifii_API{
 		$dataResponse = $this->submitApiRequest($apiUrl,$postData, "GET",'dashboard');
 		return $dataResponse['api_response'];
 	}
+	public function getOrganizationsColumnData(){
+		$postData = array("Organizations");
+ 	   $apiUrl = 'exportPeople/get/personFields/';	
+		$dataResponse = $this->submitApiRequest($apiUrl,$postData, "POST",'dashboard');
+		return $dataResponse['api_response'];
+	}
 }
 return new adminDataColumn();
