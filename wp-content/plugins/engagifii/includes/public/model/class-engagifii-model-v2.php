@@ -623,8 +623,13 @@ $postedData = '{
 				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
 			}
             $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
-            $nestedData['phone'] = !empty($value->people->primaryPhoneNumber->value) ? 
-    '<a href="tel:' . $value->people->primaryPhoneNumber->value . '" style="text-decoration: none;">' . $value->people->primaryPhoneNumber->value . '</a>' : 'N/A';
+            $rawPhone = $value->people->primaryPhoneNumber->value ?? '';
+			if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
+				$formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
+				$nestedData['phone'] = '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+			} else {
+				$nestedData['phone'] = 'N/A';
+			}
 		$data[] = $nestedData;
         }
        
@@ -651,7 +656,7 @@ public function getOrganizations(){
 	   $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
 
         $postedData = '{
-            "itemCount":  ' . $_POST['length'] . ',
+            "itemCount":  100, 
             "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
             "sortBy": "createdOn",
             "sortDirection":"' . $sortDirection . '",
@@ -699,7 +704,17 @@ public function getOrganizations(){
 		}
         foreach ($collection as $key => $value) { 
             $nestedData = array();
-            $classPopover      = '';
+            $locationPopOver      = '';
+           if(count($value->locations)) {
+                $locationPopOver  = $this->_popOverOrgLocationData($key, $value->locations);
+			}
+            $locationCount = 0 ;
+            foreach($value->locations as $key => $location){
+
+                if($location->fieldName){
+                    $locationCount = $locationCount+1;
+                }
+            }
 			$nestedData['OrganizationName']='<div class="d-flex align-items-center">';
 			if($value->imageThumbUrl && filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)){
 				$nestedData['OrganizationName'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->name.'" class="rounded-circle img-fluid mr-2" src="'.$value->imageThumbUrl.'">';	
@@ -709,10 +724,30 @@ public function getOrganizations(){
             $nestedData['OrganizationName'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
             $nestedData['Status'] = $value->status;
             $nestedData['Active/totalmember'] = $value->totalMembers.'/'.$value->activeMembers;	
-			$nestedData['Location']= $value->locationInfo->locationValue ? $value->locationInfo->locationValue : 'N/A';
-			
+			//$nestedData['Location']= $value->locationInfo[0]->locationValue ? $value->locationInfo->locationValue : 'N/A';
+           if ((!empty($value->locations) && count($value->locations) > 0)) {             
+                $nestedData['Location'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
+            } else {
+                $nestedData['Location'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
+            }
+          
             $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : 'N/A';
-            $nestedData['Tags'] = '';
+             $organizationTags = $value->organizationTags;
+            $allTags = array();
+            // foreach ($organizationTags as $index => $tag) {
+                
+            //         if(count($organizationTags) > 1 && $index == 0)
+            //         {   
+            //             $tagPopover =  $this->_popOverTagData1($key, $value->organizationTags);
+
+            //                $tagCount   = count($organizationTags) - 1;
+                    
+			// 		$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+            //         }
+            //         elseif(count($organizationTags) == 1)
+            //             $allTags[] = $tag->tagName;
+            // }
+              $nestedData['organizationTags'] = $organizationTags;
           
 		$data[] = $nestedData;
         }
@@ -727,8 +762,49 @@ public function getOrganizations(){
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-        //print_r($json_data); die;
+       print_r($json_data);
         echo json_encode($json_data);
         wp_die();
     }
- }
+
+public function _popOverOrgLocationData($id, $locationData){
+$rowName = array();
+     
+ $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"></div>';
+	 $subItems = "";
+$li=1;
+	
+     foreach ($locationData as $key => $rowData) {
+        // Access address fields directly
+        $address = isset($rowData->address) ? $rowData->address : '';
+        $addressLine2 = isset($rowData->addressLine2) ? $rowData->addressLine2 : '';
+        $city = isset($rowData->city) ? $rowData->city : '';
+        $state = isset($rowData->state) ? $rowData->state : '';
+        $zip = isset($rowData->zipCode) ? $rowData->zipCode : '';
+        $country = isset($rowData->country) ? $rowData->country : '';
+        $fieldName = isset($rowData->fieldName) && $rowData->fieldName ? $rowData->fieldName : 'Address:';
+
+        $rowName[$rowData->id ?? $key] = $locationName;
+        $class = ($li % 2 == 1) ? 'bg-light' : '';
+
+        $subItems .= '<li class="px-2 py-1 border-bottom small '.$class.'">';
+        $subItems .= '<a class="d-flex align-items-center pr-2" data-toggle="collapse" href="#loc-'.$key.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>'.$fieldName.'</b><i class="fa fa-chevron-down ml-auto"></i></a>';
+        $subItems .= '<div class="collapse" id="loc-'.$key.'">';
+        $subItems .= $address;
+        if ($addressLine2) $subItems .= ', ' . $addressLine2;
+        $subItems .= ', ' . $city . ', ' . $state . ', ' . $zip . ', ' . $country;
+        // Optionally add map if lat/lng present
+        if (!empty($rowData->lat) && !empty($rowData->lng)) {
+            $subItems .= '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->lat.','.$rowData->lng.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
+        }
+        $subItems .= '</div>';
+        $subItems .= '</li>';
+        $li++;
+    }
+
+    $popOverHtml .= $subItems;
+    $popOverHtml .= '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
+    $vars = "";
+    $popOverHtml .= '</span></div></div></div></div> ';
+    return $popOverHtml . $vars;
+} }

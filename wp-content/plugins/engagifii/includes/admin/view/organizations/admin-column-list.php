@@ -5,7 +5,7 @@
     (object)['colName' => 'OrganizationName',   'displayName' => 'Organization Name'],    
     (object)['colName' => 'Active/totalmember', 'displayName' => 'Active/Total Member'],
     (object)['colName' => 'Location',           'displayName' => 'Location'],
-    (object)['colName' => 'Tags',               'displayName' => 'Tags'],
+    (object)['colName' => 'organizationTags',   'displayName' => 'Tags'],
     (object)['colName' => 'Status',             'displayName' => 'Status'],
     (object)['colName' => 'OrganizationType',   'displayName' => 'Organization Type'],
 ];  

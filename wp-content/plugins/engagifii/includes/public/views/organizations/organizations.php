@@ -4,14 +4,12 @@
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
 	$options 	= get_option( 'ebt_api_settings' );
-$groupJsonStrings = $options['organization_settings']['orgFields'];
-$groups = [];
-foreach ($groupJsonStrings as $json) {
-    $decoded = json_decode($json);
-    if ($decoded) {
-        $groups[] = $decoded;
-    }
-}?>
+  
+  if(isset($attr['groupId'])){
+    print_r($attr);
+    $view_mode = $attr['groupId'];
+}
+?>
 <div class="container-fluid ">
 	<div class="row">
     	
@@ -99,6 +97,7 @@ foreach ($groupJsonStrings as $json) {
   });
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
+          "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
        	"bInfo":false,
        	"processing": true,
@@ -106,7 +105,7 @@ foreach ($groupJsonStrings as $json) {
        	"ordering":true,
 		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['Active/totalmember','Location', 'Tags','Status', 'OrganizationType'],
+          { "targets": ['Active/totalmember','Location', 'organizationTags','Status', 'OrganizationType'],
             "orderable": false
           },
 		  <?php //if(in_array('People Name', $colNames)){ ?>

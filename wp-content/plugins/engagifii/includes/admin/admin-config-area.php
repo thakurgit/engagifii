@@ -276,6 +276,23 @@ function ebt_api_shortocde_description() {
                     'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
                 )
             )
+                ),
+                 array(
+            'title' => 'Groups Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Groups List View',
+                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="list"]'
+                ),
+                array(
+                    'name'        => 'Groups Grid View',
+                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="Grid"]'
+                ),
+                array(
+                    'name'        => 'Groups List & Grid View',
+                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
+                )
+            )
         )
     );
 
