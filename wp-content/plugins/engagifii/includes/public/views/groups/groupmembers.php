@@ -1,11 +1,11 @@
 <?php 
-if (isset($groupId) && !empty($groupId)) {
-    $groupId = $groupId;
-	$viewMode = $viewMode;
-} else {
+if (!isset($groupId) || empty($groupId)) {
     echo '<h3 class="text-center text-muted">Group ID not found</h3>';
-	return;
-} 
+    return;
+}
+$allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
+    ? strtolower($viewMode)
+    : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
@@ -18,9 +18,7 @@ foreach ($groupJsonStrings as $json) {
         $groups[] = $decoded;
     } 
 }
-$allowedViewMode = isset($attr['viewmode']) && trim($attr['viewmode']) !== ''
-    ? strtolower($attr['viewmode'])
-    : 'both'; ?>
+ ?>
 <div class="container-fluid ">
 	<div class="row">
           <?php if ($allowedViewMode === 'both'){ ?>
