@@ -282,15 +282,15 @@ function ebt_api_shortocde_description() {
             'list'  => array(
                 array(
                     'name'        => 'Groups List View',
-                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="list"]'
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="list"]'
                 ),
                 array(
                     'name'        => 'Groups Grid View',
-                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="Grid"]'
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="Grid"]'
                 ),
                 array(
                     'name'        => 'Groups List & Grid View',
-                    'shortcode'   => '[group_members_list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
                 )
             )
         )

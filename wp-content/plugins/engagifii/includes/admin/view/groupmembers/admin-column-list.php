@@ -53,53 +53,9 @@
 		
 		
     } ?>
-	<h3>Filter Settings (Group List) <span> <input type="text" id="searchGroups" onkeyup="searchGroup()" placeholder="Search..." class="regular-text"></span></h3>
-<hr>
-<?php
-$groupList = $obj->getGroupsList();
-$result = json_decode($groupList['api_response'])->result;
-//print_r(($options));
-		  echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="searchGroupsList" style="width:100%; display:block; max-height:200px; overflow:auto;">';
-		if($result){
-			$selectedGroups = isset($options['group_members_settings']['groupFields']) ? $options['group_members_settings']['groupFields'] : [];
-		foreach ($result as  $groupList) {
-			  $isChecked = '';
-			  foreach ($selectedGroups as $savedGroup) {
-				  $savedData = json_decode(html_entity_decode($savedGroup), true);
-				  if (isset($savedData['id']) && $savedData['id'] == $groupList->groupView->id) {
-					  $isChecked = ' checked';
-					  break;
-				  }
-			  }
-              echo '<li style="width:31%; display:inline-block;word-break:break-word;">
-    <input id="'.$groupList->groupView->id.'" 
-           class="" 
-           type="checkbox" 
-           name="ebt_api_settings[group_members_settings][groupFields][]" 
-           '.$isChecked.' 
-           value=\'' . 
-           htmlspecialchars(json_encode([
-               'id' => $groupList->groupView->id,
-               'title' => $groupList->groupView->title
-           ]), ENT_QUOTES, 'UTF-8') . 
-           '\'>
-    <label for="'.$groupList->groupView->id.'">'.$groupList->groupView->title.'</label> 
-    
-</li>';
+	
 
-   
- 					  
-	}
-		}else {
-			echo '<b style="color:red"><i>No data found!</i></b>';	
-		}
-    
-	echo '</ul>';		
-
-		echo '</div>';
-		
-?>
-
+</div>
 
 
 </div>
