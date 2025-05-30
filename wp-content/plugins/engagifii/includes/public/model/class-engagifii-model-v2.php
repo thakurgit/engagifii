@@ -623,8 +623,13 @@ $postedData = '{
 				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
 			}
             $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
-            $nestedData['phone'] = !empty($value->people->primaryPhoneNumber->value) ? 
-    '<a href="tel:' . $value->people->primaryPhoneNumber->value . '" style="text-decoration: none;">' . $value->people->primaryPhoneNumber->value . '</a>' : 'N/A';
+            $rawPhone = $value->people->primaryPhoneNumber->value ?? '';
+			if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
+				$formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
+				$nestedData['phone'] = '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+			} else {
+				$nestedData['phone'] = 'N/A';
+			}
 		$data[] = $nestedData;
         }
        

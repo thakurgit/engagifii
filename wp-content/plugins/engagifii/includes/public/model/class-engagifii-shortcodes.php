@@ -83,8 +83,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 			'engagifii-myHome' => 'engagifii_myHome',
 			'people-list' => 'people_list',
 			'training-calendar' => 'training_calendar',
-			'group_members_list' => 'group_members_list',
-			'get_organization' => 'get_organization',
+			'group-members-list' => 'group_members_list',
+			'get-organization' => 'get_organization',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {

@@ -282,16 +282,28 @@ font-size: 260px;
 		}
 		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
 		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
-		var personPhone = person.primaryPhoneNumber && person.primaryPhoneNumber.value  ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value + '</a>'  : 'N/A';
+		var rawNumber = person.primaryPhoneNumber && person.primaryPhoneNumber.value;
+		var formattedPhone = 'N/A';
+		if (rawNumber && rawNumber.length === 10) {
+			formattedPhone = rawNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+		}
+		var personPhone = rawNumber
+    ? '<a href="tel:' + rawNumber + '">' + formattedPhone + '</a>'
+    : 'N/A';
 var card = '<div class="col-md-3 mb-4">\
   <div class="card h-100 shadow p-3">\
     '+personPhoto+'<hr>\
     <div class="card-body p-0 pt-3 group-card">\
       <h5 class="card-title">' + person.fullName + '</h5>\
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-1"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
+      <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
+      <p class="card-text mb-1"><i class="fas fa-envelope mr-"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
+      <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
+      <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
+      <?php } if(in_array('phone', GROUP_MEMBERS_COLS)){ ?>
       <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
+      <?php } ?>
     </div>\
   </div>\
 </div>';	
