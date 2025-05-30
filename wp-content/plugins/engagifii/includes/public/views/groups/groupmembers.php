@@ -72,7 +72,7 @@ font-size: 260px;
   <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
 </div><?php */?>
 <!-- Group Title -->
-<? /*<div class="col-12">
+<?php /* <div class="col-12">
     <h2 id="currentGroupTitle" class="mb-5 text-center"><?php  $currentTitle = '';
         if (isset($groupId) && $groupId) {
             foreach ($groups as $group) {
@@ -86,7 +86,7 @@ font-size: 260px;
             $currentTitle = htmlspecialchars($groups[0]->title);
         }
         echo $currentTitle; ?></h3>
-</div> */ ?>
+</div> <?php */?>
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
