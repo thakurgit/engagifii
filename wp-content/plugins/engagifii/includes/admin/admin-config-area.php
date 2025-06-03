@@ -294,23 +294,23 @@ function ebt_api_shortocde_description() {
                 )
             )
                 ),
-                 array(
-            'title' => 'Organization Shortcodes',
-            'list'  => array(
-                array(
-                    'name'        => 'Organization List View',
-                    'shortcode'   => '[get-organization viewmode="list"]'
-                ),
-                array(
-                    'name'        => 'Organization Grid View',
-                    'shortcode'   => '[get-organization viewmode="grid"]'
-                ),
-                array(
-                    'name'        => 'Organization List & Grid View',
-                    'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
-                )
-            )
-        )
+        //          array(
+        //     'title' => 'Organization Shortcodes',
+        //     'list'  => array(
+        //         array(
+        //             'name'        => 'Organization List View',
+        //             'shortcode'   => '[get-organization viewmode="list"]'
+        //         ),
+        //         array(
+        //             'name'        => 'Organization Grid View',
+        //             'shortcode'   => '[get-organization viewmode="grid"]'
+        //         ),
+        //         array(
+        //             'name'        => 'Organization List & Grid View',
+        //             'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
+        //         )
+        //     )
+        // )
     );
 
     echo '<div class="engagifii-setting shortcode-list">';
