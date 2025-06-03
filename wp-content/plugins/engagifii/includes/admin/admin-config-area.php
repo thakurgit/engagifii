@@ -285,11 +285,11 @@ function ebt_api_shortocde_description() {
                     'shortcode'   => '[group-members-list id="your_group_id" viewMode="list"]'
                 ),
                 array(
-                    'name'        => 'Groups Members Grid View',
+                    'name'        => 'Group Members Grid View',
                     'shortcode'   => '[group-members-list id="your_group_id" viewMode="Grid"]'
                 ),
                 array(
-                    'name'        => 'Groups Members List & Grid View',
+                    'name'        => 'Group Members List & Grid View',
                     'shortcode'   => '[group-members-list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
                 )
             )
