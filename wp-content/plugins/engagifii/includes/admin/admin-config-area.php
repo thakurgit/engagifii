@@ -278,7 +278,7 @@ function ebt_api_shortocde_description() {
             )
                 ),
                  array(
-            'title' => 'Groups Shortcodes',
+            'title' => 'Group Member Directory Shortcodes',
             'list'  => array(
                 array(
                     'name'        => 'Groups List View',
@@ -291,6 +291,23 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'Groups List & Grid View',
                     'shortcode'   => '[group-members-list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
+                )
+            )
+                ),
+                 array(
+            'title' => 'Organization Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Organization List View',
+                    'shortcode'   => '[get-organization viewmode="list"]'
+                ),
+                array(
+                    'name'        => 'Organization Grid View',
+                    'shortcode'   => '[get-organization viewmode="grid"]'
+                ),
+                array(
+                    'name'        => 'Organization List & Grid View',
+                    'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
                 )
             )
         )
