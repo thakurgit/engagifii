@@ -40,29 +40,7 @@ if(!$dataResponse['api_response']){
   	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
 	}
 
-    /* Get Tags list */
-    /*$payloadData = array();
-    $getCurrentdate = date("Y-m-d");
-    $payloadData['selectedDate'] = $getCurrentdate;
-    $payloadData['itemCount'] = 10;
-    $payloadData['sortBy'] = 'createdon';
-    $payloadData['sortDirection'] = 'desc';
-    $payloadData['pageNumber'] = 1;
-    $payloadData['filterBody'] = array('searchText' => '', 'selectedDate' => $getCurrentdate);
-
-    $postedData = $payloadData;
-    
-    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-	$date = date('Y-m-d');
-	if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
-    	$tags = $obj->eventsAllTags();
-	}
-    $eventTypes = $obj->eventTypes($date);
-    $eventLocations = $obj->eventLocation();
-    //print_r($dataResponse);
-    $dateRange  = $obj->eventDateFilter($date);
-    $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));*/
+ 
     
 ?>
 
@@ -134,11 +112,7 @@ ob_start();
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
           <?php
-		  /*if($eventTypes){
-            foreach ($eventTypes as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
-            }
-            }*/
+		 
           ?>  
         </ul></div>
       </div>
@@ -157,11 +131,7 @@ ob_start();
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
               <?php
-			 /* if($eventLocations){
-                foreach ($eventLocations as $key => $value) {
-           echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
-                }
-                }*/
+		
               ?>  
             </ul></div>
           </div>
@@ -178,11 +148,7 @@ ob_start();
               <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
             </div>
           <?php
-		 /* if($tags){
-            foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
-            }
-            }*/
+		
           ?>  
         </ul></div>
       </div>
@@ -399,41 +365,7 @@ dt_titleSearch('Search Events');
   <?php
 }
   ?>
-  // function eventRegPopUp(tpath){
-	// $('.open-pop').click(function(e){
-	// 	var tpath = $(this).attr('data-url');
-	// 	//popup
-	// 		var childWindow;
-  //      // function openChildWindow() {
-  //           // Open the child window and store the reference
-  //           childWindow = window.open(tpath, '', 'width=1300, height=700');
-  //           // Optional: Center the child window (not reliable for all browsers)
-  //           if (childWindow) {
-  //               var screenWidth = window.screen.width;
-  //               var screenHeight = window.screen.height;
-  //               var left = (screenWidth - 1000) / 2;
-  //               var top = (screenHeight - 650) / 2;
-  //               childWindow.moveTo(left, top);
-  //           }
-  //           // Set an interval to periodically check the child window status
-  //           var checkChildWindow = setInterval(function() {
-  //               if (childWindow && childWindow.closed) {
-  //                   // Update button text to indicate the parent window is refreshing
-  //                   //document.getElementById('openChildButton').innerText = 'Refreshing...';
-  //                   // Refresh the parent window when the child window is closed
-  //                   //location.reload();
-	// 				table.draw();
-  //                   clearInterval(checkChildWindow); // Stop checking once the child window is closed
-  //               }
-  //           }, 500); // Adjust the interval as needed
-			
-  //       //}
-
-		
-		
-	// 	e.preventDefault();
-	// });
-  // }
+ 
   function eventRegPopUp() {
     $('.open-pop').click(function(e) {
         var tpath = $(this).attr('data-url');

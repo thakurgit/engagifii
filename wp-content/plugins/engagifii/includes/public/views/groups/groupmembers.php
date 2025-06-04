@@ -8,16 +8,16 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
-  $date           =   date('Y-m-d');
-	$options 	= get_option( 'ebt_api_settings' );
-$groupJsonStrings = $options['group_members_settings']['groupFields'];
-$groups = [];
-foreach ($groupJsonStrings as $json) {
-    $decoded = json_decode($json);
-    if ($decoded) {
-        $groups[] = $decoded;
-    } 
-}
+  //$date           =   date('Y-m-d');
+	//$options 	= get_option( 'ebt_api_settings' );
+// $groupJsonStrings = $options['group_members_settings']['groupFields'];
+// $groups = [];
+// foreach ($groupJsonStrings as $json) {
+//     $decoded = json_decode($json);
+//     if ($decoded) {
+//         $groups[] = $decoded;
+//     } 
+// }
  ?>
 <div class="container-fluid ">
 	<div class="row">

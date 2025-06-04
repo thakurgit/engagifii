@@ -3,15 +3,30 @@
 <?php
     $obj =  new adminDataColumn();
 	$response = [
-    (object)['colName' => 'name',          'displayName' => 'Full Name'],
-    (object)['colName' => 'position',      'displayName' => 'Position'],
-    (object)['colName' => 'organization',  'displayName' => 'Organization'],
-    (object)['colName' => 'email',         'displayName' => 'Email'],
-    (object)['colName' => 'phone',         'displayName' => 'Phone'],
+    (object)['colName' => 'name',              'displayName' => 'Name'],
+    (object)['colName' => 'position',          'displayName' => 'Position'],
+    (object)['colName' => 'organization',      'displayName' => 'Organization'],
+    (object)['colName' => 'email',             'displayName' => 'Email'],
+    (object)['colName' => 'phone',             'displayName' => 'Phone'],
+    (object)['colName' => 'department', 'displayName' => 'Current Department'],   
+    (object)['colName' => 'term',              'displayName' => 'Term'],
+    (object)['colName' => 'region',            'displayName' => 'Region'],
+    (object)['colName' => 'status',            'displayName' => 'Status'],
+    (object)['colName' => 'added',             'displayName' => 'Added'],
+    (object)['colName' => 'lastUpdated',       'displayName' => 'Last Updated'],
+    (object)['colName' => 'invitationStatus',  'displayName' => 'Invitation Status'],
+    (object)['colName' => 'roles',             'displayName' => 'Roles'],
+    (object)['colName' => 'lastLogin',         'displayName' => 'Last Login'],
+    (object)['colName' => 'totalTimeWorked',   'displayName' => 'Total Time Worked'],    
+    (object)['colName' => 'personType',        'displayName' => 'Person Type'],
+    (object)['colName' => 'tags',              'displayName' => 'Tags'],
+    (object)['colName' => 'action',            'displayName' => 'Action'],
+    (object)['colName' => 'age',               'displayName' => 'Age'],
+    (object)['colName' => 'birthdate',         'displayName' => 'Birthdate'],
 ];
     
     $options = get_option( 'ebt_api_settings' );
-	$required_column_array = ['name', 'position', 'imageThumbUrl', 'organization', 'email', 'phone'];
+	//$required_column_array = ['name', 'position', 'imageThumbUrl', 'organization', 'email', 'phone'];
 	//print_r($response);
 	
     $group_member_visible_column_list = array();
@@ -30,7 +45,7 @@
     	echo '<input type="hidden" class="cls" name="ebt_api_settings[event_class_col_order]" value="'.$options['event_class_col_order'].'" /><ul class="ebt-grid-column-list sortable-list" id="eventList">';
     	$counter=1;
 		foreach ($response as $key => $row) {
-			if(in_array($row->colName, $required_column_array)){
+			//if(in_array($row->colName, $required_column_array)){
 			//print_r($row->colName)."<br>";
 			
 			$checked = "";
@@ -47,7 +62,7 @@
 			echo '<li  data-order="'.$counter.'"> <input id="'.$row->colName.'" class="" type="checkbox" name="ebt_api_settings[group_members_settings][visible_column_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
 				
 				$counter++;
-		}
+		//}
     	}
     	echo '</ul>';
 		

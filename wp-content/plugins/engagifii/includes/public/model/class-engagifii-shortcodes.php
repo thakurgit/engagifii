@@ -533,8 +533,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
     return ob_get_clean();
 }
  
-	public function get_organization(){
+	public function get_organization($attr){
 		ob_start();
+		$atts = shortcode_atts(array(      
+        'viewmode' => ''
+    ), $attr);   
+    $viewMode = $atts['viewmode'];
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
 		return ob_get_clean();
 	}

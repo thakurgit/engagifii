@@ -7,11 +7,14 @@
     (object)['colName' => 'Location',           'displayName' => 'Location'],
     (object)['colName' => 'organizationTags',   'displayName' => 'Tags'],
     (object)['colName' => 'Status',             'displayName' => 'Status'],
+	(object)['colName' => 'phoneNumbers',       'displayName' => 'Phone Numbers'],
     (object)['colName' => 'OrganizationType',   'displayName' => 'Organization Type'],
+	(object)['colName' => 'Email',   			'displayName' => 'Email'],
+	(object)['colName' => 'Tags',   			'displayName' => 'Tags'],
 ];  
 	//print_r($response); die;
     $options = get_option( 'ebt_api_settings' );
-	$required_column_array = ['OrganizationName', 'Active/totalmember', 'Location', 'Tags', 'Status', 'OrganizationType'];
+	$required_column_array = ['OrganizationName', 'Active/totalmember', 'Location', 'Tags', 'Status', 'phoneNumbers', 'Email', 'Tags', 'OrganizationType'];
 	//print_r($response);
 	
     $organization_visible_column_list = array();

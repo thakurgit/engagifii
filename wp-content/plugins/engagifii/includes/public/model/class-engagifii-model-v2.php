@@ -615,14 +615,24 @@ $postedData = '{
 			}
             $nestedData['name'] .= '<div>'.$value->people->firstName.' '.$value->people->lastName.'</div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
-            $nestedData['position'] =$value->people->peoplePosition[0]->positionName;	
+           $positionName = '';
+                if (!empty($value->people->peoplePosition) && is_array($value->people->peoplePosition)) {
+                    foreach ($value->people->peoplePosition as $position) {
+                        if (!empty($position->isCurrent) && $position->isCurrent === true) {
+                            $positionName = $position->positionName;
+                            break; // Stop at the first match
+                        }
+                    }
+                }
+            $nestedData['position'] = $positionName;
 			$nestedData['organization']='<div class="d-flex align-items-center">';
 			if($value->people->organization->imageThumbUrl && filter_var($value->people->organization->imageThumbUrl, FILTER_VALIDATE_URL)){
 				$nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
 			}else{
 				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
 			}
-            $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
+            $nestedData['department'] = $value->people->peopleDepartment[0]->departmentName;
+
             $rawPhone = $value->people->primaryPhoneNumber->value ?? '';
 			if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
 				$formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
@@ -656,7 +666,7 @@ public function getOrganizations(){
 	   $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
 
         $postedData = '{
-            "itemCount":  100, 
+            "itemCount":  ' . $_POST['length'] . ',
             "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
             "sortBy": "createdOn",
             "sortDirection":"' . $sortDirection . '",
@@ -730,24 +740,51 @@ public function getOrganizations(){
             } else {
                 $nestedData['Location'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
-          
-            $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : 'N/A';
-             $organizationTags = $value->organizationTags;
-            $allTags = array();
-            // foreach ($organizationTags as $index => $tag) {
-                
-            //         if(count($organizationTags) > 1 && $index == 0)
-            //         {   
-            //             $tagPopover =  $this->_popOverTagData1($key, $value->organizationTags);
+          $nestedData['phoneNumbers'] = '';
+            if($value->phoneNumbers && $value->phoneNumbers[0]->value){
+                $rawPhone = $value->phoneNumbers[0]->value;
+                if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
+                    $formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
+                    $nestedData['phoneNumbers'] = '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+                } else {
+                    $nestedData['phoneNumbers'] = '';
+                }
+            }
+            $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : '';
+             $nestedData['Email'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
+            // $organizationTags = $value->organizationTags;
+             $filterTag = $value->organizationTags;
+            // $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
+            // $filterTag = array_values($allTags);
+             $default_Tags = array();
+             if (is_array($filterTag) && count($filterTag)) {
 
-            //                $tagCount   = count($organizationTags) - 1;
-                    
-			// 		$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
-            //         }
-            //         elseif(count($organizationTags) == 1)
-            //             $allTags[] = $tag->tagName;
-            // }
-              $nestedData['organizationTags'] = $organizationTags;
+                 $allTags = array();
+                
+                 foreach ($filterTag as $index => $tag) {
+						$default_Tags[$index] = new stdClass();
+                     $default_Tags[$index]->tagName = $tag->tagName;
+                     $default_Tags[$index]->id =$index;
+                 }
+                
+                 foreach ($default_Tags as $index => $value) {
+                   
+                     if(count($default_Tags) > 1 && $index == 0)
+                     {   
+                        
+                         $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                          $tagCount   = count($default_Tags) - 1;
+       		 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
+					
+                     }
+                     elseif(count($default_Tags) == 1)
+                         $allTags[] = $value->tagName;
+
+                 }
+                $nestedData['Tags'] = $allTags;
+             }else{
+                 $nestedData['Tags'] = [];
+             }
           
 		$data[] = $nestedData;
         }
@@ -762,7 +799,7 @@ public function getOrganizations(){
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-       print_r($json_data);
+       //print_r($json_data);
         echo json_encode($json_data);
         wp_die();
     }
@@ -784,12 +821,12 @@ $li=1;
         $country = isset($rowData->country) ? $rowData->country : '';
         $fieldName = isset($rowData->fieldName) && $rowData->fieldName ? $rowData->fieldName : 'Address:';
 
-        $rowName[$rowData->id ?? $key] = $locationName;
+       $rowName[$rowData->id ?? $key] = $locationName;
         $class = ($li % 2 == 1) ? 'bg-light' : '';
 
         $subItems .= '<li class="px-2 py-1 border-bottom small '.$class.'">';
         $subItems .= '<a class="d-flex align-items-center pr-2" data-toggle="collapse" href="#loc-'.$key.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>'.$fieldName.'</b><i class="fa fa-chevron-down ml-auto"></i></a>';
-        $subItems .= '<div class="collapse" id="loc-'.$key.'">';
+        $subItems .= '<div class="collapse text-wrap" id="loc-'.$key.'">';
         $subItems .= $address;
         if ($addressLine2) $subItems .= ', ' . $addressLine2;
         $subItems .= ', ' . $city . ', ' . $state . ', ' . $zip . ', ' . $country;
@@ -807,4 +844,36 @@ $li=1;
     $vars = "";
     $popOverHtml .= '</span></div></div></div></div> ';
     return $popOverHtml . $vars;
-} }
+}
+private function _popOverTagData1($id, $tagData){
+        
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
+        $subItems = "";
+		$li=1;
+        foreach ($tagData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->tagName;
+           
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->tagName .  '</li>';
+			$li++;
+        }
+
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+        $vars = "";
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
+}

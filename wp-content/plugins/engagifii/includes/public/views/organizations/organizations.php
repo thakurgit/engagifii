@@ -3,38 +3,63 @@
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
-	$options 	= get_option( 'ebt_api_settings' );
-  
-  if(isset($attr['groupId'])){
-    print_r($attr);
-    $view_mode = $attr['groupId'];
-}
+	$options 	= get_option( 'ebt_api_settings' );   
+  $title_key = 0;
+$allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
+    ? strtolower($viewMode)
+    : 'both';
 ?>
 <div class="container-fluid ">
 	<div class="row">
-    	
+    	  <?php if ($allowedViewMode === 'both'){ ?>
     	<div class="col-12 justify-content-end d-flex">
           <div class="btn-group view-mode" role="group" aria-label="">
-            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid"></i></button>
-            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list"></i></button> 
+            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
+            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
           </div>
         </div>
         <div class="col-12 mb-4"></div>
+  <?php } ?>
+  <style>
+/*.prv, .nxt {
+  top: 9px;
+}
+#groupTabs {
+  scrollbar-width: none;          
+  -ms-overflow-style: none;       
+}
 
+#groupTabs::-webkit-scrollbar {
+  display: none;                  
+}*/
+.group-card .card-text {
+font-size: 14px;	
+}
+.grid-view .card .img-default { 
+font-size: 260px;
+}
+@media screen and (max-width: 1080px) {
+  .grid-view .card .img-default {
+    font-size: 150px;
+  }
+}
+</style>
 <!-- Group Title -->
-
+<?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
-		    	 <?php  $i = 0;
+		    	 <?php  $i = 0;         
 				  foreach (ORGANIZATION_COLS as $key){
 					  if($key == 'OrganizationName'){
                     	$title_key = $i;
                  	 }
 				 $forDatatable[]['data'] = $key
 				  ?>
-            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
+            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>">
+    <?php echo trim(preg_replace('/([a-z])([A-Z])/', '$1 $2', $key)); ?>
+</th>
         <?php } ?>
  		    
 
@@ -43,7 +68,8 @@
   	</table>
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
-<div class="col-12 grid-view" style="display:none">
+<?php } if ($allowedViewMode === 'grid' || $allowedViewMode === 'both' ){?>
+<div class="col-12 grid-view" <?php if($allowedViewMode === 'both') { ?>style="display:none" <?php } ?>>
 	<div class="row mb-4">
     	
     </div>
@@ -55,40 +81,29 @@
 </nav>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
-
+<?php } ?>
 </div>
 </div>
 
 <script type="text/javascript">
-  var groupId = $('#groupTabs li:first-child a').attr('id');
+  //var groupId = $('#groupTabs li:first-child a').attr('id');
+  var viewMode='<?php echo $allowedViewMode; ?>';
   var viewMode='list';
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
-  $('#groupTabs a').click(function(){
-	  groupId = $(this).attr('id');
-     var groupTitle = $(this).text();
-    $('#currentGroupTitle').text(groupTitle);
-
-	  if(viewMode=='grid'){
-		  groupMembers(start);	
-	  } else {
-		$('#eng-overlay').show();
-		table.draw();
-	  }
-  });
+ <?php  if ($allowedViewMode === 'grid' ){?>
+   OrgList(start);
+  <?php } ?>
   $('.view-mode button').click(function(){
-	  var selectedMode = $(this).attr('view-mode');
-  
-	  if (selectedMode === viewMode) return;
-  
+	  var selectedMode = $(this).attr('view-mode');  
+	  if (selectedMode === viewMode) return;  
 	  viewMode = selectedMode;
-	  $(this).addClass('active').siblings().removeClass('active');
-  
+	  $(this).addClass('active').siblings().removeClass('active');  
 	  if(viewMode === 'grid'){
 		  $('.list-view').hide();
 		  $('.grid-view').show();
-		  groupMembers(start);
+		  OrgList(start);
 	  } else {
 		  $('.list-view').show();
 		  $('.grid-view').hide();
@@ -105,7 +120,7 @@
        	"ordering":true,
 		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['Active/totalmember','Location', 'organizationTags','Status', 'OrganizationType'],
+          { "targets": ['active/totalmember', 'location', 'status', 'phonenumbers', 'email', 'organizationtype', 'tags'],
             "orderable": false
           },
 		  <?php //if(in_array('People Name', $colNames)){ ?>
@@ -131,16 +146,11 @@
             "type": "POST",
             "data": function(d) {  
             	d.action='getOrganizations'; 			
-				      d.titleColumn = titleColumn; 
-				/*d.departments=departments; 
-				d.orgs=orgs; 
-      			  d.status=Status;
-				d.totalTime= totalTime;
-				d.emailColumn = emailColumn;*/ 
+				      d.titleColumn = titleColumn; 			
             }, 
         },
         createdRow: function (row, data, index) { 
-            // $(row).addClass( 'bg-white1' );
+           
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
 		 
@@ -160,7 +170,7 @@
     } ).dataTable();
 	
 	//fetch group members
-	function groupMembers(start){ 
+	function OrgList(start){ 
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
 	   $.ajax({
@@ -178,7 +188,7 @@
 			try {
 			   var parsedResponse = JSON.parse(response);
 			  var data = parsedResponse.data || [];
-			  renderGroupGrid(data);
+			  renderOrgGrid(data);
 			 renderPagination(parsedResponse.count, start, length);
 			} catch (e) {
 			  console.error('Error parsing response:', e);
@@ -193,7 +203,7 @@
 	}
 	
 	//grid layout
-	function renderGroupGrid(data) {
+	function renderOrgGrid(data) {
 	  var container = $('.grid-view .row');
 	  container.empty(); // Clear previous content
 		if (data.length === 0) {
@@ -286,7 +296,7 @@ function renderPagination(totalCount, start, length) {
 
     if (newPage !== currentPage) {
       start = (newPage - 1) * length;
-      groupMembers(start); // re-fetch new data
+      OrgList(start); // re-fetch new data
     }
   });
 }
@@ -304,7 +314,7 @@ function isValidUrl(url) {
 <?php
   if($title_key > -1){
 ?>
-dt_titleSearch('Search Members');
+dt_titleSearch('Search Organization');
   <?php
 }
 

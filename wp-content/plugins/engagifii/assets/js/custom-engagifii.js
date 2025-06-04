@@ -278,3 +278,6 @@ $('.input-group-append').css('cursor', 'pointer');
 window.addEventListener("resize", function() {
     $(window).resize();
 });
+$(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+});
