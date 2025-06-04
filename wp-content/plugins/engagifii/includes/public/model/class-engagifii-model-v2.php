@@ -631,6 +631,7 @@ $postedData = '{
 			}else{
 				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
 			}
+            $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
             $nestedData['department'] = $value->people->peopleDepartment[0]->departmentName;
 
             $rawPhone = $value->people->primaryPhoneNumber->value ?? '';

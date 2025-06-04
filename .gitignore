@@ -147,3 +147,4 @@ wp-content/mysql.sql
 *.wmv
 *.avi
 wp-content/plugins/engagifii/includes/public/model/class-engagifii-model-okresa.php
+wp-content/debug.log
