@@ -8,6 +8,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
+  $title_key = 0;
   //$date           =   date('Y-m-d');
 	//$options 	= get_option( 'ebt_api_settings' );
 // $groupJsonStrings = $options['group_members_settings']['groupFields'];
@@ -99,7 +100,9 @@ font-size: 260px;
                  	 }
 				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
 				  ?>
-            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>"><?php echo $key; ?></th>
+            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>">
+    <?php echo trim(preg_replace('/([a-z])([A-Z])/', '$1 $2', $key)); ?>
+</th>
         <?php } ?>
  		    
 
@@ -173,9 +176,7 @@ font-size: 260px;
        	"ordering":true,
 		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['email','position', 'organization','phone'],
-            "orderable": false
-          },
+           { "targets": "_all", "orderable": false }
 		  <?php //if(in_array('People Name', $colNames)){ ?>
 		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
 		  <?php //} if(in_array('Email', $colNames)){ ?>
