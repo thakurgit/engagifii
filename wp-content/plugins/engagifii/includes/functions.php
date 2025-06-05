@@ -156,3 +156,29 @@ function add_loginout_link( $items, $args ) {
     }
     return $items;
 }
+//save group member columns on ajax save
+add_action('wp_ajax_save_groupmember_cols', 'save_groupmember_cols');
+function save_groupmember_cols() {
+	check_ajax_referer('save_groups_nonce', 'security');
+    if (!isset($_POST['security'])) {
+        wp_send_json_error(['message' => 'Security check failed.']);
+    }
+
+    // Sanitize inputs
+    $visible = isset($_POST['visible_column_list']) ? array_map('sanitize_text_field', (array) $_POST['visible_column_list']) : [];
+    $order = isset($_POST['column_order']) ? sanitize_text_field($_POST['column_order']) : '';
+    // Get existing settings
+    $settings = get_option('ebt_api_settings', []);
+    if (!isset($settings['group_members_settings'])) {
+        $settings['group_members_settings'] = [];
+    }
+
+    // Update only relevant parts
+    $settings['group_members_settings']['visible_column_list'] = $visible;
+    $settings['group_members_settings']['order'] = $order;
+
+    // Save updated settings
+    update_option('ebt_api_settings', $settings);
+
+    wp_send_json_success(['message' => 'Group Column settings saved successfully.']);
+}

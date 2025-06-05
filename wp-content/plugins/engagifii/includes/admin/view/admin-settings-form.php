@@ -162,8 +162,8 @@ $include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
 <?php
 	if($tab!= 'shortcode'){
       do_action('engagifiiGetColumnList');
-	   do_action('engagifiiCustomizer');
-        do_action('profileSettings');
+	  do_action('engagifiiCustomizer');
+      do_action('profileSettings');
 	}
 		?>
     <div class="ebt-submit-btn">
@@ -225,9 +225,9 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 		});
 		jQuery('#toggleAll_'+tid).change(function(){
 			if(jQuery(this).is(':checked')){
-				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true);
+				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',true).trigger('change');
 			} else {
-				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',false);
+				jQuery(this).parent().siblings('li').find('input[type="checkbox"]').not('input[readonly]').prop('checked',false).trigger('change');
 			}
 		});
       tid++;  
