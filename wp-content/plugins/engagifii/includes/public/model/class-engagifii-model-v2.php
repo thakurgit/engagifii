@@ -543,111 +543,228 @@ public function geteventsClasscalendar(){
 wp_die();
 }
     //GroupMembers
-     public function peopleloadGridDataByGroups(){
+   public function peopleloadGridDataByGroups(){
         $options = get_option('ebt_api_settings');
         $front_pages = $options['front_pages'];
-        //$postedData = $this->_preparePeopleData();
         $groupId = $_POST['groupId'];
         $viewMode = $_POST['viewMode'];
-       $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
-	   $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
-$postedData = '{
-  "groupId": "' . $groupId . '",
-  "itemCount": ' . $_POST['length'] . ',
-  "sortBy": "name",
-  "sortDirection": "' . $sortDirection . '",
-  "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
-  "filterBody": {
-    "pageSize": 10,
-    "pageNumber": 1,
-	"searchText":"'.$searchText.'"
-  },
-  "fields": [
-    {"fieldId": "isFavorite", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "firstName", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "title", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "email", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "phone", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "department", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "position", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "terms", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "status", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "createdDate", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "modifiedDate", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "userStatus", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "roles", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "lastLogin", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "totalTimeWorked", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "organization", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "personas", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "tags", "controlTypeId": 0, "isCustom": false},
-    {"fieldId": "action", "controlTypeId": 0, "isCustom": false}
-  ]
-}';
-        $dataResponse = $this->submitApiRequest("groups/GroupPeopleListLite/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
-        $collection   = json_decode($dataResponse['api_response'])->result;
-        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-        $totalRecords  = json_decode($dataResponse['api_response'])->totalCount;
-        //print_r(json_encode($collection)); die;
-		/*if($_POST['countResult']=='true'){
-			echo json_encode($totalcount);
-        	wp_die();
-			return;		
-		}*/
-        $request = $_GET;
-        $data    = array();
-		if($viewMode=='Grid'){ 
-		  $response = [
-			  'count' => $totalcount,
-			  'data' => $collection
-		  ];
-		  echo json_encode($response);
-		  wp_die();
-		}
+        $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
+        $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
+        $postedData = '{
+          "groupId": "' . $groupId . '",
+          "itemCount": ' . $_POST['length'] . ',
+          "sortBy": "name",
+          "sortDirection": "' . $sortDirection . '",
+          "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
+          "filterBody": {
+            "pageSize": 10,
+            "pageNumber": 1,
+            "searchText":"'.$searchText.'"
+          },
+          "fields": [{
+              "fieldId": "59f82832-ee2d-4b1c-ad98-65a771636f1b",
+              "controlTypeId": 3,
+              "isCustom": true
+             }]
+        }';
+        $dataResponse = $this->submitApiRequest("groups/GroupPeopleList/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
+        $api_response = json_decode($dataResponse['api_response']);
+        $collection   = $api_response->result;
+        $totalcount   = $api_response->totalCount;
+        $data = array();
+        if($viewMode=='Grid'){ 
+            $response = [
+                'count' => $totalcount,
+                'data' => $collection
+            ];
+            echo json_encode($response);
+            wp_die();
+        }
         foreach ($collection as $key => $value) { 
             $nestedData = array();
-            $classPopover      = '';
-			$nestedData['name']='<div class="d-flex align-items-center">';
-			if($value->people->imageThumbUrl && filter_var($value->people->imageThumbUrl, FILTER_VALIDATE_URL)){
-				$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
-			}else{
-				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
-			}
+            $nestedData['name'] = '<div class="d-flex align-items-center">';
+            if($value->people->imageThumbUrl && filter_var($value->people->imageThumbUrl, FILTER_VALIDATE_URL)){
+                $nestedData['name'] .= '<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
+            }else{
+                $nestedData['name'] .= '<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
+            }
             $nestedData['name'] .= '<div>'.$value->people->firstName.' '.$value->people->lastName.'</div>';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
-           $positionName = '';
-                if (!empty($value->people->peoplePosition) && is_array($value->people->peoplePosition)) {
-                    foreach ($value->people->peoplePosition as $position) {
-                        if (!empty($position->isCurrent) && $position->isCurrent === true) {
-                            $positionName = $position->positionName;
-                            break; // Stop at the first match
+
+            // Positions and Organizations (keep as is for now, as logic is complex)
+           if ($value->people->peoplePosition) {
+                    if (count($value->people->peoplePosition) == 1) {
+                        $pos = $value->people->peoplePosition[0];
+                        $nestedData['organization'] = '<div class="d-flex align-items-center" data-orgId="' . $pos->organizationId . '">';
+                        if ($pos->imageThumbUrl && filter_var($pos->imageThumbUrl, FILTER_VALIDATE_URL)) {
+                            $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $pos->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $pos->imageThumbUrl . '">';
+                        } else {
+                            $nestedData['organization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                        }
+                        $nestedData['organization'] .= $pos->organizationName . '</div>';
+                        $nestedData['position'] = $pos->positionName;
+                    } else {
+                        // Positions popover
+                        $nestedData['position'] = $this->buildPopoverList(
+                            $key,
+                            $value->people->peoplePosition,
+                            'Positions',
+                            'Positions',
+                            function($rowData, $class, $li) {
+                                return '<li class="px-2 py-1 border-bottom small ' . $class . '">'
+                                    . '<strong>' . $rowData->positionName . '</strong>'
+                                    . '<span class="pl-2 d-block" style="color:#21086b;">' . $rowData->organizationName . '</span>'
+                                    . '</li>';
+                            }
+                        );
+                        // Organizations popover (unique organizations only)
+                        $orgs = [];
+                        foreach ($value->people->peoplePosition as $rowData) {
+                            if (!in_array($rowData->organizationName, $orgs)) {
+                                $orgs[] = $rowData->organizationName;
+                            }
+                        }
+                        if (count($orgs) > 1) {
+                            $nestedData['organization'] = $this->buildPopoverList(
+                                $key,
+                                array_map(function($orgName) { return (object)['organizationName' => $orgName]; }, $orgs),
+                                'Organizations',
+                                'Organizations',
+                                function($rowData, $class, $li) {
+                                    return '<li class="px-2 py-1 border-bottom small ' . $class . '">' . $rowData->organizationName . '</li>';
+                                }
+                            );
+                        } else {
+                            // Only one unique organization, show as icon + name
+                            $orgObj = $value->people->peoplePosition[0];
+                            $nestedData['organization'] = '<div class="d-flex align-items-center">';
+                            if ($orgObj->imageThumbUrl && filter_var($orgObj->imageThumbUrl, FILTER_VALIDATE_URL)) {
+                                $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $orgObj->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $orgObj->imageThumbUrl . '">';
+                            } else {
+                                $nestedData['organization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                            }
+                            $nestedData['organization'] .= $orgObj->organizationName . '</div>';
                         }
                     }
+                } else {
+                    $nestedData['organization'] = '--';
+                    $nestedData['position'] = '--';
                 }
-            $nestedData['position'] = $positionName;
-			$nestedData['organization']='<div class="d-flex align-items-center">';
-			if($value->people->organization->imageThumbUrl && filter_var($value->people->organization->imageThumbUrl, FILTER_VALIDATE_URL)){
-				$nestedData['organization'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
-			}else{
-				$nestedData['organization'].='<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
-			}
+            $nestedData['organization'] = '<div class="d-flex align-items-center">';
+            if($value->people->organization->imageThumbUrl && filter_var($value->people->organization->imageThumbUrl, FILTER_VALIDATE_URL)){
+                $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
+            }else{
+                $nestedData['organization'] .= '<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
+            }
             $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
-            $nestedData['department'] = $value->people->peopleDepartment[0]->departmentName;
 
-            $rawPhone = $value->people->primaryPhoneNumber->value ?? '';
-			if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
-				$formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
-				$nestedData['phone'] = '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
-			} else {
-				$nestedData['phone'] = 'N/A';
-			}
-		$data[] = $nestedData;
+            // Department (keep as is for now)
+           if ($value->people->peopleDepartment) {
+                if (count($value->people->peopleDepartment) == 1) {
+                    $dept = $value->people->peopleDepartment[0];
+                    $nestedData['department'] = '<div class="d-flex align-items-center">';
+                    if ($dept->imageThumbUrl && filter_var($dept->imageThumbUrl, FILTER_VALIDATE_URL)) {
+                        $nestedData['department'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $dept->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $dept->imageThumbUrl . '">';
+                    } else {
+                        $nestedData['department'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                    }
+                    $nestedData['department'] .= $dept->organizationName . '</div>';
+                    $nestedData['department'] = $dept->departmentName;
+                } else {
+                    $nestedData['department'] = $this->buildPopoverList(
+                        $key,
+                        $value->people->peopleDepartment,
+                        'Departments',
+                        'Departments',
+                        function($rowData, $class, $li) {
+                            return '<li class="px-2 py-1 border-bottom small ' . $class . '">'
+                                . '<strong>' . $rowData->departmentName . '</strong>'
+                                . '<span class="pl-2 d-block" style="color:#21086b;">' . $rowData->organizationName . '</span>'
+                                . '</li>';
+                        }
+                    );
+                }
+            } else {
+                $nestedData['department'] = '--';
+            }
+
+            // Terms (keep as is for now)
+            if (!empty($value->people->terms)) {
+                $terms = $value->people->terms;
+                $termCount = count($terms);
+                $linkText = ($termCount === 1) ? $terms[0]->electionTermName : $termCount . ' Terms';
+                $nestedData['terms'] = $this->buildPopoverList(
+                    $key,
+                    $terms,
+                    'Terms',
+                    'Terms',
+                    function($term, $class, $li) {
+                        $termName = $term->electionTermName ?? '';
+                        $orgName = $term->position->organizationName ?? '';
+                        $positionName = $term->position->positionName ?? '';
+                        return '<li class="px-2 py-1 border-bottom small ' . $class . '">'
+                            . '<strong>' . $termName . '</strong>'
+                            . '<div><em style="color:#21086b;">' . $orgName . '</em></div>'
+                            . '<div>' . $positionName . '</div>'
+                            . '</li>';
+                    },
+                    'class_' . $key // dropdownClass
+                );
+                // Replace the link text in the dropdown anchor
+                $nestedData['terms'] = preg_replace(
+                    '/>\d+ Terms</',
+                    '>' . $linkText . '<',
+                    $nestedData['terms'],
+                    1
+                );
+            } else {
+                $nestedData['terms'] = '--';
+            }
+
+            $nestedData['status'] =  $value->people->status;
+            $nestedData['lastupdated'] = $this->formatDateField($value->people->modifiedDate);
+            $nestedData['added'] = $this->formatDateField($value->people->createdDate);
+            $nestedData['lastlogin'] = $this->formatDateField($value->people->lastLogin);
+            $nestedData['totaltimeworked'] = $this->formatMonthsToYearsAndMonths($value->people->totalTimeWorked);          
+            $nestedData['roles'] = $this->buildPopoverColumn($key, $value->people->roles ?? [], 'Roles', 'name');
+            $nestedData['tags'] = $this->buildPopoverColumn($key, $value->people->tags ?? [], 'Tags', 'tagName');
+            $nestedData['persontype'] = $this->buildPopoverColumn($key, $value->people->personTypes ?? [], 'Person Types', 'name');
+            $nestedData['age'] = $this->getCustomFieldValue($value->people->customFields ?? [], 'age');
+            $nestedData['birthdate'] = '';
+             $nestedData['action'] = '';
+             $nestedData['region'] = '';
+
+
+        
+            $expiration = $this->formatDateField($value->people->invitationExpirationDate);          
+            $userStatusMap = [
+                0 => 'Not Invited',
+                1 => 'Invite Sent',
+                2 => 'Invite Resent',
+                3 => 'Invitation Expired',
+                4 => 'Login Created'
+            ];
+            $status = $userStatusMap[$value->people->userStatus] ?? 'Unknown';
+            if (in_array($value->people->userStatus, [1, 2, 3]) && $expiration) {
+                $suffix = ($value->people->userStatus == 3) ? ' (Expired on ' : ' (Expires on ';
+                $status .= $suffix . $expiration . ')';
+            }
+            $nestedData['userstatus'] = $status;
+            $nestedData['phone'] = $this->formatPhoneNumber($value->people->primaryPhoneNumber->value ?? '');
+            // Custom fields (badges)
+            $customFields = $value->people->customFields ?? [];
+            $nestedData['customfields'] = '';
+            if (!empty($customFields) && is_array($customFields)) {
+                foreach ($customFields as $customField) {
+                    if (isset($customField->title) && strtolower($customField->title) === 'age') {
+                        $nestedData['customfields'] .= '<span class="badge badge-secondary">' . htmlspecialchars($customField->selectedValue ?? '') . '</span> ';
+                    }
+                }
+            }
+
+            $data[] = $nestedData;
         }
-       
-        $draw           = $_POST['draw'];
-        $start          = $_POST['start']; //0, 5
-        $length         = $_POST['length']; //5, 10 per page.
-
+        $draw = $_POST['draw'];
         $json_data = array(
             "draw" => intval($draw),
             "recordsTotal" => intval($totalcount),
@@ -693,10 +810,11 @@ public function getOrganizations(){
                 "searchText":"'.$searchText.'"
             }
         }';
+        
         $dataResponse = $this->submitApiRequest("Organization/OrganizationPagingList", json_decode($postedData), "POST", 'dashboard'); 
-        $collection   = json_decode($dataResponse['api_response'])->result;
-        $totalcount   = json_decode($dataResponse['api_response'])->totalCount;
-        $totalRecords  = json_decode($dataResponse['api_response'])->totalCount;
+        $api_response = json_decode($dataResponse['api_response']);
+        $collection   = $api_response->result;
+        $totalcount   = $api_response->totalCount;
     //print_r(json_encode($collection)); die;
 		/*if($_POST['countResult']=='true'){
 			echo json_encode($totalcount);
@@ -717,7 +835,7 @@ public function getOrganizations(){
             $nestedData = array();
             $locationPopOver      = '';
            if(count($value->locations)) {
-                $locationPopOver  = $this->_popOverOrgLocationData($key, $value->locations);
+                $locationPopOver  = $this->_popOverLocationData($key, $value->locations, ['isSession' => false, 'useFieldName' => true ]);   
 			}
             $locationCount = 0 ;
             foreach($value->locations as $key => $location){
@@ -741,16 +859,8 @@ public function getOrganizations(){
             } else {
                 $nestedData['Location'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
-          $nestedData['phoneNumbers'] = '';
-            if($value->phoneNumbers && $value->phoneNumbers[0]->value){
-                $rawPhone = $value->phoneNumbers[0]->value;
-                if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
-                    $formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
-                    $nestedData['phoneNumbers'] = '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
-                } else {
-                    $nestedData['phoneNumbers'] = '';
-                }
-            }
+         
+            $nestedData['phoneNumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
             $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : '';
              $nestedData['Email'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
             // $organizationTags = $value->organizationTags;
@@ -804,77 +914,93 @@ public function getOrganizations(){
         echo json_encode($json_data);
         wp_die();
     }
+    public function formatMonthsToYearsAndMonths($totalMonths) {
+    $years = floor($totalMonths / 12);
+    $months = $totalMonths % 12;
 
-public function _popOverOrgLocationData($id, $locationData){
-$rowName = array();
-     
- $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"></div>';
-	 $subItems = "";
-$li=1;
-	
-     foreach ($locationData as $key => $rowData) {
-        // Access address fields directly
-        $address = isset($rowData->address) ? $rowData->address : '';
-        $addressLine2 = isset($rowData->addressLine2) ? $rowData->addressLine2 : '';
-        $city = isset($rowData->city) ? $rowData->city : '';
-        $state = isset($rowData->state) ? $rowData->state : '';
-        $zip = isset($rowData->zipCode) ? $rowData->zipCode : '';
-        $country = isset($rowData->country) ? $rowData->country : '';
-        $fieldName = isset($rowData->fieldName) && $rowData->fieldName ? $rowData->fieldName : 'Address:';
+    $yearText = $years > 0 ? $years . ' yr' . ($years > 1 ? 's' : '') : '';
+    $monthText = $months > 0 ? $months . ' mo' . ($months > 1 ? 's' : '') : '';
 
-       $rowName[$rowData->id ?? $key] = $locationName;
-        $class = ($li % 2 == 1) ? 'bg-light' : '';
-
-        $subItems .= '<li class="px-2 py-1 border-bottom small '.$class.'">';
-        $subItems .= '<a class="d-flex align-items-center pr-2" data-toggle="collapse" href="#loc-'.$key.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>'.$fieldName.'</b><i class="fa fa-chevron-down ml-auto"></i></a>';
-        $subItems .= '<div class="collapse text-wrap" id="loc-'.$key.'">';
-        $subItems .= $address;
-        if ($addressLine2) $subItems .= ', ' . $addressLine2;
-        $subItems .= ', ' . $city . ', ' . $state . ', ' . $zip . ', ' . $country;
-        // Optionally add map if lat/lng present
-        if (!empty($rowData->lat) && !empty($rowData->lng)) {
-            $subItems .= '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->lat.','.$rowData->lng.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
+    if ($yearText && $monthText) {
+        return $yearText . ' and ' . $monthText;
+    } elseif ($yearText) {
+        return $yearText;
+    } elseif ($monthText) {
+        return $monthText;
+    } else {
+        return '--';
+    }
+}
+// Helper for popover columns (roles, tags, person types)
+    public function buildPopoverColumn($key, $items, $label, $field) {
+        $count = is_array($items) ? count($items) : 0;
+        $result = [];
+        if ($count > 1) {
+            $popover = $this->_popOverGenericData($key, $items, $label, $field);
+            $remaining = $count - 1;
+            $first = htmlspecialchars($items[0]->$field);
+            $result[] = '<div class="dropdown pr-4 text-left">
+                <span class="d-inline-block pr-2">' . $first . '</span>
+                <span data-toggle="dropdown" style="right:0; top:0; bottom:0"
+                      class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_' . $key . '"
+                      data-placement="left"
+                      data-containerid="' . $key . '"
+                      id="' . $key . '"> +' . $remaining . '</span>' . $popover . '
+            </div>';
+        } elseif ($count === 1) {
+            $result[] = htmlspecialchars($items[0]->$field);
         }
-        $subItems .= '</div>';
-        $subItems .= '</li>';
-        $li++;
+        return $result;
     }
 
-    $popOverHtml .= $subItems;
-    $popOverHtml .= '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
-    $vars = "";
-    $popOverHtml .= '</span></div></div></div></div> ';
-    return $popOverHtml . $vars;
-}
-private function _popOverTagData1($id, $tagData){
-        
-        $rowName = array();
-        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
-        $subItems = "";
-		$li=1;
-        foreach ($tagData as $key => $rowData) {
-            
-            $rowName[$rowData->id] = $rowData->tagName;
-           
-            $class='';
-            if($li%2==1){
-			$class='bg-light';	
-			}
-            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->tagName .  '</li>';
-			$li++;
+    // Helper for extracting custom field value
+    public function getCustomFieldValue($customFields, $field) {
+        if (!empty($customFields) && is_array($customFields)) {
+            foreach ($customFields as $customField) {
+                if (
+                    (isset($customField->title) && strtolower($customField->title) === strtolower($field)) ||
+                    (isset($customField->fieldName) && strtolower($customField->fieldName) === strtolower($field))
+                ) {
+                    return $customField->selectedValue ?? '';
+                }
+            }
         }
+        return '';
+    }
 
-        $popOverHtml .= $subItems;
-        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-        $searchName = json_encode(array_values($rowName));
-        $vars = "";
-        $popOverHtml .= '</ul></span>';
-        $popOverHtml .= '</div>';
+// Helper to format date fields
+    public function formatDateField($dateValue) {
+    return !empty($dateValue) ? date('M j, Y', strtotime($dateValue)) : '';
+    }
 
-        $popOverHtml .= '</div>';
-        $popOverHtml .= '</div>';
-        $popOverHtml .= '</div> ';
+// Helper to build a popover list for items
+    public function buildPopoverList($key, $items, $label, $countLabel, $itemCallback, $dropdownClass = '') {
+        $count = is_array($items) ? count($items) : 0;
+        if ($count === 0) {
+            return '--';
+        }
+        $classPopover = dd_header($label . ' (' . $count . ')');
+        $subItems = '';
+        $li = 1;
+        foreach ($items as $item) {
+            $class = ($li % 2 == 1) ? 'bg-light' : '';
+            $subItems .= $itemCallback($item, $class, $li);
+            $li++;
+        }
+        $classPopover .= $subItems . '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
+        return '<div class="dropdown">'
+            . '<a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" '
+            . 'data-offset="60,0" data-toggle="dropdown" class="' . $dropdownClass . ' class_' . $key . '" data-placement="left">'
+            . $count . ' ' . $countLabel . '</a>'
+            . $classPopover . '</div>';
+    }
 
-        return $popOverHtml . $vars;
+// Helper to format phone numbers
+    public function formatPhoneNumber($rawPhone) {
+        if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
+            $formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
+            return '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+        }
+        return '--';
     }
 }

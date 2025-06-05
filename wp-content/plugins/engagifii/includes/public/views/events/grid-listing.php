@@ -378,6 +378,9 @@ var table = $('#ebtmaintable').DataTable( {
         "columns":<?php echo (json_encode($forDatatable)); ?>,
      "drawCallback": function( settings ) {
 			 dt_dropdown();
+        if ($('.dataTables_empty').length) {
+        $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">There are no events to display at the moment.</h2></div>');
+    }
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>

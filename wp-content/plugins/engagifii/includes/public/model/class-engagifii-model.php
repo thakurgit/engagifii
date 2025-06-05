@@ -1955,7 +1955,7 @@ wp_die();
                 
                     if(count($classTag) > 1 && $index == 0)
                     {   
-                        $tagPopover =  $this->_popOverTagData1($key, $value->classTag);
+                        $tagPopover =  $this->_popOverGenericData($key, $default_Tags, 'Associated Tags', 'tagName');      //$this->_popOverTagData1($key, $value->classTag);
 
                            $tagCount   = count($classTag) - 1;
                     
@@ -3200,7 +3200,7 @@ wp_die();
            $locationPopOver      = '';
 
            if(count($row->eventDates)) {
-                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
+                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates, ['isSession' => true, 'requireCity' => true ]);
 			}
             $locationCount = 0 ;
             foreach($row->eventDates as $key => $location){
@@ -3311,7 +3311,7 @@ wp_die();
                      if(count($default_Tags) > 1 && $index == 0)
                      {   
                         
-                         $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                         $tagPopover =  $this->_popOverGenericData($key, $default_Tags, 'Associated Tags', 'tagName');                          
                           $tagCount   = count($default_Tags) - 1;
        		 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
 					
@@ -3833,9 +3833,8 @@ public function classesLoadGridDataByPerson(){
                 
                     if(count($classTag) > 1 && $index == 0)
                     {   
-                        $tagPopover =  $this->_popOverTagData1($key, $value->classTag);
-
-                           $tagCount   = count($classTag) - 1;
+                        $tagPopover =  $this->_popOverGenericData($key, $default_Tags, 'Associated Tags', 'tagName');      //$this->_popOverTagData1($key, $value->classTag);
+                        $tagCount   = count($classTag) - 1;
                     
 					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
                     }
@@ -3956,7 +3955,7 @@ public function classesLoadGridDataByPerson(){
            $locationPopOver      = '';
 
            if(count($row->eventDates)) {
-                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates);
+                $locationPopOver  = $this->_popOverLocationData($key, $row->eventDates, ['isSession' => true, 'requireCity' => true ]);
 			}
             $locationCount = 0 ;
             foreach($row->eventDates as $key => $location){
@@ -4090,7 +4089,7 @@ public function classesLoadGridDataByPerson(){
                          if(count($default_Tags) > 1 && $index == 0)
                          {   
                             
-                             $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
+                             $tagPopover =  $this->_popOverGenericData($key, $default_Tags, 'Associated Tags', 'tagName');      //$this->_popOverTagData1($key, $default_Tags);
                               $tagCount   = count($default_Tags) - 1;
                         $allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
                         
@@ -5847,52 +5846,96 @@ $li=1;
 }
 
 	//Events Date popover 
-	public function _popOverLocationData($id, $locationData){
-		$rowName = array();
-     
- $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Locations</h6><div class="px-2 border-bottom pb-2"></div>';
-	 $subItems = "";
-$li=1;
-	  foreach ($locationData as $key => $rowData) {
-        $days = $key+1;
-        $sessionStart_Date = strtotime($rowData->sessionStartTime);
-		$startDate = date('M d, Y', $sessionStart_Date);
-		$startTime = date('g:i A', $sessionStart_Date);
-		$sessionEnd_Date = strtotime($rowData->sessionEndTime);
-		$endDate = date('M d, Y', $sessionEnd_Date);
-		$endTime = date('g:i A', $sessionEnd_Date);
-		  
-		  $rowName[$rowData->id] = $rowData->city;
-		    $class='';
-            if($li%2==1){
-			$class='bg-light';	
-			}
-		  if($rowData->city){
-		  $subItems .= ' <li  class="px-2 py-1 border-bottom  small '.$class.'"><a class="d-flex align-items-center pr-2"  data-toggle="collapse" href="#loc-'.$rowData->id.'" role="button" aria-expanded="false" aria-controls="collapseExample"><b>Day '.$days.'</b><i class="fa fa-chevron-down ml-auto"></i></a>'; 
-          //$subItems .= $rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country; 
-		  if($rowData->latitude){
-		 	 $subItems .= '<div class="collapse" id="loc-'.$rowData->id.'">'.$rowData->addressLine.', '.$rowData->city.', '.$rowData->state.', '.$rowData->zip.', '.$rowData->country.'<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://maps.google.com/maps?q='.$rowData->latitude.','.$rowData->longitude.'&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div></div>';
-		  }
-		  $subItems .= '</li>';
-          }
-		  $li++;
-	  }
+	public function _popOverLocationData($id, $locationData, $options = []) {
+    $rowName = [];
+    $li = 1;
 
-	  $popOverHtml .= $subItems;
-	  $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+    // Options to differentiate behavior
+    $isSession = $options['isSession'] ?? false;
+    $useFieldName = $options['useFieldName'] ?? false;
+    $defaultFieldName = $options['defaultFieldName'] ?? 'Address:';
+    $requireCity = $options['requireCity'] ?? false;
 
-	  $vars = "";
+    $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton">
+                        <h6 class="text-center mb-0 pb-2">Locations</h6>
+                        <div class="px-2 border-bottom pb-2"></div>';
 
-	  $popOverHtml .= '</span>';
-	  $popOverHtml .= '</div>';
+    $subItems = "";
 
-	  $popOverHtml .= '</div>';
-	  $popOverHtml .= '</div>';
-	  $popOverHtml .= '</div> ';
+    foreach ($locationData as $key => $rowData) {
+        $class = ($li % 2 == 1) ? 'bg-light' : '';
 
-	  return $popOverHtml . $vars;
+        $idKey = $rowData->id ?? $key;
+        $collapseId = "loc-" . $idKey;
 
-  }
+        // Field values
+        $address = $rowData->address ?? $rowData->addressLine ?? '';
+        $addressLine2 = $rowData->addressLine2 ?? '';
+        $city = $rowData->city ?? '';
+        $state = $rowData->state ?? '';
+        $zip = $rowData->zipCode ?? $rowData->zip ?? '';
+        $country = $rowData->country ?? '';
+        $lat = $rowData->lat ?? $rowData->latitude ?? null;
+        $lng = $rowData->lng ?? $rowData->longitude ?? null;
+
+        // For title
+        $title = '';
+
+        if ($isSession) {
+            $dayNum = $key + 1;
+            $title = 'Day ' . $dayNum;
+
+            // Optional: format and show session timing if needed
+            if (!empty($rowData->sessionStartTime)) {
+                $start = strtotime($rowData->sessionStartTime);
+                $end = strtotime($rowData->sessionEndTime ?? '');
+                $startDate = date('M d, Y', $start);
+                $startTime = date('g:i A', $start);
+                $endTime = date('g:i A', $end);
+                // You could inject timing info if required
+            }
+
+        } elseif ($useFieldName) {
+            $title = $rowData->fieldName ?? $defaultFieldName;
+        } else {
+            $title = 'Location';
+        }
+
+        // Optionally skip if city is required but not present
+        if ($requireCity && !$city) continue;
+
+        // Save name
+        $rowName[$idKey] = $city;
+
+        // Build item
+        $subItems .= '<li class="px-2 py-1 border-bottom small ' . $class . '">';
+        $subItems .= '<a class="d-flex align-items-center pr-2" data-toggle="collapse" href="#' . $collapseId . '" role="button" aria-expanded="false" aria-controls="' . $collapseId . '">';
+        $subItems .= '<b>' . $title . '</b><i class="fa fa-chevron-down ml-auto"></i></a>';
+
+        $subItems .= '<div class="collapse text-wrap" id="' . $collapseId . '">';
+        $subItems .= $address;
+        if ($addressLine2) $subItems .= ', ' . $addressLine2;
+        $subItems .= ', ' . $city . ', ' . $state . ', ' . $zip . ', ' . $country;
+
+        if (!empty($lat) && !empty($lng)) {
+            $subItems .= '<div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://maps.google.com/maps?q=' . $lat . ',' . $lng . '&hl=en&z=14&amp;output=embed" allowfullscreen></iframe>
+                          </div>';
+        }
+
+        $subItems .= '</div>';
+        $subItems .= '</li>';
+
+        $li++;
+    }
+
+    $popOverHtml .= $subItems;
+    $popOverHtml .= '<span class="px-2 py-1 text-center small d-none">No results found!</span>';
+    $popOverHtml .= '</div></div>';
+
+    return $popOverHtml;
+}
+  
 //ends here 
      private function _popOverTagData($id, $tagData){
         
@@ -5938,38 +5981,68 @@ $li=1;
     }
 
 
-     private function _popOverTagData1($id, $tagData){
+    //  public function _popOverTagData1($id, $tagData){
         
-        $rowName = array();
-        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
-        $subItems = "";
-		$li=1;
-        foreach ($tagData as $key => $rowData) {
+    //     $rowName = array();
+    //     $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
+    //     $subItems = "";
+	// 	$li=1;
+    //     foreach ($tagData as $key => $rowData) {
             
-            $rowName[$rowData->id] = $rowData->tagName;
+    //         $rowName[$rowData->id] = $rowData->tagName;
            
-            $class='';
-            if($li%2==1){
-			$class='bg-light';	
-			}
-            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->tagName .  '</li>';
-			$li++;
-        }
+    //         $class='';
+    //         if($li%2==1){
+	// 		$class='bg-light';	
+	// 		}
+    //         $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->tagName .  '</li>';
+	// 		$li++;
+    //     }
 
-        $popOverHtml .= $subItems;
-        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-        $searchName = json_encode(array_values($rowName));
-        $vars = "";
-        $popOverHtml .= '</ul></span>';
-        $popOverHtml .= '</div>';
+    //     $popOverHtml .= $subItems;
+    //     $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+    //     $searchName = json_encode(array_values($rowName));
+    //     $vars = "";
+    //     $popOverHtml .= '</ul></span>';
+    //     $popOverHtml .= '</div>';
 
-        $popOverHtml .= '</div>';
-        $popOverHtml .= '</div>';
-        $popOverHtml .= '</div> ';
+    //     $popOverHtml .= '</div>';
+    //     $popOverHtml .= '</div>';
+    //     $popOverHtml .= '</div> ';
 
-        return $popOverHtml . $vars;
+    //     return $popOverHtml . $vars;
+    // }
+
+public function _popOverGenericData($id, $dataList, $labelTitle = 'Items', $fieldName = 'name') {
+    $rowName = array();
+    $count = is_array($dataList) ? count($dataList) : 0;
+    $popOverHtml = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton">';
+    $popOverHtml .= '<h6 class="text-center mb-0 pb-2">' . htmlspecialchars($labelTitle) . ' (' . $count . ')</h6>';
+    $popOverHtml .= '<div class="px-2 border-bottom pb-2">';
+    $popOverHtml .= '<input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search ' . strtolower($labelTitle) . '.."/></div>';
+
+    $subItems = '';
+    $li = 1;
+    
+    foreach ($dataList as $key => $rowData) {
+        $text = isset($rowData->$fieldName) ? $rowData->$fieldName : 'Unnamed';
+        $idKey = isset($rowData->id) ? $rowData->id : $key;
+        $rowName[$idKey] = $text;
+
+        $class = ($li % 2 == 1) ? 'bg-light' : '';
+        $subItems .= '<li class="px-2 py-1 border-bottom small ' . $class . '">' . htmlspecialchars($text) . '</li>';
+        $li++;
     }
 
+    $popOverHtml .= $subItems;
+    $popOverHtml .= '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
+    $popOverHtml .= '</div><div></div><div></div><div> '; // Maintain existing closing tags (optional cleanup)
+
+    $searchName = json_encode(array_values($rowName));
+    $vars = ""; // Reserved for future use
+
+    return $popOverHtml . $vars;
+}
 
     private function _popOverClassesData($courseid, $classData){
        
@@ -7128,6 +7201,36 @@ public function date_range($first, $last, $step = '+1 day', $output_format = 'Y-
 
     return $dates;
 }
+public function _popOverTypeData($id, $typeData){
+        
+        $rowName = array();
+        $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Person Types</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search types.."/></div>';
+        $subItems = "";
+		$li=1;
+        foreach ($typeData as $key => $rowData) {
+            
+            $rowName[$rowData->id] = $rowData->name;
+           
+            $class='';
+            if($li%2==1){
+			$class='bg-light';	
+			}
+            $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->name .  '</li>';
+			$li++;
+        }
 
+        $popOverHtml .= $subItems;
+        $popOverHtml.= '<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
+        $searchName = json_encode(array_values($rowName));
+        $vars = "";
+        $popOverHtml .= '</ul></span>';
+        $popOverHtml .= '</div>';
+
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div>';
+        $popOverHtml .= '</div> ';
+
+        return $popOverHtml . $vars;
+    }
 
 }
