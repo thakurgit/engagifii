@@ -255,7 +255,7 @@ position: relative;
 }
 .checked-cols li button {
 background: none;
-color:var(--error-red);
+color:var(--color-error);
 border: 0;	
 cursor:pointer;
 }
