@@ -26,7 +26,6 @@
 ];
     $nonce = wp_create_nonce('save_groups_nonce');
     $options = get_option( 'ebt_api_settings' );
-	print_r($options);
     $group_member_visible_column_list = array();
     if (!empty($options['group_members_settings']['list']['visible_column_list'])) {
     $group_member_visible_column_list = $options['group_members_settings']['list']['visible_column_list'];
