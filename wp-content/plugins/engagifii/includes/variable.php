@@ -28,8 +28,10 @@
 	 $class_visible_column_list = isset($options['class_visible_column_list']) ? $options['class_visible_column_list'] : [];  
 	define('CLASS_COLS', $class_visible_column_list);
 //Group members columns
-	 $group_members_visible_column_list = isset($options['group_members_settings']['visible_column_list']) ? $options['group_members_settings']['visible_column_list'] : [];  
+	 $group_members_visible_column_list = isset($options['group_members_settings']['list']['visible_column_list']) ? $options['group_members_settings']['list']['visible_column_list'] : [];  
 	define('GROUP_MEMBERS_COLS', $group_members_visible_column_list);
+	 $group_members_visible_column_grid = isset($options['group_members_settings']['grid']['visible_column_list']) ? $options['group_members_settings']['grid']['visible_column_list'] : [];  
+	define('GROUP_MEMBERS_COLS_GRID', $group_members_visible_column_grid);
 //Organizations columns
 	 $organization_visible_column_list = isset($options['organization_settings']['visible_column_list']) ? $options['organization_settings']['visible_column_list'] : [];
- 	define('ORGANIZATION_COLS', $organization_visible_column_list);
+ 	define('ORGANIZATION_COLS', $organization_visible_column_list); 

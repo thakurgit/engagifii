@@ -167,6 +167,8 @@ function save_groupmember_cols() {
     // Sanitize inputs
     $visible = isset($_POST['visible_column_list']) ? array_map('sanitize_text_field', (array) $_POST['visible_column_list']) : [];
     $order = isset($_POST['column_order']) ? sanitize_text_field($_POST['column_order']) : '';
+    $visibleGrid = isset($_POST['visible_column_grid']) ? array_map('sanitize_text_field', (array) $_POST['visible_column_grid']) : [];
+    $orderGrid = isset($_POST['column_order_grid']) ? sanitize_text_field($_POST['column_order_grid']) : '';
     // Get existing settings
     $settings = get_option('ebt_api_settings', []);
     if (!isset($settings['group_members_settings'])) {
@@ -174,8 +176,10 @@ function save_groupmember_cols() {
     }
 
     // Update only relevant parts
-    $settings['group_members_settings']['visible_column_list'] = $visible;
-    $settings['group_members_settings']['order'] = $order;
+    $settings['group_members_settings']['list']['visible_column_list'] = $visible;
+    $settings['group_members_settings']['list']['order'] = $order;
+    $settings['group_members_settings']['grid']['visible_column_list'] = $visibleGrid;
+    $settings['group_members_settings']['grid']['order'] = $orderGrid;
 
     // Save updated settings
     update_option('ebt_api_settings', $settings);

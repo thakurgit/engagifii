@@ -80,6 +80,12 @@ jQuery(document).ready(function($) {
       const colOrder = $checkbox.parent().attr('data-order');
       const colVal = $checkbox.val();
       const labelText = $checkbox.siblings('label').text();
+	  let colView;
+	  if ($checkbox.attr('id').includes('_grid')) {
+         colView = 'grid';
+	  }else{
+         colView = 'list';
+	  }
       if ($checkbox.is(':checked')) {
         // Add to checked-cols if not already there
         if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
@@ -92,7 +98,7 @@ jQuery(document).ready(function($) {
             </li>
           `);
 		  const $popli = $(`
-            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value="${colVal}" name="ebt_api_settings[group_members_settings][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
+            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value="${colVal}" name="ebt_api_settings[group_members_settings][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
 			<div class="bdrs">${labelText}</div>
             </li>
           `);

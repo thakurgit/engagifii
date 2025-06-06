@@ -228,6 +228,7 @@ position: relative;
 	left: 0;
 	box-sizing: border-box;
 	top: 42px;
+	z-index: 1;
 }
 .cols-list-wrapper > .cols-list-search {
 	padding: 4px 10px;
