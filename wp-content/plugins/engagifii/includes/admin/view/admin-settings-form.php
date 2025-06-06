@@ -186,6 +186,8 @@ $include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
 	
   jQuery('.accordion-btn').click(function(){
 		jQuery(this).toggleClass('active').next('.accordion-content').slideToggle();
+		jQuery(this).parent('.wrap').siblings().find('.accordion-content').slideUp();
+		jQuery(this).parent('.wrap').siblings().find('.accordion-btn ').removeClass('active');
 });
 jQuery( '.shortcode-list code' ).click( function( event ) {
 			var range = document.createRange();
@@ -252,11 +254,11 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 });
 //alert on readonly checkbox
 		jQuery('body').on('click', 'input[readonly], input[readonly]+label', function() {
-		showAlert();
+		showAlert("This item can not be modified.");
 return false;
 	});
-	function showAlert(){
-		var alertHtml ='<div class="showalert">This item can not be modified.</div>';	
+	function showAlert(message){
+		var alertHtml ='<div class="showalert">'+message+'</div>';	
 		jQuery(alertHtml).appendTo('body');
 		setTimeout(function() {
    			 jQuery('.showalert').fadeOut('fast').remove();

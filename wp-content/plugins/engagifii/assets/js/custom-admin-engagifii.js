@@ -161,7 +161,7 @@ jQuery(document).ready(function($) {
 		if (!$input.prop('readonly')) {
 		  $input.prop('checked', false).trigger('change');
 		} else {
-			showAlert();
+			showAlert("This column can't be deleted");
 		}
     });
   });
@@ -220,3 +220,29 @@ jQuery(document).ready(function($) {
 	});
 
 });
+
+
+/*jQuery(document).ready(function($) {
+    const maxAllowed = 6;
+
+    function updateCheckboxState(wrapper) {
+        const checkboxes = wrapper.find('input[type="checkbox"]:not([readonly])');
+        const checkedCount = checkboxes.filter(':checked').length;
+
+        checkboxes.each(function () {
+            const isChecked = $(this).is(':checked');
+            $(this).prop('disabled', !isChecked && checkedCount >= maxAllowed);
+        });
+    }
+
+    // Attach change event handler to checkboxes inside each .cols-list-wrapper
+    $('.cols-list-wrapper').each(function () {
+        const wrapper = $(this);
+        wrapper.find('input[type="checkbox"]').on('change', function () {
+            updateCheckboxState(wrapper);
+        });
+
+        // Run on page load in case some checkboxes are already checked
+        updateCheckboxState(wrapper);
+    });
+});*/

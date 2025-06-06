@@ -47,7 +47,7 @@
 					<button type="button" class="bdrs">Select <i class="dashicons-before dashicons-arrow-down-alt2"></i></button>
 					<div class="cols-list-wrapper bdrs" style="display:none">
 						<input type="text" class="cols-list-search bdrs" placeholder="search">
-						<ul class="ebt-grid-column-list">
+						<ul class="<?= $context === 'list' ? 'ebt-grid-column-list' : '' ?>">
 							<?php $counter = 1;
 							foreach ($response as $row) {
 								$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
@@ -114,7 +114,7 @@
 		  $group_member_visible_column_grid = ['name'];
 	  }
 			?>
-			<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for <strong>grid</strong> view only.</i><hr>			
+			<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for <strong>grid</strong> view only. <strong>Maximum 6 fields are allowed.</strong></i><hr>			
            <?php
 			render_group_columns_ui('grid', $response, $group_member_visible_column_grid, $options);
 	 } 
