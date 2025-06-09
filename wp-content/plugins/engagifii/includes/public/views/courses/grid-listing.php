@@ -207,7 +207,7 @@ $filter_content = removeWhitespace($filter_content);
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
      "drawCallback": function( settings ) {
-      $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">There are no courses to display at the moment.</h2></div>');
+      $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No courses found at the moment. Please check back later or adjust your filters.</h2></div>');
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();

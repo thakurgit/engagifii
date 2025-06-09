@@ -8,17 +8,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
-  $title_key = 0;
-  //$date           =   date('Y-m-d');
-	//$options 	= get_option( 'ebt_api_settings' );
-// $groupJsonStrings = $options['group_members_settings']['groupFields'];
-// $groups = [];
-// foreach ($groupJsonStrings as $json) {
-//     $decoded = json_decode($json);
-//     if ($decoded) {
-//         $groups[] = $decoded;
-//     } 
-// }
+print_r(GROUP_MEMBERS_COLS);
  ?>
 <div class="container-fluid ">
 	<div class="row">
@@ -54,40 +44,13 @@ font-size: 260px;
 @media screen and (max-width: 1080px) {
   .grid-view .card .img-default {
     font-size: 150px;
-  }
+  } 
+}
+ .card-text i {
+    display: none !important;
 }
 </style>
-<?php /*?><div class="col-12">
-	<span class="prv position-absolute bg-primary text-white rounded-circle align-items-center justify-content-center d-none " id="scrollLeftBtn"><i class="far fa-angle-left"></i></span>
-  <div class="tab-scroll-container overflow-hidden" id="tabScrollContainer" >
-  <ul class="nav nav-pills nav-fill flex-nowrap group-tabs mb-5 overflow-auto" id="groupTabs" role="tablist">
-      <?php foreach($groups as $idx => $group): ?>
-          <li class="nav-item mr-3">
-              <a class="text-nowrap border border-primary nav-link<?php if($idx === 0) echo ' active'; ?>" id="<?php echo $group->id; ?>" data-toggle="tab" href="#group-<?php echo $idx; ?>" role="tab" aria-controls="group-<?php echo $idx; ?>" aria-selected="<?php echo $idx === 0 ? 'true' : 'false'; ?>">
-                  <?php echo htmlspecialchars($group->title); ?>
-              </a>
-          </li>
-      <?php endforeach; ?>
-  </ul>
-  </div>
-  <span class="nxt position-absolute bg-primary text-white rounded-circle  align-items-center justify-content-center d-none" id="scrollRightBtn"><i class="far fa-angle-right"></i></span>
-</div><?php */?>
-<!-- Group Title -->
-<?php /* <div class="col-12">
-    <h2 id="currentGroupTitle" class="mb-5 text-center"><?php  $currentTitle = '';
-        if (isset($groupId) && $groupId) {
-            foreach ($groups as $group) {
-                if ($group->id == $groupId) {
-                    $currentTitle = htmlspecialchars($group->title);
-                    break;
-                }
-            }
-        }
-        if (!$currentTitle && isset($groups[0])) {
-            $currentTitle = htmlspecialchars($groups[0]->title);
-        }
-        echo $currentTitle; ?></h3>
-</div> <?php */?>
+
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
@@ -137,18 +100,7 @@ font-size: 260px;
   <?php  if ($allowedViewMode === 'grid' ){?>
   groupMembers(start);
   <?php } ?>
-  /*$('#groupTabs a').click(function(){
-	  groupId = $(this).attr('id');
-     var groupTitle = $(this).text();
-    $('#currentGroupTitle').text(groupTitle);
-
-	  if(viewMode=='grid'){
-		  groupMembers(start);	
-	  } else {
-		$('#eng-overlay').show();
-		table.draw();
-	  }
-  });*/
+  
   $('.view-mode button').click(function(){
 	  var selectedMode = $(this).attr('view-mode');
   
@@ -222,7 +174,7 @@ font-size: 260px;
 		   
          },
 		  "initComplete": function(settings, json) {
-			         //  dt_scroll();
+			          dt_scroll();
 			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
@@ -265,51 +217,211 @@ font-size: 260px;
 	}
 	
 	//grid layout
-	function renderGroupGrid(data) {
-	  var container = $('.grid-view .row');
-	  container.empty(); // Clear previous content
-		if (data.length === 0) {
-			container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>'); 
-		  return;
-		}
-	  data.forEach(function(item) {
-		var person = item.people;
-		if(isValidUrl(person.imageThumbUrl)){
-			var personPhoto = ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">';
-		}else {
-			var personPhoto = '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
-		}
-		var personPosition = person.peoplePosition && person.peoplePosition.length > 0  ? person.peoplePosition[0].positionName  : 'N/A';
-		var personOrg = person.organization.name  ? person.organization.name  : 'N/A';
-		var rawNumber = person.primaryPhoneNumber && person.primaryPhoneNumber.value;
-		var formattedPhone = 'N/A';
-		if (rawNumber && rawNumber.length === 10) {
-			formattedPhone = rawNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-		}
-		var personPhone = rawNumber
-    ? '<a href="tel:' + rawNumber + '">' + formattedPhone + '</a>'
-    : 'N/A';
-var card = '<div class="col-md-3 mb-4">\
-  <div class="card h-100 shadow p-3">\
-    '+personPhoto+'<hr>\
-    <div class="card-body p-0 pt-3 group-card">\
-      <h5 class="card-title">' + person.fullName + '</h5>\
-      <?php if(in_array('email', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-envelope mr-2"></i><a href="mailto:'+ person.email+'"> ' + person.email + '</a></p>\
-      <?php } if(in_array('organization', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-landmark mr-2"></i> ' + personOrg + '</p>\
-      <?php } if(in_array('position', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text mb-1"><i class="fas fa-user-tie mr-2"></i> ' + personPosition + '</p>\
-      <?php } if(in_array('phone', GROUP_MEMBERS_COLS)){ ?>
-      <p class="card-text"><i class="fas fa-phone mr-2"></i> ' + personPhone + '</p>\
-      <?php } ?>
-    </div>\
-  </div>\
-</div>';	
-		container.append(card); 
-	  });
-} 
+  var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
+var fieldIcons = {
+    email:    '<i class="fas fa-envelope mr-2"></i>',
+    organization: '<i class="fas fa-landmark mr-2"></i>',
+    position: '<i class="fas fa-user-tie mr-2"></i>',
+    phone:    '<i class="fas fa-phone mr-2"></i>',
+    status:   '<i class="fas fa-user-check mr-2"></i>',
+    userstatus: '<i class="fas fa-user-shield mr-2"></i>',
+    lastupdated: '<i class="fas fa-sync-alt mr-2"></i>',
+    lastlogin: '<i class="fas fa-sign-in-alt mr-2"></i>',
+    age:      '<i class="fas fa-birthday-cake mr-2"></i>',
+    tags:     '<i class="fas fa-tags mr-2"></i>',
+    terms:    '<i class="fas fa-calendar-alt mr-2"></i>',
+    added:    '<i class="fas fa-plus mr-2"></i>',
+    totaltimeworked: '<i class="fas fa-clock mr-2"></i>',
+    persontype: '<i class="fas fa-id-badge mr-2"></i>',
+    roles:    '<i class="fas fa-user-tag mr-2"></i>',
+    department: '<i class="fas fa-building mr-2"></i>',
+    region:   '<i class="fas fa-globe-americas mr-2"></i>',
+    name:     '', // handled as card-title
+};
 
+
+	function getFieldLabel(field) {
+    // Insert space before each uppercase letter (except first), then capitalize first letter
+    return field
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // add space before capital
+        .replace(/^./, function(str){ return str.toUpperCase(); }); // capitalize first letter
+}
+
+function renderGroupGrid(data) {
+    var container = $('.grid-view .row');
+    container.empty(); // Clear previous content
+    if (data.length === 0) {
+        container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
+        return;
+    }
+    data.forEach(function(item) {
+        var person = item.people;
+        var personPhoto = isValidUrl(person.imageThumbUrl)
+            ? ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">'
+            : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
+
+        // Prepare field values INSIDE the loop, after person is defined
+       // ...existing code...
+var fieldValues = {
+    email:    person.email ? '<a href="mailto:' + person.email + '">' + person.email + '</a>' : '--',
+    organization: person.organization && person.organization.name ? person.organization.name : '--',
+    position: (person.peoplePosition && person.peoplePosition.length > 0)
+        ? buildPopoverHtml('position', person.peoplePosition)
+        : '--',
+    department: (person.peopleDepartment && person.peopleDepartment.length > 0)
+        ? buildPopoverHtml('department', person.peopleDepartment)
+        : '--',
+    roles: (person.roles && person.roles.length > 0)
+        ? buildPopoverHtml('roles', person.roles)
+        : '--',
+    persontype: (person.persontype && person.persontype.length > 0)
+        ? buildPopoverHtml('persontype', person.persontype)
+        : '--',
+    terms: (person.terms && person.terms.length > 0)
+        ? buildPopoverHtml('terms', person.terms)
+        : '--',
+  region: (person.terms && person.terms.length > 0)
+    ? buildPopoverHtml('region', extractRegionsFromTerms(person.terms))
+    : '--',
+    phone: (person.primaryPhoneNumber && person.primaryPhoneNumber.value && person.primaryPhoneNumber.value.length === 10)
+        ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') + '</a>'
+        : '--',
+    status: person.status || '--',
+    userstatus: person.userstatus || '--',
+    lastupdated: person.lastupdated || '--',
+    lastlogin: person.lastlogin || '--',
+    age: person.age || '--',
+    tags: Array.isArray(person.tags) ? person.tags.join(', ') : (person.tags || '--'),
+    added: person.added || '--',
+    totaltimeworked: person.totaltimeworked || '--',
+    name: person.fullName || '--'
+};
+
+        var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
+        groupMemberCols.forEach(function(col) {
+            if (col === 'name') return; // already shown as title
+            if (fieldValues[col] !== undefined) {
+                cardBody += '<p class="card-text mb-1">' +
+                    (fieldIcons[col] || '') +
+                    '<span class="font-weight-bold">' + getFieldLabel(col) + ':</span> ' +
+                    fieldValues[col] +
+                    '</p>';
+            }
+        });
+
+        var card = '<div class="col-md-3 mb-4">' +
+            '<div class="card h-100 shadow p-3">' +
+            personPhoto + '<hr>' +
+            '<div class="card-body p-0 pt-3 group-card">' +
+            cardBody +
+            '</div></div></div>';
+        container.append(card);
+    });
+
+    // Initialize popovers after rendering
+    setTimeout(function() {
+        $('[data-toggle="popover"]').popover();
+    }, 100);
+}
+
+function extractRegionsFromTerms(terms) {
+    if (!Array.isArray(terms)) return [];
+    const regions = [];
+    terms.forEach(term => {
+        if (term.regionName) {
+            regions.push({
+                regionName: term.regionName,
+                organizationName: term.position && term.position.organizationName ? term.position.organizationName : '',
+                electionTermName: term.electionTermName || ''
+            });
+        }
+    });
+    return regions;
+}
+
+function buildPopoverHtml(field, items) {
+    if (!Array.isArray(items) || items.length === 0) return '--';
+
+    // Helper to get label for the field type
+   function getPluralLabel(field, count) {
+        if (field === 'position') return count + ' Positions';
+        if (field === 'department') return count + ' Departments';
+        if (field === 'roles') return count + ' Roles';
+        if (field === 'persontype') return count + ' Person Types';
+        if (field === 'terms') return count + ' Terms';
+        if (field === 'tags') return count + ' Tags';
+        if (field === 'region') return count + ' Regions';
+        return count + ' Items';
+    }
+     if (field === 'region') {
+        var pluralLabel = getPluralLabel(field, items.length);
+        var linkText = (items.length === 1) ? items[0].regionName : pluralLabel;
+        var htmlList = '<div class="dropdown-menu show p-0" style="min-width:600px !important;">';
+        items.forEach(function(it) {
+            htmlList += '<div class="px-3 py-2 border-bottom small" style="white-space:normal;">' +
+                '<strong>' + (it.regionName || '') + '</strong>' +
+                '<br><span class="d-block" style="color:#2176d2;">' + (it.organizationName || '') + '</span>' +
+                '<span class="d-block">Term: ' + (it.electionTermName || '') + '</span>' +
+                '</div>';
+        });
+        htmlList += '</div>';
+        return '<span class="d-inline-block pr-2">' +
+            '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="focus" data-content="' +
+            htmlList.replace(/"/g, '&quot;') +
+            '">' + linkText + '</span></span>';
+    }
+
+    // Single item: show only the main label (no org/department)
+    if (items.length === 1) {
+        if (items[0].positionName) {
+            return items[0].positionName;
+        } else if (items[0].departmentName) {
+            return items[0].departmentName;
+        } else if (items[0].electionTermName) {
+            return items[0].electionTermName;
+        } else if (items[0].name) {
+            return items[0].name;
+        } else if (items[0].tagName) {
+            return items[0].tagName;
+        } else {
+            return items[0].toString();
+        }
+    }
+
+    // Multiple items: show "N Positions" (or similar) as clickable badge
+    var pluralLabel = getPluralLabel(field, items.length);
+
+    // Build HTML list for popover content (like list view)
+    var htmlList = '<div class="dropdown-menu show p-0" style="min-width:600px !important;">';
+    items.forEach(function(it, idx) {
+        var label = '';
+        if (it.positionName) {
+            label = '<strong>' + it.positionName + '</strong>';
+            if (it.organizationName) label += '<div class="text-muted small">' + it.organizationName + '</div>';
+        } else if (it.departmentName) {
+            label = '<strong>' + it.departmentName + '</strong>';
+            if (it.organizationName) label += '<div class="text-muted small">' + it.organizationName + '</div>';
+        } else if (it.electionTermName) {
+            label = '<strong>' + it.electionTermName + '</strong>';
+            if (it.position && it.position.organizationName) label += '<div class="text-muted small">' + it.position.organizationName + '</div>';
+        } else if (it.name) {
+            label = it.name;
+        } else if (it.tagName) {
+            label = it.tagName;
+        } else {
+            label = it.toString();
+        }
+        htmlList += '<div class="px-3 py-2 border-bottom small" style="white-space:normal;">' + label + '</div>';
+    });
+    htmlList += '</div>';
+
+    // Popover trigger: show "N Positions" (or similar)
+    var html = '<span class="d-inline-block pr-2">' +
+        '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
+        htmlList.replace(/"/g, '&quot;') +
+        '">' + pluralLabel + '</span></span>';
+    return html;
+}
 //grid pagination
 function renderPagination(totalCount, start, length) {
   const $pagination = $('.grid-pagination');
@@ -390,52 +502,5 @@ dt_titleSearch('Search Members');
 }
 
   ?>
-  //group list scroller
-/*$(document).ready(function () {
-  const $container = $('#groupTabs');
-  const $scrollLeftBtn = $('#scrollLeftBtn');
-  const $scrollRightBtn = $('#scrollRightBtn');
-  const $wrapper = $container.parent();
-
-  function updateScrollButtons() {
-    const scrollLeft = $container.scrollLeft();
-    const scrollWidth = $container[0].scrollWidth;
-    const clientWidth = $container.outerWidth();
-    const overflow = scrollWidth > clientWidth;
-    const atStart = scrollLeft <= 0;
-    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
-
-    // Only show buttons if overflow exists
-    if (overflow) {
-      $scrollLeftBtn.removeClass('d-none').addClass('d-inline-flex')
-                    .toggleClass('disabled', atStart);
-      $scrollRightBtn.removeClass('d-none').addClass('d-inline-flex')
-                     .toggleClass('disabled', atEnd);
-      $wrapper.addClass('px-4 mx-2');
-    } else {
-      $scrollLeftBtn.addClass('d-none').removeClass('d-inline-flex disabled');
-      $scrollRightBtn.addClass('d-none').removeClass('d-inline-flex disabled');
-      $wrapper.removeClass('px-4 mx-2');
-    }
-  }
-
-	function scrollTabs(direction) {
-	  const distance = $container.outerWidth() * 0.75; // 75% of visible width
-	  const scrollAmount = direction === 'left' ? -distance : distance;
-	   $container[0].scrollBy({ left: scrollAmount, behavior: 'smooth' });  
-	}
-  $scrollLeftBtn.on('click', () => {
-    if (!$scrollLeftBtn.hasClass('disabled')) scrollTabs('left');
-  });
-
-  $scrollRightBtn.on('click', () => {
-    if (!$scrollRightBtn.hasClass('disabled')) scrollTabs('right');
-  });
-
-  $container.on('scroll', updateScrollButtons);
-  $(window).on('resize', updateScrollButtons);
-
-  updateScrollButtons(); // Initial check
-});
-*/
+ $('<style>.popover-wide{min-width:350px !important;max-width:600px !important;width:100% !important;}</style>').appendTo('head');
 </script>

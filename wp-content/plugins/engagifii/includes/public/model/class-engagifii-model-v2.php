@@ -732,8 +732,46 @@ wp_die();
             $nestedData['age'] = $this->getCustomFieldValue($value->people->customFields ?? [], 'age');
             $nestedData['birthdate'] = '';
              $nestedData['action'] = '';
-             $nestedData['region'] = '';
+     $regions = [];
+if (!empty($value->people->terms) && is_array($value->people->terms)) {
+    foreach ($value->people->terms as $term) {
+        if (!empty($term->regionName)) {
+            $regions[] = (object)[
+                'regionName' => $term->regionName,
+                'organizationName' => $term->position->organizationName ?? '',
+                'electionTermName' => $term->electionTermName ?? ''
+            ];
+        }
+    }
+}
 
+//print_r($regions);
+$regions = array_values($regions);
+
+if (count($regions) > 0) {
+    $customLinkText = (count($regions) === 1) ? htmlspecialchars($regions[0]->regionName) : null;
+    $nestedData['region'] = $this->buildPopoverList(
+        $key,
+        $regions,
+        'Regions',
+        'Regions',
+        function($rowData, $class, $li) {
+            return '<li class="px-2 py-1 border-bottom small ' . $class . '">'
+                . htmlspecialchars($rowData->regionName)
+                . '<br><span class="d-block" style="color:#2176d2;">'
+                . htmlspecialchars($rowData->organizationName)
+                . '</span>'
+                . '<span class="d-block">'
+                . 'Term: ' . htmlspecialchars($rowData->electionTermName)
+                . '</span>'
+                . '</li>';
+        },
+        '',
+        $customLinkText // Pass custom link text for single region
+    );
+} else {
+    $nestedData['region'] = '--';
+}
 
         
             $expiration = $this->formatDateField($value->people->invitationExpirationDate);          
@@ -974,26 +1012,30 @@ public function getOrganizations(){
     }
 
 // Helper to build a popover list for items
-    public function buildPopoverList($key, $items, $label, $countLabel, $itemCallback, $dropdownClass = '') {
-        $count = is_array($items) ? count($items) : 0;
-        if ($count === 0) {
-            return '--';
-        }
-        $classPopover = dd_header($label . ' (' . $count . ')');
-        $subItems = '';
-        $li = 1;
-        foreach ($items as $item) {
-            $class = ($li % 2 == 1) ? 'bg-light' : '';
-            $subItems .= $itemCallback($item, $class, $li);
-            $li++;
-        }
-        $classPopover .= $subItems . '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
-        return '<div class="dropdown">'
-            . '<a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" '
-            . 'data-offset="60,0" data-toggle="dropdown" class="' . $dropdownClass . ' class_' . $key . '" data-placement="left">'
-            . $count . ' ' . $countLabel . '</a>'
-            . $classPopover . '</div>';
+public function buildPopoverList($key, $items, $label, $countLabel, $itemCallback, $dropdownClass = '', $customLinkText = null) {
+    $count = is_array($items) ? count($items) : 0;
+    if ($count === 0) {
+        return '--';
     }
+    $classPopover = dd_header($label . ' (' . $count . ')');
+    $subItems = '';
+    $li = 1;
+    foreach ($items as $item) {
+        $class = ($li % 2 == 1) ? 'bg-light' : '';
+        $subItems .= $itemCallback($item, $class, $li);
+        $li++;
+    }
+    $classPopover .= $subItems . '<span class="px-2 py-1 text-center small d-none">No results found!</span></div>';
+
+    // Use custom link text if provided, otherwise default to count/countLabel
+    $linkText = $customLinkText ?? ($count . ' ' . $countLabel);
+
+    return '<div class="dropdown">'
+        . '<a href="" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';" '
+        . 'data-offset="60,0" data-toggle="dropdown" class="' . $dropdownClass . ' class_' . $key . '" data-placement="left">'
+        . $linkText . '</a>'
+        . $classPopover . '</div>';
+}
 
 // Helper to format phone numbers
     public function formatPhoneNumber($rawPhone) {

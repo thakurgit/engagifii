@@ -574,7 +574,7 @@ $filter_content = removeWhitespace($filter_content);
         },  
         "columns":<?php echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
-			 $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">There are no classes to display at the moment.</h2></div>');
+			 $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No classes found at the moment. Please check back later or adjust your filters.</h2></div>');
 			 dt_dropdown();
 			 
 			// dt_titleSearch();

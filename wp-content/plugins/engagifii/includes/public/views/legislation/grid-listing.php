@@ -1525,7 +1525,7 @@ var table = $('#ebtmaintable').DataTable( {
       ],
          
 		 "drawCallback": function( settings ) {
-      $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">There are no bills to display at the moment.</h2></div>');
+      $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No bills found at the moment. Please check back later or adjust your filters.</h2></div>');
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
