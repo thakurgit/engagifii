@@ -8,7 +8,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
-print_r(GROUP_MEMBERS_COLS);
+//print_r(GROUP_MEMBERS_COLS);
  ?>
 <div class="container-fluid ">
 	<div class="row">
