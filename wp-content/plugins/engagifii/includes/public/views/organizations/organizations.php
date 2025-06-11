@@ -8,6 +8,8 @@
 $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     ? strtolower($viewMode)
     : 'both';
+
+    //print_r(ORGANIZATION_COLS);
 ?>
 <div class="container-fluid ">
 	<div class="row">
@@ -120,9 +122,7 @@ font-size: 260px;
        	"ordering":true,
 		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
       	"columnDefs": [ 
-          { "targets": ['active/totalmember', 'location', 'status', 'phonenumbers', 'email', 'organizationtype', 'tags'],
-            "orderable": false
-          },
+            { "targets": "_all", "orderable": false },
 		  <?php //if(in_array('People Name', $colNames)){ ?>
 		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
 		  <?php //} if(in_array('Email', $colNames)){ ?>
@@ -203,114 +203,90 @@ font-size: 260px;
 	}
 	
 	//grid layout
-	function renderOrgGrid(data) {
-	  var container = $('.grid-view .row');
-	  container.empty(); // Clear previous content
-		if (data.length === 0) {
-			container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>'); 
-		  return;
-		}
-	  data.forEach(function(item) {
-		var org = item;
-		if(isValidUrl(org.imageThumbUrl)){
-			var orgPhoto = ' <img src="' + org.imageThumbUrl + '" class="card-img-top" alt="' + org.name + '">';
-		}else {
-			var orgPhoto = '<i class="fa fa-user-circle text-secondary" style="font-size:260px"></i>';
-		}
-		var orgTotalMember = org.totalMembers ;
-    var orgActiveMember = org.activeMembers;
-		var orgStatus = org.status;
-    var orgType = org.organizationType ? org.organizationType : 'N/A';
-		var orgTag = org.Tags ? org.Tags : 'N/A';
-var card = '<div class="col-md-3 mb-4">\
-  <div class="card h-100 shadow p-3">\
-    '+orgPhoto+'<hr>\
-    <div class="card-body p-2">\
-      <h5 class="card-title">' + org.name + '</h5>\
-       <p class="card-text mb-1"><strong>Total Members:</strong> ' + orgTotalMember + '</p>\
-          <p class="card-text mb-1"><strong>Active Members:</strong> ' + orgActiveMember + '</p>\
-          <p class="card-text mb-1"><strong>Status:</strong> ' + orgStatus + '</p>\
-          <p class="card-text mb-1"><strong>Type:</strong> ' + orgType + '</p>\
-          <p class="card-text"><strong>Tags:</strong> ' + orgTag + '</p>\
-    </div>\
-  </div>\
-</div>';	
-		container.append(card); 
-	  });
-} 
-
-//grid pagination
-function renderPagination(totalCount, start, length) {
-  const $pagination = $('.grid-pagination');
-  const currentPage = Math.floor(start / length) + 1;
-  const totalPages = Math.ceil(totalCount / length);
-
-  // Clear existing page numbers (except First & Last <li>)
-  $pagination.find('li.page-number').remove();
-
-  const visiblePages = [];
-  
-  // Always show first page
-  visiblePages.push(1);
-
-  // Pages before current
-  for (let i = currentPage - 2; i <= currentPage + 2; i++) {
-    if (i > 1 && i < totalPages) {
-      visiblePages.push(i);
+ var organizationGridCols = <?php echo json_encode(ORGANIZATION_COLS_GRID); ?>;
+ console.log('Organization Grid Columns:', organizationGridCols); 
+var orgFieldIcons = {
+    email: '<i class="fas fa-envelope mr-2"></i>',
+    phone: '<i class="fas fa-phone mr-2"></i>',
+    status: '<i class="fas fa-user-check mr-2"></i>',
+    organizationType: '<i class="fas fa-landmark mr-2"></i>',
+    tags: '<i class="fas fa-tags mr-2"></i>',
+    createdOn: '<i class="fas fa-calendar-plus mr-2"></i>',
+    lastUpdated: '<i class="fas fa-sync-alt mr-2"></i>',
+    name: '', // handled as card-title
+};
+function renderOrgGrid(data) {
+    var container = $('.grid-view .row');
+    container.empty();
+    if (data.length === 0) {
+        container.append('<h3 class="text-secondary text-center col-12">No organizations found!</h3>');
+        return;
     }
-  }
+    data.forEach(function(org) {
+        var orgPhoto = isValidUrl(org.imageThumbUrl)
+            ? '<img src="' + org.imageThumbUrl + '" class="card-img-top mb-3" alt="' + org.name + '">'
+            : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
 
-  // Always show last page if not already in list
-  if (totalPages > 1) {
-    visiblePages.push(totalPages);
-  }
+       var fieldValues = {
+    OrganizationName: org.name || '--',
+    Email: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
+        (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'),
+  phoneNumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
+    ? formatPhoneUS(org.phoneNumbers[0].value)
+    : '--',
+    OrganizationType: org.organizationType || '--',
+    Status: org.status || '--',
+    Location: (org.locations && org.locations.length > 0)
+        ? org.locations.map(function(loc) { return loc.address; }).join(', ')
+        : '--',
+    'Active/totalmember': (org.totalMembers !== undefined && org.activeMembers !== undefined)
+        ? org.activeMembers + '/' + org.totalMembers
+        : '--',
+    organizationTags: (org.organizationTags && org.organizationTags.length > 0)
+        ? buildPopoverHtml('tags', org.organizationTags)
+        : '--'
+};
 
-  // Remove duplicates and sort
-  const uniquePages = [...new Set(visiblePages)].sort((a, b) => a - b);
+        var cardBody = '<h5 class="card-title">' + fieldValues.OrganizationName + '</h5>';
+        organizationGridCols.forEach(function(col) {
+            if (col === 'OrganizationName') return;
+            if (fieldValues[col] !== undefined) {
+                cardBody += '<p class="card-text mb-1">' +
+                    (orgFieldIcons[col] || '') +
+                    '<span class="font-weight-bold">' + getFieldLabel(col) + ':</span> ' +
+                    fieldValues[col] +
+                    '</p>';
+            }
+        });
 
-  // Render pages with ellipsis
-  for (let i = 0; i < uniquePages.length; i++) {
-    if (i > 0 && uniquePages[i] !== uniquePages[i - 1] + 1) {
-      $pagination.find('li.page-item').last().before('<li class="page-item disabled page-number"><span class="page-link">...</span></li>');
+        var card = '<div class="col-md-3 mb-4">' +
+            '<div class="card h-100 shadow p-3">' +
+            orgPhoto + '<hr>' +
+            '<div class="card-body p-0 pt-3 group-card">' +
+            cardBody +
+            '</div></div></div>';
+        container.append(card);
+    });
+     setTimeout(function() {
+        $('[data-toggle="popover"]').popover();
+    }, 100);
+}
+function getFieldLabel(field) {
+    return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, function(str){ return str.toUpperCase(); });
+}
+function formatPhoneUS(phone) {
+    phone = phone.replace(/\D/g, '');
+    if (phone.length === 10) {
+        return '(' + phone.substr(0,3) + ') ' + phone.substr(3,3) + '-' + phone.substr(6,4);
     }
-
-    const pageNum = uniquePages[i];
-    const activeClass = pageNum === currentPage ? 'active' : '';
-    const $pageItem = $('<li class="page-item page-number ' + activeClass + '"><a class="page-link" href="#">' + pageNum + '</a></li>');
-    $pagination.find('li.page-item').last().before($pageItem);
-  }
-
-  // Enable/Disable Previous and Next
-  $pagination.find('li:first-child').toggleClass('disabled', currentPage === 1);
-  $pagination.find('li:last-child').toggleClass('disabled', currentPage === totalPages);
-
-  // Click handlers
-  $pagination.find('li.page-item a').off('click').on('click', function (e) {
-    e.preventDefault();
-    const text = $(this).text();
-    let newPage = currentPage;
-
-    if (text === 'Previous' && currentPage > 1) newPage = currentPage - 1;
-    else if (text === 'Next' && currentPage < totalPages) newPage = currentPage + 1;
-    else if (!isNaN(parseInt(text))) newPage = parseInt(text);
-
-    if (newPage !== currentPage) {
-      start = (newPage - 1) * length;
-      OrgList(start); // re-fetch new data
-    }
-  });
+    return phone;
 }
 
-//check if url is valid
-function isValidUrl(url) {
-  try {
-    new URL(url);
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
-//search members
+// function isValidUrl(url) {
+//     try { new URL(url); return true; } catch (_) { return false; }
+// }
+
+
 <?php
   if($title_key > -1){
 ?>
