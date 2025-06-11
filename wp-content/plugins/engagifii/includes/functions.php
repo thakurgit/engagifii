@@ -186,3 +186,35 @@ function save_groupmember_cols() {
 
     wp_send_json_success(['message' => 'Group Column settings saved successfully.']);
 }
+// Save organization columns on AJAX save
+add_action('wp_ajax_save_organization_cols', 'save_organization_cols');
+function save_organization_cols() {
+	check_ajax_referer('save_org_nonce', 'security');
+
+	if (!isset($_POST['security'])) {
+		wp_send_json_error(['message' => 'Security check failed.']);
+	}
+
+	// Sanitize inputs
+	 $visible = isset($_POST['visible_column_list']) ? array_map('sanitize_text_field', (array) $_POST['visible_column_list']) : [];
+    $order = isset($_POST['column_order']) ? sanitize_text_field($_POST['column_order']) : '';
+    $visibleGrid = isset($_POST['visible_column_grid']) ? array_map('sanitize_text_field', (array) $_POST['visible_column_grid']) : [];
+    $orderGrid = isset($_POST['column_order_grid']) ? sanitize_text_field($_POST['column_order_grid']) : '';
+	// Get existing settings
+	$settings = get_option('ebt_api_settings', []);
+	if (!isset($settings['organization_settings'])) {
+		$settings['organization_settings'] = [];
+	}
+
+	// Update settings
+	  // Update only relevant parts
+    $settings['organization_settings']['list']['visible_column_list'] = $visible;
+    $settings['organization_settings']['list']['order'] = $order;
+    $settings['organization_settings']['grid']['visible_column_list'] = $visibleGrid;
+    $settings['organization_settings']['grid']['order'] = $orderGrid;
+
+	// Save updated settings
+	update_option('ebt_api_settings', $settings);
+
+	wp_send_json_success(['message' => 'Organization column settings saved successfully.']);
+}

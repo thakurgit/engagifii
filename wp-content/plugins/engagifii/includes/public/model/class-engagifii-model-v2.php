@@ -567,7 +567,7 @@ wp_die();
               "isCustom": true
              }]
         }';
-        $dataResponse = $this->submitApiRequest("groups/GroupPeopleList/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
+        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
@@ -900,40 +900,13 @@ public function getOrganizations(){
          
             $nestedData['phoneNumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
             $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : '';
-             $nestedData['Email'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
+           // $nestedData['organizationTags'] = '';
+            $nestedData['Email'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
+            $nestedData['lastUpdated'] = $this->formatDateField($value->modifiedOn);
+            $nestedData['added'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;
-             $filterTag = $value->organizationTags;
-            // $allTags = array_diff($filter, array('PUBLIC', 'public', 'Public'));
-            // $filterTag = array_values($allTags);
-             $default_Tags = array();
-             if (is_array($filterTag) && count($filterTag)) {
-
-                 $allTags = array();
-                
-                 foreach ($filterTag as $index => $tag) {
-						$default_Tags[$index] = new stdClass();
-                     $default_Tags[$index]->tagName = $tag->tagName;
-                     $default_Tags[$index]->id =$index;
-                 }
-                
-                 foreach ($default_Tags as $index => $value) {
-                   
-                     if(count($default_Tags) > 1 && $index == 0)
-                     {   
-                        
-                         $tagPopover =  $this->_popOverTagData1($key, $default_Tags);
-                          $tagCount   = count($default_Tags) - 1;
-       		 	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$value->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
-					
-                     }
-                     elseif(count($default_Tags) == 1)
-                         $allTags[] = $value->tagName;
-
-                 }
-                $nestedData['Tags'] = $allTags;
-             }else{
-                 $nestedData['Tags'] = [];
-             }
+             $nestedData['organizationTags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
+            
           
 		$data[] = $nestedData;
         }
