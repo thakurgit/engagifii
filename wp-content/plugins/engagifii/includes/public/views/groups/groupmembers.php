@@ -8,7 +8,6 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
-//print_r(GROUP_MEMBERS_COLS);
  ?>
 <div class="container-fluid ">
 	<div class="row">
@@ -58,13 +57,18 @@ font-size: 260px;
 		    <tr>    
 		    	 <?php  $i = 0;
 				  foreach (GROUP_MEMBERS_COLS as $key){
-					  if($key == 'name'){
+					  $json = json_decode(stripslashes($key), true);
+					  if (!$json || !isset($json['colName'], $json['displayName'])) {
+						  continue;
+					  }
+					  if($json['colName'] == 'name'){
                     	$title_key = $i;
                  	 }
-				 $forDatatable[]['data'] = preg_replace('/\s+/', '', strtolower($key));
+					 $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+					$forDatatable[]['data'] = $colClass;
 				  ?>
-            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>">
-    <?php echo trim(preg_replace('/([a-z])([A-Z])/', '$1 $2', $key)); ?>
+            <th class="text-capitalize <?php echo esc_attr($colClass); ?>">
+    <?php echo esc_html($json['displayName']); ?>
 </th>
         <?php } ?>
  		    
@@ -74,7 +78,7 @@ font-size: 260px;
   	</table>
   	<div id="eng-overlay"><span class="spinner"></span></div>
 </div>
-<?php } if ($allowedViewMode === 'grid' ||$allowedViewMode === 'both' ){?>
+<?php } if ($allowedViewMode === 'grid' ||$allowedViewMode === 'both' ){  ?>
 <div class="col-12 grid-view" <?php if($allowedViewMode === 'both') { ?>style="display:none" <?php } ?>>
 	<div class="row mb-4">
     	
@@ -126,9 +130,9 @@ font-size: 260px;
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('name',GROUP_MEMBERS_COLS);?>, 'asc']],
+		"order": [[titleColumn, 'asc']],
       	"columnDefs": [ 
-           { "targets": "_all", "orderable": false }
+           //{ "targets": "_all", "orderable": false }
 		  <?php //if(in_array('People Name', $colNames)){ ?>
 		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
 		  <?php //} if(in_array('Email', $colNames)){ ?>

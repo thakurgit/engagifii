@@ -174,13 +174,11 @@ function save_groupmember_cols() {
     if (!isset($settings['group_members_settings'])) {
         $settings['group_members_settings'] = [];
     }
-
     // Update only relevant parts
     $settings['group_members_settings']['list']['visible_column_list'] = $visible;
     $settings['group_members_settings']['list']['order'] = $order;
     $settings['group_members_settings']['grid']['visible_column_list'] = $visibleGrid;
     $settings['group_members_settings']['grid']['order'] = $orderGrid;
-
     // Save updated settings
     update_option('ebt_api_settings', $settings);
 

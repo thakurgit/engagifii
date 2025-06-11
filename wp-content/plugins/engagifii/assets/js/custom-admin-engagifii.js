@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       const listItems = ul.querySelectorAll("li");
       listItems.forEach((li, index) => {
-        if (index === 0) return; // Ignore first <li> (toggleAll)
+        if (li.classList.contains("toggleAll")) return; // Skip <li> with class "toggleAll"
 
         const text = li.textContent.toLowerCase();
         li.style.display = text.includes(filter) ? "list-item" : "none";
@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
             </li>
           `);
 		  const $popli = $(`
-            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value="${colVal}" name="ebt_api_settings[group_members_settings][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
+            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value='${colVal}' name="ebt_api_settings[group_members_settings][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
 			<div class="bdrs">${labelText}</div>
             </li>
           `);
@@ -220,8 +220,11 @@ jQuery(document).ready(function($) {
 	});
 
 });
-
-
+function decodeHtmlEntities(str) {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
+}
 /*jQuery(document).ready(function($) {
     const maxAllowed = 6;
 

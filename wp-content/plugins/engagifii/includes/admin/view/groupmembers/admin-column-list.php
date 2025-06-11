@@ -1,43 +1,41 @@
-<div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<div data-tab="settings" class="wrap groupmembers-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Group Members Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
-    $obj =  new adminDataColumn();
-	$response = [
-    (object)['colName' => 'name',              'displayName' => 'Name'],
-    (object)['colName' => 'position',          'displayName' => 'Position'],
-    (object)['colName' => 'organization',      'displayName' => 'Organization'],
-    (object)['colName' => 'email',             'displayName' => 'Email'],
-    (object)['colName' => 'phone',             'displayName' => 'Phone'],
-    (object)['colName' => 'department',        'displayName' => 'Current Department'],   
-    (object)['colName' => 'terms',             'displayName' => 'Terms'],
-    (object)['colName' => 'region',            'displayName' => 'Region'],
-    (object)['colName' => 'status',            'displayName' => 'Status'],
-    (object)['colName' => 'added',             'displayName' => 'Added'],
-    (object)['colName' => 'lastUpdated',       'displayName' => 'Last Updated'],
-    (object)['colName' => 'userStatus',        'displayName' => 'Invitation Status'],
-    (object)['colName' => 'roles',             'displayName' => 'Roles'],
-    (object)['colName' => 'lastLogin',         'displayName' => 'Last Login'],
-    (object)['colName' => 'totalTimeWorked',   'displayName' => 'Total Time Worked'],    
-    (object)['colName' => 'personType',        'displayName' => 'Person Type'],
-    (object)['colName' => 'tags',              'displayName' => 'Tags'],
-    (object)['colName' => 'action',            'displayName' => 'Action'],
-    (object)['colName' => 'age',               'displayName' => 'Age'],
-    (object)['colName' => 'birthdate',         'displayName' => 'Birthdate'],
-];
-    $nonce = wp_create_nonce('save_groups_nonce');
     $options = get_option( 'ebt_api_settings' );
-    $group_member_visible_column_list = array();
-    if (!empty($options['group_members_settings']['list']['visible_column_list'])) {
-    $group_member_visible_column_list = $options['group_members_settings']['list']['visible_column_list'];
-	  } else {
-		  $group_member_visible_column_list = ['name'];
-	  }
+    $nonce = wp_create_nonce('save_groups_nonce');
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['engagifii_apis']['crmUrl']=='' || $options['dashboard_tenant_code']==''){
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage Group Members page settings</i></b>';	
-		} else if(is_array ($response)){ 
+		} else { 
+		  $response = wp_remote_get("{$options['engagifii_apis']['crmUrl']}/PeopleColumnList", [
+		  'headers' => [
+			'accept'        => 'application/json',
+			'tenant-code'   => $options['dashboard_tenant_code'],
+		  ]
+		]);
+		   if (is_wp_error($response)) {
+			echo '<div class="error">API Response not found!</div>';
+		  }
+		  $body = stripslashes(wp_remote_retrieve_body($response));
+		  $response  = json_decode($body, true) ?? [];
+		  if (!empty($response)) {
+			  $response = array_map(function($item) {
+			  $object = (object)[
+				  'colName' => $item['colName'],
+				  'displayName' => $item['displayName']
+			  ];
+		  
+			  if (isset($item['fieldId'])) {
+				  $object->fieldId = $item['fieldId'];
+			  }
+			  return $object;
+		  }, $response);
 		//render UI
 		function render_group_columns_ui($context, $response, $visible_columns, $options) {
+			$visible_columns = array_map(function ($json) {
+				$decoded = json_decode(stripslashes($json), true); 
+				return $decoded['colName'] ?? null;
+			}, $visible_columns);
 			$input_suffix = $context === 'grid' ? '_grid' : '';
 			$order_value = htmlspecialchars($options['group_members_settings'][$context]['order']);
 			$input_name_prefix = "ebt_api_settings[group_members_settings][$context][visible_column_list][]";
@@ -52,8 +50,17 @@
 							foreach ($response as $row) {
 								$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
 								if ($row->colName == 'name') $checked .= ' readonly';
+								
+								$value_data = [
+									'colName' => $row->colName,
+									'displayName' => $row->displayName
+								];
+								if (isset($row->fieldId)) {
+									$value_data['fieldId'] = $row->fieldId;
+								}
+								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
 								echo '<li data-order="' . $counter . '">
-									<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value="' . $row->colName . '">
+									<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
 									<label for="' . $row->colName . $input_suffix . '">' . $row->displayName . '</label>
 								</li>';
 								$counter++;
@@ -82,8 +89,16 @@
 						<ul class="colsListBody sortable-cols">
 							<?php foreach ($response as $key => $row) {
 								if (in_array($row->colName, $visible_columns)) {
+									$value_data = [
+									'colName' => $row->colName,
+									'displayName' => $row->displayName
+								];
+								if (isset($row->fieldId)) {
+									$value_data['fieldId'] = $row->fieldId;
+								}
+								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
 									echo '<li data-order="' . ($key + 1) . '">
-										<input type="hidden" value="' . $row->colName . '" name="' . $input_name_prefix . '" />
+										<input type="hidden" value="' . $input_value . '" name="' . $input_name_prefix . '" />
 										<span class="dashicons dashicons-sort"></span>
 										<div class="bdrs">' . $row->displayName . '</div>
 									</li>';
@@ -101,9 +116,17 @@
 			</div>
 			<?php
 		}
+		//list view settings
+		$group_member_visible_column_list = array();
+		if (!empty($options['group_members_settings']['list']['visible_column_list'])) {
+		$group_member_visible_column_list = $options['group_members_settings']['list']['visible_column_list'];
+		  } else {
+			  $group_member_visible_column_list = ['{"colName":"name","displayName":"Name"}'];
+		  }
 		?>
 			<h3><span class="dashicons dashicons-list-view"></span>&nbsp;&nbsp;Manage Column Visibility (List View)</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for <b>list</b> view only.</i><hr>
            <?php
+		   
 			  render_group_columns_ui('list', $response, $group_member_visible_column_list, $options);
 			
 			//grid view settings
@@ -111,12 +134,15 @@
     if (!empty($options['group_members_settings']['grid']['visible_column_list'])) {
     $group_member_visible_column_grid = $options['group_members_settings']['grid']['visible_column_list'];
 	  } else {
-		  $group_member_visible_column_grid = ['name'];
+		  $group_member_visible_column_grid = ['{"colName":"name","displayName":"Name"}'];
 	  }
 			?>
 			<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page and drag the field names to the order in which they should be displayed. Ordering is available for <strong>grid</strong> view only. <strong>Maximum 6 fields are allowed.</strong></i><hr>			
            <?php
 			render_group_columns_ui('grid', $response, $group_member_visible_column_grid, $options);
+	 } else {
+		echo '<b style="color:red"><i>Columns not found!</i></b>'; 
+	 }
 	 } 
 			?>
 </div>
@@ -136,10 +162,10 @@
     const visibleCols = [];
     const visibleColsGrid = [];
     $container.find('li input').each(function() {
-      visibleCols.push($(this).val());
+      visibleCols.push(decodeHtmlEntities($(this).val()));
     });
     $containerGrid.find('li input').each(function() {
-      visibleColsGrid.push($(this).val());
+      visibleColsGrid.push(decodeHtmlEntities($(this).val()));
     });
     $.ajax({
       url: ajaxurl,
@@ -154,6 +180,10 @@
       },
       success: function(response) {
         console.log(response.data?.message);
+		$('<p style="color:var(--e-context-success-color)"><strong><em>Columns saved successfully!</em></strong></p>').insertAfter($button);
+        setTimeout(() => {
+            $button.siblings('p').remove();
+        }, 2000);
       },
       error: function() {
         alert('Error saving column settings.');
