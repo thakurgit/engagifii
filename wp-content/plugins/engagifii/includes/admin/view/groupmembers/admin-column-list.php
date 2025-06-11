@@ -55,13 +55,16 @@
 									'colName' => $row->colName,
 									'displayName' => $row->displayName
 								];
+								$customField ='';
 								if (isset($row->fieldId)) {
 									$value_data['fieldId'] = $row->fieldId;
+									$customField = '<span class="cfield">Custom Field</span>';
 								}
 								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
 								echo '<li data-order="' . $counter . '">
 									<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
 									<label for="' . $row->colName . $input_suffix . '">' . $row->displayName . '</label>
+									'.$customField.'
 								</li>';
 								$counter++;
 							} ?>

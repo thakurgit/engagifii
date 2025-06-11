@@ -225,8 +225,8 @@ function decodeHtmlEntities(str) {
   txt.innerHTML = str;
   return txt.value;
 }
-/*jQuery(document).ready(function($) {
-    const maxAllowed = 6;
+jQuery(document).ready(function($) {
+    const maxAllowed = 5;
 
     function updateCheckboxState(wrapper) {
         const checkboxes = wrapper.find('input[type="checkbox"]:not([readonly])');
@@ -239,13 +239,20 @@ function decodeHtmlEntities(str) {
     }
 
     // Attach change event handler to checkboxes inside each .cols-list-wrapper
-    $('.cols-list-wrapper').each(function () {
+    $('.groups-grid .cols-list-wrapper').each(function () {
         const wrapper = $(this);
+		const checkboxesli = wrapper.find('li');
         wrapper.find('input[type="checkbox"]').on('change', function () {
             updateCheckboxState(wrapper);
         });
 
         // Run on page load in case some checkboxes are already checked
         updateCheckboxState(wrapper);
+		checkboxesli.on('mousedown', function (e) {
+            if ($(this).find('input').is(':disabled')) {
+                showAlert('You can select up to ' + (maxAllowed + 1) + ' columns only.');
+                e.preventDefault();
+            }
+        });
     });
-});*/
+});

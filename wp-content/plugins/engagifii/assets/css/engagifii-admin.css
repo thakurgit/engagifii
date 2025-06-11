@@ -321,3 +321,12 @@ text-align: right;
 	left:-8px;
 	right:8px;
 }
+.cfield {
+	background: #878787;
+	color: white;
+	font-weight: bold;
+	border-radius: 5px;
+	font-size: 10px;
+	padding: 0px 5px;
+	float: right;
+}
