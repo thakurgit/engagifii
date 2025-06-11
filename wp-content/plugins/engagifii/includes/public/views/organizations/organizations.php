@@ -189,7 +189,7 @@ font-size: 260px;
 			   var parsedResponse = JSON.parse(response);
 			  var data = parsedResponse.data || [];
 			  renderOrgGrid(data);
-			 renderPagination(parsedResponse.count, start, length);
+			 renderPagination(parsedResponse.count, start, length, modulename='organizations');
 			} catch (e) {
 			  console.error('Error parsing response:', e);
 			}

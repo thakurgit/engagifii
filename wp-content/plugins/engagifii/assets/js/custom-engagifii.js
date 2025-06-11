@@ -366,7 +366,7 @@ function buildPopoverHtml(field, items) {
     return html;
 }
 
-function renderPagination(totalCount, start, length) {
+function renderPagination(totalCount, start, length, modulename) {
   const $pagination = $('.grid-pagination');
   const currentPage = Math.floor(start / length) + 1;
   const totalPages = Math.ceil(totalCount / length);
@@ -422,7 +422,11 @@ function renderPagination(totalCount, start, length) {
 
     if (newPage !== currentPage) {
       start = (newPage - 1) * length;
+      if( modulename === 'organizations') {
       OrgList(start); // re-fetch new data
+    }else if( modulename === 'groupMembers') {
+      groupMembers(start); // re-fetch new data
+    }
     }
   });
 }

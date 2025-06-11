@@ -203,7 +203,7 @@ font-size: 260px;
 			   var parsedResponse = JSON.parse(response);
 			  var data = parsedResponse.data || [];
 			  renderGroupGrid(data);
-			 renderPagination(parsedResponse.count, start, length);
+			 renderPagination(parsedResponse.count, start, length, modulename = 'groupMembers');
 			} catch (e) {
 			  console.error('Error parsing response:', e);
 			}
@@ -291,7 +291,9 @@ var fieldValues = {
     lastupdated: person.lastupdated || '--',
     lastlogin: person.lastlogin || '--',
     age: person.age || '--',
-    tags: Array.isArray(person.tags) ? person.tags.join(', ') : (person.tags || '--'),
+    tags: (person.tags && person.tags.length > 0)
+    ? buildPopoverHtml('tags', person.tags)
+    : '--',
     added: person.added || '--',
     totaltimeworked: person.totaltimeworked || '--',
     name: person.fullName || '--'

@@ -906,7 +906,7 @@ public function getOrganizations(){
             $nestedData['added'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;
              $nestedData['organizationTags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
-            
+            $nestedData['Tags'] = '';
           
 		$data[] = $nestedData;
         }
