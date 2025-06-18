@@ -270,6 +270,7 @@ var fieldIcons = {
 }
 
 function renderGroupGrid(data) {
+  // console.log(data);
     var container = $('.grid-view .row');
     container.empty(); // Clear previous content
     if (data.length === 0) {
@@ -309,15 +310,17 @@ var fieldValues = {
         ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') + '</a>'
         : '--',
     status: person.status || '--',
-    userstatus: person.userstatus || '--',
-    lastupdated: person.lastupdated || '--',
-    lastlogin: person.lastlogin || '--',
+    userstatus: person.userStatus || '--',
+    modifieddate: person.modifiedDate ? new Date(person.modifiedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+    lastlogin: person.lastLogin || '--',
     age: person.age || '--',
     tags: (person.tags && person.tags.length > 0)
     ? buildPopoverHtml('tags', person.tags)
     : '--',
-    added: person.added || '--',
-    totaltimeworked: person.totaltimeworked || '--',
+    createddate: person.createdDate ? new Date(person.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+    totaltimeworked: person.totalTimeWorked ? formatMonthsToYearsAndMonths(person.totalTimeWorked) : '--',
+    // createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+    // modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
     name: person.fullName || '--'
 };
 

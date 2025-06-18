@@ -722,8 +722,8 @@ wp_die();
             }
 
             $nestedData['status'] =  $value->people->status;
-            $nestedData['lastupdated'] = $this->formatDateField($value->people->modifiedDate);
-            $nestedData['added'] = $this->formatDateField($value->people->createdDate);
+            $nestedData['modifieddate'] = $this->formatDateField($value->people->modifiedDate);
+            $nestedData['createddate'] = $this->formatDateField($value->people->createdDate);
             $nestedData['lastlogin'] = $this->formatDateField($value->people->lastLogin);
             $nestedData['totaltimeworked'] = $this->formatMonthsToYearsAndMonths($value->people->totalTimeWorked);          
             $nestedData['roles'] = $this->buildPopoverColumn($key, $value->people->roles ?? [], 'Roles', 'name');
@@ -731,7 +731,8 @@ wp_die();
             $nestedData['persontype'] = $this->buildPopoverColumn($key, $value->people->personTypes ?? [], 'Person Types', 'name');
             $nestedData['age'] = $this->getCustomFieldValue($value->people->customFields ?? [], 'age');
             $nestedData['birthdate'] = '';
-             $nestedData['action'] = '';
+            $nestedData['action'] = '';
+            $nestedData['currentorganizations'] = '';
      $regions = [];
 if (!empty($value->people->terms) && is_array($value->people->terms)) {
     foreach ($value->people->terms as $term) {

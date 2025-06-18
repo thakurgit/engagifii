@@ -449,3 +449,20 @@ function isValidUrl(url) {
     return false;
   }
 }
+function formatMonthsToYearsAndMonths(totalMonths) {
+    totalMonths = parseInt(totalMonths, 10);
+    if (isNaN(totalMonths) || totalMonths <= 0) return '--';
+    var years = Math.floor(totalMonths / 12);
+    var months = totalMonths % 12;
+    var yearText = years > 0 ? years + ' yr' + (years > 1 ? 's' : '') : '';
+    var monthText = months > 0 ? months + ' mo' + (months > 1 ? 's' : '') : '';
+    if (yearText && monthText) {
+        return yearText + ' and ' + monthText;
+    } else if (yearText) {
+        return yearText;
+    } else if (monthText) {
+        return monthText;
+    } else {
+        return '--';
+    }
+}
