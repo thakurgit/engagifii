@@ -903,7 +903,7 @@ public function getOrganizations(){
             $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
             $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
            // $nestedData['organizationTags'] = '';
-            $nestedData['primaryemail'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
+            $nestedData['primaryemail'] = $value->primaryEmail ? $value->primaryEmail : '--';
             $nestedData['modifiedon'] = $this->formatDateField($value->modifiedOn);
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;

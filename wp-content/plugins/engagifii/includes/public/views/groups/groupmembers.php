@@ -381,5 +381,5 @@ dt_titleSearch('Search Members');
 }
 
   ?>
- $('<style>.popover-wide{min-width:350px !important;max-width:600px !important;width:100% !important;}</style>').appendTo('head');
+ 
 </script>
