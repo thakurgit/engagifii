@@ -56,8 +56,10 @@ font-size: 260px;
     	<thead> 
 		    <tr>    
 		    	 <?php  $i = 0;
+         //  print_r(GROUP_MEMBERS_COLS);
 				  foreach (GROUP_MEMBERS_COLS as $key){
 					  $json = json_decode(stripslashes($key), true);
+             //print_r($json);
 					  if (!$json || !isset($json['colName'], $json['displayName'])) {
 						  continue;
 					  }
@@ -132,7 +134,7 @@ font-size: 260px;
        	"ordering":true,
 		"order": [[titleColumn, 'asc']],
       	"columnDefs": [ 
-           //{ "targets": "_all", "orderable": false }
+           { "targets": "_all", "orderable": false }
 		  <?php //if(in_array('People Name', $colNames)){ ?>
 		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
 		  <?php //} if(in_array('Email', $colNames)){ ?>
@@ -221,7 +223,23 @@ font-size: 260px;
 	}
 	
 	//grid layout
-  var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
+ // var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
+var groupMemberCols = <?php
+    $gridCols = [];
+    foreach (GROUP_MEMBERS_COLS_GRID as $key) {
+        $json = json_decode(stripslashes($key), true);
+       if (!$json || !isset($json['colName'], $json['displayName'])) continue;
+      $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+      $gridCols[] = [
+          'colClass' => $colClass,
+          'displayName' => $json['displayName'],
+          'colName' => $json['colName']
+      ];
+  }
+    echo json_encode($gridCols);
+?>;
+ 
+  //console.log(groupMemberCols);
 var fieldIcons = {
     email:    '<i class="fas fa-envelope mr-2"></i>',
     organization: '<i class="fas fa-landmark mr-2"></i>',
@@ -257,7 +275,7 @@ function renderGroupGrid(data) {
     if (data.length === 0) {
         container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
         return;
-    }
+    }    
     data.forEach(function(item) {
         var person = item.people;
         var personPhoto = isValidUrl(person.imageThumbUrl)
@@ -268,20 +286,20 @@ function renderGroupGrid(data) {
        // ...existing code...
 var fieldValues = {
     email:    person.email ? '<a href="mailto:' + person.email + '">' + person.email + '</a>' : '--',
-    organization: person.organization && person.organization.name ? person.organization.name : '--',
-    position: (person.peoplePosition && person.peoplePosition.length > 0)
+    primaryorganization: person.organization && person.organization.name ? person.organization.name : '--',
+    currentposition: (person.peoplePosition && person.peoplePosition.length > 0)
         ? buildPopoverHtml('position', person.peoplePosition)
         : '--',
-    department: (person.peopleDepartment && person.peopleDepartment.length > 0)
+    currentdepartment: (person.peopleDepartment && person.peopleDepartment.length > 0)
         ? buildPopoverHtml('department', person.peopleDepartment)
         : '--',
     roles: (person.roles && person.roles.length > 0)
         ? buildPopoverHtml('roles', person.roles)
         : '--',
-    persontype: (person.persontype && person.persontype.length > 0)
-        ? buildPopoverHtml('persontype', person.persontype)
+    persontype: (person.personTypes && person.personTypes.length > 0)
+        ? buildPopoverHtml('persontype', person.personTypes)
         : '--',
-    terms: (person.terms && person.terms.length > 0)
+    term: (person.terms && person.terms.length > 0)
         ? buildPopoverHtml('terms', person.terms)
         : '--',
   region: (person.terms && person.terms.length > 0)
@@ -304,16 +322,18 @@ var fieldValues = {
 };
 
         var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
-        groupMemberCols.forEach(function(col) {
+        groupMemberCols.forEach(function(colObj) {
+           var col = colObj.colClass;
+            var label = colObj.displayName;
             if (col === 'name') return; // already shown as title
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1">' +
                     (fieldIcons[col] || '') +
-                    '<span class="font-weight-bold">' + getFieldLabel(col) + ':</span> ' +
+                    '<span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
                     '</p>';
             }
-        });
+        });      
 
         var card = '<div class="col-md-3 mb-4">' +
             '<div class="card h-100 shadow p-3">' +

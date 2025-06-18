@@ -309,7 +309,7 @@ function buildPopoverHtml(field, items) {
         });
         htmlList += '</div>';
         return '<span class="d-inline-block pr-2">' +
-            '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="focus" data-content="' +
+            '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
             htmlList.replace(/"/g, '&quot;') +
             '">' + linkText + '</span></span>';
     }
@@ -335,31 +335,40 @@ function buildPopoverHtml(field, items) {
     var pluralLabel = getPluralLabel(field, items.length);
 
     // Build HTML list for popover content (like list view)
-    var htmlList = '<div class="dropdown-menu show p-0" style="min-width:600px !important;">';
+     var htmlList = '<div class="dropdown-menu show p-0" style="min-width:350px;">';
+    htmlList += '<div class="text-center font-weight-bold py-2 border-bottom">' + pluralLabel + '</div>';
     items.forEach(function(it, idx) {
-        var label = '';
+        htmlList += '<div class="px-3 py-2 border-bottom" style="background:' + (idx % 2 === 0 ? '#fafbfc' : '#fff') + ';">';
         if (it.positionName) {
-            label = '<strong>' + it.positionName + '</strong>';
-            if (it.organizationName) label += '<div class="text-muted small">' + it.organizationName + '</div>';
+            htmlList += '<div class="font-weight-bold mb-1">' + it.positionName + '</div>';
+            if (it.organizationName && it.organizationUrl) {
+                htmlList += '<div><a href="' + it.organizationUrl + '" target="_blank" style="color:#2176d2;">' + it.organizationName + '</a></div>';
+            } else if (it.organizationName) {
+                htmlList += '<div style="color:#2176d2;">' + it.organizationName + '</div>';
+            }
         } else if (it.departmentName) {
-            label = '<strong>' + it.departmentName + '</strong>';
-            if (it.organizationName) label += '<div class="text-muted small">' + it.organizationName + '</div>';
+            htmlList += '<div class="font-weight-bold mb-1">' + it.departmentName + '</div>';
+            if (it.organizationName) {
+                htmlList += '<div style="color:#2176d2;">' + it.organizationName + '</div>';
+            }
         } else if (it.electionTermName) {
-            label = '<strong>' + it.electionTermName + '</strong>';
-            if (it.position && it.position.organizationName) label += '<div class="text-muted small">' + it.position.organizationName + '</div>';
+            htmlList += '<div class="font-weight-bold mb-1">' + it.electionTermName + '</div>';
+            if (it.position && it.position.organizationName) {
+                htmlList += '<div style="color:#2176d2;">' + it.position.organizationName + '</div>';
+            }
         } else if (it.name) {
-            label = it.name;
+            htmlList += '<div>' + it.name + '</div>';
         } else if (it.tagName) {
-            label = it.tagName;
+            htmlList += '<div>' + it.tagName + '</div>';
         } else {
-            label = it.toString();
+            htmlList += '<div>' + it.toString() + '</div>';
         }
-        htmlList += '<div class="px-3 py-2 border-bottom small" style="white-space:normal;">' + label + '</div>';
+        htmlList += '</div>';
     });
     htmlList += '</div>';
 
     // Popover trigger: show "N Positions" (or similar)
-    var html = '<span class="d-inline-block pr-2">' +
+   var html = '<span class="d-inline-block pr-2">' +
         '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
         htmlList.replace(/"/g, '&quot;') +
         '">' + pluralLabel + '</span></span>';

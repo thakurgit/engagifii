@@ -595,17 +595,17 @@ wp_die();
            if ($value->people->peoplePosition) {
                     if (count($value->people->peoplePosition) == 1) {
                         $pos = $value->people->peoplePosition[0];
-                        $nestedData['organization'] = '<div class="d-flex align-items-center" data-orgId="' . $pos->organizationId . '">';
+                        $nestedData['primaryorganization'] = '<div class="d-flex align-items-center" data-orgId="' . $pos->organizationId . '">';
                         if ($pos->imageThumbUrl && filter_var($pos->imageThumbUrl, FILTER_VALIDATE_URL)) {
-                            $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $pos->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $pos->imageThumbUrl . '">';
+                            $nestedData['primaryorganization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $pos->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $pos->imageThumbUrl . '">';
                         } else {
-                            $nestedData['organization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                            $nestedData['primaryorganization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
                         }
-                        $nestedData['organization'] .= $pos->organizationName . '</div>';
-                        $nestedData['position'] = $pos->positionName;
+                        $nestedData['primaryorganization'] .= $pos->organizationName . '</div>';
+                        $nestedData['currentposition'] = $pos->positionName;
                     } else {
                         // Positions popover
-                        $nestedData['position'] = $this->buildPopoverList(
+                        $nestedData['currentposition'] = $this->buildPopoverList(
                             $key,
                             $value->people->peoplePosition,
                             'Positions',
@@ -625,7 +625,7 @@ wp_die();
                             }
                         }
                         if (count($orgs) > 1) {
-                            $nestedData['organization'] = $this->buildPopoverList(
+                            $nestedData['primaryorganization'] = $this->buildPopoverList(
                                 $key,
                                 array_map(function($orgName) { return (object)['organizationName' => $orgName]; }, $orgs),
                                 'Organizations',
@@ -637,41 +637,41 @@ wp_die();
                         } else {
                             // Only one unique organization, show as icon + name
                             $orgObj = $value->people->peoplePosition[0];
-                            $nestedData['organization'] = '<div class="d-flex align-items-center">';
+                            $nestedData['primaryorganization'] = '<div class="d-flex align-items-center">';
                             if ($orgObj->imageThumbUrl && filter_var($orgObj->imageThumbUrl, FILTER_VALIDATE_URL)) {
-                                $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $orgObj->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $orgObj->imageThumbUrl . '">';
+                                $nestedData['primaryorganization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $orgObj->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $orgObj->imageThumbUrl . '">';
                             } else {
-                                $nestedData['organization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                                $nestedData['primaryorganization'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
                             }
-                            $nestedData['organization'] .= $orgObj->organizationName . '</div>';
+                            $nestedData['primaryorganization'] .= $orgObj->organizationName . '</div>';
                         }
                     }
                 } else {
-                    $nestedData['organization'] = '--';
-                    $nestedData['position'] = '--';
+                    $nestedData['primaryorganization'] = '--';
+                    $nestedData['currentposition'] = '--';
                 }
-            $nestedData['organization'] = '<div class="d-flex align-items-center">';
+            $nestedData['primaryorganization'] = '<div class="d-flex align-items-center">';
             if($value->people->organization->imageThumbUrl && filter_var($value->people->organization->imageThumbUrl, FILTER_VALIDATE_URL)){
-                $nestedData['organization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
+                $nestedData['primaryorganization'] .= '<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->organization->imageThumbUrl.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->organization->imageThumbUrl.'">';	
             }else{
-                $nestedData['organization'] .= '<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
+                $nestedData['primaryorganization'] .= '<i class="fas fa-landmark mr-2" style="font-size:30px; color:#979797"></i>';
             }
-            $nestedData['organization'] .= '<div>'.$value->people->organization->name.'</div>';
+            $nestedData['primaryorganization'] .= '<div>'.$value->people->organization->name.'</div>';
 
             // Department (keep as is for now)
            if ($value->people->peopleDepartment) {
                 if (count($value->people->peopleDepartment) == 1) {
                     $dept = $value->people->peopleDepartment[0];
-                    $nestedData['department'] = '<div class="d-flex align-items-center">';
+                    $nestedData['currentdepartment'] = '<div class="d-flex align-items-center">';
                     if ($dept->imageThumbUrl && filter_var($dept->imageThumbUrl, FILTER_VALIDATE_URL)) {
-                        $nestedData['department'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $dept->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $dept->imageThumbUrl . '">';
+                        $nestedData['currentdepartment'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . $dept->organizationName . '" class="rounded-circle img-fluid mr-2" src="' . $dept->imageThumbUrl . '">';
                     } else {
-                        $nestedData['department'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
+                        $nestedData['currentdepartment'] .= '<span class="mr-2 text-white d-inline-flex align-items-center justify-content-center p-2 rounded-circle" style="font-size:24px; background:#979797"><i class="far fa-landmark"></i></span>';
                     }
-                    $nestedData['department'] .= $dept->organizationName . '</div>';
-                    $nestedData['department'] = $dept->departmentName;
+                    $nestedData['currentdepartment'] .= $dept->organizationName . '</div>';
+                    $nestedData['currentdepartment'] = $dept->departmentName;
                 } else {
-                    $nestedData['department'] = $this->buildPopoverList(
+                    $nestedData['currentdepartment'] = $this->buildPopoverList(
                         $key,
                         $value->people->peopleDepartment,
                         'Departments',
@@ -685,7 +685,7 @@ wp_die();
                     );
                 }
             } else {
-                $nestedData['department'] = '--';
+                $nestedData['currentdepartment'] = '--';
             }
 
             // Terms (keep as is for now)
@@ -693,7 +693,7 @@ wp_die();
                 $terms = $value->people->terms;
                 $termCount = count($terms);
                 $linkText = ($termCount === 1) ? $terms[0]->electionTermName : $termCount . ' Terms';
-                $nestedData['terms'] = $this->buildPopoverList(
+                $nestedData['term'] = $this->buildPopoverList(
                     $key,
                     $terms,
                     'Terms',
@@ -711,14 +711,14 @@ wp_die();
                     'class_' . $key // dropdownClass
                 );
                 // Replace the link text in the dropdown anchor
-                $nestedData['terms'] = preg_replace(
+                $nestedData['term'] = preg_replace(
                     '/>\d+ Terms</',
                     '>' . $linkText . '<',
-                    $nestedData['terms'],
+                    $nestedData['term'],
                     1
                 );
             } else {
-                $nestedData['terms'] = '--';
+                $nestedData['term'] = '--';
             }
 
             $nestedData['status'] =  $value->people->status;
@@ -787,7 +787,7 @@ if (count($regions) > 0) {
                 $suffix = ($value->people->userStatus == 3) ? ' (Expired on ' : ' (Expires on ';
                 $status .= $suffix . $expiration . ')';
             }
-            $nestedData['userstatus'] = $status;
+            $nestedData['invitationstatus'] = $status;
             $nestedData['phone'] = $this->formatPhoneNumber($value->people->primaryPhoneNumber->value ?? '');
             // Custom fields (badges)
             $customFields = $value->people->customFields ?? [];
@@ -848,8 +848,8 @@ public function getOrganizations(){
                 "searchText":"'.$searchText.'"
             }
         }';
-        
-        $dataResponse = $this->submitApiRequest("Organization/OrganizationPagingList", json_decode($postedData), "POST", 'dashboard'); 
+        //print_r($postedData); die;
+        $dataResponse = $this->submitApiRequest("OrganizationPagingList", json_decode($postedData), "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
@@ -882,31 +882,32 @@ public function getOrganizations(){
                     $locationCount = $locationCount+1;
                 }
             }
-			$nestedData['OrganizationName']='<div class="d-flex align-items-center">';
+			$nestedData['name']='<div class="d-flex align-items-center">';
 			if($value->imageThumbUrl && filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)){
-				$nestedData['OrganizationName'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->name.'" class="rounded-circle img-fluid mr-2" src="'.$value->imageThumbUrl.'">';	
+				$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->name.'" class="rounded-circle img-fluid mr-2" src="'.$value->imageThumbUrl.'">';	
 			}else{
-				$nestedData['OrganizationName'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
+				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['OrganizationName'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
-            $nestedData['Status'] = $value->status;
-            $nestedData['Active/totalmember'] = $value->totalMembers.'/'.$value->activeMembers;	
+            $nestedData['name'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
+            $nestedData['status'] = $value->status;
+            $nestedData['totalmembers'] = $value->totalMembers;	
+             $nestedData['activemembers'] = $value->activeMembers;	
 			//$nestedData['Location']= $value->locationInfo[0]->locationValue ? $value->locationInfo->locationValue : 'N/A';
            if ((!empty($value->locations) && count($value->locations) > 0)) {             
-                $nestedData['Location'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
+                $nestedData['locations'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';
             } else {
-                $nestedData['Location'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
+                $nestedData['locations'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
          
-            $nestedData['phoneNumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
-            $nestedData['OrganizationType'] = $value->organizationType ? $value->organizationType : '';
+            $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
+            $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
            // $nestedData['organizationTags'] = '';
-            $nestedData['Email'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
-            $nestedData['lastUpdated'] = $this->formatDateField($value->modifiedOn);
-            $nestedData['added'] = $this->formatDateField($value->createdOn);
+            $nestedData['primaryemail'] = $value->primaryEmail ? $value->primaryEmail : 'N/A';
+            $nestedData['modifiedon'] = $this->formatDateField($value->modifiedOn);
+            $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;
-             $nestedData['organizationTags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
-            $nestedData['Tags'] = '';
+             $nestedData['organizationtags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
+            //$nestedData['Tags'] = '';
           
 		$data[] = $nestedData;
         }
@@ -921,7 +922,7 @@ public function getOrganizations(){
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-       //print_r($json_data);
+       //print_r(($json_data));
         echo json_encode($json_data);
         wp_die();
     }

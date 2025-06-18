@@ -74,6 +74,7 @@ jQuery(document).ready(function($) {
     const $popupList = $dropdown.siblings('.colsOrderModal').find('.colsListBody');
     const $listOrder = $popupList.siblings('.cls');
     const $wrapper = $dropdown.find('.cols-list-wrapper');
+    const page = $dropdown.attr('data-option');
 
     $wrapper.find('li:not(.toggleAll) input[type="checkbox"]').on('change', function() {
       const $checkbox = $(this);
@@ -98,7 +99,7 @@ jQuery(document).ready(function($) {
             </li>
           `);
 		  const $popli = $(`
-            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value='${colVal}' name="ebt_api_settings[group_members_settings][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
+            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value='${colVal}' name="ebt_api_settings[${page}][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
 			<div class="bdrs">${labelText}</div>
             </li>
           `);
@@ -239,7 +240,7 @@ jQuery(document).ready(function($) {
     }
 
     // Attach change event handler to checkboxes inside each .cols-list-wrapper
-    $('.groups-grid .cols-list-wrapper').each(function () {
+    $('.org-grid .cols-list-wrapper, .groups-grid .cols-list-wrapper').each(function () {
         const wrapper = $(this);
 		const checkboxesli = wrapper.find('li');
         wrapper.find('input[type="checkbox"]').on('change', function () {

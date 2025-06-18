@@ -41,7 +41,7 @@
 			$input_name_prefix = "ebt_api_settings[group_members_settings][$context][visible_column_list][]";
 			?>
 			<div class="groups-<?= $context ?>" style="<?= $context === 'grid' ? 'position:relative' : '' ?>">
-				<div class="cols-dropdown bdrs">
+				<div class="cols-dropdown bdrs" data-option="group_members_settings">
 					<button type="button" class="bdrs">Select <i class="dashicons-before dashicons-arrow-down-alt2"></i></button>
 					<div class="cols-list-wrapper bdrs" style="display:none">
 						<input type="text" class="cols-list-search bdrs" placeholder="search">

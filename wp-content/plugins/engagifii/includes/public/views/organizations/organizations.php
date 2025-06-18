@@ -8,8 +8,7 @@
 $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     ? strtolower($viewMode)
     : 'both';
-
-    //print_r(ORGANIZATION_COLS);
+   
 ?>
 <div class="container-fluid ">
 	<div class="row">
@@ -52,18 +51,33 @@ font-size: 260px;
   	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
     	<thead> 
 		    <tr>    
-		    	 <?php  $i = 0;         
+		    	 <?php  
+           $labelOverrides = [
+    'Created On' => 'Added',
+    'Locations' => 'Location',
+    'Organization Tags' => 'Tags',
+    // Add more as needed
+];
+$i = 0;    
+           //print_r(ORGANIZATION_COLS);     
 				  foreach (ORGANIZATION_COLS as $key){
-					  if($key == 'OrganizationName'){
+ $json = json_decode(stripslashes($key), true);
+ //print_r($json);
+					  if (!$json || !isset($json['colName'], $json['displayName'])) {
+						  continue;
+					  }
+					  if($json['colName'] == 'Name'){
                     	$title_key = $i;
                  	 }
-				 $forDatatable[]['data'] = $key
-				  ?>
-            <th class="text-capitalize <?php echo preg_replace('/\s+/', '', strtolower($key)); ?>">
-    <?php echo trim(preg_replace('/([a-z])([A-Z])/', '$1 $2', $key)); ?>
-</th>
-        <?php } ?>
- 		    
+					 $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+					$forDatatable[]['data'] = $colClass;
+// Use override if exists, else default displayName
+    $label = isset($labelOverrides[$json['displayName']]) ? $labelOverrides[$json['displayName']] : $json['displayName'];
+?>
+    <th class="text-capitalize <?php echo esc_attr($colClass); ?>">
+        <?php echo esc_html($label); ?>
+    </th>
+<?php } ?>
 
 		    </tr> 
     	</thead> 
@@ -112,6 +126,7 @@ font-size: 260px;
 		  table.draw();
 	  }
   });
+ 
 	var table = $('#ebtmaintable').DataTable( {
        	"pageLength": 10,
           "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
@@ -120,7 +135,7 @@ font-size: 260px;
        	"processing": true,
        	"searching": true,
        	"ordering":true,
-		"order": [[<?php echo array_search('OrganizationName',ORGANIZATION_COLS);?>, 'asc']],
+		"order": [[titleColumn, 'asc']],
       	"columnDefs": [ 
             { "targets": "_all", "orderable": false },
 		  <?php //if(in_array('People Name', $colNames)){ ?>
@@ -203,8 +218,23 @@ font-size: 260px;
 	}
 	
 	//grid layout
- var organizationGridCols = <?php echo json_encode(ORGANIZATION_COLS_GRID); ?>;
- console.log('Organization Grid Columns:', organizationGridCols); 
+ //var organizationGridCols = <?php echo json_encode(ORGANIZATION_COLS_GRID); ?>;
+  var organizationGridCols = <?php 
+  $gridCols = [];
+    foreach (ORGANIZATION_COLS_GRID as $key) {
+      $json = json_decode(stripslashes($key), true);
+      if (!$json || !isset($json['colName'], $json['displayName'])) continue;
+      $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+      $gridCols[] = [
+          'colClass' => $colClass,
+          'displayName' => $json['displayName'],
+          'colName' => $json['colName']
+      ];
+  }
+    echo json_encode($gridCols);
+?>;
+  //console.log(groupMemberCols);
+// console.log('Organization Grid Columns:', organizationGridCols); 
 var orgFieldIcons = {
     email: '<i class="fas fa-envelope mr-2"></i>',
     phone: '<i class="fas fa-phone mr-2"></i>',
@@ -216,6 +246,7 @@ var orgFieldIcons = {
     name: '', // handled as card-title
 };
 function renderOrgGrid(data) {
+  //console.log('Rendering Organization Grid with data:', data);
     var container = $('.grid-view .row');
     container.empty();
     if (data.length === 0) {
@@ -228,32 +259,41 @@ function renderOrgGrid(data) {
             : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
 
        var fieldValues = {
-    OrganizationName: org.name || '--',
-    Email: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
+    name: org.name || '--',
+    primaryemail: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
         (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'),
-  phoneNumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
+  phonenumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
     ? formatPhoneUS(org.phoneNumbers[0].value)
     : '--',
-    OrganizationType: org.organizationType || '--',
-    Status: org.status || '--',
-    Location: (org.locations && org.locations.length > 0)
-        ? org.locations.map(function(loc) { return loc.address; }).join(', ')
-        : '--',
-    'Active/totalmember': (org.totalMembers !== undefined && org.activeMembers !== undefined)
+    organizationtype: org.organizationType || '--',
+    status: org.status || '--',
+    locations: (org.locations && org.locations.length > 0)
+    ? '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' +
+        buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
+        '">View Locations</a>'
+    : '--',
+    'activemembers': (org.totalMembers !== undefined && org.activeMembers !== undefined)
         ? org.activeMembers + '/' + org.totalMembers
         : '--',
-    organizationTags: (org.organizationTags && org.organizationTags.length > 0)
+    organizationtags: (org.organizationTags && org.organizationTags.length > 0)
         ? buildPopoverHtml('tags', org.organizationTags)
-        : '--'
+        : '--',
+    createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+    modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
 };
 
-        var cardBody = '<h5 class="card-title">' + fieldValues.OrganizationName + '</h5>';
-        organizationGridCols.forEach(function(col) {
-            if (col === 'OrganizationName') return;
+       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
+        organizationGridCols.forEach(function(colObj) {
+            var col = colObj.colClass;
+            var label = colObj.displayName;
+             if (label === 'Locations') label = 'Location';
+            if (label === 'Created On') label = 'Added';
+            if (label === 'Modified On') label = 'Last Updated';
+            if (col === 'name') return;
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1">' +
                     (orgFieldIcons[col] || '') +
-                    '<span class="font-weight-bold">' + getFieldLabel(col) + ':</span> ' +
+                    '<span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
                     '</p>';
             }
@@ -268,7 +308,7 @@ function renderOrgGrid(data) {
         container.append(card);
     });
      setTimeout(function() {
-        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover({ trigger: 'hover', html: true });
     }, 100);
 }
 function getFieldLabel(field) {
@@ -285,7 +325,30 @@ function formatPhoneUS(phone) {
 // function isValidUrl(url) {
 //     try { new URL(url); return true; } catch (_) { return false; }
 // }
-
+function buildLocationPopoverHtml(locations) {
+    if (!Array.isArray(locations) || locations.length === 0) return '--';
+    var html = '<div style=\'min-width:220px\'><h6 class="text-center mb-2">Locations</h6><ul class="list-unstyled mb-0">';
+    locations.forEach(function(loc, idx) {
+        html += '<li class="mb-2' + (idx % 2 === 0 ? ' bg-light' : '') + '">';
+        html += '<div><b>' + (loc.fieldName || 'Address') + ':</b></div>';
+        html += '<div>' +
+            (loc.address || '') +
+            (loc.addressLine2 ? ', ' + loc.addressLine2 : '') +
+            (loc.city ? ', ' + loc.city : '') +
+            (loc.state ? ', ' + loc.state : '') +
+            (loc.zipCode ? ', ' + loc.zipCode : '') +
+            (loc.country ? ', ' + loc.country : '') +
+            '</div>';
+        //     if (loc.lat && loc.lng) {
+        //     html += '<div class="embed-responsive embed-responsive-16by9 mt-2" style="height:120px;"><iframe class="embed-responsive-item" style="width:100%;height:100%;" src="https://maps.google.com/maps?q=' +
+        //         encodeURIComponent(loc.lat) + ',' + encodeURIComponent(loc.lng) +
+        //         '&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
+        // }
+        html += '</li>';
+    });
+    html += '</ul></div>';
+    return html;
+}
 
 <?php
   if($title_key > -1){
