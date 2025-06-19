@@ -23,17 +23,12 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
         <?php } ?>
 <!-- Group Tabs -->
 <style>
-/*.prv, .nxt {
-  top: 9px;
-}
-#groupTabs {
-  scrollbar-width: none;          
-  -ms-overflow-style: none;       
+.badge[data-toggle="popover"] + .popover,
+.badge[data-toggle="popover"].popover {
+    min-width: 400px !important;
+    max-width: 600px;
 }
 
-#groupTabs::-webkit-scrollbar {
-  display: none;                  
-}*/
 .group-card .card-text {
 font-size: 14px;	
 }

@@ -14,6 +14,7 @@
         $more = 'col-md-6';
     $html .='<div class="col-md-6 col-12">
 	<div class="new-search form-inline ">
+    <label for="search-input" class="sr-only">Search</label>
 	<input type="text" name="search"  placeholder="'.$values['placeholder'].'" class="bg-light form-control list-search mr-2" >
 	<button type="submit" class=" btn btn-primary list-search-btn">Search</button>
 	</div>

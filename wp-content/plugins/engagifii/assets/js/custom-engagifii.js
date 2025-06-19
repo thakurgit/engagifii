@@ -166,7 +166,7 @@ $('.list-search').on("keydown", function(event) {
 });
  
          var title = $(this).text();
-        $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+        $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><label for="searchTitle" class="sr-only">Search</label><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none" style="right:21px; top:-1px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
 
 function delay(callback, ms) {
   var timer = 0;
@@ -224,7 +224,7 @@ function delay(callback, ms) {
 function dt_columnSearch(key,placeholder){
   $('#ebtmaintable thead tr th:eq('+key+')').each( function () { 
   var title = $(this).text();
-  $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none h-100" style="right:0px; top:0px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
+  $(this).html( '<div class="position-relative input-group search-dt flex-nowrap"><label for="searchTitle" class="sr-only">Search</label><input type="text" id="searchTitle" placeholder="'+placeholder+'" class="form-control form-control-sm pr-4 shadow-none" value=""/><div class="input-group-append"><span class="input-group-text px-1 bg-white rounded-right" ><i class="fal fa-search d-none"></i></span></div><button type="button" class="clear-search btn position-absolute p-1 px-2 shadow-none h-100" style="right:0px; top:0px; z-index:5;display:none"><i class="fal fa-times"></i></button></div>' );
 	$( 'input', this ).keyup(delay(function (e) {
 		var titlesearch = this.value;
 		if($(this).parents('th').hasClass('billNumber')){
@@ -285,34 +285,16 @@ $(document).on('click', '.dropdown-menu', function (e) {
 function buildPopoverHtml(field, items) {
     if (!Array.isArray(items) || items.length === 0) return '--';
 
-    // Helper to get label for the field type
-   function getPluralLabel(field, count) {
-        if (field === 'position') return count + ' Positions';
-        if (field === 'department') return count + ' Departments';
-        if (field === 'roles') return count + ' Roles';
-        if (field === 'persontype') return count + ' Person Types';
-        if (field === 'terms') return count + ' Terms';
-        if (field === 'tags') return count + ' Tags';
-        if (field === 'region') return count + ' Regions';
-        return count + ' Items';
-    }
-     if (field === 'region') {
-        var pluralLabel = getPluralLabel(field, items.length);
-        var linkText = (items.length === 1) ? items[0].regionName : pluralLabel;
-        var htmlList = '<div class="dropdown-menu show p-0" style="min-width:600px !important;">';
-        items.forEach(function(it) {
-            htmlList += '<div class="px-3 py-2 border-bottom small" style="white-space:normal;">' +
-                '<strong>' + (it.regionName || '') + '</strong>' +
-                '<br><span class="d-block" style="color:#2176d2;">' + (it.organizationName || '') + '</span>' +
-                '<span class="d-block">Term: ' + (it.electionTermName || '') + '</span>' +
-                '</div>';
-        });
-        htmlList += '</div>';
-        return '<span class="d-inline-block pr-2">' +
-            '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
-            htmlList.replace(/"/g, '&quot;') +
-            '">' + linkText + '</span></span>';
-    }
+    function getPluralLabel(field, count) {
+    if (field === 'position') return (count === 1 ? 'Position' : 'Positions') + '(' + count + ')';
+    if (field === 'department') return (count === 1 ? 'Department' : 'Departments') + '(' + count + ')';
+    if (field === 'roles') return (count === 1 ? 'Role' : 'Roles') + '(' + count + ')';
+    if (field === 'persontype') return (count === 1 ? 'Person Type' : 'Person Types') + '(' + count + ')';
+    if (field === 'terms') return (count === 1 ? 'Term' : 'Terms') + '(' + count + ')';
+    if (field === 'tags') return (count === 1 ? 'Tag' : 'Tags') + '(' + count + ')';
+    if (field === 'region') return (count === 1 ? 'Region' : 'Regions') + '(' + count + ')';
+    return 'Items (' + count + ')';
+}
 
     // Single item: show only the main label (no org/department)
     if (items.length === 1) {
@@ -334,8 +316,24 @@ function buildPopoverHtml(field, items) {
     // Multiple items: show "N Positions" (or similar) as clickable badge
     var pluralLabel = getPluralLabel(field, items.length);
 
-    // Build HTML list for popover content (like list view)
-     var htmlList = '<div class="dropdown-menu show p-0" style="min-width:350px;">';
+    // Use the same width for all popover dropdowns
+    var htmlList = '';
+    if (field === 'region') {
+        var linkText = (items.length === 1) ? items[0].regionName : pluralLabel;
+        items.forEach(function(it) {
+            htmlList += '<div class="px-3 py-2 border-bottom small" style="white-space:normal;">' +
+                '<strong>' + (it.regionName || '') + '</strong>' +
+                '<br><span class="d-block" style="color:#2176d2;">' + (it.organizationName || '') + '</span>' +
+                '<span class="d-block">Term: ' + (it.electionTermName || '') + '</span>' +
+                '</div>';
+        });
+        htmlList += '</div>';
+        return '<span class="d-inline-block pr-2">' +
+            '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
+            htmlList.replace(/"/g, '&quot;') +
+            '">' + linkText + '</span></span>';
+    }
+
     htmlList += '<div class="text-center font-weight-bold py-2 border-bottom">' + pluralLabel + '</div>';
     items.forEach(function(it, idx) {
         htmlList += '<div class="px-3 py-2 border-bottom" style="background:' + (idx % 2 === 0 ? '#fafbfc' : '#fff') + ';">';
@@ -365,10 +363,10 @@ function buildPopoverHtml(field, items) {
         }
         htmlList += '</div>';
     });
-    htmlList += '</div>';
+    htmlList += '';
 
     // Popover trigger: show "N Positions" (or similar)
-   var html = '<span class="d-inline-block pr-2">' +
+    var html = '<span class="d-inline-block pr-2">' +
         '<span tabindex="0" class="badge badge-primary" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' +
         htmlList.replace(/"/g, '&quot;') +
         '">' + pluralLabel + '</span></span>';
