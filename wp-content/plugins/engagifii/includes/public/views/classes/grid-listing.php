@@ -1,190 +1,10 @@
 <?php
-  $datatableJS=false;
+ 
     $options  = get_option( 'ebt_api_settings' );
   $classStates =['Upcoming'];
   if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { 
   	$classStates = [];
    }
-function classdataJS($classStates){  
-    $postData = array();  
-    $postData['itemCount'] = 1000;
-    $postData['sortBy'] = '';    
-    $postData['pageNumber'] = 1;    
-    $postData['sortDirection'] = "desc";
-    $postData['filterBody'] = array('searchText'=>'','selectedDate' => date('Y-m-d'),'classStates'=>$classStates); //'searchText'=>$title,  
-    return $postData;
-}
-	$classdatJS =classdataJS($classStates);
-     $classdatJS = $this->submitApiRequest("Public/ClassPagingList",  $classdatJS, "POST", 'classes');
-	// $url = ENGAGIFII_ASSETS_URL.'/classdata.txt';
-	//$JSON = file_get_contents($url);
-	// $classdatJS   = json_decode($JSON)->result;
-	 $classdatJS   = json_decode($classdatJS['api_response'])->result;
-	if(json_decode($classdatJS['api_response'])->totalCount<100 ){
-		//$datatableJS=true;
-	}
-	//datatable JS data
-if($datatableJS){
-//echo json_decode($xxx['api_response'])->totalCount;
-$dataa=array();
-$k=1;
-$counter = 0; 
-function registrationEnabled($registrationurl='',$registrationBtn='Register'){
-	return '<a style="white-space:nowrap" href="'.$registrationurl.'" class="btn btn-primary px-3 py-1" target="_blank">'.$registrationBtn.'</a>';	
-}
-function registrationDisabled($registrationTitle='',$registrationBtn='Register'){ 
-	return '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$registrationTitle.'"><button type="button" id="" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">'.$registrationBtn.'</button></span>';
-}
-if($classdatJS){	
-foreach ($classdatJS as $key => $value) {
-$nestedData = array();
-//class name
-$class_icon = $value->parentCourse->iconReference;
-if($siteURL == "https://engagifiwebstg.wpengine.com/oresa" || $siteURL == "https://engagifiiweb.com/oresa" || $siteURL == "https://oconeeresa.org"){
-  $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
-}
-$class_schedule = date('M d, Y', strtotime($value->startDate)).' at '.date('h:i A', strtotime($value->startDate)).' - '.date('h:i A', strtotime($value->endDate));
-if(count($value->classSessions)){
-  foreach ($value->classSessions as $key => $rowData) {
-	$counter = 0; 
-	$class_schedule = '';
-	$classSessionTime = '';
-	if( $counter == 0 ) {         
-		$classSessionStartTime = $rowData->startTime;
-		$classSessionStartDate = $rowData->sessionDate;
-	}                  
-	if( $counter == count( $value->classSessions ) - 1) {
-		 $classSessionEndTime = $rowData->endTime;
-		 $classSessionEndDate = $rowData->sessionDate;
-	}
-	$classSessionTime = date('M d, Y', strtotime($classSessionStartDate)).' - '.date('M d, Y', strtotime($classSessionEndDate));
-	$class_schedule = $classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime;
-	$counter = $counter + 1;
-  }
- // $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';
-}
-  $nestedData['sectionname'] = '<div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.site_url().'/class-details/?classId='.$value->id.'">'.$value->sectionName.'</a></span><small class="d-block" style="white-space:normal;">'.$class_schedule.'</small></div></div>';
-//class duration
-$nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
-//class type
-$nestedData['objectType'] = $value->objectType;
-//session dropdown
-if(count($value->classSessions)){
-  $li=1;
-  $classPopover  =  dd_header('Class Dates');
-  $subItems = "";
-  foreach ($value->classSessions as $key => $rowData) {
-	if( $li == 1 ) {         
-		$classSessionStartDate = $rowData->sessionDate;
-	}                  
-	$rowName[$rowData->id] = $rowData->id;
-	$classTime = '';
-	if($rowData->sessionDate){
-	  $classTime = date('M d Y', strtotime($rowData->sessionDate)).' At '.$rowData->startTime.' - '.$rowData->endTime;
-	}
-	$class='';
-	if($li%2==1){
-	  $class='bg-light';	
-	}
-	$subItems .= '<li class="px-2 py-1 border-bottom align-items-center small '.$class.'" style="display:flex"><img style="max-width:25px" src="'. ENGAGIFII_ASSETS_URL.'/images/class.png' .'" class="img-fluid mr-2"/>' . $classTime . '</li>';
-	$li++;
-  }
-  $classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-$nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.count($value->classSessions).'</span></div>'.$classPopover.'</div>';
-}else {
-  $nestedData['startdate']= '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><img src="'.ENGAGIFII_ASSETS_URL.'/images/class.png" class="img-icon-lg img-fluid" alt="class-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Dates Available" >';	
-}
-//class instructors
-if($value->classInstructorsCount>0){
-  $instructorDropdown =  dd_header('Instructors','Search Instructors..');
-  $subItems = "";
-  $li=1;
-  foreach ($value->classInstructors as $key => $rowData) {
-	$rowName[$rowData->id] = $rowData->fullName;
-	if($rowData->thumbnailUrl){
-	  if (filter_var($rowData->thumbnailUrl, FILTER_VALIDATE_URL)) { 
-		$instructor_img = $rowData->thumbnailUrl;
-	  }	else	{
-		$instructor_img = $options['ebt_tenant_code']['engagifii_url'].$rowData->thumbnailUrl;
-	  }
-	}	else	{
-	  $instructor_img = ENGAGIFII_ASSETS_URL.'/images/user-default.png';
-	}
-	$class='';
-	if($li%2==1){
-	  $class='bg-light';	
-	}
-	$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
-	$li++;
-  }
-  $instructorDropdown .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-$nestedData['classInstructorsCount']= '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.($value->classInstructorsCount).'</span></div>'.$instructorDropdown.'</div>';  
-} else {
-$nestedData['classInstructorsCount']= '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
-}
-//class credit hours
-$nestedData['credithours']= number_format($value->courseCreditMapping[0]->credits, 2);      
-//class tags 
-$classTag = $value->classTag;
-$allTags = array();
-if($classTag){
-  if(count($classTag)>1){
-	$tagPopover = '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2 shadow" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Associated Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
-	$subItems = "";
-	$li=1;
-	foreach ($classTag as $index => $tag) {
-	  $rowName[$tag->id] = $tag->tagName;
-	  $class='';
-	  if($li%2==1){
-		$class='bg-light';	
-	  }
-	  $subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'">' . $tag->tagName .  '</li>';
-	  $li++;
-	}
-	$tagPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
-	$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$classTag{0}->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$index.'" data-placement="left" data-containerid="' . $index . '" id="' . $index . '"> +' .(count($classTag)-1) .'</span>'.$tagPopover.'</div>';
-  }else if(count($classTag)==1){
-	$allTags[] = $tag->tagName;
-  }
-  $nestedData['classTag']= implode(" ", $allTags);
-}else {
-  $nestedData['classTag']='<em class="opacity-50">N/A</em>';
-}
-//class register button
-if($value->isClassRegistrationAllow || $value->registrationWorkFlowId){
-	  if($value->registrationState !== 'Registration Not Setup' && $value->registrationState !== 'Registration Closed' && $value->registrationState!== 'Sold Out' && $value->registrationState !== 'Registration Scheduled' && $value->registrationState !== 'Early Sold Out' && $value->registrationState !== 'Standard Sold Out'){
-	  if($value->locationType->name=="onlocation")	{ 
-		 	$nestedData['register']= registrationEnabled($value->registrationUrlOnLocation);
-		}
-		elseif($value->locationType->name=="online"){
-			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine);
-		}elseif($value->locationType->name=="onlocationandonline"){
-			$nestedData['register']= registrationEnabled($value->registrationUrlOnLine,'Register Online');
-			$nestedData['register'].= '<div class="mb-2"></div>';
-			$nestedData['register'].= registrationEnabled($value->registrationUrlOnLocation,'Register in person');;
-		}
-		else{
-			$nestedData['register']= registrationDisabled('Class Location not defined');
-		}
-	  }
-	  else{
-	    $nestedData['register']= registrationDisabled($value->registrationState);
-	  }
-}else{
-  		$nestedData['register']= registrationDisabled($value->registrationState);
-}
- $k++;
- $dataa[] = $nestedData;
-
-}
-}
-}
-	
-	
-
-
-
-
   $default_length = '10';
   $calendar_view = false;
   $calendar_view_classname = false;
@@ -344,10 +164,7 @@ if($class_visible_column_list && count($class_visible_column_list)>0){
 
 </div>
 <?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
+
 
 ob_start();
 ?>
@@ -542,8 +359,7 @@ $filter_content = removeWhitespace($filter_content);
         },
         "oLanguage": {
             "sLengthMenu": "Show _MENU_ records per page"
-        },
-		<?php if(!$datatableJS){ ?>
+        },		
         "serverSide": true,
         "ajax": {
 			  
@@ -566,16 +382,20 @@ $filter_content = removeWhitespace($filter_content);
             }, 
 			
         },
-		 <?php } if($datatableJS){ ?>  
-		"data": <?php echo json_encode($dataa);  ?>,
-		<?php } ?>
-        createdRow: function (row, data, index) { 
+		    createdRow: function (row, data, index) { 
              //$(row).addClass( 'bg-white' );
         },  
         "columns":<?php echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
+           if ($('.dataTables_empty').length) {
 			 $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No classes found at the moment. Please check back later or adjust your filters.</h2></div>');
-			 dt_dropdown();
+			 $('.dataTables_paginate').hide(); // Hide pagination
+        $('.dataTables_length').hide(); 
+           }else{
+              $('.dataTables_paginate').show(); // Show pagination if records exist
+                $('.dataTables_length').show(); 
+           }
+        dt_dropdown();
 			 
 			// dt_titleSearch();
 			 <?php if($dt_respnsive==''){ ?>

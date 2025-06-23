@@ -52,10 +52,6 @@
 
 </div>
 <?php /*?><?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
 
 ob_start();
 ?>

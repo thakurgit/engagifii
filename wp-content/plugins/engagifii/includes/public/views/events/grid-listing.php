@@ -86,10 +86,6 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
 
 </div>
 <?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
 
 ob_start();
 ?>
@@ -380,7 +376,12 @@ var table = $('#ebtmaintable').DataTable( {
 			 dt_dropdown();
         if ($('.dataTables_empty').length) {
         $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No events found at the moment. Please check back later or adjust your filters.</h2></div>');
-    }
+        $('.dataTables_paginate').hide(); // Hide pagination
+        $('.dataTables_length').hide();   // Hide "Show X records per page"
+      }else{
+        $('.dataTables_paginate').show(); // Show pagination if records exist
+        $('.dataTables_length').show();   // Show "Show X records per page"
+      }
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
 			   <?php } ?>

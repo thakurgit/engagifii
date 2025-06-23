@@ -78,10 +78,6 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
 
 </div>
 <?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
 
 ob_start();
 ?>

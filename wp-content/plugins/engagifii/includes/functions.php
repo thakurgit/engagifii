@@ -138,7 +138,11 @@ function GetToken( $user, $token ){
 }
 }
 
-
+// remove whitespace from html
+function removeWhitespace($buffer)
+{
+    return preg_replace('/\s+/', ' ', $buffer);
+}
 add_filter( 'wp_nav_menu_items', 'add_loginout_link', 10, 2 );
 function add_loginout_link( $items, $args ) {
     $user = wp_get_current_user();

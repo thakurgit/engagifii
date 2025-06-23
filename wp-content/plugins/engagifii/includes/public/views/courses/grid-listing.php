@@ -81,10 +81,6 @@ if (array_key_exists("dt_darktheme",$options)){
 
 </div>
 <?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
 
 ob_start();
 ?>

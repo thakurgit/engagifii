@@ -172,10 +172,7 @@ if ($class_visible_column_list && count($class_visible_column_list) > 0) {
   </div>
 </div>
 <?php
-function removeWhitespace($buffer)
-{
-    return preg_replace('/\s+/', ' ', $buffer);
-}
+
 
 ob_start();
 ?>
