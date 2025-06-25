@@ -445,7 +445,14 @@ $filter_content = removeWhitespace($filter_content);
         },  
         "columns":<?php echo (json_encode($forDatatable)); ?>,
          "drawCallback": function( settings ) {
-			 
+			 if ($('.dataTables_empty').length) {
+        $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No classes found at the moment. Please check back later or adjust your filters.</h2></div>');
+        $('.dataTables_paginate').hide(); // Hide pagination
+        $('.dataTables_length').hide();   // Hide "Show X records per page"
+      }else{
+        $('.dataTables_paginate').show(); // Show pagination if records exist
+        $('.dataTables_length').show();   // Show "Show X records per page"
+      } 
 			 dt_dropdown();
 			 eventRegPopUp();
 		
