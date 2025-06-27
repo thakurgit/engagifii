@@ -7,13 +7,22 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
 if(isset($_REQUEST['billId'])){
-  $billId = $_GET['billId']; 
-  $views_key = 'bill_views_' . $billId;
-  $views = (int) get_option($views_key, 0);
-  $views++;
-  update_option($views_key, $views);
+    $billId = $_GET['billId'];
+    $views_key = 'bill_views_' . $billId;
+    $user_ip = $_SERVER['REMOTE_ADDR'];
+    $session_key = 'viewed_' . $billId;    
+    if (
+        (!isset($_SESSION[$session_key]) || $_SESSION[$session_key] !== $user_ip)
+    ) {
+        $views = (int) get_option($views_key, 0);
+        $views++;
+        update_option($views_key, $views);
+        $_SESSION[$session_key] = $user_ip;
+    } else {
+        $views = (int) get_option($views_key, 0);
+    }
 } else {
-  $views = 0;
+    $views = 0;
 }
 
  if(!empty($billId)){
