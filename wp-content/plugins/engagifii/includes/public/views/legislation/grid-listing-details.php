@@ -7,7 +7,13 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
 if(isset($_REQUEST['billId'])){
-  $billId = $_GET['billId'];
+  $billId = $_GET['billId']; 
+  $views_key = 'bill_views_' . $billId;
+  $views = (int) get_option($views_key, 0);
+  $views++;
+  update_option($views_key, $views);
+} else {
+  $views = 0;
 }
 
  if(!empty($billId)){
@@ -137,7 +143,7 @@ $siteURL= site_url();
     <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" target="_blank" rel="noopener" data-share-network="Facebook" data-share-action="Share" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
 
     <a href="http://twitter.com/intent/tweet?text=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>+<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&via=<?php echo get_bloginfo( 'name' ); ?>"  class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;"  target="_blank" rel="noopener" data-share-network="Twitter" data-share-action="Share" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
-    <small class="ml-4"><strong>Views:</strong>&nbsp;<span>0</span></small>
+   <small class="ml-4"><strong>Views:</strong>&nbsp;<span><?php echo $views; ?></span></small>
 </div>
 </div>
 
