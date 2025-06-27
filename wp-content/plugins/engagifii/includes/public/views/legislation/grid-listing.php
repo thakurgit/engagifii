@@ -1738,7 +1738,7 @@ $('.billNumber input').val('<?php echo $billnumber;?>').attr('disabled','');
 //aasb
 function aasbEvents(){
   if (tenant_code == "aasb") {
-	  if(sessionId == 5245 || sessionId == ''){
+	  if(sessionId == 5586 || sessionId == ''){
 		$('th.status').text('Pre-filed');  
 		$('.status-heading-title').contents().filter(function() {
 		  return this.nodeType === 3;
@@ -1746,7 +1746,7 @@ function aasbEvents(){
 		  this.textContent = this.textContent.replace('Status', 'Pre-filed');
 		});
 		localStorage.setItem("sessionAasb", 2025);
-		$('.print-bill span').show();
+		$('.print-bill span').hide();
 	  } else {
 		$('th.status').text('Status');  
 		$('.status-heading-title').contents().filter(function() {
@@ -1755,7 +1755,11 @@ function aasbEvents(){
 		  this.textContent = this.textContent.replace('Pre-filed','Status' );
 		});
 		localStorage.setItem("sessionAasb", ''); 
-		$('.print-bill span').hide();
+		 if(sessionId == 5245){
+        $('.print-bill span').show();
+      } else {
+        $('.print-bill span').hide();
+      }
 	  }
   }
 }

@@ -16,6 +16,7 @@
 	$lbt_col_order   = isset($options['lbt_col_order']) ? $options['lbt_col_order']: array();
 	$sessionResponse = $obj->getSessionsData();
 	$sessionResponse =json_decode($sessionResponse) ?? array();
+    $tenant_code = $options['lbt_tenant_code']['tenant_code'] ?? '';
 	rsort($sessionResponse);
 		echo '<div class="engagifii-setting  accordion-content" style="display:none;">';
 		if($options['lbt_api_url']=='' || $options['lbt_tenant_code']['tenant_code']==''){
@@ -276,6 +277,53 @@ if($tags){
 	    
 ?>
  
+<h3 style="display:inline; margin-right:8px;">
+    Manage Tabs Visibility on the Bill Detail Page
+    <span style="cursor:pointer; margin-left:8px; vertical-align:middle;" id="infoTabsVisibility">
+        <span class="dashicons dashicons-info" style="font-size: 18px; color: #0d6efd; vertical-align:middle;"></span>
+    </span>
+</h3>
+<!-- Popup Modal -->
+<div id="tabsVisibilityPopup" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+    <div style="position:relative; width:90%; max-width:600px; margin:5% auto; background:#fff; border-radius:8px; padding:20px; box-shadow:0 2px 20px #0003;">
+        <span id="closeTabsVisibilityPopup" style="position:absolute; right:15px; top:10px; font-size:22px; cursor:pointer;">&times;</span>
+        <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/tabs-visibility-info.png" alt="Tabs Visibility Help" style="width:100%;max-width:550px;display:block;margin:0 auto;">
+    </div>
+</div>
+<hr>
+<?php
+$legislation_tabs = [
+    'summary'        => 'State Summary',    
+    'versions'       => 'Versions',
+    'votes'          => 'Votes',
+    'history'        => 'History',
+    'quick'          => 'Quick Links',  
+];
+if ($tenant_code != 'aasb' && $tenant_code != 'mha') {
+    $legislation_tabs['staffanalysis'] = 'Staff Analysis';
+}
+// Show MACo Analysis tab only for tenant_code 'maco'
+
+if ($tenant_code == 'baltimorecountymd' ||
+    $tenant_code == 'princegeorgescountymd' ||
+    $tenant_code == 'howardcountymd' ||
+    $tenant_code == 'mcmd' ||
+    $tenant_code == 'maco') {
+    $legislation_tabs['macoanalysis'] = 'MACo Analysis';
+}
+// Get saved visible tabs for legislation module
+$visible_legislation_tabs = $options['legislation_tab_visibility'] ?? array_keys($legislation_tabs);
+
+echo '<ul class="ebt-grid-column-list tz-dropdown-filter" id="legislationTabVisibilitySettings" style="width:100%; display:block; max-height:200px; overflow:auto;">';
+foreach ($legislation_tabs as $tab_key => $tab_label) {
+    $checked = in_array($tab_key, $visible_legislation_tabs) ? 'checked' : '';
+    echo '<li>
+        <input id="legislation_tab_' . $tab_key . '" class="' . $tab_key . '" type="checkbox" name="ebt_api_settings[legislation_tab_visibility][]" value="' . $tab_key . '" ' . $checked . '>
+        <label for="legislation_tab_' . $tab_key . '">' . $tab_label . '</label>
+    </li>';
+}
+echo '</ul>';
+?>
 
 
 </div>
@@ -359,4 +407,15 @@ jQuery('#sessionsetting').change(function(){
 		jQuery('#sessionList').hide();
 	}
 });
+document.getElementById('infoTabsVisibility').onclick = function() {
+    document.getElementById('tabsVisibilityPopup').style.display = 'block';
+};
+document.getElementById('closeTabsVisibilityPopup').onclick = function() {
+    document.getElementById('tabsVisibilityPopup').style.display = 'none';
+};
+// Optional: close popup when clicking outside the modal content
+document.getElementById('tabsVisibilityPopup').onclick = function(e) {
+    if(e.target === this) this.style.display = 'none';
+};
+
 </script>

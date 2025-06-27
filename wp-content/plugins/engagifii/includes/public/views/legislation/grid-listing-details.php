@@ -17,6 +17,7 @@ if(isset($_REQUEST['billId'])){
 	return; 
  }
 	$options = get_option('ebt_api_settings');
+  $visible_legislation_tabs = $options['legislation_tab_visibility'] ?? [];
   $tenant_code = $options['lbt_tenant_code']['tenant_code'];
   $tenant_url = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings = $options['lbt_title_display_setting'];
@@ -57,23 +58,24 @@ foreach($seqColumns as $key=>$cols){
   } 
 
   
-  $bill_array = json_decode($_COOKIE['filterids'], true);
-  if($bill_array){
-  	$bill_key = array_search ($_GET['billId'], $bill_array);
-	$bill_count = count($bill_array)-1;
-	if($bill_key == 0){
-		$prev = 0;
-		$next = $bill_array[$bill_key+1];
-	}
-	if($bill_key == $bill_count){
-	   $next = 0;
-	   $prev = $bill_array[$bill_key-1];
-	}
-	if($bill_key!= $bill_count){
-	  $prev = $bill_array[$bill_key-1];
-	  $next = $bill_array[$bill_key+1];
-	}
-  }
+ $bill_array = isset($_COOKIE['filterids']) ? json_decode($_COOKIE['filterids'], true) : [];
+  $prev = 0;
+$next = 0;
+if ($bill_array) {
+    $bill_key = array_search($_GET['billId'], $bill_array);
+    $bill_count = count($bill_array) - 1;
+
+    if ($bill_key === 0) {
+        $prev = 0;
+        $next = isset($bill_array[$bill_key + 1]) ? $bill_array[$bill_key + 1] : 0;
+    } elseif ($bill_key === $bill_count) {
+        $prev = isset($bill_array[$bill_key - 1]) ? $bill_array[$bill_key - 1] : 0;
+        $next = 0;
+    } elseif ($bill_key !== false) {
+        $prev = isset($bill_array[$bill_key - 1]) ? $bill_array[$bill_key - 1] : 0;
+        $next = isset($bill_array[$bill_key + 1]) ? $bill_array[$bill_key + 1] : 0;
+    }
+}
 
 
   
@@ -365,90 +367,34 @@ $siteURL= site_url();
 							} if($tenant_code == 'mcmd'){
 								$tenantAnalysis  ='Montgomery County';
 							}?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                              <?php if ($tenant_code != 'aasb' && $tenant_code != 'mha') { ?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Analysis</a></li>
-                              <?php } ?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                            <?php if($tenant_code == 'baltimorecountymd' || $tenant_code == 'princegeorgescountymd' || $tenant_code == 'howardcountymd' || $tenant_code == 'mcmd'){ ?>
-                            	 <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
-                            <?php } ?>
-                              
-                              
-                           <?php /*?> <?php 
-                            if($tenant_code == 'accg') {?>
-                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#staffanalysis" id="">ACCG Analysis</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                             
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                              <?php
-                                }
-                                elseif($tenant_code == 'baltimorecountymd') {?>
-                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Baltimore City Analysis</a></li>
-                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                                  <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                                 <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                                   <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
-                                  <?php
-                                    }
-                                    elseif($tenant_code == 'princegeorgescountymd') {?>
-                                      
-                                       <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Prince Georges County Analysis</a></li>
-                                     <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
-                                      <?php
-                                        }
-                                        elseif($tenant_code == 'howardcountymd') {?>
-                                          
-                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                                         <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Howard County Analysis</a></li>
-                                        <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                                           <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
-                                          <?php
-                                            }
-                                            elseif($tenant_code == 'mcmd') {?>
-                                              
-                                               <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" id="">State Summary</a></li>
-                                             <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id="">Montgomery County Analysis</a></li>
-                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
-                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
-                                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
+                  <?php if (in_array('summary', $visible_legislation_tabs)): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
+                  <?php endif; ?>
 
-                                              <?php
-                                                }
-  
-                              else
-                              {
-                            ?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark active" data-toggle="pill" href="#summary" >Summary</a></li>
-                              <?php  if (count($analysisResponses)>0 && $tenant_url != 'https://aasb.engagifii.com') {?>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" >Staff Analysis</a></li>
-                              <?php } ?>
-                          <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
-                              <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
-                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" >History</a></li>
-                            <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" >Quick Links</a></li>
+                  <?php if (in_array('staffanalysis', $visible_legislation_tabs) && $tenant_code != 'aasb' && $tenant_code != 'mha'): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Analysis</a></li>
+                  <?php endif; ?>
 
-                            <?php
-                              }
-                            ?><?php */?>
+                  <?php if (in_array('versions', $visible_legislation_tabs)): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#versions" id="">Versions</a></li>
+                  <?php endif; ?>
+
+                  <?php if (in_array('votes', $visible_legislation_tabs)): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#votes" id="">Votes</a></li>
+                  <?php endif; ?>
+
+                  <?php if (in_array('history', $visible_legislation_tabs)): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#history" id="">History</a></li>
+                  <?php endif; ?>
+
+                  <?php if (in_array('quick', $visible_legislation_tabs)): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#quick" id="">Quick Links</a></li>
+                  <?php endif; ?>
+
+                  <?php if (in_array('macoanalysis', $visible_legislation_tabs) && ($tenant_code == 'baltimorecountymd' || $tenant_code == 'princegeorgescountymd' || $tenant_code == 'howardcountymd' || $tenant_code == 'mcmd')): ?>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#macoanalysis" id="">MACo Analysis</a></li>
+                  <?php endif; ?>                             
+                              
                            
                         </ul>
                         <div class="p-3">
