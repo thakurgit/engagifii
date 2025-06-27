@@ -32,7 +32,7 @@ if(isset($_REQUEST['billId'])){
 	return; 
  }
 	$options = get_option('ebt_api_settings');
-  $visible_legislation_tabs =  (!empty($options['legislation_tab_visibility']))    ? $options['legislation_tab_visibility']    : ['summary','staffanalysis','versions','votes','history','quick'];
+  $visible_legislation_tabs =  (!empty($options['legislation_tab_visibility']))  ? $options['legislation_tab_visibility']    : ['summary','staffanalysis','versions','votes','history','quick'];
   $tenant_code = $options['lbt_tenant_code']['tenant_code'];
   $tenant_url = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings = $options['lbt_title_display_setting'];
