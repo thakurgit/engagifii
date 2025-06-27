@@ -307,8 +307,7 @@ if ($tenant_code != 'aasb' && $tenant_code != 'mha') {
 if ($tenant_code == 'baltimorecountymd' ||
     $tenant_code == 'princegeorgescountymd' ||
     $tenant_code == 'howardcountymd' ||
-    $tenant_code == 'mcmd' ||
-    $tenant_code == 'maco') {
+    $tenant_code == 'mcmd') {
     $legislation_tabs['macoanalysis'] = 'MACo Analysis';
 }
 // Get saved visible tabs for legislation module
