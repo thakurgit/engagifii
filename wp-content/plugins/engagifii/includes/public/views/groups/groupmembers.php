@@ -51,7 +51,7 @@ font-size: 260px;
     	<thead> 
 		    <tr>    
 		    	 <?php  $i = 0;
-         //  print_r(GROUP_MEMBERS_COLS);
+          //print_r(GROUP_MEMBERS_COLS);
 				  foreach (GROUP_MEMBERS_COLS as $key){
 					  $json = json_decode(stripslashes($key), true);
              //print_r($json);
@@ -227,6 +227,8 @@ font-size: 260px;
 	
 	//grid layout
  // var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
+ //print_r(GROUP_MEMBERS_COLS_GRID);
+  // Convert GROUP_MEMBERS_COLS_GRID to a more usable format
 var groupMemberCols = <?php
     $gridCols = [];
     foreach (GROUP_MEMBERS_COLS_GRID as $key) {
@@ -326,6 +328,38 @@ var fieldValues = {
     // modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
     name: person.fullName || '--'
 };
+   // Add custom fields dynamically
+        var customFields = (person.customFields && Array.isArray(person.customFields)) ? person.customFields : [];
+        customFields.forEach(function(field) {
+    var key = (field.fieldName || field.title || field.name || '').toLowerCase().replace(/\s+/g, '');
+    var value = field.selectedValue || field.value || '';
+
+    // Handle address fields (controlTypeId == 9)
+    if (field.controlTypeId == 9 && value) {
+        var address = (typeof value === 'string') ? JSON.parse(value) : value;
+        if (address && typeof address === 'object') {
+            var parts = [];
+            if (address.address) parts.push(address.address);
+            if (address.addressLine2) parts.push(address.addressLine2);
+            if (address.city) parts.push(address.city);
+            if (address.state) parts.push(address.state);
+            if (address.zipCode) parts.push(address.zipCode);
+            var formatted = parts.filter(Boolean).join(', ');
+            fieldValues[key] = formatted || '--';
+        } else {
+            fieldValues[key] = '--';
+        }
+    } else if (key && value !== '') {
+        fieldValues[key] = value;
+    }
+});
+
+groupMemberCols.forEach(function(colObj) {
+    var col = colObj.colClass;
+    if (typeof fieldValues[col] === 'undefined') {
+        fieldValues[col] = '--';
+    }
+});
 
         var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
         groupMemberCols.forEach(function(colObj) {

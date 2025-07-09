@@ -256,4 +256,39 @@ jQuery(document).ready(function($) {
             }
         });
     });
+       $('.groups-list .cols-list-wrapper').each(function () {
+    const wrapper = $(this);
+    const checkboxesli = wrapper.find('li');
+
+    function updateCustomCheckboxState(wrapper) {
+        // Find all custom field checkboxes (li with .cfield)
+        const customCheckboxes = wrapper.find('li').filter(function() {
+            return $(this).find('.cfield').length > 0;
+        }).find('input[type="checkbox"]:not([readonly])');
+        const checkedCustom = customCheckboxes.filter(':checked').length;
+
+        customCheckboxes.each(function () {
+            const isChecked = $(this).is(':checked');
+            $(this).prop('disabled', !isChecked && checkedCustom >= 5);
+        });
+    }
+
+    wrapper.find('input[type="checkbox"]').on('change', function () {
+        updateCustomCheckboxState(wrapper);
+    });
+
+    // Run on page load in case some checkboxes are already checked
+    updateCustomCheckboxState(wrapper);
+
+    checkboxesli.on('mousedown', function (e) {
+        // Only show alert for custom fields
+        if (
+            $(this).find('.cfield').length > 0 &&
+            $(this).find('input').is(':disabled')
+        ) {
+            alert('You can select up to 5 custom fields only.');
+            e.preventDefault();
+        }
+    });
+});
 });

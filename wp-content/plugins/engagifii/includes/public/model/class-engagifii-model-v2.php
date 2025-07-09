@@ -545,32 +545,47 @@ wp_die();
     //GroupMembers
    public function peopleloadGridDataByGroups(){
         $options = get_option('ebt_api_settings');
+        $tenantCode = $options['dashboard_tenant_code'];
+        $context = 'list'; // or 'list', depending on your use-case
+$visible_columns = $options['group_members_settings'][$context]['visible_column_list'] ?? [];
+//print_r($visible_columns); die;
+$custom_fields = [];
+foreach ($visible_columns as $col_json) {
+    $col = json_decode(stripslashes($col_json), true);
+    if (!empty($col['fieldId'])) {
+        $custom_fields[] = [
+            'fieldId' => $col['fieldId'],
+            'controlTypeId' => isset($col['controlTypeId']) ? (int)$col['controlTypeId'] : 3,
+            'fieldType' => $col['fieldType'] ?? null,
+            'isCustom' => true
+        ];
+    }
+}
         $front_pages = $options['front_pages'];
         $groupId = $_POST['groupId'];
         $viewMode = $_POST['viewMode'];
         $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
         $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
-        $postedData = '{
-          "groupId": "' . $groupId . '",
-          "itemCount": ' . $_POST['length'] . ',
-          "sortBy": "name",
-          "sortDirection": "' . $sortDirection . '",
-          "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
-          "filterBody": {
-            "pageSize": 10,
-            "pageNumber": 1,
-            "searchText":"'.$searchText.'"
-          },
-          "fields": [{
-              "fieldId": "59f82832-ee2d-4b1c-ad98-65a771636f1b",
-              "controlTypeId": 3,
-              "isCustom": true
-             }]
-        }';
-        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$groupId, json_decode($postedData), "POST", 'dashboard'); 
+       $postedData = [
+    "groupId" => $groupId,
+    "itemCount" => (int)$_POST['length'],
+    "sortBy" => "name",
+    "sortDirection" => $sortDirection,
+    "pageNumber" => (int)(($_POST['start'] / $_POST['length']) + 1),
+    "filterBody" => [
+        "pageSize" => 10,
+        "pageNumber" => 1,
+        "searchText" => $searchText
+    ],
+    "fields" => $custom_fields
+];
+
+//print_r(json_encode($postedData)); die;
+        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$tenantCode."/".$groupId, $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
+     // print_r($collection); die;
         $data = array();
         if($viewMode=='Grid'){ 
             $response = [
@@ -730,7 +745,7 @@ wp_die();
             $nestedData['tags'] = $this->buildPopoverColumn($key, $value->people->tags ?? [], 'Tags', 'tagName');
             $nestedData['persontype'] = $this->buildPopoverColumn($key, $value->people->personTypes ?? [], 'Person Types', 'name');
             $nestedData['age'] = $this->getCustomFieldValue($value->people->customFields ?? [], 'age');
-            $nestedData['birthdate'] = '';
+//$nestedData['birthdate'] = '';
             $nestedData['action'] = '';
             $nestedData['currentorganizations'] = '';
      $regions = [];
@@ -746,7 +761,7 @@ if (!empty($value->people->terms) && is_array($value->people->terms)) {
     }
 }
 
-//print_r($regions);
+
 $regions = array_values($regions);
 
 if (count($regions) > 0) {
@@ -792,16 +807,71 @@ if (count($regions) > 0) {
             $nestedData['phone'] = $this->formatPhoneNumber($value->people->primaryPhoneNumber->value ?? '');
             // Custom fields (badges)
             $customFields = $value->people->customFields ?? [];
-            $nestedData['customfields'] = '';
-            if (!empty($customFields) && is_array($customFields)) {
-                foreach ($customFields as $customField) {
-                    if (isset($customField->title) && strtolower($customField->title) === 'age') {
-                        $nestedData['customfields'] .= '<span class="badge badge-secondary">' . htmlspecialchars($customField->selectedValue ?? '') . '</span> ';
-                    }
-                }
+if (!empty($customFields) && is_array($customFields)) {
+    $fieldCounts = [];
+    // First, count occurrences for duplicate field names
+    foreach ($customFields as $field) {
+        $fname = $field->fieldName ?? $field->title ?? $field->name ?? '';
+        if ($fname) {
+            if (!isset($fieldCounts[$fname])) {
+                $fieldCounts[$fname] = 1;
+            } else {
+                $fieldCounts[$fname]++;
             }
+        }
+    }
+    // Now, add fields to $nestedData with unique keys and handle controlTypeId == 9
+    $fieldIndex = [];
+    //print_r($customFields); 
+    foreach ($customFields as $field) {
+        $fname = $field->fieldName ?? $field->title ?? $field->name ?? '';
+        $fvalue = $field->selectedValue ?? $field->value ?? '';
+        if ($fname) {
+            if (!isset($fieldIndex[$fname])) {
+                $fieldIndex[$fname] = 1;
+            } else {
+                $fieldIndex[$fname]++;
+            }
+        $keyBase = preg_replace('/\s+/', '', strtolower($fname));
+$keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $keyBase;
 
-            $data[] = $nestedData;
+            // Special handling for address fields (controlTypeId == 9)
+            if (isset($field->controlTypeId) && $field->controlTypeId == 9 && !empty($fvalue)) {
+                $address = is_string($fvalue) ? json_decode($fvalue, true) : $fvalue;
+                
+                if (is_array($address)) {
+                    $parts = [];
+                    if (!empty($address['address'])) $parts[] = $address['address'];
+                    if (!empty($address['addressLine2'])) $parts[] = $address['addressLine2'];
+                    if (!empty($address['city'])) $parts[] = $address['city'];
+                    if (!empty($address['state'])) $parts[] = $address['state'];
+                    if (!empty($address['zipCode'])) $parts[] = $address['zipCode'];
+                    $formatted = implode(', ', array_filter($parts));       
+                    $nestedData[$keyName] = htmlspecialchars($formatted ?: '--');
+                } else {
+                    $nestedData[$keyName] = '--';
+                }
+            } else {
+                $nestedData[$keyName] = htmlspecialchars($fvalue);
+            }
+        }
+    }
+}
+ $allColumnKeys = [];
+    foreach ($visible_columns as $col_json) {
+        $col = json_decode(stripslashes($col_json), true);
+        if (!empty($col['colName'])) {
+            $allColumnKeys[] = preg_replace('/\s+/', '', strtolower($col['colName']));
+        }
+    }
+   
+    // 2. Ensure every key exists in $nestedData
+    foreach ($allColumnKeys as $colKey) {
+        if (!isset($nestedData[$colKey])) {
+            $nestedData[$colKey] = '--';
+        }
+    }
+       $data[] = $nestedData;
         }
         $draw = $_POST['draw'];
         $json_data = array(
@@ -810,7 +880,7 @@ if (count($regions) > 0) {
             "recordsFiltered" => intval($totalcount),
             "data" => $data,
         );
-        echo json_encode($json_data);
+        echo json_encode($json_data);        
         wp_die();
     }
 

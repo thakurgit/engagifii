@@ -443,15 +443,7 @@ var table = $('#ebtmaintable').DataTable( {
             // $(row).addClass( 'bg-white' );
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-        "drawCallback": function( settings ) {
-          if ($('.dataTables_empty').length) {
-            $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No record found at the moment. Please check back later or adjust your filters.</h2></div>');
-            $('.dataTables_paginate').hide(); // Hide pagination
-            $('.dataTables_length').hide();   // Hide "Show X records per page"
-          }else{
-            $('.dataTables_paginate').show(); // Show pagination if records exist
-            $('.dataTables_length').show();   // Show "Show X records per page"
-          }
+        "drawCallback": function( settings ) {        
 			 dt_dropdown();
 			 <?php if($dt_respnsive==''){ ?>
            dt_scroll();
@@ -484,12 +476,17 @@ dt_titleSearch('Search ');
  
     $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         //console.log(processing);
+    if ($('.dataTables_empty').length) {
+            $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No record found at the moment. Please check back later or adjust your filters.</h2></div>');
+            $('.dataTables_paginate').hide(); // Hide pagination
+            $('.dataTables_length').hide();   // Hide "Show X records per page"
+          }else{
+            $('.dataTables_paginate').show(); // Show pagination if records exist
+            $('.dataTables_length').show();   // Show "Show X records per page"
+          }
         $('#eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
-
-    setTimeout(function() {      
-        $('.dataTables_empty').html('');
-    },500);
+ 
   
     $( document ).ready(function() {
     $('input[name="createdbetween"]').val('');

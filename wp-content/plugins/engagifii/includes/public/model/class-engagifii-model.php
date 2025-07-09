@@ -4494,7 +4494,7 @@ public function LegislationStaffanalysis(){
 		$ipInfo = json_decode($ipInfo);
 		$timezone = $ipInfo->timezone;
 		date_default_timezone_set($timezone);
-		$date = strtotime($analysis->createdDate.' UTC');
+		$date = strtotime($analysis->updatedDate);
 		?>
 		<div class="row mb-3 pb-3 border-bottom">
 			<div class="col-12 d-flex align-items-center pb-3">

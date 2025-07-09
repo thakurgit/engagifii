@@ -2,12 +2,13 @@
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Group Members Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $options = get_option( 'ebt_api_settings' );
+	 $tenantCode = $options['dashboard_tenant_code'];
     $nonce = wp_create_nonce('save_groups_nonce');
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
 		if($options['engagifii_apis']['crmUrl']=='' || $options['dashboard_tenant_code']==''){
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage Group Members page settings</i></b>';	
 		} else { 
-		  $response = wp_remote_get("{$options['engagifii_apis']['crmUrl']}/PeopleColumnList", [
+		  $response = wp_remote_get("{$options['engagifii_apis']['crmUrl']}/PeopleColumnList/".$tenantCode, [
 		  'headers' => [
 			'accept'        => 'application/json',
 			'tenant-code'   => $options['dashboard_tenant_code'],
@@ -22,7 +23,8 @@
 			  $response = array_map(function($item) {
 			  $object = (object)[
 				  'colName' => $item['colName'],
-				  'displayName' => $item['displayName']
+				  'displayName' => $item['displayName'],
+				  'controlTypeId' => $item['controlTypeId'] ?? 3
 			  ];
 		  
 			  if (isset($item['fieldId'])) {
@@ -30,6 +32,7 @@
 			  }
 			  return $object;
 		  }, $response);
+//print_r($response); // Debugging line to check the response structure
 		//render UI
 		function render_group_columns_ui($context, $response, $visible_columns, $options) {
 			$visible_columns = array_map(function ($json) {
@@ -58,6 +61,8 @@
 								$customField ='';
 								if (isset($row->fieldId)) {
 									$value_data['fieldId'] = $row->fieldId;
+									 $value_data['fieldType'] = $row->fieldType ?? null;
+									 $value_data['controlTypeId'] = $row->controlTypeId ?? 3;
 									$customField = '<span class="cfield">Custom Field</span>';
 								}
 								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
