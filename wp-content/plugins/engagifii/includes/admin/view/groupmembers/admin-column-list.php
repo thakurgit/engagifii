@@ -19,6 +19,16 @@
 		  }
 		  $body = stripslashes(wp_remote_retrieve_body($response));
 		  $response  = json_decode($body, true) ?? [];
+		  $withoutFieldId = [];
+		  $withFieldId = [];
+		  foreach ($response as $item) {
+			  if (!isset($item['fieldId'])) {
+				  $withoutFieldId[] = $item;
+			  } else {
+				  $withFieldId[] = $item;
+			  }
+		  }
+		  $response = array_merge($withoutFieldId, $withFieldId);
 		  if (!empty($response)) {
 			  $response = array_map(function($item) {
 			  $object = (object)[
@@ -52,7 +62,7 @@
 							<?php $counter = 1;
 							$counter = 1;
 							// First, display all regular fields
-							foreach ($response as $row) {
+							/*foreach ($response as $row) {
 								if (!isset($row->fieldId)) { // Regular field
 									$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
 									if ($row->colName == 'name') $checked .= ' readonly';
@@ -76,21 +86,37 @@
 								echo '<li class="custom-fields-separator" style="border-top: 1px solid #ddd; margin: 10px 0; padding: 8px 0; pointer-events: none; background-color: #f9f9f9;">
 									<strong style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; text-align: Left;">Custom Fields (Max 5 fields allowed)</strong>
 								</li>';
-							}
+							}*/
 							// Then, display all custom fields
+							$custom_fields_separator_inserted = false;
 							foreach ($response as $row) {
-								if (isset($row->fieldId)) { // Custom field
+								//if (isset($row->fieldId)) { // Custom field
+								$hasFieldId = !empty($row->fieldId);
+								if ($hasFieldId && !$custom_fields_separator_inserted) {
+									echo '<li class="custom-fields-separator" style="border-top: 1px solid #ddd; margin: 10px 0; padding: 8px 0; pointer-events: none; background-color: #f9f9f9;">
+											<strong style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; text-align: Left;">
+												Custom Fields (Max 5 fields allowed)
+											</strong>
+										  </li>';
+									$custom_fields_separator_inserted = true;
+								}
 									$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
+									if ($row->colName == 'name') $checked .= ' readonly';
 									
 									$value_data = [
 										'colName' => $row->colName,
-										'displayName' => $row->displayName,
-										'fieldId' => $row->fieldId,
-										'fieldType' => $row->fieldType ?? null,
-										'controlTypeId' => $row->controlTypeId ?? 3
+										'displayName' => $row->displayName
 									];
+									 $customField = ''; 
+									if (!empty($row->fieldId)) {
+										$value_data['fieldId'] = $row->fieldId;
+										$customField = '<span class="cfield">Custom Field</span>';
+									}
 									
-									$customField = '<span class="cfield">Custom Field</span>';
+									if (!empty($row->controlTypeId)) {
+										$value_data['controlTypeId'] = $row->controlTypeId;
+									}
+									
 									$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
 									echo '<li data-order="' . $counter . '">
 										<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
@@ -98,7 +124,7 @@
 										'.$customField.'
 									</li>';
 									$counter++;
-								}
+								//}
 							} ?>
 						</ul>
 					</div>
