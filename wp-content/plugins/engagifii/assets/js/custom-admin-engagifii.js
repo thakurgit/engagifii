@@ -87,51 +87,61 @@ jQuery(document).ready(function($) {
 	  }else{
          colView = 'list';
 	  }
-      if ($checkbox.is(':checked')) {
-        // Add to checked-cols if not already there
-        if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
-          const $li = $(`
-            <li data-order="${colOrder}">
-              ${labelText}
-              <button title="Delete Column" class="uncheck-cols">
-                <i class="dashicons dashicons-no-alt"></i>
-              </button>
-            </li>
-          `);
-		  const $popli = $(`
-            <li data-order="${colOrder}" class="ui-sortable-handle"><input type="hidden" value='${colVal}' name="ebt_api_settings[${page}][${colView}][visible_column_list][]" /><span class="dashicons dashicons-sort"></span>
-			<div class="bdrs">${labelText}</div>
-            </li>
-          `);
-		  const newOrder = parseInt(colOrder, 10);
-		  const $children = $checkedList.children('li');
-		  const $popchildren = $popupList.children('li');
-		  let inserted = false;
-		  
-		  $children.each(function() {
-			const existingOrder = parseInt($(this).attr('data-order'), 10);
-			if (newOrder < existingOrder) {
-			  $(this).before($li);
-			  inserted = true;
-			  return false; // break the loop
-			}
-		  });
-		  $popchildren.each(function() {
-			const existingOrder = parseInt($(this).attr('data-order'), 10);
-			if (newOrder < existingOrder) {
-			  $(this).before($popli);
-			  inserted = true;
-			  return false; // break the loop
-			}
-		  });
-		  
-		  if (!inserted) {
-			$checkedList.append($li);
-			$popupList.append($popli);
-		  }
-		  updateOrder($listOrder, colOrder, 'append');
+  if ($checkbox.is(':checked')) {
+  // Add to checked-cols if not already there
+  if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
+    const $li = $(`
+      <li data-order="${colOrder}">
+        ${labelText}
+        <button title="Delete Column" class="uncheck-cols" ${labelText === 'Name' ? 'disabled style="opacity: 0.5;"' : ''}>
+          <i class="dashicons dashicons-no-alt"></i>
+        </button>
+      </li>
+    `);
+    const $popli = $(`
+      <li data-order="${colOrder}" class="ui-sortable-handle">
+        <input type="hidden" value='${colVal}' name="ebt_api_settings[${page}][${colView}][visible_column_list][]" />
+        <span class="dashicons dashicons-sort"></span>
+        <div class="bdrs">${labelText}</div>
+      </li>
+    `);
+    
+    // If it's the Name field, always add at the beginning
+    if (labelText === 'Name') {
+      $checkedList.prepend($li);
+      $popupList.prepend($popli);
+    } else {
+      // For other fields, insert based on order but after Name field
+      const newOrder = parseInt(colOrder, 10);
+      const $children = $checkedList.children('li').not(':contains("Name")');
+      const $popchildren = $popupList.children('li').not(':contains("Name")');
+      let inserted = false;
+      
+      $children.each(function() {
+        const existingOrder = parseInt($(this).attr('data-order'), 10);
+        if (newOrder < existingOrder) {
+          $(this).before($li);
+          inserted = true;
+          return false;
         }
-      } else {
+      });
+      $popchildren.each(function() {
+        const existingOrder = parseInt($(this).attr('data-order'), 10);
+        if (newOrder < existingOrder) {
+          $(this).before($popli);
+          inserted = true;
+          return false;
+        }
+      });
+      
+      if (!inserted) {
+        $checkedList.append($li);
+        $popupList.append($popli);
+      }
+    }
+    updateOrder($listOrder, colOrder, 'append');
+  }
+} else {
         // Remove from checked-cols and popup columns
         $checkedList.find('[data-order="' + colOrder + '"]').remove();
 		$popupList.find('[data-order="' + colOrder + '"]').remove();
@@ -154,17 +164,22 @@ jQuery(document).ready(function($) {
 	}
 
     // Handle delete button in checked-cols (event delegation)
-    $checkedList.on('click', '.uncheck-cols', function(e) {
-      e.preventDefault();
-      const $li = $(this).closest('li');
-      const colOrder = $li.data('order');
-		const $input = $wrapper.find('ul li[data-order="' + colOrder + '"] input');
-		if (!$input.prop('readonly')) {
-		  $input.prop('checked', false).trigger('change');
-		} else {
-			showAlert("This column can't be deleted");
-		}
-    });
+  $checkedList.on('click', '.uncheck-cols', function(e) {
+  e.preventDefault();
+  
+  if ($(this).is(':disabled')) {
+    showAlert("This column can't be deleted");
+    return;
+  }
+  
+  const $li = $(this).closest('li');
+  const colOrder = $li.data('order');
+  const $input = $wrapper.find('li[data-order="' + colOrder + '"] input[type="checkbox"]');
+  
+  if ($input.length) {
+    $input.prop('checked', false).trigger('change');
+  }
+});
   });
   
   //columns order manage pop up
