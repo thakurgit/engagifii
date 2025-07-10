@@ -286,7 +286,8 @@ jQuery(document).ready(function($) {
             $(this).find('.cfield').length > 0 &&
             $(this).find('input').is(':disabled')
         ) {
-            alert('You can select up to 5 custom fields only.');
+            //alert('You can select up to 5 custom fields only.');
+              showAlert('You can select up to 5 columns only.');
             e.preventDefault();
         }
     });

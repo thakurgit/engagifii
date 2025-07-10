@@ -50,40 +50,71 @@
 						<input type="text" class="cols-list-search bdrs" placeholder="search">
 						<ul class="<?= $context === 'list' ? 'ebt-grid-column-list' : '' ?>">
 							<?php $counter = 1;
+							$counter = 1;
+							// First, display all regular fields
 							foreach ($response as $row) {
-								$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
-								if ($row->colName == 'name') $checked .= ' readonly';
-								
-								$value_data = [
-									'colName' => $row->colName,
-									'displayName' => $row->displayName
-								];
-								$customField ='';
-								if (isset($row->fieldId)) {
-									$value_data['fieldId'] = $row->fieldId;
-									 $value_data['fieldType'] = $row->fieldType ?? null;
-									 $value_data['controlTypeId'] = $row->controlTypeId ?? 3;
-									$customField = '<span class="cfield">Custom Field</span>';
+								if (!isset($row->fieldId)) { // Regular field
+									$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
+									if ($row->colName == 'name') $checked .= ' readonly';
+									
+									$value_data = [
+										'colName' => $row->colName,
+										'displayName' => $row->displayName
+									];
+									
+									$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
+									echo '<li data-order="' . $counter . '">
+										<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
+										<label for="' . $row->colName . $input_suffix . '">' . $row->displayName . '</label>
+									</li>';
+									$counter++;
 								}
-								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
-								echo '<li data-order="' . $counter . '">
-									<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
-									<label for="' . $row->colName . $input_suffix . '">' . $row->displayName . '</label>
-									'.$customField.'
+							}
+							// Add separator before custom fields if custom fields exist
+							$hasCustomFields = array_filter($response, function($row) { return isset($row->fieldId); });
+							if (!empty($hasCustomFields)) {
+								echo '<li class="custom-fields-separator" style="border-top: 1px solid #ddd; margin: 10px 0; padding: 8px 0; pointer-events: none; background-color: #f9f9f9;">
+									<strong style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; text-align: Left;">Custom Fields (Max 5 fields allowed)</strong>
 								</li>';
-								$counter++;
+							}
+							// Then, display all custom fields
+							foreach ($response as $row) {
+								if (isset($row->fieldId)) { // Custom field
+									$checked = in_array($row->colName, $visible_columns) ? ' checked' : '';
+									
+									$value_data = [
+										'colName' => $row->colName,
+										'displayName' => $row->displayName,
+										'fieldId' => $row->fieldId,
+										'fieldType' => $row->fieldType ?? null,
+										'controlTypeId' => $row->controlTypeId ?? 3
+									];
+									
+									$customField = '<span class="cfield">Custom Field</span>';
+									$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
+									echo '<li data-order="' . $counter . '">
+										<input id="' . $row->colName . $input_suffix . '" type="checkbox" ' . $checked . ' value=\'' . $input_value . '\'>
+										<label for="' . $row->colName . $input_suffix . '">' . $row->displayName . '</label>
+										'.$customField.'
+									</li>';
+									$counter++;
+								}
 							} ?>
 						</ul>
 					</div>
 				</div>
 		
-				<ul class="checked-cols">
-					<?php foreach ($response as $key => $row) {
-						if (in_array($row->colName, $visible_columns)) {
-							echo '<li data-order="' . ($key + 1) . '">' . $row->displayName . '<button title="Delete Column" class="uncheck-cols"><i class="dashicons dashicons-no-alt"></i></button></li>';
-						}
-					} ?>
-				</ul>
+			<ul class="checked-cols">
+    <?php foreach ($response as $key => $row) {
+        if (in_array($row->colName, $visible_columns)) {
+            if ($row->colName === 'name') {
+                echo '<li data-order="' . ($key + 1) . '">' . $row->displayName . '<button title="Name column cannot be deleted" class="uncheck-cols" disabled style="opacity: 0.5;"><i class="dashicons dashicons-no-alt"></i></button></li>';
+            } else {
+                echo '<li data-order="' . ($key + 1) . '">' . $row->displayName . '<button title="Delete Column" class="uncheck-cols"><i class="dashicons dashicons-no-alt"></i></button></li>';
+            }
+        }
+    } ?>
+</ul>
 		
 				<button type="button" class="btn manageColOrder">Manage Column Order</button>
 				<div class="colsOrderModal" style="display:none;">
