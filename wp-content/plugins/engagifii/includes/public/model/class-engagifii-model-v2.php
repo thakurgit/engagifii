@@ -854,6 +854,9 @@ $keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $
             } elseif(isset($field->controlTypeId) && $field->controlTypeId == 11 && !empty($fvalue)){
                     $nestedData[$keyName] = $this->formatPhoneNumber($fvalue);
             }
+            elseif(isset($field->controlTypeId) && $field->controlTypeId == 1 && !empty($fvalue)){
+                    $nestedData[$keyName] = $this->formatDateField($fvalue);
+            }
             else {
                 $nestedData[$keyName] = htmlspecialchars($fvalue);
             }

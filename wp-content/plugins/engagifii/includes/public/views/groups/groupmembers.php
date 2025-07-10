@@ -366,6 +366,15 @@ var fieldValues = {
         fieldValues[key] = value;
     }
 }
+else if (field.controlTypeId == 1 && value) {
+    // Format date as "MMM DD, YYYY"
+    var dateObj = new Date(value);
+    if (!isNaN(dateObj.getTime())) {
+        fieldValues[key] = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } else {
+        fieldValues[key] = value;
+    }
+}
 else if (key && value !== '') {
         fieldValues[key] = value;
     }
