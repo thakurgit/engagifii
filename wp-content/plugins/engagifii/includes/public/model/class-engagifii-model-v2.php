@@ -892,6 +892,7 @@ $keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $
 
 public function getOrganizations(){
         $options = get_option('ebt_api_settings');
+         $tenantCode = $options['dashboard_tenant_code'];
         $front_pages = $options['front_pages'];
         //$postedData = $this->_preparePeopleData();        
         $viewMode = $_POST['viewMode'];
@@ -926,7 +927,7 @@ public function getOrganizations(){
             }
         }';
         //print_r($postedData); die;
-        $dataResponse = $this->submitApiRequest("OrganizationPagingList", json_decode($postedData), "POST", 'dashboard'); 
+        $dataResponse = $this->submitApiRequest("OrganizationPagingList/".$tenantCode."/", json_decode($postedData), "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
