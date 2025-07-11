@@ -851,7 +851,13 @@ $keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $
                 } else {
                     $nestedData[$keyName] = '--';
                 }
-            } else {
+            } elseif(isset($field->controlTypeId) && $field->controlTypeId == 11 && !empty($fvalue)){
+                    $nestedData[$keyName] = $this->formatPhoneNumber($fvalue);
+            }
+            elseif(isset($field->controlTypeId) && $field->controlTypeId == 1 && !empty($fvalue)){
+                    $nestedData[$keyName] = $this->formatDateField($fvalue);
+            }
+            else {
                 $nestedData[$keyName] = htmlspecialchars($fvalue);
             }
         }
@@ -1083,11 +1089,24 @@ public function buildPopoverList($key, $items, $label, $countLabel, $itemCallbac
 }
 
 // Helper to format phone numbers
-    public function formatPhoneNumber($rawPhone) {
-        if (!empty($rawPhone) && preg_match('/^\d{10}$/', $rawPhone)) {
-            $formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $rawPhone);
-            return '<a href="tel:' . $rawPhone . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+  public function formatPhoneNumber($rawPhone) {
+    if (!empty($rawPhone)) {
+        // Extract 10 digits and extension (supports ext, x, extension)
+        $digits = preg_replace('/\D/', '', $rawPhone);
+        $digits = substr($digits, 0, 10);
+        $ext = '';
+        if (preg_match('/(?:ext|x|extension)\s*\.?\s*(\d+)/i', $rawPhone, $matches)) {
+            $ext = $matches[1];
         }
-        return '--';
+        if (strlen($digits) === 10) {
+            $formattedPhone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $digits);
+            if ($ext) {
+                $formattedPhone .= ' ext ' . $ext;
+            }
+            $tel = 'tel:' . $digits . ($ext ? ',,' . $ext : '');
+            return '<a href="' . $tel . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+        }
     }
+    return '--';
+}
 }

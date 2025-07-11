@@ -349,7 +349,33 @@ var fieldValues = {
         } else {
             fieldValues[key] = '--';
         }
-    } else if (key && value !== '') {
+    }else if (field.controlTypeId == 11 && value) {
+    // Extract digits and extension (e.g., 6675553000ext10)
+    var match = value.match(/^(\D*\d{3}\D*\d{3}\D*\d{4})(?:\D*(?:ext|x|extension)\D*(\d+))?/i);
+    var digits = value.replace(/\D/g, '').substring(0, 10);
+    var extMatch = value.match(/(?:ext|x|extension)\s*\.?\s*(\d+)/i);
+    var ext = extMatch ? extMatch[1] : '';
+
+    if (digits.length === 10) {
+        var formatted = digits.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+        if (ext) {
+            formatted += ' ext ' + ext;
+        }
+        fieldValues[key] = '<a href="tel:' + digits + (ext ? ',,' + ext : '') + '">' + formatted + '</a>';
+    } else {
+        fieldValues[key] = value;
+    }
+}
+else if (field.controlTypeId == 1 && value) {
+    // Format date as "MMM DD, YYYY"
+    var dateObj = new Date(value);
+    if (!isNaN(dateObj.getTime())) {
+        fieldValues[key] = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } else {
+        fieldValues[key] = value;
+    }
+}
+else if (key && value !== '') {
         fieldValues[key] = value;
     }
 });
