@@ -17,6 +17,7 @@
     // ];
     $nonce = wp_create_nonce('save_org_nonce');
     $options = get_option( 'ebt_api_settings' );
+	$tenantCode = $options['dashboard_tenant_code'];
 	//print_r(json_encode($options));
     $organization_visible_column_list = array();
     if (!empty($options['organization_settings']['list']['visible_column_list'])) {
@@ -28,7 +29,7 @@
 		if($options['engagifii_apis']['crmUrl']=='' || $options['dashboard_tenant_code']==''){
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage Organization page settings</i></b>';	
 		} else { 
-		  $response = wp_remote_get("{$options['engagifii_apis']['crmUrl']}/OrganizationColumnList", [
+		  $response = wp_remote_get("{$options['engagifii_apis']['crmUrl']}/OrganizationColumnList/".$tenantCode, [
 		  'headers' => [
 			'accept'        => 'application/json',
 			'tenant-code'   => $options['dashboard_tenant_code'],
