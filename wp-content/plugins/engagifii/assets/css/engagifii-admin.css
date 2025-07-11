@@ -229,20 +229,31 @@ position: relative;
 	box-sizing: border-box;
 	top: 42px;
 	z-index: 1;
+		max-height: 300px;
+	overflow-y: auto;
+
 }
 .cols-list-wrapper > .cols-list-search {
 	padding: 4px 10px;
 	width: 100%;
 }
 .cols-list-wrapper ul {
-	max-height: 200px;
-	overflow-y: auto;
 	margin-bottom: 0;
 }
 .cols-list-wrapper .ebt-grid-column-list li {
 	width: 100%;
 	display: block;
 	padding: 2px 0 0 0;
+}
+.cols-list-wrapper .custom-fields-list {
+border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px;
+  background: #fefefe;	
+}
+.custom-fields-separator {
+color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; text-align: Left;
+margin-bottom: 10px;	
 }
 .checked-cols {
 	margin-top: 30px;
