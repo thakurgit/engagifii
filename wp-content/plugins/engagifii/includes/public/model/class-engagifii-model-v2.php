@@ -966,7 +966,7 @@ public function getOrganizations(){
 			}else{
 				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
-            $nestedData['name'] .= '<div><a class="text-nowrap" href="'.site_url().'/my-profile/?member='.$value->id.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
+            $nestedData['name'] .= '<div><a class="text-nowrap" href="#" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
             $nestedData['status'] = $value->status;
             $nestedData['totalmembers'] = $value->totalMembers;	
              $nestedData['activemembers'] = $value->activeMembers;	
@@ -980,7 +980,11 @@ public function getOrganizations(){
             $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');          
             $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
            // $nestedData['organizationTags'] = '';
-            $nestedData['primaryemail'] = $value->primaryEmail ? $value->primaryEmail : '--';
+            $nestedData['primaryemail'] = $value->primaryEmail 
+    ? '<a href="mailto:' . $value->primaryEmail . '">' . $value->primaryEmail . '</a>' 
+    : ((isset($value->secondaryEmails) && count($value->secondaryEmails) > 0 && isset($value->secondaryEmails[0]->value)) 
+        ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
+        : '--');
             $nestedData['modifiedon'] = $this->formatDateField($value->modifiedOn);
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;

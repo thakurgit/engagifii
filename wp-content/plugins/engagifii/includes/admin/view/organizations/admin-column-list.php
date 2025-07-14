@@ -35,6 +35,7 @@
 			'tenant-code'   => $options['dashboard_tenant_code'],
 		  ]
 		]);
+		
 		   if (is_wp_error($response)) {
 			echo '<div class="error">API Response not found!</div>';
 		  }
@@ -52,6 +53,13 @@
 			  }
 			  return $object;
 		  }, $response);
+
+		 $excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'Website', 'SecondaryEmails'];
+
+// Filter the response
+$response = array_values(array_filter($response, function ($item) use ($excludedCols) {
+    return !in_array($item->colName, $excludedCols);
+}));
 		//render UI
 		function render_org_columns_ui($context, $response, $visible_columns, $options) {
 			$visible_columns = array_map(function ($json) {
