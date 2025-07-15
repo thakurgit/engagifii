@@ -56,6 +56,8 @@ font-size: 260px;
     'Created On' => 'Added',
     'Locations' => 'Location',
     'Organization Tags' => 'Tags',
+    'Primary Email' => 'Email',
+    'Phone Numbers' => 'Phone'
     // Add more as needed
 ];
 $i = 0;    
@@ -246,7 +248,7 @@ $i = 0;
 var orgFieldIcons = {
     email: '<i class="fas fa-envelope mr-2"></i>',
     phone: '<i class="fas fa-phone mr-2"></i>',
-    //status: '<i class="fas fa-user-check mr-2"></i>',
+    status: '<i class="fas fa-user-check mr-2"></i>',
     organizationType: '<i class="fas fa-landmark mr-2"></i>',
     tags: '<i class="fas fa-tags mr-2"></i>',
     createdOn: '<i class="fas fa-calendar-plus mr-2"></i>',
@@ -297,11 +299,12 @@ function renderOrgGrid(data) {
              if (label === 'Locations') label = 'Location';
             if (label === 'Created On') label = 'Added';
             if (label === 'Modified On') label = 'Last Updated';
+            if (label === 'Primary Email') label = 'Email';
+            if (label === 'Phone Numbers') label = 'Phone';
+
             if (col === 'name') return;
             if (fieldValues[col] !== undefined) {
-                cardBody += '<p class="card-text mb-1">' +
-                    (orgFieldIcons[col] || '') +
-                    '<span class="font-weight-bold">' + label + ':</span> ' +
+                cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
                     '</p>';
             }
