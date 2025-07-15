@@ -968,8 +968,8 @@ public function getOrganizations(){
 			}
             $nestedData['name'] .= '<div><a class="text-nowrap" href="#" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
             $nestedData['status'] = $value->status;
-            $nestedData['totalmembers'] = $value->totalMembers;	
-             $nestedData['activemembers'] = $value->activeMembers;	
+            $nestedData['totalmembers'] = $value->totalMembers."/".$value->activeMembers;	
+            //$nestedData['activemembers'] = $value->activeMembers;	
 			//$nestedData['Location']= $value->locationInfo[0]->locationValue ? $value->locationInfo->locationValue : 'N/A';
            if ((!empty($value->locations) && count($value->locations) > 0)) {             
                 $nestedData['locations'] = '<div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center">'.$locationCount.'</span></div>'.$locationPopOver.'</div>';

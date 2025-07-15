@@ -57,7 +57,7 @@ font-size: 260px;
     'Locations' => 'Location',
     'Organization Tags' => 'Tags',
     'Primary Email' => 'Email',
-    'Phone Numbers' => 'Phone'
+    'Phone Numbers' => 'Phone',
     // Add more as needed
 ];
 $i = 0;    
@@ -244,7 +244,7 @@ $i = 0;
     echo json_encode($gridCols);
 ?>;
   //console.log(groupMemberCols);
-// console.log('Organization Grid Columns:', organizationGridCols); 
+//console.log('Organization Grid Columns:', organizationGridCols); 
 var orgFieldIcons = {
     email: '<i class="fas fa-envelope mr-2"></i>',
     phone: '<i class="fas fa-phone mr-2"></i>',
@@ -282,7 +282,7 @@ function renderOrgGrid(data) {
         buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
         '">View Locations</a>'
     : '--',
-    'activemembers': (org.totalMembers !== undefined && org.activeMembers !== undefined)
+    totalmembers: (org.totalMembers !== undefined && org.activeMembers !== undefined)
         ? org.activeMembers + '/' + org.totalMembers
         : '--',
     organizationtags: (org.organizationTags && org.organizationTags.length > 0)
@@ -301,6 +301,7 @@ function renderOrgGrid(data) {
             if (label === 'Modified On') label = 'Last Updated';
             if (label === 'Primary Email') label = 'Email';
             if (label === 'Phone Numbers') label = 'Phone';
+            if (label === 'Total Members') label = 'Total/Active Members';
 
             if (col === 'name') return;
             if (fieldValues[col] !== undefined) {

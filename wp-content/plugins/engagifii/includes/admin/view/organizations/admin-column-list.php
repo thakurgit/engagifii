@@ -47,14 +47,16 @@
 				  'colName' => $item['colName'],
 				  'displayName' => $item['displayName']
 			  ];
-		  
+		   if ($item['colName'] === 'TotalMembers') {
+        $object->displayName = 'Total/Active Members';
+    }
 			  if (isset($item['fieldId'])) {
 				  $object->fieldId = $item['fieldId'];
 			  }
 			  return $object;
 		  }, $response);
 
-		 $excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'Website', 'SecondaryEmails'];
+		 $excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'Website', 'SecondaryEmails'];
 
 // Filter the response
 $response = array_values(array_filter($response, function ($item) use ($excludedCols) {
