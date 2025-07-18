@@ -86,106 +86,99 @@ echo do_shortcode('[view_mode search="on" placeholder="'.$placeholder_text.'"]')
 
 </div>
 <?php
-
+// Replace the existing filter content generation with:
 ob_start();
 ?>
-<div class="filter-content" id="filterdp1">
-	<div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border"><i class="far fa-filter click-filter"></i><span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span></div>
-  <div class="filter-border">
-  <div class="filter-area" id="filterdp">
-    <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
-      <div class="row">
-      <div class="col-6 text-left">
-        <span class="filter-title">
-          <i class="far fa-filter mr-2"></i> Filter
-          <span id="blockedchecked"></span> 
-        </span>
-      </div>
-      <div class="col-6 text-right">
-        <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
-      </div>
-      </div>
-    </div>
-    <div class="col-sm-12" id="test">
-      <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
-       <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none position-relative pb-2">
-          <input type="text" name="createdbetween"  class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY" >
-          <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+<div id="filter-content-wrapper" style="display: none;">
+    <div id="filter-loader" class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
         </div>
-      </div>
-      <?php }
-      if(in_array('eventType', $events_visible_column_list) && array_search('eventType', $ebt_visib_datacol_list)){
-      ?>
-       <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-		  if($eventTypes){
-            foreach ($eventTypes as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input type="checkbox" name="eventsType[]" id="event_'.$key.'" value="'.$value['value'].'" class="mr-2 mt-1"> <label for="event_'.$key.'"><small> '.addslashes($value['text']).'</small></label></li>';
-            }
-            }
-          ?>  
-        </ul></div>
-      </div>
-      
-      <?php
-        }
-      
-      
-      if(in_array('city', $events_visible_column_list)) {
-         //if(array_search('location', $ebt_visib_datacol_list)){
-          ?>
-          <div class="filter-list border-bottom">
-            <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
-            <div class="content-area d-none"><ul class="list-group m-0">
-              <?php
-			  if($eventLocations){
-                foreach ($eventLocations as $key => $value) {
-           echo '<li class="d-flex align-items-start"><input  type="checkbox" name="eventsLocation[]" id="location_'.$key.'" value="'.$value['id'].'" class="mr-2 mt-1"> <label for="location_'.$key.'"><small>'.addslashes($value['city']).'</small></label></li>';
-                }
-                }
-              ?>  
-            </ul></div>
-          </div>
-          
-          <?php
-          // }
-              }
-    if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
-      ?>
-       <div class="filter-list border-bottom">
-        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
-        <div class="content-area d-none"><ul class="list-group m-0">
-          <?php
-		  if($tags){
-            foreach ($tags as $key => $value) {
-              echo '<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';
-            }
-            }
-          ?>  
-        </ul></div>
-      </div>
-      
-    <?php } 
-    
-    ?>
-      
     </div>
-          <div class="apply-filter">
-        <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
-          <span id="countFilterResult"></span>
-        </button>
-      </div>
-
-  </div>
-</div>
+    <div class="filter-content" id="filterdp1">
+        <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
+            <i class="far fa-filter click-filter"></i>
+            <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
+        </div>
+        <div class="filter-border">
+            <div class="filter-area d-none" id="filterdp">
+                <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <span class="filter-title">
+                                <i class="far fa-filter mr-2"></i> Filter
+                                <span id="blockedchecked"></span> 
+                            </span>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" id="test">
+                    <input type="hidden" id="isApplyACtive" value="0">
+                    
+                    <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
+                        <div class="content-area d-none position-relative pb-2">
+                            <input type="text" name="createdbetween" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
+                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if(in_array('eventType', $events_visible_column_list) && array_search('eventType', $ebt_visib_datacol_list)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
+                        <div class="content-area eventType-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if(in_array('city', $events_visible_column_list)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
+                        <div class="content-area city-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
+                        <div class="content-area tags-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+                
+                <div class="apply-filter">
+                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
+                        <span id="countFilterResult"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
-$filter_content =ob_get_contents();
+$filter_content = ob_get_contents();
 ob_end_clean();
 $filter_content = removeWhitespace($filter_content);
 $title_key = -1;
@@ -381,7 +374,8 @@ var table = $('#ebtmaintable').DataTable( {
          },
 		  "initComplete": function(settings, json) {
 			  $('#eng-overlay').css( 'display', 'none' );
-			  dt_filterActivate();
+       $('#filter-content-wrapper').fadeIn();
+			 // dt_filterActivate();
     },
     });
 
@@ -595,13 +589,13 @@ $(document).on('click', '.daterangepicker ', function (e) {
   e.stopPropagation();
 });
 
-      $('.filter-list input[type=checkbox]').change(function(){
-		  if($('#apply-filter-data .spinner-border').length==0){
-			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-		  }
+      // $('.filter-list input[type=checkbox]').change(function(){
+		  // if($('#apply-filter-data .spinner-border').length==0){
+			//   $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+		  // }
 		  
-          countFilterData();
-      })
+      //     countFilterData();
+      // })
 
       function countFilterData()
       {
@@ -675,24 +669,56 @@ var city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return
 </script> 
 <script>
   
-    //  //Hide Filters on clicking outside filter area
-    //  const filterdp1= document.getElementById('filterdp1');
-    //  const filterdp= document.getElementById('filterdp');
-    //  const test= document.getElementById('list');
-    //  const id = $('.filter-area').val();
+   // Load filters after page loads
+window.addEventListener("load", function () {
+    $('#filter-loader').show(); // Show loader
+    $('.filter-content').hide(); // Hide filter content
+    
+    $.ajax({
+        type: "post",
+        url: engagifiiUrl_ajaxurl,
+        data: {
+            action: 'eventFilters',
+            filterParams: <?php echo json_encode($events_visible_column_list); ?>,
+        },
+        success: function(response) { 
+            for (var key of Object.keys(JSON.parse(response))) {
+                $('.' + key + '-filter ul').html(JSON.parse(response)[key]);
+            }
+            dt_filterActivate();
+            var dates = JSON.parse(response)['startDateTime'];
+            filterEvents(dates['minStartDate'], dates['maxEndDate']); 
+            $('#filter-loader').hide(); // Hide loader
+            $('.filter-content').fadeIn(); // Show filter content
+        }
+    });
+});
 
-    //  document.onclick= function(e){
-    //  if(e.target.id !== 'filterdp1' && e.target.id !== 'filterdp' && e.target.id !== 'test'){
-    //   var elmId = $("#filter-area").attr("id");
-    //     alert(elmId);
-    //     //$('.filter-area').addClass('d-none');
-    //     //$('.filter-content').addClass('d-none');
-        
-    //   }
-    // };
-
-    // filterdp.onclick = function(){
-    //   alert(e.target.id);
-    // };
+function filterEvents(minDate, maxDate) {
+    // $('input[name="createdbetween"]').daterangepicker({
+    //     minDate: minDate,
+    //     maxDate: maxDate,
+    //     autoApply: true
+    // }, function(start, end) {
+    //     createdDate = start.format('MM/DD/YYYY') + '-' + end.format('MM/DD/YYYY');
+    //     startdate = start.format('MM/DD/YYYY');
+    //     enddate = end.format('MM/DD/YYYY');
+    //     if ($('#apply-filter-data .spinner-border').length == 0) {
+    //         $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    //     }
+    //     countFilterData();
+    // });
+    
+    startdate = '';
+    enddate = '';
+    $('input[name="createdbetween"]').val('');
+    
+    $('.filter-list input[type=checkbox]').change(function() {
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+}
   </script>
 </div>
