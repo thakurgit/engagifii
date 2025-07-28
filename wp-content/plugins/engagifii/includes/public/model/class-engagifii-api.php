@@ -1153,8 +1153,19 @@ public function getEventDetailsByID($id)
         $responseArray = array();
         	$apiUrl= 'legislative/public-bills/filter/tags';
         $response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-        $responseArray = json_decode($response['api_response']);
-        return $responseArray;
+        $responseArray = json_decode($response['api_response'],true);
+		$filtered = array_filter($responseArray, function($item) {
+			return isset($item['count']) && $item['count'] != 0;
+		});
+		// Append (count) to text
+		$updated = array_map(function($item) {
+			if (isset($item['text'], $item['count'])) {
+				$item['text'] .= ' (' . $item['count'] . ')';
+			}
+			return $item;
+		}, $filtered);
+        //return $updated;
+		wp_send_json($updated);
     }
 
 	public function legislationAssignToFilter(){
@@ -1163,8 +1174,19 @@ public function getEventDetailsByID($id)
 		$responseArray = array();
 		$apiUrl= 'legislative/public-bills/filter/billusers';
 		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response']);
-		return $responseArray;
+		$responseArray = json_decode($response['api_response'],true);
+		$filtered = array_filter($responseArray, function($item) {
+			return isset($item['count']) && $item['count'] != 0;
+		});
+		// Append (count) to text
+		$updated = array_map(function($item) {
+			if (isset($item['fullName'], $item['count'])) {
+				$item['fullName'] .= ' (' . $item['count'] . ')';
+			}
+			return $item;
+		}, $filtered);
+		//return $updated;
+		wp_send_json($updated);
 	}
 
 	public function legislationGroupsFilter(){
@@ -1172,8 +1194,19 @@ public function getEventDetailsByID($id)
 		$responseArray = array();
 		$apiUrl= 'legislative/public-bills/filter/groups';
 		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response']);
-		return $responseArray;
+		$responseArray = json_decode($response['api_response'],true);
+		$filtered = array_filter($responseArray, function($item) {
+			return isset($item['count']) && $item['count'] != 0;
+		});
+		// Append (count) to text
+		$updated = array_map(function($item) {
+			if (isset($item['text'], $item['count'])) {
+				$item['text'] .= ' (' . $item['count'] . ')';
+			}
+			return $item;
+		}, $filtered);
+		//return $updated;
+		wp_send_json($updated);
 			
 	}
 
@@ -1182,8 +1215,19 @@ public function getEventDetailsByID($id)
 		$responseArray = array();
 		$apiUrl= 'legislative/public-bills/filter/billusertags';
 		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
-		$responseArray = json_decode($response['api_response']);
-		return $responseArray;
+		$responseArray = json_decode($response['api_response'],true);
+		$filtered = array_filter($responseArray, function($item) {
+			return isset($item['count']) && $item['count'] != 0;
+		});
+		// Append (count) to text
+		$updated = array_map(function($item) {
+			if (isset($item['text'], $item['count'])) {
+				$item['text'] .= ' (' . $item['count'] . ')';
+			}
+			return $item;
+		}, $filtered);
+		//return $updated;
+		wp_send_json($updated);
 			
 	}
 

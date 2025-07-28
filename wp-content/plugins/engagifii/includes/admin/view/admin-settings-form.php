@@ -233,7 +233,6 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
 			}
 		});
       tid++;  
-		//jQuery(this).find('li:not(.toggleAll)').each(function(){
 		 jQuery(this).find('li:not(.toggleAll) input[type="checkbox"]').change(function(){
 			if(jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input[type="checkbox"]').length==jQuery(this).parents('.ebt-grid-column-list').find('li:not(.toggleAll) input:checked').length) {
 			   jQuery(this).parent().siblings('.toggleAll').find('input[type="checkbox"]').prop('checked',true);
@@ -253,7 +252,7 @@ jQuery( '.shortcode-list code' ).click( function( event ) {
     }
 });
 //alert on readonly checkbox
-		jQuery('body').on('click', 'input[readonly], input[readonly]+label', function() {
+		jQuery('body').on('click', 'input[readonly], input[disabled], input[readonly]+label, input[disabled]+label', function() {
 		showAlert("This item can not be modified.");
 return false;
 	});

@@ -19,7 +19,10 @@
 background: #1a96f3;
 color:white;	
 }
-.bordered{ border: 1px solid #c5c5c5; }
+.bordered {
+	border: 1px solid #c5c5c5;
+	border-radius: 5px;
+}
 
 .engagifii-setting { 
 margin-bottom: 20px;
@@ -30,6 +33,10 @@ margin-bottom: 20px;
     border-top: none;
     padding: 10px;
     background: #fff;
+	border-radius:0 0 5px 5px;
+}
+.accordion-btn {
+cursor:pointer;	
 }
 .m-tlr-20{margin-top:20px;}
 .engagifii-setting .form-group{ padding: 10px 5px; }
@@ -201,6 +208,15 @@ color:green
 
 
 /*6-4-25 group members new ui*/
+.cols-wrapper {
+	border: 1px solid #e2e2e2;
+	border-radius: 5px;
+	padding: 15px;
+	background: #fbfbfb;
+	margin-bottom: 20px;
+	box-shadow: 0px 0px 7px #e2e2e2;
+	position: relative;
+}
 .cols-dropdown {
 width: 380px;	
 position: relative;
@@ -229,16 +245,40 @@ position: relative;
 	box-sizing: border-box;
 	top: 42px;
 	z-index: 1;
-		max-height: 300px;
+	max-height: 300px;
 	overflow-y: auto;
-
+	overflow-x: hidden;
 }
 .cols-list-wrapper > .cols-list-search {
 	padding: 4px 10px;
 	width: 100%;
 }
+.refreshCols {
+	padding-top: 6px !important;
+	position: absolute;
+	right: 20px;
+	top: 62px;
+	border: 0 !important;
+	z-index: 1;
+}
+.refreshCols.loading .dashicons {
+  animation: spin 1s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .cols-list-wrapper ul {
 	margin-bottom: 0;
+}
+.cols-list-wrapper ul.loading {
+	opacity: 0.3;
 }
 .cols-list-wrapper .ebt-grid-column-list li {
 	width: 100%;
@@ -252,13 +292,22 @@ border: 1px solid #ccc;
   background: #fefefe;	
 }
 .custom-fields-separator {
-color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; text-align: Left;
-margin-bottom: 10px;	
+	color: var(--error-red);
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	display: block;
+	text-align: Left;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	font-weight: bold;
 }
 .checked-cols {
 	margin-top: 30px;
 	display: flex;
 	flex-wrap: wrap;
+	max-height: 200px;
+	overflow-y: auto;
 }
 .checked-cols li {
 	flex: 0 0 25%;
@@ -270,6 +319,12 @@ background: none;
 color:var(--color-error);
 border: 0;	
 cursor:pointer;
+}
+.checked-cols span.placeholder {
+	font-size: 18px;
+	font-weight: bold;
+	font-style: italic;
+	color: #b3b2b2;
 }
 .colsOrderModal {
 position: fixed;

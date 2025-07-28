@@ -1,6 +1,48 @@
 <div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['evt_api_url']=='' || $options['evt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        <!--events columns list-->
+			<div class="cols-wrapper" style="position:relative">
+            	<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+                <?php renderColumnsUI('events_visible_column_list','eventsList'); ?>
+                </div>
+                
+                <!--events types-->
+                <div class="cols-wrapper" style="position:relative">
+                	<h3>Manage Event Type Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+                    <?php renderColumnsUI('events_type_visible_column_list','eventsType'); ?>
+                </div>
+                <?php
+				if(isset($options['allEvents'])){
+				  $allEvents = $options['allEvents'];
+				 }else{
+					 $allEvents = null;
+				 }
+			  
+				  $all_events = '';
+				  if($allEvents==1)
+				  {
+					   $all_events = 'checked';
+			  }
+				?>
+                <div class="cols-wrapper" style="position:relative">
+                	<h3>Manage Event Listing</h3><hr>
+                    <div style="padding-left:7px"> <input type="checkbox" name="ebt_api_settings[allEvents]" id="allEvents" value="1" <?php echo $all_events;?>/> <strong>Show All Events</strong><br><i>Note: When unchecked, only upcoming events will be displayed.</i></div>
+
+              </div>
+    	<?php 
+	}
+		echo '</div>';				
+?>
+</div>
+<?php /*?><div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
     $obj =  new adminDataColumn();
 	$date = date('Y-m-d');
     $response = $obj->getEventsColumnData();
@@ -102,4 +144,4 @@
 		echo '</div>';
 		
 ?>
-</div>
+</div><?php */?>

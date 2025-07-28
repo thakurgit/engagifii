@@ -2,6 +2,30 @@
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Group Members Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['engagifii_apis']['crmUrl']=='' || $options['dashboard_tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        	<!--Groups columns list-->
+			<div class="cols-wrapper">
+            	<h3><span class="dashicons dashicons-list-view"></span>&nbsp;&nbsp;Manage Column Visibility (List View)</h3><i>Check the columns that should be visible on the page. <strong>Max 5 Custom fields allowed.</strong></i><hr>
+            <?php renderColumnsUI(['group_members_settings', 'list', 'visible_column_list'],'groupColumns'); ?>
+                </div>
+                <!--Groups columns grid-->
+                <div class="cols-wrapper groups-grid">
+                	<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page. <strong>Maximum 6 fields are allowed.</strong></i><hr>
+            <?php renderColumnsUI(['group_members_settings', 'grid', 'visible_column_list'],'groupColumns'); ?>
+                </div>
+    	<?php 
+	}
+		echo '</div>';				
+?>
+
+</div>
+<?php /*?><div data-tab="settings" class="wrap groupmembers-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Group Members Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
+    $options = get_option( 'ebt_api_settings' );
 	 $tenantCode = $options['dashboard_tenant_code'];
     $nonce = wp_create_nonce('save_groups_nonce');
     	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
@@ -42,7 +66,6 @@
 			  }
 			  return $object;
 		  }, $response);
-//print_r($response); // Debugging line to check the response structure
 		//render UI
 		function render_group_columns_ui($context, $response, $visible_columns, $options) {
 			$visible_columns = array_map(function ($json) {
@@ -109,7 +132,7 @@
             }
         }
     } ?>
-</ul>
+</ul> 
 		
 				<button type="button" class="btn manageColOrder">Manage Column Order</button>
 				<div class="colsOrderModal" style="display:none;">
@@ -229,4 +252,4 @@
   });
 });
 
-</script>
+</script><?php */?>

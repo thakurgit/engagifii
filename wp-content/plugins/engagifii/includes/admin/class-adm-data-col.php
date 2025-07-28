@@ -15,10 +15,42 @@ class adminDataColumn extends Engagifii_API{
 		$this->dbObj=$wpdb;
 		add_action('wp_ajax_nopriv_admcolumnconfig',array($this,'getColumnData'));
 		add_action('wp_ajax_admcolumnconfig',array($this,'getColumnData'));		
+		add_action('wp_ajax_nopriv_endorsementList',array($this,'getColumnData'));
+		add_action('wp_ajax_endorsementList',array($this,'getColumnData'));	
+		add_action('wp_ajax_nopriv_coursesList',array($this,'getCourseColumnData'));
+		add_action('wp_ajax_coursesList',array($this,'getCourseColumnData'));	
+		add_action('wp_ajax_nopriv_classesList',array($this,'getClassColumnData'));
+		add_action('wp_ajax_classesList',array($this,'getClassColumnData'));	
+		add_action('wp_ajax_nopriv_classesType',array($this,'getClassesType'));
+		add_action('wp_ajax_classesType',array($this,'getClassesType'));	
+		add_action('wp_ajax_nopriv_eventsList',array($this,'getEventsColumnData'));
+		add_action('wp_ajax_eventsList',array($this,'getEventsColumnData'));	
+		add_action('wp_ajax_nopriv_eventsType',array($this,'getEventsType'));
+		add_action('wp_ajax_eventsType',array($this,'getEventsType'));	
+		add_action('wp_ajax_nopriv_eventsClassList',array($this,'getAllCommonColumnList'));
+		add_action('wp_ajax_eventsClassList',array($this,'getAllCommonColumnList'));	
+		add_action('wp_ajax_nopriv_legislationSessions',array($this,'getSessionsData'));
+		add_action('wp_ajax_legislationSessions',array($this,'getSessionsData'));	
+		add_action('wp_ajax_nopriv_legislationList',array($this,'getLegislationColumnData'));
+		add_action('wp_ajax_legislationList',array($this,'getLegislationColumnData'));	
+		add_action('wp_ajax_nopriv_legislationTags',array($this,'legislationTagsFilter'));
+		add_action('wp_ajax_legislationTags',array($this,'legislationTagsFilter'));	
+		add_action('wp_ajax_nopriv_legislationMembers',array($this,'legislationAssignToFilter'));
+		add_action('wp_ajax_legislationMembers',array($this,'legislationAssignToFilter'));	
+		add_action('wp_ajax_nopriv_legislationGroups',array($this,'legislationGroupsFilter'));
+		add_action('wp_ajax_legislationGroups',array($this,'legislationGroupsFilter'));	
+		add_action('wp_ajax_nopriv_legislationMemberTags',array($this,'legislationAssignToTagFilter'));
+		add_action('wp_ajax_legislationMemberTags',array($this,'legislationAssignToTagFilter'));	
+		add_action('wp_ajax_nopriv_legislationTabs',array($this,'legislationTabs'));
+		add_action('wp_ajax_legislationTabs',array($this,'legislationTabs'));	
+		add_action('wp_ajax_nopriv_groupColumns',array($this,'groupColumns'));
+		add_action('wp_ajax_groupColumns',array($this,'groupColumns'));	
+		add_action('wp_ajax_nopriv_orgColumns',array($this,'orgColumns'));
+		add_action('wp_ajax_orgColumns',array($this,'orgColumns'));	
+		
 	}
 
 	public function getColumnData(){
-
 		$dataResponse = $this->submitApiRequest("Public/EndorsementColumnList",array(),"GET",'endorsement');
 		if(isset($dataResponse['api_response']))
 		{
@@ -27,19 +59,20 @@ class adminDataColumn extends Engagifii_API{
 			unset($collection[6]);
 			unset($collection[8]);
 			unset($collection[9]);
-	    	return $collection;
+	    	//return $collection;
+			wp_send_json($collection);
 		}
 		else
 			return array();
 		
 	}
-
 	public function getLegislationColumnData(){
 		$postedData=array();
 			 $dataResponse = $this->submitApiRequest("legislative/public-bills/column-list",$postedData,"GET",'legislation');
 			 if(isset($dataResponse['api_response'])){
 					 $collection = json_decode($dataResponse['api_response']);
-			 	return $collection; 	
+			 	//return $collection;
+				wp_send_json($collection->columnList); 	
 			 }else
 			  return array();
 			
@@ -56,14 +89,16 @@ class adminDataColumn extends Engagifii_API{
 			unset($collection[1]);
 			unset($collection[5]);
 			unset($collection[8]);
-    		return $collection;
+    		//return $collection;
+			wp_send_json($collection);
 		}
 		else
 			return array();
 	}
 
 	public function getClassColumnData(){
-
+		$options = get_option( 'ebt_api_settings' );
+		$tenantCode = $options['dashboard_tenant_code'];
 		$dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
 		if(isset($dataResponse['api_response'])){
 			$collection   = json_decode($dataResponse['api_response']);
@@ -71,31 +106,78 @@ class adminDataColumn extends Engagifii_API{
 			unset($collection[1]);
 			unset($collection[7]);
 			unset($collection[8]);
-			return $collection;
+			if($tenantCode == 'psba'){ 
+			   $nextKey = max(array_keys($collection)) + 1;
+			  $collection[$nextKey] = [
+				  'colName' => 'talentLms',
+				  'displayName' => 'Access Class',
+			  ];
+			}
+			//return $collection;
+			wp_send_json($collection);
 		}
 		else
 			return array();    	
 	}
-
+public function getClassesType($date){
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/GetObjectTypesForFilter/'.date('Y-m-d');
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'classes');
+		$responseArray = json_decode($response['api_response'], true);
+		//return $responseArray;
+			wp_send_json($responseArray);
+	}
 
 	public function getEventsColumnData(){
 
 		$dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
 		if(isset($dataResponse['api_response'])){
-			$collection   = json_decode($dataResponse['api_response']);
-		return $collection;
+			$allowedColNames = ['name', 'city', 'tags', 'eventClasses', 'register', 'eventStatus', 'eventType', 'startDateTime'];
+			$collection   = json_decode($dataResponse['api_response'], true);
+			$collection  = array_filter($collection, function ($item) use ($allowedColNames) {
+            	return in_array($item['colName'] ?? '', $allowedColNames, true);
+			});
+			foreach ($collection as &$item) {
+            if (isset($item['colName']) && $item['colName'] === 'startDateTime') {
+                $item['displayName'] = 'Event Schedule';
+            }
+        }
+		//return $collection;
+			wp_send_json($collection );
 		}
 		else
 			return array();
-		
-    	
+	}
+	public function getEventsType($date){
+
+		$postData=array();
+		$responseArray = array();
+		$apiUrl = 'public/event-type';
+		$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'event');
+		$responseArray = json_decode($response['api_response'], true);
+		//return $responseArray;
+			wp_send_json($responseArray);
 	}
 	public function getAllCommonColumnList(){
 
 		$dataResponse = $this->submitApiRequest("Public/AllCommonColumnList",array(),"GET",'classes');
 		if(isset($dataResponse['api_response'])){
-			$collection   = json_decode($dataResponse['api_response']);
-		return $collection;
+			$allowedColNames = ['name', 'entity', 'city', 'tags', 'register', 'status', 'Type', 'startDateTime'];
+			$collection   = json_decode($dataResponse['api_response'],true);
+			$collection  = array_filter($collection, function ($item) use ($allowedColNames) {
+            	return in_array($item['colName'] ?? '', $allowedColNames, true);
+			});
+			foreach ($collection as &$item) {
+            if (isset($item['colName']) && $item['colName'] === 'startDateTime') {
+                $item['displayName'] = 'Schedule';
+            }
+			if (isset($item['colName']) && $item['colName'] === 'city') {
+                $item['displayName'] = 'Location';
+            }
+		  }
+		//return $collection;
+			wp_send_json($collection );
 		}
 		else
 			return array();
@@ -107,7 +189,16 @@ class adminDataColumn extends Engagifii_API{
 		$postData = array();
  	   $apiUrl = 'legislative/public-bills/sessions/';	
 		$dataResponse = $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
-		return $dataResponse['api_response'];
+		if(isset($dataResponse['api_response'])){
+		  $collection   = json_decode($dataResponse['api_response'],true);
+		  usort($collection, function($a, $b) {
+			  return $b['sessionId'] <=> $a['sessionId'];
+		  });
+		  //return $dataResponse['api_response'];
+		  wp_send_json($collection);
+		} else {
+			return array();
+		}	
 	}
 	public function getDashboardFieldData($tenantCode){
 		$postData = array();
@@ -120,6 +211,77 @@ class adminDataColumn extends Engagifii_API{
  	   $apiUrl = 'exportPeople/get/personFields/';	
 		$dataResponse = $this->submitApiRequest($apiUrl,$postData, "POST",'dashboard');
 		return $dataResponse['api_response'];
+	}
+	public function groupColumns(){
+		$options = get_option( 'ebt_api_settings' );
+		$tenantCode = $options['dashboard_tenant_code'];
+		$dataResponse = $this->submitApiRequest("PeopleColumnList/".$tenantCode,array(),"GET",'dashboard');
+		if(isset($dataResponse['api_response'])){
+			$response   = json_decode($dataResponse['api_response'], true);
+			$withoutFieldId = [];
+		  $withFieldId = [];
+		  foreach ($response as $item) {
+			  if (!isset($item['fieldId'])) {
+				  $withoutFieldId[] = $item;
+			  } else {
+				  $withFieldId[] = $item;
+			  }
+		  }
+		  $collection = array_merge($withoutFieldId, $withFieldId);
+			wp_send_json($collection );
+		}
+		else
+			return array();
+	}
+	public function orgColumns(){
+		$options = get_option( 'ebt_api_settings' );
+		$tenantCode = $options['dashboard_tenant_code'];
+		$dataResponse = $this->submitApiRequest("OrganizationColumnList/".$tenantCode,array(),"GET",'dashboard');
+		if(isset($dataResponse['api_response'])){
+			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'Website', 'SecondaryEmails'];
+			$collection   = json_decode($dataResponse['api_response'],true);
+			$collection  = array_filter($collection, function ($item) use ($excludedCols) {
+            	return !in_array($item['colName'] ?? '', $excludedCols, true);
+			});
+			foreach ($collection as &$item) {
+            if (isset($item['colName']) && $item['colName'] === 'TotalMembers') {
+                $item['displayName'] = 'Total/Active Members';
+            }
+		  }
+		//return $collection;
+			wp_send_json($collection );
+		}
+		else
+			return array();
+	}
+	public function legislationTabs(){
+		$options = get_option( 'ebt_api_settings' );
+		$tenant_code = $options['lbt_tenant_code']['tenant_code'] ?? '';
+		$legislation_tabs = [
+		  'summary'        => 'State Summary',    
+		  'versions'       => 'Versions',
+		  'votes'          => 'Votes',
+		  'history'        => 'History',
+		  'quick'          => 'Quick Links',  
+	  ];
+	  if ($tenant_code != 'aasb' && $tenant_code != 'mha') {
+		  $legislation_tabs['staffanalysis'] = 'Staff Analysis';
+	  }
+	  // Show MACo Analysis tab only for tenant_code 'maco'
+	  if ($tenant_code == 'baltimorecountymd' ||
+		  $tenant_code == 'princegeorgescountymd' ||
+		  $tenant_code == 'howardcountymd' ||
+		  $tenant_code == 'mcmd') {
+		  $legislation_tabs['macoanalysis'] = 'MACo Analysis';
+	  }
+	   $results = [];
+		foreach ($legislation_tabs as $key => $label) {
+			$results[] = (object)[
+				'colName'   => $key,
+				'displayName' => $label
+			];
+		}
+		wp_send_json($results);
 	}
 }
 return new adminDataColumn();

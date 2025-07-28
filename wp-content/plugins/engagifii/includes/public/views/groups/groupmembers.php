@@ -2,7 +2,7 @@
 if (!isset($groupId) || empty($groupId)) {
     echo '<h3 class="text-center text-muted">Group ID not found</h3>';
     return;
-}
+} 
 $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     ? strtolower($viewMode)
     : 'both';
@@ -51,10 +51,8 @@ font-size: 260px;
     	<thead> 
 		    <tr>    
 		    	 <?php  $i = 0;
-          //print_r(GROUP_MEMBERS_COLS);
 				  foreach (GROUP_MEMBERS_COLS as $key){
 					  $json = json_decode(stripslashes($key), true);
-             //print_r($json);
 					  if (!$json || !isset($json['colName'], $json['displayName'])) {
 						  continue;
 					  }
@@ -67,7 +65,7 @@ font-size: 260px;
             <th class="text-capitalize <?php echo esc_attr($colClass); ?>">
     <?php echo esc_html($json['displayName']); ?>
 </th>
-        <?php } ?>
+        <?php  $i++; } ?>
  		    
 
 		    </tr> 

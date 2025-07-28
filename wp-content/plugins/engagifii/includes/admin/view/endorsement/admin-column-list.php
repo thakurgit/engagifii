@@ -1,4 +1,21 @@
 <div data-tab="settings" class="wrap endorsement-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn" >Endorsement Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">'; 
+    if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        <!--ENdorsement columns list-->
+			<div class="cols-wrapper" style="position:relative">
+            <h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+             <?php renderColumnsUI('ebt_visib_datacol_list','endorsementList'); ?>
+                </div>
+    	<?php }
+		echo '</div>';				
+?>
+</div>
+<?php /*?><div data-tab="settings" class="wrap endorsement-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Endorsement Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
     $obj =  new adminDataColumn();
@@ -28,11 +45,11 @@
 				$checked .= " checked readonly";
 			}
 					 
-			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[ebt_visib_datacol_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>'		;
+			echo '<li data-order="'.$counter.'"> <input id="'.$row->colName.'" class="'.$row->colName.'" type="checkbox" name="ebt_api_settings[ebt_visib_datacol_list][]" '.$checked.' value='.$row->colName.'><label for="'.$row->colName.'">'.$row->displayName.'</label></li>';
 	    	$counter++;	  
     	}
     	echo '</ul>';
 	}
 		echo '</div>';				
 ?>
-</div>
+</div><?php */?>

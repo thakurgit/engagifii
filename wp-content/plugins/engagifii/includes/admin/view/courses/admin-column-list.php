@@ -1,6 +1,6 @@
 <div data-tab="settings" class="wrap course-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Courses Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
-<?php
+<?php /*?><?php
     $obj =  new adminDataColumn();
     $response = $obj->getCourseColumnData();
     $options = get_option( 'ebt_api_settings' );
@@ -36,5 +36,20 @@
     }
     	echo '</div>';				
 ?>
+</div><?php */?>
+<?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        <!--courses column list-->
+			<div class="cols-wrapper" style="position:relative">
+            <h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+            <?php renderColumnsUI('course_visible_column_list','coursesList'); ?>
+                </div>
+    	<?php  
+	}
+		echo '</div>';				
+?>
 </div>
-<!--course column end-->

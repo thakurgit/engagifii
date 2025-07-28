@@ -1,20 +1,47 @@
 <div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Organization Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['engagifii_apis']['crmUrl']=='' || $options['dashboard_tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        	<!--Org columns list-->
+			<div class="cols-wrapper">
+            	<h3><span class="dashicons dashicons-list-view"></span>&nbsp;&nbsp;Manage Column Visibility (List View)</h3><i>Check the columns that should be visible on the page.</i><hr>
+            <?php renderColumnsUI(['organization_settings', 'list', 'visible_column_list'],'orgColumns'); ?>
+                </div>
+                <!--Org columns grid-->
+                <div class="cols-wrapper groups-grid">
+                	<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page. <strong>Maximum 6 fields are allowed.</strong></i><hr>
+            <?php renderColumnsUI(['organization_settings', 'grid', 'visible_column_list'],'orgColumns'); ?>
+                </div>
+    	<?php 
+	}
+		echo '</div>';				
+?>
+
+</div>
+<?php /*?><div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Organization Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
     $obj =  new adminDataColumn();
-	//   $response = [
-    //     (object)['colName' => 'OrganizationName',   'displayName' => 'Organization Name'],    
-    //     (object)['colName' => 'Active/totalmember', 'displayName' => 'Active/Total Member'],
-    //     (object)['colName' => 'Location',           'displayName' => 'Location'],
-    //     (object)['colName' => 'organizationTags',   'displayName' => 'Tags'],
-    //     (object)['colName' => 'Status',             'displayName' => 'Status'],
-	// 	(object)['colName' => 'added',             'displayName' => 'Added'],
-    // 	(object)['colName' => 'lastUpdated',       'displayName' => 'Last Updated'],
-    //     (object)['colName' => 'phoneNumbers',       'displayName' => 'Phone Numbers'],
-    //     (object)['colName' => 'OrganizationType',   'displayName' => 'Organization Type'],
-    //     (object)['colName' => 'Email',              'displayName' => 'Email'],
-    //     (object)['colName' => 'Tags',               'displayName' => 'Tags'],
-    // ];
+	   //$response = [
+//         (object)['colName' => 'OrganizationName',   'displayName' => 'Organization Name'],    
+//         (object)['colName' => 'Active/totalmember', 'displayName' => 'Active/Total Member'],
+//         (object)['colName' => 'Location',           'displayName' => 'Location'],
+//         (object)['colName' => 'organizationTags',   'displayName' => 'Tags'],
+//         (object)['colName' => 'Status',             'displayName' => 'Status'],
+//	 	(object)['colName' => 'added',             'displayName' => 'Added'],
+//     	(object)['colName' => 'lastUpdated',       'displayName' => 'Last Updated'],
+//         (object)['colName' => 'phoneNumbers',       'displayName' => 'Phone Numbers'],
+//         (object)['colName' => 'OrganizationType',   'displayName' => 'Organization Type'],
+//         (object)['colName' => 'Email',              'displayName' => 'Email'],
+//         (object)['colName' => 'Tags',               'displayName' => 'Tags'],
+//     ];
+//	  $response = array_map(function($obj) {
+//    return (array) $obj;
+//}, $response);
     $nonce = wp_create_nonce('save_org_nonce');
     $options = get_option( 'ebt_api_settings' );
 	$tenantCode = $options['dashboard_tenant_code'];
@@ -214,3 +241,4 @@ $response = array_values(array_filter($response, function ($item) use ($excluded
 });
 
 </script>
+<?php */?>

@@ -79,7 +79,7 @@ $i = 0;
     <th class="text-capitalize <?php echo esc_attr($colClass); ?>">
         <?php echo esc_html($label); ?>
     </th>
-<?php } ?>
+<?php $i++; } ?>
 
 		    </tr> 
     	</thead> 

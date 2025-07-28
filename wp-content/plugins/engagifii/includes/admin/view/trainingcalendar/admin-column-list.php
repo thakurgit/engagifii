@@ -1,8 +1,44 @@
 <div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Training Calendar Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['evt_api_url']=='' || $options['evt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        	<!--Events & classes columns list-->
+			<div class="cols-wrapper" style="position:relative">
+            	<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+                <?php renderColumnsUI('training_calendar_visible_column_list','eventsClassList'); ?>
+                </div>
+                <?php
+				if(isset($options['allEventsClass'])){
+					$allEventsClass = $options['allEventsClass'];
+				   }else{
+					   $allEventsClass = null;
+				   }
+				
+					$all_events_class = '';
+					if($allEventsClass==1)
+					{
+						 $all_events_class = 'checked';
+			}
+				?>
+                <div class="cols-wrapper" style="position:relative">
+                	<h3>Manage Events & Classes Listing</h3><hr>
+                    <div> <input type="checkbox" name="ebt_api_settings[allEventsClass]" id="allEventsClass" value="1" <?php echo $all_events_class;?>/> <label for="allEventsClass"><strong>Show All Events & Class</strong></label><br><i>Note: When unchecked, only upcoming events & classes will be displayed.</i></div>
+
+              </div>
+    	<?php 
+	}
+		echo '</div>';				
+?>
+</div>
+<?php /*?><div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Training Calendar Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
     $obj =  new adminDataColumn();
-	$response = $obj->getAllCommonColumnList(); 
+	//$response = $obj->getAllCommonColumnList(); 
     
     $options = get_option( 'ebt_api_settings' );
 	$required_column_array = ['name', 'entity', 'city', 'tags', 'register', 'status', 'Type', 'startDateTime'];
@@ -64,4 +100,4 @@
 		echo '</div>';
 		
 ?>
-</div>
+</div><?php */?>

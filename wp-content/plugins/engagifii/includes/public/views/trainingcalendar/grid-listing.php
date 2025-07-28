@@ -8,27 +8,31 @@ if(isset($attr['records'])){
 if(isset($attr['calendar'])){
   $calendar_view = $attr['calendar'];
 }
-
-    $obj =  new Engagifii_API();
-
-    /* added static column list by vpsc */
-    $dataResponse = $this->submitApiRequest("Public/AllCommonColumnList",array(),"GET",'classes');
-    
-if(!$dataResponse){
-	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
-	return;
-}
-    $collection   = json_decode($dataResponse['api_response']);
-    //$collection   = $dataResponse;
     $options = get_option('ebt_api_settings');
-    $events_visible_column_list = $options['training_calendar_visible_column_list'];
+    $obj =  new Engagifii_API();
+	$columns='';
+	$columnNames=[];
+	if (!empty(EVENTS_CLASS_COLS) && isArrayOfJsonStrings(EVENTS_CLASS_COLS)) {
+		  $columns = convertToObjectArray(EVENTS_CLASS_COLS);
+		  $columnNames = extractColNames(EVENTS_CLASS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/AllCommonColumnList",array(),"GET",'classes');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);	
+	}
+
+    
+    //$collection   = $dataResponse;
+    /*$events_visible_column_list = $options['training_calendar_visible_column_list'];
 	$ebt_visib_datacol_list   =  array();
 	if($options['training_calendar_visible_column_list']){
   	  $ebt_visib_datacol_list = $options['training_calendar_visible_column_list'];
-	}
-//print_r("hello"); die;
+	}*/
     /* Get Tags list */
-    $payloadData = array();
+    /*$payloadData = array();
     $getCurrentdate = date("Y-m-d");
     $payloadData['selectedDate'] = $getCurrentdate;
     $payloadData['itemCount'] = 10;
@@ -38,14 +42,13 @@ if(!$dataResponse){
     $payloadData['filterBody'] = array('searchText' => '', 'selectedDate' => $getCurrentdate);
 
     $postedData = $payloadData;
-    $date = date('Y-m-d');
     $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
     $tags = $obj->eventsAllTags();
     $eventTypes = $obj->eventTypes($date);
     $classTypes = $obj->classTypes($date);
 
-    $eventLocations = $obj->eventLocation();
-    //print_r($classTypes); die;
+    $eventLocations = $obj->eventLocation();*/
+    $date = date('Y-m-d');
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
     $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
@@ -100,7 +103,7 @@ ob_start();
     </div>
     <div class="col-sm-12" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
+      <?php if(in_array('startDateTime', $columnNames)) { ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 px-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -135,7 +138,7 @@ ob_start();
       
        <div class="col-sm-12" id="test">
        <input type="hidden" id="isApplyACtive" value="0">
-       <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
+       <?php if(in_array('startDateTime', $columnNames)) { ?>
         <div class="filter-list border-bottom">
          <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Registration Date <i class="far fa-angle-down"></i></div>
          <div class="content-area d-none position-relative pb-2">
@@ -144,7 +147,7 @@ ob_start();
          </div>
        </div>
        <?php }
-      if(in_array('Type', $events_visible_column_list) && array_search('Type', $ebt_visib_datacol_list)){
+      if(in_array('Type', $columnNames) && array_search('Type', $columnNames)){
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Type <i class="far fa-angle-down"></i></div>
@@ -186,7 +189,7 @@ ob_start();
       //      }
       
       
-      if(in_array('city', $events_visible_column_list)) {
+      if(in_array('city', $columnNames)) {
          //if(array_search('location', $ebt_visib_datacol_list)){
           ?>
           <div class="filter-list border-bottom">
@@ -208,7 +211,7 @@ ob_start();
           <?php
           // }
               }
-    if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
+    if (in_array('tags', $columnNames) && array_search('tags', $columnNames)) {
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
@@ -265,7 +268,7 @@ if (array_key_exists("dt_darktheme",$options)){
 }
 
 
-if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
+/*if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
@@ -286,7 +289,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   }
 } else {
 	$seqColumns=$collection;
-}
+}*/
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -297,11 +300,12 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
         //print_r($filteredColumns);die;
         $forDatatable = array();
         $i=0;
-        foreach($seqColumns as $key => $value){
+        foreach($columns as $key => $value){
          // print_r($value);
           //if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
-              $forDatatable[$i]['name'] =$value->colName;
+			  $displayName = !empty($value->displayName) ? $value->displayName : $value->colName;
+             /* $forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'Type')
               {
                  $value->displayName = "Type";
@@ -319,16 +323,16 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
               }
               if($value->colName == 'startDateTime'){
                 $value->displayName = "Schedule";
-              }
+              }*/
               if($value->colName == 'name'){
-				  $value->displayName = "event_name";
+				 // $value->displayName = "event_name";
                 $title_key = $i;
               }
 			  //$forDatatable[]['data'] = $value->colName;
 
           ?>    
-            <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?> " style="width: 400px;" >
-            <?php  echo $value->displayName; ?>
+            <th class="<?php echo strtolower($value->colName); ?> " style="width: 400px;" >
+            <?php  echo $displayName; ?>
             </th>
           <?php $i++; 
           //}
@@ -392,17 +396,17 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-		<?php //if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		//"order": [[<?php //echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'desc']],
-		 <?php //} ?>
+		<?php if(in_array('startDateTime', $columnNames)){ ?>
+		"order": [[<?php echo array_search('startDateTime',$columnNames);?>, 'desc']],
+		 <?php } ?>
        "columnDefs": [ 
-          { "targets": ['tags','register','Type','city','status', 'entity', 'startDateTime'],
+          { "targets": ['tags','register','type','city','status', 'entity', 'startdatetime'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["tags","register","Type","eventDates","city", "entity", "startDateTime", "status"] },
-		  <?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		  {'targets': <?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  { className: "text-center", "targets": ["tags","register","Type","eventDates","city", "entity", "startdatetime", "status"] },
+		  <?php if(in_array('startDateTime', $columnNames)){ ?>
+		  {'targets': <?php echo array_search('startDateTime',$columnNames);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
@@ -507,7 +511,7 @@ $( '.cleardate' ).click(function() {
 		url: engagifiiUrl_ajaxurl,
 		data:{
 		   action:'eventClassFilters',
-		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
+		   filterParams:<?php echo json_encode($columnNames);?>,
 		},
 		success: function(response) { 
 		for (var key of Object.keys(JSON.parse(response))) {

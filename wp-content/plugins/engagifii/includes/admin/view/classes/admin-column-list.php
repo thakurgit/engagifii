@@ -1,9 +1,67 @@
 <div data-tab="settings" class="wrap class-column <?= $tab == 'settings' ? 'show' : 'hide' ?>">
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php
+    $options = get_option( 'ebt_api_settings' );
+    	echo '<div class="engagifii-setting accordion-content" style="display:none;">';
+    if($options['ebt_api_url']=='' || $options['ebt_tenant_code']['tenant_code']==''){
+			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
+		} else{ ?>
+        	<!--classes columns list-->
+			<div class="cols-wrapper" style="position:relative">
+            	<h3>Manage Column Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+            <?php renderColumnsUI('class_visible_column_list','classesList'); ?>
+                </div>
+                <!--classes types-->
+                <div class="cols-wrapper" style="position:relative">
+                	<h3>Manage Class Type Visibility</h3><i>Check the columns that should be visible on the page.</i><hr>
+            <?php renderColumnsUI('class_type_visible_column_list','classesType'); ?>
+                </div>
+                <?php
+				$tenantCode = $options['dashboard_tenant_code'];
+				if(isset($options['tLMSClasses'])){
+			$tLMSClasses = $options['tLMSClasses'];
+		   }else{
+			   $tLMSClasses = null;
+		   }
+		
+			$tLMS_Classes = '';
+			if($tLMSClasses==1)
+			{
+				 $tLMS_Classes  = 'checked';
+			}
+			
+				if(isset($options['allClasses'])){
+				  $allClasses = $options['allClasses'];
+				 }else{
+					 $allClasses = null;
+				 }
+			  
+				  $all_classes = '';
+				  if($allClasses==1)
+				  {
+					   $all_classes  = 'checked';
+			}
+				?>
+                <div class="cols-wrapper" style="position:relative">
+                	<h3>Manage Class Listing</h3><hr>
+                    <?php if($tenantCode == 'psba'){ ?>
+                    <div style=" padding-bottom:8px"> <input type="checkbox" name="ebt_api_settings[tLMSClasses]" id="tLMSClasses" value="1" <?php echo $tLMS_Classes; ?>/> <label for="tLMSClasses"><strong>Include Talent LMS Linked Classes</strong></label></div>
+                    <?php } ?>
+                    <div> <input type="checkbox" name="ebt_api_settings[allClasses]" id="allClasses" value="1" <?php echo $all_classes;?>/> <label for="allClasses"><strong>Show All classes</strong></label><br><i>Note: When unchecked, only upcoming classes will be displayed.</i></div>
+
+              </div>
+    	<?php 
+	}
+		echo '</div>';				
+?>
+
+</div>
+<?php /*?><div data-tab="settings" class="wrap class-column <?= $tab == 'settings' ? 'show' : 'hide' ?>">
+<h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
+<?php
     $obj =  new adminDataColumn();
 	$date = date('Y-m-d');
-    $response = $obj->getClassColumnData();
+    //$response = $obj->getClassColumnData();
 	$options = get_option('ebt_api_settings');
    	$tenantCode = $options['dashboard_tenant_code'];
 	if($tenantCode == 'psba'){
@@ -108,4 +166,4 @@
 		echo '</div>';				
 ?>
 
-</div>
+</div><?php */?>

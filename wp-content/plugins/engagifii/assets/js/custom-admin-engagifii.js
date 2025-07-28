@@ -68,13 +68,13 @@ jQuery(document).ready(function($) {
   });
   
   	//columns dropdown events
-  $('.cols-dropdown').each(function() {
+ /* $('.cols-dropdown').each(function() {
     const $dropdown = $(this);
     const $checkedList = $dropdown.siblings('.checked-cols');
     const $popupList = $dropdown.siblings('.colsOrderModal').find('.colsListBody');
     const $listOrder = $popupList.siblings('.cls');
     const $wrapper = $dropdown.find('.cols-list-wrapper');
-    const page = $dropdown.attr('data-option');
+    const page = $dropdown.attr('data-option'); 
 
     $wrapper.find('li:not(.toggleAll) input[type="checkbox"]').on('change', function() {
       const $checkbox = $(this);
@@ -180,7 +180,7 @@ jQuery(document).ready(function($) {
     $input.prop('checked', false).trigger('change');
   }
 });
-  });
+  });*/
   
   //columns order manage pop up
   $('.manageColOrder').on('click', function() {
@@ -192,7 +192,7 @@ jQuery(document).ready(function($) {
   
   //Sorting saved columns as per order
   jQuery('.sortable-cols').each(function(){
-		var colsList=[];	
+		/*var colsList=[];	
 		if(jQuery(this).siblings('.cls').val()!==''){
 		  colsList= (jQuery(this).siblings('.cls').val()).split(',');
 		}
@@ -206,7 +206,7 @@ jQuery(document).ready(function($) {
 			}
 		}
 		  jQuery(this).html(outerHtml);
-		}
+		}*/
 	
 	//initialize sorting
 	  jQuery(this).sortable({
@@ -241,7 +241,7 @@ function decodeHtmlEntities(str) {
   txt.innerHTML = str;
   return txt.value;
 }
-jQuery(document).ready(function($) {
+/*jQuery(document).ready(function($) {
     const maxAllowed = 5;
 
     function updateCheckboxState(wrapper) {
@@ -307,4 +307,284 @@ jQuery(document).ready(function($) {
         }
     });
 });
+});*/
+//ajax columns
+  jQuery(document).ready(function () {
+  jQuery('.accordion-btn').on('click', function () {
+    const $header = jQuery(this);
+    const $contentSection = $header.next('.accordion-content');
+    $contentSection.find('ul[data-endpoint]').each(function () {
+      const $ul = jQuery(this);
+      const endpoint = $ul.data('endpoint');
+     // const colsArray = $ul.data('colsArray');
+      const visibleCols = JSON.parse($ul.attr('data-visiblecols') || '[]');
+      if (!$ul.data('loaded') && endpoint) {
+		ajaxCols(endpoint,visibleCols,$ul);
+      }
+    });
+  });
+  });
+//execute ajax
+function ajaxCols(endpoint,visibleCols,$ul){
+	jQuery.ajax({
+          url: engagifiiAjax.ajax_url,
+          type: "post",
+          data: { action: endpoint },
+          success: function (response) {
+            try {
+              let html = '';
+			  let counter = 0;
+              jQuery.each(response, function (i, item) {
+				counter++;
+               const colName = item.colName || item.id || item.value || item.key || item.tagId || item.personId || item.sessionId || '';
+			  const displayName = item.displayName || item.name || item.text || item.fullName || item.sessionName || colName;
+			  const colOrder = item.colOrder ?? counter;
+			  const valueData = {
+				colName: colName,
+				displayName: displayName,
+				colOrder: colOrder
+			  };
+			  if ('fieldId' in item) {
+				valueData.fieldId = item.fieldId;
+			  }
+			  if ('controlTypeId' in item) {
+				valueData.controlTypeId = item.controlTypeId;
+			  }
+				const ind = $ul.parents('.wrap').index()+'_'+$ul.parents('.cols-wrapper').index();
+				let attrs = '';
+				if (colName === 'name' || colName === 'sectionname' || colName === 'title' || colName === 'billNumber') {
+				  if (visibleCols.includes(colName)) {
+					attrs += ' checked disabled';
+				  }
+				} else if (visibleCols.includes(colName)) {
+				  attrs += ' checked';
+				}
+				let customBadge = '';
+				let cFieldClass = '';
+				if ('fieldId' in valueData) {
+				  customBadge = `<span class="cfield">Custom Field</span>`;
+				  cFieldClass = 'cField';
+				}
+                html += `<li  data-order="${counter}">
+                    <input class="${cFieldClass}" id="${colName}-${ind}" type="checkbox" value='${JSON.stringify(valueData)}'${attrs}>
+                    <label for="${colName}-${ind}">${displayName}</label>${customBadge}
+                  </li>`;
+              });
+			  if(html==''){
+				  html='<b><i style="color:var(--error-red)">No data found! Try again.</i></b>'
+			  }
+              $ul.html(html).removeClass('loading').siblings('.refreshCols').removeClass('loading');
+			 toggleAll($ul);
+			 checkboxEvents($ul);
+              $ul.data('loaded', true);
+
+            } catch (e) {
+               $ul.html('<li><b><i style="color:var(--error-red)">Invalid JSON response OR failed to render HTML</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
+            }
+          },
+          error: function () {
+            $ul.html('<li><b><i style="color:var(--error-red)">Error loading content. Refresh again.</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
+          }
+        });
+}
+//refresh ajax columns
+jQuery(document).ready(function($) {
+  $('.refreshCols').on('click', function(e) {
+	e.preventDefault();
+	const $button = $(this);
+	const $ul = $button.siblings('ul[data-endpoint]');
+	const endpoint = $ul.data('endpoint');
+     const visibleCols = JSON.parse($ul.attr('data-visiblecols') || '[]');
+    const $checkedList = $ul.parents('.cols-dropdown').siblings('.checked-cols');
+    const $popupList = $ul.parents('.cols-dropdown').siblings('.colsOrderModal').find('.colsListBody')
+	if($ul && endpoint){
+		$ul.addClass('loading');
+		$button.addClass('loading');
+		const visibleCols = [];
+		console.log(visibleCols);
+		$checkedList.html('<span class="placeholder">No columns selected.</span>');
+		$popupList.html('');
+		ajaxCols(endpoint,visibleCols,$ul);
+	}
+  });
 });
+//select/deselect all checkbox
+function toggleAll($list) {
+  let tid = $list.parents('.wrap').index()+'_'+$list.parents('.cols-wrapper').index();
+    const $checkboxes = $list.find('li:not(.toggleAll) input[type="checkbox"]:not(.cField)');
+    if ($checkboxes.length === 0) return;
+
+    const toggleId = `toggleAll_${tid}`;
+    const $toggleAllItem = jQuery(`
+      <li class="toggleAll">
+        <input type="checkbox" id="${toggleId}" />
+        <label for="${toggleId}"><b><u>Select/Deselect all</u></b></label>
+      </li>
+    `);
+
+    $list.prepend($toggleAllItem);
+    const $toggleAll = $toggleAllItem.find('input');
+
+    $toggleAll.prop('checked', $checkboxes.length === $checkboxes.filter(':checked').length);
+
+    $toggleAll.on('change', function () {
+      const isChecked = jQuery(this).is(':checked');
+      $checkboxes.not('[disabled], .cField').prop('checked', isChecked).trigger('change');
+    });
+
+    $checkboxes.on('change', function () {
+      const allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+      $toggleAll.prop('checked', allChecked);
+    });
+	//for custom fields
+	const $checkboxesCField = $list.find('li:not(.toggleAll) input[type="checkbox"].cField');
+	//setTimeout(function() {
+	  if ($checkboxesCField.first().parent('li').length) {
+		jQuery('<span class="custom-fields-separator">Custom Fields</span>').insertBefore($checkboxesCField.first().parent());
+	  }
+	  jQuery('.groups-grid').find($list).find('.toggleAll').remove();
+	  if($checkboxesCField.filter(':checked').length>5){
+		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
+	  }
+	//}, 1000);
+    $checkboxesCField.on('change', function () {
+	  if($checkboxesCField.filter(':checked').length>5){
+		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
+		showAlert('Max 5 Custom Fields allowed.');  
+	  } else {
+		 $checkboxesCField.filter(':not(:checked)').removeAttr('disabled'); 
+	  }
+    });
+	jQuery('.groups-grid').find('[data-endpoint] input[type=checkbox]').on('change', function () {
+	  const $changedCheckbox = jQuery(this);
+	  const $container = $changedCheckbox.closest('.groups-grid'); // Scope to the current group
+	  const $gridcheckboxes = $container.find('[data-endpoint] input[type=checkbox]');
+	  const checkedCount = $gridcheckboxes.filter(':checked').length;
+	
+	  if (checkedCount > 6) {
+		$gridcheckboxes.filter(':not(:checked)').attr('disabled', true);
+		showAlert('Max 6 Custom Fields allowed.');
+	  } else {
+		$gridcheckboxes.removeAttr('disabled');
+	  }
+	});
+
+}
+//cols dropdown events after ajax
+function checkboxEvents($list){
+	const colsArray = $list.data('colsArray');
+    const $checkedList = $list.parents('.cols-dropdown').siblings('.checked-cols');
+    const $popupList = $list.parents('.cols-dropdown').siblings('.colsOrderModal').find('.colsListBody')
+    $list.find('li:not(.toggleAll) input[type="checkbox"]').on('change', function() {
+      const $checkbox = jQuery(this);
+      const colOrder = $checkbox.parent().attr('data-order');
+      const colVal = $checkbox.val();
+      const labelText = $checkbox.siblings('label').text();
+	  if ($checkbox.is(':checked')) {
+		if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
+		  const $li = jQuery(`
+			<li data-order="${colOrder}">
+			  ${labelText}
+			  <button title="Delete Column" class="uncheck-cols">
+				<i class="dashicons dashicons-no-alt"></i>
+			  </button>
+			</li>
+		  `);
+		  const $popli = jQuery(`
+			<li data-order="${colOrder}" class="ui-sortable-handle">
+			  <input type="hidden" value='${colVal}' name="${colsArray}" />
+			  <span class="dashicons dashicons-sort"></span>
+			  <div class="bdrs">${labelText}</div>
+			</li>
+		  `);
+		  const newOrder = parseInt(colOrder, 10);
+		  $checkedList.prepend($li);
+			$popupList.prepend($popli);
+			updateOrder($checkedList, $li, newOrder);
+			updateOrder($popupList, $popli, newOrder);
+		}
+	  } else {
+        $checkedList.find('[data-order="' + colOrder + '"]').remove();
+		$popupList.find('[data-order="' + colOrder + '"]').remove();
+      }
+	  if($checkedList.find('li').length==0){
+		 $checkedList.html('<span class="placeholder">No columns selected.</span>');
+	  }else {
+		 $checkedList.find('span.placeholder').remove(); 
+	  }
+  });
+
+    // Handle delete button in checked-cols (event delegation)
+  $checkedList.on('click', '.uncheck-cols', function(e) {
+  e.preventDefault();
+  const $li = jQuery(this).closest('li');
+  const colOrder = $li.data('order');
+  const $input =$list.find('li[data-order="' + colOrder + '"] input[type="checkbox"]');
+  if ($input.length) {
+	  if($input.prop('disabled')) {
+		showAlert("This column can't be deleted"); 
+		return; 
+	  } else{
+    	$input.prop('checked', false).trigger('change');
+	  }
+  }
+});
+}
+//update list after checkbox selected
+function updateOrder($list, $item, newOrder) {
+  let inserted = false;
+
+  $list.children().each(function () {
+    const existingOrder = parseInt(jQuery(this).attr('data-order'), 10);
+    if (newOrder < existingOrder) {
+      jQuery(this).before($item);
+      inserted = true;
+      return false; // exit loop
+    }
+  });
+
+  if (!inserted) {
+    $list.append($item); // add to end if no smaller order found
+  }
+}
+//save columns ajax
+jQuery(document).ready(function($) {
+$('.colsSave').on('click', function(e) {
+e.preventDefault();
+const $button = $(this);
+const $container = $button.parent().siblings('.colsListBody');
+const originalText = $button.text();
+const columnsName = $button.data('columnsname');
+$button.text('Updating...').prop('disabled', true);
+const visibleCols = [];
+$container.find('li input').each(function() {
+  visibleCols.push(decodeHtmlEntities($(this).val()));
+});
+$.ajax({
+  url: engagifiiAjax.ajax_url,
+  type: 'POST',
+  data: {
+	action: 'save_cols',
+	visible_column_list: visibleCols, 
+	column_namearray: columnsName,
+	security: engagifiiAjax.nonce
+  },
+  success: function(response) {
+	console.log(response.data?.message);
+	$('<p style="color:var(--e-context-success-color)"><strong><em>Columns saved successfully!</em></strong></p>').insertAfter($button);
+	setTimeout(() => {
+		$button.siblings('p').remove();
+	}, 2000);
+  },
+  error: function() {
+	alert('Error saving column settings.');
+  },
+  complete: function() {
+	$button.text(originalText).prop('disabled', false);
+  }
+});
+});
+});
+
+
+

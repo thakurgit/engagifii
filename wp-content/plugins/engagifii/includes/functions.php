@@ -161,7 +161,7 @@ function add_loginout_link( $items, $args ) {
     return $items;
 }
 //save group member columns on ajax save
-add_action('wp_ajax_save_groupmember_cols', 'save_groupmember_cols');
+/*add_action('wp_ajax_save_groupmember_cols', 'save_groupmember_cols');
 function save_groupmember_cols() {
 	check_ajax_referer('save_groups_nonce', 'security');
     if (!isset($_POST['security'])) {
@@ -187,9 +187,9 @@ function save_groupmember_cols() {
     update_option('ebt_api_settings', $settings);
 
     wp_send_json_success(['message' => 'Group Column settings saved successfully.']);
-}
+}*/
 // Save organization columns on AJAX save
-add_action('wp_ajax_save_organization_cols', 'save_organization_cols');
+/*add_action('wp_ajax_save_organization_cols', 'save_organization_cols');
 function save_organization_cols() {
 	check_ajax_referer('save_org_nonce', 'security');
 
@@ -219,4 +219,215 @@ function save_organization_cols() {
 	update_option('ebt_api_settings', $settings);
 
 	wp_send_json_success(['message' => 'Organization column settings saved successfully.']);
+}*/
+//ajax save columns
+function set_nested_array_value(&$array, $path, $value) {
+    $keys = preg_split('/\]\[|\[|\]/', trim($path, '[]'));
+    foreach ($keys as $key) {
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            $array[$key] = [];
+        }
+        $array = &$array[$key];
+    }
+    $array = $value;
 }
+add_action('wp_ajax_save_cols', 'save_cols');
+function save_cols() {
+	check_ajax_referer('save_cols_nonce', 'security');
+    if (!isset($_POST['security'])) {
+        wp_send_json_error(['message' => 'Security check failed.']);
+    }
+	if (!isset($_POST['column_namearray'])) {
+        wp_send_json_error(['message' => 'Option name not defined.']);
+    }
+    // Sanitize inputs
+    $raw_visible = isset($_POST['visible_column_list']) ? (array) $_POST['visible_column_list'] : [];
+	$visible = array_map(function($item) {
+		return sanitize_text_field(stripslashes($item));
+	}, $raw_visible);
+    $settings = get_option('ebt_api_settings', []);
+	$columnPath = $_POST['column_namearray'] ?? '';
+    if (strpos($columnPath, '[') !== false) {
+	  set_nested_array_value($settings, $columnPath, $visible);
+	} else {
+		$settings[$columnPath] = $visible;
+	}
+    update_option('ebt_api_settings', $settings);
+
+    wp_send_json_success(['message' => 'Column settings saved successfully.']);
+}
+//columns render function
+function renderColumnsUI($optionKey,$action){
+	$nameString = 'ebt_api_settings';
+	$saveOptionName = '';
+    if (is_string($optionKey)) {
+        $nameString .= '[' . $optionKey . ']';
+		$saveOptionName .= $optionKey;
+    } elseif (is_array($optionKey)) {
+        foreach ($optionKey as $key) {
+            $nameString .= '[' . $key . ']';
+			$saveOptionName .= '[' . $key . ']';
+        }
+    }
+    $nameString .= '[]'; 
+	
+	$options = get_option( 'ebt_api_settings' );
+	$visible_columns = array();
+	if (!empty($optionKey)) {
+	  if (is_array($optionKey)) {
+		  // Traverse nested keys
+		  $temp = $options;
+		  foreach ($optionKey as $keyPart) {
+			  if (isset($temp[$keyPart])) {
+				  $temp = $temp[$keyPart];
+			  } else {
+				  $temp = [];
+				  break;
+			  }
+		  }
+		  $visible_columns = $temp;
+	  } elseif (is_string($optionKey) && isset($options[$optionKey])) {
+		  // Flat key
+		  $visible_columns = $options[$optionKey];
+	  }
+  }
+	$colNames = [];
+	foreach ($visible_columns as $row) {
+		if (is_string($row)) {
+			$rowData = json_decode(stripslashes($row));
+		} else {
+			$rowData = $row;
+		}
+		if (!empty($rowData->colName)) {
+			$colNames[] = $rowData->colName;
+		}
+	}
+	?>	
+    <div class="cols-dropdown bdrs">
+					<button type="button" class="bdrs">Select <i class="dashicons-before dashicons-arrow-down-alt2"></i></button>
+					<div class="cols-list-wrapper bdrs" style="display:none">
+                    	<button type="button" class="refreshCols button" title="Refresh List"><span class="dashicons dashicons-update"></span></button>
+						<input type="text" class="cols-list-search bdrs" placeholder="search">
+						<ul class="ebt-grid-column-list" id="<?php echo $action; ?>" data-endpoint="<?php echo $action; ?>" data-visibleCols="<?php echo htmlspecialchars(json_encode($colNames)); ?>" data-cols-array="<?php echo $nameString; ?>">
+                        <li><span class="env-loading"><img style="max-width:100%" src="<?php echo  ENGAGIFII_ASSETS_URL; ?>/images/loader.gif" alt=""></span></li>
+                        </ul>
+                        </div>
+                        </div>
+      <ul class="checked-cols"> 
+                        <?php $sortedList =[];  
+						foreach ($visible_columns as $key => $row) {
+						  if (is_string($row)) {
+							  $rowData = json_decode(stripslashes($row));
+						  } else {
+							  $rowData = $row;
+						  }
+						  if (!$rowData || empty($rowData->colName)) {
+							  continue; // Skip if colName is missing or invalid JSON
+						  }
+						  $rowData->displayName = !empty($rowData->displayName) ? $rowData->displayName : $rowData->colName;
+						  $rowData->colOrder  = isset($rowData->colOrder) ? $rowData->colOrder : 9999;
+						  $sortedList[] = $rowData;
+						}
+						  usort($sortedList, function($a, $b) {
+							  return $a->colOrder <=> $b->colOrder;
+						  });
+						  foreach ($sortedList as $rowData) {
+							echo '<li data-order="' . esc_attr($rowData->colOrder) . '">' . esc_html($rowData->displayName) . 
+								 '<button title="Delete Column" class="uncheck-cols"><i class="dashicons dashicons-no-alt"></i></button></li>';
+						  }
+						  if(empty($sortedList)){
+							  echo '<span class="placeholder">No columns selected.</span>';
+						  }
+ ?>
+    </ul>
+      <button type="button" class="button manageColOrder">Manage Column Order</button> 
+	<div class="colsOrderModal" style="display:none;">
+					<div class="colsList bdrs">
+						<div class="colsListHeader">
+							<h3>Reorder Visible Columns</h3>
+							<button class="close" type="button"><i class="dashicons dashicons-no-alt"></i></button>
+						</div>
+						<hr>
+                        <div style="padding:0 10px"><i>Drag the field names to the order in which they should be displayed. Ordering is available for <strong>list</strong> view only.</i></div>
+						<ul class="colsListBody sortable-cols">
+							 <?php foreach ($visible_columns as $key => $row) {
+							if (is_string($row)) {
+							  $rowData = json_decode(stripslashes($row));
+						  } else {
+							  $rowData = $row;
+						  }
+						  if (!$rowData || empty($rowData->colName)) {
+							  continue; // Skip if colName is missing or invalid JSON
+						  }
+						  $displayName = !empty($rowData->displayName) ? $rowData->displayName : $rowData->colName;
+						  $colOrder = isset($rowData->colOrder) ? $rowData->colOrder : '';
+									$value_data = [
+									'colName' => $rowData->colName,
+									'displayName' => $displayName,
+									'colOrder' => $colOrder
+								];
+								if (!empty($rowData->fieldId)) {
+									$value_data['fieldId'] = $rowData->fieldId;
+								}
+								if (!empty($rowData->controlTypeId)) {
+									$value_data['controlTypeId'] = $rowData->controlTypeId;
+								}
+								$input_value = htmlspecialchars(json_encode($value_data), ENT_QUOTES, 'UTF-8');
+									echo '<li data-order="' . $colOrder . '">
+										<input type="hidden" value="' . $input_value . '" name="' . esc_attr($nameString) . '" />
+										<span class="dashicons dashicons-sort"></span>
+										<div class="bdrs">' . $displayName. '</div>
+									</li>';
+							} ?>
+						</ul>
+						<hr>
+						<div class="colsListFooter">
+							<button class="button close" type="button">Cancel</button>&nbsp;&nbsp;
+							<button class="button button-secondary resetOrder" type="button">Reset to Default Order</button>&nbsp;&nbsp;
+							<button data-columnsname="<?php echo $saveOptionName; ?>" class="button button-primary colsSave" type="button">Save</button>
+						</div> 
+					</div>
+				</div>
+    <?php
+}
+//convert columns  array of json strings into array of objects
+function convertToObjectArray(array $inputArray): array {
+    $result = [];
+    foreach ($inputArray as $item) {
+        $decoded = json_decode($item);
+        if ($decoded instanceof stdClass) {
+            $result[] = $decoded;
+        }
+    }
+    return $result;
+}
+//check if columns array is simple array or array of json strings
+function isJsonString($string) {
+    if (!is_string($string)) {
+        return false;
+    }
+    json_decode($string);
+    return (json_last_error() === JSON_ERROR_NONE);
+}
+function isArrayOfJsonStrings(array $input) {
+    foreach ($input as $item) {
+        if (!isJsonString($item)) {
+            return false; // Found non-JSON string
+        }
+    }
+    return true; // All items are valid JSON
+}
+//create a colNames array from array of json strings
+function extractColNames($jsonStrings){
+	$columnNames = [];
+  foreach ($jsonStrings as $jsonStr) {
+	$decoded = json_decode($jsonStr);
+	if (is_object($decoded) && isset($decoded->colName)) {
+		$columnNames[] = $decoded->colName;
+	}
+  }
+	return $columnNames;
+}
+
+
+
