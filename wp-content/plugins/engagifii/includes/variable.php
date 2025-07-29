@@ -24,9 +24,15 @@
 //event columns
 	$events_visible_column_list = isset($options['events_visible_column_list']) ? $options['events_visible_column_list'] : [];  	
 	define('EVENTS_COLS', $events_visible_column_list);
+//event types columns
+	 $events_type_visible_column_list = isset($options['events_type_visible_column_list']) ? $options['events_type_visible_column_list'] : [];  
+	define('EVENTS_TYPES_COLS', $events_type_visible_column_list);
 //class columns
 	 $class_visible_column_list = isset($options['class_visible_column_list']) ? $options['class_visible_column_list'] : [];  
 	define('CLASS_COLS', $class_visible_column_list);
+//class types columns
+	 $class_type_visible_column_list = isset($options['class_type_visible_column_list']) ? $options['class_type_visible_column_list'] : [];  
+	define('CLASS_TYPES_COLS', $class_type_visible_column_list);
 //Group members columns
 	 $group_members_visible_column_list = isset($options['group_members_settings']['list']['visible_column_list']) ? $options['group_members_settings']['list']['visible_column_list'] : [];  
 	define('GROUP_MEMBERS_COLS', $group_members_visible_column_list);

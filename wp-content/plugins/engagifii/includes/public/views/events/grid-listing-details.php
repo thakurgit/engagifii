@@ -59,7 +59,11 @@ session_start();
 	$apiUrl = $api_url.$env.'/public/eventactivity/list';
 	$postData['pageNumber'] = 1;
 	$options = get_option('ebt_api_settings');
-    $events_visible_column_list = $options['events_visible_column_list'];
+    //$events_visible_column_list = $options['events_visible_column_list'];
+	$columnNames=[];
+		if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+			  $columnNames = extractColNames(EVENTS_COLS);
+		}
 	$loggedInUserId = $_SESSION['pid'];
     //$tenantCode = $options['ebt_tenant_code']['tenant_code'];
 	$tenantCode = $options['dashboard_tenant_code'];
@@ -133,13 +137,13 @@ if ( strpos($url,'my-profile') !== false ) {
 			
         <div>
             <h3 class="mb-0 pb-1"><?php echo $response->name;?> </h3>
-			<?php if(in_array('eventType', $events_visible_column_list)) { ?>
+			<?php if(in_array('eventType', $columnNames)) { ?>
 			<div class="mb-2">
                 <span>Event type: </span>
                 <span class="pl-1 pr-1"> <?php echo $response->eventType;  ?></span>
 </div>
 <?php } ?>
-            <?php if(in_array('tags', $events_visible_column_list) && is_array($response->tags) && count($response->tags)>0) {
+            <?php if(in_array('tags', $columnNames) && is_array($response->tags) && count($response->tags)>0) {
             ?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s):</span>
@@ -181,7 +185,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		  $registration_state = $response->eventRegistrationState;
 		  $isAlreadyRegistered = $response->registrationWorkflows[0]->isAlreadyRegistered;
 		  $default_RegisterBtn = "";
-		  if(in_array('register', $events_visible_column_list)) {
+		  if(in_array('register', $columnNames)) {
 			if (($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') && ($registerOverride=='false')) {
 			 if($registration_state == 'RegistrationScheduled'){
 			 $tooltip = 'Registration opens from '.date('M d, Y', strtotime($response->registrationStartFrom)); ?>
@@ -273,7 +277,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		                        </div>
 		                        <?php
 		                        	}
-									if(in_array('eventType', $events_visible_column_list) && $response->eventType) {
+									if(in_array('eventType', $columnNames) && $response->eventType) {
 		                        ?>
 		                        <div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Event Type:</div>
@@ -282,7 +286,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		                        <?php
 		                        	}
 								
-									if(in_array('startDateTime', $events_visible_column_list) && $response->startDateTime) {
+									if(in_array('startDateTime', $columnNames) && $response->startDateTime) {
 										$defaulget_Date = $response->startDateTime;
 										$convert_Date = strtotime($defaulget_Date);
 										$date = date('M d, Y', $convert_Date);
@@ -307,7 +311,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		                        <?php
 		                        	}
 								}
-								if(in_array('register', $events_visible_column_list)) {
+								if(in_array('register', $columnNames)) {
 									if ($response->registrationStartFrom){ ?>
 								<div class="summary-content-para-engagiigii row flex-wrap mb-3">
 		                            <div class="col-sm-4 ">Registration Start Date:</div>
@@ -342,8 +346,8 @@ if ( strpos($url,'my-profile') !== false ) {
 			                        </div>
                                    <div class="p-3">
                                    	<?php
-									//if(in_array('startDateTime', $events_visible_column_list) && count($response->eventDates)){
-										if (is_array($events_visible_column_list) && in_array('startDateTime', $events_visible_column_list) &&
+									//if(in_array('startDateTime', $columnNames) && count($response->eventDates)){
+										if (is_array($columnNames) && in_array('startDateTime', $columnNames) &&
 											isset($response->eventDates) && is_array($response->eventDates) && count($response->eventDates)
 										) {	
 		                    			foreach ($response->eventDates as $key => $value) {

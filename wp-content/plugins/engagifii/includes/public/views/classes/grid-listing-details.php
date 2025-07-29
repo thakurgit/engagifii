@@ -20,7 +20,12 @@ $tenant_url = $options['ebt_tenant_code']['engagifii_url'] ?? '';
 if (!str_contains($tenant_url, 'http')) {
     $tenant_url = 'https://' . $tenant_url . '.engagifii.com';
 }
-$class_visible_column_list = $options['class_visible_column_list'] ?? [];
+//$class_visible_column_list = $options['class_visible_column_list'] ?? [];
+$columnNames=[];
+	if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+		  $columns = convertToObjectArray(CLASS_COLS);
+		  $columnNames = extractColNames(CLASS_COLS);
+	}
 $loggedInUserId = $_SESSION['pid'] ?? null;
 $tenantCode = $options['dashboard_tenant_code'] ?? '';
 $env = $options['engagifii_apis']['environment'] ?? '';
@@ -79,7 +84,7 @@ $registerOverride = $permissions['registerOverride'];
             <div>
              <h3 class="mb-0 pb-1"><?php echo $response->parentCourse->name;?> </h3>
             <p  class="mb-2"> <?php echo $response->sectionName; ?></p>
-            <?php if(is_array($response->classTag) && count($response->classTag)>0 && in_array('classTag', $class_visible_column_list)) {?>
+            <?php if(is_array($response->classTag) && count($response->classTag)>0 && in_array('classTag', $columnNames)) {?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s): </span>
                 <span class="pl-1 pr-1 d-none"> <?php echo count($response->classTag);  ?></span>
@@ -114,7 +119,7 @@ $registerOverride = $permissions['registerOverride'];
           <?php
           $isAlreadyRegistered = $response->isAlreadyRegistered;
           //print_r($response);
-          if ($response->isClassRegistrationAllow && in_array('register', $class_visible_column_list)) {
+          if ($response->isClassRegistrationAllow && in_array('register', $columnNames)) {
             $registration_state = $response->registrationState;
             
             // Helper function to render disabled button with tooltip
@@ -214,7 +219,7 @@ $registerOverride = $permissions['registerOverride'];
                <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
                       <div class="row">
-                      		<?php if(in_array('sessions', $class_visible_column_list)) {?>
+                      		<?php if(in_array('sessions', $columnNames)) {?>
                               <div class="col-12 mb-3">
                                   <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
@@ -271,7 +276,7 @@ $registerOverride = $permissions['registerOverride'];
                                   </div>
                                   <?php
                                       }
-                                      if($response->objectType && in_array('objectType', $class_visible_column_list)){
+                                      if($response->objectType && in_array('objectType', $columnNames)){
                                   ?>
                                   <div class="summary-content-para-engagiigii row mb-2">
                                       <div class="col-md-4 col-xl-3  mb-3 mb-md-0"><strong>Class Type:</strong></div>
@@ -280,7 +285,7 @@ $registerOverride = $permissions['registerOverride'];
                                   <?php 
                                       } 
                                       //print_r(json_encode($response->courseCreditMapping[0]->credits));
-                                      if($response->courseCreditMapping && in_array('credithours', $class_visible_column_list)){
+                                      if($response->courseCreditMapping && in_array('credithours', $columnNames)){
                                         
                                         foreach ($response->courseCreditMapping as $key => $creditHrs){
                                      ?>
@@ -420,7 +425,7 @@ $registerOverride = $permissions['registerOverride'];
                                   
                               </div>
                           </div>
-                          <?php if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+                          <?php if(in_array('classInstructorsCount', $columnNames)){ ?>
                           <div class="col-12 mt-3">
                               <div class="border rounded shadow-sm">
                                   <div class="panel-title bg-light p-2  border-bottom">
@@ -516,19 +521,19 @@ table#ebtmaintable td:nth-child(1) {
                           <thead>
                               <tr>
 			  					<th class="class">Class</th>
-                                  <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                  <?php if(in_array('classDuration', $columnNames)){ ?>
 			  					<th class="duration">Duration</th>
                                   <?php } 
-                                    if(in_array('objectType', $class_visible_column_list)){ ?>
+                                    if(in_array('objectType', $columnNames)){ ?>
 			  					<th class="classType">Class Type</th>
                                   <?php } 
-								   if(in_array('sessions', $class_visible_column_list)){ ?>
+								   if(in_array('sessions', $columnNames)){ ?>
 			  					<th class="classDates">Class Dates</th>
                                   <?php }
-								   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+								   if(in_array('classInstructorsCount', $columnNames)){ ?>
 			  					<th class="instructor">Instructor</th>
                                   <?php } 
-                                   if(in_array('credithours', $class_visible_column_list)){ ?>
+                                   if(in_array('credithours', $columnNames)){ ?>
 			  					<th class="creditHours">Credit Hours</th>
                                  <?php } ?>
                                   
@@ -557,23 +562,23 @@ table#ebtmaintable td:nth-child(1) {
                                            ?>
                                            </small>
                                       </td>
-                                      <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                      <?php if(in_array('classDuration', $columnNames)){ ?>
                                       <td><?php echo $value->classDuration.' '.$value->classDurationType; ?></td>
                                       <?php }
-									   if(in_array('objectType', $class_visible_column_list)){ ?>
+									   if(in_array('objectType', $columnNames)){ ?>
                                       <td><?php echo $value->objectType; ?></td>
                                       <?php }
-									   if(in_array('sessions', $class_visible_column_list)){?>
+									   if(in_array('sessions', $columnNames)){?>
                                       <td>
                                           <div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_<?php echo $key; ?> " data-placement="left" data-containerid="<?php echo $key; ?>" id="<?php echo $key; ?>">
                                           <img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/Agenda.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->classSessionSettings); ?></span></div><?php echo $classPopover; ?></div>
                                               
                                       </td>
                                       <?php }
-									   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+									   if(in_array('classInstructorsCount', $columnNames)){ ?>
                                       <td><div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td> 
 									  <?php }
-									  if(in_array('credithours', $class_visible_column_list)){?>
+									  if(in_array('credithours', $columnNames)){?>
                                       <?php foreach ($response->courseCreditMapping as $key => $credithrs){
                                         ?>
                                       <td><?php echo number_format($credithrs->credits, 2);  ?></td>
@@ -626,7 +631,7 @@ table#ebtmaintable td:nth-child(1) {
 		    	searchPlaceholder: "Search..."
 		   	},
 			"ordering":true,
-			"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
+			"order": [[<?php echo array_search('sessions',$columnNames);?>, 'asc']],
 			"columnDefs": [ 
 					{ "targets": ['duration','classType','instructor','creditHours'],
 					  "orderable": false

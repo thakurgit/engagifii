@@ -1,5 +1,18 @@
 <?php
-
+$options = get_option('ebt_api_settings');
+	$columns='';
+	$columnNames=[];
+	if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+		  $columns = convertToObjectArray(EVENTS_COLS);
+		  $columnNames = extractColNames(EVENTS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);
+	}
 $default_length = '10';
 $calendar_view = false;
 if(isset($attr['records'])){
@@ -9,13 +22,12 @@ if(isset($attr['calendar'])){
   $calendar_view = $attr['calendar'];
 }
 
-    $obj =  new Engagifii_API();
 
     /* added static column list by vpsc */
-    $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+   // $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
 	//print_r($dataResponse);
 	//die;
-if(!$dataResponse['api_response']){
+/*if(!$dataResponse['api_response']){
 	echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
 	return;
 }
@@ -25,13 +37,14 @@ if(!$dataResponse['api_response']){
 	$ebt_visib_datacol_list   =  array();
 	if($options['events_visible_column_list']){
   	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
-	}
+	}*/
   if($options['events_type_visible_column_list']){
     $eventTypeIds = $options['events_type_visible_column_list'];
 }
 
+    $obj =  new Engagifii_API();
     /* Get Tags list */
-    $payloadData = array();
+    /*$payloadData = array();
     $getCurrentdate = date("Y-m-d");
     $payloadData['selectedDate'] = $getCurrentdate;
     $payloadData['itemCount'] = 10;
@@ -40,11 +53,11 @@ if(!$dataResponse['api_response']){
     $payloadData['pageNumber'] = 1;
     $payloadData['filterBody'] = array('searchText' => '', 'selectedDate' => $getCurrentdate);
 
-    $postedData = $payloadData;
-    $date = date('Y-m-d');
-    $dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
-    $tags = $obj->eventsAllTags();
-    $eventTypes = $obj->eventTypes($date); 
+    $postedData = $payloadData;*/
+    //$date = date('Y-m-d');
+    //$dataResponse = $this->submitApiRequest("/public/tags".$date, $postedData, "GET", 'event');
+   // $tags = $obj->eventsAllTags();
+   /* $eventTypes = $obj->eventTypes($date); 
 if (!isset($eventTypeIds) || !is_array($eventTypeIds)) {
     $eventTypeIds = []; 
 }
@@ -53,11 +66,11 @@ $filteredEventTypes = array_filter($eventTypes, function ($event) use ($eventTyp
     return in_array($event['value'], $eventTypeIds); 
 });
 
-$eventTypes = array_values($filteredEventTypes); 
+$eventTypes = array_values($filteredEventTypes); */
 
 //print_r($eventTypes); die;
 
-    $eventLocations = $obj->eventLocation();
+    //$eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
@@ -118,7 +131,7 @@ ob_start();
                 <div class="col-sm-12" id="test">
                     <input type="hidden" id="isApplyACtive" value="0">
                     
-                    <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
+                    <?php if(in_array('startDateTime', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
                         <div class="content-area d-none position-relative pb-2">
@@ -128,7 +141,7 @@ ob_start();
                     </div>
                     <?php } ?>
                     
-                    <?php if(in_array('eventType', $events_visible_column_list) && array_search('eventType', $ebt_visib_datacol_list)) { ?>
+                    <?php if(in_array('eventType', $columnNames) && array_search('eventType', $columnNames) && !empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
                         <div class="content-area eventType-filter d-none">
@@ -141,7 +154,7 @@ ob_start();
                     </div>
                     <?php } ?>
                     
-                    <?php if(in_array('city', $events_visible_column_list)) { ?>
+                    <?php if(in_array('city', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
                         <div class="content-area city-filter d-none">
@@ -154,7 +167,7 @@ ob_start();
                     </div>
                     <?php } ?>
                     
-                    <?php if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) { ?>
+                    <?php if (in_array('tags', $columnNames) && array_search('tags', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
                         <div class="content-area tags-filter d-none">
@@ -202,7 +215,7 @@ if (array_key_exists("dt_darktheme",$options)){
 }
 
 
-if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
+/*if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
@@ -222,7 +235,7 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   }
 } else {
 	$seqColumns=$collection;
-}
+}*/
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -232,11 +245,11 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
         <?php 
         $forDatatable = array();
         $i=0;
-        foreach($seqColumns as $key => $value){
+        foreach($columns as $key => $value){
          // print_r($value);
           //if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
-              $forDatatable[$i]['name'] =$value->colName;
+              //$forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'eventType')
               {
                  $value->displayName = "Type";
@@ -244,17 +257,17 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
               if($value->colName == 'city'){
                 $value->displayName = "Location";
               }
-              if($value->colName == 'startDateTime'){
+              /*if($value->colName == 'startDateTime'){
                 $value->displayName = "Event Schedule";
-              }
+              }*/
               if($value->colName == 'name'){
-				  $value->displayName = "event_name";
+				 // $value->displayName = "event_name";
                 $title_key = $i;
               }
 			  //$forDatatable[]['data'] = $value->colName;
 
           ?>    
-            <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
+            <th class="<?php echo strtolower($value->colName); ?>">
             <?php  echo $value->displayName; ?>
             </th>
           <?php $i++; 
@@ -316,17 +329,17 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-		<?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		"order": [[<?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'desc']],
+		<?php if(in_array('startDateTime', $columnNames)){ ?>
+		"order": [[<?php echo array_search('startDateTime',$columnNames);?>, 'desc']],
 		 <?php } ?>
        "columnDefs": [ 
-          { "targets": ['tags','register','eventType','city','eventStatus'],
+          { "targets": ['tags','register','eventtype','city','eventstatus'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
-		  { className: "text-center", "targets": ["tags","register","eventType","eventDates","city"] },
-		  <?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		  {'targets': <?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  { className: "text-center", "targets": ["tags","register","eventtype","eventdates","city"] },
+		  <?php if(in_array('startDateTime', $columnNames)){ ?>
+		  {'targets': <?php echo array_search('startDateTime',$columnNames);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
@@ -543,7 +556,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
 
       $('.clear-all').click(function(){
          <?php
-          if(in_array('tags', $ebt_visib_datacol_list))
+          if(in_array('tags', $columnNames))
           {
         ?>
             $('input[type=checkbox]').prop('checked',false);
@@ -679,7 +692,7 @@ window.addEventListener("load", function () {
         url: engagifiiUrl_ajaxurl,
         data: {
             action: 'eventFilters',
-            filterParams: <?php echo json_encode($events_visible_column_list); ?>,
+            filterParams: <?php echo json_encode($columnNames); ?>,
         },
         success: function(response) { 
             for (var key of Object.keys(JSON.parse(response))) {

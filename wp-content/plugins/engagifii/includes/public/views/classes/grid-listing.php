@@ -1,6 +1,22 @@
 <?php
- 
-    $options  = get_option( 'ebt_api_settings' );
+ $options = get_option('ebt_api_settings');
+	$columns='';
+	$columnNames=[];
+	if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+		  $columns = convertToObjectArray(CLASS_COLS);
+		  $columnNames = extractColNames(CLASS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);
+		unset($columns[0]);
+		unset($columns[1]);
+		unset($columns[7]);
+		unset($columns[8]);	
+	}
   $classStates =['Upcoming'];
   if(array_key_exists('allClasses',$options) && $options['allClasses']==1) { 
   	$classStates = [];
@@ -19,20 +35,14 @@
   }
   
   $obj      =  new Engagifii_API();
-  $collection   = array();
+  //$collection   = array();
     $forDatatable   =   array();
     $date           =   date('Y-m-d');
-    //print_r($date);
-    $options  = get_option( 'ebt_api_settings' );
-    $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
-	$class_visible_column_list   =  array();
+   // $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
+	/*$class_visible_column_list   =  array();
 	if($options['class_visible_column_list']){
   	  $class_visible_column_list = $options['class_visible_column_list'];
 	}
-	 
-//print_r($options['upcomingClasses']);
-	//die;
-   // print_r($class_visible_column_list);
     $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
 if(!$dataResponse['api_response']){
 	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
@@ -43,10 +53,10 @@ if(!$dataResponse['api_response']){
     unset($collection[0]);
     unset($collection[1]);
     unset($collection[7]);
-    unset($collection[8]);
+    unset($collection[8]);*/
 
     $classes = $obj->getAllClassCourses($date);
-    $classesTypes = $obj->classTypes($date);
+    //$classesTypes = $obj->classTypes($date);
     $creditFilter    = $obj->getCreditHoursFilter($date);
     $instructor = $obj->classAllInstructors($date);
     $dateRange  = $obj->classRegDateFilters($date);
@@ -95,7 +105,7 @@ if (array_key_exists("dt_darktheme",$options)){
   	$dt_class .= 'table-dark ';	
   }
 }
-if($class_visible_column_list && count($class_visible_column_list)>0){
+/*if($class_visible_column_list && count($class_visible_column_list)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
@@ -115,7 +125,7 @@ if($class_visible_column_list && count($class_visible_column_list)>0){
   }
 } else {
 	$seqColumns=$collection;
-}
+}*/
 ?>
 <div class="containerEngagii ff" id="list_div" <?php if($calendar_view || $calendar_view_classname){ echo 'style="display:none"'; } ?>>
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -123,10 +133,8 @@ if($class_visible_column_list && count($class_visible_column_list)>0){
       <thead> 
         <tr>        
           <?php
-            //if(is_array($seqColumns) && count($seqColumns)>0){
               $i = 0;
-              foreach ($seqColumns as $key => $value) {
-                // if(in_array($value->colName, $class_visible_column_list)){
+              foreach ($columns as $key => $value) {
                 
                   if($value->displayName == 'Class Type')
                   {
@@ -146,14 +154,12 @@ if($class_visible_column_list && count($class_visible_column_list)>0){
                   }
                   $forDatatable[]['data'] = $value->colName;
                 ?>
-                  <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
+                  <th class="<?php echo strtolower($value->colName); ?>">
             <?php  echo $value->displayName; ?>
             </th>
                 <?php
                 $i++;
-                //}
               }
-            //}
           ?>    
 
         </tr> 
@@ -187,7 +193,7 @@ ob_start();
     </div>
     <div class="">
       <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('sessions', $class_visible_column_list)){ ?>
+      <?php if(in_array('sessions', $columnNames)){ ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Class Dates <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -204,20 +210,23 @@ ob_start();
           </ul>
         </div>
       </div>
-<?php } if($classesTypes){ ?>
+<?php } if(!empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(CLASS_TYPES_COLS)) { ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between">Class Type <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none">
           <ul class="list-group m-0">
-          <?php foreach ($classesTypes as $key => $value) { 
-            if (in_array($value['id'], $classTypesShow)) {
-              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="classType_'.$key.'" name="classType[]" value="'.addslashes($value['id']).'"><label class="" for="class_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';} 
-              }?>
+          <?php foreach (CLASS_TYPES_COLS as $key => $values) { 
+		  		 $value = json_decode($values, true);
+           // if (in_array($value['id'], $classTypesShow)) {
+              echo '<li class="d-flex align-items-start"><input class="mr-2 mt-1" type="checkbox" id="classType_'.$key.'" name="classType[]" value="'.addslashes($value['colName']).'"><label class="" for="classType_'.$key.'"><small> '.addslashes($value['displayName']).'</small></label></li>';
+			  } 
+            //  }
+			?>
           </ul>
         </div>
       </div>
 <?php } //credit Hour filters
- if(in_array('credithours', $class_visible_column_list)){ ?>
+ if(in_array('credithours', $columnNames)){ ?>
 <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter"> Credit Hours <i class="far fa-angle-down "></i></div>
         <div class="content-area d-none">
@@ -228,7 +237,7 @@ ob_start();
         </div>
       </div>
       <?php } 
-	  if(in_array('classInstructorsCount', $class_visible_column_list)){
+	  if(in_array('classInstructorsCount', $columnNames)){
 	  ?>
       <div class="filter-list border-bottom px-2">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Instructors <i class="far fa-angle-down"></i></div>
@@ -324,19 +333,19 @@ $filter_content = removeWhitespace($filter_content);
         "searching": true,
         "ordering":true,
 		"search": {regex: true},
-		<?php if(in_array('sessions', $class_visible_column_list)){ ?>
-		"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
+		<?php if(in_array('sessions', $columnNames)){ ?>
+		"order": [[<?php echo array_search('sessions',$columnNames);?>, 'asc']],
 		 <?php } ?>
         "columnDefs": [ 
-          { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register'],
+          { "targets": ['objecttype','classduration',  'credithours', 'classtag', 'classinstructorscount', 'register'],
             "orderable": false
           },
           //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
-		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
+		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objecttype","classtag"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
-		  <?php if(in_array('sessions', $class_visible_column_list)){ ?>
-		  {'targets': <?php echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  <?php if(in_array('sessions', $columnNames)){ ?>
+		  {'targets': <?php echo array_search('sessions',$columnNames);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
@@ -546,7 +555,7 @@ $('input[name="createdbetween"]').daterangepicker({
 			  $('#apply-filter-data').attr('disabled','').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
 		  }
     });
-<?php  if(in_array('sessions', $class_visible_column_list)) { ?>
+<?php  if(in_array('sessions', $columnNames)) { ?>
 $('input[name="classdates"]').daterangepicker({
    minDate:'<?php echo $class_start_date; ?>',
     maxDate: '<?php echo $class_end_date; ?>',
@@ -616,13 +625,13 @@ $('.clear-all').click(function(){
 	 	  minReg = $.trim(regDate[0]);
 		maxReg = $.trim(regDate[1]);
 	  }
-	  <?php if(in_array('sessions', $class_visible_column_list)) { ?>
+	  <?php if(in_array('sessions', $columnNames)) { ?>
 	  if($('input[name="classdates"]').val()!=''){
 		var classDate = $('input[name="classdates"]').val().split("-");
 	 	  class_start_date = $.trim(classDate[0]);
 		class_end_date = $.trim(classDate[1]);
 	  }
-      <?php } if(in_array('credithours', $class_visible_column_list)) { ?>
+      <?php } if(in_array('credithours', $columnNames)) { ?>
 	  var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
@@ -693,7 +702,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
       var courses = $.map($('input[name="courseClass[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       var classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
-	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
+	  <?php  if(in_array('credithours', $columnNames)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
@@ -741,7 +750,7 @@ $(document).ready(function(){
 	
 });
 
-<?php  if(in_array('credithours', $class_visible_column_list)) { ?>
+<?php  if(in_array('credithours', $columnNames)) { ?>
 $(document).ready(function(){
 
 $("#slider-range").slider({

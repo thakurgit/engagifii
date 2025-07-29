@@ -25,6 +25,23 @@
 
 <?php
 $options = get_option('ebt_api_settings');
+$columns='';
+	$columnNames=[];
+	if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+		  $columns = convertToObjectArray(CLASS_COLS);
+		  $columnNames = extractColNames(CLASS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/ClassColumnList",array(),"GET",'classes');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);
+		unset($columns[0]);
+		unset($columns[1]);
+		unset($columns[7]);
+		unset($columns[8]);	
+	}
 $classStates = ['Upcoming'];
 if (array_key_exists('allClasses', $options) && $options['allClasses'] == 1) {
   $classStates = [];
@@ -44,16 +61,15 @@ if (isset($attr['calendarclassname'])) {
 }
 
 $obj = new Engagifii_API();
-$collection = array();
+//$collection = array();
 $forDatatable = array();
 $date = date('Y-m-d');
-$options = get_option('ebt_api_settings');
-$class_visible_column_list = array();
+/*$class_visible_column_list = array();
 if ($options['class_visible_column_list']) {
   $class_visible_column_list = $options['class_visible_column_list'];
-}
+}*/
 $classTypesShow = get_option('ebt_api_settings')['class_type_visible_column_list'];
-$dataResponse = $this->submitApiRequest("Public/ClassColumnList", array(), "GET", 'classes');
+/*$dataResponse = $this->submitApiRequest("Public/ClassColumnList", array(), "GET", 'classes');
 if (!$dataResponse['api_response']) {
   echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete. Please contact your administrator.</em></strong><h5>';
   return;
@@ -63,13 +79,13 @@ $collection = json_decode($dataResponse['api_response']);
 unset($collection[0]);
 unset($collection[1]);
 unset($collection[7]);
-unset($collection[8]);
+unset($collection[8]);*/
 $talentLmsObj = new stdClass();
 $talentLmsObj->colName = "talentLms";
 $talentLmsObj->displayName = "Access Class";
 
 // Append the object to the array
-$collection[] = $talentLmsObj;
+//$collection[] = $talentLmsObj;
 $class_end_date = date('01/01/2100');
 $class_start_date = date('01/01/1970');
 $min_date = date('01/01/1970');
@@ -109,7 +125,7 @@ if (array_key_exists("dt_darktheme", $options)) {
     $dt_class .= 'table-dark ';
   }
 }
-if ($class_visible_column_list && count($class_visible_column_list) > 0) {
+/*if ($class_visible_column_list && count($class_visible_column_list) > 0) {
   $filteredColumns = []; // object array filtered from columnList
   $columnGroup = []; // array of keys from filtered objects
   $tempColumn = []; // temporary object from filtered objects
@@ -129,7 +145,7 @@ if ($class_visible_column_list && count($class_visible_column_list) > 0) {
   }
 } else {
   $seqColumns = $collection;
-}
+}*/
 ?>
 
 <div class="containerEngagii ff" id="list_div" <?php if ($calendar_view || $calendar_view_classname) {
@@ -143,7 +159,7 @@ if ($class_visible_column_list && count($class_visible_column_list) > 0) {
         <tr>
           <?php
           $i = 0;
-          foreach ($seqColumns as $key => $value) {
+          foreach ($columns as $key => $value) {
             if ($value->displayName == 'Class Type') {
               $value->displayName = "Type";
             }
@@ -158,7 +174,7 @@ if ($class_visible_column_list && count($class_visible_column_list) > 0) {
             }
             $forDatatable[]['data'] = $value->colName;
           ?>
-            <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
+            <th class="<?php echo strtolower($value->colName); ?>">
               <?php echo $value->displayName; ?>
             </th>
           <?php
@@ -217,7 +233,7 @@ ob_start();
                             </span>
                         </div>
                     </div>
-                    <?php if (in_array('sectionname', $class_visible_column_list)) { ?>
+                    <?php if (in_array('sectionname', $columnNames)) { ?>
                         <div class="filter-list border-bottom px-2">
                             <div class="heading-title py-2 d-flex align-items-center justify-content-between">
                                 Course Name <i class="far fa-angle-down"></i>
@@ -233,7 +249,7 @@ ob_start();
                             </div>
                         </div>
                     <?php } ?>
-                    <?php if (in_array('objectType', $class_visible_column_list)) { ?>
+                    <?php if (in_array('objectType', $columnNames)) { ?>
                         <div class="filter-list border-bottom px-2">
                             <div class="heading-title py-2 d-flex align-items-center justify-content-between">
                                 Class Type <i class="far fa-angle-down"></i>
@@ -249,7 +265,7 @@ ob_start();
                             </div>
                         </div>
                     <?php } ?>
-                    <?php if (in_array('credithours', $class_visible_column_list)) { ?>
+                    <?php if (in_array('credithours', $columnNames)) { ?>
                         <div class="filter-list border-bottom px-2">
                             <div class="heading-title py-2 d-flex align-items-center justify-content-between" for="creditFilter">
                                 Credit Hours <i class="far fa-angle-down"></i>
@@ -261,7 +277,7 @@ ob_start();
                             </div>
                         </div>
                     <?php } ?>
-                    <?php if (in_array('talentLms', $class_visible_column_list)) { ?>
+                    <?php if (in_array('talentLms', $columnNames)) { ?>
                         <div class="filter-list border-bottom px-2">
                             <div class="heading-title py-2 d-flex align-items-center justify-content-between">
                                 Linked to LMS <i class="far fa-angle-down"></i>
@@ -280,7 +296,7 @@ ob_start();
                             </div>
                         </div>
                     <?php } ?>
-                    <?php if (in_array('classInstructorsCount', $class_visible_column_list)) { ?>
+                    <?php if (in_array('classInstructorsCount', $columnNames)) { ?>
                         <div class="filter-list border-bottom px-2">
                             <div class="heading-title py-2 d-flex align-items-center justify-content-between">
                                 Instructors <i class="far fa-angle-down"></i>
@@ -383,19 +399,19 @@ $filter_content = removeWhitespace($filter_content);
         "searching": true,
         "ordering":true,
 		"search": {regex: true},
-		<?php if(in_array('sessions', $class_visible_column_list)){ ?>
-		"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
+		<?php if(in_array('sessions', $columnNames)){ ?>
+		"order": [[<?php echo array_search('sessions',$columnNames);?>, 'asc']],
 		 <?php } ?>
         "columnDefs": [ 
-          { "targets": ['objectType','classDuration',  'credithours', 'classTag', 'classInstructorsCount', 'register', 'talentLms'],
+          { "targets": ['objecttype','classduration',  'credithours', 'classtag', 'classinstructorscount', 'register', 'talentlms'],
             "orderable": false
           },
           //{ width: 200, targets: 3 },
 		  { className: "title-col", "targets": "classes" },
-		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objectType","classTag"] },
+		  { className: "text-center", "targets": ["startdate","instructors","credithours","register","duration","objecttype","classtag"] },
 		  { responsivePriority: 1, targets: 'sectionname' },
-		  <?php if(in_array('sessions', $class_visible_column_list)){ ?>
-		  {'targets': <?php echo array_search('sessions',$class_visible_column_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  <?php if(in_array('sessions', $columnNames)){ ?>
+		  {'targets': <?php echo array_search('sessions',$columnNames);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
@@ -547,7 +563,7 @@ $('.clear-all').click(function(){
 		url: engagifiiUrl_ajaxurl,
 		data:{
 		   action:'byPersonClassFilters',
-		   filterParams:<?php echo json_encode($class_visible_column_list);?>,
+		   filterParams:<?php echo json_encode($columnNames);?>,
 		},
 		success: function(response) { 
 		for (var key of Object.keys(JSON.parse(response))) {
@@ -644,13 +660,13 @@ function filterClasses(minDate, maxDate, inputName) {
 	 	  minReg = $.trim(regDate[0]);
 		maxReg = $.trim(regDate[1]);
 	  }
-	  <?php if(in_array('sessions', $class_visible_column_list)) { ?>
+	  <?php if(in_array('sessions', $columnNames)) { ?>
 	  if($('input[name="classdates"]').val()!=''){ 
 		var classDate = $('input[name="classdates"]').val().split("-");
 	 	  class_start_date = $.trim(classDate[0]);
 		class_end_date = $.trim(classDate[1]);
 	  }
-      <?php } if(in_array('credithours', $class_visible_column_list)) { ?>
+      <?php } if(in_array('credithours', $columnNames)) { ?>
 	  var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
@@ -721,7 +737,7 @@ $(document).on('click', '.daterangepicker ', function (e) {
       var classTypes = $.map($('input[name="classType[]"]:checked'), function(c){return c.value; });
       var instructor = $.map($('input[name="courseInstrutor[]"]:checked'), function(c){return c.value; });
       var classLinkTypeId = $.map($('input[name="classLinkTypeId"]:checked'), function(c){return c.value; });
-	  <?php  if(in_array('credithours', $class_visible_column_list)) { ?>
+	  <?php  if(in_array('credithours', $columnNames)) { ?>
       var range = $('#creditFilter').val().split("-");
 	  minRange = range[0];
 	   maxRange = range[1];
@@ -841,7 +857,7 @@ $(document).ready(function(){
 	
 });
 
-<?php  if(in_array('credithours', $class_visible_column_list)) { ?>
+<?php  if(in_array('credithours', $columnNames)) { ?>
 
 <?php } ?>
 </script>

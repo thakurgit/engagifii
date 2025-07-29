@@ -204,7 +204,12 @@ public function geteventsClasscalendar(){
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
     
     $options = get_option('ebt_api_settings');
-    $events_visible_column_list = $options['events_visible_column_list'];
+    //$events_visible_column_list = $options['events_visible_column_list'];
+	$columnNames=[];
+		if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+			  $columnNames = extractColNames(EVENTS_COLS);
+		}
+	
 	
 ?>
     <main class="calendar-contain row">
@@ -286,9 +291,9 @@ public function geteventsClasscalendar(){
                                                <div class="modal-body text-left" >
                                                
                                                <table class="table table-borderless table-sm text-left">
-                                               		<?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
+                                               		<?php if(in_array('startDateTime', $columnNames)){ ?>
                                                    <tr><td><strong>Date :</strong> </td><td><?php echo $filteredItems[$fi]['schedule']; ?></td></tr>
-                                                   <?php }  if(in_array('eventType', $events_visible_column_list)){ ?>
+                                                   <?php }  if(in_array('eventType', $columnNames)){ ?>
                                                     <tr><td><strong>Type : </strong></td><td><?php echo $filteredItems[$fi]['objectType']; ?></td></tr>
                                                    <?php } ?>
                                                      <tr><td><strong>Price :</strong> </td><td><?php echo '$'.$filteredItems[$fi]['price']; ?></td></tr>
@@ -303,7 +308,7 @@ public function geteventsClasscalendar(){
                                         <?php } else { ?>
                                         <a href="<?php echo EVENT_DETAIL_LINK;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php } ?>
-                                               <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
+                                               <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                                </div>
                                                </div>
                                            </div>
@@ -351,11 +356,11 @@ public function geteventsClasscalendar(){
                                         </div>
                                         <div class="modal-body text-left">
                                          <table class="table table-sm text-left">
-                                                   <?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
+                                                   <?php if(in_array('startDateTime', $columnNames)){ ?>
                                                    <tr><td><strong>Date :</strong></td><td> <?php echo $filteredItems[$fi]['schedule']; ?></td></tr>
                                                    <?php } if($filteredItems[$fi]['entity']=='Class' ) { ?>
                                                    <tr><td><strong>Duration : </strong></td><td><?php echo $filteredItems[$fi]['classDuration']; ?></td></tr>
-                                                   <?php } if(in_array('eventType', $events_visible_column_list)){ ?>
+                                                   <?php } if(in_array('eventType', $columnNames)){ ?>
                                                    <tr><td><strong>Type : </strong></td><td><?php echo $filteredItems[$fi]['objectType']; ?></td></tr>
                                                   <?php }  ?>
                                                    <tr><td><strong>Tags :</strong></td><td>
@@ -379,7 +384,7 @@ public function geteventsClasscalendar(){
                                         <?php } else { ?>
                                         <a href="<?php echo EVENT_DETAIL_LINK;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php } ?>
-                                        <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
+                                        <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
                                     </div>

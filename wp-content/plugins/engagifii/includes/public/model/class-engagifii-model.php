@@ -165,7 +165,11 @@ public function calendar_mode(){
 
 <?php  }
      public function classCalendar(){
-        $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
+        //$classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
+		$classTypesShow=[];
+	if (!empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(CLASS_TYPES_COLS)) {
+		  $classTypesShow = extractColNames(CLASS_TYPES_COLS);
+	}
         $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
@@ -192,7 +196,11 @@ public function calendar_mode(){
 
         $last_date_find = strtotime(date("Y-m-d", strtotime($date)) . ", last day of this month");
         $last_date = date("Y-m-d",$last_date_find);
-        $class_visible_column_list = $options['class_visible_column_list'];
+        //$class_visible_column_list = $options['class_visible_column_list'];
+		$columnNames=[];
+		if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+			  $columnNames = extractColNames(CLASS_COLS);
+		}
         
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
@@ -666,7 +674,11 @@ public function getCalendarClassName1(){
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
-    $class_visible_column_list = $options['class_visible_column_list'];
+    //$class_visible_column_list = $options['class_visible_column_list'];
+	$columnNames=[];
+		if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+			  $columnNames = extractColNames(CLASS_COLS);
+		}
 
 ?>
 
@@ -759,22 +771,22 @@ public function getCalendarClassName1(){
                                                         </button>
                                                     </div>
                                                     <div class="modal-body text-left">
-                                                    <?php if(in_array('sessions', $class_visible_column_list)){ ?>
+                                                    <?php if(in_array('sessions', $columnNames)){ ?>
                                                         <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['classTime']; ?></p>
                                                         <?php }
-                                                        if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                                        if(in_array('classDuration', $columnNames)){ ?>
                                                         <p><strong>Duration : </strong><?php echo $filteredItems[$fi]['classDuration']; ?></p>
                                                         <?php } 
-                                                        if(in_array('objectType', $class_visible_column_list)){ ?>
+                                                        if(in_array('objectType', $columnNames)){ ?>
                                                         <p><strong>Type :</strong> <?php echo $filteredItems[$fi]['objectType']; ?></p>
                                                         <?php } 
-                                                        if(in_array('credithours', $class_visible_column_list)){ ?>
+                                                        if(in_array('credithours', $columnNames)){ ?>
                                                         <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p>
                                                         <?php } ?>
                                                     </div>
                                                     <div class="modal-footer">
                                                     <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                                    <?php if(in_array('register', $class_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
+                                                    <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                                     </div>
                                                     </div>
                                                 </div>
@@ -896,22 +908,22 @@ public function getCalendarClassName1(){
                                             </button>
                                         </div>
                                         <div class="modal-body" >
-                                        <?php if(in_array('sessions', $class_visible_column_list)){ ?>
+                                        <?php if(in_array('sessions', $columnNames)){ ?>
                                             <p><strong>Date :</strong> <?php echo $weekfilteredItems[$fi]['classTime']; ?></p>
                                             <?php }
-                                            if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                            if(in_array('classDuration', $columnNames)){ ?>
                                             <p><strong>Duration : </strong><?php echo $weekfilteredItems[$fi]['classDuration']; ?></p>
                                             <?php } 
-                                            if(in_array('objectType', $class_visible_column_list)){ ?>
+                                            if(in_array('objectType', $columnNames)){ ?>
                                                 <p><strong>Type :</strong> <?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
                                                         <?php } 
-                                                        if(in_array('credithours', $class_visible_column_list)){ ?>
+                                                        if(in_array('credithours', $columnNames)){ ?>
                                             <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p>
                                             <?php } ?>
                                         </div>
                                         <div class="modal-footer">
                                         <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                        <?php if(in_array('register', $class_visible_column_list)) { echo $weekfilteredItems[$fi]['register']; } ?>
+                                        <?php if(in_array('register', $columnNames)) { echo $weekfilteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
                                     </div>
@@ -967,7 +979,11 @@ public function getEventsCalendar(){
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
     
     $options = get_option('ebt_api_settings');
-    $events_visible_column_list = $options['events_visible_column_list'];
+    //$events_visible_column_list = $options['events_visible_column_list'];
+	$columnNames=[];
+		if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+			  $columnNames = extractColNames(EVENTS_COLS);
+		}
 ?>
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); 
@@ -1058,10 +1074,10 @@ public function getEventsCalendar(){
                                                    </button>
                                                </div>
                                                <div class="modal-body text-left" >
-                                                 <?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
+                                                 <?php if(in_array('startDateTime', $columnNames)){ ?>
                                                    <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
                                                    <?php }
-                                                   if(in_array('eventType', $events_visible_column_list)){ ?>
+                                                   if(in_array('eventType', $columnNames)){ ?>
                                                    <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
                                                    <?php } ?>
                                                     <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
@@ -1070,7 +1086,7 @@ public function getEventsCalendar(){
                                                </div>
                                                <div class="modal-footer">
                                                <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                               <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
+                                               <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                                </div>
                                                </div>
                                            </div>
@@ -1116,10 +1132,10 @@ public function getEventsCalendar(){
                                             </button>
                                         </div>
                                         <div class="modal-body text-left">
-                                                   <?php if(in_array('startDateTime', $events_visible_column_list)){ ?>
+                                                   <?php if(in_array('startDateTime', $columnNames)){ ?>
                                                   <p><strong>Date :</strong> <?php echo $filteredItems[$fi]['schedule']; ?></p>
                                                    <?php }
-                                                   if(in_array('eventType', $events_visible_column_list)){ ?>
+                                                   if(in_array('eventType', $columnNames)){ ?>
                                                   <p><strong>Type : </strong><?php echo $filteredItems[$fi]['objectType']; ?></p>
                                                   <?php } ?>
                                                   <p><strong>Price :</strong> <?php echo '$'.$filteredItems[$fi]['price']; ?></p>
@@ -1128,7 +1144,7 @@ public function getEventsCalendar(){
                                         </div>
                                         <div class="modal-footer">
                                         <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
-                                        <?php if(in_array('register', $events_visible_column_list)) { echo $filteredItems[$fi]['register']; } ?>
+                                        <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
                                     </div>
@@ -2013,7 +2029,11 @@ wp_die();
 
     }
     public function _prepareClassData(){
-        $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
+       // $classTypesShow = get_option( 'ebt_api_settings' )['class_type_visible_column_list'];
+		$classTypesShow=[];
+	if (!empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(CLASS_TYPES_COLS)) {
+		  $classTypesShow = extractColNames(CLASS_TYPES_COLS);
+	}
         $allclass = get_option( 'ebt_api_settings' )['allClasses'];
 		if (empty($allclass)) {
     $allclass = ["Upcoming"];
@@ -3619,7 +3639,11 @@ public function eventFilters(){
 	$postData=array();
 	$htmlArray = array();
     $options = get_option('ebt_api_settings');
-	$events_type_visible_column_list = $options['events_type_visible_column_list']??array();
+	//$events_type_visible_column_list = $options['events_type_visible_column_list']??array();
+	$events_type_visible_column_list=[];
+	if (!empty(EVENTS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) {
+		  $events_type_visible_column_list = extractColNames(EVENTS_TYPES_COLS);
+	}
 	  $filterParams = $_POST['filterParams'];
 	  $apiUrl='';
 	  $date = date('Y-m-d');
@@ -6165,7 +6189,11 @@ public function _popOverGenericData($id, $dataList, $labelTitle = 'Items', $fiel
 
 
     public function _prepareEventsData(){
-        $eventTypesShow = get_option( 'ebt_api_settings' )['events_type_visible_column_list'];
+       // $eventTypesShow = get_option( 'ebt_api_settings' )['events_type_visible_column_list'];
+		$eventTypesShow=[];
+	if (!empty(EVENTS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) {
+		  $eventTypesShow = extractColNames(EVENTS_TYPES_COLS);
+	}
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
         if($allEvents==1){
         $allEvents = 'false';	
@@ -6487,7 +6515,11 @@ if(!empty($_POST['minRange']))
     //Events : Get data - Added by Gurpreet
 
     public function eventsCalendar(){
-    $eventTypesShow = get_option( 'ebt_api_settings' )['events_type_visible_column_list'];
+   // $eventTypesShow = get_option( 'ebt_api_settings' )['events_type_visible_column_list'];
+	$eventTypesShow=[];
+	if (!empty(EVENTS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) {
+		  $eventTypesShow = extractColNames(EVENTS_TYPES_COLS);
+	}
 	$options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];

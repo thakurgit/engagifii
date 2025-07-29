@@ -13,6 +13,20 @@
 }
 </style>
 <?php
+$options = get_option('ebt_api_settings');
+	$columns='';
+	$columnNames=[];
+	if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+		  $columns = convertToObjectArray(EVENTS_COLS);
+		  $columnNames = extractColNames(EVENTS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);
+	}
 $default_length = '10';
 $calendar_view = false;
 if(isset($attr['records'])){
@@ -25,7 +39,7 @@ if(isset($attr['calendar'])){
     $obj =  new Engagifii_API();
 
     /* added static column list by vpsc */
-    $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+    /*$dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
 	//print_r($dataResponse);
 	//die;
 if(!$dataResponse['api_response']){
@@ -34,11 +48,11 @@ if(!$dataResponse['api_response']){
 }
     $collection   = json_decode($dataResponse['api_response']);
     $options = get_option('ebt_api_settings');
-    $events_visible_column_list = $options['events_visible_column_list'];
-	$ebt_visib_datacol_list   =  array();
+    $columnNames = $options['events_visible_column_list'];
+	$columnNames   =  array();
 	if($options['events_visible_column_list']){
-  	  $ebt_visib_datacol_list = $options['events_visible_column_list'];
-	}
+  	  $columnNames = $options['events_visible_column_list'];
+	}*/
 
  
     
@@ -91,7 +105,7 @@ ob_start();
     </div>
     <div class="col-sm-12" id="test">
       <input type="hidden" id="isApplyACtive" value="0">
-      <?php if(in_array('startDateTime', $events_visible_column_list)) { ?>
+      <?php if(in_array('startDateTime', $columnNames)) { ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
         <div class="content-area d-none position-relative pb-2">
@@ -100,7 +114,7 @@ ob_start();
         </div>
       </div>
       <?php }
-      if(in_array('eventType', $events_visible_column_list) && array_search('eventType', $ebt_visib_datacol_list)){
+      if(in_array('eventType', $columnNames) && array_search('eventType', $columnNames)){
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
@@ -118,8 +132,8 @@ ob_start();
         }
       
       
-      if(in_array('city', $events_visible_column_list)) {
-         //if(array_search('location', $ebt_visib_datacol_list)){
+      if(in_array('city', $columnNames)) {
+         //if(array_search('location', $columnNames)){
           ?>
           <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
@@ -136,7 +150,7 @@ ob_start();
           <?php
           // }
               }
-    if (in_array('tags', $events_visible_column_list) && array_search('tags', $ebt_visib_datacol_list)) {
+    if (in_array('tags', $columnNames) && array_search('tags', $columnNames)) {
       ?>
        <div class="filter-list border-bottom">
         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
@@ -190,14 +204,14 @@ if (array_key_exists("dt_darktheme",$options)){
 }
 
 
-if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
+/*if($columnNames && count($columnNames)>0){
   $filteredColumns=[]; //object array filtered from columnList
   $columnGroup=[]; //array of keys from filtered objects 
   $tempColumn=[];  //temporary object from filtered objects
-  $seqColumns=array_fill(0, count($ebt_visib_datacol_list), ''); //sequenced object array
+  $seqColumns=array_fill(0, count($columnNames), ''); //sequenced object array
   //compare columns with checked columns
   foreach($collection as $key => $value) {
-	  if (in_array($value->colName, $ebt_visib_datacol_list)){
+	  if (in_array($value->colName, $columnNames)){
 		  array_push($filteredColumns, $value);
 		  array_push($columnGroup, $value->colName);	
 	  }
@@ -205,12 +219,12 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
   //sequence columns with checked columns
   foreach($filteredColumns as $key => $value) {
 		  array_push($tempColumn, $filteredColumns[array_search($value->colName, $columnGroup)]);
-		  array_splice($seqColumns,array_search($value->colName, $ebt_visib_datacol_list),1,$tempColumn);
+		  array_splice($seqColumns,array_search($value->colName, $columnNames),1,$tempColumn);
 		  $tempColumn=[];
   }
 } else {
 	$seqColumns=$collection;
-}
+}*/
 ?>
 <div class="containerEngagii" id="list_div">
   <div class="container-fluid engagifii-box engagifii-main-cotainer position-relative <?php if($dt_respnsive==''){ echo 'px-xl-5'; } ?>">
@@ -220,11 +234,11 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
         <?php 
         $forDatatable = array();
         $i=0;
-        foreach($seqColumns as $key => $value){
+        foreach($columns as $key => $value){
          // print_r($value);
-          //if(in_array($value->colName, $ebt_visib_datacol_list)){
+          //if(in_array($value->colName, $columnNames)){
               $forDatatable[$i]['data'] =$value->colName; 
-              $forDatatable[$i]['name'] =$value->colName;
+              //$forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'eventType')
               {
                  $value->displayName = "Type";
@@ -232,17 +246,17 @@ if($ebt_visib_datacol_list && count($ebt_visib_datacol_list)>0){
               if($value->colName == 'city'){
                 $value->displayName = "Location";
               }
-              if($value->colName == 'startDateTime'){
+              /*if($value->colName == 'startDateTime'){
                 $value->displayName = "Event Schedule";
-              }
+              }*/
               if($value->colName == 'name'){
-				  $value->displayName = "event_name";
+				 // $value->displayName = "event_name";
                 $title_key = $i;
               }
 			  //$forDatatable[]['data'] = $value->colName;
 
           ?>    
-            <th class="<?php echo strtolower($value->displayName); ?> <?php echo $value->colName; ?>">
+            <th class="<?php echo strtolower($value->colName); ?>">
             <?php  echo $value->displayName; ?>
             </th>
           <?php $i++; 
@@ -287,17 +301,17 @@ var table = $('#ebtmaintable').DataTable( {
        "searching": true,
        "ordering":true,
 	   //"search": {regex: true},
-		<?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		"order": [[<?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'asc']],
+		<?php if(in_array('startDateTime', $columnNames)){ ?>
+		"order": [[<?php echo array_search('startDateTime',$columnNames);?>, 'asc']],
 		 <?php } ?>
        "columnDefs": [ 
-          { "targets": ['tags','register','eventType','city','eventStatus'],
+          { "targets": ['tags','register','eventtype','city','eventstatus'],
             "orderable": false
           },
 		  { className: "title-col", "targets": "name" },
-		  { className: "text-left", "targets": ["tags","register","eventType","eventDates","city"] },
-		  <?php if(in_array('startDateTime', $ebt_visib_datacol_list)){ ?>
-		  {'targets': <?php echo array_search('startDateTime',$ebt_visib_datacol_list);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
+		  { className: "text-left", "targets": ["tags","register","eventtype","eventdates","city"] },
+		  <?php if(in_array('startDateTime', $columnNames)){ ?>
+		  {'targets': <?php echo array_search('startDateTime',$columnNames);?>, 'createdCell':  function (td, cellData, rowData, row, col) {
 			  var html = $(cellData);
 			  var editor = $("<p>").append(html);
 			  var cell = editor.find("span:first-child").html();
@@ -468,7 +482,7 @@ window.addEventListener("load", function () {
 		url: engagifiiUrl_ajaxurl,
 		data:{
 		   action:'eventFilters',
-		   filterParams:<?php echo json_encode($events_visible_column_list);?>,
+		   filterParams:<?php echo json_encode($columnNames);?>,
 		},
 		success: function(response) { 
 		for (var key of Object.keys(JSON.parse(response))) {
@@ -551,7 +565,7 @@ city = $.map($('input[name="eventsLocation[]"]:checked'), function(c){return c.v
 
       $('.clear-all').click(function(){
          <?php
-          //if(in_array('tags', $ebt_visib_datacol_list))
+          //if(in_array('tags', $columnNames))
          // {
         ?>
             $('.filter-content input[type=checkbox]').prop('checked',false);

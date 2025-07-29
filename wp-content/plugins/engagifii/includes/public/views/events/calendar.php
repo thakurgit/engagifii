@@ -154,10 +154,14 @@ aside .box {
     $date           =   date('Y-m-d');
     $tags = $obj->eventsAllTags($date);
     $options = get_option('ebt_api_settings');
-	$events_visible_column_list   =  array();
+	/*$events_visible_column_list   =  array();
 	if($options['events_visible_column_list']){
     $events_visible_column_list = $options['events_visible_column_list'];
-	}
+	}*/
+	$columnNames=[];
+		if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
+			  $columnNames = extractColNames(EVENTS_COLS);
+		}
    // print_r($tags);
 
     
@@ -270,7 +274,7 @@ aside .box {
                       $('#event_list').removeClass('col-md-3');
                       $('#event_list').addClass('col-12');
                    }
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2" alt="image icon">'+value['title']+'</div><?php if(in_array('startDateTime', $events_visible_column_list)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php } ?> <div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><?php if(in_array('tags', $events_visible_column_list)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', $events_visible_column_list)){ ?> '+value['register']+'</div><?php } ?></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light"><div class="col-12 m-auto p-1 text-left d-flex align-items-center"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2" alt="image icon">'+value['title']+'</div><?php if(in_array('startDateTime', $columnNames)) { ?><div class="col-12 py-1 text-left">'+value["schedule"]+'</div><?php } if(in_array('eventType', $columnNames)){ ?><div class="col-12 py-1 text-left"><span class="text-muted">Type: </span><span>'+value["objectType"]+'</span></div><?php } ?> <div class="col-12 py-1 text-left"><span class=" text-muted">Price: $</span><span>'+value["price"]+'</span></div><?php if(in_array('tags', $columnNames)){ ?><div class="col-12 py-1 text-left"><span class=" text-muted">Tags: </span><span>'+tags+'</span></div><?php } ?><div class="col-12 text-center py-3">'+value['viewdetails']+' <?php if(in_array('register', $columnNames)){ ?> '+value['register']+'</div><?php } ?></div></div>';
 
                 });
 				class_html += '</div>';

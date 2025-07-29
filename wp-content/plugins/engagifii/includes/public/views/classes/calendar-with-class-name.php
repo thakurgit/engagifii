@@ -150,9 +150,14 @@ aside .box {
     $instructor = $obj->classAllInstructors($date);
     $classes = $obj->getAllClassCourses($date);
     $options = get_option('ebt_api_settings');
-	$class_visible_column_list   =  array();
+	/*$class_visible_column_list   =  array();
 	if($options['class_visible_column_list']){
   	  $class_visible_column_list = $options['class_visible_column_list'];
+	}*/
+	$columnNames=[];
+	if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+		  $columns = convertToObjectArray(CLASS_COLS);
+		  $columnNames = extractColNames(CLASS_COLS);
 	}
   ?>
   
@@ -261,7 +266,7 @@ $(document).ready(function() {
 					   html_class = 'col-12';
                    }
                   
-                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light p-2"><div class=" text-left d-flex align-items-center pb-2"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2 rounded-circle" alt="class-icon">'+value["title"]+'</div><div class=" text-left">'+value["classTime"]+'</div><table class="table table-borderless table-sm text-left"><?php if(in_array('classDuration', $class_visible_column_list)){ ?><tr><td class="text-muted">Duration: </td><td>'+value["classDuration"]+'</td></tr><?php } if(in_array('objectType', $class_visible_column_list)){ ?><tr><td class="text-muted">Type: </td><td>'+value["objectType"]+'</td></tr><?php } if(in_array('credithours', $class_visible_column_list)){ ?><tr><td class=" text-muted">Credit Hours: </td><td>'+value["hours"]+'</td></tr><?php } if(in_array('classTag', $class_visible_column_list)){ ?><tr><td class=" text-muted">Tags: </td><td>'+tags+'</td></tr><?php } ?></table><div class="text-center">'+value['viewdetails']+' <?php if(in_array('register', $class_visible_column_list)){ ?>'+value['register']+'</div><?php } ?></div></div>';
+                    class_html += '<div class="'+html_class+' mb-3  "><div class="box border rounded h-100 class-text bg-light p-2"><div class=" text-left d-flex align-items-center pb-2"><img src="'+value['icon']+'" class="img-fluid img-icon-lg mr-2 rounded-circle" alt="class-icon">'+value["title"]+'</div><div class=" text-left">'+value["classTime"]+'</div><table class="table table-borderless table-sm text-left"><?php if(in_array('classDuration', $columnNames)){ ?><tr><td class="text-muted">Duration: </td><td>'+value["classDuration"]+'</td></tr><?php } if(in_array('objectType', $columnNames)){ ?><tr><td class="text-muted">Type: </td><td>'+value["objectType"]+'</td></tr><?php } if(in_array('credithours', $columnNames)){ ?><tr><td class=" text-muted">Credit Hours: </td><td>'+value["hours"]+'</td></tr><?php } if(in_array('classTag', $columnNames)){ ?><tr><td class=" text-muted">Tags: </td><td>'+tags+'</td></tr><?php } ?></table><div class="text-center">'+value['viewdetails']+' <?php if(in_array('register', $columnNames)){ ?>'+value['register']+'</div><?php } ?></div></div>';
 					
 
                 });

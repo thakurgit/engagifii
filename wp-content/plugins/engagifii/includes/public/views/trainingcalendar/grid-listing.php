@@ -1,15 +1,5 @@
 <?php
-
-$default_length = '10';
-$calendar_view = true;
-if(isset($attr['records'])){
-  $default_length = $attr['records'];
-}
-if(isset($attr['calendar'])){
-  $calendar_view = $attr['calendar'];
-}
-    $options = get_option('ebt_api_settings');
-    $obj =  new Engagifii_API();
+$options = get_option('ebt_api_settings');
 	$columns='';
 	$columnNames=[];
 	if (!empty(EVENTS_CLASS_COLS) && isArrayOfJsonStrings(EVENTS_CLASS_COLS)) {
@@ -23,8 +13,15 @@ if(isset($attr['calendar'])){
 		}
 		$columns   = json_decode($dataResponse['api_response']);	
 	}
-
-    
+	
+$default_length = '10';
+$calendar_view = true;
+if(isset($attr['records'])){
+  $default_length = $attr['records'];
+}
+if(isset($attr['calendar'])){
+  $calendar_view = $attr['calendar'];
+}
     //$collection   = $dataResponse;
     /*$events_visible_column_list = $options['training_calendar_visible_column_list'];
 	$ebt_visib_datacol_list   =  array();
@@ -48,6 +45,7 @@ if(isset($attr['calendar'])){
     $classTypes = $obj->classTypes($date);
 
     $eventLocations = $obj->eventLocation();*/
+    $obj =  new Engagifii_API();
     $date = date('Y-m-d');
     $dateRange  = $obj->eventDateFilter($date);
     $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
@@ -304,7 +302,6 @@ if (array_key_exists("dt_darktheme",$options)){
          // print_r($value);
           //if(in_array($value->colName, $ebt_visib_datacol_list)){
               $forDatatable[$i]['data'] =$value->colName; 
-			  $displayName = !empty($value->displayName) ? $value->displayName : $value->colName;
              /* $forDatatable[$i]['name'] =$value->colName;
               if($value->colName == 'Type')
               {
@@ -332,7 +329,7 @@ if (array_key_exists("dt_darktheme",$options)){
 
           ?>    
             <th class="<?php echo strtolower($value->colName); ?> " style="width: 400px;" >
-            <?php  echo $displayName; ?>
+            <?php  echo $value->displayName; ?>
             </th>
           <?php $i++; 
           //}

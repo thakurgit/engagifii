@@ -27,7 +27,12 @@
 	}
     $api_url = $options['ebt_api_url'];
     $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
-	$class_visible_column_list = $options['class_visible_column_list'];
+	//$class_visible_column_list = $options['class_visible_column_list'];
+	$columnNames=[];
+	if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
+		  $columns = convertToObjectArray(CLASS_COLS);
+		  $columnNames = extractColNames(CLASS_COLS);
+	}
 
 	$certifiedInsturctor = $obj->getCertifiedInstructor($id);
 	$class_array = json_decode(stripslashes($_COOKIE['courseids']), true);
@@ -355,19 +360,19 @@ if ( strpos($url,'my-profile') !== false ) {
 			  			<thead>
 			  				<tr>
 			  					<th class="class">Class</th>
-                                  <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                  <?php if(in_array('classDuration', $columnNames)){ ?>
 			  					<th class="duration">Duration</th>
                                   <?php } 
-                                    if(in_array('objectType', $class_visible_column_list)){ ?>
+                                    if(in_array('objectType', $columnNames)){ ?>
 			  					<th class="classType">Class Type</th>
                                   <?php } 
-								   if(in_array('sessions', $class_visible_column_list)){ ?>
+								   if(in_array('sessions', $columnNames)){ ?>
 			  					<th class="classDates">Class Dates</th>
                                   <?php }
-								   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+								   if(in_array('classInstructorsCount', $columnNames)){ ?>
 			  					<th class="instructor">Instructor</th>
                                   <?php } 
-                                   if(in_array('credithours', $class_visible_column_list)){ ?>
+                                   if(in_array('credithours', $columnNames)){ ?>
 			  					<th class="creditHours">Credit Hours</th>
                                  <?php } ?>
                                   
@@ -395,20 +400,20 @@ if ( strpos($url,'my-profile') !== false ) {
 			  								}
 			  							 ?></small>
 			  						</span></td>
-                                      <?php if(in_array('classDuration', $class_visible_column_list)){ ?>
+                                      <?php if(in_array('classDuration', $columnNames)){ ?>
                                       <td><?php echo $value->classDuration.' '.$value->classDurationType; ?></td>
                                       <?php }
-									   if(in_array('objectType', $class_visible_column_list)){ ?>
+									   if(in_array('objectType', $columnNames)){ ?>
                                       <td><?php echo $value->objectType; ?></td>
                                       <?php }
-									   if(in_array('sessions', $class_visible_column_list)){?>
+									   if(in_array('sessions', $columnNames)){?>
                                       <td>
                                           <div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover class_<?php echo $key; ?> " data-placement="left" data-containerid="<?php echo $key; ?>" id="<?php echo $key; ?>">
                                           <img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/Agenda.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo count($value->classSessionSettings); ?></span></div><?php echo $classPopover; ?></div>
                                               
                                       </td>
                                       <?php }
-									   if(in_array('classInstructorsCount', $class_visible_column_list)){ ?>
+									   if(in_array('classInstructorsCount', $columnNames)){ ?>
                                       <td>
                                       	<?php if($value->classInstructorsCount<1){
 											echo '<img src="'.ENGAGIFII_ASSETS_URL.'/images/instructor.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter:grayscale(1)" data-toggle="tooltip" data-placement="top" title="No Instructors Available" >';
@@ -416,7 +421,7 @@ if ( strpos($url,'my-profile') !== false ) {
                                       <div class="dropdown"><div data-offset="60,0" data-toggle="dropdown" class="instructor-popover instructor_<?php echo $key ?> " data-placement="left" data-containerid="<?php echo $key ?>" id=" <?php echo $key ?> "><img src="<?php echo ENGAGIFII_ASSETS_URL ; ?>/images/instructor.png" class="img-icon-lg img-fluid"><span class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"><?php echo $value->classInstructorsCount; ?></span></div><?php echo $instructorPopOver; ?></div></td> 
 										<?php }
 									   }
-									  if(in_array('credithours', $class_visible_column_list)){?>
+									  if(in_array('credithours', $columnNames)){?>
 			  						<td><?php echo $response->creditHours; ?></td>
                                     <?php } ?>
 			  						
@@ -468,7 +473,7 @@ if ( strpos($url,'my-profile') !== false ) {
 		    	searchPlaceholder: "Search..."
 		   	},
 			"ordering":true,
-			"order": [[<?php echo array_search('sessions',$class_visible_column_list);?>, 'asc']],
+			"order": [[<?php echo array_search('sessions',$columnNames);?>, 'asc']],
 			"columnDefs": [ 
 					{ "targets": ['duration','classType','instructor','creditHours'],
 					  "orderable": false
