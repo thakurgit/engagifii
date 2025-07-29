@@ -8,11 +8,154 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     : 'both';
 	$collection 	=	array();
   $forDatatable 	= 	array();
+  $columns='';
+	$columnNames=[];
+	if (!empty(GROUP_MEMBERS_COLS) && isArrayOfJsonStrings(GROUP_MEMBERS_COLS)) {
+		  $columns = convertToObjectArray(GROUP_MEMBERS_COLS);
+		  $columnNames = extractColNames(GROUP_MEMBERS_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
+		if(!$dataResponse['api_response']){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response']);
+	}
+    //print_r($columns);
  ?>
+ 
 <div class="container-fluid ">
 	<div class="row">
+        
           <?php if ($allowedViewMode === 'both'){ ?>
     	<div class="col-12 justify-content-end d-flex">
+            <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
+    <div id="filter-loader" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <div class="filter-content" id="filterdp1">
+        <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
+            <i class="far fa-filter click-filter"></i>
+            <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
+        </div>
+        <div class="filter-border">
+            <div class="filter-area d-none" id="filterdp">
+                <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <span class="filter-title">
+                                <i class="far fa-filter mr-2"></i> Filter
+                                <span id="blockedchecked"></span> 
+                            </span>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" id="test">
+                    <input type="hidden" id="isApplyACtive" value="0">
+                    
+                    <?php if(in_array('startDateTime', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Date <i class="far fa-angle-down"></i></div>
+                        <div class="content-area d-none position-relative pb-2">
+                            <input type="text" name="createdbetween" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
+                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if(in_array('eventType', $columnNames) && array_search('eventType', $columnNames) && !empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
+                        <div class="content-area eventType-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if(in_array('city', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Location <i class="far fa-angle-down"></i></div>
+                        <div class="content-area city-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if (in_array('currentDepartment', $columnNames) && array_search('currentDepartment', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Department <i class="far fa-angle-down"></i></div>
+                        <div class="content-area currentDepartment-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if (in_array('currentPosition', $columnNames) && array_search('currentPosition', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Position <i class="far fa-angle-down"></i></div>
+                        <div class="content-area currentPosition-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if (in_array('personType', $columnNames) && array_search('personType', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Person Type <i class="far fa-angle-down"></i></div>
+                        <div class="content-area personType-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if (in_array('roles', $columnNames) && array_search('roles', $columnNames)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Roles <i class="far fa-angle-down"></i></div>
+                        <div class="content-area roles-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+                
+                <div class="apply-filter">
+                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
+                        <span id="countFilterResult"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
           <div class="btn-group view-mode" role="group" aria-label="">
             <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
             <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
@@ -96,6 +239,10 @@ font-size: 260px;
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
+  var departments = []; // Array to store selected department IDs
+  var positions = []; // Array to store selected position IDs  
+  var personTypes = []; // Array to store selected person type IDs
+  var roles = []; // Array to store selected role IDs
   <?php  if ($allowedViewMode === 'grid' ){?>
   groupMembers(start);
   <?php } ?>
@@ -154,8 +301,11 @@ font-size: 260px;
             	d.action='peopleloadGridDataByGroups'; 
 				d.groupId=groupId; 
 				d.titleColumn = titleColumn; 
-				/*d.departments=departments; 
-				d.orgs=orgs; 
+				d.departments=departments; 
+				d.positions=positions;
+				d.personTypes=personTypes;
+				d.roles=roles;
+				/*d.orgs=orgs; 
       			  d.status=Status;
 				d.totalTime= totalTime;
 				d.emailColumn = emailColumn;*/ 
@@ -201,7 +351,11 @@ font-size: 260px;
 			  groupId:groupId,
 			  viewMode:'Grid',
 			  length:length,
-			  start:start
+			  start:start,
+			  departments:departments,
+			  positions:positions,
+			  personTypes:personTypes,
+			  roles:roles
           },
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
@@ -442,5 +596,134 @@ dt_titleSearch('Search Members');
 }
 
   ?>
- 
+  // Load filters after page loads
+window.addEventListener("load", function () {
+    $('#filter-loader').show(); // Show loader
+    $('.filter-content').hide(); // Hide filter content
+    
+    $.ajax({
+        type: "post",
+        url: engagifiiUrl_ajaxurl,
+        data: {
+            action: 'groupMemberFilters',
+            filterParams: <?php echo json_encode($columnNames); ?>,
+             groupId:groupId, 
+        },
+        success: function(response) { 
+            //console.log(response);
+            for (var key of Object.keys(JSON.parse(response))) {
+                $('.' + key + '-filter ul').html(JSON.parse(response)[key]);
+            }
+            dt_filterActivate();
+            var dates = JSON.parse(response)['startDateTime'];
+            //filterEvents(dates['minStartDate'], dates['maxEndDate']); 
+            $('#filter-loader').hide(); // Hide loader
+            $('.filter-content').fadeIn(); // Show filter content
+        }
+    });
+});
+
+function filterEvents(minDate, maxDate) {
+    // $('input[name="createdbetween"]').daterangepicker({
+    //     minDate: minDate,
+    //     maxDate: maxDate,
+    //     autoApply: true
+    // }, function(start, end) {
+    //     createdDate = start.format('MM/DD/YYYY') + '-' + end.format('MM/DD/YYYY');
+    //     startdate = start.format('MM/DD/YYYY');
+    //     enddate = end.format('MM/DD/YYYY');
+    //     if ($('#apply-filter-data .spinner-border').length == 0) {
+    //         $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    //     }
+    //     countFilterData();
+    // });
+    
+    startdate = '';
+    enddate = '';
+    $('input[name="createdbetween"]').val('');
+    
+    $('.filter-list input[type=checkbox]').change(function() {
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+}
+
+// Apply filter button click handler
+$('#apply-filter-data').click(function() {
+    // Collect selected department IDs
+    departments = [];
+    $('.currentDepartment-filter input[type="checkbox"]:checked').each(function() {
+        departments.push($(this).val());
+    });
+    
+    // Collect selected position IDs
+    positions = [];
+    $('.currentPosition-filter input[type="checkbox"]:checked').each(function() {
+        positions.push($(this).val());
+    });
+    
+    // Collect selected person type IDs
+    personTypes = [];
+    $('.personType-filter input[type="checkbox"]:checked').each(function() {
+        personTypes.push($(this).val());
+    });
+    
+    // Collect selected role IDs
+    roles = [];
+    $('.roles-filter input[type="checkbox"]:checked').each(function() {
+        roles.push($(this).val());
+    });
+    
+    console.log('Selected Filters:', {
+        departments: departments,
+        positions: positions,
+        personTypes: personTypes,
+        roles: roles
+    });
+    
+    // Reload DataTable with filters
+    if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+        table.draw();
+    }
+    
+    // Reload grid view if in grid mode
+    if (viewMode === 'grid') {
+        start = 0; // Reset to first page
+        groupMembers(start);
+    }
+    
+    // Remove spinner from apply button
+    $('#apply-filter-data .spinner-border').remove();
+    $('#apply-filter-data').removeAttr('disabled');
+});
+
+// Clear all filters functionality
+$('#clear-all').click(function() {
+    // Clear all filter arrays
+    departments = [];
+    positions = [];
+    personTypes = [];
+    roles = [];
+    
+    // Uncheck all checkboxes
+    $('.filter-list input[type="checkbox"]').prop('checked', false);
+    
+    // Clear date input
+    $('input[name="createdbetween"]').val('');
+    
+    // Reload DataTable
+    if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+        table.draw();
+    }
+    
+    // Reload grid view if in grid mode
+    if (viewMode === 'grid') {
+        start = 0; // Reset to first page
+        groupMembers(start);
+    }
+    
+    console.log('All filters cleared');
+});
 </script>
