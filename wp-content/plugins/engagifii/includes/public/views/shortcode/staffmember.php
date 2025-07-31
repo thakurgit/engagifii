@@ -11,16 +11,20 @@ $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();*/
 $options = get_option( 'ebt_api_settings' );
+$sessionlist = $options['lbt_visib_session_list']?? array();
 $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
    $sessionsetting = '';
-  $sessionlist = array();
  if(isset($options['sessionsetting'])){	 
    $sessionsetting = $options['sessionsetting'];
-  $sessionlist = $options['lbt_visib_session_list']?? array();
  }
-
+$columns='';
+$columnNames=[]; 
+if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_list)) {
+		  $columns = convertToObjectArray($lbt_visib_members_list);
+		  $columnNames = extractColNames($lbt_visib_members_list);
+}
 /*if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();
@@ -56,7 +60,71 @@ $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array(
   <div class="row">
       <div class="col-sm-12">
 <div class="list-group border eq-height legis-members position-relative" style="overflow: auto;">
+<?php if (empty($sessionsetting)|| empty($sessionlist)) {
+	$html = '';
+	$site_url = get_site_url();
+	foreach ($columns as $item) {
+		$member = $item->colName;
+		$name = $item->displayName;
+		$encoded = base64_encode($name);
+		$html .= '<a href="' . $site_url . '/bill-tracking/?member=' . urlencode($member) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+	}
+	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
+ } else { ?>
 <div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>
+  <script type="text/javascript">
+  var allmembers = <?php echo json_encode( $columnNames);  ?>;
+  function toNumber(value) {
+	 return Number(value);
+		}
+  allmembers  = allmembers.map(toNumber);
+ window.addEventListener("load", function () {
+		getStaffMembers(sessionId);
+		$('.session-tab li button').click(function(){
+			$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:2"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').prependTo(".legis-members"); 
+			getStaffMembers(sessionId);
+		});
+});
+function getStaffMembers(sessionId)
+{
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativestaffmembers'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			
+			$.each(data, function(i, item) {
+				if($.inArray(item.personId, allmembers) != -1) {
+					if(item.count>0){
+						if(sessionId==0){
+						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						}else{
+						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						}
+					}
+				}
+			});			
+			
+			if(html){
+        		$('.legis-members').html(html);
+			}else{
+        		$('.legis-members').html('<h6 class="p-3">No data found</h6>');
+			}
+			$('.legis-members').siblings('.issue-loader').remove();
+         }
+    });
+}	
+
+
+   
+</script>
+<?php } ?>
        <?php /*?> <?php
          $site = site_url();
            if(is_array($assignto) && count($assignto) > 0){
@@ -140,76 +208,3 @@ $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array(
     </div>
     </div>
     </div>
-
-
-  <script type="text/javascript">
-  var allmembers = <?php echo json_encode( $lbt_visib_members_list);  ?>;
-  function toNumber(value) {
-	 return Number(value);
-		}
-  allmembers  = allmembers.map(toNumber);
- window.addEventListener("load", function () {
-	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
-		getStaffMembers(sessionId);
-		$('.session-tab li button').click(function(){
-			$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:2"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').prependTo(".legis-members"); 
-			getStaffMembers(sessionId);
-		});
-	<?php } else { ?>
-		getStaffMembers(sessionId);
-	<?php } ?>	 
-});
-function getStaffMembers(sessionId)
-{
-  $.ajax({
-      type : "post",
-      url: engagifiiUrl_ajaxurl,
-      data:{
-		sessionId : sessionId,
-        action:'legislativestaffmembers'
-      },
-      success: function(response) {    
-	  		var data = response.api_response;
-			data = JSON.parse(data);
-			var html='';
-			
-			$.each(data, function(i, item) {
-				if($.inArray(item.personId, allmembers) != -1) {
-					if(item.count>0){
-						if(sessionId==0){
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
-						}else{
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
-						}
-						//html +='<option data-title="'+btoa(item.fullName)+'" data-type="member" data-id="'+item.personId+'" onclick="filterStaff('+item.personId+')" >'+item.fullName+' ('+item.count+')</option>';
-					}
-				}
-			});			
-			
-			if(html){
-        		$('.legis-members').html(html);
-			}else{
-        		$('.legis-members').html('<h6 class="p-3">No data found</h6>');
-			}
-			$('.legis-members').siblings('.issue-loader').remove();
-			//optionhover();
-         }
-    });
-}	
-	
-    <?php /*?>function filterStaff(id) {
-      $("body").removeClass('loaded');
-      var name = $('select[name="staff_member"]').find(':selected').data('title');
-      var assign_type = $('select[name="staff_member"]').find(':selected').data('type');
-	  if(sessionId==''){
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?'+assign_type+'='+id+'&'+name;
-	  }else {
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?'+assign_type+'='+id+'&'+name+'&sessionId='+sessionId;
-	  }
-      window.location.href = redirect_url;
-
-    }<?php */?>
-
-   
-</script>
-

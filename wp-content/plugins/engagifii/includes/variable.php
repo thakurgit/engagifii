@@ -18,6 +18,9 @@
 		$events_detail_page_link= site_url() .'/event-detail/';	 
 	}
 		define('EVENT_DETAIL_LINK', $events_detail_page_link);
+//Bills columns
+	$lbt_visib_datacol_list = isset($options['lbt_visib_datacol_list']) ? $options['lbt_visib_datacol_list'] : [];  
+	define('LEGISLATION_COLS', $lbt_visib_datacol_list);
 //class and Events columns
 	$events_class_columns = isset($options['training_calendar_visible_column_list']) ? $options['training_calendar_visible_column_list'] : [];  
 	define('EVENTS_CLASS_COLS', $events_class_columns);

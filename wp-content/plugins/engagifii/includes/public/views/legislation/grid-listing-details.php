@@ -50,12 +50,12 @@ if(isset($_REQUEST['billId'])){
 		$bills_detail_page_link= site_url() .'/engagifii-detail/';	
 	}
   $lbt_api_url = $options['lbt_api_url'];
-  if($options['lbt_visib_tags_list']){
-	$lbt_vsbl_tag_list = $options['lbt_visib_tags_list'];
-  }else{
-  	$lbt_vsbl_tag_list = array();
-  }
-$seqColumns = $options['lbt_visib_datacol_list'];
+ $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
+ $tagNames=[];
+ if (!empty($lbt_visib_legislative_list) && isArrayOfJsonStrings($lbt_visib_legislative_list)) {
+		  $tagNames = extractColNames($lbt_visib_legislative_list);
+	}
+/*$seqColumns = $options['lbt_visib_datacol_list'];
 $lbt_visible_column_list = array();
 foreach($seqColumns as $key=>$cols){
 	if(!array_key_exists("key",$cols)){
@@ -63,7 +63,11 @@ foreach($seqColumns as $key=>$cols){
 		continue;
 	}
 	$lbt_visible_column_list[] =$cols['key']; 
-}
+}*/
+$columnNames=[];
+	if (!empty(LEGISLATION_COLS) && isArrayOfJsonStrings(LEGISLATION_COLS)) {
+		  $columnNames = extractColNames(LEGISLATION_COLS);
+	}
   /* Bill Detail*/
   $billResponse = $api->getBillDetails($billId);
   $billResponses = json_decode($billResponse['api_response']);
@@ -215,15 +219,15 @@ $siteURL= site_url();
             }
             if ($tenant_code=='capitolreports-nc'){ 
               ?>
-        <?php  if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
+        <?php  if(in_array('introducedDate', $columnNames)) { ?>
           <div class="pt-1 text-size-medium">
             <span class="pt-2 text-bold"><strong>Introduced Date: </strong></span><span><?php echo $intro_new_date;?> </span>
           </div>
-          <?php } if(in_array('status', $lbt_visible_column_list)) { ?>
+          <?php } if(in_array('status', $columnNames)) { ?>
           <div class="pt-1 text-size-medium">
           <span class="pt-2 text-bold"><strong>Status:</strong> </span><span><?php echo $billResponses->status; ?></span>
           </div>
-          <?php } if(in_array('lastActionOn', $lbt_visible_column_list)) { ?>
+          <?php } if(in_array('lastActionOn', $columnNames)) { ?>
           <div class="pt-1 text-size-medium">
             <!-- <span class="pt-2 text-bold">State: </span><span><?php echo $billResponses->state;?></span> -->
             <?php if($lastAction_new_date && $lastAction_new_date!==null){ ?>
@@ -233,20 +237,20 @@ $siteURL= site_url();
           <?php }
           }else{ ?>
             <div class="pt-1 small">
-            <?php if(in_array('status', $lbt_visible_column_list)) { ?>
+            <?php if(in_array('status', $columnNames)) { ?>
             <span class=""><strong>State:</strong> <?php echo $billResponses->state;?></span><br>
-            <?php } if(in_array('lastActionOn', $lbt_visible_column_list) && $lastAction_new_date && $lastAction_new_date!==null) {  ?>
+            <?php } if(in_array('lastActionOn', $columnNames) && $lastAction_new_date && $lastAction_new_date!==null) {  ?>
             <span class=""><strong>Last Action:</strong> <?php echo $lastAction_new_date;?> - <?php echo $billResponses->lastActionTaken;?></span><br>
-            <?php } if(in_array('introducedDate', $lbt_visible_column_list)) { ?>
+            <?php } if(in_array('introducedDate', $columnNames)) { ?>
             <span class=""><strong>Introduced Date:</strong> <?php echo $intro_new_date;?> </span><br>
-            <?php } if(in_array('status', $lbt_visible_column_list)) { ?>
+            <?php } if(in_array('status', $columnNames)) { ?>
             <span class="status-label"><strong>Status:</strong> <?php echo $billResponses->status; ?></span><br>
          <?php } ?>
             <span class=""><strong>Session:</strong> <?php echo $billResponses->session; ?></span>
           </div>
           <?php
           }
-          if(in_array('tags', $lbt_visible_column_list)) { 
+          if(in_array('tags', $columnNames)) { 
                 if(count($billResponses->clientTags)){
                   usort($billResponses->clientTags, "sort_associative_array");
                   $countTag = 0;
@@ -257,7 +261,7 @@ $siteURL= site_url();
 				 <?php
                   foreach ($billResponses->clientTags as $key => $tag) {
                     $tagMatch = $tag->tagId;
-                  if (in_array($tagMatch, $lbt_vsbl_tag_list)){
+                  if (in_array($tagMatch, $tagNames)){
                     $countTag = $countTag+1;
                      echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.$bills_page_link.'?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
                   }
@@ -275,7 +279,7 @@ $siteURL= site_url();
           
          
 
-          <?php  if(in_array('assignedto', $lbt_visible_column_list)) {
+          <?php  if(in_array('assignedto', $columnNames)) {
           if(count($billResponses->clientUsers) || count($billResponses->clientUserTags) || count($billResponses->clientGroups)){ 
               $total_assign_to = (int)count($billResponses->clientUsers) + (int)count($billResponses->clientUserTags) + (int)count($billResponses->clientGroups);
             ?>
@@ -328,7 +332,7 @@ $siteURL= site_url();
             <div class="">
               <span class="btn btn-sm text-white tracking-state" style="background-color: <?php echo $billResponses->trackingLevelColorCode;?>; border-color: <?php echo $billResponses->trackingLevelColorCode;?>;"> <?php echo $billResponses->trackingLevel;?> </span>
             </div>
-            <?php  if(in_array('fileId', $lbt_visible_column_list)) { ?>
+            <?php  if(in_array('fileId', $columnNames)) { ?>
             <div class="d-flex align-items-center justify-content-lg-end py-3">
               
               <a class="text-underline pl-3  download-detail " href="<?php echo $lbt_api_url;?>/file/<?php echo $billResponses->fileId;?>"><i class="fas fa-file-pdf mr-2 d-inline-block vertical-middle" style="font-size:28px"></i>Download Full Text</a>
@@ -419,7 +423,7 @@ $siteURL= site_url();
                               	
                                   <div class="col-md-4 order-2">
                                   <div class="border rounded shadow-sm h-100">
-                                  <?php  if(in_array('houseCommittees', $lbt_visible_column_list)) { ?>
+                                  <?php  if(in_array('houseCommittees', $columnNames)) { ?>
                                     <div class="panel-title bg-light p-2  border-bottom">
                                       <h6 class="mb-0 font-weight-normal">House Committees</h6>
                                     </div>
@@ -433,7 +437,7 @@ $siteURL= site_url();
                                           <p class="summary-content-para no-border text-capitalize"> None </p>
                                         <?php }?> 
 
-                                  </div> <?php  } if(in_array('senateCommittees', $lbt_visible_column_list)) { ?>
+                                  </div> <?php  } if(in_array('senateCommittees', $columnNames)) { ?>
 
                                        <div class="panel-title bg-light p-2  border-bottom border-top">
                                       <h6 class="mb-0 font-weight-normal">Senate Committees</h6>
@@ -458,7 +462,7 @@ $siteURL= site_url();
                                       <div class="p-3">
                                       <p class="summary-content-para-engagiigii "> <?php echo $billResponses->summary;?> </p>
                                          </div>
-                                         <?php if(in_array('sponsors', $lbt_visible_column_list)) {
+                                         <?php if(in_array('sponsors', $columnNames)) {
                                        $countSponsors =  count($billResponses->sponsors); ?>
                                        <div class="panel-title bg-light p-2  border-bottom border-top">
                                       <h6 class="mb-0 font-weight-normal">Sponsors (<?php echo $countSponsors;?>) </h6>
