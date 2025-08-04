@@ -388,7 +388,13 @@ function renderColumnsUI($optionKey,$action){
 						</div> 
 					</div>
 				</div>
-    <?php
+      <?php if ($options['debug_mode']==1) {
+			echo '<div class="option-saved-value">';
+		echo '<ul>';
+		echo '<li>'.$saveOptionName.' -<pre>' . htmlspecialchars(print_r($options[$saveOptionName], true)) . '</pre></li>';
+		echo '</ul>';
+		echo '</div>'; 
+		}
 }
 //convert columns  array of json strings into array of objects
 function convertToObjectArray(array $inputArray): array {
@@ -427,6 +433,15 @@ function extractColNames($jsonStrings){
 	}
   }
 	return $columnNames;
+}
+//debug mode handler 
+add_action('wp_ajax_update_debug_mode_setting', 'update_debug_mode_setting_callback');
+function update_debug_mode_setting_callback() {
+    $debug_mode = isset($_POST['debug_mode']) ? (int) $_POST['debug_mode'] : 0;
+    $options = get_option('ebt_api_settings', []);
+    $options['debug_mode'] = $debug_mode;
+    update_option('ebt_api_settings', $options);
+    wp_send_json_success(['message' => 'Debug mode updated']);
 }
 
 

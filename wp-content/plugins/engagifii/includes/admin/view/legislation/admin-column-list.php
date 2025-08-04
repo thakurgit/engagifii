@@ -8,7 +8,7 @@
 			echo '<b style="color:red"><i>Please provide both the API URL and the Tenant Code in the API URLs section above in order to manage these page settings</i></b>';
 		} else{ ?>
         	<!--sessions list-->
-			<div class="cols-wrapper" style="position:relative">
+			<div class="cols-wrapper">
             <h3>Manage Multiple Sessions Visibility</h3><hr> 
             <?php
 			if(isset($options['sessionsetting'])){

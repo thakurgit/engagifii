@@ -41,7 +41,7 @@ function getCountSelected(sessionId)
       type : "post",
       url: engagifiiUrl_ajaxurl,
       data:{
-		sessionId : sessionId,
+		sessionId : (!isNaN(sessionId) && sessionId !== '' && sessionId !== null) ? sessionId : 0,
         action:'legislationfiltercountdata'
       },
       success: function(response) { 

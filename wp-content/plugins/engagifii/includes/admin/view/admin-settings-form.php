@@ -154,6 +154,23 @@ $include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
 </div> 
            <i>Note: Uncheck this option if your theme already includes the FontAwesome icon library to prevent duplication.</i>
         </div>
+        <div style="padding-left:7px; margin-top:20px"> 
+        	 <?php if(isset($options['debug_mode'])){
+    $debug_mode = $options['debug_mode']; 
+   }else{
+       $debug_mode = null;
+   }
+    $debug_mode_setting = '';
+    if($debug_mode==1)
+    {
+         $debug_mode_setting  = 'checked';
+    }?>
+        <div class="form-check form-switch">
+        	<input class="form-check-input" type="checkbox" name="ebt_api_settings[debug_mode]" id="debug_mode" value="1" <?php echo $debug_mode_setting; ?>> 
+       		 <label for="debug_mode" class="form-check-label"><strong>Enable Debug Mode</strong></label>
+             <span class="spinner" style="float:none"></span>
+         	</div>
+        </div>
     </div>
 
     </div>
@@ -174,6 +191,36 @@ $include_fontawesome_setting = ($enabled == 1) ? 'checked' : '';
     </div>
 </form> 
 <script type="text/javascript">
+jQuery(document).ready(function ($) {
+    $('#debug_mode').on('change', function () {
+        const debugStatus = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'update_debug_mode_setting',
+                debug_mode: debugStatus,
+            },
+            beforeSend: function () {
+                $('.spinner').addClass('is-active');
+            },
+            success: function (response) {
+                $('.spinner').removeClass('is-active');
+                if (response.success) {
+                    console.log('Setting saved.');
+                } else {
+                    alert('Failed to save setting.');
+                }
+            },
+            error: function () {
+                $('.spinner').removeClass('is-active');
+                alert('AJAX error occurred.');
+            }
+        });
+    });
+});
+
   function getTenantCode(tenantCode, current) {    		
 	  var tCode = tenantCode;
     tCode =tCode.replace('https://', '');
