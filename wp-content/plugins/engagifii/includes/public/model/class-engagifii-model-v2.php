@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         ['geteventsClasscalendar', 'geteventsClasscalendar'],
         ['peopleloadGridDataByGroups', 'peopleloadGridDataByGroups'],
         ['getOrganizations', 'getOrganizations'],
+        ['groupMemberFilters', 'groupMemberFilters']
     ];
 
     foreach ($ajax_actions as $action) { 
@@ -571,6 +572,48 @@ foreach ($visible_columns as $col_json) {
         $viewMode = $_POST['viewMode'];
         $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
         $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
+        
+        // Get filter parameters
+        $departments = isset($_POST['departments']) && is_array($_POST['departments']) ? $_POST['departments'] : [];
+        $positions = isset($_POST['positions']) && is_array($_POST['positions']) ? $_POST['positions'] : [];
+        $personTypes = isset($_POST['personTypes']) && is_array($_POST['personTypes']) ? $_POST['personTypes'] : [];
+        $roles = isset($_POST['roles']) && is_array($_POST['roles']) ? $_POST['roles'] : [];
+        
+        // Build filter rules for API
+        $filterRules = [];
+        
+        if (!empty($departments)) {
+            $filterRules[] = [
+                "fieldId" => "departments", // Try departmentId instead of department
+                "filterType" => 4, // Assuming 4 is for 'contains' or 'in' filter
+                "selectedValues" => $departments
+            ];
+        }
+        
+        if (!empty($positions)) {
+            $filterRules[] = [
+                "fieldId" => "positions", // Try positionId instead of position
+                "filterType" => 4,
+                "selectedValues" => $positions
+            ];
+        }
+        
+        if (!empty($personTypes)) {
+            $filterRules[] = [
+                "fieldId" => "personTypes", // Try personTypeId instead of personType
+                "filterType" => 4,
+                "selectedValues" => $personTypes
+            ];
+        }
+        
+        if (!empty($roles)) {
+            $filterRules[] = [
+                "fieldId" => "roles", // Try roleId instead of roles
+                "filterType" => 4,
+                "selectedValues" => $roles
+            ];
+        }
+        
        $postedData = [
     "groupId" => $groupId,
     "itemCount" => (int)$_POST['length'],
@@ -580,17 +623,19 @@ foreach ($visible_columns as $col_json) {
     "filterBody" => [
         "pageSize" => 10,
         "pageNumber" => 1,
-        "searchText" => $searchText
+        "searchText" => $searchText,
+        "filterRules" => $filterRules
     ],
     "fields" => $custom_fields
 ];
 
 //print_r(json_encode($postedData)); die;
-        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$tenantCode."/".$groupId, $postedData, "POST", 'dashboard'); 
+        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$tenantCode."/".$groupId, $postedData, "POST", 'dashboard');       
+                
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
-     // print_r($collection); die;
+     //print_r($collection); die;
         $data = array();
         if($viewMode=='Grid'){ 
             $response = [
@@ -1118,5 +1163,61 @@ public function buildPopoverList($key, $items, $label, $countLabel, $itemCallbac
         }
     }
     return '--';
+}
+//events filters
+public function groupMemberFilters(){
+	$postData=array();
+	$htmlArray = array();
+    $options = get_option('ebt_api_settings');
+	//$events_type_visible_column_list = $options['events_type_visible_column_list']??array();
+	$events_type_visible_column_list=[];
+	if (!empty(GROUP_MEMBERS_COLS) && isArrayOfJsonStrings(GROUP_MEMBERS_COLS)) {
+		  $events_type_visible_column_list = extractColNames(GROUP_MEMBERS_COLS);
+	}
+	  $filterParams = $_POST['filterParams'];
+       $groupId = $_POST['groupId'];
+       //print_r($filterParams); die;
+	  $apiUrl='';
+	  $date = date('Y-m-d');
+	  foreach ($filterParams as $keys => $values) {
+		  if($values =='currentDepartment'){
+			$apiUrl='list/people/department/'.$date.'/'.$groupId; 
+		  } 
+        //   elseif($values =='currentPosition'){
+		// 	$apiUrl='list/people/position/'.$date.'/'.$groupId; 
+		//   } elseif($values =='personType'){
+		// 	$apiUrl='list/people/persontype/'.$date.'/'.$groupId; 
+		//   } elseif($values =='roles'){
+		// 	$apiUrl='list/people/roles/'.$date.'/'.$groupId; 
+		//   }
+           //print_r($apiUrl); 
+		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+         // print_r($response); 
+		  if($response['api_response']){
+			$response = json_decode($response['api_response'], true);
+			if($response){
+			  foreach ($response as $key => $value) {
+				 if($values =='currentDepartment'){
+					  $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="memberDepartments[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				  } 
+                //   elseif($values =='currentPosition'){
+				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="position_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPositions[]" value="'.$value['id'].'"> <label class="" for="position_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				//   } elseif($values =='personType'){
+				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="persontype_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPersonTypes[]" value="'.$value['id'].'"> <label class="" for="persontype_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				//   } elseif($values =='roles'){
+				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="role_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsRoles[]" value="'.$value['id'].'"> <label class="" for="role_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				//   }
+				}
+			  }else{
+				$html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
+			  }
+	  		} else {
+				$html[$values]='<h6 class="text-center mt-3">data not found</h6>';	
+			}
+			$htmlArray=$html;
+	  }
+		echo json_encode($htmlArray);
+        wp_die();
+	
 }
 }
