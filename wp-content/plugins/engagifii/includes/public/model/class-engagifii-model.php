@@ -4435,22 +4435,6 @@ public function classesLoadGridDataByPerson(){
 				  continue;
 			  }
            	$response =  $this->submitApiRequestWithGet($apiUrl, $postData, 'legislation'); 
-             /*if($values =='assignedto'){
-				$response =[
-                'api_response' => '[
-                    {
-                        "id" : "1",
-                        "name" : "Active"
-				 },
-                    {
-                        "id" : "2",
-                        "name" : "Deactivated"
-					}
-                ]'
-            ]; 
-			 }else{
-           		 $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
-			 }*/
             if($response['api_response']){
                 $response = json_decode($response['api_response'], true);                
                 if($response){
@@ -4465,18 +4449,18 @@ public function classesLoadGridDataByPerson(){
                       }else if($values=='houseCommittees' || $values =='senateCommittees'){
                         $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'" > '. $value['text'].' '.'('.$value['count'].')'.' </li>';
                       }else if($values=='tags'){
-						  if(in_array($value['tagId'], $lbt_visib_tags_list)){
+						 /* if(in_array($value['tagId'], $lbt_visib_tags_list)){
 							$checked = $_POST['chkdTags'] == $value['tagId'] && $_POST['chkdTags'] != null ? 'checked disabled' : '';
 							$html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['tagId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" value="'.$value['tagId'].'" id="item_id_'.$value['tagId'].'"> '.$value['text'].'</li>';
-						  }
+						  }*/
                       }else if($values=='lastActionOn'){
 						$checked = $_POST['chkdAction'] == $value['value'] && $_POST['chkdAction'] != null ? 'checked disabled' : '';
                         $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'"> '.$value['text'].'</li>';
                       }else if($values=='assignedto'){
-						  if(in_array($value['personId'], $lbt_visib_members_list)){
+						 /* if(in_array($value['personId'], $lbt_visib_members_list)){
 							$checked = $_POST['chkdAssign'] == $value['personId'] && $_POST['chkdAssign'] != null ? 'checked disabled' : '';
 							$html[$values].= '<li data-title="'.$value['fullName'].'" data-id="'.$value['personId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="members" value="'.$value['personId'].'" id="item_id_'.$value['personId'].'"> '.$value['fullName'].'</li>';
-						  }
+						  }*/
                       }else if($values=='assignedtoGroups'){
 						  if(in_array($value['value'], $lbt_visib_groups_list)){
 							$checked = $_POST['chkdAssignGroups'] == $value['value'] && $_POST['chkdAssignGroups'] != null ? 'checked disabled' : '';

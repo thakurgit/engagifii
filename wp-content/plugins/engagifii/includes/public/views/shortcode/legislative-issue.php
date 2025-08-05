@@ -2,15 +2,19 @@
  /*$obj =  new Engagifii_API();
 $tags = $obj->legislationTagsFilter();*/
 $options = get_option( 'ebt_api_settings' );
+  $sessionlist = $options['lbt_visib_session_list']?? array();
  $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
    $sessionsetting = '';
   $sessionlist = array();
  if(isset($options['sessionsetting'])){	 
    $sessionsetting = $options['sessionsetting'];
-  $sessionlist = $options['lbt_visib_session_list']?? array();
  }
-
-
+$columns='';
+ $columnNames=[];
+ if (!empty($lbt_visib_legislative_list) && isArrayOfJsonStrings($lbt_visib_legislative_list)) {
+		  $columns = convertToObjectArray($lbt_visib_legislative_list);
+		  $columnNames = extractColNames($lbt_visib_legislative_list);
+	}
  /*if(site_url() == 'https://engagifiiweb.com'){
   $legislative_tags_list             = $options['legislative_tags_list'] ?? array();
 
@@ -49,55 +53,33 @@ usort($tags, "sort_associative_array");*/
   <div class="row">
       <div class="col-sm-12 ">
         <div class="list-group border eq-height legis-issues position-relative" style="overflow: auto;">
+        <?php if (empty($sessionsetting)|| empty($sessionlist)) {
+			$html = '';
+	$site_url = get_site_url();
+	//$columns = array_slice($columns, 0, 101); 
+	foreach ($columns as $item) {
+		$tagId = $item->colName;
+		$name = $item->displayName;
+		$encoded = base64_encode($name);
+		$html .= '<a href="' . $site_url . '/bill-tracking/?tag=' . urlencode($tagId) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+	}
+	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
+		} else { ?>
 <div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>
- <?php /*?>  <?php foreach($tags as $tag){
-          if(in_array($tag->tagId, $lbt_visib_legislative_list)){
-				if($tag->count>0){
-					$cevent = 'onclick="filterIssues('.$tag->tagId.')"';
-				} else {
-					$cevent = 'disabled';
-				}
-        ?>
-        <option class="text-break pb-1" data-title="<?php echo base64_encode($tag->text);?>" data-id="<?php echo $tag->tagId;?>" <?php echo $cevent; ?>>
-        
-        <?php  
-
-         echo $tag->text.' ('.$tag->count.')';
-      ?>
-        </option>
-        <?php //}
-		 } }?><?php */?>
-    </div>
-    </div>
-    </div>
-  </div>
-
   <script type="text/javascript">
-  var allissues = <?php echo json_encode( $lbt_visib_legislative_list);  ?>;
+  var allissues = <?php echo json_encode($columnNames);  ?>;
   function toNumber1(value) {
 	 return Number(value);
 		}
   allissues  = allissues.map(toNumber1);
  window.addEventListener("load", function () {
-	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
 		getLegislativeIssues(sessionId);
 		$('.session-tab li button').click(function(){
 			$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:2"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').prependTo(".legis-issues"); 
 			getLegislativeIssues(sessionId);
 		});
-	<?php } else { ?>
-		getLegislativeIssues(sessionId);
-	<?php } ?>	 
 });
-	/*optionhover();
-	$('.session-tab li button').click(function(){
-		$('<div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6);"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>').insertBefore(".legis-issues"); 
-		getLegislativeIssues();
-		localStorage.setItem("sessionname", $(this).attr('sessionname'));
-	});*/
-	
-function getLegislativeIssues(sessionId)
-{
+function getLegislativeIssues(sessionId){
   $.ajax({
       type : "post",
       url: engagifiiUrl_ajaxurl,
@@ -117,8 +99,6 @@ function getLegislativeIssues(sessionId)
 						}else{
 						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?tag='+item.tagId+'&'+btoa(item.text)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
 						}
-					//var cevent = 'onclick="filterIssues('+item.tagId+')"';
-				 //html +=' <option class="text-break pb-1" data-title="'+btoa(item.text)+'" data-id="'+item.tagId+'" '+cevent+'>'+item.text+' ('+item.count+')';
 					}
 				}
 			});			
@@ -127,31 +107,15 @@ function getLegislativeIssues(sessionId)
 			}else{
         		$('.legis-issues').html('<h6 class="p-3">No data found</h6>');
 			}
-			$('.legis-issues').siblings('.issue-loader').remove();
-			//optionhover();
-            
+			$('.legis-issues').siblings('.issue-loader').remove();            
          }
     });
 }	
 
-
-   /* function filterIssues(id) {
-      $("body").removeClass('loaded');
-     var tag = $('select[name="issue_tags"]').find(':selected').data('title');
-	 if(sessionId==''){
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag;
-	 } else {
-      var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?tag='+id+'&'+tag+'&sessionId='+sessionId;
-	 }
-      window.location.href= redirect_url;
-
-    }
-	function optionhover(){
-	 $('option[onclick]').mouseover(function(){
-     $(this).addClass('bg-secondary');
-});
-$('option[onclick]').mouseout(function(){
-     $(this).removeClass('bg-secondary');
-});
-	}*/
 </script>
+<?php } ?>
+    </div>
+    </div>
+    </div>
+  </div>
+

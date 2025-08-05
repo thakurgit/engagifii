@@ -396,3 +396,13 @@ text-align: right;
 	padding: 0px 5px;
 	float: right;
 }
+.option-saved-value {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 250px;
+	border-left: 1px solid #e2e2e2;
+	padding-left: 10px;
+	height: calc(100% - 95px); 
+	overflow:auto;
+}

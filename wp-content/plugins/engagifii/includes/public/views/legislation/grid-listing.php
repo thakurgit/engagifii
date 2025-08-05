@@ -1,4 +1,25 @@
 <?php
+$options = get_option('ebt_api_settings');
+	$columns='';
+	$columnNames=[];
+	if (!empty(LEGISLATION_COLS) && isArrayOfJsonStrings(LEGISLATION_COLS)) {
+		  $columns = convertToObjectArray(LEGISLATION_COLS);
+		  $columnNames = extractColNames(LEGISLATION_COLS);
+	}else{
+	  $dataResponse = $this->submitApiRequest("legislative/public-bills/column-list", array() , "GET", 'legislation');
+		if(!json_decode($dataResponse['api_response'])->columnList){
+			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+			return;
+		}
+		$columns   = json_decode($dataResponse['api_response'])->columnList;
+		foreach ($columns as $col) {
+			$new_columns[] = (object)[
+				'colName' => $col->key,
+				'displayName' => $col->name,
+			];
+		}
+		$columns = $new_columns;
+	}
 $actionType = '';
 $billnumber = '';
 $tagsRequest = '';
@@ -57,9 +78,8 @@ if (isset($_REQUEST['sessionId']))
 }
 
 
-$options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['tenant_code'];
-$seqColumns = $options['lbt_visib_datacol_list'];
+/*$seqColumns = $options['lbt_visib_datacol_list'];
 $lbt_visible_column_list = array();
 foreach($seqColumns as $key=>$cols){
 	if(!array_key_exists("key",$cols)){
@@ -75,8 +95,9 @@ if(!$seqColumns){
 	echo '<h5 class="text-center text-danger"><strong><em>Settings for this page are not complete.  Please contact your administrator.</em></strong><h5>';
 	return;
 }
-$seqColumns = array_values($seqColumns);
-$filterParams=array_diff($lbt_visible_column_list, ["billNumber", "title","state","fileId"]);
+$seqColumns = array_values($seqColumns);*/
+$filterParams=array_diff($columnNames, ["billNumber", "title","state","fileId","assignedto","tags"]);
+$lbt_visib_legislative_list = $options['lbt_visib_legislative_list']??array();
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
@@ -160,9 +181,9 @@ $senateResponses=array();
             <div class="col-sm-12 tz-areafix">
                <div class="filter-section">
                <!-- Tags -->
-               <?php if(count(array_diff($lbt_visible_column_list,['billNumber','title']))==0){
+               <?php if(count(array_diff($columnNames,['billNumber','title']))==0){
 				   echo '<span class="text-center d-block">Filter parameters not found!</span>';
-			   } if(in_array('assignedto', $lbt_visible_column_list)) { ?>
+			   } if(in_array('assignedto', $columnNames)) { ?>
                   <div class="filter-list border-bottom">
                      <div class="heading-title py-2 d-flex align-items-center">Assign To <span id="countviewbyassign" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
                      <div class="multiple-select">
@@ -172,22 +193,24 @@ $senateResponses=array();
                         </div>
                         <div class="list-box">
                            <ul class="searchbyassignto tz-dropdown-filter list-unstyled" >
-      	 <div class="loaders text-center py-3">
-            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-          </div>
-                          <?php /*?> <?php if(count($lbt_visib_members_list) > 0) {
-                              foreach ($assignto as $assign){
-                                 if (in_array($assign->personId, $lbt_visib_members_list)){
+                           <?php $assigntocolumns='';
+								if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_list)) {
+										  $assigntocolumns = convertToObjectArray($lbt_visib_members_list);
+										  foreach ($assigntocolumns as $assign){
+									$checked = $staffMember == $assign->colName && $assign->colName != null ? 'checked disabled' : '';
                            ?>
-                                    <li data-title="<?php echo $assign->fullName; ?>" data-id="<?php echo $assign->personId; ?>">
-                                       <label class="d-none" for="item_id_<?php echo $assign->personId; ?>">Assign to</label>
-                                       <input type="checkbox" name="enggafifilterdata[]" data-type="members" value="<?php echo $assign->personId; ?>" id="item_id_<?php echo $assign->personId; ?>" >
-                                       <?php echo $assign->fullName; ?>
+                                    <li data-title="<?php echo $assign->displayName; ?>" data-id="<?php echo $assign->colName; ?>">
+                                       <label class="d-none" for="item_id_<?php echo $assign->colName; ?>">Assign to</label>
+                                       <input type="checkbox" name="enggafifilterdata[]" data-type="members" value="<?php echo $assign->colName; ?>" id="item_id_<?php echo $assign->colName; ?>" <?php echo $checked;?> >
+                                       <?php echo $assign->displayName; ?>
                                     </li>
-                           <?php    
-                              } } ?>
+                                   <?php }
+								} else {
+									echo '<h6 class="text-center mt-3">Data not found</h6>';
+								}
+                           ?>
 
-                           <?php foreach ($assigntoGroups as $assign){
+                          <?php /*?> <?php foreach ($assigntoGroups as $assign){
                                  if (in_array($assign->value, $lbt_visib_groups_list)){
                            ?>
                                  <li data-title="<?php echo $assign->text; ?>" data-id="<?php echo $assign->value; ?>">
@@ -216,7 +239,7 @@ $senateResponses=array();
                   </div>
 <?php } ?>
           <!-- Bill Types -->
-  <?php  if(in_array('billType', $lbt_visible_column_list)) { ?>
+  <?php  if(in_array('billType', $columnNames)) { ?>
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Bill Types <span id="countviewbybilltypes" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -243,7 +266,7 @@ $senateResponses=array();
     </div>
     </div>
 <?php } ?>
-<?php  if(in_array('houseCommittees', $lbt_visible_column_list)) { ?>
+<?php  if(in_array('houseCommittees', $columnNames)) { ?>
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">House Committee <span id="countviewhousecommittee" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -275,7 +298,7 @@ $senateResponses=array();
 
 
      <!-- Last Action Date  -->
-     <?php  if(in_array('lastActionOn', $lbt_visible_column_list)) { ?> 
+     <?php  if(in_array('lastActionOn', $columnNames)) { ?> 
      <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Last Action Date  <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select mb-2">
@@ -337,7 +360,7 @@ $senateResponses=array();
     </div>
 <?php } ?>
     <!-- Senate Committee -->
-    <?php  if(in_array('senateCommittees', $lbt_visible_column_list)) { ?> 
+    <?php  if(in_array('senateCommittees', $columnNames)) { ?> 
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Senate Committee <span id="countviewsenatecommittee" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -368,7 +391,7 @@ $senateResponses=array();
 <?php } ?>
 
     <!-- Sponsors -->
-    <?php  if(in_array('sponsors', $lbt_visible_column_list)) { ?> 
+    <?php  if(in_array('sponsors', $columnNames)) { ?> 
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Sponsors <span id="countviewbysponsors" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -396,7 +419,7 @@ $senateResponses=array();
 <?php } ?>
 
       <!-- Tags -->
-      <?php  if(in_array('tags', $lbt_visible_column_list)) { ?>   
+      <?php  if(in_array('tags', $columnNames)) { ?>   
       <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Tags <span id="countviewbytags" class="font-weight-bold ml-1"></span><i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -406,23 +429,21 @@ $senateResponses=array();
       </div>
       <div class="list-box">
       <ul class="searchbytags tz-dropdown-filter list-unstyled" >
-            	 <div class="loaders text-center py-3">
-            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-          </div>
-
-      <?php /*?><?php foreach ($tags as $tag){
-            if (in_array($tag->tagId, $lbt_visib_tags_list)){ ?>
-              <li data-title="<?php echo $tag->text; ?>" data-id="<?php echo $tag->tagId; ?>">
-              <label class="d-none" for="item_id_<?php echo $tag->tagId; ?>">Tags</label>
-              <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $tag->tagId; ?>" id="item_id_<?php echo $tag->tagId; ?>" <?php if ($tagsRequest == $tag->tagId)
-              {
-                  echo "checked  disabled";
-              } ?> >
-              <?php echo $tag->text; ?>
+      <?php $tagscolumns='';
+		if (!empty($lbt_visib_legislative_list) && isArrayOfJsonStrings($lbt_visib_legislative_list)) {
+				  $tagscolumns = convertToObjectArray($lbt_visib_legislative_list);
+				  foreach ($tagscolumns as $tag){
+			$checked = $tagsRequest == $tag->colName && $tag->colName != null ? 'checked disabled' : ''; ?>
+              <li data-title="<?php echo $tag->displayName; ?>" data-id="<?php echo $tag->colName; ?>">
+              <label class="d-none" for="item_id_<?php echo $tag->colName; ?>">Tags</label>
+              <input type="checkbox" name="enggafifilterdata[]" value="<?php echo $tag->colName; ?>" id="item_id_<?php echo $tag->colName; ?>"  <?php echo $checked;?>>
+              <?php echo $tag->displayName; ?>
               </li>
               <?php
-              }
-            } ?><?php */?>
+            } 
+				  } else{
+					echo '<h6 class="text-center mt-3">Data not found</h6>';  
+				  } ?>
       </ul>
       </div>
 
@@ -431,7 +452,7 @@ $senateResponses=array();
 <?php } ?>
 
     <!-- Tracking Lavels -->
-    <!-- <?php  if(in_array('trackingLevel', $lbt_visible_column_list)) { ?>    -->
+    <!-- <?php  if(in_array('trackingLevel', $columnNames)) { ?>    -->
     <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Tracking Levels <span id="countviewbytrackinglevels" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select">
@@ -467,7 +488,7 @@ $senateResponses=array();
 <!-- <?php } ?> -->
 
 <!-- Introduced Date  -->
-<?php  if(in_array('introducedDate', $lbt_visible_column_list)) { ?> 
+<?php  if(in_array('introducedDate', $columnNames)) { ?> 
      <div class="filter-list border-bottom">
       <div class="heading-title py-2 d-flex align-items-center">Introduced Date  <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select mb-2">
@@ -493,7 +514,7 @@ $senateResponses=array();
 <?php } ?>
 
     <!-- Status types -->
-    <?php  if(in_array('status', $lbt_visible_column_list)) { ?>  
+    <?php  if(in_array('status', $columnNames)) { ?>  
     <div class="filter-list border-bottom">
       <div class="heading-title status-heading-title py-2 d-flex align-items-center">Status <span id="countviewbystatustypes" class="font-weight-bold ml-1"></span> <i class="far fa-angle-down ml-auto"> </i></div>
     <div class="multiple-select"> 
@@ -639,7 +660,7 @@ function getCheckedSponsersValues()
 function getCheckedtagsValues()
 {
   <?php
-    if(count($lbt_visib_tags_list) > 0){
+    if(count($lbt_visib_legislative_list) > 0){
   ?>
   var elements = window.document.getElementsByClassName("searchbytags");  
   tags=[];
@@ -1107,20 +1128,20 @@ $columnSearch_key = [];
 $forDatatable = array();
 $i = 0;
 $sort_key = 1;
-foreach ($seqColumns as $key => $row){
+foreach ($columns as $key => $value){
    // if (in_array($row->key, $lbt_visible_column_list)){
 
-        if ($row['key'] == 'introducedDate')
+        if ($value->colName == 'introducedDate')
         {
-            $row['key'] = 'IntroducedDate';
+            $value->colName = 'IntroducedDate';
         }
-        if ($row['key'] == 'billType')
+        if ($value->colName == 'billType')
         {
-            $row['key'] = 'BillType';
+            $value->colName = 'BillType';
 
         }
 
-        if ($row['key'] == 'billNumber')
+        if ($value->colName == 'billNumber')
         {
 			$bill_number_column_key = $i;
             $sort_key = $i;
@@ -1129,7 +1150,7 @@ foreach ($seqColumns as $key => $row){
 			$searchObject['placeholder'] = 'Eg: HB 0002 or SR 0980';
 			$columnSearch_key[]=$searchObject;
         }
-		if($row['key'] == 'title'){
+		if($value->colName == 'title'){
 			$bill_title_key = $i;
 			$searchObject=[];
 			$searchObject['key'] = $i;
@@ -1137,20 +1158,12 @@ foreach ($seqColumns as $key => $row){
 			$columnSearch_key[]=$searchObject;
 		}
 
-        $forDatatable[$i]['data'] = $row['key'];
-		//unset($forDatatable[9]);
+        $forDatatable[$i]['data'] = $value->colName;
 		
-		$class=strtolower($row['label']);
+		$class=strtolower($value->colName);
 		
 ?>                       
-                  <th class="<?php echo $class; ?> <?php echo $row['key']; ?>" scope="col">
-                    <?php if ($row['key'] == 'trackingLevel')
-        {
-            echo "Tracking\nLevel";
-		} else {
-            echo $row['label'];
-        } ?>
-                  </th>
+                  <th class="<?php echo $class; ?>" scope="col"><?php echo $value->displayName; ?></th>
                 <?php
         $i++;
     //}
@@ -1510,14 +1523,14 @@ var table = $('#ebtmaintable').DataTable( {
          "columns":<?php echo (json_encode($forDatatable)); ?>, 
 		 
 		 "columnDefs": [ 
-	  				{ "targets": [ 'BillType','state','fileId','trackingLevel','IntroducedDate','lastActionOn','sponsors','houseCommittees','senateCommittees','status', 'tags', 'assignedto'], "orderable": false},
-            { responsivePriority: 1, targets: 'billNumber' },
+	  				{ "targets": [ 'billtype','state','fileid','trackinglevel','introduceddate','lastactionon','sponsors','housecommittees','senatecommittees','status', 'tags', 'assignedto'], "orderable": false},
+            { responsivePriority: 1, targets: 'billnumber' },
 			{ responsivePriority: 2, targets: 'title' },
-			{ responsivePriority: 10001, targets: 'lastActionOn' },
-			{ responsivePriority: 10002, targets: 'IntroducedDate' },
-			{ responsivePriority: 10003, targets: 'houseCommittees' },
-			{ responsivePriority: 10004, targets: 'senateCommittees' },
-			{ className: "text-center", "targets": ["BillType","status","fileId","state"] },
+			{ responsivePriority: 10001, targets: 'lastactionon' },
+			{ responsivePriority: 10002, targets: 'introduceddate' },
+			{ responsivePriority: 10003, targets: 'housecommittees' },
+			{ responsivePriority: 10004, targets: 'senatecommittees' },
+			{ className: "text-center", "targets": ["billtype","status","fileid","state"] },
 			{ className: "title-col", "targets": "title" }
 			//{ 'width': '75', 'targets': 'billNumber' },
 			//{ 'width': '199', 'targets': 'title' },
@@ -1847,9 +1860,9 @@ function billFilters(){
 		   action:'legilslationFilters',
 		   filterParams: colNames,
 		   chkdTracking :chkdTracking,
-		   chkdTags:chkdTags,
+		   //chkdTags:chkdTags,
 		   chkdAction:chkdAction,
-		   chkdAssign:chkdAssign,
+		  // chkdAssign:chkdAssign,
 		   chkdAssignGroups:chkdAssignGroups,
 		   chkdAssignTags:chkdAssignTags,
 		   session:sessionId
@@ -1866,7 +1879,7 @@ function billFilters(){
 			$('.searchbylastactiontypes').html(JSON.parse(response)['lastActionOn']);
 			$('.searchbyhousecommittee').html(JSON.parse(response)['houseCommittees']);
 			$('.searchbysenatecommittee').html(JSON.parse(response)['senateCommittees']);
-			if(JSON.parse(response)['assignedto']){
+			/*if(JSON.parse(response)['assignedto']){
 			  $('.searchbyassignto').html(JSON.parse(response)['assignedto']);
 			}else{
 			  $('.searchbyassignto').html('<span class="text-center d-block">Data not found</span>');
@@ -1875,7 +1888,7 @@ function billFilters(){
 			  $('.searchbytags').html(JSON.parse(response)['tags']);
 			}else{
 			  $('.searchbytags').html('<span class="text-center d-block">Data not found</span>');
-			}
+			}*/
 		filterEvents();
 			}
 	  });	
