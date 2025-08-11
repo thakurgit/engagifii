@@ -752,6 +752,9 @@ $('#clear-all').click(function() {
 });
 
 // Collect selected custom field values dynamically
+// Object to store selected values for each custom field
+var customFieldSelections = {};
+
 $(document).on('click', '.custom-field-filter-tittle', function() {
     // Dynamically fetch the fieldId of the clicked element
     var fieldId = $(this).closest('.filter-list').find('.custom-field-filter').data('field-id');
@@ -781,8 +784,10 @@ $(document).on('click', '.custom-field-filter-tittle', function() {
                 if (typeof response.data === 'object' && response.data !== null) {
                     var filterContent = '';
                     response.data.forEach(function(item) {
+                        var isChecked = customFieldSelections[fieldId] && customFieldSelections[fieldId].includes(item.id);
                         filterContent += '<li class="d-flex align-items-start">'
-                            + '<input type="checkbox" class="mr-2 mt-1" id="customfield_' + item.id + '" value="' + item.id + '">'
+                            + '<input type="checkbox" class="mr-2 mt-1" id="customfield_' + item.id + '" value="' + item.id + '"'
+                            + (isChecked ? ' checked' : '') + '>'
                             + '<label for="customfield_' + item.id + '"><small>' + item.name + '</small></label>'
                             + '</li>';
                     });
@@ -802,6 +807,25 @@ $(document).on('click', '.custom-field-filter-tittle', function() {
             $('.custom-field-filter[data-field-id="' + fieldId + '"] .loaders').hide();
         }
     });
+});
+
+// Save selected values when checkboxes are changed
+$(document).on('change', '.custom-field-filter input[type=checkbox]', function() {
+    var fieldId = $(this).closest('.custom-field-filter').data('field-id');
+    if (!customFieldSelections[fieldId]) {
+        customFieldSelections[fieldId] = [];
+    }
+
+    var value = $(this).val();
+    if ($(this).is(':checked')) {
+        if (!customFieldSelections[fieldId].includes(value)) {
+            customFieldSelections[fieldId].push(value);
+        }
+    } else {
+        customFieldSelections[fieldId] = customFieldSelections[fieldId].filter(function(id) {
+            return id !== value;
+        });
+    }
 });
 
 function countFilterData() {
@@ -866,4 +890,5 @@ $(document).on('click', function(event) {
         $filterArea.addClass('d-none');
     }
 });
+
 </script>
