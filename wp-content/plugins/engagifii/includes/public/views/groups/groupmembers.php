@@ -42,7 +42,6 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 <div class="container-fluid ">
     <div class="row">
         
-          <?php if ($allowedViewMode === 'both'){ ?>
         <div class="col-12 justify-content-end d-flex">
             <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
     <div id="filter-loader" class="text-center">
@@ -196,7 +195,6 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
         </div>
             
         <div class="col-12 mb-4"></div>
-        <?php } ?>
 <!-- Group Tabs -->
 <style>
 .badge[data-toggle="popover"] + .popover,
