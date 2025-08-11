@@ -188,12 +188,13 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
         </div>
     </div>
 </div>
+          <?php if ($allowedViewMode === 'both'){ ?>
           <div class="btn-group view-mode" role="group" aria-label="">
             <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
             <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
           </div>
         </div>
-            
+            <?php } ?>
         <div class="col-12 mb-4"></div>
 <!-- Group Tabs -->
 <style>
