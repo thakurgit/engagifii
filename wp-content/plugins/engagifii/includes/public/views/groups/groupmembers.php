@@ -734,6 +734,7 @@ $('#clear-all').click(function() {
     personTypes = [];
     roles = [];
     organizations = [];
+    customFieldSelections = {};
     clearAllCheckboxes('.filter-list');
     clearAllCheckboxes('.custom-field-filter');
     resetCustomFields();
@@ -745,10 +746,11 @@ $('#clear-all').click(function() {
         start = 0;
         groupMembers(start);
     }
-    $('.filter-area').addClass('d-none');
-    console.log('All filters cleared');
+    $('.filter-area').addClass('d-none');   
      $('.filter-icon').removeClass('active');
         $('.filter-icon span').hide();
+          // Reset the filter count display
+    $('#countFilterResult').text('')
 });
 
 // Collect selected custom field values dynamically
