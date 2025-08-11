@@ -448,7 +448,7 @@ function toggleAll($list) {
 	  }
 	//}, 1000);
     $checkboxesCField.on('change', function () {
-	  if($checkboxesCField.filter(':checked').length>5){
+	  if($checkboxesCField.filter(':checked').length>50){
 		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
 		showAlert('Max 5 Custom Fields allowed.');  
 	  } else {

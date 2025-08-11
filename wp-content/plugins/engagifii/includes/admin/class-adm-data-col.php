@@ -225,6 +225,9 @@ public function getClassesType($date){
 				  $withoutFieldId[] = $item;
 			  } else {
 				  $withFieldId[] = $item;
+				//   if(!isset($item['controlTypeId'])) {
+				// 	  $item['controlTypeId'] = 3;
+				//   }
 			  }
 		  }
 		  $collection = array_merge($withoutFieldId, $withFieldId);

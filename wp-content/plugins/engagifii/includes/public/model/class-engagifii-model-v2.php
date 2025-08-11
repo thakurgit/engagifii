@@ -17,7 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
         ['geteventsClasscalendar', 'geteventsClasscalendar'],
         ['peopleloadGridDataByGroups', 'peopleloadGridDataByGroups'],
         ['getOrganizations', 'getOrganizations'],
-        ['groupMemberFilters', 'groupMemberFilters']
+        ['groupMemberFilters', 'groupMemberFilters'],
+        ['getCustomFieldFilterData', 'getCustomFieldFilterData'],
+        ['groupCountFilterData', 'groupCountFilterData']
     ];
 
     foreach ($ajax_actions as $action) { 
@@ -500,7 +502,7 @@ public function geteventsClasscalendar(){
                                                    <p><strong>Dates :</strong> <?php echo $weekfilteredItems[$fi]['schedule']; ?></p>
                                                    <p><strong>Type : </strong><?php echo $weekfilteredItems[$fi]['objectType']; ?></p>
                                                    <p><strong>Prices :</strong> <?php echo '$'.$weekfilteredItems[$fi]['price']; ?></p>
-                                                   <!-- <p><strong>Credit Hours : </strong><?php echo $weekfilteredItems[$fi]['hours']; ?></p> -->
+                                                   <!-- <p><strong>Credit Hours : </strong><?php echo $filteredItems[$fi]['hours']; ?></p> -->
                                                    
                                                </div>
                                                <div class="modal-footer">
@@ -577,8 +579,9 @@ foreach ($visible_columns as $col_json) {
         $departments = isset($_POST['departments']) && is_array($_POST['departments']) ? $_POST['departments'] : [];
         $positions = isset($_POST['positions']) && is_array($_POST['positions']) ? $_POST['positions'] : [];
         $personTypes = isset($_POST['personTypes']) && is_array($_POST['personTypes']) ? $_POST['personTypes'] : [];
+        $organizations = isset($_POST['organizations']) && is_array($_POST['organizations']) ? $_POST['organizations'] : [];
         $roles = isset($_POST['roles']) && is_array($_POST['roles']) ? $_POST['roles'] : [];
-        
+       // print_r($organizations); die;
         // Build filter rules for API
         $filterRules = [];
         
@@ -600,8 +603,8 @@ foreach ($visible_columns as $col_json) {
         
         if (!empty($personTypes)) {
             $filterRules[] = [
-                "fieldId" => "personTypes", // Try personTypeId instead of personType
-                "filterType" => 4,
+                "fieldId" => "personaTypeIds", // Try personTypeId instead of personType
+                "filterType" => 1,
                 "selectedValues" => $personTypes
             ];
         }
@@ -613,7 +616,26 @@ foreach ($visible_columns as $col_json) {
                 "selectedValues" => $roles
             ];
         }
-        
+        if (!empty($organizations)) {
+            $filterRules[] = [
+                "fieldId" => "currentOrganization", // Try organizationId instead of organization
+                "filterType" => 4,
+                "selectedValues" => $organizations
+            ];
+        }
+    
+// Add filterRules for custom fields
+if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
+    foreach ($_POST['customFields'] as $customFieldId => $selectedValues) {
+        if (!empty($selectedValues) && is_array($selectedValues)) {
+            $filterRules[] = [
+                "fieldId" => $customFieldId,
+                "filterType" => 301, // 'in' filter for custom fields
+                "selectedValues" => $selectedValues
+            ];
+        }
+    }
+}
        $postedData = [
     "groupId" => $groupId,
     "itemCount" => (int)$_POST['length'],
@@ -1176,22 +1198,28 @@ public function groupMemberFilters(){
 	}
 	  $filterParams = $_POST['filterParams'];
        $groupId = $_POST['groupId'];
-       //print_r($filterParams); die;
+      // print_r($filterParams); die;
 	  $apiUrl='';
 	  $date = date('Y-m-d');
 	  foreach ($filterParams as $keys => $values) {
 		  if($values =='currentDepartment'){
-			$apiUrl='list/people/department/'.$date.'/'.$groupId; 
+			$apiUrl='list/people/department/'.$date.'/'.$groupId;
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
 		  } 
-        //   elseif($values =='currentPosition'){
-		// 	$apiUrl='list/people/position/'.$date.'/'.$groupId; 
-		//   } elseif($values =='personType'){
-		// 	$apiUrl='list/people/persontype/'.$date.'/'.$groupId; 
-		//   } elseif($values =='roles'){
-		// 	$apiUrl='list/people/roles/'.$date.'/'.$groupId; 
-		//   }
-           //print_r($apiUrl); 
-		  $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+           elseif($values =='currentPosition'){
+			$apiUrl='list/people/position/'.$date.'/'.$groupId; 
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		  } 
+        elseif($values =='personType'){
+		 	$apiUrl='list/people/persontype/'.$date.'/'.$groupId; 
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		   } 
+           elseif($values =='organization'){
+			$apiUrl='list/people/organization/'.$date.'/'.$groupId; 
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		  }
+        //    //print_r($apiUrl); 
+		  //$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
          // print_r($response); 
 		  if($response['api_response']){
 			$response = json_decode($response['api_response'], true);
@@ -1200,13 +1228,15 @@ public function groupMemberFilters(){
 				 if($values =='currentDepartment'){
 					  $html[$values].='<li class="d-flex align-items-start"><input id="tag_'.$key.'" class="mr-2 mt-1" type="checkbox" name="memberDepartments[]" value="'.$value['id'].'"> <label class="" for="tag_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
 				  } 
-                //   elseif($values =='currentPosition'){
-				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="position_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPositions[]" value="'.$value['id'].'"> <label class="" for="position_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-				//   } elseif($values =='personType'){
-				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="persontype_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPersonTypes[]" value="'.$value['id'].'"> <label class="" for="persontype_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-				//   } elseif($values =='roles'){
-				// 	  $html[$values].='<li class="d-flex align-items-start"><input id="role_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsRoles[]" value="'.$value['id'].'"> <label class="" for="role_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
-				//   }
+                  elseif($values =='currentPosition'){
+				  $html[$values].='<li class="d-flex align-items-start"><input id="position_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPositions[]" value="'.$value['id'].'"> <label class="" for="position_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				 } 
+                elseif($values =='personType'){
+				 	  $html[$values].='<li class="d-flex align-items-start"><input id="persontype_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsPersonTypes[]" value="'.$value['id'].'"> <label class="" for="persontype_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				   } 
+                   elseif($values =='organization'){
+				 	  $html[$values].='<li class="d-flex align-items-start"><input id="organization_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsOrganizations[]" value="'.$value['id'].'"> <label class="" for="organization_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+				  }
 				}
 			  }else{
 				$html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
@@ -1220,4 +1250,136 @@ public function groupMemberFilters(){
         wp_die();
 	
 }
+public function getCustomFieldFilterData() {
+    //print_r("test"); die;// Debugging line, can be removed later
+    // Check if required parameters are provided
+    if (!isset($_POST['fieldConfigurationId'], $_POST['selectedDate'], $_POST['groupId'])) {
+        wp_send_json_error(['message' => 'Missing required parameters.']);
+        return;
+    }
+
+    $fieldConfigurationId = sanitize_text_field($_POST['fieldConfigurationId']);
+    $selectedDate = sanitize_text_field($_POST['selectedDate']);
+    $groupId = sanitize_text_field($_POST['groupId']);
+//print_r($fieldConfigurationId); // Debugging line, can be removed later
+
+    // Call the API
+    $apiEndpoint = "GetCustomFieldFilterData/{$fieldConfigurationId}/{$selectedDate}/{$groupId}";
+//print_r($apiEndpoint); // Debugging line, can be removed later
+    $response = $this->submitApiRequest($apiEndpoint, [], 'GET', 'dashboard');
+//print_r($response); // Debugging line, can be removed later
+
+    if (isset($response['api_response'])) {
+        wp_send_json_success(json_decode($response['api_response']));
+    } else {
+        wp_send_json_error(['message' => 'Failed to fetch custom field filter data.']);
+    }
+}
+
+public function groupCountFilterData() {
+        $selectedDate = sanitize_text_field($_POST['selectedDate']);
+        $groupId = sanitize_text_field($_POST['groupId']);
+
+    $postedData = $this->_groupPostCountData();
+     $apiEndpoint = "GroupPeopleListCount/meams/{$groupId}";
+    $dataResponse = $this->submitApiRequest($apiEndpoint, $postedData, "POST", 'dashboard');
+    // print_r($dataResponse); die;
+    header("Content-Type: application/json");
+    echo json_encode($dataResponse);
+    wp_die();
+}
+
+private function _groupPostCountData() {
+    $searchValue = '';
+    if (!empty($_POST['search']['value'])) {
+        $searchValue = $_POST['search']['value'];
+    }
+
+    $start = isset($_POST['start']) && is_numeric($_POST['start']) ? (int) $_POST['start'] : 0;
+    $length = isset($_POST['length']) && is_numeric($_POST['length']) && (int) $_POST['length'] > 0 ? (int) $_POST['length'] : 10;
+    $startPageNum = (int) (($start / $length) + 1);
+
+    $columnsData = [];
+    foreach ($_POST['columns'] as $key => $value) {
+        if ($value['orderable'] == "true") {
+            $columnsData[$value['data']] = $value['data'];
+        }
+    }
+
+    $sortBy = '';
+    if (isset($columnsData['name'])) {
+        $sortBy = 'name';
+    }
+
+    $departments = isset($_POST['departments']) ? $_POST['departments'] : [];
+    $positions = isset($_POST['positions']) ? $_POST['positions'] : [];
+    $personTypes = isset($_POST['personTypes']) ? $_POST['personTypes'] : [];
+    $roles = isset($_POST['roles']) ? $_POST['roles'] : [];
+    $organizations = isset($_POST['organizations']) ? $_POST['organizations'] : [];
+    $customFields = isset($_POST['customFields']) ? $_POST['customFields'] : [];
+
+    $filterRules = [];
+
+    if (!empty($departments)) {
+        $filterRules[] = [
+            'fieldId' => 'departments',
+            'filterType' => 4,
+            'selectedValues' => $departments
+        ];
+    }
+
+    if (!empty($positions)) {
+        $filterRules[] = [
+            'fieldId' => 'positions',
+            'filterType' => 4,
+            'selectedValues' => $positions
+        ];
+    }
+
+    if (!empty($personTypes)) {
+        $filterRules[] = [
+            'fieldId' => 'personaTypeIds',
+            'filterType' => 1,
+            'selectedValues' => $personTypes
+        ];
+    }
+
+    if (!empty($roles)) {
+        $filterRules[] = [
+            'fieldId' => 'roles',
+            'filterType' => 4,
+            'selectedValues' => $roles
+        ];
+    }
+
+    if (!empty($organizations)) {
+        $filterRules[] = [
+            'fieldId' => 'currentOrganization',
+            'filterType' => 4,
+            'selectedValues' => $organizations
+        ];
+    }
+
+    foreach ($customFields as $customFieldId => $selectedValues) {
+        if (!empty($selectedValues)) {
+            $filterRules[] = [
+                'fieldId' => $customFieldId,
+                'filterType' => 301,
+                'selectedValues' => $selectedValues
+            ];
+        }
+    }
+
+    $postData = [
+        'groupId' => $_POST['groupId'],
+        'searchText' => $searchValue,
+        'sortBy' => $sortBy,
+        'pageNumber' => $startPageNum,
+        'pageSize' => $length,
+        'filterRules' => $filterRules
+    ];
+
+    return $postData;
+}
+ 
 }

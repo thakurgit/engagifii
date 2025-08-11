@@ -6,29 +6,44 @@ if (!isset($groupId) || empty($groupId)) {
 $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     ? strtolower($viewMode)
     : 'both';
-	$collection 	=	array();
+    $collection 	=	array();
   $forDatatable 	= 	array();
   $columns='';
-	$columnNames=[];
-	if (!empty(GROUP_MEMBERS_COLS) && isArrayOfJsonStrings(GROUP_MEMBERS_COLS)) {
-		  $columns = convertToObjectArray(GROUP_MEMBERS_COLS);
-		  $columnNames = extractColNames(GROUP_MEMBERS_COLS);
-	}else{
-	  $dataResponse = $this->submitApiRequest("Public/EventColumnList",array(),"GET",'event');
-		if(!$dataResponse['api_response']){
-			echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
-			return;
-		}
-		$columns   = json_decode($dataResponse['api_response']);
-	}
-    //print_r($columns);
+    $columnNames=[];
+    if (!empty(GROUP_MEMBERS_COLS) && isArrayOfJsonStrings(GROUP_MEMBERS_COLS)) {
+          $columns = convertToObjectArray(GROUP_MEMBERS_COLS);
+          $columnNames = extractColNames(GROUP_MEMBERS_COLS);
+    }else{
+        $options = get_option( 'ebt_api_settings' );
+		$tenantCode = $options['dashboard_tenant_code'];
+      $dataResponse = $this->submitApiRequest("PeopleColumnList/".$tenantCode,array(),"GET",'dashboard');
+        if(!$dataResponse['api_response']){
+            echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
+            return;
+        }
+        $columns   = json_decode($dataResponse['api_response']);
+
+    
+    }
+       $columns = array_filter($columns, function($column) {
+    if (!isset($column->controlTypeId)) {
+        error_log("Filtering: controlTypeId is not set");
+        return true;
+    }
+
+    $id = (int) $column->controlTypeId;
+    error_log("Filtering: controlTypeId = $id");
+
+    return in_array($id, [3, 6, 15]);
+});
+
  ?>
  
 <div class="container-fluid ">
-	<div class="row">
+    <div class="row">
         
           <?php if ($allowedViewMode === 'both'){ ?>
-    	<div class="col-12 justify-content-end d-flex">
+        <div class="col-12 justify-content-end d-flex">
             <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
     <div id="filter-loader" class="text-center">
         <div class="spinner-border text-primary" role="status">
@@ -55,7 +70,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12" id="test">
+                <div class="col-sm-12" id="test" style="max-height: 400px; overflow-y: auto;">
                     <input type="hidden" id="isApplyACtive" value="0">
                     
                     <?php if(in_array('startDateTime', $columnNames)) { ?>
@@ -96,7 +111,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                     
                     <?php if (in_array('currentDepartment', $columnNames) && array_search('currentDepartment', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Department <i class="far fa-angle-down"></i></div>
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Department <i class="far fa-angle-down"></i></div>
                         <div class="content-area currentDepartment-filter d-none">
                             <ul class="list-group m-0">
                                 <div class="loaders text-center py-3">
@@ -109,7 +124,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                     
                     <?php if (in_array('currentPosition', $columnNames) && array_search('currentPosition', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Position <i class="far fa-angle-down"></i></div>
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Position <i class="far fa-angle-down"></i></div>
                         <div class="content-area currentPosition-filter d-none">
                             <ul class="list-group m-0">
                                 <div class="loaders text-center py-3">
@@ -122,7 +137,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                     
                     <?php if (in_array('personType', $columnNames) && array_search('personType', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Person Type <i class="far fa-angle-down"></i></div>
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Person Type <i class="far fa-angle-down"></i></div>
                         <div class="content-area personType-filter d-none">
                             <ul class="list-group m-0">
                                 <div class="loaders text-center py-3">
@@ -133,10 +148,10 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                     </div>
                     <?php } ?>
                     
-                    <?php if (in_array('roles', $columnNames) && array_search('roles', $columnNames)) { ?>
+                    <?php if (in_array('organization', $columnNames) && array_search('organization', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Roles <i class="far fa-angle-down"></i></div>
-                        <div class="content-area roles-filter d-none">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Organization <i class="far fa-angle-down"></i></div>
+                        <div class="content-area organization-filter d-none">
                             <ul class="list-group m-0">
                                 <div class="loaders text-center py-3">
                                     <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
@@ -145,6 +160,24 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                         </div>
                     </div>
                     <?php } ?>
+                    
+                    <!-- Dynamically generate filters for custom fields -->
+                    <?php foreach ($columns as $column) {
+    if (isset($column->fieldId) && !empty($column->fieldId)) { ?>
+        <div class="filter-list border-bottom">
+            <div class="heading-title py-2 d-flex align-items-center justify-content-between custom-field-filter-tittle">
+                <?php echo esc_html($column->displayName ?? $column->fieldName); ?> <i class="far fa-angle-down"></i>
+            </div>
+            <div class="content-area custom-field-filter d-none" data-field-id="<?php echo esc_attr($column->fieldId); ?>">
+                <ul class="list-group m-0">
+                    <div class="loaders text-center py-3">
+                        <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    <?php }
+} ?>
                 </div>
                 
                 <div class="apply-filter">
@@ -186,40 +219,43 @@ font-size: 260px;
  .card-text i {
     display: none !important;
 }
+label{
+    margin-bottom: 0px !important;
+    }
 </style>
 
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
-	<div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
-  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
-    	<thead> 
-		    <tr>    
-		    	 <?php  $i = 0;
-				  foreach (GROUP_MEMBERS_COLS as $key){
-					  $json = json_decode(stripslashes($key), true);
-					  if (!$json || !isset($json['colName'], $json['displayName'])) {
-						  continue;
-					  }
-					  if($json['colName'] == 'name'){
-                    	$title_key = $i;
-                 	 }
-					 $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
-					$forDatatable[]['data'] = $colClass;
-				  ?>
+    <div class="engagifii-box  engagifii-main-cotainer position-relative col-12 list-view">
+    <table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
+        <thead> 
+            <tr>    
+                 <?php  $i = 0;
+                  foreach (GROUP_MEMBERS_COLS as $key){
+                      $json = json_decode(stripslashes($key), true);
+                      if (!$json || !isset($json['colName'], $json['displayName'])) {
+                          continue;
+                      }
+                      if($json['colName'] == 'name'){
+                        $title_key = $i;
+                     }
+                     $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+                    $forDatatable[]['data'] = $colClass;
+                  ?>
             <th class="text-capitalize <?php echo esc_attr($colClass); ?>">
     <?php echo esc_html($json['displayName']); ?>
 </th>
         <?php  $i++; } ?>
- 		    
+            
 
-		    </tr> 
-    	</thead> 
-  	</table>
-  	<div id="eng-overlay"><span class="spinner"></span></div>
+            </tr> 
+        </thead> 
+    </table>
+    <div id="eng-overlay"><span class="spinner"></span></div>
 </div>
 <?php } if ($allowedViewMode === 'grid' ||$allowedViewMode === 'both' ){  ?>
 <div class="col-12 grid-view" <?php if($allowedViewMode === 'both') { ?>style="display:none" <?php } ?>>
-	<div class="row mb-4">
-    	
+    <div class="row mb-4">
+        
     </div>
     <nav aria-label="Page navigation example">
   <ul class="pagination pagination-sm justify-content-center grid-pagination">
@@ -239,51 +275,53 @@ font-size: 260px;
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
-  var departments = []; // Array to store selected department IDs
-  var positions = []; // Array to store selected position IDs  
-  var personTypes = []; // Array to store selected person type IDs
-  var roles = []; // Array to store selected role IDs
+  var departments = [];
+  var positions = [];
+  var personTypes = [];
+  var roles = [];
+  var organizations = [];
+  var customFields = {};
   <?php  if ($allowedViewMode === 'grid' ){?>
   groupMembers(start);
   <?php } ?>
   
   $('.view-mode button').click(function(){
-	  var selectedMode = $(this).attr('view-mode');
+      var selectedMode = $(this).attr('view-mode');
   
-	  if (selectedMode === viewMode) return;
+      if (selectedMode === viewMode) return;
   
-	  viewMode = selectedMode;
-	  $(this).addClass('active').siblings().removeClass('active');
+      viewMode = selectedMode;
+      $(this).addClass('active').siblings().removeClass('active');
   
-	  if(viewMode === 'grid'){
-		  $('.list-view').hide();
-		  $('.grid-view').show();
-		  groupMembers(start);
-	  } else {
-		  $('.list-view').show();
-		  $('.grid-view').hide();
-		  table.draw();
-	  }
+      if(viewMode === 'grid'){
+          $('.list-view').hide();
+          $('.grid-view').show();
+          groupMembers(start);
+      } else {
+          $('.list-view').show();
+          $('.grid-view').hide();
+          table.draw();
+      }
   });
-	var table = $('#ebtmaintable').DataTable( {
-       	"pageLength": 10,
-		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
-       	"bInfo":false,
-       	"processing": true,
-       	"searching": true,
-       	"ordering":true,
-		"order": [[titleColumn, 'asc']],
-      	"columnDefs": [ 
+    var table = $('#ebtmaintable').DataTable( {
+        "pageLength": 10,
+        "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+        "bInfo":false,
+        "processing": true,
+        "searching": true,
+        "ordering":true,
+        "order": [[titleColumn, 'asc']],
+        "columnDefs": [ 
            { "targets": "_all", "orderable": false }
-		  <?php //if(in_array('People Name', $colNames)){ ?>
-		  //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
-		  <?php //} if(in_array('Email', $colNames)){ ?>
-		//  { width: 150, targets: <?php //echo array_search('Email',$colNames);?> },
-		  <?php // } ?>
-		 // { className: "text-center", "targets": ['people-select'] },
-		   
+          <?php //if(in_array('People Name', $colNames)){ ?>
+          //	{ width: 350, targets: <?php //echo array_search('People Name',$colNames);?> },
+          <?php //} if(in_array('Email', $colNames)){ ?>
+        //  { width: 150, targets: <?php //echo array_search('Email',$colNames);?> },
+          <?php // } ?>
+         // { className: "text-center", "targets": ['people-select'] },
+           
       ],
-		
+        
         "language": {
           processing: '<span>&nbsp;</span>',
           "emptyTable": '-',
@@ -298,90 +336,90 @@ font-size: 260px;
             "url": engagifiiUrl_ajaxurl,
             "type": "POST",
             "data": function(d) {  
-            	d.action='peopleloadGridDataByGroups'; 
-				d.groupId=groupId; 
-				d.titleColumn = titleColumn; 
-				d.departments=departments; 
-				d.positions=positions;
-				d.personTypes=personTypes;
-				d.roles=roles;
-				/*d.orgs=orgs; 
-      			  d.status=Status;
-				d.totalTime= totalTime;
-				d.emailColumn = emailColumn;*/ 
+                d.action = 'peopleloadGridDataByGroups'; 
+                d.groupId = groupId; 
+                d.titleColumn = titleColumn; 
+                d.departments = departments; 
+                d.positions = positions;
+                d.personTypes = personTypes;
+                d.roles = roles;
+                d.organizations = organizations;
+                // Add custom fields filter
+                d.customFields = customFields;
+                console.log('DataTable AJAX customFields:', customFields);               
             }, 
         },
-        createdRow: function (row, data, index) { 
-            // $(row).addClass( 'bg-white1' );
+        createdRow: function (row, data, index) {          
         },        
         "columns":<?php echo (json_encode($forDatatable)); ?>,
-		 
+         
      "drawCallback": function( settings ) {
       if ($('.dataTables_empty').length) {
         $('.dataTables_empty').html('<div class="dt-empty-message"><h2 class="text-muted">No member found at the moment. Please check back later or adjust your filters.</h2></div>');
-        $('.dataTables_paginate').hide(); // Hide pagination
-        $('.dataTables_length').hide();   // Hide "Show X records per page"
+        $('.dataTables_paginate').hide(); 
+        $('.dataTables_length').hide();   
       }else{
-        $('.dataTables_paginate').show(); // Show pagination if records exist
-        $('.dataTables_length').show();   // Show "Show X records per page"
+        $('.dataTables_paginate').show(); 
+        $('.dataTables_length').show();   
       }
             dt_dropdown();
-			   $('[data-toggle="tooltip"]').tooltip() ; 
-			    $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
-		   
+               $('[data-toggle="tooltip"]').tooltip() ; 
+                $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+           
          },
-		  "initComplete": function(settings, json) {
-			          dt_scroll();
-			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+          "initComplete": function(settings, json) {
+                      dt_scroll();
+              $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
-	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
+     $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         $('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
-	
-	//fetch group members
-	function groupMembers(start){ 
-		 $('.grid-view #eng-overlay').show();
-		  $('.grid-view .row').css('opacity','.3');
-	   $.ajax({
+    
+    //fetch group members
+    function groupMembers(start){ 
+         $('.grid-view #eng-overlay').show();
+          $('.grid-view .row').css('opacity','.3');
+       $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
           data:{
               action:'peopleloadGridDataByGroups',
-			  groupId:groupId,
-			  viewMode:'Grid',
-			  length:length,
-			  start:start,
-			  departments:departments,
-			  positions:positions,
-			  personTypes:personTypes,
-			  roles:roles
+              groupId:groupId,
+              viewMode:'Grid',
+              length:length,
+              start:start,
+              departments:departments,
+              positions:positions,
+              personTypes:personTypes,
+              roles:roles,
+              organizations:organizations,
+              customFields: customFields
+
           },
          success: function(response) {
-	  		 $('.grid-view #eng-overlay').hide();
-			  $('.grid-view .row').css('opacity','1');
-			try {
-			   var parsedResponse = JSON.parse(response);
-			  var data = parsedResponse.data || [];
-			  renderGroupGrid(data);
-			 renderPagination(parsedResponse.count, start, length, modulename = 'groupMembers');
-			} catch (e) {
-			  console.error('Error parsing response:', e);
-			}
-		  },
-		  error: function() {
-			$('.grid-view #eng-overlay').hide();
-			 $('.grid-view .row').css('opacity','1');
-			console.error('AJAX request failed');
-		  }
+             $('.grid-view #eng-overlay').hide();
+              $('.grid-view .row').css('opacity','1');
+            try {
+               var parsedResponse = JSON.parse(response);
+              var data = parsedResponse.data || [];
+              renderGroupGrid(data);
+             renderPagination(parsedResponse.count, start, length, modulename = 'groupMembers');
+            } catch (e) {
+              console.error('Error parsing response:', e);
+            }
+          },
+          error: function() {
+            $('.grid-view #eng-overlay').hide();
+             $('.grid-view .row').css('opacity','1');
+            console.error('AJAX request failed');
+          }
         });
-	}
-	
-	//grid layout
+    }
+    
+    //grid layout
  // var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
- //print_r(GROUP_MEMBERS_COLS_GRID);
-  // Convert GROUP_MEMBERS_COLS_GRID to a more usable format
-var groupMemberCols = <?php
+    var groupMemberCols = <?php
     $gridCols = [];
     foreach (GROUP_MEMBERS_COLS_GRID as $key) {
         $json = json_decode(stripslashes($key), true);
@@ -396,7 +434,7 @@ var groupMemberCols = <?php
     echo json_encode($gridCols);
 ?>;
  
-  //console.log(groupMemberCols);
+  
 var fieldIcons = {
     email:    '<i class="fas fa-envelope mr-2"></i>',
     organization: '<i class="fas fa-landmark mr-2"></i>',
@@ -415,21 +453,19 @@ var fieldIcons = {
     roles:    '<i class="fas fa-user-tag mr-2"></i>',
     department: '<i class="fas fa-building mr-2"></i>',
     region:   '<i class="fas fa-globe-americas mr-2"></i>',
-    name:     '', // handled as card-title
+    name:     '', 
 };
 
 
-	function getFieldLabel(field) {
-    // Insert space before each uppercase letter (except first), then capitalize first letter
+    function getFieldLabel(field) {    
     return field
-        .replace(/([a-z])([A-Z])/g, '$1 $2') // add space before capital
-        .replace(/^./, function(str){ return str.toUpperCase(); }); // capitalize first letter
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/^./, function(str){ return str.toUpperCase(); });
 }
 
 function renderGroupGrid(data) {
-  // console.log(data);
     var container = $('.grid-view .row');
-    container.empty(); // Clear previous content
+    container.empty(); 
     if (data.length === 0) {
         container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
         return;
@@ -440,8 +476,7 @@ function renderGroupGrid(data) {
             ? ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">'
             : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
 
-        // Prepare field values INSIDE the loop, after person is defined
-       // ...existing code...
+       
 var fieldValues = {
     email:    person.email ? '<a href="mailto:' + person.email + '">' + person.email + '</a>' : '--',
     primaryorganization: person.organization && person.organization.name ? person.organization.name : '--',
@@ -476,8 +511,6 @@ var fieldValues = {
     : '--',
     createddate: person.createdDate ? new Date(person.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
     totaltimeworked: person.totalTimeWorked ? formatMonthsToYearsAndMonths(person.totalTimeWorked) : '--',
-    // createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-    // modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
     name: person.fullName || '--'
 };
    // Add custom fields dynamically
@@ -584,10 +617,6 @@ function extractRegionsFromTerms(terms) {
 }
 
 
-//grid pagination
-
-
-//search members
 <?php
   if($title_key > -1){
 ?>
@@ -610,7 +639,7 @@ window.addEventListener("load", function () {
              groupId:groupId, 
         },
         success: function(response) { 
-            //console.log(response);
+            console.log(response);
             for (var key of Object.keys(JSON.parse(response))) {
                 $('.' + key + '-filter ul').html(JSON.parse(response)[key]);
             }
@@ -624,20 +653,6 @@ window.addEventListener("load", function () {
 });
 
 function filterEvents(minDate, maxDate) {
-    // $('input[name="createdbetween"]').daterangepicker({
-    //     minDate: minDate,
-    //     maxDate: maxDate,
-    //     autoApply: true
-    // }, function(start, end) {
-    //     createdDate = start.format('MM/DD/YYYY') + '-' + end.format('MM/DD/YYYY');
-    //     startdate = start.format('MM/DD/YYYY');
-    //     enddate = end.format('MM/DD/YYYY');
-    //     if ($('#apply-filter-data .spinner-border').length == 0) {
-    //         $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
-    //     }
-    //     countFilterData();
-    // });
-    
     startdate = '';
     enddate = '';
     $('input[name="createdbetween"]').val('');
@@ -650,80 +665,205 @@ function filterEvents(minDate, maxDate) {
     });
 }
 
+// Common function to collect checked values from a filter area
+function getCheckedValues(selector) {
+    var values = [];
+    $(selector + ' input[type="checkbox"]:checked').each(function() {
+        values.push($(this).val());
+    });
+    return values;
+}
+
+// Common function to clear all checkboxes in a filter area
+function clearAllCheckboxes(selector) {
+    $(selector + ' input[type="checkbox"]').prop('checked', false);
+}
+
+// Common function to reset customFields object
+function resetCustomFields() {
+    customFields = {};
+}
+
+// Common function to update customFields object from DOM
+function updateCustomFieldsFromDOM() {
+    customFields = {};
+    $('.custom-field-filter').each(function() {
+        var fieldId = $(this).data('field-id');
+        var checked = [];
+        $(this).find('input[type="checkbox"]:checked').each(function() {
+            checked.push($(this).val());
+        });
+        if (checked.length > 0) {
+            customFields[fieldId] = checked;
+        }
+    });
+}
+
 // Apply filter button click handler
 $('#apply-filter-data').click(function() {
-    // Collect selected department IDs
-    departments = [];
-    $('.currentDepartment-filter input[type="checkbox"]:checked').each(function() {
-        departments.push($(this).val());
-    });
-    
-    // Collect selected position IDs
-    positions = [];
-    $('.currentPosition-filter input[type="checkbox"]:checked').each(function() {
-        positions.push($(this).val());
-    });
-    
-    // Collect selected person type IDs
-    personTypes = [];
-    $('.personType-filter input[type="checkbox"]:checked').each(function() {
-        personTypes.push($(this).val());
-    });
-    
-    // Collect selected role IDs
-    roles = [];
-    $('.roles-filter input[type="checkbox"]:checked').each(function() {
-        roles.push($(this).val());
-    });
-    
+    departments = getCheckedValues('.currentDepartment-filter');
+    positions = getCheckedValues('.currentPosition-filter');
+    personTypes = getCheckedValues('.personType-filter');
+    roles = getCheckedValues('.roles-filter');
+    organizations = getCheckedValues('.organization-filter');
+    updateCustomFieldsFromDOM();
     console.log('Selected Filters:', {
         departments: departments,
         positions: positions,
         personTypes: personTypes,
-        roles: roles
+        roles: roles,
+        organizations: organizations,
+        customFields: customFields
     });
-    
-    // Reload DataTable with filters
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
-    
-    // Reload grid view if in grid mode
     if (viewMode === 'grid') {
-        start = 0; // Reset to first page
+        start = 0;
         groupMembers(start);
     }
-    
-    // Remove spinner from apply button
+    $('.filter-area').addClass('d-none');
     $('#apply-filter-data .spinner-border').remove();
     $('#apply-filter-data').removeAttr('disabled');
 });
 
 // Clear all filters functionality
 $('#clear-all').click(function() {
-    // Clear all filter arrays
     departments = [];
     positions = [];
     personTypes = [];
     roles = [];
-    
-    // Uncheck all checkboxes
-    $('.filter-list input[type="checkbox"]').prop('checked', false);
-    
-    // Clear date input
+    organizations = [];
+    clearAllCheckboxes('.filter-list');
+    clearAllCheckboxes('.custom-field-filter');
+    resetCustomFields();
     $('input[name="createdbetween"]').val('');
-    
-    // Reload DataTable
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
-    
-    // Reload grid view if in grid mode
     if (viewMode === 'grid') {
-        start = 0; // Reset to first page
+        start = 0;
         groupMembers(start);
     }
-    
+    $('.filter-area').addClass('d-none');
     console.log('All filters cleared');
+     $('.filter-icon').removeClass('active');
+        $('.filter-icon span').hide();
+});
+
+// Collect selected custom field values dynamically
+$(document).on('click', '.custom-field-filter-tittle', function() {
+    // Dynamically fetch the fieldId of the clicked element
+    var fieldId = $(this).closest('.filter-list').find('.custom-field-filter').data('field-id');
+    var selectedDate = new Date().toISOString().split('T')[0];
+    var groupId = '<?php echo $groupId; ?>';
+
+    if (!fieldId) {
+        console.error('Field ID not found for the clicked element');
+        return;
+    }
+
+    // Show loader only for the specific custom field
+    $('.custom-field-filter[data-field-id="' + fieldId + '"] .loaders').show();
+
+    $.ajax({
+        type: 'POST',
+        url: engagifiiUrl_ajaxurl,
+        data: {
+            action: 'getCustomFieldFilterData',
+            fieldConfigurationId: fieldId,
+            selectedDate: selectedDate,
+            groupId: groupId
+        },
+        success: function(response) {
+            console.log('Custom Field Filter Data:', response);
+            if (response.success) {
+                if (typeof response.data === 'object' && response.data !== null) {
+                    var filterContent = '';
+                    response.data.forEach(function(item) {
+                        filterContent += '<li class="d-flex align-items-start">'
+                            + '<input type="checkbox" class="mr-2 mt-1" id="customfield_' + item.id + '" value="' + item.id + '">'
+                            + '<label for="customfield_' + item.id + '"><small>' + item.name + '</small></label>'
+                            + '</li>';
+                    });
+
+                    var $filterArea = $('.custom-field-filter[data-field-id="' + fieldId + '"]');
+                    $filterArea.removeClass('d-none'); // Make sure it's visible
+                    $filterArea.find('.list-group').html(filterContent);
+                }
+            } else {
+                console.error('Failed to fetch custom field filter data:', response.data.message || 'No data returned');
+            }
+        },
+        error: function() {
+            console.error('AJAX request failed');
+        },
+        complete: function() {
+            $('.custom-field-filter[data-field-id="' + fieldId + '"] .loaders').hide();
+        }
+    });
+});
+
+function countFilterData() {
+    var departments = getCheckedValues('.currentDepartment-filter');
+    var positions = getCheckedValues('.currentPosition-filter');
+    var personTypes = getCheckedValues('.personType-filter');
+    var roles = getCheckedValues('.roles-filter');
+    var organizations = getCheckedValues('.organization-filter');
+    var groupId = '<?php echo $groupId; ?>';
+    updateCustomFieldsFromDOM();
+
+    $.ajax({
+        type: "post",
+        url: engagifiiUrl_ajaxurl,
+        data: {
+            action: 'groupCountFilterData',
+            departments: departments,
+            positions: positions,
+            personTypes: personTypes,
+            roles: roles,
+            organizations: organizations,
+            customFields: customFields,
+            groupId: groupId
+        },
+        success: function(response) {
+            var element = document.getElementById("countFilterResult");
+            $('#apply-filter-data .spinner-border').remove();
+            $('#apply-filter-data').removeAttr('disabled');
+            if (element) {
+                element.innerHTML = " (" + response.api_response + ")";
+            }
+        }
+    });
+}
+
+// Trigger countFilterData on filter changes
+$(document).on('change', '.filter-list input[type=checkbox]', function() {   
+    countFilterData();
+    var appliedCategories = $('.filter-list').filter(function() {
+        return $(this).find('input[type=checkbox]:checked').length > 0;
+    }).length;
+    // Store the count but do not show it yet
+    $('.filter-icon').data('appliedCategories', appliedCategories);
+});
+
+$('#apply-filter-data').click(function() {
+    // Show the count on the filter icon after Apply is clicked
+    var appliedCategories = $('.filter-icon').data('appliedCategories') || 0;
+    if (appliedCategories > 0) {
+        $('.filter-icon').addClass('active');
+        $('.filter-icon span').text(appliedCategories).show();
+    } else {
+        $('.filter-icon').removeClass('active');
+        $('.filter-icon span').hide();
+    }
+});
+$(document).on('click', function(event) {
+    var $filterArea = $('.filter-area');
+    var $filterIcon = $('.filter-icon');
+    if (!$filterArea.is(event.target) && !$filterArea.has(event.target).length &&
+        !$filterIcon.is(event.target) && !$filterIcon.has(event.target).length) {
+        $filterArea.addClass('d-none');
+    }
 });
 </script>
