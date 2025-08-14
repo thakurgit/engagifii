@@ -41,7 +41,7 @@ function clearCookies() {
 	}
     		function moOAuthLoginNew(app_name) {
 			
-			window.location.href = '<?php echo site_url(); ?>' + '/?option=oauthredirect&app_name=' + app_name;
+			window.location.href = '<?php echo site_url(); ?>' + '/wp-login.php?action=engagifii_sso';
 		}
     const accessToken = '<?php echo isset($_SESSION['accesstoken']) ? $_SESSION['accesstoken'] : ''; ?>';
     

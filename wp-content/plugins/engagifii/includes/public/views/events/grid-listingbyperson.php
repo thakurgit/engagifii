@@ -392,8 +392,8 @@ dt_titleSearch('Search Events');
         var iframe = $('<iframe>', {
             src: tpath,
             id: 'iframeContainer',
-            width: 1000,
-            height: 700,
+            width: '100%',
+            height: '100%',
             frameborder: 0,
             scrolling: 'auto'
         });
@@ -402,8 +402,8 @@ dt_titleSearch('Search Events');
         var modalContainer = $('<div>', {
             id: 'modalContainer',
             css: {
-                'width': '1000px',
-                'height': '700px',
+                'width': '90vw',
+                'height': '90vh',
                 'position': 'fixed',
                 'top': '50%',
                 'left': '50%',
