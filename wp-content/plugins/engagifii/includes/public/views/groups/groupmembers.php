@@ -639,7 +639,7 @@ window.addEventListener("load", function () {
              groupId:groupId, 
         },
         success: function(response) { 
-            console.log(response);
+           // console.log(response);
             for (var key of Object.keys(JSON.parse(response))) {
                 $('.' + key + '-filter ul').html(JSON.parse(response)[key]);
             }

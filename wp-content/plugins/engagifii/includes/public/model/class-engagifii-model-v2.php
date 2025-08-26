@@ -241,7 +241,7 @@ public function geteventsClasscalendar(){
 
             <?php
                 $dayCount = 1;
-                $eventsdata = $this->eventsClassCalendar();
+                $eventsdata = $this->eventsClassCalendar() ?? [];
                 echo '<div class="calendar__week text-center d-flex justify-content-around border-top">';
                 for($cb=1;$cb<=$boxDisplay;$cb++){
                     if(($cb >= $currentMonthFirstDay || $currentMonthFirstDay == 1) && $cb <= ($totalDaysOfMonthDisplay)){
