@@ -5,7 +5,7 @@
  * Plugin URI:  https://engagifii.com/
  * Author:      Engagifii
  * Author URI:  https://engagifii.com/
- * Version:     1.4.0
+ * Version:     1.6.0
  * Text Domain: engagifii
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define('ENGAGIFII_VERSION','1.3.0');
+define('ENGAGIFII_VERSION','1.6.0');
 
 Final Class Engagifii {
 	/**
