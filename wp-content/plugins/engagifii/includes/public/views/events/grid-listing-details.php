@@ -453,7 +453,7 @@ if ( strpos($url,'my-profile') !== false ) {
                                                 	<div class="dropdown">
 														  <button class="btn shadow-none no-border dropdown-toggle" type="button" id="skills_<?php echo $key; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 														  	style="background:url('<?php echo ENGAGIFII_ASSETS_URL; ?>/images/class.png');background-size:contain;background-repeat:no-repeat;width:35px;height:35px">
-														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo //count($skills); ?></span>
+														    <span class="badge badge-secondary position-absolute rounded-circle"><?php //echo count($skills); ?></span>
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="skills_<?php echo $key; ?>">
 														  	<?php
