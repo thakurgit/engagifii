@@ -68,7 +68,7 @@ session_start();
     //$tenantCode = $options['ebt_tenant_code']['tenant_code'];
 	$tenantCode = $options['dashboard_tenant_code'];
 	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
-	$contactPersons = $response->contacts;
+	$contactPersons = $response->contacts ?? [];
 	if($loggedInUserId){
 	$userPermissionArray = array();
         $postedDataPermission = array();
@@ -432,7 +432,7 @@ if ( strpos($url,'my-profile') !== false ) {
                                                 <ul class="list-unstyled mb-0 ml-0 d-flex flex-wrap">
                                                 <li class="position-relative inst-ac ml-0">
                                                 	<div class="dropdown">
-														    <!-- <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($courses); ?></span> -->
+														    <!-- <span class="badge badge-secondary position-absolute rounded-circle"><?php //echo count($courses); ?></span> -->
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="course_<?php echo $key; ?>">
 														  	<?php
@@ -453,7 +453,7 @@ if ( strpos($url,'my-profile') !== false ) {
                                                 	<div class="dropdown">
 														  <button class="btn shadow-none no-border dropdown-toggle" type="button" id="skills_<?php echo $key; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
 														  	style="background:url('<?php echo ENGAGIFII_ASSETS_URL; ?>/images/class.png');background-size:contain;background-repeat:no-repeat;width:35px;height:35px">
-														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo count($skills); ?></span>
+														    <span class="badge badge-secondary position-absolute rounded-circle"><?php echo //count($skills); ?></span>
 														  </button>
 														  <ul class="dropdown-menu p-1" aria-labelledby="skills_<?php echo $key; ?>">
 														  	<?php
