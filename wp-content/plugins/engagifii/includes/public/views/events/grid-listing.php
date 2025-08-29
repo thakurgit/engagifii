@@ -141,7 +141,7 @@ ob_start();
                     </div>
                     <?php } ?>
                     
-                    <?php if(in_array('eventType', $columnNames) && array_search('eventType', $columnNames) && !empty(CLASS_TYPES_COLS) && isArrayOfJsonStrings(EVENTS_TYPES_COLS)) { ?>
+                    <?php if(in_array('eventType', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Event Types <i class="far fa-angle-down"></i></div>
                         <div class="content-area eventType-filter d-none">
@@ -167,7 +167,7 @@ ob_start();
                     </div>
                     <?php } ?>
                     
-                    <?php if (in_array('tags', $columnNames) && array_search('tags', $columnNames)) { ?>
+                    <?php if (in_array('tags', $columnNames)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Tags <i class="far fa-angle-down"></i></div>
                         <div class="content-area tags-filter d-none">
