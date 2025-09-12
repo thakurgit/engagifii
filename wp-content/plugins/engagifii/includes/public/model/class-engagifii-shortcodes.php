@@ -28,7 +28,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 			'endorsement-details' => 'endorsement_details',
 			'endorsement-list-calendar' => 'endorsement_list_calender_grid_view',
 			'legislation-list' 		       =>  'legislation_grid_view',			
-			'legislation_grid_detail_information' =>  'legislation_grid_details',
+			//'legislation_grid_detail_information' =>  'legislation_grid_details',
 			'legislation-details' => 'legislation_details',
 			'courses-list' => 'courses_grid_view',
 			//'courses-list-ByPerson' => 'courses_grid_view_byPerson',
@@ -218,11 +218,11 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		return ob_get_clean();
 	}	
 
-	public function legislation_grid_details(){
+	/*public function legislation_grid_details(){
 		ob_start();
 		include $this->basePath.'includes/public/views/legislation/grid-listing-details.php';
 		return ob_get_clean();
-	} 
+	} */
 
 	public function legislation_details($attr){
 		ob_start();
@@ -230,7 +230,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		     'billId' => $attr['id']
 		    ), $attr));
 
-		include $this->basePath.'includes/public/views/legislation/grid-listing-details.php';
+		include_once $this->basePath.'includes/public/views/legislation/grid-listing-details.php';
 		return ob_get_clean();
 	}
 
@@ -293,7 +293,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 	public function events_calendar_search()
 	{
 		ob_start();
-		include $this->basePath.'includes/public/views/events/calendar-search.php';
+		include_once $this->basePath.'includes/public/views/events/calendar-search.php';
 		return ob_get_clean();
 	}
 

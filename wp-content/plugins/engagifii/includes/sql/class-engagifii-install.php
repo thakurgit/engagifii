@@ -113,7 +113,7 @@ class Engagifii_Install{
 				'post_name'     => 'engagifii-grid-view',
 			),array(
 				'post_title'    => wp_strip_all_tags( 'Engagifii Detail' ),
-				'post_content'  => '<div class="capital-watch-main-contatiner">[legislation_grid_detail_information]</div>',
+				'post_content'  => '<div class="capital-watch-main-contatiner">[legislation-details Id="bill-id"]</div>',
 				'post_status'   => 'publish',
 				'post_author'   => 1,
 				'post_type'     => 'page',

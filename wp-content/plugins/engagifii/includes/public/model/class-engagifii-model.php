@@ -4267,7 +4267,7 @@ public function classesLoadGridDataByPerson(){
                 $nestedData["sponsors"] = "None";
             }
 
-            $nestedData["trackingLevelColorCode"] = $row->trackingLevelColorCode;
+            $nestedData["trackingLevelColorCode"] = $row->trackingLevelColorCode ?? '#000000';
             $nestedData["BillType"] = $row->billTypeAbbr;
             if($tenantCode=="clemson"){
                 $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billnumbers=' . $fBillNumber . ' >'.$row->billNumber.'</a>';
