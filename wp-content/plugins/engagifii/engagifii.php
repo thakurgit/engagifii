@@ -5,7 +5,7 @@
  * Plugin URI:  https://engagifii.com/
  * Author:      Engagifii
  * Author URI:  https://engagifii.com/
- * Version:     1.6.0
+ * Version:     1.6.1
  * Text Domain: engagifii
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define('ENGAGIFII_VERSION','1.6.0');
+define('ENGAGIFII_VERSION','1.6.1');
 
 Final Class Engagifii {
 	/**
@@ -65,6 +65,7 @@ Final Class Engagifii {
 		register_uninstall_hook( __FILE__, array( 'Engagifii_Install','uninstall'));
 		//add_action( 'wp_print_styles', array($this,'dequeue_unnecessary_styles'));
 		add_action('init',array($this,'engagifii_load_js_script'));
+		add_action('init',array($this,'includes_variable'));
 		add_action('wp_enqueue_scripts',array($this,'engagifii_load_css'),9999);
 		add_action('init', array( $this->engagifiiShortcode, 'init' ) );
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
@@ -106,8 +107,13 @@ Final Class Engagifii {
 		}		 
 		$this->frontend_includes_ebt();
 		include_once('includes/functions.php');
-		require_once('includes/variable.php');
 		require_once ('includes/updater.php');
+	}
+	/**
+	* Include required core files used in the frontend after wp init
+	*/
+	public function includes_variable() {
+		include_once('includes/variable.php');
 	}
 
 	/**
