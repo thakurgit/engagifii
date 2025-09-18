@@ -308,7 +308,7 @@ function insert_page_on_activation() {
         $page7_id = wp_insert_post($page7);
     }
 	// Parent page data
-	$parent_page_slug = 'my-profile'; // Slug of the parent page
+	/*$parent_page_slug = 'my-profile'; // Slug of the parent page
 	$parent_page = array(
 		'post_type'     => 'page',
 		'post_title'    => 'My Profile',
@@ -352,11 +352,11 @@ function insert_page_on_activation() {
 			'title' => 'Members',
 			'content' => '[engagifii-members]'
 		)
-	);
+	);*/
 	
 	// Loop through child pages data to add each child page
 	// Function to check if a page with a given slug exists under a given parent page
-function is_page_unique($slug, $parent_id) {
+/*function is_page_unique($slug, $parent_id) {
     global $wpdb;
     $query = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_parent = %d AND post_type = 'page'", $slug, $parent_id);
     $result = $wpdb->get_var($query);
@@ -442,7 +442,7 @@ foreach ($child_pages_data as $child_data) {
             }
         }
     }
-}
+}*/
 }
 
 /**

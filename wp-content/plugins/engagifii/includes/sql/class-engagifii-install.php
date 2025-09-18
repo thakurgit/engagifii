@@ -20,8 +20,8 @@ class Engagifii_Install{
 	 */
 	public static function install() {
 		self::create_tables();
-		self::add_EBT_page();
-		self::add_LBT_Page();
+		//self::add_EBT_page();
+		//self::add_LBT_Page();
 	}
 
 
@@ -69,7 +69,7 @@ class Engagifii_Install{
 		
 	}
 
-	private static function add_EBT_page() {
+	/*private static function add_EBT_page() {
        	global $wpdb;  
       	$checkPageExists =  $wpdb->get_results("select *  from ".$wpdb->prefix."posts WHERE post_name in ('endorsement-grid-view','endorsement-detail') and post_type='page' ");
        	$foundPages = $wpdb->num_rows;       
@@ -123,6 +123,6 @@ class Engagifii_Install{
 				wp_insert_post( $page );
 			}
 		}
-	}
+	}*/
 
 }
