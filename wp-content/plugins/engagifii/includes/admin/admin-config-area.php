@@ -76,23 +76,27 @@ class ebtAdminConfigSettings {
  	}
 	function profile_Settings()
  	{
-		
- 		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-		$enabledModules = get_option('engagifii_modules');
-		if(!$enabledModules || in_array('dashboard',$enabledModules)){
-		  include_once( __DIR__.'/view/dashboard-settings.php' );
+		$options = get_option( 'ebt_api_settings' );
+		$dashboard_tenant_code= $options['dashboard_tenant_code'] ?? '';
+		if ($dashboard_tenant_code == 'psba') {
+		  $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+		  $enabledModules = get_option('engagifii_modules');
+		  if(!$enabledModules || in_array('dashboard',$enabledModules)){
+			include_once( __DIR__.'/view/dashboard-settings.php' );
+		  }
 		}
  	}
 	function ebt_api_add_admin_menu() {
-	//$options = get_option( 'ebt_api_settings' );
-	//$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
+	  $options = get_option( 'ebt_api_settings' );
+		$dashboard_tenant_code= $options['dashboard_tenant_code'] ?? '';
 				add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
 				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
 				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
 				add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
+				if ($dashboard_tenant_code == 'psba') {
 					add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'Profile Settings', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
-					//add_submenu_page( 'engagifii-module-api', 'Modules Settings', 'Module Settings', 'manage_options', 'engagifii-module-settings',  array($this,'engagifii_modules'));
+				} 
 	}
 	
     function ebt_api_settings_init() {
@@ -416,8 +420,8 @@ function ebt_tenant_code_render(  ) {
 
 	function ebt_api_settings_section_callback( ) {
   		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-	//$options = get_option( 'ebt_api_settings' );
-	//$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
+	$options = get_option( 'ebt_api_settings' );
+	$dashboard_tenant_code= $options['dashboard_tenant_code'] ?? '';
     	?>
 		<!-- Our admin page content should all be inside .wrap -->
   		<div class="wrap">
@@ -426,7 +430,7 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>">Customize CSS</a>
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
                 <a href="?page=engagifii-module-api&tab=page-settings" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
-                <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a>
+               <?php if ($dashboard_tenant_code == 'psba') { ?> <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a><?php } ?>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
     		</nav>
 

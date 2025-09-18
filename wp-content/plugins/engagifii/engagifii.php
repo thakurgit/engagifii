@@ -217,7 +217,51 @@ register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
 function insert_page_on_activation() {
   if ( ! current_user_can( 'activate_plugins' ) ) return;
  
-    $page1_slug = 'bill-tracking'; // Slug of the Post
+    $pages = [
+        'bill-tracking' => [
+            'post_title'   => 'Bill Tracking',
+            'post_content' => '[legislation-list]',
+        ],
+        'engagifii-detail' => [
+            'post_title'   => 'Bill Detail',
+            'post_content' => "[legislation-details Id='bill-id']",
+        ],
+        'legislative-tracking-database' => [
+            'post_title'   => 'Legislative tracking database',
+            'post_content' => '', // optional
+        ],
+        'classes' => [
+            'post_title'   => 'Classes',
+            'post_content' => '[classes-list-calendar-class-name calendarclassname=true]',
+        ],
+        'class-details' => [
+            'post_title'   => 'Class Details',
+            'post_content' => "[class-details Id='class-id']",
+        ],
+        'courses' => [
+            'post_title'   => 'Courses',
+            'post_content' => '[courses-list]',
+        ],
+        'course-details' => [
+            'post_title'   => 'Course Details',
+            'post_content' => "[course-details Id='course-id']",
+        ],
+    ];
+
+    foreach ( $pages as $slug => $data ) {
+        if ( ! get_page_by_path( $slug, OBJECT, 'page' ) ) {
+            $page = [
+                'post_type'    => 'page',
+                'post_name'    => $slug,
+                'post_title'   => $data['post_title'],
+                'post_content' => $data['post_content'],
+                'post_status'  => 'publish',
+                'post_author'  => 1,
+            ];
+            wp_insert_post( $page );
+        }
+    }
+/* $page1_slug = 'bill-tracking'; // Slug of the Post
     $page1 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Bill Tracking',    // Title of the Content
@@ -308,7 +352,7 @@ function insert_page_on_activation() {
         $page7_id = wp_insert_post($page7);
     }
 	// Parent page data
-	/*$parent_page_slug = 'my-profile'; // Slug of the parent page
+	$parent_page_slug = 'my-profile'; // Slug of the parent page
 	$parent_page = array(
 		'post_type'     => 'page',
 		'post_title'    => 'My Profile',
