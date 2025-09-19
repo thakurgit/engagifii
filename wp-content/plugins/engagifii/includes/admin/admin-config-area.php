@@ -37,36 +37,56 @@ class ebtAdminConfigSettings {
  	// }
      function show_datatable_column() {
         $tab = $_GET['tab'] ?? null;
-        /*$views = [
-          'endorsement/admin-column-list.php',
-          'courses/admin-column-list.php',
-          'classes/admin-column-list.php',
-          'events/admin-column-list.php',
-          'legislation/admin-column-list.php'
-        ];*/
-        $enabledModules = get_option('engagifii_modules');
-		if(!$enabledModules || in_array('training-and-accreditation',$enabledModules)){
-			$views[] = 'endorsement/admin-column-list.php';
-			$views[] = 'courses/admin-column-list.php';
-			$views[] = 'classes/admin-column-list.php';
-		}
-		if(!$enabledModules || in_array('events',$enabledModules)){
-			$views[] = 'events/admin-column-list.php';
-		}
-        if(!$enabledModules || in_array('events',$enabledModules)){
-			$views[] = 'trainingcalendar/admin-column-list.php';
-		}
-		if(!$enabledModules || in_array('legislation',$enabledModules)){
-			$views[] = 'legislation/admin-column-list.php';
+        
+        // Get enabled modules from our new module system
+        $enabledModules = get_option('engagifii_enabled_modules', array());
+        
+        // Ensure $enabledModules is always an array
+        if (!is_array($enabledModules)) {
+            $enabledModules = array();
+        }
+        
+        // If specific modules are enabled, include their views
+        $views = array();
+        
+        if (in_array('endorsements', $enabledModules) || in_array('classes', $enabledModules) || in_array('courses', $enabledModules)) {
+            $views[] = 'endorsement/admin-column-list.php';
+        }
+        
+        if (in_array('courses', $enabledModules)) {
+            $views[] = 'courses/admin-column-list.php';
+        }
+        
+        if (in_array('classes', $enabledModules)) {
+            $views[] = 'classes/admin-column-list.php';
+        }
+        
+        if (in_array('events', $enabledModules)) {
+            $views[] = 'events/admin-column-list.php';
+            $views[] = 'trainingcalendar/admin-column-list.php';
+        }
+        
+        if (in_array('legislation', $enabledModules)) {
+            $views[] = 'legislation/admin-column-list.php';
+        }
+        
+        if (in_array('group_directory', $enabledModules)) {
             $views[] = 'groupmembers/admin-column-list.php';
+        }
+        
+        if (in_array('organization_directory', $enabledModules)) {
             $views[] = 'organizations/admin-column-list.php';
-		}
-      	if (isset($views)) {
-		  foreach ($views as $view) {
-			include_once(__DIR__ . '/view/' . $view);
-		  }
-		}
-      }
+        }
+        
+        // Include the views
+        if (!empty($views)) {
+            foreach ($views as $view) {
+                if (file_exists(__DIR__ . '/view/' . $view)) {
+                    include_once(__DIR__ . '/view/' . $view);
+                }
+            }
+        }
+    }
       
 	function engagifii_Customizer()
  	{
@@ -76,23 +96,61 @@ class ebtAdminConfigSettings {
  	}
 	function profile_Settings()
  	{
-		
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-		$enabledModules = get_option('engagifii_modules');
-		if(!$enabledModules || in_array('dashboard',$enabledModules)){
-		  include_once( __DIR__.'/view/dashboard-settings.php' );
+		
+		// Get enabled modules from our new module system
+		$enabledModules = get_option('engagifii_enabled_modules', array());
+		
+		// Ensure $enabledModules is always an array
+		if (!is_array($enabledModules)) {
+		    $enabledModules = array();
+		}
+		
+		// Show dashboard settings if group_directory module is enabled
+		if (in_array('group_directory', $enabledModules)) {
+		    include_once( __DIR__.'/view/dashboard-settings.php' );
 		}
  	}
 	function ebt_api_add_admin_menu() {
-	//$options = get_option( 'ebt_api_settings' );
-	//$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
-				add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
-				$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
-				add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
-				add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
-				add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
-					add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'Profile Settings', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
-					//add_submenu_page( 'engagifii-module-api', 'Modules Settings', 'Module Settings', 'manage_options', 'engagifii-module-settings',  array($this,'engagifii_modules'));
+		// Get enabled modules from our new module system
+		$enabledModules = get_option('engagifii_enabled_modules', array());
+		
+		// Ensure $enabledModules is always an array
+		if (!is_array($enabledModules)) {
+		    $enabledModules = array();
+		}
+		
+		// Main menu page - always show
+		add_menu_page( 'Engagifii', 'Engagifii', 'manage_options', 'engagifii-module-api', array($this,'engagifii_settings_api_view'),plugins_url('engagifii/assets/images/logo-icon.png'), 4 );
+		$parent = site_url().'/wp-admin/admin.php?page=engagifii-module-api';
+		
+		// API settings - always show
+		add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
+		
+		// Shortcodes - only show if relevant modules are enabled
+		if (in_array('legislation', $enabledModules) || 
+		    in_array('classes', $enabledModules) || 
+		    in_array('courses', $enabledModules) || 
+		    in_array('events', $enabledModules) || 
+		    in_array('endorsements', $enabledModules) ||
+		    in_array('group_directory', $enabledModules) ||
+		    in_array('organization_directory', $enabledModules)) {
+			add_submenu_page( 'engagifii-module-api', 'Shortcodes', 'Shortcodes', 'manage_options', $parent.'&tab=shortcode',  $callback = '');
+		}
+		
+		// Page Settings - only show if page-creating modules are enabled
+		if (in_array('legislation', $enabledModules) || 
+		    in_array('classes', $enabledModules) || 
+		    in_array('courses', $enabledModules) || 
+		    in_array('endorsements', $enabledModules) ||
+		    in_array('group_directory', $enabledModules)) {
+			add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
+		}
+		
+		// Profile Settings - only show if group directory module is enabled
+		if (in_array('group_directory', $enabledModules)) {
+			add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'Profile Settings', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
+		}
 	}
 	
     function ebt_api_settings_init() {
@@ -117,8 +175,19 @@ class ebtAdminConfigSettings {
 /* List Page */
 
 function ebt_api_shortocde_description() {
-    $shortcodes = array(
-        array(
+    // Get enabled modules
+    $enabledModules = get_option('engagifii_enabled_modules', array());
+    
+    // Ensure $enabledModules is always an array
+    if (!is_array($enabledModules)) {
+        $enabledModules = array();
+    }
+    
+    $shortcodes = array();
+    
+    // Classes shortcodes - only if classes module is enabled
+    if (in_array('classes', $enabledModules)) {
+        $shortcodes[] = array(
             'title' => 'Class Shortcodes',
             'list'  => array(
                 array(
@@ -146,8 +215,12 @@ function ebt_api_shortocde_description() {
                     'shortcode'   => '[class-calendar-class-name]'
                 )
             )
-        ),
-        array(
+        );
+    }
+    
+    // Legislation shortcodes - only if legislation module is enabled
+    if (in_array('legislation', $enabledModules)) {
+        $shortcodes[] = array(
             'title' => 'Legislation Shortcodes',
             'list'  => array(
                 array(
@@ -187,8 +260,12 @@ function ebt_api_shortocde_description() {
                     'shortcode'   => '[legislative-reports]'
                 )
             )
-        ),
-        array(
+        );
+    }
+    
+    // Events shortcodes - only if events module is enabled
+    if (in_array('events', $enabledModules)) {
+        $shortcodes[] = array(
             'title' => 'Event Shortcodes',
             'list'  => array(
                 array(
@@ -208,21 +285,64 @@ function ebt_api_shortocde_description() {
                     'shortcode'   => '[events-list-calendar calendar=true]'
                 )
             )
-        ),
-		array(
-            'title' => 'Public Official Shortcodes',
+        );
+    }
+    
+    // Courses shortcodes - only if courses module is enabled
+    if (in_array('courses', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Courses Shortcodes',
             'list'  => array(
                 array(
-                    'name'        => 'Public Official List',
-                    'shortcode'   => '[public-officials]'
+                    'name'        => 'Course List',
+                    'shortcode'   => '[courses-list]'
                 ),
                 array(
-                    'name'        => 'Public Official Details',
-                    'shortcode'   => '[public-officials-detail]'
-                ),
+                    'name'        => 'Course Details',
+                    'shortcode'   => '[course-details Id=\'course-id\']'
+                )
             )
-        ),
-		array(
+        );
+    }
+    
+    // Endorsement shortcodes - only if endorsements module is enabled
+    if (in_array('endorsements', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Endorsement Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Endorsement List',
+                    'shortcode'   => '[endorsement-grid-list]'
+                ),
+                array(
+                    'name'        => 'Endorsement Detail',
+                    'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
+                )
+            )
+        );
+    }
+    
+    // Group Directory shortcodes - only if group_directory module is enabled
+    if (in_array('group_directory', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Group Member Directory Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Group Members List View',
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="list"]'
+                ),
+                array(
+                    'name'        => 'Group Members Grid View',
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="Grid"]'
+                ),
+                array(
+                    'name'        => 'Group Members List & Grid View',
+                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
+                )
+            )
+        );
+        
+        $shortcodes[] = array(
             'title' => 'My Engagifii Dashboard',
             'list'  => array(
                 array(
@@ -248,87 +368,72 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'My Transactions',
                     'shortcode'   => '[engagifii-myTransactions]'
-                ),
-            )
-        ),
-        array(
-            'title' => 'Courses Shortcodes',
-            'list'  => array(
-                array(
-                    'name'        => 'Course List',
-                    'shortcode'   => '[courses-list]'
-                ),
-                array(
-                    'name'        => 'Course Details',
-                    'shortcode'   => '[course-details Id=\'course-id\']'
-                ),
-            )
-        ),
-        array(
-            'title' => 'Endorsement Shortcodes',
-            'list'  => array(
-                array(
-                    'name'        => 'Endorsement List',
-                    'shortcode'   => '[endorsement-grid-list]'
-                ),
-                array(
-                    'name'        => 'Endorsement Detail',
-                    'shortcode'   => '[endorsement-details Id=\'endorsement-id\']'
                 )
             )
-                ),
-                 array(
-            'title' => 'Group Member Directory Shortcodes',
+        );
+    }
+    
+    // Organization Directory shortcodes - only if organization_directory module is enabled
+    if (in_array('organization_directory', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Organization Shortcodes',
             'list'  => array(
                 array(
-                    'name'        => 'Group Members List View',
-                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="list"]'
+                    'name'        => 'Organization List View',
+                    'shortcode'   => '[get-organization viewmode="list"]'
                 ),
                 array(
-                    'name'        => 'Group Members Grid View',
-                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="Grid"]'
+                    'name'        => 'Organization Grid View',
+                    'shortcode'   => '[get-organization viewmode="grid"]'
                 ),
                 array(
-                    'name'        => 'Group Members List & Grid View',
-                    'shortcode'   => '[group-members-list id="your_group_id" viewMode="both"] OR [group_members_list id="your_group_id"]'
+                    'name'        => 'Organization List & Grid View',
+                    'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
                 )
             )
+        );
+    }
+    
+    // Public Officials shortcodes - part of legislation module
+    if (in_array('legislation', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Public Official Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Public Official List',
+                    'shortcode'   => '[public-officials]'
                 ),
-        //          array(
-        //     'title' => 'Organization Shortcodes',
-        //     'list'  => array(
-        //         array(
-        //             'name'        => 'Organization List View',
-        //             'shortcode'   => '[get-organization viewmode="list"]'
-        //         ),
-        //         array(
-        //             'name'        => 'Organization Grid View',
-        //             'shortcode'   => '[get-organization viewmode="grid"]'
-        //         ),
-        //         array(
-        //             'name'        => 'Organization List & Grid View',
-        //             'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
-        //         )
-        //     )
-        // )
-    );
+                array(
+                    'name'        => 'Public Official Details',
+                    'shortcode'   => '[public-officials-detail]'
+                )
+            )
+        );
+    }
 
     echo '<div class="engagifii-setting shortcode-list">';
 
-    foreach ($shortcodes as $shortcode) {
-        echo "<div class='bg-grey bordered' style='margin-bottom:20px'><h3 class='' style='margin-top:0'>{$shortcode['title']}</h3>";
-        echo "<ul class='list'>";
+    if (empty($shortcodes)) {
+        echo '<div class="notice notice-info">';
+        echo '<p><strong>No shortcodes available.</strong></p>';
+        echo '<p>Please go to <a href="' . admin_url('options-general.php?page=engagifii-settings') . '">Engagifii Settings</a> to enable the modules you want to use, then return here to view available shortcodes.</p>';
+        echo '</div>';
+    } else {
+        foreach ($shortcodes as $shortcode) {
+            echo "<div class='bg-grey bordered' style='margin-bottom:20px'><h3 class='' style='margin-top:0'>{$shortcode['title']}</h3>";
+            echo "<ul class='list'>";
 
-        foreach ($shortcode['list'] as $item) {
-            echo "<li><strong>{$item['name']}</strong>: <code>{$item['shortcode']}</code></li>";
+            foreach ($shortcode['list'] as $item) {
+                echo "<li><strong>{$item['name']}</strong>: <code>{$item['shortcode']}</code></li>";
+            }
+
+            echo "</ul></div>";
         }
 
-        echo "</ul></div>";
+        echo "<hr>";
+        echo "<ul><li>Create a <a href='post-new.php?post_type=page' target='_blank'>page</a> or <a href='post-new.php' target='_blank'>Post</a> or use existing pages/posts</li><li>Place the shortcode where you want to display data</li></ul>";
     }
 
-    echo "<hr>";
-
-    echo "<ul><li>Create a <a href='post-new.php?post_type=page' target='_blank'>page</a> or <a href='post-new.php' target='_blank'>Post</a> or use existing pages/posts</li><li>Place the shortcode where you want to display data</li></ul>";
     echo '</div>';
 }
 

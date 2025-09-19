@@ -1,4 +1,9 @@
 <?php
+ $enabled_modules = get_option('engagifii_enabled_modules', array()); 
+   if (!in_array('classes', $enabled_modules)) {   
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
@@ -53,11 +58,37 @@ if ($class_key !== null) {
     $prev = $class_key > 0 ? $class_array[$class_key - 1] : 0;
     $next = $class_key < $class_count ? $class_array[$class_key + 1] : 0;
 }
-$permissions = $obj->getUserPermissions($tenantCode, $loggedInUserId); 
 
-$registerOthers = $permissions['registerOthers'];
-$registerOverride = $permissions['registerOverride'];
+if (!function_exists('renderDisabledButton')) {
+    function renderDisabledButton($tooltip) {
+        ?>
+        <div class="mt-auto">
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo htmlspecialchars($tooltip); ?>">
+                <button type="button" class="btn btn-primary px-3 py-1" disabled>Register</button>
+            </span>
+        </div>
+        <?php
+    }
+}
 
+if (!function_exists('renderRegisterButton')) {
+    function renderRegisterButton($url, $label = 'Register', $classes = 'btn btn-primary px-3 py-1') {
+        if (strpos($url, 'auth-callback') !== false) {
+            echo "<button data-url=\"{$url}\" class=\"{$classes} open-pop\">{$label}</button>";
+        } else {
+            echo "<a class=\"{$classes}\" target=\"_blank\" href=\"{$url}\">{$label}</a>";
+        }
+    }
+}
+
+if ($loggedInUserId !== null && $loggedInUserId !== '') {
+    $permissions = $obj->getUserPermissions($tenantCode, $loggedInUserId);
+    $registerOthers = $permissions['registerOthers'];
+    $registerOverride = $permissions['registerOverride'];
+} else {
+    $registerOthers = false;
+    $registerOverride = false;
+}
  
   $class_icon = $response->parentCourse->icon->iconReference;
  
@@ -123,25 +154,10 @@ $registerOverride = $permissions['registerOverride'];
             $registration_state = $response->registrationState;
             
             // Helper function to render disabled button with tooltip
-            function renderDisabledButton($tooltip) {
-                ?>
-                <div class="mt-auto">
-                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo htmlspecialchars($tooltip); ?>">
-                        <button type="button" class="btn btn-primary px-3 py-1" disabled>Register</button>
-                    </span>
-                </div>
-                <?php
-            }
+            
         
             // Helper function to render registration button
-            function renderRegisterButton($url, $label = 'Register', $classes = 'btn btn-primary px-3 py-1') {
-                if (strpos($url, 'auth-callback') !== false) {
-                    echo "<button data-url=\"{$url}\" class=\"{$classes} open-pop\">{$label}</button>";
-                } else {
-                    echo "<a class=\"{$classes}\" target=\"_blank\" href=\"{$url}\">{$label}</a>";
-                }
-            }
-        
+            
             // Handle disabled states first
             $disabledStates = [
                 'Registration Scheduled' => 'Registration opens from ' . date('M d, Y', strtotime($response->registrationStartFrom)),

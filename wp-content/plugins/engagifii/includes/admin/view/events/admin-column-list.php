@@ -1,3 +1,9 @@
+<?php 
+// Only show events settings if the events module is enabled
+if (!engagifii_should_show_module_settings('events')) {
+    return;
+}
+?>
 <div data-tab="settings" class="wrap event-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>" >
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Events Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php

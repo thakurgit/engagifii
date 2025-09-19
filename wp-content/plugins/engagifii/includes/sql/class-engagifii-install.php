@@ -20,8 +20,22 @@ class Engagifii_Install{
 	 */
 	public static function install() {
 		self::create_tables();
-		self::add_EBT_page();
-		self::add_LBT_Page();
+		
+		// Only create pages if modules are enabled
+		$enabled_modules = get_option('engagifii_enabled_modules', array());
+		
+		// Ensure $enabled_modules is always an array
+		if (!is_array($enabled_modules)) {
+		    $enabled_modules = array();
+		}
+		
+		if (in_array('endorsements', $enabled_modules)) {
+			self::add_EBT_page();
+		}
+		
+		if (in_array('legislation', $enabled_modules)) {
+			self::add_LBT_Page();
+		}
 	}
 
 

@@ -1,3 +1,9 @@
+<?php 
+// Only show legislation settings if the legislation module is enabled
+if (!engagifii_should_show_module_settings('legislation')) {
+    return;
+}
+?>
 <div data-tab="settings" class="wrap legislation-column <?php if($tab == 'settings'){ echo 'show';}else {echo 'hide'; }?>">
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Legislation Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php

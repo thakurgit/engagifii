@@ -1,3 +1,9 @@
+<?php 
+// Only show classes settings if the classes module is enabled
+if (!engagifii_should_show_module_settings('classes')) {
+    return;
+}
+?>
 <div data-tab="settings" class="wrap class-column <?= $tab == 'settings' ? 'show' : 'hide' ?>">
 <h3 class="mb-0 bg-grey bordered d-flex justify-content-between accordion-btn">Classes Page Settings<i class="dashicons-before dashicons-arrow-down-alt2"></i></h3>
 <?php

@@ -36,7 +36,11 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 
     return in_array($id, [3, 6, 15]);
 });
-
+ $enabled_modules = get_option('engagifii_enabled_modules', array());
+   if (!in_array('group_directory', $enabled_modules)) {
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
  ?>
  
 <div class="container-fluid ">
@@ -176,6 +180,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
             </div>
         </div>
     <?php }
+   
 } ?>
                 </div>
                 

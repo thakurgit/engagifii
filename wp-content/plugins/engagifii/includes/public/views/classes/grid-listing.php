@@ -35,6 +35,11 @@
   }
   
   $obj      =  new Engagifii_API();
+   $enabled_modules = get_option('engagifii_enabled_modules', array()); 
+   if (!in_array('classes', $enabled_modules)) {   
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
   //$collection   = array();
     $forDatatable   =   array();
     $date           =   date('Y-m-d');

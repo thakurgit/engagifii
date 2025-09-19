@@ -61,13 +61,14 @@ Final Class Engagifii {
 			wp_dequeue_style('tommusrhodus-style');
 }
 	private function init_hooks() {
-		register_activation_hook( __FILE__, array( 'Engagifii_Install', 'install' ) );
+		register_activation_hook( __FILE__, array( $this, 'plugin_activation' ) );
 		register_uninstall_hook( __FILE__, array( 'Engagifii_Install','uninstall'));
 		//add_action( 'wp_print_styles', array($this,'dequeue_unnecessary_styles'));
 		add_action('init',array($this,'engagifii_load_js_script'));
 		add_action('wp_enqueue_scripts',array($this,'engagifii_load_css'),9999);
 		add_action('init', array( $this->engagifiiShortcode, 'init' ) );
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
+		add_action('admin_init', array($this,'redirect_to_settings'));
 		define( 'ENGAGIFII_ASSETS_URL', esc_url( plugins_url( '/assets', __FILE__ ) ) );
 		define('_WORKSPACE_', get_bloginfo( 'name' ));
 		add_action('wp_head',array($this,'engagifii_include_custom_css'));	
@@ -103,11 +104,17 @@ Final Class Engagifii {
 		if ( is_admin() ) {
 			include_once( 'includes/admin/admin-config-area.php' );	
 			include_once( 'includes/admin/class-adm-data-col.php' );
+			include_once( 'includes/admin/class-engagifii-settings.php' );
 		}		 
 		$this->frontend_includes_ebt();
 		include_once('includes/functions.php');
 		require_once('includes/variable.php');
 		require_once ('includes/updater.php');
+		
+		// Initialize settings class
+		if (is_admin()) {
+			new Engagifii_Settings();
+		}
 	}
 
 	/**
@@ -202,11 +209,40 @@ wp_enqueue_script(
 
 	}
 
+	/**
+	 * Plugin activation handler
+	 */
+	public function plugin_activation() {
+		// Create database tables first
+		Engagifii_Install::install();
+		
+		// Set activation flag to redirect to settings
+		set_transient('engagifii_activation_redirect', true, 30);
+	}
+
+	/**
+	 * Redirect to settings page after activation
+	 */
+	public function redirect_to_settings() {
+		// Only redirect on first activation
+		if (get_transient('engagifii_activation_redirect')) {
+			delete_transient('engagifii_activation_redirect');
+			
+			// Check if setup is not completed yet
+			$setup_completed = get_option('engagifii_setup_completed', false);
+			
+			if (!$setup_completed && !isset($_GET['activate-multi'])) {
+				wp_redirect(admin_url('admin.php?page=engagifii-settings&setup=1'));
+				exit;
+			}
+		}
+	}
+
 
 }
 //create pages
 define( 'PLUGIN_FILE_PATH', __FILE__ );
-register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
+//register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
  
 function insert_page_on_activation() {
   if ( ! current_user_can( 'activate_plugins' ) ) return;
