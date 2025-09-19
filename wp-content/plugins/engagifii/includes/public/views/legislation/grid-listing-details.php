@@ -1,4 +1,10 @@
 <?php
+// Check if legislation module is enabled
+$enabled_modules = get_option('engagifii_enabled_modules', array());
+if (!in_array('legislation', $enabled_modules)) {
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
 
 header('Expires: Thu, 26 Jul 1997 00:00:01 GMT');
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');

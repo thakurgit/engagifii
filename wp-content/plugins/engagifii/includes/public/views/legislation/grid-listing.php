@@ -1,4 +1,11 @@
 <?php
+// Check if legislation module is enabled
+$enabled_modules = get_option('engagifii_enabled_modules', array());
+if (!in_array('legislation', $enabled_modules)) {
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
+
 $options = get_option('ebt_api_settings');
 	$columns='';
 	$columnNames=[];
@@ -1448,7 +1455,7 @@ var chkdBillNo = '<?php echo $billnumber; ?>';
 var columnSearch = '<?php echo json_encode( $columnSearch_key); ?>';
  columnSearch = JSON.parse(columnSearch);
 if(tenant_code =="aasb"){
-  var order = [[$('th.billNumber').index(), 'asc']];
+  var order = [[$('th.billnumber').index(), 'asc']];
 }else{
   var order = [[$('th.title').index(), 'desc']];
 }

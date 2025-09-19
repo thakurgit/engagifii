@@ -1,4 +1,5 @@
 <div data-tab="dashboard-settings" class="wrap dashoboard-settings <?php if($tab == 'dashboard-settings'){ echo 'show';}else {echo 'hide'; }?>" >
+    <!-- Header is now handled by the main admin-settings-form.php -->
 <div class="engagifii-setting m-tlr-20">
 <?php 
 //API setting

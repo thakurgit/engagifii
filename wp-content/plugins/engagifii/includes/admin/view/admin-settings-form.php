@@ -1,9 +1,37 @@
-<?php   $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+<?php   
+        // Include the header component
+        require_once(__DIR__ . '/engagifii-admin-header.php');
+        
+        $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
+        
+        // Determine page title and description based on tab
+        $page_title = 'Engagifii Settings';
+        $page_description = '';
+        
+        switch($tab) {
+            case 'shortcode':
+                $page_title = 'Engagifii Shortcodes';
+                $page_description = 'Copy and paste these shortcodes into your pages and posts to display Engagifii content.';
+                break;
+            case 'page-settings':
+                $page_title = 'Engagifii Page Settings';
+                $page_description = 'Configure which pages to use for displaying different module content.';
+                break;
+            case 'dashboard-settings':
+                $page_title = 'Engagifii Profile Settings';
+                $page_description = 'Configure dashboard and profile page settings for your members.';
+                break;
+            default:
+                $page_title = 'Engagifii API Settings';
+                $page_description = 'Configure API endpoints and theme settings for your Engagifii modules.';
+                break;
+        }
+        
+        // Render the consistent header
+        engagifii_render_admin_header($page_title, false, $page_description);
 		?>
         <form class="ebt-setting-frm" action='options.php' method='post'>
     <?php
-
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
         settings_fields( 'engagifiiPlugin' );
         do_settings_sections( 'engagifiiPlugin' );
         
@@ -480,3 +508,8 @@ jQuery(this).siblings('.cls').val('');
   });	
 });
 </script>
+
+<?php
+// Close the header wrapper
+engagifii_close_admin_header();
+?>
