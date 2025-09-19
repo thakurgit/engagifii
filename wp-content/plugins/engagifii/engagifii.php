@@ -248,7 +248,7 @@ wp_enqueue_script(
 }
 //create pages
 define( 'PLUGIN_FILE_PATH', __FILE__ );
-//register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
+register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
  
 function insert_page_on_activation() {
   if ( ! current_user_can( 'activate_plugins' ) ) return;
