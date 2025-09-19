@@ -521,8 +521,8 @@ function ebt_tenant_code_render(  ) {
 
 	function ebt_api_settings_section_callback( ) {
   		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-	//$options = get_option( 'ebt_api_settings' );
-	//$tenant_url= $options['ebt_tenant_code']['engagifii_url'];
+	$options = get_option( 'ebt_api_settings' );
+	$dashboard_tenant_code= $options['dashboard_tenant_code'] ?? '';
     	?>
 		<!-- Our admin page content should all be inside .wrap -->
   		<div class="wrap">
@@ -531,7 +531,7 @@ function ebt_tenant_code_render(  ) {
       			<a href="?page=engagifii-module-api" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>">Customize CSS</a>
       			<a href="?page=engagifii-module-api&tab=settings" class="nav-tab <?php if($tab==='settings'):?>nav-tab-active<?php endif; ?>">API Settings</a>
                 <a href="?page=engagifii-module-api&tab=page-settings" class="nav-tab <?php if($tab==='page-settings'):?>nav-tab-active<?php endif; ?>">Page Settings</a>
-                <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a>
+               <?php if ($dashboard_tenant_code == 'psba') { ?> <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">Profile Settings</a><?php } ?>
       			<a href="?page=engagifii-module-api&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>">Shortcode Usage</a>
     		</nav>
 
@@ -735,13 +735,13 @@ function ebt_tenant_code_render(  ) {
 		
 		include_once( __DIR__.'/view/admin-settings-form.php' );
 	}
-	function engagifii_modules(){
-		if ( ! current_user_can( 'manage_options' ) ) {
-    		return;
-  		}
+	// function engagifii_modules(){
+	// 	if ( ! current_user_can( 'manage_options' ) ) {
+    // 		return;
+  	// 	}
 		
-		include_once( __DIR__.'/view/engagifii_modules.php' );
-	}
+	// 	include_once( __DIR__.'/view/engagifii_modules.php' );
+	// }
 
 }
 

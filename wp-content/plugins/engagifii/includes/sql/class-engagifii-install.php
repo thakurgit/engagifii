@@ -27,15 +27,7 @@ class Engagifii_Install{
 		// Ensure $enabled_modules is always an array
 		if (!is_array($enabled_modules)) {
 		    $enabled_modules = array();
-		}
-		
-		if (in_array('endorsements', $enabled_modules)) {
-			self::add_EBT_page();
-		}
-		
-		if (in_array('legislation', $enabled_modules)) {
-			self::add_LBT_Page();
-		}
+		}			
 	}
 
 
@@ -81,62 +73,6 @@ class Engagifii_Install{
 		global $wpdb;
 		$wpdb->hide_errors();
 		
-	}
-
-	private static function add_EBT_page() {
-       	global $wpdb;  
-      	$checkPageExists =  $wpdb->get_results("select *  from ".$wpdb->prefix."posts WHERE post_name in ('endorsement-grid-view','endorsement-detail') and post_type='page' ");
-       	$foundPages = $wpdb->num_rows;       
-
-       	if($foundPages<1)
-       	{
-			$ebt_pages = array( array(
-			'post_title'    => wp_strip_all_tags( 'Endorsement Grid View' ),
-			'post_content'  => '<div class="capital-watch-main-contatiner">[endorsement-grid-list]</div>',
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_type'     => 'page',
-			'post_name'     => 'endorsement-grid-view',
-		),array(
-			'post_title'    => wp_strip_all_tags( 'Endorsement Detail' ),
-			'post_content'  => '<div class="capital-watch-main-contatiner">[endorsement_grid_detail_information]</div>',
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_type'     => 'page',
-			'post_name'     => 'endorsement-detail',
-		));
-		foreach ($ebt_pages as $key => $page) {
-			 wp_insert_post( $page );
-		}
-		}  
-	}
-
-	private static function add_LBT_Page() {
-       	global $wpdb;  
-      	$checkPageExists =  $wpdb->get_results("select *  from ".$wpdb->prefix."posts WHERE post_name in ('engagifii-grid-view','engagifii-detail') and post_type='page' ");
-       	$foundPages = $wpdb->num_rows;       
-
-       	if($foundPages<1)
-       	{
-			$lbt_pages = array( array(
-				'post_title'    => wp_strip_all_tags( 'Engagifii Grid View' ),
-				'post_content'  => '<div class="capital-watch-main-contatiner">[legislation-list]</div>',
-				'post_status'   => 'publish',
-				'post_author'   => 1,
-				'post_type'     => 'page',
-				'post_name'     => 'engagifii-grid-view',
-			),array(
-				'post_title'    => wp_strip_all_tags( 'Engagifii Detail' ),
-				'post_content'  => '<div class="capital-watch-main-contatiner">[legislation-details Id="bill-id"]</div>',
-				'post_status'   => 'publish',
-				'post_author'   => 1,
-				'post_type'     => 'page',
-				'post_name'     => 'engagifii-detail',
-			));
-			foreach ($lbt_pages as $key => $page) {
-				wp_insert_post( $page );
-			}
-		}
-	}
+	}	
 
 }

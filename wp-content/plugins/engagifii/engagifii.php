@@ -5,7 +5,7 @@
  * Plugin URI:  https://engagifii.com/
  * Author:      Engagifii
  * Author URI:  https://engagifii.com/
- * Version:     1.6.0
+ * Version:     1.6.2
  * Text Domain: engagifii
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define('ENGAGIFII_VERSION','1.6.0');
+define('ENGAGIFII_VERSION','1.6.2');
 
 Final Class Engagifii {
 	/**
@@ -65,6 +65,7 @@ Final Class Engagifii {
 		register_uninstall_hook( __FILE__, array( 'Engagifii_Install','uninstall'));
 		//add_action( 'wp_print_styles', array($this,'dequeue_unnecessary_styles'));
 		add_action('init',array($this,'engagifii_load_js_script'));
+		add_action('init',array($this,'includes_variable'));
 		add_action('wp_enqueue_scripts',array($this,'engagifii_load_css'),9999);
 		add_action('init', array( $this->engagifiiShortcode, 'init' ) );
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
@@ -108,13 +109,18 @@ Final Class Engagifii {
 		}		 
 		$this->frontend_includes_ebt();
 		include_once('includes/functions.php');
-		require_once('includes/variable.php');
 		require_once ('includes/updater.php');
 		
 		// Initialize settings class
 		if (is_admin()) {
 			new Engagifii_Settings();
 		}
+	}
+	/**
+	* Include required core files used in the frontend after wp init
+	*/
+	public function includes_variable() {
+		include_once('includes/variable.php');
 	}
 
 	/**
@@ -247,7 +253,51 @@ define( 'PLUGIN_FILE_PATH', __FILE__ );
 function insert_page_on_activation() {
   if ( ! current_user_can( 'activate_plugins' ) ) return;
  
-    $page1_slug = 'bill-tracking'; // Slug of the Post
+    $pages = [
+        'bill-tracking' => [
+            'post_title'   => 'Bill Tracking',
+            'post_content' => '[legislation-list]',
+        ],
+        'engagifii-detail' => [
+            'post_title'   => 'Bill Detail',
+            'post_content' => "[legislation-details Id='bill-id']",
+        ],
+        'legislative-tracking-database' => [
+            'post_title'   => 'Legislative tracking database',
+            'post_content' => '', // optional
+        ],
+        'classes' => [
+            'post_title'   => 'Classes',
+            'post_content' => '[classes-list-calendar-class-name calendarclassname=true]',
+        ],
+        'class-details' => [
+            'post_title'   => 'Class Details',
+            'post_content' => "[class-details Id='class-id']",
+        ],
+        'courses' => [
+            'post_title'   => 'Courses',
+            'post_content' => '[courses-list]',
+        ],
+        'course-details' => [
+            'post_title'   => 'Course Details',
+            'post_content' => "[course-details Id='course-id']",
+        ],
+    ];
+
+    foreach ( $pages as $slug => $data ) {
+        if ( ! get_page_by_path( $slug, OBJECT, 'page' ) ) {
+            $page = [
+                'post_type'    => 'page',
+                'post_name'    => $slug,
+                'post_title'   => $data['post_title'],
+                'post_content' => $data['post_content'],
+                'post_status'  => 'publish',
+                'post_author'  => 1,
+            ];
+            wp_insert_post( $page );
+        }
+    }
+/* $page1_slug = 'bill-tracking'; // Slug of the Post
     $page1 = array(
         'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
         'post_title'    => 'Bill Tracking',    // Title of the Content
@@ -382,11 +432,11 @@ function insert_page_on_activation() {
 			'title' => 'Members',
 			'content' => '[engagifii-members]'
 		)
-	);
+	);*/
 	
 	// Loop through child pages data to add each child page
 	// Function to check if a page with a given slug exists under a given parent page
-function is_page_unique($slug, $parent_id) {
+/*function is_page_unique($slug, $parent_id) {
     global $wpdb;
     $query = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_parent = %d AND post_type = 'page'", $slug, $parent_id);
     $result = $wpdb->get_var($query);
@@ -472,7 +522,7 @@ foreach ($child_pages_data as $child_data) {
             }
         }
     }
-}
+}*/
 }
 
 /**

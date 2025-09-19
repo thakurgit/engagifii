@@ -371,7 +371,7 @@ function ajaxCols(endpoint,visibleCols,$ul){
                   </li>`;
               });
 			  if(html==''){
-				  html='<b><i style="color:var(--error-red)">No data found! Try again.</i></b>'
+				  html='<b><i style="color:var(--e-context-error-color)">No data found! Try again.</i></b>'
 			  }
               $ul.html(html).removeClass('loading').siblings('.refreshCols').removeClass('loading');
 			 toggleAll($ul);
@@ -379,11 +379,11 @@ function ajaxCols(endpoint,visibleCols,$ul){
               $ul.data('loaded', true);
 
             } catch (e) {
-               $ul.html('<li><b><i style="color:var(--error-red)">Invalid JSON response OR failed to render HTML</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
+               $ul.html('<li><b><i style="color:var(--e-context-error-color)">Invalid JSON response OR failed to render HTML</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
             }
           },
           error: function () {
-            $ul.html('<li><b><i style="color:var(--error-red)">Error loading content. Refresh again.</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
+            $ul.html('<li><b><i style="color:var(--e-context-error-color)">Error loading content. Refresh again.</i></b></li>').removeClass('loading').siblings('.refreshCols').removeClass('loading');
           }
         });
 }

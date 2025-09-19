@@ -292,7 +292,7 @@ border: 1px solid #ccc;
   background: #fefefe;	
 }
 .custom-fields-separator {
-	color: var(--error-red);
+	color: var(--e-context-error-color);
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 1px;
