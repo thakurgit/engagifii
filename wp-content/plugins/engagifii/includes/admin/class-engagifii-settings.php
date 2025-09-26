@@ -522,7 +522,7 @@ class Engagifii_Settings {
             body.wp-admin .wrap > .notice,
             body.wp-admin .wrap > .error, 
             body.wp-admin .wrap > .updated {
-                display: block !important;
+                display: none !important;
                 margin: 20px 20px 20px 0 !important;
                 position: relative;
                 z-index: 1000;
@@ -531,7 +531,7 @@ class Engagifii_Settings {
             /* Allow specific important notices to show even inside our container */
             .engagifii-settings-container .notice:not(.hidden),
             .engagifii-settings-wrap .notice:not(.hidden) {
-                display: block !important;
+                display: none !important;
                 margin: 10px 0 !important;
             }
             
