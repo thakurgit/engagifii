@@ -59,10 +59,10 @@ body.wp-admin .engagifii-settings-wrap .tab-navigation .tab-button.active,
 .tab-navigation .tab-button.active,
 .tab-button.active {
     color: #ffffff !important;
-    background: #3b82f6 !important;
-    border-bottom: 3px solid #2563eb !important;
+    background: #2271b1 !important;
+    border-bottom: 3px solid #2271b1 !important;
     font-weight: 600 !important;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(34, 113, 177, 0.3) !important;
 }
 
 /* Tab Button Icons */
@@ -111,7 +111,7 @@ body.wp-admin .engagifii-settings-wrap .tab-navigation .tab-button.active,
     box-shadow: 0 1px 1px rgba(0,0,0,.04);
     padding: 23px 10px 0;
     position: relative;
-    border-left: 4px solid #72aee6;
+    border-left: 4px solid #2271b1;
 }
 
 .engagifii-welcome-panel .welcome-panel-content {
@@ -144,7 +144,7 @@ body.wp-admin .engagifii-settings-wrap .tab-navigation .tab-button.active,
 }
 
 .engagifii-module-card:hover {
-    border-color: #72aee6;
+    border-color: #2271b1;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -227,7 +227,7 @@ input:checked + .toggle-slider:before {
     padding: 10px;
     background: #f6f7f7;
     border-radius: 3px;
-    border-left: 3px solid #72aee6;
+    border-left: 3px solid #2271b1;
 }
 
 .module-features ul {

@@ -10,7 +10,7 @@ if (!is_array($enabledModules)) {
 ?>
 <div data-tab="page-settings" class="wrap eng-customizer <?php if($tab == 'page-settings'){ echo 'show';}else {echo 'hide'; }?>" >
     <!-- Header is now handled by the main admin-settings-form.php -->
-<div class="engagifii-setting m-tlr-20">
+<div class="engagifii-content-wrapper">
 <?php 
 $options = get_option( 'ebt_api_settings' );
 $front_pages = $options['front_pages'];
@@ -81,7 +81,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('legislation', $enabledModules)): ?>
@@ -94,7 +93,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('events', $enabledModules)): ?>
@@ -107,7 +105,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('courses', $enabledModules)): ?>
@@ -120,7 +117,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('awards', $enabledModules)): ?>
@@ -133,7 +129,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('endorse_detail_page',$endorse_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('organization_directory', $enabledModules)): ?>
@@ -146,7 +141,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php else: ?>

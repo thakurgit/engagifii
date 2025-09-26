@@ -434,7 +434,7 @@ function ebt_api_shortocde_description() {
     }
 
     // Add styling for shortcode cards to match module settings
-    echo '<div class="engagifii-setting shortcode-cards">';
+    echo '<div class="engagifii-content-wrapper shortcode-cards">';
     
     echo '<style>
         .engagifii-settings-container {
@@ -478,8 +478,8 @@ function ebt_api_shortocde_description() {
         }
         
         .engagifii-module-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+            border-color: #2271b1;
+            box-shadow: 0 8px 24px rgba(34, 113, 177, 0.15);
             transform: translateY(-2px);
         }
         
@@ -504,9 +504,9 @@ function ebt_api_shortocde_description() {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(102, 126, 234, 0.1);
+            background: rgba(34, 113, 177, 0.1);
             border-radius: 12px;
-            color: #667eea;
+            color: #2271b1;
         }
         
         .module-title-section {
@@ -532,7 +532,7 @@ function ebt_api_shortocde_description() {
             padding: 12px;
             background: #f7fafc;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #2271b1;
         }
         
         .shortcode-item:last-child {
@@ -550,7 +550,7 @@ function ebt_api_shortocde_description() {
         }
         
         .shortcode-name .dashicons {
-            color: #667eea;
+            color: #2271b1;
             font-size: 16px;
         }
         
@@ -582,7 +582,7 @@ function ebt_api_shortocde_description() {
         
         .shortcode-code code:hover {
             background: #cbd5e0;
-            border-color: #667eea;
+            border-color: #2271b1;
             transform: translateY(-1px);
         }
         
@@ -655,7 +655,7 @@ function ebt_api_shortocde_description() {
         }
         
         .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2271b1 0%, #2271b1 100%);
             color: white;
             width: 30px;
             height: 30px;
@@ -675,7 +675,7 @@ function ebt_api_shortocde_description() {
         }
         
         .step-text a {
-            color: #667eea;
+            color: #2271b1;
             text-decoration: none;
             font-weight: 500;
         }
@@ -818,7 +818,7 @@ function ebt_api_shortocde_description() {
         echo '</div>'; // End shortcode-instructions
     }
 
-    echo '</div>'; // End engagifii-setting shortcode-cards
+    echo '</div>'; // End engagifii-content-wrapper shortcode-cards
 }
 
 function ebt_api_url_setings(){
@@ -865,7 +865,7 @@ function engagifii_apply_css_ebt_render($html_class){
     }
 
 
-    $_inputHtml = '<div class="m-tlr-20 bg-grey bordered '.$html_class.'"><input type="checkbox" id="engagii_custom_css" name="ebt_api_settings[engagifii_apply_css_ebt]" value="1" '.$checkedHtml.' >';
+    $_inputHtml = '<div class="engagifii-content-wrapper bg-grey bordered '.$html_class.'"><input type="checkbox" id="engagii_custom_css" name="ebt_api_settings[engagifii_apply_css_ebt]" value="1" '.$checkedHtml.' >';
     $_inputHtml.= '<span> <strong>Enable Customize CSS</strong></span></div>';
     echo $_inputHtml;
 }*/
@@ -938,39 +938,54 @@ function ebt_tenant_code_render(  ) {
   		}
   		
   		.nav-tab:hover {
-  		    border-color: #667eea !important;
+  		    border-color: #2271b1 !important;
   		    background: #edf2f7 !important;
   		    color: #2d3748 !important;
   		    transform: translateY(-2px) !important;
-  		    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15) !important;
+  		    box-shadow: 0 4px 12px rgba(34, 113, 177, 0.15) !important;
   		}
   		
   		.nav-tab-active,
-  		.nav-tab-active:hover {
-  		    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  		.nav-tab-active:hover,
+  		.nav-tab.nav-tab-active,
+  		.nav-tab.nav-tab-active:hover,
+  		.nav-tab-wrapper .nav-tab.nav-tab-active,
+  		.nav-tab-wrapper .nav-tab.nav-tab-active:hover {
+  		    background: #2271b1 !important;
   		    color: white !important;
-  		    border-color: #667eea !important;
-  		    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25) !important;
+  		    border-color: #2271b1 !important;
+  		    box-shadow: 0 4px 12px rgba(34, 113, 177, 0.25) !important;
+  		}
+  		
+  		/* Force active tab styling - highest specificity */
+  		body.wp-admin .nav-tab-wrapper .nav-tab.nav-tab-active {
+  		    background: #2271b1 !important;
+  		    color: white !important;
+  		    border-color: #2271b1 !important;
   		}
   		
   		/* Content sections styling - apply to actual content containers */
-  		.engagifii-setting, .shortcode-section {
+  		.engagifii-setting, .shortcode-section, .engagifii-content-wrapper {
   		    background: white;
   		    border-radius: 12px;
-  		    padding: 20px;
-  		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  		    margin: 10px 20px 0 20px;
+  		    padding: 30px;
+  		    margin: 20px;
   		}
   		
   		/* Remove extra spacing from wrapper */
   		.wrap {
   		    margin-top: 0;
+            padding-left: 20px;
+            padding-right: 20px;
   		}
   		
-  		/* Reduce spacing in content areas */
-  		.engagifii-setting {
-  		    margin: 0 20px;
-  		    padding-top: 10px;
+  		/* Unified content wrapper - consistent padding and spacing for all tabs */
+  		.engagifii-content-wrapper {
+  		    margin: 20px !important;
+  		    padding: 30px !important;
+  		    background: white !important;
+  		    border-radius: 12px !important;
+  		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   		}
   		</style>
     		<!-- Here are our tabs -->

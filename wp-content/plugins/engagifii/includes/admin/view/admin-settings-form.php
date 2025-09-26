@@ -54,7 +54,7 @@
            // $options = get_option( 'ebt_api_settings' );
         ?>
     <div class="wrap tab-content " >
-    <div class="engagifi_style_group engagifii-setting m-tlr-20" data-tab="" <?php echo $checkedHtml ?>>
+    <div class="engagifi_style_group engagifii-content-wrapper" data-tab="" <?php echo $checkedHtml ?>>
         <table class="engtcustomtbl" cellspacing="0" cellpadding="15" width="100%">
         <tr>
         	<td colspan="4"><h3>Theme Colors</h3><hr></td>
