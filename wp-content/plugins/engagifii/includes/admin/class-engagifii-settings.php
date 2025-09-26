@@ -540,25 +540,83 @@ class Engagifii_Settings {
                 display: none !important;
             }
             
-            /* Hide all admin notices on Engagifii settings page */
-            .engagifii-settings-page .notice,
-            .engagifii-settings-page .error,
-            .engagifii-settings-page .updated,
-            .engagifii-settings-page div.notice,
-            .engagifii-settings-page div.error,
-            .engagifii-settings-page div.updated,
-            .wrap.engagifii-settings-page .notice,
-            .wrap.engagifii-settings-page .error,
-            .wrap.engagifii-settings-page .updated {
+            /* Hide all admin notices on Engagifii settings page - HIGH SPECIFICITY */
+            body.wp-admin .engagifii-settings-page .notice,
+            body.wp-admin .engagifii-settings-page .error,
+            body.wp-admin .engagifii-settings-page .updated,
+            body.wp-admin .engagifii-settings-page div.notice,
+            body.wp-admin .engagifii-settings-page div.error,
+            body.wp-admin .engagifii-settings-page div.updated,
+            body.wp-admin .wrap.engagifii-settings-page .notice,
+            body.wp-admin .wrap.engagifii-settings-page .error,
+            body.wp-admin .wrap.engagifii-settings-page .updated,
+            body.wp-admin #wpbody-content .engagifii-settings-page .notice,
+            body.wp-admin #wpbody-content .engagifii-settings-page .error,
+            body.wp-admin #wpbody-content .engagifii-settings-page .updated,
+            body.wp-admin #wpwrap .engagifii-settings-page .notice,
+            body.wp-admin #wpwrap .engagifii-settings-page .error,
+            body.wp-admin #wpwrap .engagifii-settings-page .updated,
+            .settings_page_engagifii-settings .notice,
+            .settings_page_engagifii-settings .error,
+            .settings_page_engagifii-settings .updated,
+            .settings_page_engagifii-settings div.notice,
+            .settings_page_engagifii-settings div.error,
+            .settings_page_engagifii-settings div.updated {
                 display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                position: absolute !important;
+                left: -9999px !important;
             }
             
-            /* Hide plugin update notices specifically */
-            .engagifii-settings-page .update-nag,
-            .engagifii-settings-page #update-nag,
-            .engagifii-settings-page .plugin-update-tr,
-            .engagifii-settings-page .update-message {
+            /* Hide plugin update notices specifically - HIGH SPECIFICITY */
+            body.wp-admin .engagifii-settings-page .update-nag,
+            body.wp-admin .engagifii-settings-page #update-nag,
+            body.wp-admin .engagifii-settings-page .plugin-update-tr,
+            body.wp-admin .engagifii-settings-page .update-message,
+            body.wp-admin .engagifii-settings-page .notice-warning,
+            body.wp-admin .engagifii-settings-page .notice-info,
+            body.wp-admin .engagifii-settings-page .notice-success,
+            body.wp-admin .engagifii-settings-page .notice-error,
+            .settings_page_engagifii-settings .update-nag,
+            .settings_page_engagifii-settings #update-nag,
+            .settings_page_engagifii-settings .plugin-update-tr,
+            .settings_page_engagifii-settings .update-message,
+            .settings_page_engagifii-settings .notice-warning,
+            .settings_page_engagifii-settings .notice-info,
+            .settings_page_engagifii-settings .notice-success,
+            .settings_page_engagifii-settings .notice-error {
                 display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                position: absolute !important;
+                left: -9999px !important;
+            }
+            
+            /* Nuclear option - hide ALL notices on this specific page */
+            .settings_page_engagifii-settings #wpbody-content > div.notice:not(.engagifii-internal),
+            .settings_page_engagifii-settings #wpbody-content > div.error:not(.engagifii-internal),
+            .settings_page_engagifii-settings #wpbody-content > div.updated:not(.engagifii-internal),
+            .settings_page_engagifii-settings #wpbody-content > .notice:not(.engagifii-internal),
+            .settings_page_engagifii-settings #wpbody-content > .error:not(.engagifii-internal),
+            .settings_page_engagifii-settings #wpbody-content > .updated:not(.engagifii-internal) {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                position: absolute !important;
+                left: -9999px !important;
             }
             
             /* Prevent WordPress admin bar from interfering */
@@ -966,55 +1024,125 @@ class Engagifii_Settings {
             </style>
             
             <script>
-            // Hide admin notices on Engagifii settings page
-            document.addEventListener('DOMContentLoaded', function() {
-                // Function to hide notices
-                function hideNotices() {
-                    const notices = document.querySelectorAll('.notice, .error, .updated, .update-nag, #update-nag, .plugin-update-tr, .update-message');
-                    notices.forEach(function(notice) {
-                        // Only hide if we're on the Engagifii settings page
-                        if (document.body.classList.contains('settings_page_engagifii-settings') || 
-                            document.querySelector('.engagifii-settings-page')) {
-                            notice.style.display = 'none';
-                        }
+            // Aggressive notice hiding for Engagifii settings page
+            (function() {
+                console.log('Starting aggressive notice hiding...');
+                
+                // Function to aggressively hide notices
+                function hideNoticesAggressively() {
+                    // Check if we're on the Engagifii settings page
+                    const isEngagifiiPage = document.body.classList.contains('settings_page_engagifii-settings') || 
+                                          document.querySelector('.engagifii-settings-page') ||
+                                          window.location.href.includes('page=engagifii-settings');
+                    
+                    if (!isEngagifiiPage) return;
+                    
+                    console.log('Hiding notices on Engagifii page...');
+                    
+                    // Multiple selectors to catch all possible notices
+                    const noticeSelectors = [
+                        '.notice', '.error', '.updated', '.update-nag', '#update-nag',
+                        '.plugin-update-tr', '.update-message', '.notice-warning',
+                        '.notice-info', '.notice-success', '.notice-error',
+                        'div.notice', 'div.error', 'div.updated',
+                        '#wpbody-content > .notice', '#wpbody-content > .error', '#wpbody-content > .updated',
+                        '#wpbody-content > div.notice', '#wpbody-content > div.error', '#wpbody-content > div.updated'
+                    ];
+                    
+                    noticeSelectors.forEach(function(selector) {
+                        const notices = document.querySelectorAll(selector);
+                        notices.forEach(function(notice) {
+                            // Don't hide our internal notices
+                            if (notice.classList && notice.classList.contains('engagifii-internal')) {
+                                return;
+                            }
+                            
+                            // Apply multiple hiding methods
+                            notice.style.setProperty('display', 'none', 'important');
+                            notice.style.setProperty('visibility', 'hidden', 'important');
+                            notice.style.setProperty('opacity', '0', 'important');
+                            notice.style.setProperty('height', '0', 'important');
+                            notice.style.setProperty('margin', '0', 'important');
+                            notice.style.setProperty('padding', '0', 'important');
+                            notice.style.setProperty('overflow', 'hidden', 'important');
+                            notice.style.setProperty('position', 'absolute', 'important');
+                            notice.style.setProperty('left', '-9999px', 'important');
+                            
+                            // Also try to remove from DOM
+                            try {
+                                notice.remove();
+                            } catch(e) {
+                                // Fallback if removal fails
+                                notice.innerHTML = '';
+                            }
+                            
+                            console.log('Hidden notice:', notice);
+                        });
                     });
                 }
                 
-                // Hide notices immediately
-                hideNotices();
-                
-                // Also hide any notices that might be added dynamically
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList') {
-                            mutation.addedNodes.forEach(function(node) {
-                                if (node.nodeType === 1) { // Element node
-                                    if (node.classList && (node.classList.contains('notice') || 
-                                        node.classList.contains('error') || 
-                                        node.classList.contains('updated') ||
-                                        node.classList.contains('update-nag'))) {
-                                        node.style.display = 'none';
+                // Hide notices multiple times and ways
+                function initializeNoticeHiding() {
+                    hideNoticesAggressively();
+                    
+                    // Set up mutation observer for dynamic content
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'childList') {
+                                mutation.addedNodes.forEach(function(node) {
+                                    if (node.nodeType === 1) { // Element node
+                                        // Check if the node itself is a notice
+                                        if (node.classList && (
+                                            node.classList.contains('notice') ||
+                                            node.classList.contains('error') ||
+                                            node.classList.contains('updated') ||
+                                            node.classList.contains('update-nag')
+                                        )) {
+                                            setTimeout(function() {
+                                                hideNoticesAggressively();
+                                            }, 0);
+                                        }
+                                        
+                                        // Check child elements
+                                        const childNotices = node.querySelectorAll('.notice, .error, .updated, .update-nag');
+                                        if (childNotices.length > 0) {
+                                            setTimeout(function() {
+                                                hideNoticesAggressively();
+                                            }, 0);
+                                        }
                                     }
-                                    // Also check child elements
-                                    const childNotices = node.querySelectorAll('.notice, .error, .updated, .update-nag');
-                                    childNotices.forEach(function(childNotice) {
-                                        childNotice.style.display = 'none';
-                                    });
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
-                });
+                    
+                    // Start observing
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                    
+                    // Repeated checks at different intervals
+                    setTimeout(hideNoticesAggressively, 100);
+                    setTimeout(hideNoticesAggressively, 300);
+                    setTimeout(hideNoticesAggressively, 500);
+                    setTimeout(hideNoticesAggressively, 1000);
+                    setTimeout(hideNoticesAggressively, 2000);
+                }
                 
-                // Start observing
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
+                // Initialize on various events
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initializeNoticeHiding);
+                } else {
+                    initializeNoticeHiding();
+                }
                 
-                // Additional check after a short delay
-                setTimeout(hideNotices, 500);
-            });
+                // Also initialize on window load
+                window.addEventListener('load', initializeNoticeHiding);
+                
+                // Set up interval for persistent checking
+                setInterval(hideNoticesAggressively, 2000);
+            })();
             </script>
 
             .unified-actions .button {
