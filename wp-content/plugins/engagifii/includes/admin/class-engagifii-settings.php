@@ -23,37 +23,37 @@ class Engagifii_Settings {
         ),
         'events' => array(
             'title' => 'Events Management',
-            'description' => 'Manage and display events',
+            'description' => 'Manage Events List, Event details and Register Events',
             'pages' => array(),
             'shortcodes' => array('events-list', 'event-details')
         ),
         'classes' => array(
             'title' => 'Classes',
-            'description' => 'Educational classes and training sessions',
+            'description' => 'Manage Classes List, Class details and Register Classes',
             'pages' => array('classes', 'class-details'),
             'shortcodes' => array('classes-list-calendar-class-name', 'class-details')
         ),
         'awards' => array(
             'title' => 'Awards/Endorsements',
-            'description' => 'Awards recognition and endorsement tracking system',
+            'description' => 'Manage Awards list, Award details',
             'pages' => array('endorsement-grid-view', 'endorsement-detail'),
             'shortcodes' => array('awards-list', 'award-details', 'endorsement-grid-list', 'endorsement_grid_detail_information')
         ),
         'courses' => array(
             'title' => 'Courses',
-            'description' => 'Educational courses and curriculum',
+            'description' => 'Manage Courses List, Course details',
             'pages' => array('courses', 'course-details'),
             'shortcodes' => array('courses-list', 'course-details')
         ),
         'group_directory' => array(
             'title' => 'Group Member Directory',
-            'description' => 'Group Member director',
+            'description' => 'Group Member directory',
             'pages' => array(),
             'shortcodes' => array('group-members')
         ),
         'organization_directory' => array(
             'title' => 'Organization Directory',
-            'description' => 'Organization listings and details',
+            'description' => 'Organization listings',
             'pages' => array(),
             'shortcodes' => array('organization-list', 'organization-details')
         )
