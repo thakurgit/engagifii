@@ -77,10 +77,24 @@ class Engagifii_Settings {
      */
     public function remove_admin_notices() {
         $screen = get_current_screen();
-        if ($screen && $screen->id === 'engagifii_page_engagifii-settings') {
+        if ($screen && ($screen->id === 'engagifii_page_engagifii-settings' || $screen->id === 'settings_page_engagifii-settings')) {
+            // Remove all admin notice hooks
             remove_all_actions('admin_notices');
             remove_all_actions('network_admin_notices');
             remove_all_actions('all_admin_notices');
+            remove_all_actions('user_admin_notices');
+            
+            // Also add inline CSS as backup
+            echo '<style type="text/css">
+                .wrap .notice, 
+                .wrap div.error, 
+                .wrap div.updated,
+                .notice,
+                div.error,
+                div.updated {
+                    display: none !important;
+                }
+            </style>';
         }
     }
 
@@ -537,6 +551,13 @@ class Engagifii_Settings {
             /* Hide WordPress version notice on Engagifii settings page */
             #wp-version-message,
             #footer-upgrade {
+                display: none !important;
+            }
+            
+            /* Simple notice hiding - same approach as engagifii_modules.php */
+            .wrap .notice, 
+            .wrap div.error, 
+            .wrap div.updated {
                 display: none !important;
             }
             
