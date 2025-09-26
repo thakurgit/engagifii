@@ -239,7 +239,9 @@ p#footer-upgrade
         padding: 0px 30px !important;
         border-bottom: 1px solid #e1e1e1 !important;
     }
-    
+    .notice{
+        display: none !important;
+    }
     .engagifii-setting:last-child {
         border-bottom: none !important;
     }
