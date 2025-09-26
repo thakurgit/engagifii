@@ -539,6 +539,10 @@ class Engagifii_Settings {
             #footer-upgrade {
                 display: none !important;
             }
+            .wrap .notice, .wrap div.error, .wrap div.updated {
+                margin: 5px 0 15px;
+                display: none;
+            }
             
             /* Prevent WordPress admin bar from interfering */
             .wp-admin .engagifii-settings-wrap {
