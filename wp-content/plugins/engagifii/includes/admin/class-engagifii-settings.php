@@ -539,9 +539,26 @@ class Engagifii_Settings {
             #footer-upgrade {
                 display: none !important;
             }
-            .wrap .notice, .wrap div.error, .wrap div.updated {
-                margin: 5px 0 15px;
-                display: none;
+            
+            /* Hide all admin notices on Engagifii settings page */
+            .engagifii-settings-page .notice,
+            .engagifii-settings-page .error,
+            .engagifii-settings-page .updated,
+            .engagifii-settings-page div.notice,
+            .engagifii-settings-page div.error,
+            .engagifii-settings-page div.updated,
+            .wrap.engagifii-settings-page .notice,
+            .wrap.engagifii-settings-page .error,
+            .wrap.engagifii-settings-page .updated {
+                display: none !important;
+            }
+            
+            /* Hide plugin update notices specifically */
+            .engagifii-settings-page .update-nag,
+            .engagifii-settings-page #update-nag,
+            .engagifii-settings-page .plugin-update-tr,
+            .engagifii-settings-page .update-message {
+                display: none !important;
             }
             
             /* Prevent WordPress admin bar from interfering */
@@ -946,6 +963,59 @@ class Engagifii_Settings {
                 
                 /* All tab mobile styles moved to external CSS file: assets/css/admin-settings.css */
             }
+            </style>
+            
+            <script>
+            // Hide admin notices on Engagifii settings page
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to hide notices
+                function hideNotices() {
+                    const notices = document.querySelectorAll('.notice, .error, .updated, .update-nag, #update-nag, .plugin-update-tr, .update-message');
+                    notices.forEach(function(notice) {
+                        // Only hide if we're on the Engagifii settings page
+                        if (document.body.classList.contains('settings_page_engagifii-settings') || 
+                            document.querySelector('.engagifii-settings-page')) {
+                            notice.style.display = 'none';
+                        }
+                    });
+                }
+                
+                // Hide notices immediately
+                hideNotices();
+                
+                // Also hide any notices that might be added dynamically
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList') {
+                            mutation.addedNodes.forEach(function(node) {
+                                if (node.nodeType === 1) { // Element node
+                                    if (node.classList && (node.classList.contains('notice') || 
+                                        node.classList.contains('error') || 
+                                        node.classList.contains('updated') ||
+                                        node.classList.contains('update-nag'))) {
+                                        node.style.display = 'none';
+                                    }
+                                    // Also check child elements
+                                    const childNotices = node.querySelectorAll('.notice, .error, .updated, .update-nag');
+                                    childNotices.forEach(function(childNotice) {
+                                        childNotice.style.display = 'none';
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+                
+                // Start observing
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+                
+                // Additional check after a short delay
+                setTimeout(hideNotices, 500);
+            });
+            </script>
 
             .unified-actions .button {
                 display: flex;
