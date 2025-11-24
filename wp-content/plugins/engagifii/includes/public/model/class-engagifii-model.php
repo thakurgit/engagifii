@@ -3747,7 +3747,7 @@ public function classesLoadGridDataByPerson(){
     $tenantCode = isset($options['dashboard_tenant_code']) ? $options['dashboard_tenant_code'] : ''; 
     $env = isset($options['engagifii_apis']['environment']) ? $options['engagifii_apis']['environment'] : '';
     $allclass = isset($options['allClasses']) ? $options['allClasses'] : null;
-    $classAPIUrl = "Classes/UpcomingClassPagingList";
+    $classAPIUrl = "Classes/UpcomingClassPagingListLite";
 		
     if (empty($allclass)) {
             $allclass = ["Upcoming"];
