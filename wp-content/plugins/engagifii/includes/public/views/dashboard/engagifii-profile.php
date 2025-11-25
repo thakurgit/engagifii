@@ -289,7 +289,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
   </div>
         </div>
         <?php if($member_id){ ?>
-        <button type="button" class="btn btn-primary btn-sm  ml-auto mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Badges Report</button>
+        <button type="button" class="btn btn-primary btn-sm  ml-auto mt-auto ga justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Badges Report</button>
         <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-2 mt-auto gt justify-content-end px-3" title="Select Member"><i class="far fa-file-pdf mr-2 mt-1"></i>Generate Credits Earned Report</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
