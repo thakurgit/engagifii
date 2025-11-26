@@ -2793,6 +2793,11 @@ wp_die();
         );      
               
         $response = json_decode($dataResponse['api_response']);       
+        
+        // Debug: Print first item to see actual field names
+        if (!empty($response->result) && is_array($response->result) && count($response->result) > 0) {
+            error_log('First Participant Item: ' . print_r($response->result[0], true));
+        }
               
         $collection = $response->result ?? [];
         $totalcount = $response->totalCount ?? 0;
