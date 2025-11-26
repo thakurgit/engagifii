@@ -28,6 +28,7 @@ class abstractModelEngagifii extends Engagifii_API {
         ['coursesByPerson', 'courseLoadGridDataByPerson'],
         ['peopleList', 'peopleLoadGridData'],
         ['peopleFilters', 'peopleFilters'],
+        ['getClassParticipants', 'getClassParticipants'],
         //['peoplefiltercountdata', 'peoplefiltercountdata'],
         ['downloadsByPerson', 'downloadDataByPerson'],
         ['generateDownloads', 'generateDownloadsByPerson'],
@@ -2778,6 +2779,219 @@ wp_die();
       
     return $postData;
     }
+
+    // Class Participants functionality
+    public function getClassParticipants() {
+        $postedData = $this->_prepareClassParticipantsData();
+        
+        // Call the API
+        $dataResponse = $this->submitApiRequest(
+            "ClassAttendence/GetClassAttendenceList/" . $_POST['classId'], 
+            $postedData, 
+            "POST", 
+            'classes'
+        );
+        
+        // Debug: Print API response
+        echo '<pre>API Response: ';
+        print_r($dataResponse);
+        echo '</pre>';
+        
+        $response = json_decode($dataResponse['api_response']);
+        
+        echo '<pre>Decoded Response: ';
+        print_r($response);
+        echo '</pre>';
+        
+        $collection = $response->result ?? [];
+        $totalcount = $response->totalCount ?? 0;
+        $totalRecords = $response->itemCount ?? 0;
+        
+        // Check if this is just a count request for filters
+        if ($_POST['countResult'] == 'true') {
+            echo json_encode($totalcount);
+            wp_die();
+            return;
+        }
+        
+        $data = array();
+        
+        foreach ($collection as $key => $value) {
+            $nestedData = array();
+            
+            // Participant selection checkbox
+            $nestedData['select'] = '<input type="checkbox" class="select-participant" value="' . ($value->participantId ?? '') . '"/>';
+            
+            // Participant Name with image
+            $participantName = $value->participantName ?? 'N/A';
+            $participantId = $value->participantId ?? '';
+            $imageUrl = $value->participantImage ?? '';
+            
+            $nestedData['participantName'] = '<div class="d-flex align-items-center">';
+            if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                $nestedData['participantName'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . esc_attr($participantName) . '" class="rounded-circle img-fluid mr-2" src="' . $imageUrl . '">';
+            } else {
+                $nestedData['participantName'] .= '<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
+            }
+            $nestedData['participantName'] .= '<div><span class="text-nowrap">' . esc_html($participantName) . '</span></div></div>';
+            
+            // Invoice Number
+            $nestedData['invoiceNumber'] = $value->invoiceNumber ?? '--';
+            
+            // Completion Status
+            $completionStatus = $value->completionStatus ?? 'Not Started';
+            $statusClass = '';
+            switch ($completionStatus) {
+                case 'Completed':
+                    $statusClass = 'badge badge-success';
+                    break;
+                case 'In Progress':
+                    $statusClass = 'badge badge-warning';
+                    break;
+                case 'Not Started':
+                    $statusClass = 'badge badge-secondary';
+                    break;
+                default:
+                    $statusClass = 'badge badge-info';
+            }
+            $nestedData['completionStatus'] = '<span class="' . $statusClass . '">' . esc_html($completionStatus) . '</span>';
+            
+            // Time Spent (in hours/minutes)
+            $timeSpent = $value->timeSpent ?? 0;
+            if ($timeSpent > 0) {
+                $hours = floor($timeSpent / 60);
+                $minutes = $timeSpent % 60;
+                $nestedData['timeSpent'] = $hours > 0 ? $hours . 'h ' . $minutes . 'm' : $minutes . 'm';
+            } else {
+                $nestedData['timeSpent'] = '--';
+            }
+            
+            // Marked Credit Hours
+            $nestedData['markedCreditHours'] = $value->markedCreditHours ?? '--';
+            
+            // Registered On
+            $registeredOn = $value->registeredOn ?? '';
+            if (!empty($registeredOn)) {
+                $timestamp = strtotime($registeredOn);
+                $nestedData['registeredOn'] = date('M d, Y', $timestamp);
+            } else {
+                $nestedData['registeredOn'] = '--';
+            }
+            
+            // Organization
+            $nestedData['organization'] = $value->organization ?? '--';
+            
+            // Earned Credit Hours (Finalized)
+            $nestedData['earnedCreditHours'] = $value->earnedCreditHours ?? '--';
+            
+            // Class Format
+            $classFormat = $value->classFormat ?? 'N/A';
+            $nestedData['classFormat'] = '<span class="badge badge-primary">' . esc_html($classFormat) . '</span>';
+            
+            // Current Position
+            $nestedData['currentPosition'] = $value->currentPosition ?? '--';
+            
+            // Current Department
+            $nestedData['currentDepartment'] = $value->currentDepartment ?? '--';
+            
+            // Title
+            $nestedData['title'] = $value->title ?? '--';
+            
+            // Granted By
+            $nestedData['grantedBy'] = $value->grantedBy ?? '--';
+            
+            // Registration Status
+            $registrationStatus = $value->registrationStatus ?? 'Pending';
+            $regStatusClass = '';
+            switch ($registrationStatus) {
+                case 'Confirmed':
+                case 'Registered':
+                    $regStatusClass = 'badge badge-success';
+                    break;
+                case 'Pending':
+                    $regStatusClass = 'badge badge-warning';
+                    break;
+                case 'Cancelled':
+                    $regStatusClass = 'badge badge-danger';
+                    break;
+                default:
+                    $regStatusClass = 'badge badge-info';
+            }
+            $nestedData['registrationStatus'] = '<span class="' . $regStatusClass . '">' . esc_html($registrationStatus) . '</span>';
+            
+            // Actions
+            $nestedData['actions'] = '<button class="btn btn-sm btn-primary view-participant" data-id="' . esc_attr($participantId) . '" title="View Details"><i class="far fa-eye"></i></button>';
+            
+            $data[] = $nestedData;
+        }
+        
+        $draw = $_POST['draw'];
+        $start = $_POST['start'];
+        $length = $_POST['length'];
+        
+        $json_data = array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalcount),
+            "recordsFiltered" => intval($totalcount),
+            "data" => $data,
+        );
+        
+        echo json_encode($json_data);
+        print_r($json_data); die;
+        wp_die();
+    }
+    
+    public function _prepareClassParticipantsData() {
+        $startPageNum = (int) (($_POST['start'] / $_POST['length']) + 1);
+        $sortByColumn = $_POST['order'][0]['column'];
+        $sortDirection = $_POST['order'][0]['dir'];
+        
+        // Get column name for sorting
+        $sortByColumnName = $_POST['columns'][$sortByColumn]['data'] ?? 'name';
+        
+        // Map frontend column names to API field names if needed
+        $columnMapping = array(
+            'participantName' => 'name',
+            'registeredOn' => 'registeredDate',
+            'earnedCreditHours' => 'creditHours',
+            // Add more mappings as needed
+        );
+        
+        $sortBy = isset($columnMapping[$sortByColumnName]) ? $columnMapping[$sortByColumnName] : $sortByColumnName;
+        
+        // Prepare filter body
+        $filterBody = array(
+            'selectedDate' => date('Y-m-d')
+        );
+        
+        // Add completion status filter
+        if (isset($_POST['completionStatus']) && is_array($_POST['completionStatus']) && !empty($_POST['completionStatus'])) {
+            $filterBody['completionStatus'] = $_POST['completionStatus'];
+        }
+        
+        // Add registration status filter
+        if (isset($_POST['registrationStatus']) && is_array($_POST['registrationStatus']) && !empty($_POST['registrationStatus'])) {
+            $filterBody['registrationStatus'] = $_POST['registrationStatus'];
+        }
+        
+        // Add class format filter
+        if (isset($_POST['classFormat']) && is_array($_POST['classFormat']) && !empty($_POST['classFormat'])) {
+            $filterBody['classFormat'] = $_POST['classFormat'];
+        }
+        
+        // Prepare the post data according to API structure
+        $postData = array(
+            'pageNumber' => $startPageNum,
+            'itemCount' => (int) $_POST['length'],
+            'sortBy' => $sortBy,
+            'sortDirection' => $sortDirection,
+            'filterBody' => $filterBody,
+            'id' => $_POST['classId']
+        );
+        
+        return $postData;
+    }
+    
 	/* public function peoplefiltercountdata(){
         $postedData = $this->_preparePeopleData();
         $dataResponse = $this->submitApiRequest("People/NewPeoplePagingList/", $postedData, "POST", 'dashboard');
