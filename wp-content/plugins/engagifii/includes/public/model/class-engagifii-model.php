@@ -2792,13 +2792,7 @@ wp_die();
             'classes'
         );      
               
-        $response = json_decode($dataResponse['api_response']);       
-        
-        // Debug: Print first item to see actual field names
-        if (!empty($response->result) && is_array($response->result) && count($response->result) > 0) {
-            error_log('First Participant Item: ' . print_r($response->result[0], true));
-        }
-              
+        $response = json_decode($dataResponse['api_response']);         
         $collection = $response->result ?? [];
         $totalcount = $response->totalCount ?? 0;
         $totalRecords = $response->itemCount ?? 0;
@@ -2815,14 +2809,25 @@ wp_die();
         foreach ($collection as $key => $value) {
             $nestedData = array();
             
+            // Get student data
+            $student = $value->student ?? null;
+            $participantId = $student->id ?? '';
+            $participantName = $student->name ?? 'N/A';
+            $imageUrl = $student->imageThumbUrl ?? '';
+            
+            // Get organization data
+            $organization = $value->organization ?? null;
+            $orgName = $organization->name ?? '--';
+            
+            // Get position data (first position if exists)
+            $peoplePositions = $value->peoplePositions ?? [];
+            $currentPosition = !empty($peoplePositions) && isset($peoplePositions[0]->name) ? $peoplePositions[0]->name : '--';
+            $currentDepartment = !empty($peoplePositions) && isset($peoplePositions[0]->departmentName) ? $peoplePositions[0]->departmentName : '--';
+            
             // Participant selection checkbox
-            $nestedData['select'] = '<input type="checkbox" class="select-participant" value="' . ($value->participantId ?? '') . '"/>';
+            $nestedData['select'] = '<input type="checkbox" class="select-participant" value="' . esc_attr($participantId) . '"/>';
             
             // Participant Name with image
-            $participantName = $value->participantName ?? 'N/A';
-            $participantId = $value->participantId ?? '';
-            $imageUrl = $value->participantImage ?? '';
-            
             $nestedData['participantName'] = '<div class="d-flex align-items-center">';
             if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                 $nestedData['participantName'] .= '<img style="max-width:40px; flex:0 0 40px" alt="' . esc_attr($participantName) . '" class="rounded-circle img-fluid mr-2" src="' . $imageUrl . '">';
@@ -2835,7 +2840,7 @@ wp_die();
             $nestedData['invoiceNumber'] = $value->invoiceNumber ?? '--';
             
             // Completion Status
-            $completionStatus = $value->completionStatus ?? 'Not Started';
+            $completionStatus = $value->lmsCompletionStatus ?? 'Not started';
             $statusClass = '';
             switch ($completionStatus) {
                 case 'Completed':
@@ -2844,7 +2849,7 @@ wp_die();
                 case 'In Progress':
                     $statusClass = 'badge badge-warning';
                     break;
-                case 'Not Started':
+                case 'Not started':
                     $statusClass = 'badge badge-secondary';
                     break;
                 default:
@@ -2852,21 +2857,15 @@ wp_die();
             }
             $nestedData['completionStatus'] = '<span class="' . $statusClass . '">' . esc_html($completionStatus) . '</span>';
             
-            // Time Spent (in hours/minutes)
-            $timeSpent = $value->timeSpent ?? 0;
-            if ($timeSpent > 0) {
-                $hours = floor($timeSpent / 60);
-                $minutes = $timeSpent % 60;
-                $nestedData['timeSpent'] = $hours > 0 ? $hours . 'h ' . $minutes . 'm' : $minutes . 'm';
-            } else {
-                $nestedData['timeSpent'] = '--';
-            }
+            // Time Spent (parse lmsTotalTime like "8m 42s")
+            $timeSpent = $value->lmsTotalTime ?? '0s';
+            $nestedData['timeSpent'] = $timeSpent !== '0s' ? $timeSpent : '--';
             
             // Marked Credit Hours
-            $nestedData['markedCreditHours'] = $value->markedCreditHours ?? '--';
+            $nestedData['markedCreditHours'] = $value->totalCredit ?? '--';
             
             // Registered On
-            $registeredOn = $value->registeredOn ?? '';
+            $registeredOn = $value->registrationDate ?? '';
             if (!empty($registeredOn)) {
                 $timestamp = strtotime($registeredOn);
                 $nestedData['registeredOn'] = date('M d, Y', $timestamp);
@@ -2875,31 +2874,44 @@ wp_die();
             }
             
             // Organization
-            $nestedData['organization'] = $value->organization ?? '--';
+            $nestedData['organization'] = $orgName;
             
             // Earned Credit Hours (Finalized)
-            $nestedData['earnedCreditHours'] = $value->earnedCreditHours ?? '--';
+            $nestedData['earnedCreditHours'] = $value->creditEarned ?? '--';
             
-            // Class Format
-            $classFormat = $value->classFormat ?? 'N/A';
+            // Class Format (based on classLocationTypeId: 1=In Person, 2=Online, 3=Hybrid)
+            $classLocationTypeId = $value->classLocationTypeId ?? 0;
+            $classFormat = 'Unknown';
+            switch ($classLocationTypeId) {
+                case 1:
+                    $classFormat = 'In Person';
+                    break;
+                case 2:
+                    $classFormat = 'Online';
+                    break;
+                case 3:
+                    $classFormat = 'Hybrid';
+                    break;
+            }
             $nestedData['classFormat'] = '<span class="badge badge-primary">' . esc_html($classFormat) . '</span>';
             
             // Current Position
-            $nestedData['currentPosition'] = $value->currentPosition ?? '--';
+            $nestedData['currentPosition'] = $currentPosition;
             
             // Current Department
-            $nestedData['currentDepartment'] = $value->currentDepartment ?? '--';
+            $nestedData['currentDepartment'] = $currentDepartment;
             
-            // Title
-            $nestedData['title'] = $value->title ?? '--';
+            // Title (from student object)
+            $nestedData['title'] = $student->title ?? '--';
             
             // Granted By
-            $nestedData['grantedBy'] = $value->grantedBy ?? '--';
+            $nestedData['grantedBy'] = $value->grantedByDetails ?? '--';
             
             // Registration Status
             $registrationStatus = $value->registrationStatus ?? 'Pending';
             $regStatusClass = '';
             switch ($registrationStatus) {
+                case 'Approval Completed':
                 case 'Confirmed':
                 case 'Registered':
                     $regStatusClass = 'badge badge-success';
