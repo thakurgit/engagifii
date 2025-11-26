@@ -2790,19 +2790,10 @@ wp_die();
             $postedData, 
             "POST", 
             'classes'
-        );
-        
-        // Debug: Print API response
-        echo '<pre>API Response: ';
-        print_r($dataResponse);
-        echo '</pre>';
-        
-        $response = json_decode($dataResponse['api_response']);
-        
-        echo '<pre>Decoded Response: ';
-        print_r($response);
-        echo '</pre>';
-        
+        );      
+              
+        $response = json_decode($dataResponse['api_response']);       
+              
         $collection = $response->result ?? [];
         $totalcount = $response->totalCount ?? 0;
         $totalRecords = $response->itemCount ?? 0;
@@ -2937,7 +2928,7 @@ wp_die();
         );
         
         echo json_encode($json_data);
-        print_r($json_data); die;
+        //print_r($json_data); die;
         wp_die();
     }
     
