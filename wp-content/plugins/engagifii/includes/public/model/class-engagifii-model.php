@@ -4079,7 +4079,7 @@ public function classesLoadGridDataByPerson(){
                 
                     if(count($classTag) > 1 && $index == 0)
                     {   
-                        $tagPopover =  $this->_popOverGenericData($key, $default_Tags, 'Associated Tags', 'tagName');      //$this->_popOverTagData1($key, $value->classTag);
+                        $tagPopover =  $this->_popOverGenericData($key, $classTag, 'Associated Tags', 'tagName');      //$this->_popOverTagData1($key, $value->classTag);
                         $tagCount   = count($classTag) - 1;
                     
 					$allTags[] = '<div class="dropdown pr-4 text-left"><span class="d-inline-block pr-2">'.$tag->tagName.'</span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_'.$key.'" data-placement="left" data-containerid="' . $key . '" id="' . $key . '"> +' . $tagCount .'</span>'.$tagPopover.'</div>';
