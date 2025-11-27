@@ -21,7 +21,7 @@ function clearAllCookies(newtab='') {
 	if(newtab==''){
  	function myWindow(){
  		 //window.open('https://engagifii-preview4-identity.azurewebsites.net/Account/SignOut?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dng.EngagifiiUI%26redirect_uri%3Dhttps%253A%252F%252Fpsba.engagifii-preview4.com%252Fauth-callback%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520email%2520UsersAPI%2520AccreditationAPI%2520BilltrackingApi%2520CommentApi%2520NotesApi%26state%3D2f9558adbd6147b0acdd08d1aa46c79c%26nonce%3D43ea3bf67eef475ca04ea79b328fd000','_self');
- 			 window.open('https://engagifii-preview5-identity.azurewebsites.net/Account/SignOut?ReturnUrl=https://engagifiwebstg.wpengine.com/psba/','_self');
+ 			 window.open('<?php echo get_option('engagifii_sso_settings')['logout_url']; ?>?ReturnUrl=<?php echo site_url(); ?>','_self');
  }
    setTimeout(function() {
  	  myWindow();
@@ -62,7 +62,7 @@ window.location.href = "<?php echo site_url();?>/my-profile";
 	document.addEventListener('DOMContentLoaded', function() {
         var loginEngagifii = document.getElementById('login_engagifii');
 
-        if (loginEngagifii) {
+        if (loginEngagifii) { 
             loginEngagifii.addEventListener('click', function() {
 				if(localStorage.getItem("userLogin")!==null){
 					window.location.href="<?php echo site_url();?>/my-profile";
