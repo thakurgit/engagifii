@@ -4076,11 +4076,11 @@ public function classesLoadGridDataByPerson(){
             }
             else{
 				if($row->registrationWorkflows[0]->registrationWorkflowId==''){
-                    $tooltip = 'You are not authorized to register for this event. Please contact the event contact.';
+                    $tooltip = 'Registration Not Setup';
                      $default_RegisterBtn .= '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="'.$tooltip.'"><button type="button" id="onlocation" class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span>';
                   }else{
                     if($row->registrantsCapacity > $row->attendeesCount){
-                        $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_SESSION['accesstoken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview';
+                        $url = 'https://'.$tenantCode.'.engagifii'.$env.'.com/auth-callback/pages/home#access_token='.$_COOKIE['peopleToken'].'&source=external&tpath=pages/events/'. $default_Id .'/'.$row->registrationWorkflows[0]->registrationWorkflowId.'/'.$row->registrationWorkflows[0]->roleId.'/eventregpub/signup/overview';
                         $default_RegisterBtn .= '<button data-url="'.$url.'"  class="btn btn-primary px-3 py-1 open-pop" >Register</button>';
                     }else{                        
                         $tooltip = 'Sold Out';
