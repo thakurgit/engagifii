@@ -148,15 +148,17 @@ if ( strpos($url,'my-profile') !== false ) {
                 <span class="pl-1 pr-1"> <?php echo $response->eventType;  ?></span>
 </div>
 <?php } ?>
-            <?php if(in_array('tags', $columnNames) && is_array($response->tags) && count($response->tags)>0) {
+            <?php if(in_array('tags', $columnNames) && isset($response->tags) && is_array($response->tags) && count($response->tags)>0) {
             ?>
             <div class="">
                 <span><i class="fas fa-tags mr-1"></i>Tag(s):</span>
-                <span class="pl-1"> <?php echo count($response->tags)-1;  ?></span>
+                <span class="pl-1 d-none"> <?php echo count($response->tags);  ?></span>
                 <?php
                 	foreach ($response->tags as $key => $value) {
+                		// Handle both string array and object array
+                		$tagName = is_string($value) ? $value : (isset($value->tags) ? $value->tags : '');
                 		?>
-                			<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><?php echo $value->tags; ?></span>
+                			<span class="badge badge-pill badge-light text-capitalize border mr-2 font-weight-normal"><?php echo $tagName; ?></span>
                 		<?php
                 	}
                  ?>
@@ -214,7 +216,7 @@ if ( strpos($url,'my-profile') !== false ) {
 			<div class="mt-auto">	
             <?php if ( strpos($url,'my-profile') !== false ) { 
 				if($workflowid==''){
-                    $tooltip = 'You are not authorized to register for this event. Please contact the event contact.'; ?>
+                    $tooltip = 'Registration not setup'; ?>
 					<div class="mt-auto"><span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="<?php echo $tooltip;?>"><button type="button"  class="btn btn-primary  px-3 py-1"  disabled style="pointer-events: none;">Register</button></span></div>
                  <?php } else{ 
 					if($response->registrantsCapacity > $attendeesCount){ 

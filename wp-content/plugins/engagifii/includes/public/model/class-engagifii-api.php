@@ -257,7 +257,7 @@ public function _popOverSpeakerData3($id, $instructorData){
 
   foreach ($instructorData as $key => $rowData) {
 	  
-	  $rowName[$rowData->id] = $rowData->fullName;
+	  $rowName[$rowData->id] = $rowData->name;
 	  
 	  if($rowData->thumbnailUrl)
 	  {
@@ -281,7 +281,7 @@ public function _popOverSpeakerData3($id, $instructorData){
             if($li%2==1){
 			$class='bg-light';	
 			}
-			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->fullName . '</li>';
+			$subItems .= '<li class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->name . '</li>';
 			$li++;
   }
 
