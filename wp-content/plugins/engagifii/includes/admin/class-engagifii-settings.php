@@ -17,43 +17,43 @@ class Engagifii_Settings {
     const MODULES = array(
         'legislation' => array(
             'title' => 'Legislation Tracking',
-            'description' => 'Track bills, legislation, and voting records',
+            'description' => 'Track bills, Bill details, Public Officials and Legislative reports',
             'pages' => array('bill-tracking', 'engagifii-detail', 'legislative-tracking-database', 'engagifii-grid-view'),
             'shortcodes' => array('legislation-list', 'legislation-details')
         ),
         'events' => array(
             'title' => 'Events Management',
-            'description' => 'Manage and display events',
+            'description' => 'Manage Events List, Event details and Register Events',
             'pages' => array(),
             'shortcodes' => array('events-list', 'event-details')
         ),
         'classes' => array(
             'title' => 'Classes',
-            'description' => 'Educational classes and training sessions',
+            'description' => 'Manage Classes List, Class details and Register Classes',
             'pages' => array('classes', 'class-details'),
             'shortcodes' => array('classes-list-calendar-class-name', 'class-details')
         ),
         'awards' => array(
             'title' => 'Awards/Endorsements',
-            'description' => 'Awards recognition and endorsement tracking system',
+            'description' => 'Manage Awards list, Award details',
             'pages' => array('endorsement-grid-view', 'endorsement-detail'),
             'shortcodes' => array('awards-list', 'award-details', 'endorsement-grid-list', 'endorsement_grid_detail_information')
         ),
         'courses' => array(
             'title' => 'Courses',
-            'description' => 'Educational courses and curriculum',
+            'description' => 'Manage Courses List, Course details',
             'pages' => array('courses', 'course-details'),
             'shortcodes' => array('courses-list', 'course-details')
         ),
         'group_directory' => array(
             'title' => 'Group Member Directory',
-            'description' => 'Member directory and profiles',
-            'pages' => array('my-profile'),
-            'shortcodes' => array('group-members', 'member-profile')
+            'description' => 'Group Member directory',
+            'pages' => array(),
+            'shortcodes' => array('group-members')
         ),
         'organization_directory' => array(
             'title' => 'Organization Directory',
-            'description' => 'Organization listings and details',
+            'description' => 'Organization listings',
             'pages' => array(),
             'shortcodes' => array('organization-list', 'organization-details')
         )
@@ -77,10 +77,24 @@ class Engagifii_Settings {
      */
     public function remove_admin_notices() {
         $screen = get_current_screen();
-        if ($screen && $screen->id === 'engagifii_page_engagifii-settings') {
+        if ($screen && ($screen->id === 'engagifii_page_engagifii-settings' || $screen->id === 'settings_page_engagifii-settings')) {
+            // Remove all admin notice hooks
             remove_all_actions('admin_notices');
             remove_all_actions('network_admin_notices');
             remove_all_actions('all_admin_notices');
+            remove_all_actions('user_admin_notices');
+            
+            // Also add inline CSS as backup
+            echo '<style type="text/css">
+                .wrap .notice, 
+                .wrap div.error, 
+                .wrap div.updated,
+                .notice,
+                div.error,
+                div.updated {
+                    display: none !important;
+                }
+            </style>';
         }
     }
 
@@ -375,7 +389,7 @@ class Engagifii_Settings {
                                             <div class="help-item">
                                                 <h5>📖 Documentation</h5>
                                                 <p>Read our comprehensive setup guides and feature documentation.</p>
-                                                <a href="#" class="button button-secondary" target="_blank">View Docs</a>
+                                                <a href="https://docs.google.com/document/d/1pNd0OG0W0sjqMvJhW1Iu0dFHOrLsSldBX07XoSLsT7s/edit?usp=sharing" class="button button-secondary" target="_blank">View Docs</a>
                                             </div>
                                             <div class="help-item">
                                                 <h5>🎯 Quick Actions</h5>
@@ -432,7 +446,7 @@ class Engagifii_Settings {
             
             .tab-button.active {
                 color: #ffffff !important;
-                background: #667eea !important;
+                background: #2271b1 !important;
                 font-weight: 600 !important;
             }
             
@@ -508,7 +522,7 @@ class Engagifii_Settings {
             body.wp-admin .wrap > .notice,
             body.wp-admin .wrap > .error, 
             body.wp-admin .wrap > .updated {
-                display: block !important;
+                display: none !important;
                 margin: 20px 20px 20px 0 !important;
                 position: relative;
                 z-index: 1000;
@@ -517,7 +531,7 @@ class Engagifii_Settings {
             /* Allow specific important notices to show even inside our container */
             .engagifii-settings-container .notice:not(.hidden),
             .engagifii-settings-wrap .notice:not(.hidden) {
-                display: block !important;
+                display: none !important;
                 margin: 10px 0 !important;
             }
             
@@ -537,6 +551,13 @@ class Engagifii_Settings {
             /* Hide WordPress version notice on Engagifii settings page */
             #wp-version-message,
             #footer-upgrade {
+                display: none !important;
+            }
+            
+            /* Simple notice hiding - same approach as engagifii_modules.php */
+            .wrap .notice, 
+            .wrap div.error, 
+            .wrap div.updated {
                 display: none !important;
             }
             
@@ -564,7 +585,7 @@ class Engagifii_Settings {
             }
 
             .engagifii-settings-wrap h1 {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #2271b1 0%, #2271b1 100%);
                 color: white;
                 margin: 0;
                 padding: 30px 40px;
@@ -580,7 +601,7 @@ class Engagifii_Settings {
                 box-shadow: 0 1px 1px rgba(0,0,0,.04);
                 padding: 23px 10px 0;
                 position: relative;
-                border-left: 4px solid #667eea;
+                border-left: 4px solid #2271b1;
             }
 
             .welcome-logo-container {
@@ -637,7 +658,7 @@ class Engagifii_Settings {
                 display: block;
                 font-size: 32px;
                 font-weight: 700;
-                color: #667eea;
+                color: #2271b1;
                 margin-bottom: 5px;
             }
 
@@ -685,7 +706,7 @@ class Engagifii_Settings {
 
             .setup-section h4 {
                 margin: 0 0 20px 0;
-                color: #667eea;
+                color: #2271b1;
                 font-size: 18px;
                 font-weight: 600;
                 text-align: left;
@@ -704,9 +725,9 @@ class Engagifii_Settings {
                 align-items: center;
                 gap: 15px;
                 padding: 12px 15px;
-                background: rgba(102, 126, 234, 0.05);
+                background: rgba(34, 113, 177, 0.05);
                 border-radius: 8px;
-                border: 1px solid rgba(102, 126, 234, 0.1);
+                border: 1px solid rgba(34, 113, 177, 0.1);
             }
 
             .step-number {
@@ -715,7 +736,7 @@ class Engagifii_Settings {
                 justify-content: center;
                 width: 28px;
                 height: 28px;
-                background: #667eea;
+                background: #2271b1;
                 color: white;
                 border-radius: 50%;
                 font-weight: 600;
@@ -731,7 +752,7 @@ class Engagifii_Settings {
             }
 
             .step-text a {
-                color: #667eea;
+                color: #2271b1;
                 text-decoration: none;
                 font-weight: 500;
             }
@@ -883,7 +904,7 @@ class Engagifii_Settings {
                 background: #f8fafc;
                 padding: 25px;
                 border-radius: 8px;
-                border-left: 4px solid #667eea;
+                border-left: 4px solid #2271b1;
             }
             
             .help-item h5 {
@@ -1003,8 +1024,8 @@ class Engagifii_Settings {
             }
 
             .engagifii-module-card:hover {
-                border-color: #667eea;
-                box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+                border-color: #2271b1;
+                box-shadow: 0 8px 24px rgba(34, 113, 177, 0.15);
                 transform: translateY(-2px);
             }
 
@@ -1040,7 +1061,7 @@ class Engagifii_Settings {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: rgba(102, 126, 234, 0.1);
+                background: rgba(34, 113, 177, 0.1);
                 border-radius: 12px;
             }
 
@@ -1221,9 +1242,9 @@ class Engagifii_Settings {
                 align-items: center;
                 gap: 8px;
                 padding: 8px 12px;
-                background: rgba(102, 126, 234, 0.05);
+                background: rgba(34, 113, 177, 0.05);
                 border-radius: 8px;
-                border: 1px solid rgba(102, 126, 234, 0.1);
+                border: 1px solid rgba(34, 113, 177, 0.1);
             }
 
             .features-label {
@@ -1231,7 +1252,7 @@ class Engagifii_Settings {
                 align-items: center;
                 gap: 6px;
                 font-size: 13px;
-                color: #667eea;
+                color: #2271b1;
                 font-weight: 500;
             }
 
@@ -1276,16 +1297,16 @@ class Engagifii_Settings {
             .engagifii-settings-wrap .button-primary:hover,
             .engagifii-settings-wrap .button-primary:focus,
             .engagifii-settings-wrap .button-primary:active {
-                background: #667eea !important;
-                border-color: #667eea !important;
+                background: #2271b1 !important;
+                border-color: #2271b1 !important;
                 color: #ffffff !important;
-                box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2) !important;
+                box-shadow: 0 2px 4px rgba(34, 113, 177, 0.2) !important;
             }
 
             .engagifii-settings-wrap .button-primary:hover {
                 background: #5a67d8 !important;
                 border-color: #5a67d8 !important;
-                box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
+                box-shadow: 0 4px 8px rgba(34, 113, 177, 0.3) !important;
             }
 
             .action-description {
@@ -1317,10 +1338,10 @@ class Engagifii_Settings {
             }
 
             .quick-action-link:hover {
-                border-color: #667eea;
-                color: #667eea;
+                border-color: #2271b1;
+                color: #2271b1;
                 transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+                box-shadow: 0 4px 12px rgba(34, 113, 177, 0.1);
             }
 
             .quick-action-link .dashicons {

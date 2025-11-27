@@ -9,23 +9,24 @@ if (!is_array($enabledModules)) {
 }
 ?>
 <div data-tab="page-settings" class="wrap eng-customizer <?php if($tab == 'page-settings'){ echo 'show';}else {echo 'hide'; }?>" >
-<div class="engagifii-setting m-tlr-20">
+    <!-- Header is now handled by the main admin-settings-form.php -->
+<div class="engagifii-content-wrapper">
 <?php 
 $options = get_option( 'ebt_api_settings' );
 $front_pages = $options['front_pages'];
 if(isset($front_pages)){
-    $classes_page = $front_pages['classes_page'];
-    $classes_detail_page = $front_pages['classes_detail_page'];
-    $bills_page = $front_pages['bills_page'];
-    $bills_detail_page = $front_pages['bills_detail_page'];
-    $events_page = $front_pages['events_page'];
-    $events_detail_page = $front_pages['events_detail_page'];
-    $courses_page = $front_pages['courses_page'];
-    $courses_detail_page = $front_pages['courses_detail_page'];
-    $endorse_page = $front_pages['endorse_page'];
-    $endorse_detail_page = $front_pages['endorse_detail_page'];
-    $public_official_page = $front_pages['public_official_page'];
-    $public_official_detail_page = $front_pages['public_official_detail_page'];
+    $classes_page = $front_pages['classes_page'] ?? '';
+    $classes_detail_page = $front_pages['classes_detail_page'] ?? '';
+    $bills_page = $front_pages['bills_page'] ?? '';
+    $bills_detail_page = $front_pages['bills_detail_page'] ?? '';
+    $events_page = $front_pages['events_page'] ?? '';
+    $events_detail_page = $front_pages['events_detail_page'] ?? '';
+    $courses_page = $front_pages['courses_page'] ?? '';
+    $courses_detail_page = $front_pages['courses_detail_page'] ?? '';
+    $endorse_page = $front_pages['endorse_page'] ?? '';
+    $endorse_detail_page = $front_pages['endorse_detail_page'] ?? '';
+    $public_official_page = $front_pages['public_official_page'] ?? '';
+    $public_official_detail_page = $front_pages['public_official_detail_page'] ?? '';
    }else{
    	$classes_page= $classes_detail_page =$bills_page=$bills_detail_page=$events_page=$events_detail_page=$courses_page =$courses_detail_page=$endorse_page=$endorse_detail_page=$public_official_page=$public_official_detail_page= '';
    }
@@ -80,7 +81,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('legislation', $enabledModules)): ?>
@@ -93,7 +93,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('events', $enabledModules)): ?>
@@ -106,7 +105,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('courses', $enabledModules)): ?>
@@ -119,11 +117,10 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
-<?php if (in_array('endorsements', $enabledModules)): ?>
-	<h3>Endorsement</h3>
+<?php if (in_array('awards', $enabledModules)): ?>
+	<h3>Awards</h3>
     <div class="form-group">
     	<label for="">Listing page</label>
         <?php  echo pages_list('endorse_page',$endorse_page); ?>
@@ -132,7 +129,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('endorse_detail_page',$endorse_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php if (in_array('organization_directory', $enabledModules)): ?>
@@ -145,7 +141,6 @@ foreach($pages as $page){
     	<label for="">Detail page</label>
          <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
     </div>
-<hr>
 <?php endif; ?>
 
 <?php else: ?>

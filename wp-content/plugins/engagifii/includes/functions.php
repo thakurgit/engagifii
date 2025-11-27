@@ -388,7 +388,7 @@ function renderColumnsUI($optionKey,$action){
 						</div> 
 					</div>
 				</div>
-      <?php if ($options['debug_mode']==1) {
+      <?php if (isset($options['debug_mode']) && $options['debug_mode']==1) {
 			echo '<div class="option-saved-value">';
 		echo '<ul>';
 		echo '<li>'.$saveOptionName.' -<pre>' . htmlspecialchars(print_r($options[$saveOptionName], true)) . '</pre></li>';

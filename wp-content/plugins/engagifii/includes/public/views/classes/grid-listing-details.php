@@ -227,6 +227,9 @@ if ($loggedInUserId !== null && $loggedInUserId !== '') {
 			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark " id="profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Related Classes</a>
 			  	</li>
                 <?php } ?>
+                <li class="nav-item">
+			    	<a class="nav-link rounded-0 px-0 mx-3 text-dark" id="participants-tab" data-toggle="pill" href="#participants" role="tab" aria-controls="participants" aria-selected="false">Participants</a>
+			  	</li>
 			  <!-- 	<li class="nav-item">
 			    	<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Document</a>
 			  	</li> -->
@@ -609,6 +612,194 @@ table#ebtmaintable td:nth-child(1) {
                       </table>
                       </div>
                   </div>
+                  
+                  <!-- Participants Tab -->
+                  <div class="tab-pane fade" id="participants" role="tabpanel" aria-labelledby="participants-tab">
+                      <style>
+                          /* Participants Table Styles */
+                          #participantsTable th.participant-select,
+                          #participantsTable td.participant-select {
+                              width: 50px !important;
+                              text-align: center;
+                          }
+                          
+                          #participantsTable th.searchparticipant,
+                          #participantsTable td.searchparticipant {
+                              min-width: 200px !important;
+                          }
+                          
+                          #participantsTable th.searchorganization,
+                          #participantsTable td.searchorganization {
+                              min-width: 180px !important;
+                          }
+                          
+                          #participantsTable th.actions,
+                          #participantsTable td.actions {
+                              width: 100px !important;
+                              text-align: center;
+                          }
+                          
+                          #participants-overlay {
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                              width: 100%;
+                              height: 100%;
+                              background: rgba(255, 255, 255, 0.8);
+                              display: none;
+                              z-index: 999;
+                          }
+                          
+                          #participants-overlay .spinner {
+                              position: absolute;
+                              top: 50%;
+                              left: 50%;
+                              transform: translate(-50%, -50%);
+                              border: 4px solid #f3f3f3;
+                              border-top: 4px solid #3498db;
+                              border-radius: 50%;
+                              width: 40px;
+                              height: 40px;
+                              animation: spin 1s linear infinite;
+                          }
+                          
+                          @keyframes spin {
+                              0% { transform: translate(-50%, -50%) rotate(0deg); }
+                              100% { transform: translate(-50%, -50%) rotate(360deg); }
+                          }
+                          
+                          .po-filter-participants .filter-toggle span {
+                              font-size: 10px;
+                              min-width: 18px;
+                              height: 18px;
+                              padding: 2px 4px;
+                          }
+                          
+                          .po-filter-participants.ft-selected .filter-toggle {
+                              background-color: #007bff !important;
+                              color: white !important;
+                          }
+                          
+                          .po-filter-participants .ft-active {
+                              background-color: #f8f9fa;
+                          }
+                          
+                          .po-filter-participants .ft-counter {
+                              color: #007bff;
+                          }
+                          
+                          #participantsTable tr.selected {
+                              background-color: #e3f2fd !important;
+                          }
+                      </style>
+                      <div class="p-3">
+                          <div class="mb-3 d-flex align-items-center justify-content-between">
+                              <div class="d-flex align-items-center">
+                                  <h5 class="mb-0 mr-3">
+                                      <button type="button" title="Refresh Participants" class="refresh-participants btn shadow-none p-2 mr-1">
+                                          <i class="fas fa-sync"></i>
+                                      </button>
+                                      <img src="<?php echo ENGAGIFII_ASSETS_URL; ?>/images/Member-Icon.png" class="img-fluid" alt="participant-icon" style="max-width:40px">
+                                  </h5>
+                                  <h6 class="mb-0">Class Participants</h6>
+                              </div>
+                              
+                              <!-- Filters -->
+                              <div class="dropdown dropleft po-filter-participants d-flex justify-content-end">
+                                  <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
+                                      <i class="far fa-filter"></i>
+                                  </button>
+                                  <div class="dropdown-menu py-0" style="min-width: 300px;">
+                                      <div class="filter-top-bg py-2 px-3 bg-dark text-white d-flex align-items-center">
+                                          <span class="filter-title"><i class="far fa-filter mr-2"></i> Filter</span>
+                                          <span class="clear-all-participants ml-auto" title="Reset Filter" style="cursor:pointer;">Clear All</span>
+                                      </div>
+                                      <div class="accordion" id="accordionParticipantFilter">
+                                          <!-- Filter options will be added here dynamically via JS -->
+                                          <div class="filter-list border-bottom" data-filter="completionstatus">
+                                              <h5 class="mb-0">
+                                                  <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1" type="button" data-toggle="collapse" data-target="#filter-completion">
+                                                      Completion Status <span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+                                                  </button>
+                                              </h5>
+                                              <div id="filter-completion" class="collapse px-3" data-parent="#accordionParticipantFilter">
+                                                  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+                                                      <div class="loaders text-center py-3">
+                                                          <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                                      </div>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          
+                                          <div class="filter-list border-bottom bg-light" data-filter="registrationstatus">
+                                              <h5 class="mb-0">
+                                                  <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1" type="button" data-toggle="collapse" data-target="#filter-registration">
+                                                      Registration Status <span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+                                                  </button>
+                                              </h5>
+                                              <div id="filter-registration" class="collapse px-3" data-parent="#accordionParticipantFilter">
+                                                  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+                                                      <div class="loaders text-center py-3">
+                                                          <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                                      </div>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          
+                                          <div class="filter-list border-bottom" data-filter="classformat">
+                                              <h5 class="mb-0">
+                                                  <button class="btn btn-block text-left d-flex align-items-center shadow-none px-3 py-1" type="button" data-toggle="collapse" data-target="#filter-format">
+                                                      Class Format <span class="ml-2 font-weight-bold ft-counter text-black"></span><i class="fal fa-chevron-down ml-auto"></i>
+                                                  </button>
+                                              </h5>
+                                              <div id="filter-format" class="collapse px-3" data-parent="#accordionParticipantFilter">
+                                                  <ul class="list-group td-dropdown mb-3" style="overflow:auto; max-height:200px">
+                                                      <div class="loaders text-center py-3">
+                                                          <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                                      </div>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="text-center py-2">
+                                          <button class="btn btn-primary py-1" type="button" id="apply-participant-filter">
+                                              Apply<span class="mx-1" id="participantFilterResult"></span>
+                                              <div class="spinner-border spinner-border-sm d-none mb-1" role="status"><span class="sr-only">Loading...</span></div>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <!-- Participants Table -->
+                          <div class="engagifii-box position-relative">
+                              <table id="participantsTable" class="table table-bordered border-0 table-striped main-list-here nowrap" style="width: 100% !important;">
+                                  <thead>
+                                      <tr>
+                                          <th class="participant-select"><input type="checkbox"></th>
+                                          <th class="searchparticipant">Search Participant</th>
+                                          <th class="searchinvoices">Search Invoices</th>
+                                          <th class="completionstatus">Completion Status (Access Class)</th>
+                                          <th class="timespent">Time Spent (Access Class)</th>
+                                          <th class="markedcredithours">Marked Credit Hours</th>
+                                          <th class="registeredon">Registered On</th>
+                                          <th class="searchorganization">Search Organization</th>
+                                          <th class="earnedcredithours">Earned Credit Hours (Finalized)</th>
+                                          <th class="classformat">Class Format</th>
+                                          <th class="currentposition">Current Position</th>
+                                          <th class="currentdepartment">Current Department</th>
+                                          <th class="title">Title</th>
+                                          <th class="grantedby">Granted By</th>
+                                          <th class="registrationstatus">Registration Status</th>
+                                          <th class="actions">Actions</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                              <div id="participants-overlay"><span class="spinner"></span></div>
+                          </div>
+                      </div>
+                  </div>
+                  
                   <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                       <div class="col-sm-12">
                           <div class="table-responsive">
@@ -728,4 +919,242 @@ table#ebtmaintable td:nth-child(1) {
 
         e.preventDefault();
     });
+
+    // ==================== PARTICIPANTS TAB FUNCTIONALITY ====================
+    
+    // Initialize variables for participants table
+    var participantFilters = {
+        completionStatus: [],
+        registrationStatus: [],
+        classFormat: [],
+        selectedParticipants: []
+    };
+    var participantsTable;
+    var classId = '<?php echo $id; ?>';
+    var totalParticipants = 0;
+    
+    // Initialize Participants DataTable
+    function initParticipantsTable() {
+        if (!$.fn.DataTable.isDataTable('#participantsTable')) {
+            participantsTable = $('#participantsTable').DataTable({
+                "pageLength": 10,
+                "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
+                "bInfo": false,
+                "processing": true,
+                "searching": true,
+                "ordering": true,
+                "order": [[1, 'asc']], // Sort by participant name
+                "columnDefs": [
+                    {
+                        "targets": ['participant-select', 'searchinvoices', 'timespent', 'markedcredithours', 
+                                   'earnedcredithours', 'currentposition', 'currentdepartment', 'grantedby', 
+                                   'registrationstatus', 'actions'],
+                        "orderable": false
+                    },
+                    { className: "text-center", "targets": ['participant-select', 'completionstatus', 'timespent', 
+                                                             'markedcredithours', 'earnedcredithours', 'classformat', 
+                                                             'registrationstatus', 'actions'] }
+                ],
+                "language": {
+                    processing: '<span>&nbsp;</span>',
+                    "emptyTable": 'No participants found',
+                    search: '',
+                    searchPlaceholder: "Search participants"
+                },
+                "oLanguage": {
+                    "sLengthMenu": "Show _MENU_ records per page"
+                },
+                "serverSide": true,
+                "ajax": {
+                    "url": engagifiiUrl_ajaxurl,
+                    "type": "POST",
+                    "data": function(d) {
+                        // TODO: Replace with actual action when API is ready
+                        d.action = 'getClassParticipants'; // Placeholder action
+                        d.classId = classId;
+                        d.completionStatus = participantFilters.completionStatus;
+                        d.registrationStatus = participantFilters.registrationStatus;
+                        d.classFormat = participantFilters.classFormat;
+                    }
+                },
+                "columns": [
+                    { "data": "select", "render": function(data, type, row) {
+                        return '<input type="checkbox" class="select-participant" value="' + row.participantId + '">';
+                    }},
+                    { "data": "participantName" },
+                    { "data": "invoiceNumber" },
+                    { "data": "completionStatus" },
+                    { "data": "timeSpent" },
+                    { "data": "markedCreditHours" },
+                    { "data": "registeredOn" },
+                    { "data": "organization" },
+                    { "data": "earnedCreditHours" },
+                    { "data": "classFormat" },
+                    { "data": "currentPosition" },
+                    { "data": "currentDepartment" },
+                    { "data": "title" },
+                    { "data": "grantedBy" },
+                    { "data": "registrationStatus" },
+                    { "data": "actions", "render": function(data, type, row) {
+                        return '<button class="btn btn-sm btn-primary view-participant" data-id="' + row.participantId + '">View</button>';
+                    }}
+                ],
+                "drawCallback": function(settings) {
+                    totalParticipants = settings._iRecordsTotal;
+                    dt_dropdown();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    
+                    // Handle select all checkbox
+                    $('.participant-select :checkbox').off('change').on('change', function() {
+                        if ($(this).is(':checked')) {
+                            $('.select-participant').prop('checked', true).change();
+                        } else {
+                            $('.select-participant').prop('checked', false).change();
+                        }
+                    });
+                    
+                    // Handle individual participant selection
+                    $('.select-participant').off('change').on('change', function() {
+                        var participantId = $(this).val();
+                        if ($(this).is(':checked')) {
+                            if (!participantFilters.selectedParticipants.includes(participantId)) {
+                                participantFilters.selectedParticipants.push(participantId);
+                            }
+                            $(this).parents('tr').addClass('selected');
+                        } else {
+                            var index = participantFilters.selectedParticipants.indexOf(participantId);
+                            if (index > -1) {
+                                participantFilters.selectedParticipants.splice(index, 1);
+                            }
+                            $(this).parents('tr').removeClass('selected');
+                        }
+                        
+                        // Update select all checkbox state
+                        var totalChecked = $('.select-participant:checked').length;
+                        var totalCheckboxes = $('.select-participant').length;
+                        
+                        if (totalChecked === 0) {
+                            $('.participant-select :checkbox').prop('checked', false).prop('indeterminate', false);
+                        } else if (totalChecked === totalCheckboxes) {
+                            $('.participant-select :checkbox').prop('checked', true).prop('indeterminate', false);
+                        } else {
+                            $('.participant-select :checkbox').prop('indeterminate', true);
+                        }
+                    });
+                },
+                "initComplete": function(settings, json) {
+                    $('#participants-overlay').css('display', 'none');
+                    
+                    // Add column search for participant name and organization
+                    dt_columnSearch(1, 'Search Participant');
+                    dt_columnSearch(7, 'Search Organization');
+                }
+            });
+            
+            // Handle processing indicator
+            $('#participantsTable').on('processing.dt', function(e, settings, processing) {
+                $('#participants-overlay').css('display', processing ? 'block' : 'none');
+            });
+        }
+    }
+    
+    // Load participants table when tab is shown
+    $('#participants-tab').on('shown.bs.tab shown.bs.pill', function(e) {
+        if (!participantsTable) {
+            initParticipantsTable();
+        } else {
+            participantsTable.draw();
+        }
+    });
+    
+    // Refresh participants table
+    $('.refresh-participants').on('click', function() {
+        if (participantsTable) {
+            participantsTable.draw();
+        }
+    });
+    
+    // Apply participant filters
+    $('#apply-participant-filter').on('click', function() {
+        $(this).attr('disabled', '');
+        $('#apply-participant-filter .spinner-border').removeClass('d-none');
+        
+        // Collect filter values
+        participantFilters.completionStatus = $.map($('input[name="completionStatus[]"]:checked'), function(c) {
+            return c.value;
+        });
+        participantFilters.registrationStatus = $.map($('input[name="registrationStatus[]"]:checked'), function(c) {
+            return c.value;
+        });
+        participantFilters.classFormat = $.map($('input[name="classFormat[]"]:checked'), function(c) {
+            return c.value;
+        });
+        
+        // Update filter UI
+        if ($(".po-filter-participants ul input:checkbox:checked").length > 0) {
+            $('.po-filter-participants').addClass('ft-selected');
+            var activeFilters = $('.po-filter-participants .ft-active').length;
+            if ($('.po-filter-participants .filter-toggle span').length === 0) {
+                $('.po-filter-participants .filter-toggle').append('<span class="badge badge-danger position-absolute" style="right:-6px; top:-6px">' + activeFilters + '</span>');
+            } else {
+                $('.po-filter-participants .filter-toggle span').text(activeFilters);
+            }
+        } else {
+            $('.po-filter-participants').removeClass('ft-selected');
+            $('.po-filter-participants .filter-toggle span').remove();
+        }
+        
+        // Redraw table with filters
+        if (participantsTable) {
+            participantsTable.draw();
+        }
+        
+        $('#apply-participant-filter').removeAttr('disabled');
+        $('#apply-participant-filter .spinner-border').addClass('d-none');
+    });
+    
+    // Clear all participant filters
+    $('.clear-all-participants').on('click', function() {
+        participantFilters.completionStatus = [];
+        participantFilters.registrationStatus = [];
+        participantFilters.classFormat = [];
+        
+        $('.po-filter-participants input[type=checkbox]').prop('checked', false);
+        $('.po-filter-participants .ft-active').removeClass('ft-active');
+        $('.po-filter-participants .ft-counter').text('');
+        $('.po-filter-participants').removeClass('ft-selected');
+        $('.po-filter-participants .filter-toggle span').remove();
+        $('#participantFilterResult').text('');
+        
+        if (participantsTable) {
+            participantsTable.draw();
+        }
+    });
+    
+    // Filter list functionality for participants
+    $('.po-filter-participants ul').each(function() {
+        $('input', this).on('change', function() {
+            var ftSelected = $(this).parents('ul').find('input:checkbox:checked').length;
+            if (ftSelected > 0) {
+                $(this).parents('.border-bottom').addClass('ft-active').find('.ft-counter').text('(' + ftSelected + ')');
+            } else {
+                $(this).parents('.border-bottom').removeClass('ft-active').find('.ft-counter').text('');
+            }
+        });
+    });
+    
+    // Handle view participant action
+    $(document).on('click', '.view-participant', function() {
+        var participantId = $(this).data('id');
+        // TODO: Implement view participant details functionality
+        console.log('View participant:', participantId);
+    });
+    
+    // Prevent dropdown from closing when clicking inside
+    $(document).on('click', '.po-filter-participants .dropdown-menu', function(e) {
+        e.stopPropagation();
+    });
+    
+    // ==================== END PARTICIPANTS TAB FUNCTIONALITY ====================
 </script>
+

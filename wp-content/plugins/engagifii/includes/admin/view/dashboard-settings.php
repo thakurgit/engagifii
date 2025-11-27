@@ -1,5 +1,6 @@
 <div data-tab="dashboard-settings" class="wrap dashoboard-settings <?php if($tab == 'dashboard-settings'){ echo 'show';}else {echo 'hide'; }?>" >
-<div class="engagifii-setting m-tlr-20">
+    <!-- Header is now handled by the main admin-settings-form.php -->
+<div class="engagifii-content-wrapper">
 <?php 
 //API setting
 	$options = get_option( 'ebt_api_settings' );
