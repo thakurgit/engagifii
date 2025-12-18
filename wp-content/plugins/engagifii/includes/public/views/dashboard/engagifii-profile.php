@@ -1343,14 +1343,26 @@ payload.push( TextBoxdata<?php echo $key;?> );
   if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $currentGenderId;?>'){
 	  var newGenderId<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
       // Find the selected gender object
-      var selectedGender<?php echo $key;?> = genderOptions<?php echo $key;?>.find(function(g) { return g.id === newGenderId<?php echo $key;?>; });
+      var selectedGender<?php echo $key;?> = null;
+      for(var i = 0; i < genderOptions<?php echo $key;?>.length; i++) {
+          if(genderOptions<?php echo $key;?>[i].id === newGenderId<?php echo $key;?>) {
+              selectedGender<?php echo $key;?> = genderOptions<?php echo $key;?>[i];
+              break;
+          }
+      }
       // Construct the JSON string for newValue
-      var newGenderValue<?php echo $key;?> = selectedGender<?php echo $key;?> ? JSON.stringify({
-          "id": selectedGender<?php echo $key;?>.id,
-          "imageUrl": selectedGender<?php echo $key;?>.imageUrl,
-          "value": selectedGender<?php echo $key;?>.value,
-          "sequence": selectedGender<?php echo $key;?>.sequence
-      }) : newGenderId<?php echo $key;?>;
+      var newGenderValue<?php echo $key;?>;
+      if(selectedGender<?php echo $key;?>) {
+          newGenderValue<?php echo $key;?> = JSON.stringify({
+              "id": selectedGender<?php echo $key;?>.id,
+              "imageUrl": selectedGender<?php echo $key;?>.imageUrl,
+              "value": selectedGender<?php echo $key;?>.value,
+              "sequence": selectedGender<?php echo $key;?>.sequence
+          });
+      } else {
+          // Fallback - this should not happen if API loaded correctly
+          newGenderValue<?php echo $key;?> = '{"id":"' + newGenderId<?php echo $key;?> + '","imageUrl":"","value":"' + jQuery('.gender-<?php echo $key;?> option:selected').text() + '","sequence":0}';
+      }
       
 	  	var Genderdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
@@ -1778,6 +1790,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			//form.addEventListener('change', enableUpdateProfileBtn);
     });
 	$('form input').on('input',function(){
+	  if ($('.invalid-feedback').is(':visible')) {
+		$('#updateProfile').attr('disabled',''); 
+	  }else{
+		$('#updateProfile').removeAttr('disabled'); 
+	  }
+	});
+	
+	$('form select').on('change',function(){
 	  if ($('.invalid-feedback').is(':visible')) {
 		$('#updateProfile').attr('disabled',''); 
 	  }else{
