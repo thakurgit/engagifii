@@ -738,10 +738,16 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                                 echo '<option value="' . esc_attr($genderOption->id) . '" ' . $selected . '>' . esc_html($genderOption->value) . '</option>';
                             }
                         } else {
-                            // Fallback to hardcoded values if API fails
-                            echo '<option value="Male" ' . (($value->selectedValue == 'Male') ? 'selected' : '') . '>Male</option>';
-                            echo '<option value="Female" ' . (($value->selectedValue == 'Female') ? 'selected' : '') . '>Female</option>';
-                            echo '<option value="Other" ' . (($value->selectedValue == 'Other') ? 'selected' : '') . '>Other</option>';
+                            // Fallback with proper GUIDs if API fails
+                            $fallbackGenders = [
+                                ['id' => '3bb5e06d-8c07-42e4-a1f5-b36073444fd7', 'value' => 'Male'],
+                                ['id' => 'c103ffe0-7571-4916-9b35-11591fabb96b', 'value' => 'Female'],
+                                ['id' => '2218a241-9350-4106-afc4-53cfb1f25262', 'value' => 'Other']
+                            ];
+                            foreach ($fallbackGenders as $fallbackGender) {
+                                $selected = ($currentGenderId == $fallbackGender['id']) ? 'selected' : '';
+                                echo '<option value="' . esc_attr($fallbackGender['id']) . '" ' . $selected . '>' . esc_html($fallbackGender['value']) . '</option>';
+                            }
                         }
                         ?>
                     </select>
@@ -1336,12 +1342,19 @@ payload.push( TextBoxdata<?php echo $key;?> );
         // Parse the JSON to get the current gender ID
         $genderData = json_decode($value->selectedValue);
         $currentGenderId = $genderData && isset($genderData->id) ? $genderData->id : '';
-        // Create gender options map for JavaScript
-        $genderOptionsJson = !empty($genderOptions) ? json_encode($genderOptions) : '[]';
+        // Create gender options map for JavaScript - use hardcoded fallback if API failed
+        if (!empty($genderOptions)) {
+            $genderOptionsJson = json_encode($genderOptions);
+        } else {
+            // Fallback with proper GUIDs
+            $genderOptionsJson = '[{"id":"3bb5e06d-8c07-42e4-a1f5-b36073444fd7","imageUrl":"","value":"Male","sequence":1},{"id":"c103ffe0-7571-4916-9b35-11591fabb96b","imageUrl":"","value":"Female","sequence":2},{"id":"2218a241-9350-4106-afc4-53cfb1f25262","imageUrl":"","value":"Other","sequence":3}]';
+        }
 	 ?>
   var genderOptions<?php echo $key;?> = <?php echo $genderOptionsJson; ?>;
+  console.log('Gender Options:', genderOptions<?php echo $key;?>);
   if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $currentGenderId;?>'){
 	  var newGenderId<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
+      console.log('Selected Gender ID:', newGenderId<?php echo $key;?>);
       // Find the selected gender object
       var selectedGender<?php echo $key;?> = null;
       for(var i = 0; i < genderOptions<?php echo $key;?>.length; i++) {
@@ -1350,6 +1363,7 @@ payload.push( TextBoxdata<?php echo $key;?> );
               break;
           }
       }
+      console.log('Found Gender Object:', selectedGender<?php echo $key;?>);
       // Construct the JSON string for newValue
       var newGenderValue<?php echo $key;?>;
       if(selectedGender<?php echo $key;?>) {
@@ -1360,9 +1374,11 @@ payload.push( TextBoxdata<?php echo $key;?> );
               "sequence": selectedGender<?php echo $key;?>.sequence
           });
       } else {
-          // Fallback - this should not happen if API loaded correctly
+          // This should not happen now with fallback
+          console.error('Gender option not found for ID:', newGenderId<?php echo $key;?>);
           newGenderValue<?php echo $key;?> = '{"id":"' + newGenderId<?php echo $key;?> + '","imageUrl":"","value":"' + jQuery('.gender-<?php echo $key;?> option:selected').text() + '","sequence":0}';
       }
+      console.log('Final Gender Value:', newGenderValue<?php echo $key;?>);
       
 	  	var Genderdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
