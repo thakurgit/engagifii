@@ -462,10 +462,20 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender' && $value->selectedValue){
+        // Find the display text for the selected gender ID
+        $genderDisplayText = $value->selectedValue;
+        if (!empty($genderOptions)) {
+            foreach ($genderOptions as $genderOption) {
+                if ($genderOption->id == $value->selectedValue) {
+                    $genderDisplayText = $genderOption->value;
+                    break;
+                }
+            }
+        }
 ?>
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
-            <?php echo $value->selectedValue;?></div>
+            <?php echo $genderDisplayText;?></div>
 <?php 
     } 
 }
@@ -728,8 +738,8 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                         <?php 
                         if (!empty($genderOptions)) {
                             foreach ($genderOptions as $genderOption) {
-                                $selected = ($value->selectedValue == $genderOption->value) ? 'selected' : '';
-                                echo '<option value="' . esc_attr($genderOption->value) . '" ' . $selected . '>' . esc_html($genderOption->value) . '</option>';
+                                $selected = ($value->selectedValue == $genderOption->id) ? 'selected' : '';
+                                echo '<option value="' . esc_attr($genderOption->id) . '" ' . $selected . '>' . esc_html($genderOption->value) . '</option>';
                             }
                         } else {
                             // Fallback to hardcoded values if API fails
