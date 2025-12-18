@@ -1163,6 +1163,35 @@ var fields = [
   }
 });
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==10 && in_array($value->id, $profilePayloadFields)){ 
+	 ?>
+  if(jQuery('.email-<?php echo $key;?>').val()!='<?php echo $value->selectedValue; ?>'){
+	  var newEmail<?php echo $key;?> = jQuery('.email-<?php echo $key;?>').val();
+	  	var Emaildata<?php echo $key;?> = {
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": loggedInUserId,
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "newValue": newEmail<?php echo $key;?>,
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( Emaildata<?php echo $key;?> );  
+  }
+   <?php  } 
+ } 
+?>
+   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){ 
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
 	 ?>
