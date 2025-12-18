@@ -392,14 +392,18 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
  }
 ?>
 <hr class="my-4 col-12">
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==10 && in_array($value->id, $profilePayloadFields) && $value->selectedValue){
+?>
   <div class="col-md-4 mb-4">
-                <?php if($peopleDATA->people->primaryEmail->value){ ?>
-          <p class="mb-0"> <strong><?php echo $peopleDATA->people->primaryEmail->type; ?>: </strong><br>
-           
-            <a class="font-weight-normal" href="mailto:<?php echo $peopleDATA->people->primaryEmail->value; ?>" ><?php echo $peopleDATA->people->primaryEmail->value; ?></a>
-          </p>
-            <?php } ?>	
-                </div>
+    <strong><?php echo $value->name;?>:</strong><br>
+    <a class="font-weight-normal" href="mailto:<?php echo $value->selectedValue; ?>"><?php echo $value->selectedValue; ?></a>
+  </div>
+<?php 
+    } 
+}
+?>
                 
                 	<?php //if($peopleDATA->people->primaryPhoneNumber->value){
            foreach ($peopleDATA->peopleFields as $key => $value) {
@@ -608,12 +612,21 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             <div class="pb-3">
               <div class="overflow-hidden">
               <div class="px-3">
-              <div class="form-group">
-              	<label for="Email Address">Email Address</label>
-                    <input disabled type="text" value="<?php echo $peopleDATA->people->primaryEmail->value; ?>" class="form-control primaryEmail">
-              </div>
               
               <div class="row">
+              <?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==10 && in_array($value->id, $profilePayloadFields)){
+        $isPrimary = ($value->isPrimary == 1) ? 'disabled' : '';
+?>
+              <div class="form-group col-md-6">
+              	<label for=""><?php echo $value->name;?></label>
+                    <input type="email" value="<?php echo $value->selectedValue;?>" class="form-control email-<?php echo $key;?>" <?php echo $isPrimary;?>>
+              </div>
+<?php 
+    } 
+}
+?>
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
       $formattedPhoneNumber='';
