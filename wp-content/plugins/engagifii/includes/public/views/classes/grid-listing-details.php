@@ -703,9 +703,11 @@ table#ebtmaintable td:nth-child(1) {
                                   </h5>
                                   <h6 class="mb-0">Class Participants</h6>
                               </div>
+                               <button  type="button" class="btn btn-primary btn-sm  ml-auto ga"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Badges</button>
+				<button  type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm  ml-2 gt"  title="Select Member" disabled><i class="far fa-file-pdf mr-2"></i>Generate Transcripts</button>
                               
                               <!-- Filters -->
-                              <div class="dropdown dropleft po-filter-participants d-flex justify-content-end">
+                              <div class="dropdown dropleft po-filter-participants d-flex justify-content-end ml-3">
                                   <button class="btn border rounded-circle filter-toggle bg-light d-flex align-items-center justify-content-center position-relative" type="button" data-toggle="dropdown" aria-expanded="false">
                                       <i class="far fa-filter"></i>
                                   </button>

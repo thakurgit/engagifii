@@ -46,7 +46,7 @@ white-space:nowrap;
 padding: 0;	
 }
 .td-dropdown {
-	max-height: 300px;
+	max-height: 320px;
 	/*overflow-y: auto;
 	overflow-x: hidden;*/
 	min-width:300px !important;
