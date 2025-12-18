@@ -462,16 +462,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender' && $value->selectedValue){
-        // Find the display text for the selected gender ID
-        $genderDisplayText = $value->selectedValue;
-        if (!empty($genderOptions)) {
-            foreach ($genderOptions as $genderOption) {
-                if ($genderOption->id == $value->selectedValue) {
-                    $genderDisplayText = $genderOption->value;
-                    break;
-                }
-            }
-        }
+        // Parse the JSON string to get the value
+        $genderData = json_decode($value->selectedValue);
+        $genderDisplayText = $genderData && isset($genderData->value) ? $genderData->value : $value->selectedValue;
 ?>
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
@@ -730,6 +723,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender'){
+        // Parse the JSON string to get the ID
+        $genderData = json_decode($value->selectedValue);
+        $currentGenderId = $genderData && isset($genderData->id) ? $genderData->id : '';
 ?>
               <div class="form-group col-md-6">
               	<label for=""><?php echo $value->name;?></label>
@@ -738,7 +734,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                         <?php 
                         if (!empty($genderOptions)) {
                             foreach ($genderOptions as $genderOption) {
-                                $selected = ($value->selectedValue == $genderOption->id) ? 'selected' : '';
+                                $selected = ($currentGenderId == $genderOption->id) ? 'selected' : '';
                                 echo '<option value="' . esc_attr($genderOption->id) . '" ' . $selected . '>' . esc_html($genderOption->value) . '</option>';
                             }
                         } else {
@@ -1337,8 +1333,11 @@ payload.push( TextBoxdata<?php echo $key;?> );
    <?php  
    foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender'){ 
+        // Parse the JSON to get the current gender ID
+        $genderData = json_decode($value->selectedValue);
+        $currentGenderId = $genderData && isset($genderData->id) ? $genderData->id : '';
 	 ?>
-  if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $value->selectedValue;?>'){
+  if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $currentGenderId;?>'){
 	  var newGender<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
 	  	var Genderdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
@@ -1351,7 +1350,7 @@ payload.push( TextBoxdata<?php echo $key;?> );
     "smartDropDownRequest": "",
     "fieldChangeValues": [
       {
-        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "oldValue": "<?php echo $currentGenderId; ?>",
         "newValue": newGender<?php echo $key;?>,
         "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
       }
