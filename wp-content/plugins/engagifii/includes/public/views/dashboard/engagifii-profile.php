@@ -445,12 +445,11 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 ?>
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
-    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){
-        $displayValue = ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'Yes' : 'No';
+    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender' && $value->selectedValue){
 ?>
              <div class="col-md-4 mb-4"> 
             <strong><?php echo $value->name;?>:</strong><br>
-            <?php echo $displayValue;?></div>
+            <?php echo $value->selectedValue;?></div>
 <?php 
     } 
 }
@@ -701,14 +700,16 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 ?>
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
-    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){
-        $isChecked = ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'checked' : '';
+    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender'){
 ?>
               <div class="form-group col-md-6">
-              	<div class="custom-control custom-checkbox mt-4">
-                    <input type="checkbox" class="custom-control-input checkbox-<?php echo $key;?>" id="checkbox-<?php echo $key;?>" <?php echo $isChecked;?>>
-                    <label class="custom-control-label" for="checkbox-<?php echo $key;?>"><?php echo $value->name;?></label>
-                </div>
+              	<label for=""><?php echo $value->name;?></label>
+                    <select class="form-control gender-<?php echo $key;?>">
+                        <option value="">Select Gender</option>
+                        <option value="Male" <?php echo ($value->selectedValue == 'Male') ? 'selected' : '';?>>Male</option>
+                        <option value="Female" <?php echo ($value->selectedValue == 'Female') ? 'selected' : '';?>>Female</option>
+                        <option value="Other" <?php echo ($value->selectedValue == 'Other') ? 'selected' : '';?>>Other</option>
+                    </select>
               </div>
 <?php 
     } 
@@ -1295,11 +1296,11 @@ payload.push( TextBoxdata<?php echo $key;?> );
  } 
 ?>
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){ 
+     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender'){ 
 	 ?>
-  if(jQuery('.checkbox-<?php echo $key;?>').is(':checked')!=<?php echo ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'true' : 'false';?>){
-	  var newCheckbox<?php echo $key;?> = jQuery('.checkbox-<?php echo $key;?>').is(':checked');
-	  	var Checkboxdata<?php echo $key;?> = {
+  if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $value->selectedValue;?>'){
+	  var newGender<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
+	  	var Genderdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
     "tabGroupId": "<?php echo $value->tabGroupId; ?>",
     "tabGroupFieldId": "<?php echo $value->id; ?>",
@@ -1310,15 +1311,15 @@ payload.push( TextBoxdata<?php echo $key;?> );
     "smartDropDownRequest": "",
     "fieldChangeValues": [
       {
-        "oldValue": "<?php echo ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'true' : 'false';?>",
-        "newValue": newCheckbox<?php echo $key;?>,
+        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "newValue": newGender<?php echo $key;?>,
         "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
       }
     ],
     "isValueChanged": false
 };
 
-payload.push( Checkboxdata<?php echo $key;?> );  
+payload.push( Genderdata<?php echo $key;?> );  
   }
    <?php  } 
  } 
