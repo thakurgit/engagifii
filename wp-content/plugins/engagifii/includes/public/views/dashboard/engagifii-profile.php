@@ -660,19 +660,22 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
     } 
 }
 ?>
-              <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
-      $formattedPhoneNumber='';
-          if($value->selectedValue){
-          $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
-          }?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
+        $formattedPhoneNumber='';
+        if($value->selectedValue){
+            $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
+        }
+?>
               <div class="form-group col-md-6">
               	<label for=""><?php echo $value->name;?></label>
                     <input type="text" value="<?php echo $formattedPhoneNumber;?>" class="form-control phonenumber-<?php echo $key;?>">
                     <div class="invalid-feedback">Only numbers allowed.</div>
               </div>
-   <?php  } 
- }
+<?php 
+    } 
+}
 ?>
 <?php 
 foreach ($peopleDATA->peopleFields as $key => $value) {
@@ -1358,7 +1361,8 @@ payload.push( Emaildata<?php echo $key;?> );
 	 $formattedPhoneNumber= preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue)
 	 ?>
   if(jQuery('.phonenumber-<?php echo $key;?>').val()!='<?php echo $formattedPhoneNumber; ?>'){
-	  var newPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
+	  var formattedPhoneNumber<?php echo $key;?> = jQuery('.phonenumber-<?php echo $key;?>').val();
+	  var newPhoneNumber<?php echo $key;?> = formattedPhoneNumber<?php echo $key;?>.replace(/\D/g, '');
 	  	var PhoneNumberdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
     "tabGroupId": "<?php echo $value->tabGroupId; ?>",
@@ -1370,7 +1374,7 @@ payload.push( Emaildata<?php echo $key;?> );
     "smartDropDownRequest": "",
     "fieldChangeValues": [
       {
-        "oldValue": "<?php echo $formattedPhoneNumber; ?>",
+        "oldValue": "<?php echo $value->selectedValue; ?>",
         "newValue": newPhoneNumber<?php echo $key;?>,
         "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
       }
