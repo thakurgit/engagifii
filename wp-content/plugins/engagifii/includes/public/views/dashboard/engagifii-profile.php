@@ -37,6 +37,7 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
+  print_r($profilePayload);
 	//$tenantCode = $options['dashboard_apis']['tenant'];
 	$tenantCode = $options['dashboard_tenant_code'];
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
@@ -770,7 +771,9 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
 	});
 	jQuery('[class^="phonenumber-"], [class*=" phonenumber-"]').on('input', function() {
     this.value = this.value.replace(/\D/g, "");
-    if (this.value.length < 10) {
+    if (this.value.length === 0) {
+        jQuery(this).siblings('.invalid-feedback').hide();
+    } else if (this.value.length < 10) {
         jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (10 digits minimum).').show();
     } else if (this.value.length > 25) {
         jQuery(this).siblings('.invalid-feedback').text('Please enter a valid phone number (25 characters maximum).').show();
