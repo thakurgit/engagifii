@@ -43,6 +43,22 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
 	$peopleDATA = json_decode($engagifiiProfile['api_response']);
 
+  // Fetch Gender dropdown values from API
+  $genderOptions = [];
+  $genderApiUrl = 'https://engagifii-qa-crm.azurewebsites.net/api/v1.0/Settings/GetFieldPossibleValues/a9eb2d91-02b2-40e7-820d-1aab4c95ce1e/3';
+  $genderResponse = wp_remote_get($genderApiUrl, array(
+      'headers' => array(
+          'Authorization' => 'Bearer ' . $_SESSION['accesstoken'],
+          'Content-Type' => 'application/json'
+      ),
+      'timeout' => 30
+  ));
+  
+  if (!is_wp_error($genderResponse) && wp_remote_retrieve_response_code($genderResponse) == 200) {
+      $genderBody = wp_remote_retrieve_body($genderResponse);
+      $genderOptions = json_decode($genderBody);
+  }
+
   $fiscalYear  = $obj->getFiscalYear();
   $fiscalYearResponse = json_decode($fiscalYear['api_response'])->collection;
   $largestStartDate = null;
@@ -709,9 +725,19 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               	<label for=""><?php echo $value->name;?></label>
                     <select class="form-control gender-<?php echo $key;?>">
                         <option value="">Select Gender</option>
-                        <option value="Male" <?php echo ($value->selectedValue == 'Male') ? 'selected' : '';?>>Male</option>
-                        <option value="Female" <?php echo ($value->selectedValue == 'Female') ? 'selected' : '';?>>Female</option>
-                        <option value="Other" <?php echo ($value->selectedValue == 'Other') ? 'selected' : '';?>>Other</option>
+                        <?php 
+                        if (!empty($genderOptions)) {
+                            foreach ($genderOptions as $genderOption) {
+                                $selected = ($value->selectedValue == $genderOption->value) ? 'selected' : '';
+                                echo '<option value="' . esc_attr($genderOption->value) . '" ' . $selected . '>' . esc_html($genderOption->value) . '</option>';
+                            }
+                        } else {
+                            // Fallback to hardcoded values if API fails
+                            echo '<option value="Male" ' . (($value->selectedValue == 'Male') ? 'selected' : '') . '>Male</option>';
+                            echo '<option value="Female" ' . (($value->selectedValue == 'Female') ? 'selected' : '') . '>Female</option>';
+                            echo '<option value="Other" ' . (($value->selectedValue == 'Other') ? 'selected' : '') . '>Other</option>';
+                        }
+                        ?>
                     </select>
               </div>
 <?php 
@@ -1298,7 +1324,8 @@ payload.push( TextBoxdata<?php echo $key;?> );
    <?php  } 
  } 
 ?>
-   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+   <?php  
+   foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields) && $value->name == 'Gender'){ 
 	 ?>
   if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $value->selectedValue;?>'){
