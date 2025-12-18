@@ -1336,9 +1336,22 @@ payload.push( TextBoxdata<?php echo $key;?> );
         // Parse the JSON to get the current gender ID
         $genderData = json_decode($value->selectedValue);
         $currentGenderId = $genderData && isset($genderData->id) ? $genderData->id : '';
+        // Create gender options map for JavaScript
+        $genderOptionsJson = !empty($genderOptions) ? json_encode($genderOptions) : '[]';
 	 ?>
+  var genderOptions<?php echo $key;?> = <?php echo $genderOptionsJson; ?>;
   if(jQuery('.gender-<?php echo $key;?>').val()!='<?php echo $currentGenderId;?>'){
-	  var newGender<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
+	  var newGenderId<?php echo $key;?> = jQuery('.gender-<?php echo $key;?>').val();
+      // Find the selected gender object
+      var selectedGender<?php echo $key;?> = genderOptions<?php echo $key;?>.find(function(g) { return g.id === newGenderId<?php echo $key;?>; });
+      // Construct the JSON string for newValue
+      var newGenderValue<?php echo $key;?> = selectedGender<?php echo $key;?> ? JSON.stringify({
+          "id": selectedGender<?php echo $key;?>.id,
+          "imageUrl": selectedGender<?php echo $key;?>.imageUrl,
+          "value": selectedGender<?php echo $key;?>.value,
+          "sequence": selectedGender<?php echo $key;?>.sequence
+      }) : newGenderId<?php echo $key;?>;
+      
 	  	var Genderdata<?php echo $key;?> = {
     "tabId": "<?php echo $value->tabId; ?>",
     "tabGroupId": "<?php echo $value->tabGroupId; ?>",
@@ -1347,11 +1360,12 @@ payload.push( TextBoxdata<?php echo $key;?> );
     "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
     "isHeader": false,
     "headerFieldName": "",
+    "controlTypeId": <?php echo $value->controlTypeId; ?>,
     "smartDropDownRequest": "",
     "fieldChangeValues": [
       {
-        "oldValue": "<?php echo $currentGenderId; ?>",
-        "newValue": newGender<?php echo $key;?>,
+        "oldValue": <?php echo json_encode($value->selectedValue); ?>,
+        "newValue": newGenderValue<?php echo $key;?>,
         "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
       }
     ],
