@@ -421,6 +421,40 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
  } 
  //}
 ?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==8 && in_array($value->id, $profilePayloadFields) && $value->selectedValue){
+?>
+             <div class="col-md-4 mb-4"> 
+            <strong><?php echo $value->name;?>:</strong><br>
+            <?php echo $value->selectedValue;?></div>
+<?php 
+    } 
+}
+?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==4 && in_array($value->id, $profilePayloadFields) && $value->selectedValue){
+?>
+             <div class="col-md-4 mb-4"> 
+            <strong><?php echo $value->name;?>:</strong><br>
+            <?php echo $value->selectedValue;?></div>
+<?php 
+    } 
+}
+?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){
+        $displayValue = ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'Yes' : 'No';
+?>
+             <div class="col-md-4 mb-4"> 
+            <strong><?php echo $value->name;?>:</strong><br>
+            <?php echo $displayValue;?></div>
+<?php 
+    } 
+}
+?>
 
 <hr class="my-4 col-12">
 <?php 
@@ -640,7 +674,47 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
               </div>
    <?php  } 
  }
-?>			</div>
+?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==8 && in_array($value->id, $profilePayloadFields)){
+?>
+              <div class="form-group col-md-6">
+              	<label for=""><?php echo $value->name;?></label>
+                    <input type="text" value="<?php echo $value->selectedValue;?>" class="form-control extension-<?php echo $key;?>">
+              </div>
+<?php 
+    } 
+}
+?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==4 && in_array($value->id, $profilePayloadFields)){
+?>
+              <div class="form-group col-md-6">
+              	<label for=""><?php echo $value->name;?></label>
+                    <input type="text" value="<?php echo $value->selectedValue;?>" class="form-control textbox-<?php echo $key;?>">
+              </div>
+<?php 
+    } 
+}
+?>
+<?php 
+foreach ($peopleDATA->peopleFields as $key => $value) {
+    if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){
+        $isChecked = ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'checked' : '';
+?>
+              <div class="form-group col-md-6">
+              	<div class="custom-control custom-checkbox mt-4">
+                    <input type="checkbox" class="custom-control-input checkbox-<?php echo $key;?>" id="checkbox-<?php echo $key;?>" <?php echo $isChecked;?>>
+                    <label class="custom-control-label" for="checkbox-<?php echo $key;?>"><?php echo $value->name;?></label>
+                </div>
+              </div>
+<?php 
+    } 
+}
+?>
+			</div>
 			</div>
               <?php   foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields)){ 
@@ -1162,6 +1236,93 @@ var fields = [
     payload.push(newData);
   }
 });
+   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==8 && in_array($value->id, $profilePayloadFields)){ 
+	 ?>
+  if(jQuery('.extension-<?php echo $key;?>').val()!='<?php echo $value->selectedValue; ?>'){
+	  var newExtension<?php echo $key;?> = jQuery('.extension-<?php echo $key;?>').val();
+	  	var Extensiondata<?php echo $key;?> = {
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": loggedInUserId,
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "newValue": newExtension<?php echo $key;?>,
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( Extensiondata<?php echo $key;?> );  
+  }
+   <?php  } 
+ } 
+?>
+   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==4 && in_array($value->id, $profilePayloadFields)){ 
+	 ?>
+  if(jQuery('.textbox-<?php echo $key;?>').val()!='<?php echo $value->selectedValue; ?>'){
+	  var newTextBox<?php echo $key;?> = jQuery('.textbox-<?php echo $key;?>').val();
+	  	var TextBoxdata<?php echo $key;?> = {
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": loggedInUserId,
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo $value->selectedValue; ?>",
+        "newValue": newTextBox<?php echo $key;?>,
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( TextBoxdata<?php echo $key;?> );  
+  }
+   <?php  } 
+ } 
+?>
+   <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
+     if($value->controlTypeId==3 && in_array($value->id, $profilePayloadFields)){ 
+	 ?>
+  if(jQuery('.checkbox-<?php echo $key;?>').is(':checked')!=<?php echo ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'true' : 'false';?>){
+	  var newCheckbox<?php echo $key;?> = jQuery('.checkbox-<?php echo $key;?>').is(':checked');
+	  	var Checkboxdata<?php echo $key;?> = {
+    "tabId": "<?php echo $value->tabId; ?>",
+    "tabGroupId": "<?php echo $value->tabGroupId; ?>",
+    "tabGroupFieldId": "<?php echo $value->id; ?>",
+    "loggedInUserId": loggedInUserId,
+    "profileUserId": "<?php echo $peopleDATA->people->id; ?>",
+    "isHeader": false,
+    "headerFieldName": "",
+    "smartDropDownRequest": "",
+    "fieldChangeValues": [
+      {
+        "oldValue": "<?php echo ($value->selectedValue == 'true' || $value->selectedValue == '1' || $value->selectedValue === true) ? 'true' : 'false';?>",
+        "newValue": newCheckbox<?php echo $key;?>,
+        "primary": <?php if($value->isPrimary==1){ echo 'true';}else{echo 'false';}?>
+      }
+    ],
+    "isValueChanged": false
+};
+
+payload.push( Checkboxdata<?php echo $key;?> );  
+  }
+   <?php  } 
+ } 
+?>
    <?php  foreach ($peopleDATA->peopleFields as $key => $value) {
      if($value->controlTypeId==10 && in_array($value->id, $profilePayloadFields)){ 
 	 ?>
