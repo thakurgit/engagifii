@@ -37,7 +37,7 @@ $member_id = isset($_GET['member']) ? $_GET['member'] : null;
       "id" => $memberid,
       "fieldIds" => $profilePayloadFields
   );
-  print_r($profilePayload);
+  //print_r($profilePayload);
 	//$tenantCode = $options['dashboard_apis']['tenant'];
 	$tenantCode = $options['dashboard_tenant_code'];
   $engagifiiProfile = $obj->engagifiiProfile($profilePayload, $tenantCode);
@@ -399,7 +399,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
             <?php  
 		// foreach ($peopleDATA->tabs[$infoseq]->groupFields[$groupseq]->fields as $key => $value) {
 		 foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields)){
+     if($value->controlTypeId==9 && in_array($value->id, $profilePayloadFields) && $value->selectedValue){
 	 $address = json_decode($value->selectedValue,true);
 	 ?>
      <div class="col-md-4 mb-4 ">
@@ -423,7 +423,7 @@ foreach ($peopleDATA->peopleFields as $key => $value) {
                 
                 	<?php //if($peopleDATA->people->primaryPhoneNumber->value){
            foreach ($peopleDATA->peopleFields as $key => $value) {
-     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields)){
+     if($value->controlTypeId==11 && in_array($value->id, $profilePayloadFields) && $value->selectedValue){
           $formattedPhoneNumber='';
           if($value->selectedValue){
           $formattedPhoneNumber = preg_replace('/^(\d{3})(\d{3})(\d{4})$/', '($1) $2-$3', $value->selectedValue);
