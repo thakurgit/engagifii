@@ -1914,6 +1914,9 @@ input[type="checkbox"]{
   background: var(--engagifii-color);
   color:white;
 }
+#ebtmaintable_wrapper .dataTable thead tr>th.billnumber {
+	min-width:100px;
+}
 /*table tbody tr.selected {
 	background-color: #d5e9ff !important;
 }*/

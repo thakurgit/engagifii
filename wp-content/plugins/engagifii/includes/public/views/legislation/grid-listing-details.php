@@ -387,24 +387,27 @@ $siteURL= site_url();
                               }
                             }
                             ?><?php */?>
-                            <?php $tenantAnalysis  ='Staff';
+                            <?php $tenantAnalysis  ='Staff Analysis';
 							if($tenant_code == 'accg') {
-								$tenantAnalysis  ='ACCG';
+								$tenantAnalysis  ='ACCG Analysis';
 							} if($tenant_code == 'baltimorecountymd'){ 
-							  $tenantAnalysis  ='Baltimore City';
+							  $tenantAnalysis  ='Baltimore City Analysis';
 							} if($tenant_code == 'princegeorgescountymd'){
-							   $tenantAnalysis  ='Prince Georges County';
+							   $tenantAnalysis  ='Prince Georges County Analysis';
 							} if($tenant_code == 'howardcountymd'){
-								$tenantAnalysis  ='Howard County';
+								$tenantAnalysis  ='Howard County Analysis';
 							} if($tenant_code == 'mcmd'){
-								$tenantAnalysis  ='Montgomery County';
+								$tenantAnalysis  ='Montgomery County Analysis';
+							}
+							if($tenant_code == 'mabe'){
+								$tenantAnalysis  ='MABE Notes';
 							}?>
                   <?php if (in_array('summary', $visible_legislation_tabs)): ?>
                       <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#summary" id="">State Summary</a></li>
                   <?php endif; ?>
 
                   <?php if (in_array('staffanalysis', $visible_legislation_tabs) && $tenant_code != 'aasb' && $tenant_code != 'mha'): ?>
-                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> Analysis</a></li>
+                      <li class="nav-item"><a class="nav-link rounded-0 px-0 mx-3 text-dark" data-toggle="pill" href="#staffanalysis" id=""><?php echo $tenantAnalysis; ?> </a></li>
                   <?php endif; ?>
 
                   <?php if (in_array('versions', $visible_legislation_tabs)): ?>

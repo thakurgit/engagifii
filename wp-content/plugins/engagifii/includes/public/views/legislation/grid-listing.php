@@ -103,7 +103,7 @@ if(!$seqColumns){
 	return;
 }
 $seqColumns = array_values($seqColumns);*/
-$filterParams=array_diff($columnNames, ["billNumber", "title","state","fileId","assignedto","tags"]);
+$filterParams=array_diff($columnNames, ["billNumber", "title","state","fileId","tags"]);
 $lbt_visib_legislative_list = $options['lbt_visib_legislative_list']??array();
 $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
 $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
@@ -200,7 +200,10 @@ $senateResponses=array();
                         </div>
                         <div class="list-box">
                            <ul class="searchbyassignto tz-dropdown-filter list-unstyled" >
-                           <?php $assigntocolumns='';
+                           <div class="loaders text-center py-3">
+            <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+          </div>
+                           <?php /*?><?php $assigntocolumns='';
 								if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_list)) {
 										  $assigntocolumns = convertToObjectArray($lbt_visib_members_list);
 										  foreach ($assigntocolumns as $assign){
@@ -217,7 +220,7 @@ $senateResponses=array();
 								}
                            ?>
 
-                          <?php /*?> <?php foreach ($assigntoGroups as $assign){
+                           <?php foreach ($assigntoGroups as $assign){
                                  if (in_array($assign->value, $lbt_visib_groups_list)){
                            ?>
                                  <li data-title="<?php echo $assign->text; ?>" data-id="<?php echo $assign->value; ?>">
@@ -1154,7 +1157,7 @@ foreach ($columns as $key => $value){
             $sort_key = $i;
 			$searchObject=[];
 			$searchObject['key'] = $i;
-			$searchObject['placeholder'] = 'Eg: HB 0002 or SR 0980';
+			$searchObject['placeholder'] = 'HB 0002';
 			$columnSearch_key[]=$searchObject;
         }
 		if($value->colName == 'title'){
@@ -1886,12 +1889,12 @@ function billFilters(){
 			$('.searchbylastactiontypes').html(JSON.parse(response)['lastActionOn']);
 			$('.searchbyhousecommittee').html(JSON.parse(response)['houseCommittees']);
 			$('.searchbysenatecommittee').html(JSON.parse(response)['senateCommittees']);
-			/*if(JSON.parse(response)['assignedto']){
+			if(JSON.parse(response)['assignedto']){
 			  $('.searchbyassignto').html(JSON.parse(response)['assignedto']);
 			}else{
 			  $('.searchbyassignto').html('<span class="text-center d-block">Data not found</span>');
 			}
-			if(JSON.parse(response)['tags']){
+			/*if(JSON.parse(response)['tags']){
 			  $('.searchbytags').html(JSON.parse(response)['tags']);
 			}else{
 			  $('.searchbytags').html('<span class="text-center d-block">Data not found</span>');

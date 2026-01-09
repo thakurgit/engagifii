@@ -1,6 +1,4 @@
 <?php
- /*$obj =  new Engagifii_API();
-$tags = $obj->legislationTagsFilter();*/
 $options = get_option( 'ebt_api_settings' );
   $sessionlist = $options['lbt_visib_session_list']?? array();
  $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
@@ -8,6 +6,7 @@ $options = get_option( 'ebt_api_settings' );
   $sessionlist = array();
  if(isset($options['sessionsetting'])){	 
    $sessionsetting = $options['sessionsetting'];
+  $sessionlist = $options['lbt_visib_session_list']?? array();
  }
 $columns='';
  $columnNames=[];

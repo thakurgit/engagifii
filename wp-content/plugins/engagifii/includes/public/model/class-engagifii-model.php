@@ -4492,9 +4492,9 @@ public function classesLoadGridDataByPerson(){
             $nestedData["trackingLevelColorCode"] = $row->trackingLevelColorCode ?? '#000000';
             $nestedData["BillType"] = $row->billTypeAbbr;
             if($tenantCode=="clemson"){
-                $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billnumbers=' . $fBillNumber . ' >'.$row->billNumber.'</a>';
+                $nestedData["billNumber"] = '<a class="bill-title text-nowrap" href=' . $bill_detail_link.'?billnumbers=' . $fBillNumber . ' >'.$row->billNumber.'</a>';
             }else{
-                $nestedData["billNumber"] = '<a class="bill-title" href=' . $bill_detail_link.'?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
+                $nestedData["billNumber"] = '<a class="bill-title text-nowrap" href=' . $bill_detail_link.'?billId=' . $row->id . ' >'.$row->billNumber.'</a>';
             }
            
             $nestedData["state"] = $row->state;
@@ -4623,8 +4623,22 @@ public function classesLoadGridDataByPerson(){
 		  }
 		  $options = get_option('ebt_api_settings');
 		  $lbt_visib_tags_list = $options['lbt_visib_tags_list']??array();
-		  $lbt_visib_members_list = $options['lbt_visib_members_list']??array();
-		  $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
+		  $lbt_visib_members_list = array_values(
+			  array_filter(
+				  array_map(
+					  fn($v) => json_decode($v, true)['colName'] ?? null,
+					  $options['lbt_visib_members_list'] ?? []
+				  )
+			  )
+		  );
+		  $lbt_visib_groups_list = array_values(
+			  array_filter(
+				  array_map(
+					  fn($v) => json_decode($v, true)['colName'] ?? null,
+					  $options['lbt_visib_groups_list'] ?? []
+				  )
+			  )
+		  );
 		  $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
           $apiUrl='';
           $date = date('Y-m-d');
@@ -4679,10 +4693,10 @@ public function classesLoadGridDataByPerson(){
 						$checked = $_POST['chkdAction'] == $value['value'] && $_POST['chkdAction'] != null ? 'checked disabled' : '';
                         $html[$values].= '<li data-title="'.$value['text'].'" data-id="'.$value['value'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" value="'.$value['value'].'" id="item_id_'.$value['value'].'"> '.$value['text'].'</li>';
                       }else if($values=='assignedto'){
-						 /* if(in_array($value['personId'], $lbt_visib_members_list)){
+						  if(in_array($value['personId'], $lbt_visib_members_list)){
 							$checked = $_POST['chkdAssign'] == $value['personId'] && $_POST['chkdAssign'] != null ? 'checked disabled' : '';
 							$html[$values].= '<li data-title="'.$value['fullName'].'" data-id="'.$value['personId'].'"><input '.$checked.' type="checkbox" name="enggafifilterdata[]" data-type="members" value="'.$value['personId'].'" id="item_id_'.$value['personId'].'"> '.$value['fullName'].'</li>';
-						  }*/
+						  }
                       }else if($values=='assignedtoGroups'){
 						  if(in_array($value['value'], $lbt_visib_groups_list)){
 							$checked = $_POST['chkdAssignGroups'] == $value['value'] && $_POST['chkdAssignGroups'] != null ? 'checked disabled' : '';

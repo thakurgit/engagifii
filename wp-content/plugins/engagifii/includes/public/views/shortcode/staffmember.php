@@ -11,13 +11,14 @@ $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();*/
 $options = get_option( 'ebt_api_settings' );
-$sessionlist = $options['lbt_visib_session_list']?? array();
 $lbt_visib_members_list  = $options['lbt_visib_members_list'] ?? array();
 $lbt_visib_groups_list   = $options['lbt_visib_groups_list'] ?? array();
 $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
-   $sessionsetting = '';
+  $sessionsetting = '';
+  $sessionlist = array(); 
  if(isset($options['sessionsetting'])){	 
    $sessionsetting = $options['sessionsetting'];
+  $sessionlist = $options['lbt_visib_session_list']?? array();
  }
 $columns='';
 $columnNames=[]; 

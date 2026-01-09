@@ -270,6 +270,9 @@ public function getClassesType($date){
 	  if ($tenant_code != 'aasb' && $tenant_code != 'mha') {
 		  $legislation_tabs['staffanalysis'] = 'Staff Analysis';
 	  }
+	  if ($tenant_code == 'mabe') {
+		  $legislation_tabs['staffanalysis'] = 'MABE Notes';
+	  }
 	  // Show MACo Analysis tab only for tenant_code 'maco'
 	  if ($tenant_code == 'baltimorecountymd' ||
 		  $tenant_code == 'princegeorgescountymd' ||
