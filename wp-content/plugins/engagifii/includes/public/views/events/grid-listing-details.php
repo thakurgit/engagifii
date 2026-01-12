@@ -1,7 +1,9 @@
 <?php 
-ini_set('session.gc_maxlifetime', 86400);
-session_set_cookie_params(86400);
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.gc_maxlifetime', 86400);
+    session_set_cookie_params(86400);
+    session_start();
+}
 	$id 		= $_REQUEST['endId'] ?? null;
 	$workflowid 		= $_REQUEST['wId'] ?? null;
 	$roleid 		= $_REQUEST['rId'] ?? null;
@@ -50,6 +52,7 @@ session_start();
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
+	$course_detail_page = $options['course_detail_page'] ?? null;
 	if($course_detail_page){
 		$course_detail_page_link=get_permalink( $course_detail_page );	
 	}else{
@@ -69,7 +72,7 @@ session_start();
 		if (!empty(EVENTS_COLS) && isArrayOfJsonStrings(EVENTS_COLS)) {
 			  $columnNames = extractColNames(EVENTS_COLS);
 		}
-	$loggedInUserId = $_SESSION['pid'];
+	$loggedInUserId = isset($_SESSION['pid']) ? $_SESSION['pid'] : null;
     //$tenantCode = $options['ebt_tenant_code']['tenant_code'];
 	$tenantCode = $options['dashboard_tenant_code'];
 	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
@@ -97,7 +100,9 @@ session_start();
             $registerOverride = 'false';
         }
 	}
-	if($_COOKIE['courseids']){
+	$prev = null;
+	$next = null;
+	if(isset($_COOKIE['courseids'])){
 	$class_array = @json_decode(stripslashes($_COOKIE['courseids']), true);
   $class_key = array_search ($_GET['courseId'], $class_array);
   $class_count = count($class_array)-1;
@@ -190,8 +195,11 @@ if ( strpos($url,'my-profile') !== false ) {
           <?php 
 		  $event_status = $response->eventStatus;
 		  $registration_state = $response->eventRegistrationState;
-		  $isAlreadyRegistered = $response->registrationWorkflows[0]->isAlreadyRegistered;
+		  $isAlreadyRegistered = isset($response->registrationWorkflows[0]) ? $response->registrationWorkflows[0]->isAlreadyRegistered : false;
 		  $default_RegisterBtn = "";
+		  if (!isset($registerOverride)) {
+			  $registerOverride = 'false';
+		  }
 		  if(in_array('register', $columnNames)) {
 			if (($event_status == 'Completed' || $registration_state == 'RegistrationClosed' || $registration_state == 'RegistrationNotStarted' || $registration_state == 'RegistrationScheduled') && ($registerOverride=='false')) {
 			 if($registration_state == 'RegistrationScheduled'){
@@ -358,8 +366,8 @@ if ( strpos($url,'my-profile') !== false ) {
 											isset($response->eventDates) && is_array($response->eventDates) && count($response->eventDates)
 										) {	
 		                    			foreach ($response->eventDates as $key => $value) {
-		                    				$position  = $value->position;
-		                    				$department = $value->$department;
+		                    				$position  = isset($value->position) ? $value->position : '';
+		                    				$department = isset($value->department) ? $value->department : '';
 											$sessionStart_Date = strtotime($value->sessionStartTime);
 											$startDate = date('M d, Y', $sessionStart_Date);
 											$startTime = date('g:i A', $sessionStart_Date);

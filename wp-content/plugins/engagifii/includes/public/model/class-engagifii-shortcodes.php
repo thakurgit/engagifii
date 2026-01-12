@@ -517,7 +517,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 	public function events_details($attr){
 		ob_start();
 		extract(shortcode_atts(array(
-		     'endId' => $attr['id']
+		     'endId' => isset($attr['id']) ? $attr['id'] : ''
 		    ), $attr));
 
 		include $this->basePath.'includes/public/views/events/grid-listing-details.php';

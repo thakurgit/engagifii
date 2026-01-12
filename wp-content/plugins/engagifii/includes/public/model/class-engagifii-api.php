@@ -994,7 +994,7 @@ return $this->submitApiRequestWithGet($apiUrl,$postData, 'legislation');
 /*Event Detail */
 public function getEventDetailsByID($id)
 {
-	$peopleToken = $_SESSION['accesstoken'];
+	$peopleToken = isset($_SESSION['accesstoken']) ? $_SESSION['accesstoken'] : null;
 	$postData = array();
 	$responseArray = array();
 	if($peopleToken){
