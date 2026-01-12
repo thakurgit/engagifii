@@ -13,7 +13,9 @@ if (filter_var($tenant_url, FILTER_VALIDATE_URL)) {
 //echo $tenant; // Output will be "gsba" in both cases
 
 $reportsResponse = $obj->legislativeReports();
+print_r($reportsResponse);
 	if(!$reportsResponse){
+
 		echo'<h5 class="text-center pt-5">Data not available</h5>';
 		return;	
 	}
