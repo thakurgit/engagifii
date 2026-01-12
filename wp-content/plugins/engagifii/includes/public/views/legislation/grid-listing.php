@@ -571,7 +571,7 @@ $senateResponses=array();
 </div>
 
 <script>
-
+/* <![CDATA[ */
 
 var trackingLevels=[];
 var sponsors=[];
@@ -1066,6 +1066,7 @@ $(".tz-selectAll").change(function () {
       jQuery(document).find(".select2-search").prepend("<span class=\"engTrackingLevels\"> Tracking Levels </span>");  
     }
 }*/
+/* ]]> */
   </script>
 
 <?php 
@@ -1191,6 +1192,7 @@ foreach ($columns as $key => $value){
 </div>
 
 <script type="text/javascript">
+/* <![CDATA[ */
 var lbtDynamicTableClass = new Array();
 
 
@@ -1906,6 +1908,6 @@ function billFilters(){
 window.addEventListener("load", function () {
 		billFilters();
 });
-
+/* ]]> */
 </script>      
 </div>
