@@ -39,6 +39,21 @@ foreach ($reportsResponses as $value) {
     $reportListResponses = json_decode($reportListResponse['api_response'], true);
     $reportListData[$value['reportTypeMasterId']] = $reportListResponses;
 }
+
+// Check if any report type has data
+$hasData = false;
+foreach ($reportListData as $data) {
+    if (!empty($data)) {
+        $hasData = true;
+        break;
+    }
+}
+
+// If no data available in any report type, show message
+if (!$hasData) {
+    echo '<h5 class="text-center pt-5">Data not available</h5>';
+    return;
+}
 ?>
 
 
