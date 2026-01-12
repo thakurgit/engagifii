@@ -56,11 +56,13 @@ usort($tags, "sort_associative_array");*/
 			$html = '';
 	$site_url = get_site_url();
 	//$columns = array_slice($columns, 0, 101); 
-	foreach ($columns as $item) {
-		$tagId = $item->colName;
-		$name = $item->displayName;
-		$encoded = base64_encode($name);
-		$html .= '<a href="' . $site_url . '/bill-tracking/?tag=' . urlencode($tagId) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+	if (!empty($columns) && is_array($columns)) {
+		foreach ($columns as $item) {
+			$tagId = $item->colName;
+			$name = $item->displayName;
+			$encoded = base64_encode($name);
+			$html .= '<a href="' . $site_url . '/bill-tracking/?tag=' . urlencode($tagId) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+		}
 	}
 	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
 		} else { ?>
