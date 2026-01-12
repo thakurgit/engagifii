@@ -13,7 +13,6 @@ if (filter_var($tenant_url, FILTER_VALIDATE_URL)) {
 //echo $tenant; // Output will be "gsba" in both cases
 
 $reportsResponse = $obj->legislativeReports();
-print_r($reportsResponse);
 
 // Check if api_response exists and has data
 if (empty($reportsResponse['api_response'])) {
