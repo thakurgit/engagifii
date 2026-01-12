@@ -88,15 +88,18 @@ foreach ($reportsResponses as $value) {
         <?php
         $first = true;
         foreach ($reportsResponses as $value) {
-            $isActive = $first ? 'active' : '';
-            ?>
-            <div class="tab mb-3 <?php echo $isActive; ?>" data-report-type-id="<?php echo $value['reportTypeMasterId']; ?>">
-                <a href="javascript:void(0)">
-                    <?php echo $value['name']; ?>
-                </a>
-            </div>
-            <?php
-            $first = false;
+            // Check if this report type has data
+            if (!empty($reportListData[$value['reportTypeMasterId']])) {
+                $isActive = $first ? 'active' : '';
+                ?>
+                <div class="tab mb-3 <?php echo $isActive; ?>" data-report-type-id="<?php echo $value['reportTypeMasterId']; ?>">
+                    <a href="javascript:void(0)">
+                        <?php echo $value['name']; ?>
+                    </a>
+                </div>
+                <?php
+                $first = false;
+            }
         }
         ?>
     </div>
@@ -105,10 +108,12 @@ foreach ($reportsResponses as $value) {
         <?php
         
         foreach ($reportsResponses as $value) {
-             ?>
-            <div class="tab-pane" id="report-tab-<?php echo $value['reportTypeMasterId']; ?>">
-			<?php $tabData = $reportListData[$value['reportTypeMasterId']]; 
-			foreach($tabData as $values){
+            // Only display tab panes that have data
+            if (!empty($reportListData[$value['reportTypeMasterId']])) {
+                ?>
+                <div class="tab-pane" id="report-tab-<?php echo $value['reportTypeMasterId']; ?>">
+                <?php $tabData = $reportListData[$value['reportTypeMasterId']]; 
+                foreach($tabData as $values){
 				$name = $values['billReportName'];
 				$id = $values['billReportId'];
 				?>
@@ -128,6 +133,7 @@ foreach ($reportsResponses as $value) {
                 <!-- show Data here -->
             </div>
             <?php
+            }
         }
         ?>
     </div>
