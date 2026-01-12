@@ -566,12 +566,10 @@ $senateResponses=array();
    </div>
 </div>
 </div>
-        
-</div>
 </div>
 
-<script>
-
+<script type="text/javascript">
+//<![CDATA[
 
 var trackingLevels=[];
 var sponsors=[];
@@ -1192,6 +1190,7 @@ foreach ($columns as $key => $value){
 </div>
 
 <script type="text/javascript">
+//<![CDATA[
 
 var lbtDynamicTableClass = new Array();
 
