@@ -148,7 +148,7 @@ function add_loginout_link( $items, $args ) {
     $user = wp_get_current_user();
 	$user_role = $user->roles[0];
 	$options  = get_option( 'ebt_api_settings' );
-    $login_btn = $options['dash_menus']['login_btn'];
+    $login_btn = isset($options['dash_menus']['login_btn']) ? $options['dash_menus']['login_btn'] : false;
 
 	
 	$login = "moOAuthLoginNew('Engagifii')";
