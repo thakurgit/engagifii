@@ -318,6 +318,7 @@ background: none;
 color:var(--color-error);
 border: 0;	
 cursor:pointer;
+vertical-align: middle;
 }
 .checked-cols span.placeholder {
 	font-size: 18px;
