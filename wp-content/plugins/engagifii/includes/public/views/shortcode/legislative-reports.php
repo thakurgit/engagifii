@@ -14,11 +14,24 @@ if (filter_var($tenant_url, FILTER_VALIDATE_URL)) {
 
 $reportsResponse = $obj->legislativeReports();
 print_r($reportsResponse);
-if(empty($reportsResponse['api_response'])){
-		echo'<h5 class="text-center pt-5">Data not available</h5>';
-		return;	
-	}
-$reportsResponses = json_decode($reportsResponse['api_response'], true);
+
+// Check if api_response exists and has data
+if (empty($reportsResponse['api_response'])) {
+    echo '<h5 class="text-center pt-5">Data not available</h5>';
+    return;	
+}
+
+// Decode the response if it's a JSON string, otherwise use as-is
+$reportsResponses = is_string($reportsResponse['api_response']) 
+    ? json_decode($reportsResponse['api_response'], true) 
+    : $reportsResponse['api_response'];
+
+// Check again after decoding
+if (empty($reportsResponses)) {
+    echo '<h5 class="text-center pt-5">Data not available</h5>';
+    return;	
+}
+
 $reportListData = [];
 $site_url = site_url();
 
