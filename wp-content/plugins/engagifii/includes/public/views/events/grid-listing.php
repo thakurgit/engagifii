@@ -72,9 +72,10 @@ $eventTypes = array_values($filteredEventTypes); */
 
     //$eventLocations = $obj->eventLocation();
     //print_r($dataResponse);
+    $date = date('Y-m-d'); // Initialize date variable
     $dateRange  = $obj->eventDateFilter($date);
-    $min_date   = date('m/d/Y',strtotime($dateRange['minStartDate']));
-    $max_date = date('m/d/Y',strtotime($dateRange['maxEndDate']));
+    $min_date   = isset($dateRange['minStartDate']) ? date('m/d/Y',strtotime($dateRange['minStartDate'])) : '';
+    $max_date = isset($dateRange['maxEndDate']) ? date('m/d/Y',strtotime($dateRange['maxEndDate'])) : '';
     $enabled_modules = get_option('engagifii_enabled_modules', array()); 
    if (!in_array('events', $enabled_modules)) {   
     echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
