@@ -213,9 +213,19 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 	
 	
 	public function legislation_grid_view(){
+		// Remove wpautop filter to prevent WordPress from converting && to &#038;&#038;
+		remove_filter('the_content', 'wpautop');
+		remove_filter('the_content', 'wptexturize');
+		
 		ob_start();
 		include $this->basePath.'includes/public/views/legislation/grid-listing.php';
-		return ob_get_clean();
+		$content = ob_get_clean();
+		
+		// Re-add filters for other content
+		add_filter('the_content', 'wpautop');
+		add_filter('the_content', 'wptexturize');
+		
+		return $content;
 	}	
 
 	/*public function legislation_grid_details(){
