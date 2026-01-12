@@ -14,7 +14,7 @@ if (filter_var($tenant_url, FILTER_VALIDATE_URL)) {
 
 $reportsResponse = $obj->legislativeReports();
 print_r($reportsResponse);
-if(!$reportsResponse['api_response']){
+if(empty($reportsResponse['api_response'])){
 		echo'<h5 class="text-center pt-5">Data not available</h5>';
 		return;	
 	}
