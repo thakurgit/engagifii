@@ -1,6 +1,7 @@
 <?php 
 // Only show training calendar settings if the events module is enabled
-if (!engagifii_should_show_module_settings('events')) {
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('events')) {
     return;
 }
 ?>

@@ -1,4 +1,10 @@
 <?php 
+$enabled_modules = get_option('engagifii_enabled_modules', array()); 
+   $setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !in_array('legislation', $enabled_modules)) {   
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
 $obj = new Engagifii_API();
 $options = get_option('ebt_api_settings');
 $tenant_url          = $options['lbt_tenant_code']['engagifii_url'];

@@ -1,7 +1,7 @@
 <?php 
 // Get enabled modules and setup status
 $enabledModules = get_option('engagifii_enabled_modules', array());
-$setup_completed = get_option('engagifii_setup_completed', false);
+$setupCompleted = get_option('engagifii_setup_completed');
 
 // Ensure $enabledModules is always an array
 if (!is_array($enabledModules)) {
@@ -67,90 +67,82 @@ foreach($pages as $page){
   return $html;
 }
 ?>
+
+<?php if (!$setupCompleted || !empty($enabledModules) && count($enabledModules) > 0){ ?>
 <div class="engagifii-setting api-urls">
-
-<?php if (!empty($enabledModules) && count($enabledModules) > 0): ?>
-    
-<?php if (in_array('classes', $enabledModules)): ?>
-	<h3>Classes</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('classes_page',$classes_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php if (in_array('legislation', $enabledModules)): ?>
-	<h3>Legislation</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('bills_page',$bills_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php if (in_array('events', $enabledModules)): ?>
-	<h3>Events</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('events_page',$events_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php if (in_array('courses', $enabledModules)): ?>
-	<h3>Courses</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('courses_page',$courses_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php if (in_array('awards', $enabledModules)): ?>
-	<h3>Awards</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('endorse_page',$endorse_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('endorse_detail_page',$endorse_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php if (in_array('organization_directory', $enabledModules)): ?>
-	<h3>Public Official</h3>
-    <div class="form-group">
-    	<label for="">Listing page</label>
-        <?php  echo pages_list('public_official_page',$public_official_page); ?>
-    </div>
-    <div class="form-group">
-    	<label for="">Detail page</label>
-         <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
-    </div>
-<?php endif; ?>
-
-<?php else: ?>
-    <div class="notice notice-info">
-        <p><strong>No modules are currently enabled.</strong></p>
-        <p>Please go to <a href="<?php echo admin_url('options-general.php?page=engagifii-settings'); ?>">Engagifii Settings</a> to enable the modules you want to use, then return here to configure page settings.</p>
-    </div>
-<?php endif; ?>
-    
+	  <?php if (!$setupCompleted || in_array('classes', $enabledModules)): ?>
+          <h3>Classes</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('classes_page',$classes_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
+          </div>
+      <?php endif; ?>
+      
+      <?php if (!$setupCompleted || in_array('legislation', $enabledModules)): ?>
+          <h3>Legislation</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('bills_page',$bills_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
+          </div>
+      <?php endif; ?>
+      
+      <?php if (!$setupCompleted || in_array('events', $enabledModules)): ?>
+          <h3>Events</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('events_page',$events_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
+          </div>
+      <?php endif; ?>
+      
+      <?php if (!$setupCompleted || in_array('courses', $enabledModules)): ?>
+          <h3>Courses</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('courses_page',$courses_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
+          </div>
+      <?php endif; ?>
+      
+      <?php if (!$setupCompleted || in_array('awards', $enabledModules)): ?>
+          <h3>Awards</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('endorse_page',$endorse_page); ?> 
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('endorse_detail_page',$endorse_detail_page); ?>
+          </div>
+      <?php endif; ?>
+      
+      <?php if (!$setupCompleted || in_array('organization_directory', $enabledModules)): ?>
+          <h3>Public Official</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('public_official_page',$public_official_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
+          </div>
+      <?php endif; ?>
 </div>
+
         <div>
         <?php
 		 
@@ -188,6 +180,14 @@ foreach($pages as $page){
           <span>Enable Dark theme datatable</span>
           <span><input type="checkbox" name="ebt_api_settings[dt_darktheme]" id="dt_darktheme" value="1" <?php echo $dark; ?>></span>
         </div>
+<?php } else { ?>
+    <div class="notice notice-warning"> 
+        <p><strong>No modules are currently enabled.</strong></p>
+        <p>Please go to <a href="<?php echo admin_url('admin.php?page=engagifii-settings'); ?>">Engagifii Settings</a> to enable the modules you want to use, then return here to configure page settings.</p>
+    </div>
+<?php } ?>
+    
+
 
 </div>
 </div>

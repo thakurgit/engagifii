@@ -1,7 +1,8 @@
 <?php 
 // Only show classes settings if the classes module is enabled
-if (!engagifii_should_show_module_settings('classes')) {
-    return;
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('classes')) {
+    return; 
 }
 ?>
 <div data-tab="settings" class="wrap class-column <?= $tab == 'settings' ? 'show' : 'hide' ?>">

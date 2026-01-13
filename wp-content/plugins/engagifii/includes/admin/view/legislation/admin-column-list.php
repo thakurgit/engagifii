@@ -1,6 +1,7 @@
 <?php 
 // Only show legislation settings if the legislation module is enabled
-if (!engagifii_should_show_module_settings('legislation')) {
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('legislation')) {
     return;
 }
 ?>

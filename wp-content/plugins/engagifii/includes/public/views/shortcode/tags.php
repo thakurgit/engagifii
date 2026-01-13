@@ -1,4 +1,10 @@
 <?php
+$enabled_modules = get_option('engagifii_enabled_modules', array());
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
+    echo '<div class="alert alert-warning text-center">Legislation module is deactivated. Please contact the admin.</div>';
+    return;
+}
 $options = get_option( 'ebt_api_settings' );
 $lbt_visib_tags_list   = $options['lbt_visib_tags_list']  ?? array();
    $sessionsetting = '';

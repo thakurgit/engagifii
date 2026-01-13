@@ -69,7 +69,7 @@ class Engagifii_Settings {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         
         // Remove admin notices on our settings page
-        add_action('admin_head', array($this, 'remove_admin_notices'));
+       // add_action('admin_head', array($this, 'remove_admin_notices'));
     }
 
     /**
@@ -230,18 +230,17 @@ class Engagifii_Settings {
         if (!is_array($enabled_modules)) {
             $enabled_modules = array();
         }
-        
-        $setup_completed = get_option('engagifii_setup_completed', false);
+       	$setup_completed = get_option('engagifii_setup_completed', false);
         $is_initial_setup = !$setup_completed && isset($_GET['setup']) && $_GET['setup'] === '1';
-        $show_welcome = $is_initial_setup || !$setup_completed; // Show welcome for initial setup OR if setup never completed
+        //$show_welcome = $is_initial_setup || !$setup_completed; // Show welcome for initial setup OR if setup never completed
         ?>
         
-        <div class="wrap engagifii-settings-page">
+        <div class="engagifii-wrap engagifii-settings-page">
             <div class="engagifii-settings-container">
                 <div class="engagifii-settings-wrap">
                     <h1><?php echo $is_initial_setup ? 'Engagifii Initial Setup' : 'Engagifii Module Settings'; ?></h1>
             
-            <?php if ($show_welcome): ?>
+            <?php //if ($show_welcome): ?>
                 <div class="engagifii-welcome-panel">
                     <div class="welcome-panel-content">
                         <div class="welcome-logo-container">
@@ -339,7 +338,7 @@ class Engagifii_Settings {
                                     
                                     <!-- Tab Actions -->
                                     <div class="tab-actions">
-                                        <?php if ($is_initial_setup): ?>
+                                        <?php  if ($is_initial_setup): ?>
                                             <input type="hidden" name="engagifii_setup_completed" value="1">
                                             <button type="submit" class="button button-primary button-hero">
                                                 <span class="dashicons dashicons-yes-alt"></span>
@@ -412,7 +411,7 @@ class Engagifii_Settings {
                     </form>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php //endif; ?>
 
             <style>
             /* EMERGENCY BASIC STYLING - In case external CSS doesn't load */
@@ -513,33 +512,33 @@ class Engagifii_Settings {
             }
             
             /* WordPress Admin Notices Positioning */
-            .wrap {
+            .engagifii-wrap {
                 margin: 0;
                 padding: 0;
             }
             
             /* Ensure top-level notices are visible and positioned properly */
-            body.wp-admin .wrap > .notice,
+            /*body.wp-admin .wrap > .notice,
             body.wp-admin .wrap > .error, 
             body.wp-admin .wrap > .updated {
                 display: none !important;
                 margin: 20px 20px 20px 0 !important;
                 position: relative;
                 z-index: 1000;
-            }
+            }*/
             
             /* Allow specific important notices to show even inside our container */
-            .engagifii-settings-container .notice:not(.hidden),
+            /*.engagifii-settings-container .notice:not(.hidden),
             .engagifii-settings-wrap .notice:not(.hidden) {
                 display: none !important;
                 margin: 10px 0 !important;
-            }
+            }*/
             
             /* Only hide generic duplicates, not important plugin notices */
-            .engagifii-settings-wrap .notice.duplicate,
+            /*.engagifii-settings-wrap .notice.duplicate,
             .engagifii-settings-container .notice.duplicate {
                 display: none !important;
-            }
+            }*/
             
             .engagifii-settings-container {
                 margin: 0;
@@ -549,17 +548,17 @@ class Engagifii_Settings {
             }
             
             /* Hide WordPress version notice on Engagifii settings page */
-            #wp-version-message,
+           /* #wp-version-message,
             #footer-upgrade {
                 display: none !important;
-            }
+            }*/
             
             /* Simple notice hiding - same approach as engagifii_modules.php */
-            .wrap .notice, 
+           /* .wrap .notice, 
             .wrap div.error, 
             .wrap div.updated {
                 display: none !important;
-            }
+            }*/
             
             /* Prevent WordPress admin bar from interfering */
             .wp-admin .engagifii-settings-wrap {
@@ -567,12 +566,12 @@ class Engagifii_Settings {
             }
             
             /* Ensure admin notices appear above our header */
-            #wpbody-content > .wrap > .notice,
+           /* #wpbody-content > .wrap > .notice,
             #wpbody-content > .notice {
                 position: relative;
                 z-index: 1001;
                 margin: 20px 20px 20px 0 !important;
-            }
+            }*/
             
             /* Modern Professional Styling */
             .engagifii-settings-wrap {
@@ -2142,6 +2141,9 @@ class Engagifii_Settings {
         
         // Save enabled modules
         update_option('engagifii_enabled_modules', $clean_modules);
+		        update_option('engagifii_setup_completed', true);
+
+		
         
         wp_send_json_success(array(
             'message' => 'Module settings saved successfully!',

@@ -13,6 +13,12 @@
 }
 </style>
 <?php
+ $enabled_modules = get_option('engagifii_enabled_modules', array()); 
+   $setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !in_array('events', $enabled_modules)) {   
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
 $options = get_option('ebt_api_settings');
 	$columns='';
 	$columnNames=[];
@@ -54,11 +60,7 @@ if(!$dataResponse['api_response']){
   	  $columnNames = $options['events_visible_column_list'];
 	}*/
 
-  $enabled_modules = get_option('engagifii_enabled_modules', array()); 
-   if (!in_array('events', $enabled_modules)) {   
-    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
-    return;
-}
+ 
     
 ?>
 

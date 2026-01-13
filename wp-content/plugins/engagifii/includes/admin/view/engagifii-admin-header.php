@@ -40,14 +40,14 @@ function engagifii_render_admin_header($title = 'Engagifii Settings', $descripti
     ?>
     <style>
     /* ENGAGIFII ADMIN HEADER - INLINE FORCE OVERRIDE */
-    div#setting-error-egovt {
+    /*div#setting-error-egovt {
     display: none;
 }
 p#footer-upgrade
 
  {
     display: none;
-}
+}*/
     .engagifii-page-header {
         background: #2271b1 !important;
         color: white !important;
@@ -146,7 +146,7 @@ p#footer-upgrade
     }
     
     /* BOXED LAYOUT MATCHING MODULE SETTINGS PAGE */
-    .wrap {
+    .engagifii-wrap {
         margin: 20px 0 0 0 !important;
     }
     
@@ -239,9 +239,9 @@ p#footer-upgrade
         padding: 0px 30px !important;
         border-bottom: 1px solid #e1e1e1 !important;
     }
-    .notice{
+   /* .notice{
         display: none !important;
-    }
+    }*/
     .engagifii-setting:last-child {
         border-bottom: none !important;
     }
@@ -262,6 +262,7 @@ p#footer-upgrade
         max-width: 250px !important;
         padding: 25px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+		text-decoration:none;
     }
     
     /* OVERRIDE TO MATCH MODULE SETTINGS PAGE EXACTLY */
@@ -339,7 +340,7 @@ p#footer-upgrade
         }
     }
     </style>
-    <div class="wrap">
+    <div class="engagifii-wrap">
         <div class="engagifii-settings-container">
             <div class="engagifii-settings-wrap">
                 <div class="engagifii-settings-page">
@@ -356,16 +357,21 @@ p#footer-upgrade
             <h2>Welcome to Engagifii!</h2>
             <p>Transform your website with powerful engagement modules. Select the features that best serve your community.</p>
             
-                      
+                   <?php /*delete_option('engagifii_setup_completed'); 
+				   if( get_option('engagifii_setup_completed')) {
+					echo 'setup completed';   
+				   }else {
+					   echo 'setup  not completed'; 
+				   };*/?>   
             <div class="engagifii-stats-grid">
-                <div class="stat-card">
+                <a href="<?php echo admin_url(); ?>/admin.php?page=engagifii-settings" class="stat-card">
                     <div class="stat-number"><?php echo number_format($total_modules); ?></div>
                     <div class="stat-label">Modules Available</div>
-                </div>
-                <div class="stat-card">
+                </a>
+                <a href="<?php echo admin_url(); ?>/admin.php?page=engagifii-settings" class="stat-card">
                     <div class="stat-number"><?php echo number_format($activated_modules); ?></div>
                     <div class="stat-label">Currently Active</div>
-                </div>
+                </a>
             </div>
         </div>
         

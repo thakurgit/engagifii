@@ -1,4 +1,10 @@
 <?php 
+$enabled_modules = get_option('engagifii_enabled_modules', array());
+  $setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !in_array('group_directory', $enabled_modules)) {
+    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
+    return;
+}
 if (!isset($groupId) || empty($groupId)) {
     echo '<h3 class="text-center text-muted">Group ID not found</h3>';
     return;
@@ -36,11 +42,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 
     return in_array($id, [3, 6, 15]);
 });
- $enabled_modules = get_option('engagifii_enabled_modules', array());
-   if (!in_array('group_directory', $enabled_modules)) {
-    echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
-    return;
-}
+ 
  ?>
  
 <div class="container-fluid ">

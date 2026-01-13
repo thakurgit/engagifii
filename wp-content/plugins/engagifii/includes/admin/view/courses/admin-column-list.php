@@ -1,6 +1,7 @@
 <?php 
 // Only show courses settings if the courses module is enabled
-if (!engagifii_should_show_module_settings('courses')) {
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('courses')) {
     return;
 }
 ?>

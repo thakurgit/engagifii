@@ -1,4 +1,9 @@
 <?php
+$enabled_modules = get_option('engagifii_enabled_modules', array());
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
+    return;
+}
 /*$obj =  new Engagifii_API();
 $sessionResponse = $obj->sessions();
 $sessionResponses = json_decode($sessionResponse['api_response']);*/

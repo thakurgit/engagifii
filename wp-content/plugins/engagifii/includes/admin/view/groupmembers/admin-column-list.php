@@ -1,6 +1,7 @@
 <?php 
 // Only show group members settings if the group_directory module is enabled
-if (!engagifii_should_show_module_settings('group_directory')) {
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('group_directory')) {
     return;
 }
 ?>

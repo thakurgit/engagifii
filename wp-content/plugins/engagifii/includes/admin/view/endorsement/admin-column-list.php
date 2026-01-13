@@ -1,6 +1,7 @@
 <?php 
 // Only show endorsement settings if the endorsements module is enabled
-if (!engagifii_should_show_module_settings('awards')) {
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && !engagifii_should_show_module_settings('awards')) {
     return;
 }
 ?>

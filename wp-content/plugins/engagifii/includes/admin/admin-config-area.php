@@ -40,7 +40,8 @@ class ebtAdminConfigSettings {
         
         // Get enabled modules from our new module system
         $enabledModules = get_option('engagifii_enabled_modules', array());
-        
+		$setupCompleted = get_option('engagifii_setup_completed');
+
         // Ensure $enabledModules is always an array
         if (!is_array($enabledModules)) {
             $enabledModules = array();
@@ -49,32 +50,32 @@ class ebtAdminConfigSettings {
         // If specific modules are enabled, include their views
         $views = array();
         
-        if (in_array('awards', $enabledModules)) {
+        if (!$setupCompleted || in_array('awards', $enabledModules)) {
             $views[] = 'endorsement/admin-column-list.php';
         }
         
-        if (in_array('courses', $enabledModules)) {
+        if (!$setupCompleted || in_array('courses', $enabledModules)) {
             $views[] = 'courses/admin-column-list.php';
         }
         
-        if (in_array('classes', $enabledModules)) {
+        if (!$setupCompleted || in_array('classes', $enabledModules)) {
             $views[] = 'classes/admin-column-list.php';
         }
         
-        if (in_array('events', $enabledModules)) {
+        if (!$setupCompleted || in_array('events', $enabledModules)) {
             $views[] = 'events/admin-column-list.php';
             $views[] = 'trainingcalendar/admin-column-list.php';
         }
         
-        if (in_array('legislation', $enabledModules)) {
+        if (!$setupCompleted || in_array('legislation', $enabledModules)) {
             $views[] = 'legislation/admin-column-list.php';
         }
         
-        if (in_array('group_directory', $enabledModules)) {
+        if (!$setupCompleted || in_array('group_directory', $enabledModules)) {
             $views[] = 'groupmembers/admin-column-list.php';
         }
         
-        if (in_array('organization_directory', $enabledModules)) {
+        if (!$setupCompleted || in_array('organization_directory', $enabledModules)) {
             $views[] = 'organizations/admin-column-list.php';
         }
         
@@ -109,6 +110,7 @@ class ebtAdminConfigSettings {
 		
 		// Get enabled modules from our new module system
 		$enabledModules = get_option('engagifii_enabled_modules', array());
+		$setupCompleted = get_option('engagifii_setup_completed');
 		
 		// Ensure $enabledModules is always an array
 		if (!is_array($enabledModules)) {
@@ -116,7 +118,7 @@ class ebtAdminConfigSettings {
 		}
 		
 		// Show dashboard settings if group_directory module is enabled
-		if (in_array('group_directory', $enabledModules)) {
+		if (!$setupCompleted || in_array('group_directory', $enabledModules)) {
 		    include_once( __DIR__.'/view/dashboard-settings.php' );
 		}
  	}
@@ -127,6 +129,8 @@ class ebtAdminConfigSettings {
 		
 		// Get enabled modules from our new module system
 		$enabledModules = get_option('engagifii_enabled_modules', array());
+				$setupCompleted = get_option('engagifii_setup_completed');
+
 		
 		// Ensure $enabledModules is always an array
 		if (!is_array($enabledModules)) {
@@ -141,7 +145,7 @@ class ebtAdminConfigSettings {
 		add_submenu_page( 'engagifii-module-api', 'API settings', 'API settings', 'manage_options', $parent.'&tab=settings',  $callback = '');
 		
 		// Shortcodes - only show if relevant modules are enabled
-		if (in_array('legislation', $enabledModules) || 
+		if (!$setupCompleted || in_array('legislation', $enabledModules) || 
 		    in_array('classes', $enabledModules) || 
 		    in_array('courses', $enabledModules) || 
 		    in_array('events', $enabledModules) || 
@@ -152,7 +156,7 @@ class ebtAdminConfigSettings {
 		}
 		
 		// Page Settings - only show if page-creating modules are enabled
-		if (in_array('legislation', $enabledModules) || 
+		if (!$setupCompleted || in_array('legislation', $enabledModules) || 
 		    in_array('classes', $enabledModules) || 
 		    in_array('courses', $enabledModules) || 
 		    in_array('awards', $enabledModules) ||
@@ -194,6 +198,8 @@ function ebt_api_shortocde_description() {
 
     // Get enabled modules
     $enabledModules = get_option('engagifii_enabled_modules', array());
+	$setupCompleted = get_option('engagifii_setup_completed');
+
     
     // Ensure $enabledModules is always an array
     if (!is_array($enabledModules)) {
@@ -203,7 +209,7 @@ function ebt_api_shortocde_description() {
     $shortcodes = array();
     
     // Classes shortcodes - only if classes module is enabled
-    if (in_array('classes', $enabledModules)) {
+    if (!$setupCompleted || in_array('classes', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Class Shortcodes',
             'list'  => array(
@@ -236,7 +242,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Legislation shortcodes - only if legislation module is enabled
-    if (in_array('legislation', $enabledModules)) {
+    if (!$setupCompleted || in_array('legislation', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Legislation Shortcodes',
             'list'  => array(
@@ -281,7 +287,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Events shortcodes - only if events module is enabled
-    if (in_array('events', $enabledModules)) {
+    if (!$setupCompleted || in_array('events', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Event Shortcodes',
             'list'  => array(
@@ -306,7 +312,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Courses shortcodes - only if courses module is enabled
-    if (in_array('courses', $enabledModules)) {
+    if (!$setupCompleted || in_array('courses', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Courses Shortcodes',
             'list'  => array(
@@ -323,7 +329,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Awards shortcodes - only if awards module is enabled
-    if (in_array('awards', $enabledModules)) {
+    if (!$setupCompleted || in_array('awards', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Awards Shortcodes',
             'list'  => array(
@@ -340,7 +346,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Group Directory shortcodes - only if group_directory module is enabled
-    if (in_array('group_directory', $enabledModules)) {
+    if (!$setupCompleted || in_array('group_directory', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Group Member Directory Shortcodes',
             'list'  => array(
@@ -396,7 +402,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Organization Directory shortcodes - only if organization_directory module is enabled
-    if (in_array('organization_directory', $enabledModules)) {
+    if (!$setupCompleted || in_array('organization_directory', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Organization Shortcodes',
             'list'  => array(
@@ -417,7 +423,7 @@ function ebt_api_shortocde_description() {
     }
     
     // Public Officials shortcodes - part of legislation module
-    if (in_array('legislation', $enabledModules)) {
+    if (!$setupCompleted || in_array('legislation', $enabledModules)) {
         $shortcodes[] = array(
             'title' => 'Public Official Shortcodes',
             'list'  => array(
@@ -728,9 +734,9 @@ function ebt_api_shortocde_description() {
     </script>';
 
     if (empty($shortcodes)) {
-        echo '<div class="notice notice-info">';
+        echo '<div class="notice notice-warning">';
         echo '<p><strong>No shortcodes available.</strong></p>';
-        echo '<p>Please go to <a href="' . admin_url('options-general.php?page=engagifii-settings') . '">Engagifii Settings</a> to enable the modules you want to use, then return here to view available shortcodes.</p>';
+        echo '<p>Please go to <a href="' . admin_url('admin.php?page=engagifii-settings') . '">Engagifii Settings</a> to enable the modules you want to use, then return here to view available shortcodes.</p>';
         echo '</div>';
     } else {
         // Add the grid layout for shortcode cards
@@ -1162,7 +1168,15 @@ function ebt_tenant_code_render(  ) {
                 </div>
             </div>
             
-
+<?php $enabled_modules = get_option('engagifii_enabled_modules', array());
+$setupCompleted = get_option('engagifii_setup_completed');
+if ($setupCompleted && count($enabled_modules)<1) {
+echo '<div class="notice notice-warning">';
+        echo '<p><strong>No Modules available.</strong></p>';
+        echo '<p>Please go to <a href="' . admin_url('admin.php?page=engagifii-settings') . '">Engagifii Settings</a> to enable the modules.</p>';
+        echo '</div>';
+}
+?>
   			</div>
 		<?php
 	}
