@@ -386,11 +386,11 @@ p#footer-upgrade
  */
 function engagifii_close_admin_header() {
     ?>
-        </div> <!-- Close .engagifii-content-area -->
+        
             </div> <!-- Close .engagifii-settings-page -->
         </div> <!-- Close .engagifii-settings-wrap -->
     </div> <!-- Close .engagifii-settings-container -->
-</div> <!-- Close .wrap -->
+</div> <!-- Close .engagifii-wrap -->
     <?php
 }
 

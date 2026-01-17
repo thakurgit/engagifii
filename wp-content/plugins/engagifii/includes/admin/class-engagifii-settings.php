@@ -1731,7 +1731,6 @@ class Engagifii_Settings {
         </script>
             </div> <!-- .engagifii-settings-wrap -->
         </div> <!-- .engagifii-settings-container -->
-        </div> <!-- .wrap -->
         <?php
     }
 
