@@ -1653,18 +1653,17 @@ class Engagifii_Settings {
                         // Handle regular module settings save
                         $('#engagifii-module-form').on('submit', function(e) {
                             e.preventDefault();
-                            
                             var selectedModules = [];
                             $('input[name="engagifii_enabled_modules[]"]:checked').each(function() {
                                 selectedModules.push($(this).val());
                             });
                             
-                            console.log('Selected modules:', selectedModules);
+                            /*console.log('Selected modules:', selectedModules);
                             console.log('Form data to send:', {
                                 action: 'engagifii_save_modules',
                                 modules: selectedModules,
-                                nonce: '<?php echo wp_create_nonce("engagifii_settings_nonce"); ?>'
-                            });
+                                nonce: '<?php //echo wp_create_nonce("engagifii_settings_nonce"); ?>'
+                            });*/
                             
                             $.ajax({
                                 url: ajaxurl,
