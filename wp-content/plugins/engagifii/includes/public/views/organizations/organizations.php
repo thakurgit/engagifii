@@ -312,6 +312,17 @@ jQuery(document).ready(function($) {
 	function OrgList(start){ 
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
+		  
+		// Merge custom fields with dynamic filter selections
+		var allCustomFields = Object.assign({}, customFields || {});
+		if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
+			Object.keys(dynamicFilterSelections).forEach(function(key) {
+				if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
+					allCustomFields[key] = dynamicFilterSelections[key];
+				}
+			});
+		}
+		  
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -319,7 +330,12 @@ jQuery(document).ready(function($) {
               action:'getOrganizations',			 
 			  viewMode:'Grid',
 			  length:length,
-			  start:start
+			  start:start,
+			  organizationTypes: organizationTypes,
+			  statuses: statuses,
+			  locations: locations,
+			  organizationTags: organizationTags,
+			  customFields: allCustomFields
           },
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
