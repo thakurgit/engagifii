@@ -24,7 +24,9 @@ window.addEventListener("load", function () {
  sessionId='0';
 	viewAll = $('#bill-count').siblings('a').attr('href');
 	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
-		sessionId = $('.session-tab li:first-child button').attr('id');
+		if($('.session-tab li').length>0){
+			sessionId = $('.session-tab li:first-child button').attr('id');
+		}
 		$('.session-tab li:first-child button').trigger('click') ;
 		getCountSelected(sessionId);
 		localStorage.setItem("sessionname", $('.session-tab li:first-child button').text());
@@ -37,7 +39,7 @@ window.addEventListener("load", function () {
 	<?php } else { ?>
 	  getCountSelected(sessionId);
 	  localStorage.setItem("sessionname", "");	
-	<?php } ?>
+	<?php } ?> 
 	
 });
 function getCountSelected(sessionId)
@@ -52,7 +54,9 @@ function getCountSelected(sessionId)
       success: function(response) { 
         $('#bill-count').html('(Total '+response.api_response+' bills)');
 		<?php if($sessionsetting==1 && count($sessionlist)>0) {?>
+		if($('.session-tab li').length>0){
        	 $('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);  
+		}
 		<?php } ?>
        	   
          }
