@@ -1099,7 +1099,8 @@ function ebt_tenant_code_render(  ) {
                                     '-preview6' => 'Preview6',
                                     '-preview9' => 'Preview9',
                                     '-preview10' => 'Preview10',
-                                    '-staging' => 'Staging'
+                                    '-staging' => 'Staging',
+                                    '-dev' => 'Development'
                                   ];
                                 
                                   foreach ($envs as $value => $label) {

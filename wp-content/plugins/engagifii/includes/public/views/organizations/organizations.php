@@ -48,12 +48,12 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 	<div class="row">
         <div class="col-12 justify-content-end d-flex">
             <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
-    <div id="filter-loader" class="text-center">
+    <div id="filter-loader" class="text-center" style="display:none;">
         <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    <div class="filter-content" id="filterdp1">
+    <div class="filter-content" id="filterdp1" style="display:block;">
         <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
             <i class="far fa-filter click-filter"></i>
             <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
@@ -76,102 +76,15 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                 <div class="col-sm-12" id="test" style="max-height: 400px; overflow-y: auto;">
                     <input type="hidden" id="isApplyACtive" value="0">
                     
-                    <?php
-                    $columnNames = [];
-                    if (!empty(ORGANIZATION_COLS) && isArrayOfJsonStrings(ORGANIZATION_COLS)) {
-                        $columnNames = extractColNames(ORGANIZATION_COLS);
-                    }
-                    ?>
-                    
-                    <?php if(in_array('OrganizationType', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Organization Type <i class="far fa-angle-down"></i></div>
-                        <div class="content-area organizationType-filter d-none">
-                            <ul class="list-group m-0">
-                                <div class="loaders text-center py-3">
-                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-                                </div>
-                            </ul>
+                    <!-- Dynamic filters will be loaded here -->
+                    <div id="dynamic-filters-container">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading filters...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading filters...</p>
                         </div>
                     </div>
-                    <?php } ?>
-                    
-                    <?php if(in_array('Status', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Status <i class="far fa-angle-down"></i></div>
-                        <div class="content-area status-filter d-none">
-                            <ul class="list-group m-0">
-                                <div class="loaders text-center py-3">
-                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <?php if(in_array('Locations', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Locations <i class="far fa-angle-down"></i></div>
-                        <div class="content-area locations-filter d-none">
-                            <ul class="list-group m-0">
-                                <div class="loaders text-center py-3">
-                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <?php if(in_array('OrganizationTags', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Organization Tags <i class="far fa-angle-down"></i></div>
-                        <div class="content-area organizationTags-filter d-none">
-                            <ul class="list-group m-0">
-                                <div class="loaders text-center py-3">
-                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <?php if(in_array('CreatedOn', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Created Date <i class="far fa-angle-down"></i></div>
-                        <div class="content-area d-none position-relative pb-2">
-                            <input type="text" name="createdbetween" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
-                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <?php if(in_array('ModifiedOn', $columnNames)) { ?>
-                    <div class="filter-list border-bottom">
-                        <div class="heading-title py-2 d-flex align-items-center justify-content-between"> Modified Date <i class="far fa-angle-down"></i></div>
-                        <div class="content-area d-none position-relative pb-2">
-                            <input type="text" name="modifiedbetween" class="form-control form-control-sm input-xs small-css bg-light" data-date-format="mm/dd/yyyy" placeholder="MM/DD/YYYY">
-                            <span style="right:0; top:0; cursor:pointer" class="position-absolute cleardate mt-1 mr-2"><i class="fal fa-times"></i></span>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    
-                    <!-- Dynamically generate filters for custom fields -->
-                    <?php foreach ($columns as $column) {
-    if (isset($column->fieldId) && !empty($column->fieldId)) { ?>
-        <div class="filter-list border-bottom">
-            <div class="heading-title py-2 d-flex align-items-center justify-content-between custom-field-filter-tittle">
-                <?php echo esc_html($column->displayName ?? $column->fieldName); ?> <i class="far fa-angle-down"></i>
-            </div>
-            <div class="content-area custom-field-filter d-none" data-field-id="<?php echo esc_attr($column->fieldId); ?>">
-                <ul class="list-group m-0">
-                    <div class="loaders text-center py-3">
-                        <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
-                    </div>
-                </ul>
-            </div>
-        </div>
-    <?php }
-} ?>
                     
                 </div>
                 
@@ -275,6 +188,13 @@ $i = 0;
 </div>
 
 <script type="text/javascript">
+jQuery(document).ready(function($) {
+  
+  // Ensure filter area starts hidden
+  $('.filter-area').addClass('d-none');
+  
+});
+
   //var groupId = $('#groupTabs li:first-child a').attr('id');
   var viewMode='<?php echo $allowedViewMode; ?>';
   var viewMode='list';
@@ -340,7 +260,24 @@ $i = 0;
             "type": "POST",
             "data": function(d) {  
             	d.action='getOrganizations'; 			
-				      d.titleColumn = titleColumn; 			
+				d.titleColumn = titleColumn;
+				
+				// Send filter parameters
+				d.organizationTypes = organizationTypes;
+				d.statuses = statuses;
+				d.locations = locations;
+				d.organizationTags = organizationTags;
+				
+				// Merge custom fields with dynamic filter selections
+				var allCustomFields = Object.assign({}, customFields || {});
+				if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
+					Object.keys(dynamicFilterSelections).forEach(function(key) {
+						if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
+							allCustomFields[key] = dynamicFilterSelections[key];
+						}
+					});
+				}
+				d.customFields = allCustomFields;
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -375,6 +312,17 @@ $i = 0;
 	function OrgList(start){ 
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
+		  
+		// Merge custom fields with dynamic filter selections
+		var allCustomFields = Object.assign({}, customFields || {});
+		if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
+			Object.keys(dynamicFilterSelections).forEach(function(key) {
+				if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
+					allCustomFields[key] = dynamicFilterSelections[key];
+				}
+			});
+		}
+		  
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -382,7 +330,12 @@ $i = 0;
               action:'getOrganizations',			 
 			  viewMode:'Grid',
 			  length:length,
-			  start:start
+			  start:start,
+			  organizationTypes: organizationTypes,
+			  statuses: statuses,
+			  locations: locations,
+			  organizationTags: organizationTags,
+			  customFields: allCustomFields
           },
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
@@ -548,76 +501,275 @@ dt_titleSearch('Search Organization');
 
   ?>
   
-// Load filters after page loads
+// Global object to store dynamic filter data
+var dynamicFiltersConfig = [];
+var dynamicFilterSelections = {};
+
+// Load dynamic filters after page loads
 window.addEventListener("load", function () {
-    $('#filter-loader').show(); // Show loader
-    $('.filter-content').hide(); // Hide filter content
+    // Initially show filter content and hide the main loader
+    $('#filter-loader').hide();
+    $('.filter-content').show();
+    
+    loadDynamicFilters();
+});
+
+function loadDynamicFilters() {
+     // Show loading inside the dynamic filters container
+    $('#dynamic-filters-container').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading filters...</span></div><p class="mt-2 text-muted">Loading filters...</p></div>');
     
     $.ajax({
         type: "post",
         url: engagifiiUrl_ajaxurl,
         data: {
-            action: 'organizationFilters',
-             filterParams: <?php echo json_encode($columnNames); ?>,
-             organizationId: organizationId,
+            action: 'getOrganizationFilterConfiguration'
         },
-        success: function(response) { 
-            console.log('Raw response:', response);
-            try {
-                var parsedResponse = JSON.parse(response);
-                console.log('Parsed response:', parsedResponse);
-                for (var key of Object.keys(parsedResponse)) {
-                if (key == 'OrganizationType') {
-                    organizationTypes = parsedResponse[key];
-                    htmlcontent = '<ul class="list-group m-0">';
-                    for (var i = 0; i < organizationTypes.length; i++) {
-                        htmlcontent += '<li class="list-group-item border-0 py-1 px-2"><label class="m-0"><input class="mr-2" data-filter-key="OrganizationType" type="checkbox" value="' + organizationTypes[i]['organizationType'] + '">' + organizationTypes[i]['organizationType'] + '</label></li>';
-                    }
-                    htmlcontent += '</ul>';
-                    $('.organizationType-filter').html(htmlcontent);
-                } else if (key == 'Status') {
-                    statuses = parsedResponse[key];
-                    htmlcontent = '<ul class="list-group m-0">';
-                    for (var i = 0; i < statuses.length; i++) {
-                        htmlcontent += '<li class="list-group-item border-0 py-1 px-2"><label class="m-0"><input class="mr-2" data-filter-key="Status" type="checkbox" value="' + statuses[i]['status'] + '">' + statuses[i]['status'] + '</label></li>';
-                    }
-                    htmlcontent += '</ul>';
-                    $('.status-filter').html(htmlcontent);
-                } else if (key == 'Locations') {
-                    locations = parsedResponse[key];
-                    htmlcontent = '<ul class="list-group m-0">';
-                    for (var i = 0; i < locations.length; i++) {
-                        htmlcontent += '<li class="list-group-item border-0 py-1 px-2"><label class="m-0"><input class="mr-2" data-filter-key="Locations" type="checkbox" value="' + locations[i]['location'] + '">' + locations[i]['location'] + '</label></li>';
-                    }
-                    htmlcontent += '</ul>';
-                    $('.locations-filter').html(htmlcontent);
-                } else if (key == 'OrganizationTags') {
-                    organizationTags = parsedResponse[key];
-                    htmlcontent = '<ul class="list-group m-0">';
-                    for (var i = 0; i < organizationTags.length; i++) {
-                        htmlcontent += '<li class="list-group-item border-0 py-1 px-2"><label class="m-0"><input class="mr-2" data-filter-key="OrganizationTags" type="checkbox" value="' + organizationTags[i]['tagName'] + '">' + organizationTags[i]['tagName'] + '</label></li>';
-                    }
-                    htmlcontent += '</ul>';
-                    $('.organizationTags-filter').html(htmlcontent);
+        success: function(response) {
+                     
+            if (response.success && response.data) {
+                // Check if the API returned an error
+                if (response.data.isError === true) {
+                    console.error('API Error:', response.data.message);
+                    console.error('Error Details:', response.data.detail);
+                    $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">API Error: ' + (response.data.message || 'Failed to load filters') + '</p>');
+                    return;
                 }
+                
+                // Check if data is an array or if it's an object with nested data
+                var filtersData = response.data;
+                
+                // If data is an object, try to find the array of filters
+                if (!Array.isArray(filtersData)) {
+                    
+                    // Try common property names for filter arrays
+                    if (filtersData.filters && Array.isArray(filtersData.filters)) {
+                        filtersData = filtersData.filters;
+                    } else if (filtersData.data && Array.isArray(filtersData.data)) {
+                        filtersData = filtersData.data;
+                    } else if (filtersData.result && Array.isArray(filtersData.result)) {
+                        filtersData = filtersData.result;
+                    } else if (filtersData.items && Array.isArray(filtersData.items)) {
+                        filtersData = filtersData.items;
+                    } else {
+                        // If it's still not an array, convert the object values to array
+                        filtersData = Object.values(filtersData);
+                    }
+                }
+                
+                
+                if (!filtersData || filtersData.length === 0) {
+                    $('#dynamic-filters-container').html('<p class="text-center text-muted py-3">No filters configured</p>');
+                    return;
+                }
+                
+                dynamicFiltersConfig = filtersData;
+                renderDynamicFilters(dynamicFiltersConfig);
+            } else {
+                console.error('API returned error or no data:', response);
+                $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">Failed to load filters</p>');
             }
-            dt_filterActivate();
-            $('#filter-loader').hide(); // Hide loader
-            $('.filter-content').fadeIn(); // Show filter content
-        } catch (e) {
-            console.error('Error parsing filter response:', e);
-            console.error('Response was:', response);
-            $('#filter-loader').hide();
-            $('.filter-content').fadeIn();
-        }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX error:', error);
-            $('#filter-loader').hide();
-            $('.filter-content').fadeIn();
+            console.error('Error loading filter configuration:', error);
+            console.error('XHR:', xhr);
+            console.error('Status:', status);
+            
+            $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">Error loading filters: ' + error + '</p>');
         }
     });
-});
+}
+
+function renderDynamicFilters(filters) {
+   
+    var container = $('#dynamic-filters-container');
+    container.empty();
+    
+    if (!filters || filters.length === 0) {
+        container.html('<p class="text-center text-muted py-3">No filters available</p>');
+        return;
+    }
+    
+    filters.forEach(function(filter) {
+        var filterId = filter.fieldName || 'filter_' + filter.order;
+        var filterHtml = '';
+        
+        // Create filter container
+        filterHtml += '<div class="filter-list border-bottom" data-filter-id="' + filterId + '" data-filter-type="' + filter.filterType + '">';
+        filterHtml += '<div class="heading-title py-2 d-flex align-items-center justify-content-between dynamic-filter-title">';
+        filterHtml += filter.displayName + ' <i class="far fa-angle-down"></i>';
+        filterHtml += '</div>';
+        filterHtml += '<div class="content-area dynamic-filter-content d-none" data-field-name="' + filterId + '">';
+        
+        // Check filter type
+        if (filter.filterType === 1) {
+            // Numeric filter - need to fetch data from serviceUrl if provided
+            if (filter.serviceUrl && filter.serviceUrl !== '') {
+                filterHtml += '<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>';
+            } else {
+                filterHtml += '<p class="text-muted text-center py-2">Numeric filter (serviceUrl not provided)</p>';
+            }
+        } else if (filter.filterType === 4) {
+            // Dropdown/Checkbox filter
+            if (filter.properties && Array.isArray(filter.properties) && filter.properties.length > 0) {
+                // Render checkboxes from properties
+                filterHtml += '<ul class="list-group m-0">';
+                filter.properties.forEach(function(item) {
+                    var value = item.id || item.name || '';
+                    var display = item.name || item.id || '';
+                    if (value && display) {
+                        filterHtml += '<li class="list-group-item border-0 py-1 px-2">';
+                        filterHtml += '<label class="m-0">';
+                        filterHtml += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                        filterHtml += display;
+                        filterHtml += '</label></li>';
+                    }
+                });
+                filterHtml += '</ul>';
+            } else if (filter.serviceUrl && filter.serviceUrl !== '') {
+                // Need to fetch data from serviceUrl
+                filterHtml += '<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>';
+            } else {
+                filterHtml += '<p class="text-muted text-center py-2">No options available</p>';
+            }
+        } else {
+            filterHtml += '<p class="text-muted text-center py-2">Unknown filter type</p>';
+        }
+        
+        filterHtml += '</div></div>';
+        container.append(filterHtml);
+    });
+    
+    // Initialize dynamic filter click handlers
+    initializeDynamicFilterHandlers();
+}
+
+function initializeDynamicFilterHandlers() {
+    // Handle filter title clicks
+    $(document).on('click', '.dynamic-filter-title', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var $contentArea = $filterList.find('.dynamic-filter-content');
+        var filterType = $filterList.data('filter-type');
+        var filterId = $filterList.data('filter-id');
+        
+        // Toggle content area
+        $contentArea.toggleClass('d-none');
+        
+        // If content area is being shown and has a loader, fetch data
+        if (!$contentArea.hasClass('d-none') && $contentArea.find('.loaders').length > 0) {
+            loadFilterData($filterList);
+        }
+    });
+    
+    // Handle checkbox changes
+    $(document).on('change', '.dynamic-filter-content input[type="checkbox"]', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var filterId = $filterList.data('filter-id');
+        
+        // Update selections
+        if (!dynamicFilterSelections[filterId]) {
+            dynamicFilterSelections[filterId] = [];
+        }
+        
+        var value = $(this).val();
+        if ($(this).is(':checked')) {
+            if (!dynamicFilterSelections[filterId].includes(value)) {
+                dynamicFilterSelections[filterId].push(value);
+            }
+        } else {
+            dynamicFilterSelections[filterId] = dynamicFilterSelections[filterId].filter(function(v) {
+                return v !== value;
+            });
+        }
+        
+        // Trigger filter count update
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+}
+
+function loadFilterData($filterList) {
+    var filterId = $filterList.data('filter-id');
+    var filterType = $filterList.data('filter-type');
+    var $contentArea = $filterList.find('.dynamic-filter-content');
+    
+    // Find the filter config
+    var filterConfig = dynamicFiltersConfig.find(function(f) {
+        return (f.fieldName || 'filter_' + f.order) === filterId;
+    });
+    
+    if (!filterConfig || !filterConfig.serviceUrl) {
+        $contentArea.find('.loaders').remove();
+        $contentArea.append('<p class="text-muted text-center py-2">No service URL available</p>');
+        return;
+    }
+    
+    $.ajax({
+        type: 'POST',
+        url: engagifiiUrl_ajaxurl,
+        data: {
+            action: 'getFilterItemsFromServiceUrl',
+            serviceUrl: filterConfig.serviceUrl
+        },
+        success: function(response) {
+            $contentArea.find('.loaders').remove();
+            
+            if (response.success && response.data) {
+                var data = response.data;
+                var htmlContent = '';
+                
+                if (filterType === 1) {
+                    // Numeric filter - render as range inputs or list
+                    if (Array.isArray(data) && data.length > 0) {
+                        htmlContent = '<ul class="list-group m-0">';
+                        data.forEach(function(item) {
+                            var value = item.value || item || '';
+                            htmlContent += '<li class="list-group-item border-0 py-1 px-2">';
+                            htmlContent += '<label class="m-0">';
+                            htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                            htmlContent += value;
+                            htmlContent += '</label></li>';
+                        });
+                        htmlContent += '</ul>';
+                    } else {
+                        htmlContent = '<p class="text-muted text-center py-2">No numeric values available</p>';
+                    }
+                } else if (filterType === 4) {
+                    // Checkbox filter
+                    if (Array.isArray(data) && data.length > 0) {
+                        htmlContent = '<ul class="list-group m-0">';
+                        data.forEach(function(item) {
+                            var value = item.id || item.value || item.name || '';
+                            var display = item.name || item.displayName || item.value || value || '';
+                            if (value && display) {
+                                htmlContent += '<li class="list-group-item border-0 py-1 px-2">';
+                                htmlContent += '<label class="m-0">';
+                                htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                                htmlContent += display;
+                                htmlContent += '</label></li>';
+                            }
+                        });
+                        htmlContent += '</ul>';
+                    } else {
+                        htmlContent = '<p class="text-muted text-center py-2">No options available</p>';
+                    }
+                }
+                
+                $contentArea.append(htmlContent);
+            } else {
+                $contentArea.append('<p class="text-muted text-center py-2">No data available</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading filter items:', error);
+            $contentArea.find('.loaders').remove();
+            $contentArea.append('<p class="text-danger text-center py-2">Error loading data</p>');
+        }
+    });
+}
+
+// The old filter loading code has been removed and replaced with dynamic filters
 
 function filterEvents(minDate, maxDate) {
     startdate = '';
@@ -668,19 +820,16 @@ function updateCustomFieldsFromDOM() {
 
 // Apply filter button click handler
 $('#apply-filter-data').click(function() {
+    // Collect values from old filters (backward compatibility)
     organizationTypes = getCheckedValues('.organizationType-filter');
     statuses = getCheckedValues('.status-filter');
     locations = getCheckedValues('.locations-filter');
     organizationTags = getCheckedValues('.organizationTags-filter');
     updateCustomFieldsFromDOM();
-    console.log('Selected Filters:', {
-        organizationTypes: organizationTypes,
-        statuses: statuses,
-        locations: locations,
-        organizationTags: organizationTags,
-        customFields: customFields
-    });
-    if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+    
+    // Also collect dynamic filter selections
+    
+   if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
     if (viewMode === 'grid') {
@@ -694,16 +843,26 @@ $('#apply-filter-data').click(function() {
 
 // Clear all filters functionality
 $('#clear-all').click(function() {
+    // Clear old filters
     organizationTypes = [];
     statuses = [];
     locations = [];
     organizationTags = [];
     customFieldSelections = {};
+    resetCustomFields();
+    
+    // Clear dynamic filters
+    dynamicFilterSelections = {};
+    
+    // Clear all checkboxes
     clearAllCheckboxes('.filter-list');
     clearAllCheckboxes('.custom-field-filter');
-    resetCustomFields();
+    clearAllCheckboxes('.dynamic-filter-content');
+    
+    // Clear date inputs
     $('input[name="createdbetween"]').val('');
     $('input[name="modifiedbetween"]').val('');
+    
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
@@ -712,10 +871,10 @@ $('#clear-all').click(function() {
         OrgList(start);
     }
     $('.filter-area').addClass('d-none');   
-     $('.filter-icon').removeClass('active');
-        $('.filter-icon span').hide();
-          // Reset the filter count display
-    $('#countFilterResult').text('')
+    $('.filter-icon').removeClass('active');
+    $('.filter-icon span').hide();
+    // Reset the filter count display
+    $('#countFilterResult').text('');
 });
 
 // Collect selected custom field values dynamically
@@ -744,8 +903,7 @@ $(document).on('click', '.custom-field-filter-tittle', function() {
             selectedDate: selectedDate
         },
         success: function(response) {
-            console.log('Custom Field Filter Data:', response);
-            if (response.success) {
+               if (response.success) {
                 if (typeof response.data === 'object' && response.data !== null) {
                     var data = Array.isArray(response.data) ? response.data : [response.data];
                     var htmlContent = '';
@@ -799,33 +957,65 @@ $(document).on('change', '.custom-field-filter input[type=checkbox]', function()
     }
 });
 
-function countFilterData() {
-    var organizationTypes = getCheckedValues('.organizationType-filter');
-    var statuses = getCheckedValues('.status-filter');
-    var locations = getCheckedValues('.locations-filter');
-    var organizationTags = getCheckedValues('.organizationTags-filter');
-    updateCustomFieldsFromDOM();
+// Debounce function to prevent excessive API calls
+var countFilterDataTimeout = null;
+var currentCountRequest = null;
 
-    $.ajax({
-        type: "post",
-        url: engagifiiUrl_ajaxurl,
-        data: {
-            action: 'organizationCountFilterData',
-            organizationTypes: organizationTypes,
-            statuses: statuses,
-            locations: locations,
-            organizationTags: organizationTags,
-            customFields: customFields
-        },
-        success: function(response) {
-            var element = document.getElementById("countFilterResult");
-            $('#apply-filter-data .spinner-border').remove();
-            $('#apply-filter-data').removeAttr('disabled');
-            if (element) {
-                element.innerHTML = " (" + response.api_response + ")";
+function countFilterData() {
+    // Cancel any pending timeout
+    if (countFilterDataTimeout) {
+        clearTimeout(countFilterDataTimeout);
+    }
+    
+    // Cancel any pending request
+    if (currentCountRequest && currentCountRequest.readyState !== 4) {
+        currentCountRequest.abort();
+    }
+    
+    // Set new timeout to delay the API call
+    countFilterDataTimeout = setTimeout(function() {
+        var organizationTypes = getCheckedValues('.organizationType-filter');
+        var statuses = getCheckedValues('.status-filter');
+        var locations = getCheckedValues('.locations-filter');
+        var organizationTags = getCheckedValues('.organizationTags-filter');
+        updateCustomFieldsFromDOM();
+        
+        // Merge dynamic filter selections into customFields
+        var allCustomFields = Object.assign({}, customFields);
+        Object.keys(dynamicFilterSelections).forEach(function(key) {
+            if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
+                allCustomFields[key] = dynamicFilterSelections[key];
             }
-        }
-    });
+        });
+
+        currentCountRequest = $.ajax({
+            type: "post",
+            url: engagifiiUrl_ajaxurl,
+            data: {
+                action: 'organizationCountFilterData',
+                organizationTypes: organizationTypes,
+                statuses: statuses,
+                locations: locations,
+                organizationTags: organizationTags,
+                customFields: allCustomFields
+            },
+            success: function(response) {
+                var element = document.getElementById("countFilterResult");
+                $('#apply-filter-data .spinner-border').remove();
+                $('#apply-filter-data').removeAttr('disabled');
+                if (element) {
+                    element.innerHTML = " (" + response.api_response + ")";
+                }
+            },
+            error: function(xhr, status, error) {
+                if (status !== 'abort') {
+                    console.error('Error counting filtered data:', error);
+                }
+                $('#apply-filter-data .spinner-border').remove();
+                $('#apply-filter-data').removeAttr('disabled');
+            }
+        });
+    }, 500); // Wait 500ms after last change before making API call
 }
 
 // Trigger countFilterData on filter changes
@@ -850,17 +1040,38 @@ $('#apply-filter-data').click(function() {
     }
 });
 
-$('.click-filter').click(function(e) {
+// Use delegated event handler for filter icon click
+$(document).on('click', '.click-filter', function(e) {
     e.preventDefault();
-    $('.filter-area').toggleClass('d-none');
+    e.stopPropagation();
+     
+    var $filterArea = $('.filter-area');
+    var $filterBorder = $('.filter-border');
+        
+    // Toggle using Bootstrap class and show parent container
+    if ($filterArea.hasClass('d-none')) {
+        $filterArea.removeClass('d-none');
+        $filterBorder.show(); // Show the parent container
+       
+    } else {
+        $filterArea.addClass('d-none');
+        $filterBorder.hide(); // Hide the parent container
+       
+    }   
+   
 });
 
-$(document).click(function(event) {
+// Close filter when clicking outside
+$(document).on('click', function(event) {
     var $filterArea = $('.filter-area');
+    var $filterBorder = $('.filter-border');
     var $filterIcon = $('.filter-icon');
     if (!$filterArea.is(event.target) && !$filterArea.has(event.target).length &&
         !$filterIcon.is(event.target) && !$filterIcon.has(event.target).length) {
-        $filterArea.addClass('d-none');
+        if (!$filterArea.hasClass('d-none')) {
+            $filterArea.addClass('d-none');
+            $filterBorder.hide();
+        }
     }
 });
 
