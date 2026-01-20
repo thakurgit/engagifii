@@ -30,41 +30,46 @@ if(isset($front_pages)){
    }else{
    	$classes_page= $classes_detail_page =$bills_page=$bills_detail_page=$events_page=$events_detail_page=$courses_page =$courses_detail_page=$endorse_page=$endorse_detail_page=$public_official_page=$public_official_detail_page= '';
    }
-function pages_list($module='',$selected=''){
-	$args = array(
-    'sort_order' => 'asc',
-    'sort_column' => 'post_title',
-    'hierarchical' => 1,
-    'exclude' => '',
-    'include' => '',
-    'meta_key' => '',
-    'meta_value' => '',
-    'authors' => '',
-    'child_of' => 0,
-    'parent' => 0,
-    'exclude_tree' => '',
-    'number' => '',
-    'offset' => 0,
-    'post_type' => 'page',
-    'post_status' => 'publish'
-); 
-$pages = get_pages($args); 
-  $html= '<select name="ebt_api_settings[front_pages]['.$module.']"><option value="">--Select Page--</option>';
-foreach($pages as $page){ 
-  $html.= ' <option '. ($selected == $page->ID ? 'selected' : '') .' value="'.$page->ID.'">'.$page->post_title.'</option>';
-  $child_args = array(
-    'parent' =>$page->ID, 
-    'post_type'   => 'page',
-    'post_status' => 'publish'
-  );
-  $childPages = get_pages($child_args);
-  foreach($childPages as $page){
-	$html.= ' <option '. ($selected == $page->ID ? 'selected' : '') .' value="'.$page->ID.'">&nbsp;&nbsp;&nbsp;--'.$page->post_title.'</option>';  
-  }
+function pages_list($module = '', $selected = '') {
 
+    $html  = '<select name="ebt_api_settings[front_pages][' . esc_attr($module) . ']">';
+    $html .= '<option value="">-- Select Page --</option>';
+
+    $html .= pages_list_recursive(0, $selected);
+
+    $html .= '</select>';
+
+    return $html;
 }
-  $html.='</select>';
-  return $html;
+
+function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
+
+    $args = array(
+        'post_type'   => 'page',
+        'post_status' => 'publish',
+        'parent'      => $parent_id,
+        'sort_order'  => 'asc',
+        'sort_column' => 'post_title',
+    );
+
+    $pages = get_pages($args);
+    $html  = '';
+
+    foreach ($pages as $page) {
+
+        // indentation for child levels
+        $indent = str_repeat('&nbsp;&nbsp;&nbsp;', $depth);
+
+        $html .= '<option value="' . esc_attr($page->ID) . '" ' .
+                 selected($selected, $page->ID, false) . '>' .
+                 $indent . esc_html($page->post_title) .
+                 '</option>';
+
+        // recursive call for children
+        $html .= pages_list_recursive($page->ID, $selected, $depth + 1);
+    }
+
+    return $html;
 }
 ?>
 
@@ -91,6 +96,15 @@ foreach($pages as $page){
           <div class="form-group">
               <label for="">Detail page</label>
                <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
+          </div>
+          <h3>Public Official</h3>
+          <div class="form-group">
+              <label for="">Listing page</label>
+              <?php  echo pages_list('public_official_page',$public_official_page); ?>
+          </div>
+          <div class="form-group">
+              <label for="">Detail page</label>
+               <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
           </div>
       <?php endif; ?>
       
@@ -131,15 +145,7 @@ foreach($pages as $page){
       <?php endif; ?>
       
       <?php if (!$setupCompleted || in_array('organization_directory', $enabledModules)): ?>
-          <h3>Public Official</h3>
-          <div class="form-group">
-              <label for="">Listing page</label>
-              <?php  echo pages_list('public_official_page',$public_official_page); ?>
-          </div>
-          <div class="form-group">
-              <label for="">Detail page</label>
-               <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
-          </div>
+          <!--org pages option-->
       <?php endif; ?>
 </div>
 
