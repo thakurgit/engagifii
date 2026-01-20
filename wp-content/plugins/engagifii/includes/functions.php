@@ -103,9 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
 add_action('wp_footer', 'engagifii_scripts');
 
     $options  = get_option( 'ebt_api_settings' );
-	/*$dashboard_apis = $options['dashboard_apis']; 
-    $tenant_url          = $dashboard_apis['tenant'];*/
-	$tenant_url = $options['dashboard_tenant_code']; 
+	$tenant_url = '';
+	if ( is_array( $options ) && ! empty( $options['dashboard_tenant_code'] ) ) {
+    $tenant_url = $options['dashboard_tenant_code'];
+}
 	if($tenant_url){
 /*function custom_login_redirect( $redirect_to, $request, $user ) {
     // Get the current user's role
