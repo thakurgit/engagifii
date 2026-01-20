@@ -813,15 +813,7 @@ $('#apply-filter-data').click(function() {
     
     // Also collect dynamic filter selections
     
-        organizationTypes: organizationTypes,
-        statuses: statuses,
-        locations: locations,
-        organizationTags: organizationTags,
-        customFields: customFields,
-        dynamicFilters: dynamicFilterSelections
-    });
-    
-    if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+   if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
     if (viewMode === 'grid') {
