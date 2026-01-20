@@ -21,7 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
         ['getCustomFieldFilterData', 'getCustomFieldFilterData'],
         ['groupCountFilterData', 'groupCountFilterData'],
         ['organizationFilters', 'organizationFilters'],
-        ['organizationCountFilterData', 'organizationCountFilterData']
+        ['organizationCountFilterData', 'organizationCountFilterData'],
+        ['getOrganizationFilterConfiguration', 'getOrganizationFilterConfiguration'],
+        ['getFilterItemsFromServiceUrl', 'getFilterItemsFromServiceUrl']
     ];
 
     foreach ($ajax_actions as $action) { 
@@ -973,35 +975,90 @@ public function getOrganizations(){
        $sortDirection = isset($_POST["order"][0]["dir"]) ? $_POST["order"][0]["dir"] : 'asc';
 	   $searchText = isset($_POST["columns"][$_POST['titleColumn']]["search"]["value"]) ? $_POST["columns"][$_POST['titleColumn']]["search"]["value"] : '';
 
-        $postedData = '{
-            "itemCount":  ' . $_POST['length'] . ',
-            "pageNumber": ' . (int)(($_POST['start'] / $_POST['length']) + 1) . ',
-            "sortBy": "createdOn",
-            "sortDirection":"' . $sortDirection . '",
-            "filterBody": {
-                "filterRules": [
-                    {
-                        "fieldId": "status",
-                        "filterType": 4,
-                        "selectedValues": ["Active"]
-                    }
-                ],
-                "search": [],
-                "selectedDate": "2025-05-28",
-                "IsShowPastOrg": false,
-                "pageSize": 1000,
-                "isFlatView": true,
-                "allOrganizationPermission": {
-                    "viewClientOrganization": true,
-                    "viewAllMemberOrganizations": true,
-                    "viewOwnOrganization": true,
-                    "viewChildOrganization": true
-                },
-                "searchText":"'.$searchText.'"
+        // Get filter parameters from POST
+        $organizationTypes = isset($_POST['organizationTypes']) && is_array($_POST['organizationTypes']) ? $_POST['organizationTypes'] : [];
+        $statuses = isset($_POST['statuses']) && is_array($_POST['statuses']) ? $_POST['statuses'] : [];
+        $locations = isset($_POST['locations']) && is_array($_POST['locations']) ? $_POST['locations'] : [];
+        $organizationTags = isset($_POST['organizationTags']) && is_array($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
+        $customFields = isset($_POST['customFields']) && is_array($_POST['customFields']) ? $_POST['customFields'] : [];
+
+        // Build filter rules dynamically
+        $filterRules = [];
+        
+        // Always add Active status as default if no statuses provided
+        if (empty($statuses)) {
+            $filterRules[] = [
+                "fieldId" => "status",
+                "filterType" => 4,
+                "selectedValues" => ["Active"]
+            ];
+        } else {
+            $filterRules[] = [
+                "fieldId" => "status",
+                "filterType" => 4,
+                "selectedValues" => $statuses
+            ];
+        }
+
+        if (!empty($organizationTypes)) {
+            $filterRules[] = [
+                "fieldId" => "organizationType",
+                "filterType" => 4,
+                "selectedValues" => $organizationTypes
+            ];
+        }
+
+        if (!empty($locations)) {
+            $filterRules[] = [
+                "fieldId" => "locations",
+                "filterType" => 4,
+                "selectedValues" => $locations
+            ];
+        }
+
+        if (!empty($organizationTags)) {
+            $filterRules[] = [
+                "fieldId" => "organizationTags",
+                "filterType" => 4,
+                "selectedValues" => $organizationTags
+            ];
+        }
+
+        // Add custom field filters
+        foreach ($customFields as $customFieldId => $selectedValues) {
+            if (!empty($selectedValues) && is_array($selectedValues)) {
+                $filterRules[] = [
+                    "fieldId" => $customFieldId,
+                    "filterType" => 4,
+                    "selectedValues" => $selectedValues
+                ];
             }
-        }';
-        //print_r($postedData); die;
-        $dataResponse = $this->submitApiRequest("OrganizationPagingList/".$tenantCode."/", json_decode($postedData), "POST", 'dashboard'); 
+        }
+
+        $postedData = [
+            "itemCount" => (int)$_POST['length'],
+            "pageNumber" => (int)(($_POST['start'] / $_POST['length']) + 1),
+            "sortBy" => "name",
+            "sortDirection" => $sortDirection,
+            "filterBody" => [
+                "filterRules" => $filterRules,
+                "searchText" => $searchText,
+                "search" => [],
+                "selectedDate" => date('Y-m-d'),
+                "IsShowPastOrg" => false,
+                "pageSize" => (int)$_POST['length'],
+                "pageNumber" => (int)(($_POST['start'] / $_POST['length']) + 1),
+                "isFlatView" => true,
+                "allOrganizationPermission" => [
+                    "viewClientOrganization" => true,
+                    "viewAllMemberOrganizations" => true,
+                    "viewOwnOrganization" => true,
+                    "viewChildOrganization" => true
+                ]
+            ]
+        ];
+        //print_r(json_encode($postedData)); die;
+        $dataResponse = $this->submitApiRequest("OrganizationPagingList/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
@@ -1390,10 +1447,12 @@ public function organizationFilters(){
 	$htmlArray = array();
     $options = get_option('ebt_api_settings');
     $tenantCode = $options['dashboard_tenant_code'];
+    
 	$events_type_visible_column_list=[];
 	if (!empty(ORGANIZATION_COLS) && isArrayOfJsonStrings(ORGANIZATION_COLS)) {
 		  $events_type_visible_column_list = extractColNames(ORGANIZATION_COLS);
 	}
+    
 	  $filterParams = isset($_POST['filterParams']) ? $_POST['filterParams'] : $events_type_visible_column_list;
 	  $apiUrl='';
 	  $date = date('Y-m-d');
@@ -1401,26 +1460,47 @@ public function organizationFilters(){
 		  if($values =='OrganizationType'){
 		     $apiUrl = "OrganizationTypeFilterList/".$tenantCode;
 			 $dataResponse = $this->submitApiRequest($apiUrl,array(),"GET",'dashboard');
-			 $htmlArray['OrganizationType'] = json_decode($dataResponse['api_response']);
+			 if (isset($dataResponse['api_response'])) {
+                 $decoded = json_decode($dataResponse['api_response']);
+                 $htmlArray['OrganizationType'] = $decoded;
+             } else {
+                 $htmlArray['OrganizationType'] = [];
+             }
 		  } 
         elseif($values =='OrganizationTags'){
             $apiUrl = "OrganizationTagFilterList/".$tenantCode;
 			$dataResponse = $this->submitApiRequest($apiUrl,array(),"GET",'dashboard');
-			$htmlArray['OrganizationTags'] = json_decode($dataResponse['api_response']);
+			if (isset($dataResponse['api_response'])) {
+                $decoded = json_decode($dataResponse['api_response']);
+                $htmlArray['OrganizationTags'] = $decoded;
+            } else {
+                $htmlArray['OrganizationTags'] = [];
+            }
         }
         elseif($values =='Locations'){
             $apiUrl = "OrganizationLocationFilterList/".$tenantCode;
 			$dataResponse = $this->submitApiRequest($apiUrl,array(),"GET",'dashboard');
-			$htmlArray['Locations'] = json_decode($dataResponse['api_response']);
+			if (isset($dataResponse['api_response'])) {
+                $decoded = json_decode($dataResponse['api_response']);
+                $htmlArray['Locations'] = $decoded;
+            } else {
+                $htmlArray['Locations'] = [];
+            }
         }
         elseif($values =='Status'){
             $apiUrl = "OrganizationStatusFilterList/".$tenantCode;
 			$dataResponse = $this->submitApiRequest($apiUrl,array(),"GET",'dashboard');
-			$htmlArray['Status'] = json_decode($dataResponse['api_response']);
+			if (isset($dataResponse['api_response'])) {
+                $decoded = json_decode($dataResponse['api_response']);
+                $htmlArray['Status'] = $decoded;
+            } else {
+                $htmlArray['Status'] = [];
+            }
         }
 	  }
-		echo json_encode($htmlArray);
-        wp_die();
+    
+	echo json_encode($htmlArray);
+    wp_die();
 }
 
 public function organizationCountFilterData() {
@@ -1428,7 +1508,7 @@ public function organizationCountFilterData() {
     $tenantCode = $options['dashboard_tenant_code'];
 
     $postedData = $this->_organizationPostCountData();
-    $apiEndpoint = "OrganizationPagingListCount/".$tenantCode;
+    $apiEndpoint = "PublicFilteredRecordCount/".$tenantCode;
     $dataResponse = $this->submitApiRequest($apiEndpoint, $postedData, "POST", 'dashboard');
     // print_r($dataResponse); die;
     header("Content-Type: application/json");
@@ -1447,9 +1527,11 @@ private function _organizationPostCountData() {
     $startPageNum = (int) (($start / $length) + 1);
 
     $columnsData = [];
-    foreach ($_POST['columns'] as $key => $value) {
-        if ($value['orderable'] == "true") {
-            $columnsData[$value['data']] = $value['data'];
+    if (isset($_POST['columns']) && is_array($_POST['columns'])) {
+        foreach ($_POST['columns'] as $key => $value) {
+            if (isset($value['orderable']) && $value['orderable'] == "true") {
+                $columnsData[$value['data']] = $value['data'];
+            }
         }
     }
 
@@ -1517,6 +1599,71 @@ private function _organizationPostCountData() {
     ];
 
     return $postData;
+}
+
+/**
+ * Get organization filter configuration from API
+ */
+public function getOrganizationFilterConfiguration() {
+    $options = get_option('ebt_api_settings');
+    $tenantCode = $options['dashboard_tenant_code'];
+    
+    $apiEndpoint = "Settings/FilterConfiguration/organizationList?onlyFavorite=false";
+    
+    $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
+    
+    if (isset($dataResponse['api_response'])) {
+        $data = json_decode($dataResponse['api_response'], true);
+        
+        if ($data !== null) {
+            wp_send_json_success($data);
+        } else {
+            wp_send_json_error(['message' => 'Invalid JSON response from API', 'raw' => $dataResponse['api_response']]);
+        }
+    } else {
+        wp_send_json_error(['message' => 'Failed to fetch filter configuration', 'error' => $dataResponse]);
+    }
+    wp_die();
+}
+
+/**
+ * Get filter items from serviceUrl
+ */
+public function getFilterItemsFromServiceUrl() {
+    $options = get_option('ebt_api_settings');
+    $tenantCode = $options['dashboard_tenant_code'];
+    
+    $serviceUrl = isset($_POST['serviceUrl']) ? sanitize_text_field($_POST['serviceUrl']) : '';
+    
+    if (empty($serviceUrl)) {
+        wp_send_json_error(['message' => 'Service URL is required']);
+        wp_die();
+    }
+    
+    // Remove leading slash if present
+    $apiEndpoint = ltrim($serviceUrl, '/');
+    
+    // Add tenant code if the URL contains {tenantCode} placeholder or if it needs it
+    if (strpos($apiEndpoint, '{tenantCode}') !== false) {
+        $apiEndpoint = str_replace('{tenantCode}', $tenantCode, $apiEndpoint);
+    } elseif (strpos($apiEndpoint, 'Organization') !== false && strpos($apiEndpoint, $tenantCode) === false) {
+        // If it's an organization-related endpoint and doesn't have tenant code, append it
+        $apiEndpoint = rtrim($apiEndpoint, '/') . '/' . $tenantCode;
+    }
+    
+    $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
+    
+    if (isset($dataResponse['api_response'])) {
+        $data = json_decode($dataResponse['api_response'], true);
+        if ($data !== null) {
+            wp_send_json_success($data);
+        } else {
+            wp_send_json_error(['message' => 'Invalid JSON response from API', 'rawResponse' => $dataResponse['api_response']]);
+        }
+    } else {
+        wp_send_json_error(['message' => 'Failed to fetch filter items', 'error' => $dataResponse, 'endpoint' => $apiEndpoint]);
+    }
+    wp_die();
 }
  
 }
