@@ -21,7 +21,36 @@ class ebtAdminConfigSettings {
 	add_action('admin_init',array($this,'ebt_api_settings_init'));
 		add_action('engagifiiGetColumnList', array($this,'show_datatable_column'));		
 		add_action('engagifiiCustomizer', array($this,'engagifii_Customizer'));		
- 	add_action('profileSettings', array($this,'profile_Settings'));	
+ 	add_action('profileSettings', array($this,'profile_Settings'));
+	add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));	
+	}
+
+	/**
+	 * Enqueue admin styles and scripts for shortcode page
+	 */
+	public function enqueue_admin_styles($hook) {
+		// Only load on our plugin page
+		if (strpos($hook, 'engagifii-module-api') === false) {
+			return;
+		}
+
+		// Check if we're on the shortcode tab
+		$tab = isset($_GET['tab']) ? $_GET['tab'] : '';
+		if ($tab === 'shortcode') {
+			wp_enqueue_style(
+				'engagifii-admin-settings',
+				plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/css/admin-settings.css',
+				array(),
+				ENGAGIFII_VERSION
+			);
+			wp_enqueue_script(
+				'engagifii-admin-settings',
+				plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/js/admin-settings.js',
+				array('jquery'),
+				ENGAGIFII_VERSION,
+				true
+			);
+		}
 	}
 
  	// function show_datatable_column()
@@ -281,6 +310,10 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'Legislative Reports',
                     'shortcode'   => '[legislative-reports]'
+                ),
+                array(
+                    'name'        => 'sessions',
+                    'shortcode'   => '[sessions]'
                 )
             )
         );
@@ -441,297 +474,6 @@ function ebt_api_shortocde_description() {
 
     // Add styling for shortcode cards to match module settings
     echo '<div class="engagifii-content-wrapper shortcode-cards">';
-    
-    echo '<style>
-        .engagifii-settings-container {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .engagifii-settings-wrap {
-            background: #f8fafc;
-            min-height: calc(100vh - 160px);
-            padding: 0;
-        }
-        
-        .engagifii-settings-page {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin: 20px;
-            overflow: hidden;
-        }
-        
-        .engagifii-content-area {
-            padding: 40px;
-        }
-        
-        .engagifii-modules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin: 0 0 40px 0;
-        }
-        
-        .engagifii-module-card {
-            background: #fff;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .engagifii-module-card:hover {
-            border-color: #2271b1;
-            box-shadow: 0 8px 24px rgba(34, 113, 177, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        .engagifii-module-card.active {
-            border-color: #48bb78;
-            background: #f0fff4 !important;
-        }
-        
-        .module-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding: 20px 20px 10px 20px;
-            position: relative;
-        }
-        
-        .module-icon {
-            font-size: 32px;
-            flex-shrink: 0;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(34, 113, 177, 0.1);
-            border-radius: 12px;
-            color: #2271b1;
-        }
-        
-        .module-title-section {
-            flex: 1;
-            padding: 0 15px;
-        }
-        
-        .module-title {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-            line-height: 1.3;
-            word-wrap: break-word;
-        }
-        
-        .module-content {
-            padding: 10px 20px 20px 20px;
-        }
-        
-        .shortcode-item {
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #f7fafc;
-            border-radius: 8px;
-            border-left: 4px solid #2271b1;
-        }
-        
-        .shortcode-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .shortcode-name {
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 6px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .shortcode-name .dashicons {
-            color: #2271b1;
-            font-size: 16px;
-        }
-        
-        .shortcode-count {
-            color: #718096;
-            font-size: 12px;
-            font-weight: 400;
-            margin-top: 4px;
-        }
-        
-        .shortcode-code {
-            font-family: "Monaco", "Consolas", "Courier New", monospace;
-            position: relative;
-        }
-        
-        .shortcode-code code {
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            display: block;
-            font-weight: 500;
-            word-break: break-all;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-        
-        .shortcode-code code:hover {
-            background: #cbd5e0;
-            border-color: #2271b1;
-            transform: translateY(-1px);
-        }
-        
-        .copy-hint {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2d3748;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-            white-space: nowrap;
-        }
-        
-        .shortcode-code:hover .copy-hint {
-            opacity: 1;
-        }
-        
-        .copy-hint::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 4px solid transparent;
-            border-top-color: #2d3748;
-        }
-        
-        .engagifii-actions {
-            background: #f8fafc;
-            padding: 40px;
-            border-top: 1px solid #e2e8f0;
-            margin: 0 -40px -40px -40px;
-        }
-        
-        .actions-container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .actions-container h3 {
-            color: #2c3e50;
-            font-size: 24px;
-            margin-bottom: 25px;
-        }
-        
-        .setup-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .step-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 20px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            text-align: left;
-        }
-        
-        .step-number {
-            background: linear-gradient(135deg, #2271b1 0%, #2271b1 100%);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        
-        .step-text {
-            color: #4a5568;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .step-text a {
-            color: #2271b1;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .step-text a:hover {
-            text-decoration: underline;
-        }
-    </style>';
-    
-    // Add JavaScript for copy functionality
-    echo '<script>
-        function copyToClipboard(element) {
-            const text = element.textContent;
-            navigator.clipboard.writeText(text).then(function() {
-                // Show success feedback
-                const originalHint = element.nextElementSibling;
-                const originalText = originalHint.textContent;
-                originalHint.textContent = "Copied!";
-                originalHint.style.opacity = "1";
-                
-                // Reset after 2 seconds
-                setTimeout(function() {
-                    originalHint.textContent = originalText;
-                    originalHint.style.opacity = "";
-                }, 2000);
-            }).catch(function() {
-                // Fallback for older browsers
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand("copy");
-                    const originalHint = element.nextElementSibling;
-                    const originalText = originalHint.textContent;
-                    originalHint.textContent = "Copied!";
-                    originalHint.style.opacity = "1";
-                    
-                    setTimeout(function() {
-                        originalHint.textContent = originalText;
-                        originalHint.style.opacity = "";
-                    }, 2000);
-                } catch (err) {
-                    console.error("Could not copy text: ", err);
-                }
-                document.body.removeChild(textArea);
-            });
-        }
-    </script>';
 
     if (empty($shortcodes)) {
         echo '<div class="notice notice-warning">';

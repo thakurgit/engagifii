@@ -4,6 +4,46 @@
 (function($) {
     'use strict';
 
+    // Copy to clipboard functionality for shortcodes
+    window.copyToClipboard = function(element) {
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(function() {
+            // Show success feedback
+            const originalHint = element.nextElementSibling;
+            const originalText = originalHint.textContent;
+            originalHint.textContent = "Copied!";
+            originalHint.style.opacity = "1";
+            
+            // Reset after 2 seconds
+            setTimeout(function() {
+                originalHint.textContent = originalText;
+                originalHint.style.opacity = "";
+            }, 2000);
+        }).catch(function() {
+            // Fallback for older browsers
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand("copy");
+                const originalHint = element.nextElementSibling;
+                const originalText = originalHint.textContent;
+                originalHint.textContent = "Copied!";
+                originalHint.style.opacity = "1";
+                
+                setTimeout(function() {
+                    originalHint.textContent = originalText;
+                    originalHint.style.opacity = "";
+                }, 2000);
+            } catch (err) {
+                console.error("Could not copy text: ", err);
+            }
+            document.body.removeChild(textArea);
+        });
+    };
+
     $(document).ready(function() {
         
         // Initialize module cards
