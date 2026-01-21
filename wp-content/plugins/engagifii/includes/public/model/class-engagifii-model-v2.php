@@ -1608,7 +1608,7 @@ public function getOrganizationFilterConfiguration() {
     $options = get_option('ebt_api_settings');
     $tenantCode = $options['dashboard_tenant_code'];
     
-    $apiEndpoint = "Settings/FilterConfiguration/organizationList?onlyFavorite=false";
+    $apiEndpoint = "PublicFilterConfiguration/".$tenantCode."/organizationlist";
     
     $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
     
