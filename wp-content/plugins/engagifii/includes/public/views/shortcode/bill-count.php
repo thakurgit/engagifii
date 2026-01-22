@@ -4,9 +4,6 @@ $setupCompleted = get_option('engagifii_setup_completed');
 if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
     return;
 }
-/*$obj =  new Engagifii_API();
-$sessionResponse = $obj->sessions();
-$sessionResponses = json_decode($sessionResponse['api_response']);*/
 $options = get_option( 'ebt_api_settings' );
    $sessionsetting = '';
   $sessionlist = array();
@@ -16,29 +13,22 @@ $options = get_option( 'ebt_api_settings' );
  }
 ?>
 
-<span id="bill-count"><span class="content-loader"></span></span>
+<a href="<?php echo BILLS_PAGE_LINK;?>">View All Tracked Bills</a> <span id="bill-count"><span class="content-loader"></span></span> 
 <script type="text/javascript">
 var viewAll;
-var sessionId;
+if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
 window.addEventListener("load", function () {
- sessionId='0';
 	viewAll = $('#bill-count').siblings('a').attr('href');
 	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
-		if($('.session-tab li').length>0){
-			sessionId = $('.session-tab li:first-child button').attr('id');
-		}
-		$('.session-tab li:first-child button').trigger('click') ;
 		getCountSelected(sessionId);
-		localStorage.setItem("sessionname", $('.session-tab li:first-child button').text());
 		$('.session-tab li button').click(function(){
 			$('#bill-count').html('<span class="content-loader"></span>');
-			sessionId = $(this).attr('id');
 			getCountSelected(sessionId);
-			localStorage.setItem("sessionname", $(this).text());
 		});
 	<?php } else { ?>
 	  getCountSelected(sessionId);
-	  localStorage.setItem("sessionname", "");	
 	<?php } ?> 
 	
 });

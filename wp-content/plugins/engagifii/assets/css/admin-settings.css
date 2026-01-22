@@ -1,6 +1,6 @@
 /* Engagifii Admin Settings Styles - Clean Version */
 
-/* Hide admin notices on Engagifii settings page */
+/* Hide admin notices on Engagifii settings page 
 body.wp-admin .engagifii-settings-page .notice,
 body.wp-admin .engagifii-settings-page .error,
 body.wp-admin .engagifii-settings-page .updated,
@@ -8,14 +8,14 @@ body.wp-admin .engagifii-settings-page div.notice,
 body.wp-admin .engagifii-settings-page div.error,
 body.wp-admin .engagifii-settings-page div.updated {
     display: none !important;
-}
+}*/
 
-/* Clean header area - hide notices in wpbody-content */
+/* Clean header area - hide notices in wpbody-content 
 .engagifii-settings-page #wpbody-content > .notice,
 .engagifii-settings-page #wpbody-content > .error,
 .engagifii-settings-page #wpbody-content > .updated {
     display: none !important;
-}
+}*/
 
 /* ==================================================
    TAB SYSTEM - COMPLETE AND WORKING
@@ -384,7 +384,7 @@ input:checked + .toggle-slider:before {
 @media (min-width: 1400px) {
     .shortcode-cards .engagifii-modules-grid,
     .engagifii-content-wrapper.shortcode-cards .engagifii-modules-grid {
-        column-count: 3;
+        column-count: 2;
         column-gap: 25px;
     }
 }

@@ -21,6 +21,7 @@ if(isset($front_pages)){
     $bills_detail_page = $front_pages['bills_detail_page'] ?? '';
     $events_page = $front_pages['events_page'] ?? '';
     $events_detail_page = $front_pages['events_detail_page'] ?? '';
+    $events_classes_page = $front_pages['events_classes_page'] ?? '';
     $courses_page = $front_pages['courses_page'] ?? '';
     $courses_detail_page = $front_pages['courses_detail_page'] ?? '';
     $endorse_page = $front_pages['endorse_page'] ?? '';
@@ -71,6 +72,19 @@ function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
 
     return $html;
 }
+function engagifii_create_page_button( $slug, $page_option ) {
+	if(empty( $page_option )) {
+		$url = wp_nonce_url(
+        admin_url( 'admin-post.php?action=engagifii_create_default_page&slug=' . $slug ),
+        'engagifii_create_default_page'
+    	);
+
+  	  	return ' <a class="button button-primary" href="' . esc_url( $url ) . '">Create Default</a>';	
+	} else {
+		return ' <a target="_blank" href="'.get_permalink($page_option).'">View</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="'.get_edit_post_link( $page_option, 'raw' ).'">Edit</a>';	
+	}
+    
+} 
 ?>
 
 <?php if (!$setupCompleted || !empty($enabledModules) && count($enabledModules) > 0){ ?>
@@ -79,11 +93,13 @@ function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
           <h3>Classes</h3>
           <div class="form-group">
               <label for="">Listing page</label>
-              <?php  echo pages_list('classes_page',$classes_page); ?>
+              <?php  echo pages_list('classes_page',$classes_page); 
+			   echo engagifii_create_page_button( 'classes', $classes_page );?>
           </div>
           <div class="form-group">
               <label for="">Detail page</label>
-               <?php  echo pages_list('classes_detail_page',$classes_detail_page); ?>
+               <?php  echo pages_list('classes_detail_page',$classes_detail_page); 
+			    echo engagifii_create_page_button( 'class-details', $classes_detail_page );?>
           </div>
       <?php endif; ?>
       
@@ -91,20 +107,28 @@ function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
           <h3>Legislation</h3>
           <div class="form-group">
               <label for="">Listing page</label>
-              <?php  echo pages_list('bills_page',$bills_page); ?>
+              <?php  echo pages_list('bills_page',$bills_page); 
+			  		echo engagifii_create_page_button( 'bill-tracking', $bills_page );
+			  ?>
           </div>
           <div class="form-group">
               <label for="">Detail page</label>
-               <?php  echo pages_list('bills_detail_page',$bills_detail_page); ?>
+               <?php  echo pages_list('bills_detail_page',$bills_detail_page); 
+			   echo engagifii_create_page_button( 'engagifii-detail', $bills_detail_page );
+			  ?>
           </div>
           <h3>Public Official</h3>
           <div class="form-group">
               <label for="">Listing page</label>
-              <?php  echo pages_list('public_official_page',$public_official_page); ?>
+              <?php  echo pages_list('public_official_page',$public_official_page); 
+			  echo engagifii_create_page_button( 'public-official', $public_official_page );
+			  ?>
           </div>
           <div class="form-group">
               <label for="">Detail page</label>
-               <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); ?>
+               <?php  echo pages_list('public_official_detail_page',$public_official_detail_page); 
+			   echo engagifii_create_page_button( 'public-official-detail', $public_official_detail_page );
+			   ?>
           </div>
       <?php endif; ?>
       
@@ -112,11 +136,18 @@ function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
           <h3>Events</h3>
           <div class="form-group">
               <label for="">Listing page</label>
-              <?php  echo pages_list('events_page',$events_page); ?>
+              <?php  echo pages_list('events_page',$events_page); 
+			  echo engagifii_create_page_button( 'events', $events_page );?>
           </div>
           <div class="form-group">
               <label for="">Detail page</label>
-               <?php  echo pages_list('events_detail_page',$events_detail_page); ?>
+               <?php  echo pages_list('events_detail_page',$events_detail_page); 
+			   echo engagifii_create_page_button( 'event-detail', $events_detail_page );?>
+          </div>
+          <div class="form-group">
+              <label for="">Events/Classes page</label>
+               <?php  echo pages_list('events_classes_page',$events_classes_page); 
+			   echo engagifii_create_page_button( 'events-classes', $events_classes_page );?>
           </div>
       <?php endif; ?>
       
@@ -124,11 +155,13 @@ function pages_list_recursive($parent_id = 0, $selected = '', $depth = 0) {
           <h3>Courses</h3>
           <div class="form-group">
               <label for="">Listing page</label>
-              <?php  echo pages_list('courses_page',$courses_page); ?>
+              <?php  echo pages_list('courses_page',$courses_page); 
+			  echo engagifii_create_page_button( 'courses', $courses_page );?>
           </div>
           <div class="form-group">
               <label for="">Detail page</label>
-               <?php  echo pages_list('courses_detail_page',$courses_detail_page); ?>
+               <?php  echo pages_list('courses_detail_page',$courses_detail_page); 
+			   echo engagifii_create_page_button( 'course-details', $courses_detail_page );?>
           </div>
       <?php endif; ?>
       

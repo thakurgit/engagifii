@@ -138,11 +138,11 @@ if ($loggedInUserId !== null && $loggedInUserId !== '') {
           	 <?php
                 if($prev){
               ?>
-              <a class=" <?php if($next){echo 'pr-2'; }?>" href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class=" <?php if($next){echo 'pr-2'; }?>" href="<?php echo CLASS_DETAIL_LINK;?>?classId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="" href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a class="" href="<?php echo CLASS_DETAIL_LINK;?>?classId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
@@ -569,7 +569,7 @@ table#ebtmaintable td:nth-child(1) {
                                           $classPopover   = $obj->_popOverClassesDate1($key, $value->classSessionSettings);
                               ?>
                                   <tr>
-                                      <td><span class="d-block"><a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,15); ?></a></span><small class="d-block">
+                                      <td><span class="d-block"><a href="<?php echo CLASS_DETAIL_LINK;?>?classId=<?php echo $value->id; ?>"><?php echo mb_substr($value->sectionName, 0,15); ?></a></span><small class="d-block">
                                           <?php 
                                               if(!empty($value->startDate) ){
                                                   echo date('M d, Y', strtotime($value->startDate)); 

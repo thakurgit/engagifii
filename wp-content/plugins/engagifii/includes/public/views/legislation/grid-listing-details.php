@@ -50,19 +50,6 @@ if(isset($_REQUEST['billId'])){
   $tenant_code = $options['lbt_tenant_code']['tenant_code'];
   $tenant_url = $options['lbt_tenant_code']['engagifii_url'];
   $title_settings = $options['lbt_title_display_setting'];
-	$front_pages = $options['front_pages'];
-    $bills_page = $front_pages['bills_page'];
-    $bills_detail_page = $front_pages['bills_detail_page'];
-	if($bills_page){
-		$bills_page_link=get_permalink( $bills_page );	
-	}else{
-		$bills_page_link= site_url() .'/bill-tracking/';	
-	}
-	if($bills_detail_page){
-		$bills_detail_page_link=get_permalink( $bills_detail_page );	
-	}else{
-		$bills_detail_page_link= site_url() .'/engagifii-detail/';	
-	}
   $lbt_api_url = $options['lbt_api_url'];
  $lbt_visib_legislative_list   = $options['lbt_visib_legislative_list']  ?? array();
  $tagNames=[];
@@ -164,12 +151,12 @@ $siteURL= site_url();
 ?>
 <div class="bill-detail-page">
 <div class="mb-2 d-flex align-items-center justify-content-between">
-<a href="<?php echo $bills_page_link;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
+<a href="<?php echo BILLS_PAGE_LINK;?>" class="go-back"><i class="fal fa-arrow-left mr-2"></i> Go Back </a>
 <div class="d-flex align-items-center">
 	<small><strong>Share:</strong></small>
-    <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" target="_blank" rel="noopener" data-share-network="Facebook" data-share-action="Share" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo BILLS_DETAIL_PAGE_LINK; ?>?billId=<?php echo $billId; ?>&title=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>" class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" target="_blank" rel="noopener" data-share-network="Facebook" data-share-action="Share" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
 
-    <a href="http://twitter.com/intent/tweet?text=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>+<?php echo $siteURL; ?>/engagifii-detail/?billId=<?php echo $billId; ?>&via=<?php echo get_bloginfo( 'name' ); ?>"  class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;"  target="_blank" rel="noopener" data-share-network="Twitter" data-share-action="Share" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
+    <a href="http://twitter.com/intent/tweet?text=<?php echo $billResponses->billNumber.' - '.$billResponses->title; ?>+<?php echo BILLS_DETAIL_PAGE_LINK; ?>?billId=<?php echo $billId; ?>&via=<?php echo get_bloginfo( 'name' ); ?>"  class="ml-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:25px; height:25px" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;"  target="_blank" rel="noopener" data-share-network="Twitter" data-share-action="Share" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
    <small class="ml-4"><strong>Views:</strong>&nbsp;<span><?php echo $views; ?></span></small>
 </div>
 </div>
@@ -277,7 +264,7 @@ $siteURL= site_url();
                     $tagMatch = $tag->tagId;
                   if (in_array($tagMatch, $tagNames)){
                     $countTag = $countTag+1;
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.$bills_page_link.'?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1 order-2"><a href="'.BILLS_PAGE_LINK.'?tag='.$tag->tagId.'&'.base64_encode($tag->text).'">'.$tag->text."</a></span>";
                   }
                     }
 					echo '<span class="order-1 mx-1">'.$countTag.'</span>';
@@ -303,21 +290,21 @@ $siteURL= site_url();
                 if(count($billResponses->clientUsers)){
                   foreach ($billResponses->clientUsers as $key => $assignto) {
                    
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.BILLS_PAGE_LINK.'?member='.$assignto->personId.'&'.base64_encode($assignto->firstName.' '.$assignto->lastName).'">'.$assignto->firstName.' '.$assignto->lastName."</a></span>";
                   }
                 }
               ?>
               <?php if(count($billResponses->clientUserTags)){ 
                   foreach ($billResponses->clientUserTags as $key => $assignto) {
                   
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.BILLS_PAGE_LINK.'?membertags='.$assignto->tag.'&'.base64_encode($assignto->tag).'">'.$assignto->tag."</a></span>";
                   }
              } ?>
 
               <?php if(count($billResponses->clientGroups)){ 
                   foreach ($billResponses->clientGroups as $key => $assignto) {
                     
-                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.$bills_page_link.'?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
+                     echo '<span class="badge badge-pill badge-light text-capitalize border mr-1"><a href="'.BILLS_PAGE_LINK.'?groups='.$assignto->id.'&'.base64_encode($assignto->name).'">'.$assignto->name."</a></span>";
                   }
              } ?>
   
@@ -334,11 +321,11 @@ $siteURL= site_url();
               <?php
                 if($prev){
               ?>
-              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo $bills_detail_page_link;?>?billId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class="<?php if($next){echo 'pr-2'; }?>" href="<?php echo BILLS_DETAIL_PAGE_LINK;?>?billId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a href="<?php echo $bills_detail_page_link;?>?billId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a href="<?php echo BILLS_DETAIL_PAGE_LINK;?>?billId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>

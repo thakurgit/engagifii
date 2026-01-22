@@ -5,9 +5,6 @@ if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
     echo '<div class="alert alert-warning text-center">Legislation module is deactivated. Please contact the admin.</div>';
     return;
 }
-    /*$obj =  new Engagifii_API();
-    $lastResponse = $obj->lastAction();
-    $lastResponses = json_decode($lastResponse['api_response']);*/
 $options = get_option( 'ebt_api_settings' );
    $sessionsetting = '';
   $sessionlist = array();
@@ -22,12 +19,7 @@ $options = get_option( 'ebt_api_settings' );
       <div class="col-sm-12">
       <div class="list-group border eq-height position-relative legis-actions" style="overflow: auto;">
 <div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>
-  <?php /*?> <?php foreach($lastResponses as $last){?>
-        <option class="text-break pb-1" data-title="<?php echo $last->text;?>" data-id="<?php echo $last->value;?>" onclick="filterLastAction('<?php echo $last->value; ?>')" >
-        
-        <?php echo $last->text;?>
-        </option>
-        <?php }?><?php */?>
+  
 </div>
     </div>
     
@@ -36,8 +28,9 @@ $options = get_option( 'ebt_api_settings' );
   </div>
 
 <script type="text/javascript">
-/*var sessionId='';
-	optionhover();*/
+	if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
  window.addEventListener("load", function () {
 	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
 		getLegislativeActions(sessionId);
@@ -65,12 +58,10 @@ function getLegislativeActions(sessionId)
 			$.each(data, function(i, item) {
 				var items = "'"+item.value+"'";
 				if(sessionId==0){
-					html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?actionType='+item.value+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+'</a>';	
+					html +='<a href="<?php echo BILLS_PAGE_LINK; ?>?actionType='+item.value+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+'</a>';	
 				}else{
-					html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?actionType='+item.value+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+'</a>';	
+					html +='<a href="<?php echo BILLS_PAGE_LINK; ?>?actionType='+item.value+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+'</a>';	
 				}
-				//var items = "'"+item.value+"'";
-				 //html +=' <option class="text-break pb-1" data-title="'+item.text+'" data-id="'+item.value+'" onclick="filterLastAction('+items+')">'+item.text+'</option>';			
 			});
 			if(html){
         		$('.legis-actions').html(html);
@@ -78,21 +69,8 @@ function getLegislativeActions(sessionId)
         		$('.legis-actions').html('<h6 class="p-3">No data found</h6>');
 			}
 			$('.legis-actions').siblings('.issue-loader').remove();
-			//optionhover();
             
          }
     });
 }	
-   /* function filterLastAction(id) {
-      $("body").removeClass('loaded');
-	  if(sessionId==''){
-    	  var redirect_url = '<?php //echo get_site_url(); ?>/bill-tracking/?actionType='+id;
-	  } else {
-   		   var redirect_url = '<?php //echo get_site_url(); ?>/bill-tracking/?actionType='+id+'&sessionId='+sessionId;
-	  }
-      window.location.href = redirect_url;
-
-    }*/
-
-    
 </script>

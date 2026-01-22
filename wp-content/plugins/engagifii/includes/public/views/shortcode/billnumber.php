@@ -5,9 +5,6 @@ if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
     echo '<div class="alert alert-warning text-center">Legislation module is deactivated. Please contact the admin.</div>';
     return;
 }
-/*$obj =  new Engagifii_API();
-$billResponse = $obj->billType();
-$billResponses = json_decode($billResponse['api_response']);*/
 ?>
 <style type="text/css">
   button#billSearch{ padding: 0 15px; }
@@ -46,11 +43,9 @@ $billResponses = json_decode($billResponse['api_response']);*/
   </div>
  
   <script type="text/javascript">
-  /*var sessionId='';
-  	$('.session-tab li button').click(function(){
-		sessionId = $(this).attr('id');
-		//$('#bill-count').siblings('a').attr('href',viewAll+'?sessionId='+sessionId);
-	});*/
+  if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
 
     $("#bill_number").keyup(function(event) {
     if (event.keyCode === 13) {
@@ -62,9 +57,9 @@ $billResponses = json_decode($billResponse['api_response']);*/
       var bill = $('#bill_number').val();
       $("body").removeClass('loaded');
 	  if(sessionId!=0){
-     	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill+'&sessionId='+sessionId;
+     	 var redirect_url = '<?php echo BILLS_PAGE_LINK; ?>?bill='+bill+'&sessionId='+sessionId;
 	  }else {
-     	 var redirect_url = '<?php echo get_site_url(); ?>/bill-tracking/?bill='+bill;
+     	 var redirect_url = '<?php echo BILLS_PAGE_LINK; ?>?bill='+bill;
 	  }
       window.location.href = redirect_url;
     });

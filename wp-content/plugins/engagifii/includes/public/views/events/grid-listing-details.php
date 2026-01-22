@@ -35,7 +35,7 @@ if ($setupCompleted && !in_array('events', $enabled_modules)) {
 	
 	$options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'];
-    $events_page = $front_pages['events_page'];
+    /*$events_page = $front_pages['events_page'];
     $events_detail_page = $front_pages['events_detail_page'];
     $classes_detail_page = $front_pages['classes_detail_page'];
 	if($events_page){
@@ -58,7 +58,7 @@ if ($setupCompleted && !in_array('events', $enabled_modules)) {
 		$course_detail_page_link=get_permalink( $course_detail_page );	
 	}else{
 		$course_detail_page_link= site_url() .'/course-details/';	
-	}
+	}*/
     $api_url = $options['ebt_api_url'];
 	$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
     $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii.com';
@@ -182,15 +182,15 @@ if ( strpos($url,'my-profile') !== false ) {
         	<?php
                 if($prev){
               ?>
-              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo $events_detail_page_link;?>?courseId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
+              <a class="text-muted <?php if($next){echo 'pr-2'; }?>" href="<?php echo EVENT_DETAIL_LINK;?>?courseId=<?php echo $prev; ?>"><i class="fal fa-arrow-left"></i> </a>
               <?php
                 }if($next){
               ?>
-              <a class="text-muted" href="<?php echo $events_detail_page_link;?>?courseId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
+              <a class="text-muted" href="<?php echo EVENT_DETAIL_LINK;?>?courseId=<?php echo $next; ?>"> <i class="fal fa-arrow-right"></i></a>
               <?php
                 }
               ?>
-            <a href="<?php echo $events_page;?>/courses/" class="p-2 mr-2 text-muted d-none"><i class="fa fa-times"></i></a>
+            <a href="<?php echo EVENTS_PAGE_LINK;?>/courses/" class="p-2 mr-2 text-muted d-none"><i class="fa fa-times"></i></a>
         </div>
 		
           <?php 
@@ -533,8 +533,8 @@ table.class-table td:nth-child(1) {
 			  						foreach ($classesData->collection as $key => $value) {
 			  				?>
 			  					<tr class="bg-white">
-			  						<td><span><a href="<?php echo $course_detail_page_link; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,25); ?></a><br>
-									<a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
+			  						<td><span><a href="<?php echo COURSE_DETAIL_LINK; ?>?courseId=<?php echo $value->parentCourse->id; ?>" style="color: rgb(189, 16, 224);"><?php echo mb_substr($value->parentCourse->name, 0,25); ?></a><br>
+									<a href="<?php echo CLASS_DETAIL_LINK; ?>?classId=<?php echo $value->id; ?>"><?php echo $value->sectionName; ?></a><br/>
 			  							<small><?php 
 			  								if(!empty($value->startDate) ){
 			  									echo date('M d, Y', strtotime($value->startDate)); 

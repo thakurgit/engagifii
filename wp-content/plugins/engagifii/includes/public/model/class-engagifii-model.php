@@ -172,13 +172,13 @@ public function calendar_mode(){
 		  $classTypesShow = extractColNames(CLASS_TYPES_COLS);
 	}
         $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+	}*/
         $siteURL= site_url();
 
         $year = $_POST['year'];
@@ -257,7 +257,7 @@ public function calendar_mode(){
                 $class_icon = ENGAGIFII_ASSETS_URL.'/images/oconee-logo.png';
                 
             }
-        		$data['title'] = '<a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a>';
+        		$data['title'] = '<a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a>';
 				$data['titleNoLink'] = $value->sectionName;
 	            $data['id']    = $value->id;
 	            $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
@@ -286,7 +286,7 @@ public function calendar_mode(){
 	            }
 
 	            $data['classTag'] = $allTags;
-				 $data['viewdetails'] = '<a href="'.$classes_detail_page_link.'?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+				 $data['viewdetails'] = '<a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                 if($value->isClassRegistrationAllow)
 	            {
                     //echo $value->registrationState;
@@ -426,7 +426,7 @@ public function getCalendarClassName(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="<?php echo $classes_detail_page_link;?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo CLASS_DETAIL_LINK;?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $filteredItems[$fi]['register']; ?>
                                                     </div>
                                                     </div>
@@ -490,7 +490,7 @@ public function getCalendarClassName(){
                                                         
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo CLASS_DETAIL_LINK; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php echo $filteredItems[$fi]['register']; ?>
                                                     </div>
                                                     </div>
@@ -615,7 +615,7 @@ public function getCalendarClassName(){
                                             
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo CLASS_DETAIL_LINK; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php echo $weekfilteredItems[$fi]['register']; ?>
                                         </div>
                                         </div>
@@ -668,13 +668,13 @@ public function getCalendarClassName1(){
     $totalDaysOfMonth_Prev = cal_days_in_month(CAL_GREGORIAN, $prevMonth, $prevYear);
 
     $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+	}*/
     //$class_visible_column_list = $options['class_visible_column_list'];
 	$columnNames=[];
 		if (!empty(CLASS_COLS) && isArrayOfJsonStrings(CLASS_COLS)) {
@@ -786,7 +786,7 @@ public function getCalendarClassName1(){
                                                         <?php } ?>
                                                     </div>
                                                     <div class="modal-footer">
-                                                    <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                                    <a href="<?php echo CLASS_DETAIL_LINK; ?>?classId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                     <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                                     </div>
                                                     </div>
@@ -923,7 +923,7 @@ public function getCalendarClassName1(){
                                             <?php } ?>
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="<?php echo $classes_detail_page_link; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo CLASS_DETAIL_LINK; ?>?classId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php if(in_array('register', $columnNames)) { echo $weekfilteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
@@ -989,14 +989,14 @@ public function getEventsCalendar(){
     <main class="calendar-contain row">
     <?php echo $this->calendar_mode(); 
 	        $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
 	if($events_detail_page){
 		$events_detail_page_link=get_permalink( $events_detail_page );	
 	}else{
 		$events_detail_page_link= site_url() .'/event-detail/';	 
 	}
-
+*/
 	?>
        
         <div class="col-12 pt-4">
@@ -1086,7 +1086,7 @@ public function getEventsCalendar(){
                                                    
                                                </div>
                                                <div class="modal-footer">
-                                               <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <a href="<?php echo EVENT_DETAIL_LINK;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                                </div>
                                                </div>
@@ -1144,7 +1144,7 @@ public function getEventsCalendar(){
                                             
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                        <a href="<?php echo EVENT_DETAIL_LINK;?>?endId=<?php echo $filteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                         <?php if(in_array('register', $columnNames)) { echo $filteredItems[$fi]['register']; } ?>
                                         </div>
                                         </div>
@@ -1264,7 +1264,7 @@ public function getEventsCalendar(){
                                                    
                                                </div>
                                                <div class="modal-footer">
-                                               <a href="<?php echo $events_detail_page_link;?>?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
+                                               <a href="<?php echo EVENT_DETAIL_LINK;?>?endId=<?php echo $weekfilteredItems[$fi]['id']; ?>" class="btn btn-secondary px-3 py-1">View Detail </a>
                                                <?php echo $weekfilteredItems[$fi]['register']; ?>
                                                </div>
                                                </div>
@@ -1866,13 +1866,13 @@ wp_die();
         $data         = array();
 
         $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+	}*/
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
         
@@ -1920,9 +1920,9 @@ wp_die();
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
-                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
@@ -2115,13 +2115,13 @@ wp_die();
         $data         = array();
 
         $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $classes_detail_page = $front_pages['classes_detail_page'];
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+	}*/
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['ebt_tenant_code']['engagifii_url'];
 		$dataJS='';
@@ -2172,9 +2172,9 @@ wp_die();
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
-                $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div></td>';
+                $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div></td>';
             }else{
-            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div></td>';
+            $dataJS .= '<td><span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div></td>';
             }
             $dataJS .= '<td>'.$value->classDuration.' '.$value->classDurationType.'</td>';
             $dataJS .= '<td>'.$value->objectType.'</td>';
@@ -2413,7 +2413,7 @@ wp_die();
 					if($li%2==1){
 					  $class='bg-light';	
 					}
-					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a href="'.$classes_detail_page_link.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('g:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('g:i A', strtotime($classEnd)).'</li>';
+					$subItems .= ' <li class="px-2 py-1 border-bottom  small '.$class.'"><a href="'.CLASS_DETAIL_LINK.'?classId='.$rowData->id.'">'.$rowData->name.'</a><br>'.date('M d, Y', strtotime($classStart)).' at '.date('g:i A', strtotime($classStart)).' to '.date('M d, Y', strtotime($classEnd)).' at '.date('g:i A', strtotime($classEnd)).'</li>';
 					$li++;
 				}
 				$classPopover .= $subItems.'<span class="px-2 py-1 text-center   small d-none">No results found!</span></div>';
@@ -3414,13 +3414,13 @@ wp_die();
 
         $options = get_option('ebt_api_settings');
         $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
-	    $front_pages = $options['front_pages'];
+	    /*$front_pages = $options['front_pages'];
         $events_detail_page = $front_pages['events_detail_page'];
 	    if($events_detail_page){
 		$events_detail_page_link=get_permalink( $events_detail_page );	
 	    }else{
 		$events_detail_page_link= site_url() .'/event-detail/';	 
-	    }
+	    }*/
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
@@ -3447,7 +3447,7 @@ wp_die();
             $default_Title = $row->name;
             $default_Id = $row->id;
             $default_Detailpage = "";
-            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' .$events_detail_page_link.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
+            $default_Detailpage .= '<div class="d-flex align-items-center"><img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="award-icon"><a href=' .EVENT_DETAIL_LINK.'?endId=' . $default_Id . ' >' . $default_Title . '</a></div>';
             if ($default_Title) {
                 $nestedData['name'] = $default_Detailpage;
             }else{
@@ -3588,19 +3588,19 @@ wp_die();
 
         $options = get_option('ebt_api_settings');
         $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
-	    $front_pages = $options['front_pages'];
+	    /*$front_pages = $options['front_pages'];
         $events_detail_page = $front_pages['events_detail_page'];
 	    if($events_detail_page){
 		$events_detail_page_link=get_permalink( $events_detail_page );	
 	    }else{
 		$events_detail_page_link= site_url() .'/event-detail/';	 
-	    }
-        $classes_detail_page = $front_pages['classes_detail_page'];
+	    }*/
+        /*$classes_detail_page = $front_pages['classes_detail_page'];
 	if($classes_detail_page){
 		$classes_detail_page_link=get_permalink( $classes_detail_page );	
 	}else{
 		$classes_detail_page_link= site_url() .'/class-details/';	
-	}
+	}*/
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
         $endorsement_visib_datacol_list = $options['endorsement_visib_datacol_list'];
@@ -3645,9 +3645,9 @@ if($entity=="Event"){
                            <img src="'.$row->imageUrl.'" class="img-fluid img-icon-lg mr-3" alt="image-icon">';
                            
             if ($entity == 'Event') {
-                $default_Detailpage .= '<a href="' . $events_detail_page_link . '?endId=' . $default_Id . '">' . $default_Title . '</a>';
+                $default_Detailpage .= '<a href="' . EVENT_DETAIL_LINK . '?endId=' . $default_Id . '">' . $default_Title . '</a>';
             } elseif ($entity == 'Class') {
-                $default_Detailpage .= '<a href="' . $classes_detail_page_link . '?classId=' . $default_Id . '">' . $default_Title . '</a>';
+                $default_Detailpage .= '<a href="' . CLASS_DETAIL_LINK . '?classId=' . $default_Id . '">' . $default_Title . '</a>';
             }
 
 $default_Detailpage .= '</div>';
@@ -4025,9 +4025,9 @@ public function classesLoadGridDataByPerson(){
                     $class_schedule = '<small class="d-block" style="white-space:normal;">'.$classSessionTime.' <br>'.$classSessionStartTime.'-'.$classSessionEndTime.'</small>';
                     $counter = $counter + 1;
                 }
-                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+                $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($classSessionStartDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'</div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }else{
-            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.$classes_detail_page_link.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
+            $nestedData['sectionname'] = '<span style="display:none;">'.strtotime(date('M d, Y', strtotime($value->startDate))).'</span><div class="d-flex align-items-center"><img alt="'.$value->sectionName.'" src="'.$class_icon.'" class="img-fluid img-icon-lg p-0 mr-3 rounded-circle"><div><span class="d-block"><a href="'.CLASS_DETAIL_LINK.'?classId='.$value->id.'">'.$value->sectionName.'</a></span>'.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('M d, Y', strtotime($value->startDate)).' at '.date('g:i A', strtotime($value->startDate)).' - '.date('g:i A', strtotime($value->endDate)).' </small></div></div>';//.$class_schedule.'<small class="d-block" style="white-space:normal;">'.date('d M Y', strtotime($value->startDate)).' </small>
             }
             $nestedData['classDuration'] = $value->classDuration.' '.$value->classDurationType;
             $nestedData['objectType'] = $value->objectType;
@@ -4372,19 +4372,7 @@ public function classesLoadGridDataByPerson(){
 
         $options = get_option('ebt_api_settings');
         $tenantCode = $options['dashboard_tenant_code'];
-	$front_pages = $options['front_pages'];
-    $bills_page = $front_pages['bills_page'];
-    $bills_detail_page = $front_pages['bills_detail_page'];
-	if($bills_page){
-	$bill_page_link=get_permalink( $bills_page );	
-	}else{
-	$bill_page_link= site_url() .'/bill-tracking/';	
-	}
-	if($bills_detail_page){
-	$bill_detail_link=get_permalink( $bills_detail_page );	
-	}else{
-	$bill_detail_link= site_url() .'/engagifii-detail/';	
-	}
+	$bill_detail_link = BILLS_DETAIL_PAGE_LINK;
     if($tenantCode=="clemson"){
         $bill_detail_link="https://www.scstatehouse.gov/billsearch.php";
         //$billIdText = ""
@@ -4571,10 +4559,10 @@ public function classesLoadGridDataByPerson(){
                     $tagCount              = count($row->tags) - 1;
                   
                     $tagList               = $this->_popoverTagsHtml1($row->id, $row->tags);
-                    $nestedData['tags'] = '<div class="dropdown pr-4"><span class="d-inline-block pr-2"> <a href="' . $bill_page_link.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span>'.$tagList.'</div>';
+                    $nestedData['tags'] = '<div class="dropdown pr-4"><span class="d-inline-block pr-2"> <a href="' . BILLS_PAGE_LINK.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text.'</a></span><span data-toggle="dropdown" style="right:0; top:0; bottom:0" class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_leg_'.$row->id.'" data-placement="left" data-containerid="' . $row->id . '" id="' . $row->id . '"> +' . $tagCount .'</span>'.$tagList.'</div>';
                 }else{
                     
-                    $nestedData['tags']       = '<a href="' . $bill_page_link.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
+                    $nestedData['tags']       = '<a href="' . BILLS_PAGE_LINK.'?tag='.$row->tags[0]->value.'&'.base64_encode($row->tags[0]->text).'">'.$row->tags[0]->text;
                 }
             }
             else
@@ -5140,13 +5128,7 @@ public function publicOfficialTabs(){
 } 
  public function publicOfficialLoadData(){
         $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
-    $public_official_detail_page = $front_pages['public_official_detail_page'];
-	if($public_official_detail_page){
-		$public_official_detail_page_link=get_permalink( $public_official_detail_page );	
-	}else{
-		$public_official_detail_page_link= site_url() .'/public-official-detail/';	
-	}
+	
 $seqColumns=['Name','Counties','City of Residence','District','Committees','Party','Role'];
 $tableHeader='';
 foreach ($seqColumns as $key => $value) {
@@ -5203,7 +5185,7 @@ foreach ($seqColumns as $key => $value) {
        foreach ($collection as $key => $value) { 
                         $data.= '<tr>';
                         //name
-                       $data.= '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.$public_official_detail_page_link.'?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
+                       $data.= '<td><div class="d-flex"><div class="overflow-hidden rounded-circle mr-2" style="height:40px; max-width:40px; flex: 0 0 40px"><img src="'.$value['profilePic'].'" alt="" class="img-fluid"></div><div><a href="'.PUBLIC_OFFICIAL_DETAIL_PAGE_LINK.'?id='.$value['id'].'">'.$value['legalName'].'<br>('.$value['officialNameLabel'].')</a></div></div></td>'; 
 					  //counties 
 					  $countiesList = $value['counties'];
 					  $allCounties = array();
@@ -5570,15 +5552,7 @@ if (isset($_POST['sessionIds'])) {
 
     private function _popoverTagsHtml1($id, $tags){
 	$options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
-    $bills_page = $front_pages['bills_page'];
-	if($bills_page){
-	$bill_page_link=get_permalink( $bills_page );	
-	}else{
-	$bill_page_link= site_url() .'/bill-tracking/';	
-	}
-
-        $rowName = array();
+	 $rowName = array();
         $popOverHtml .= '<div class="dropdown-menu dropdown-menu-right td-dropdown pb-0 pt-2" aria-labelledby="dropdownMenuButton" ><h6 class="text-center mb-0 pb-2">Tags</h6><div class="px-2 border-bottom pb-2"><input class="form-control form-control-sm bg-light search-dropdown" placeholder="Search tags.."/></div>';
         $subItems = "";
        $li=1;
@@ -5587,7 +5561,7 @@ if (isset($_POST['sessionIds'])) {
             if($li%2==1){
 			$class='bg-light';	
 			}
-			$subItems .= '<a style="display:block" href="' . $bill_page_link.'?tag='.$rowData->value.'&'.base64_encode($rowData->text).'" target="_blank" class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->text . '</a>';
+			$subItems .= '<a style="display:block" href="' . BILLS_PAGE_LINK.'?tag='.$rowData->value.'&'.base64_encode($rowData->text).'" target="_blank" class="px-2 py-1 border-bottom  small '.$class.'">' . $rowData->text . '</a>';
 			$li++;
 			}
 
@@ -6733,13 +6707,13 @@ if(!empty($_POST['minRange']))
 		  $eventTypesShow = extractColNames(EVENTS_TYPES_COLS);
 	}
 	$options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'];
+	/*$front_pages = $options['front_pages'];
     $events_detail_page = $front_pages['events_detail_page'];
 	if($events_detail_page){
 		$events_detail_page_link=get_permalink( $events_detail_page );	
 	}else{
 		$events_detail_page_link= site_url() .'/event-detail/';	 
-	}
+	}*/
 
         $endorsement_api_url = $options['ebt_api_url'];
         $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
@@ -6810,7 +6784,7 @@ if(!empty($_POST['minRange']))
                 $startDate = date('Y-m-d', strtotime($value->startDateTime));
                 //$sessionEndTime = date('Y-m-d', strtotime($value->endDateTime));
                    $endDate = date('Y-m-d', strtotime($value->endDateTime));
-                   $data['title'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
+                   $data['title'] = '<a href="'.EVENT_DETAIL_LINK.'?endId='.$value->id.'">'.$value->name.'</a>';
                    $data['titleNoLink'] = $value->name;
                    $data['id']    = $value->id;
                    $data['start'] = date('Y-m-d', strtotime($event->sessionStartTime));
@@ -6840,7 +6814,7 @@ if(!empty($_POST['minRange']))
                 }
     
                    $data['endorsementTag'] = $allTags;
-                   $data['viewdetails'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
+                   $data['viewdetails'] = '<a href="'.EVENT_DETAIL_LINK.'?endId='.$value->id.'" class="btn btn-secondary px-3 py-1" target="_blank">View Details</a>';
                   
                    $default_RegisterBtn = "";
                    if ($event_status == 'Completed' || $registration_state == 'RegistrationClosed') {
@@ -6870,7 +6844,7 @@ if(!empty($_POST['minRange']))
                 // end here
                         $startDate = date('Y-m-d', strtotime($value->startDateTime));
                         $endDate = date('Y-m-d', strtotime($value->endDateTime));
-                        $data['title'] = '<a href="'.$events_detail_page_link.'?endId='.$value->id.'">'.$value->name.'</a>';
+                        $data['title'] = '<a href="'.EVENT_DETAIL_LINK.'?endId='.$value->id.'">'.$value->name.'</a>';
                         $data['titleNoLink'] = $value->name;
                         $data['id']    = $value->id;
                         $data['start'] = date('Y-m-d', strtotime($value->classSessionSettings[0]->sessionStartTime));
@@ -7477,4 +7451,4 @@ public function _popOverTypeData($id, $typeData){
         return $popOverHtml . $vars;
     }
 
-}
+} 

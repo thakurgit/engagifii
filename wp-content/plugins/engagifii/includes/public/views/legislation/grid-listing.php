@@ -1053,9 +1053,6 @@ $(".tz-selectAll").change(function () {
 });
 
 }
-     // Extra Div for Tracking
-
-
 /*function addDivTracking(){
     var span_Ext1 = jQuery(document).find(".select2-search").find("span.engTrackingLevels").length;
     if(span_Ext1 <1)

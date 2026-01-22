@@ -73,7 +73,7 @@ if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_l
 		$member = $item->colName;
 		$name = $item->displayName;
 		$encoded = base64_encode($name);
-		$html .= '<a href="' . $site_url . '/bill-tracking/?member=' . urlencode($member) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+		$html .= '<a href="' . BILLS_PAGE_LINK . '?member=' . urlencode($member) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
 	}
 	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
  } else { ?>
@@ -84,6 +84,9 @@ if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_l
 	 return Number(value);
 		}
   allmembers  = allmembers.map(toNumber);
+  if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
  window.addEventListener("load", function () {
 		getStaffMembers(sessionId);
 		$('.session-tab li button').click(function(){
@@ -109,9 +112,9 @@ function getStaffMembers(sessionId)
 				if($.inArray(item.personId, allmembers) != -1) {
 					if(item.count>0){
 						if(sessionId==0){
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
 						}else{
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?member='+item.personId+'&'+btoa(item.fullName)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?member='+item.personId+'&'+btoa(item.fullName)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
 						}
 					}
 				}

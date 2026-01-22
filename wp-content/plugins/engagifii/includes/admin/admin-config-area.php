@@ -124,6 +124,7 @@ class ebtAdminConfigSettings {
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		include_once( __DIR__.'/view/customizer.php' );
  	}
+
 	function profile_Settings()
  	{
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;

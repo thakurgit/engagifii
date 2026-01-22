@@ -35,7 +35,7 @@ $columns='';
 			$tagId = $item->colName;
 			$name = $item->displayName;
 			$encoded = base64_encode($name);
-			$html .= '<a href="' . $site_url . '/bill-tracking/?tag=' . urlencode($tagId) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+			$html .= '<a href="' . BILLS_PAGE_LINK . '?tag=' . urlencode($tagId) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
 		}
 	}
 	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
@@ -47,6 +47,9 @@ $columns='';
 	 return Number(value);
 		}
   allissues  = allissues.map(toNumber1);
+  if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
  window.addEventListener("load", function () {
 		getLegislativeTags(sessionId);
 		$('.session-tab li button').click(function(){
@@ -70,9 +73,9 @@ function getLegislativeTags(sessionId){
 				if($.inArray(item.tagId, allissues) != -1) {
 					if(item.count>0){
 						if(sessionId==0){
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?tag='+item.tagId+'&'+btoa(item.text)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?tag='+item.tagId+'&'+btoa(item.text)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
 						}else{
-						  html += '<a href="<?php echo get_site_url(); ?>/bill-tracking/?tag='+item.tagId+'&'+btoa(item.text)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?tag='+item.tagId+'&'+btoa(item.text)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
 						}
 					}
 				}

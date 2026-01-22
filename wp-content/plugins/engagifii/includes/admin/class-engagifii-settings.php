@@ -181,21 +181,18 @@ class Engagifii_Settings {
         */
         
         // Add inline script for tab functionality
-        wp_add_inline_script('engagifii-admin-script', '
+        /*wp_add_inline_script('engagifii-admin-script', '
             console.log("Inline script loaded");
             
             // Vanilla JavaScript tab functionality
             document.addEventListener("DOMContentLoaded", function() {
-                console.log("DOM ready - inline script");
                 
                 var tabButtons = document.querySelectorAll(".tab-button");
-                console.log("Found tab buttons:", tabButtons.length);
                 
                 tabButtons.forEach(function(button) {
                     button.addEventListener("click", function(e) {
                         e.preventDefault();
                         var tabId = this.getAttribute("data-tab");
-                        console.log("Tab clicked:", tabId);
                         
                         // Remove active from all
                         document.querySelectorAll(".tab-button").forEach(function(b) {
@@ -212,12 +209,11 @@ class Engagifii_Settings {
                         if (panel) {
                             panel.classList.add("active");
                             panel.style.display = "block";
-                            console.log("Activated panel:", tabId);
                         }
                     });
                 });
             });
-        ');
+        ');*/
     }
 
     /**
@@ -556,14 +552,14 @@ class Engagifii_Settings {
             /* Simple notice hiding - same approach as engagifii_modules.php */
            /* .wrap .notice, 
             .wrap div.error, 
-            .wrap div.updated {
+            .wrap div.updated { 
                 display: none !important;
             }*/
             
             /* Prevent WordPress admin bar from interfering */
-            .wp-admin .engagifii-settings-wrap {
+           /* .wp-admin .engagifii-settings-wrap {
                 margin-top: 0 !important;
-            }
+            }*/
             
             /* Ensure admin notices appear above our header */
            /* #wpbody-content > .wrap > .notice,
@@ -1506,13 +1502,12 @@ class Engagifii_Settings {
         </div>
 
         <script>
-        console.log('INLINE: Script section executing');
         
         // Make sure ajaxurl is available
         var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
         
         // Hide admin notices on page load and dynamically
-        (function() {
+        /*(function() {
             function hideAdminNotices() {
                 const notices = document.querySelectorAll('.notice, .error, .updated, div.notice, div.error, div.updated');
                 notices.forEach(function(notice) {
@@ -1528,12 +1523,11 @@ class Engagifii_Settings {
             // Hide any notices that appear later
             const observer = new MutationObserver(hideAdminNotices);
             observer.observe(document.body, { childList: true, subtree: true });
-        })();
+        })();*/
         
         // Tab functionality with multiple approaches
         (function() {
             function initTabs() {
-                console.log('Initializing tabs...');
                 
                 // Vanilla JavaScript approach
                 const tabButtons = document.querySelectorAll('.tab-button');
@@ -1543,7 +1537,6 @@ class Engagifii_Settings {
                     button.addEventListener('click', function(e) {
                         e.preventDefault();
                         const tabId = this.getAttribute('data-tab');
-                        console.log('Vanilla JS tab clicked:', tabId);
                         
                         // Remove active class from all buttons and panels
                         tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -1602,12 +1595,10 @@ class Engagifii_Settings {
                 // jQuery approach as fallback
                 if (typeof jQuery !== 'undefined') {
                     jQuery(document).ready(function($) {
-                        console.log('jQuery tabs initialization');
                         
                         $('.tab-button').off('click.tabs').on('click.tabs', function(e) {
                             e.preventDefault();
                             var tabId = $(this).data('tab');
-                            console.log('jQuery tab clicked:', tabId);
                             
                             $('.tab-button').removeClass('active');
                             $('.tab-panel').removeClass('active').hide();
@@ -1658,12 +1649,7 @@ class Engagifii_Settings {
                                 selectedModules.push($(this).val());
                             });
                             
-                            /*console.log('Selected modules:', selectedModules);
-                            console.log('Form data to send:', {
-                                action: 'engagifii_save_modules',
-                                modules: selectedModules,
-                                nonce: '<?php //echo wp_create_nonce("engagifii_settings_nonce"); ?>'
-                            });*/
+                            
                             
                             $.ajax({
                                 url: ajaxurl,
@@ -1724,9 +1710,9 @@ class Engagifii_Settings {
             
             // Initialize tabs with multiple attempts
             document.addEventListener('DOMContentLoaded', initTabs);
-            setTimeout(initTabs, 100);
+            /*setTimeout(initTabs, 100);
             setTimeout(initTabs, 500);
-            setTimeout(initTabs, 1000);
+            setTimeout(initTabs, 1000);*/
         })();
         </script>
             </div> <!-- .engagifii-settings-wrap -->
@@ -1759,7 +1745,7 @@ class Engagifii_Settings {
     /**
      * Handle create pages AJAX
      */
-    public static function handle_create_pages() {
+    /*public static function handle_create_pages() {
         check_ajax_referer('engagifii_settings_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
@@ -1775,12 +1761,12 @@ class Engagifii_Settings {
         $created_pages = self::create_module_pages($modules);
         
         wp_send_json_success('Created ' . count($created_pages) . ' pages');
-    }
+    }*/
 
     /**
      * Create pages for enabled modules
      */
-    public static function create_module_pages($enabled_modules) {
+    /*public static function create_module_pages($enabled_modules) {
         $created_pages = array();
         
         foreach ($enabled_modules as $module_key) {
@@ -1811,12 +1797,12 @@ class Engagifii_Settings {
         }
         
         return $created_pages;
-    }
+    }*/
 
     /**
      * Create legislation module pages
      */
-    private static function create_legislation_pages() {
+   /* private static function create_legislation_pages() {
         $pages = array();
         
         // Bill Tracking Page
@@ -1872,12 +1858,12 @@ class Engagifii_Settings {
         }
         
         return $pages;
-    }
+    }*/
 
     /**
      * Create classes module pages
      */
-    private static function create_classes_pages() {
+   /* private static function create_classes_pages() {
         $pages = array();
         
         // Classes Page
@@ -1907,12 +1893,12 @@ class Engagifii_Settings {
         }
         
         return $pages;
-    }
+    }*/
 
     /**
      * Create courses module pages
      */
-    private static function create_courses_pages() {
+   /* private static function create_courses_pages() {
         $pages = array();
         
         // Courses Page
@@ -1942,12 +1928,12 @@ class Engagifii_Settings {
         }
         
         return $pages;
-    }
+    }*/
 
     /**
      * Create group directory pages
      */
-    private static function create_group_directory_pages() {
+    /*private static function create_group_directory_pages() {
         $pages = array();
         
         // My Profile Page with child pages
@@ -1991,12 +1977,12 @@ class Engagifii_Settings {
         }
         
         return $pages;
-    }
+    }*/
 
     /**
      * Create endorsement pages
      */
-    private static function create_endorsement_pages() {
+   /* private static function create_endorsement_pages() {
         $pages = array();
         
         // Endorsement Grid View Page
@@ -2026,7 +2012,7 @@ class Engagifii_Settings {
         }
         
         return $pages;
-    }
+    }*/
 
     /**
      * Check if a module is enabled
@@ -2157,7 +2143,7 @@ class Engagifii_Settings {
 
 // Initialize AJAX handlers
 add_action('wp_ajax_engagifii_initial_setup', array('Engagifii_Settings', 'handle_initial_setup'));
-add_action('wp_ajax_engagifii_create_pages', array('Engagifii_Settings', 'handle_create_pages'));
+//add_action('wp_ajax_engagifii_create_pages', array('Engagifii_Settings', 'handle_create_pages'));
 add_action('wp_ajax_engagifii_save_modules', array('Engagifii_Settings', 'handle_save_modules'));
 
 // Global helper functions for use in other files

@@ -5,7 +5,7 @@
  * Plugin URI:  https://engagifii.com/
  * Author:      Engagifii
  * Author URI:  https://engagifii.com/
- * Version:     2.1.0
+ * Version:     2.2.0
  * Text Domain: engagifii
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define('ENGAGIFII_VERSION','2.1.0');
+define('ENGAGIFII_VERSION','2.2.0');
 
 Final Class Engagifii {
 	/**
@@ -66,6 +66,7 @@ Final Class Engagifii {
 		//add_action( 'wp_print_styles', array($this,'dequeue_unnecessary_styles'));
 		add_action('init',array($this,'engagifii_load_js_script'));
 		add_action('init',array($this,'includes_variable'));
+
 		add_action('wp_enqueue_scripts',array($this,'engagifii_load_css'),9999);
 		add_action('init', array( $this->engagifiiShortcode, 'init' ) );
 		add_action('admin_init',array($this,'engagifii_adm_settings'));
@@ -116,6 +117,7 @@ Final Class Engagifii {
 			new Engagifii_Settings();
 		}
 	}
+	
 	/**
 	* Include required core files used in the frontend after wp init
 	*/
@@ -248,282 +250,143 @@ wp_enqueue_script(
 }
 //create pages
 define( 'PLUGIN_FILE_PATH', __FILE__ );
-register_activation_hook( PLUGIN_FILE_PATH, 'insert_page_on_activation' );
- 
-function insert_page_on_activation() {
-  if ( ! current_user_can( 'activate_plugins' ) ) return;
- 
-    $pages = [
+//pages creation
+function engagifii_get_default_pages() {
+
+    return [
         'bill-tracking' => [
+            'option_key'   => 'bills_page',
             'post_title'   => 'Bill Tracking',
             'post_content' => '[legislation-list]',
         ],
         'engagifii-detail' => [
+            'option_key'   => 'bills_detail_page',
             'post_title'   => 'Bill Detail',
             'post_content' => "[legislation-details Id='bill-id']",
         ],
-        'legislative-tracking-database' => [
-            'post_title'   => 'Legislative tracking database',
-            'post_content' => '', // optional
+		'public-official' => [
+            'option_key'   => 'public_official_page',
+            'post_title'   => 'Public Officials',
+            'post_content' => '[public-officials]',
+        ],
+        'public-official-detail' => [
+            'option_key'   => 'public_official_detail_page',
+            'post_title'   => 'Public Official Detail',
+            'post_content' => "[public-officials-detail]",
         ],
         'classes' => [
+            'option_key'   => 'classes_page',
             'post_title'   => 'Classes',
             'post_content' => '[classes-list-calendar-class-name calendarclassname=true]',
         ],
         'class-details' => [
+            'option_key'   => 'classes_detail_page',
             'post_title'   => 'Class Details',
             'post_content' => "[class-details Id='class-id']",
         ],
         'courses' => [
+            'option_key'   => 'courses_page',
             'post_title'   => 'Courses',
             'post_content' => '[courses-list]',
         ],
         'course-details' => [
+            'option_key'   => 'courses_detail_page',
             'post_title'   => 'Course Details',
             'post_content' => "[course-details Id='course-id']",
         ],
+		'events' => [
+            'option_key'   => 'events_page',
+            'post_title'   => 'Events',
+            'post_content' => '[events-list-calendar calendar=true]',
+        ],
+        'event-detail' => [
+            'option_key'   => 'events_detail_page',
+            'post_title'   => 'Event Detail',
+            'post_content' => "[events-details Id='event-id']",
+        ],
+		'events-classes' => [
+            'option_key'   => 'events_classes_page',
+            'post_title'   => 'Events Classes',
+            'post_content' => "[training-calendar]",
+        ],
+    ];
+}
+
+add_action( 'admin_post_engagifii_create_default_page', 'engagifii_create_default_page' );
+function engagifii_create_default_page() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'Unauthorized' );
+    }
+
+    check_admin_referer( 'engagifii_create_default_page' );
+
+    $slug  = sanitize_text_field( $_GET['slug'] ?? '' );
+    $pages = engagifii_get_default_pages();
+
+    if ( ! isset( $pages[ $slug ] ) ) {
+        wp_redirect( wp_get_referer() );
+        exit;
+    }
+
+    $page_def = $pages[ $slug ];
+
+    // Prevent duplicates
+    $page = get_page_by_path( $slug );
+    if ( $page ) {
+        $page_id = $page->ID;
+    } else {
+        $page_id = wp_insert_post( [
+            'post_title'   => $page_def['post_title'],
+            'post_name'    => $slug,
+            'post_content' => $page_def['post_content'],
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+        ] );
+    }
+
+    if ( ! is_wp_error( $page_id ) ) {
+        $options = get_option( 'ebt_api_settings', [] );
+        $options['front_pages'][ $page_def['option_key'] ] = $page_id;
+        update_option( 'ebt_api_settings', $options );
+    }
+
+    wp_redirect( wp_get_referer() );
+    exit;
+}
+
+add_filter( 'display_post_states', function ( $states, $post ) {
+
+    if ( $post->post_type !== 'page' ) {
+        return $states;
+    }
+
+    $options = get_option( 'ebt_api_settings', [] );
+    $pages   = $options['front_pages'] ?? [];
+
+    $labels = [
+        'bills_page'         => 'Engagifii Bills',
+        'bills_detail_page'  => 'Engagifii Bill Detail',
+        'public_official_page'         => 'Engagifii Public Official',
+        'public_official_detail_page'  => 'Engagifii Public Official Detail',
+        'classes_page'       => 'Engagifii Classes',
+        'classes_detail_page'       => 'Engagifii Class Detail',
+        'courses_page'       => 'Engagifii Courses',
+        'courses_detail_page'       => 'Engagifii Course Detail',
+        'events_page'       => 'Engagifii Events',
+        'events_classes_page'       => 'Engagifii Classes & Events',
+        'events_detail_page'       => 'Engagifii Event Detail',
     ];
 
-    foreach ( $pages as $slug => $data ) {
-        if ( ! get_page_by_path( $slug, OBJECT, 'page' ) ) {
-            $page = [
-                'post_type'    => 'page',
-                'post_name'    => $slug,
-                'post_title'   => $data['post_title'],
-                'post_content' => $data['post_content'],
-                'post_status'  => 'publish',
-                'post_author'  => 1,
-            ];
-            wp_insert_post( $page );
+    foreach ( $labels as $key => $label ) {
+        if ( isset( $pages[ $key ] ) && (int) $pages[ $key ] === (int) $post->ID ) {
+            $states[] = $label;
+            break;
         }
     }
-/* $page1_slug = 'bill-tracking'; // Slug of the Post
-    $page1 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Bill Tracking',    // Title of the Content
-        'post_content'  => '[legislation-list]',  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page1_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page1_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page1_id = wp_insert_post($page1);
-    }
-	
-	$page2_slug = 'engagifii-detail'; // Slug of the Post
-    $page2 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Bill Detail',    // Title of the Content
-		'post_content'  => "[legislation-details Id='bill-id']",  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page2_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page2_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page2_id = wp_insert_post($page2);
-    }
-	
-	$page3_slug = 'legislative-tracking-database'; // Slug of the Post
-    $page3 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Legislative tracking database',    // Title of the Content
-        //'post_content'  => 'Test Page Content',  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page3_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page3_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page3_id = wp_insert_post($page3);
-    }
-	
-		$page4_slug = 'classes'; // Slug of the Post
-		$page4 = array(
-			'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-			'post_title'    => 'Classes',    // Title of the Content
-			'post_content'  => '[classes-list-calendar-class-name calendarclassname=true]',  // Content
-			'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page4_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page4_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page4_id = wp_insert_post($page4);
-    }
-	
-	$page5_slug = 'class-details'; // Slug of the Post
-    $page5 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Class Details',    // Title of the Content
-		'post_content'  => "[class-details Id='class-id']",  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page5_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page5_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page5_id = wp_insert_post($page5);
-    }
-	
-	$page6_slug = 'courses'; // Slug of the Post
-    $page6 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Courses',    // Title of the Content
-        'post_content'  => '[courses-list]',  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page6_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page6_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page6_id = wp_insert_post($page6);
-    }
-	
-	$page7_slug = 'course-details'; // Slug of the Post
-    $page7 = array(
-        'post_type'     => 'page',               // Post Type Slug eg: 'page', 'post'
-        'post_title'    => 'Course Details',    // Title of the Content
-        'post_content'  => "[course-details Id='course-id']",  // Content
-        'post_status'   => 'publish',            // Post Status
-        'post_author'   => 1,                    // Post Author ID
-        'post_name'     => $page7_slug            // Slug of the Post
-    );
-    if (!get_page_by_path( $page7_slug, OBJECT, 'page')) { // Check If Page Not Exits
-        $page7_id = wp_insert_post($page7);
-    }
-	// Parent page data
-	$parent_page_slug = 'my-profile'; // Slug of the parent page
-	$parent_page = array(
-		'post_type'     => 'page',
-		'post_title'    => 'My Profile',
-		'post_content'  => '[engagifii-profile]',
-		'post_status'   => 'publish',
-		'post_author'   => 1,
-		'post_name'     => $parent_page_slug
-	);
-	
-	// Check if parent page exists, if not, create it
-	if (!get_page_by_path($parent_page_slug, OBJECT, 'page')) {
-		$parent_page_id = wp_insert_post($parent_page);
-	} else {
-		$parent_page_id = get_page_by_path($parent_page_slug)->ID;
-	}
-	
-	// Child page data
-	$child_pages_data = array(
-		array(
-			'slug' => 'edit',
-			'title' => 'Engagifii Profile Edit',
-			'content' => '[engagifii-profile-edit]'
-		),
-		array(
-			'slug' => 'events',
-			'title' => 'Events',
-			'content' => '[engagifii-myEvents]'
-		),
-		array(
-			'slug' => 'welcome-to-dashboard',
-			'title' => 'Welcome to Dashboard',
-			'content' => 'Welcome to My Profile Dashboard'
-		),
-		array(
-			'slug' => 'my-transcript',
-			'title' => 'My Transcript',
-			'content' => '[engagifii-myTranscript]'
-		),
-		array(
-			'slug' => 'members',
-			'title' => 'Members',
-			'content' => '[engagifii-members]'
-		)
-	);*/
-	
-	// Loop through child pages data to add each child page
-	// Function to check if a page with a given slug exists under a given parent page
-/*function is_page_unique($slug, $parent_id) {
-    global $wpdb;
-    $query = $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_parent = %d AND post_type = 'page'", $slug, $parent_id);
-    $result = $wpdb->get_var($query);
-    return $result ? true : false;
-}
 
-foreach ($child_pages_data as $child_data) {
-    $child_page_slug = $child_data['slug'];
-    $child_page_title = $child_data['title'];
-    $child_page_content = $child_data['content'];
-    
-    $child_page = array(
-        'post_type'     => 'page',
-        'post_title'    => $child_page_title,
-        'post_content'  => $child_page_content,
-        'post_status'   => 'publish',
-        'post_author'   => 1,
-        'post_name'     => $child_page_slug,
-        'post_parent'   => $parent_page_id // Set parent page ID here
-    );
+    return $states;
+}, 10, 2 );
 
-    // Check if parent page exists
-    $parent_page = get_post($parent_page_id);
-    if (!$parent_page || $parent_page->post_type !== 'page') {
-        continue; // Skip this child page creation if parent page doesn't exist or is not a page
-    }
-
-    // Check if child page exists, if not, create it
-    if (!is_page_unique($child_page_slug, $parent_page_id)) {
-        $child_page_id = wp_insert_post($child_page);
-        
-        // If this child page has further child pages
-        if ($child_page_slug == 'events' || $child_page_slug == 'my-transcript') {
-            // Adding child pages of 'events' and 'my-transcript'
-            $child_page_child_pages_data = array();
-            if ($child_page_slug == 'events') {
-                $child_page_child_pages_data = array(
-                    array(
-                        'slug' => 'event-detail',
-                        'title' => 'Event Detail',
-                        'content' => '[engagifii-myEvents-detail]'
-                    )
-                );
-            } elseif ($child_page_slug == 'my-transcript') {
-                $child_page_child_pages_data = array(
-                    array(
-                        'slug' => 'class-detail',
-                        'title' => 'Class Detail',
-                        'content' => '[engagifii-myTranscript-class-detail]'
-                    ),
-                    array(
-                        'slug' => 'course-details',
-                        'title' => 'Course Detail',
-                        'content' => '[engagifii-myTranscript-detail]'
-                    ),
-                    array(
-                        'slug' => 'downloads',
-                        'title' => 'My Downloads',
-                        'content' => '[engagifii-myDownloads]'
-                    )
-                );
-            }
-            
-            foreach ($child_page_child_pages_data as $child_page_child_data) {
-                $child_page_child_slug = $child_page_child_data['slug'];
-                $child_page_child_title = $child_page_child_data['title'];
-                $child_page_child_content = $child_page_child_data['content'];
-                
-                $child_page_child = array(
-                    'post_type'     => 'page',
-                    'post_title'    => $child_page_child_title,
-                    'post_content'  => $child_page_child_content,
-                    'post_status'   => 'publish',
-                    'post_author'   => 1,
-                    'post_name'     => $child_page_child_slug,
-                    'post_parent'   => $child_page_id // Set parent page ID here
-                );
-                
-                // Check if parent page of subchild exists
-                if (!is_page_unique($child_page_child_slug, $child_page_id)) {
-                    wp_insert_post($child_page_child);
-                }
-            }
-        }
-    }
-}*/
-}
 
 /**
  * Main instance of EngagifiiAPI.
@@ -537,6 +400,3 @@ function initializeEngagifii() {
 
 // Global for backwards compatibility.
 $GLOBALS['engagifii'] = initializeEngagifii();
-
-
-

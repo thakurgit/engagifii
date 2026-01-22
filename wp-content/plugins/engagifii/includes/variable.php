@@ -1,7 +1,39 @@
 <?php
-//use this file for defining common variable being uses across plugin
+//use this file for defining common variable being used across plugin
  $options = get_option('ebt_api_settings');
 	$front_pages = $options['front_pages'] ?? array();
+//Bills page link
+	$bills_page = $front_pages['bills_page'] ?? '';
+	if($bills_page){
+		$bills_page_link=get_permalink( $bills_page );	
+	}else{
+		$bills_page_link= site_url() .'/bill-tracking/';	
+	}
+	define('BILLS_PAGE_LINK', $bills_page_link);
+//Bills detail page link
+	$bills_detail_page = $front_pages['bills_detail_page'] ?? '';
+	if($bills_detail_page){
+		$bills_detail_page_link=get_permalink( $bills_detail_page );	
+	}else{
+		$bills_detail_page_link= site_url() .'/engagifii-detail/';	
+	}
+	define('BILLS_DETAIL_PAGE_LINK', $bills_detail_page_link);
+// Public official page link
+$public_official_page = $front_pages['public_official_page'] ?? '';
+if ( ! defined( 'PUBLIC_OFFICIAL_PAGE_LINK' ) ) {
+    define('PUBLIC_OFFICIAL_PAGE_LINK', $public_official_page ? get_permalink( $public_official_page ) : site_url( '/public-official/' ));
+}
+
+// Public official detail page link
+$public_official_detail_page = $front_pages['public_official_detail_page'] ?? '';
+if ( ! defined( 'PUBLIC_OFFICIAL_DETAIL_PAGE_LINK' ) ) {
+    define('PUBLIC_OFFICIAL_DETAIL_PAGE_LINK', $public_official_detail_page ? get_permalink( $public_official_detail_page ) : site_url('/public-official-detail/' ) );
+}
+// classes page link
+$classes_page = $front_pages['classes_page'] ?? '';
+if ( ! defined( 'CLASSES_PAGE_LINK' ) ) {
+    define('CLASSES_PAGE_LINK', $classes_page ? get_permalink( $classes_page ) : site_url('/classes/' ) );
+}
 //class detail page link
 	$classes_detail_page = $front_pages['classes_detail_page'] ?? '';
 	if($classes_detail_page){
@@ -10,6 +42,21 @@
 		$classes_detail_page_link= site_url() .'/class-details/';	
 	}
 	define('CLASS_DETAIL_LINK', $classes_detail_page_link);
+// courses page link
+$courses_page = $front_pages['courses_page'] ?? '';
+if ( ! defined( 'COURSES_PAGE_LINK' ) ) {
+    define('COURSES_PAGE_LINK', $courses_page ? get_permalink( $courses_page ) : site_url('/courses/' ) );
+}
+// courses detail page link
+$courses_detail_page = $front_pages['courses_detail_page'] ?? '';
+if ( ! defined( 'COURSE_DETAIL_LINK' ) ) {
+    define('COURSE_DETAIL_LINK', $courses_detail_page ? get_permalink( $courses_detail_page ) : site_url('/course-details/' ) );
+}
+// events page link
+$events_page = $front_pages['events_page'] ?? '';
+if ( ! defined( 'EVENTS_PAGE_LINK' ) ) {
+    define('EVENTS_PAGE_LINK', $events_page ? get_permalink( $events_page ) : site_url('/events/' ) );
+}
 //event detail link
 	$events_detail_page = $front_pages['events_detail_page'] ?? '';
 	if($events_detail_page){

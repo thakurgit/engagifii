@@ -5,9 +5,6 @@ if ($setupCompleted && !in_array('legislation', $enabled_modules)) {
     echo '<div class="alert alert-warning text-center">Legislation module is deactivated. Please contact the admin.</div>';
     return;
 }
- /* $obj =  new Engagifii_API();
-  $trackingResponse = $obj->getTrackingLevels();
-  $trackingResponses = json_decode($trackingResponse['api_response']);*/
 $options = get_option( 'ebt_api_settings' );
    $sessionsetting = '';
   $sessionlist = array();
@@ -51,6 +48,9 @@ $options = get_option( 'ebt_api_settings' );
     </div>
   </div>
   <script>
+  if (typeof window.sessionId === 'undefined') {
+    window.sessionId = 0;
+}
  window.addEventListener("load", function () {
 	 <?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
 		getTrackingLevels(sessionId);
@@ -94,7 +94,7 @@ $options = get_option( 'ebt_api_settings' );
 					}else{
 						var sessionParam = '&sessionId='+sessionId;	
 					}
-				html +='<a href="<?php echo get_site_url(); ?>/bill-tracking/?tracking='+item.trackingLevelId+'&'+btoa(item.title)+sessionParam+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><p class="text-dark mb-0">'+item.title+'</p></div></a>';
+				html +='<a href="<?php echo BILLS_PAGE_LINK; ?>?tracking='+item.trackingLevelId+'&'+btoa(item.title)+sessionParam+'"><div class="alert  regular d-fw mb-2 col-12 p-2" data-id="'+item.trackingLevelId+'" style="border: 2px solid '+item.colorCode+' !important;"><p class="text-dark mb-0">'+item.title+'</p></div></a>';
 			}
       });			
 			

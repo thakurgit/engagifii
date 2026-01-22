@@ -7,9 +7,6 @@ $options = get_option( 'ebt_api_settings' );
   $sessionlist = $options['lbt_visib_session_list']?? array();
  }
 if($sessionsetting==1 && count($sessionlist)>0) {
-/*$obj =  new Engagifii_API();
-$sessionResponse = $obj->sessions();
-$sessionResponses = json_decode($sessionResponse['api_response']);*/
 $sessionResponses=[]; 
 if (isArrayOfJsonStrings($sessionlist)) {
 		  $sessionResponses = convertToObjectArray($sessionlist);
@@ -47,5 +44,25 @@ if (isArrayOfJsonStrings($sessionlist)) {
          
      
       </ul>
+      <script>
+	  var sessionId;;
+	  window.addEventListener("load", function () {
+ sessionId='0';
+	<?php if($sessionsetting==1 && count($sessionlist)>0) { ?>
+		if($('.session-tab li').length>0){
+			sessionId = $('.session-tab li:first-child button').attr('id');
+		}
+		$('.session-tab li:first-child button').trigger('click') ;
+		localStorage.setItem("sessionname", $('.session-tab li:first-child button').text());
+		$('.session-tab li button').click(function(){
+			sessionId = $(this).attr('id');
+			localStorage.setItem("sessionname", $(this).text());
+		});
+	<?php } else { ?>
+	  localStorage.setItem("sessionname", "");	
+	<?php } ?> 
+	
+});
+	  </script>
 <?php } ?>
  
