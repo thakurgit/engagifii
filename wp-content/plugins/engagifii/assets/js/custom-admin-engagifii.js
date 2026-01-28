@@ -448,7 +448,7 @@ function toggleAll($list) {
 	  }
 	//}, 1000);
     $checkboxesCField.on('change', function () {
-	  if($checkboxesCField.filter(':checked').length>50){
+	  if($checkboxesCField.filter(':checked').length>5){
 		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
 		showAlert('Max 5 Custom Fields allowed.');  
 	  } else {
@@ -461,7 +461,7 @@ function toggleAll($list) {
 	  const $gridcheckboxes = $container.find('[data-endpoint] input[type=checkbox]');
 	  const checkedCount = $gridcheckboxes.filter(':checked').length;
 	
-	  if (checkedCount > 6) {
+	  if (checkedCount >= 6) {
 		$gridcheckboxes.filter(':not(:checked)').attr('disabled', true);
 		showAlert('Max 6 Custom Fields allowed.');
 	  } else {
