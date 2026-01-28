@@ -345,6 +345,19 @@ function ebt_api_shortocde_description() {
         );
     }
     
+    // Training Calendar shortcodes - only if events module is enabled
+    if (!$setupCompleted || in_array('events', $enabledModules)) {
+        $shortcodes[] = array(
+            'title' => 'Training Calendar Shortcodes',
+            'list'  => array(
+                array(
+                    'name'        => 'Events & Classes (Combined)',
+                    'shortcode'   => '[training-calendar]'
+                )
+            )
+        );
+    }
+    
     // Courses shortcodes - only if courses module is enabled
     if (!$setupCompleted || in_array('courses', $enabledModules)) {
         $shortcodes[] = array(
