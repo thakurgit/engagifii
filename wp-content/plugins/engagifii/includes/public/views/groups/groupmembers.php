@@ -553,7 +553,7 @@ var fieldValues = {
         if (ext) {
             formatted += ' ext ' + ext;
         }
-        fieldValues[key] = '<a href="tel:' + digits + (ext ? ',,' + ext : '') + '">' + formatted + '</a>';
+        fieldValues[key] = formatted;
     } else {
         fieldValues[key] = value;
     }
