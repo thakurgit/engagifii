@@ -506,7 +506,7 @@ var fieldValues = {
     ? buildPopoverHtml('region', extractRegionsFromTerms(person.terms))
     : '--',
     phone: (person.primaryPhoneNumber && person.primaryPhoneNumber.value && person.primaryPhoneNumber.value.length === 10)
-        ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') + '</a>'
+        ? person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
         : '--',
     status: person.status || '--',
     userstatus: person.userStatus || '--',
