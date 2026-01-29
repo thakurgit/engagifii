@@ -1239,8 +1239,7 @@ public function buildPopoverList($key, $items, $label, $countLabel, $itemCallbac
             if ($ext) {
                 $formattedPhone .= ' ext ' . $ext;
             }
-            $tel = 'tel:' . $digits . ($ext ? ',,' . $ext : '');
-            return '<a href="' . $tel . '" style="text-decoration: none;">' . $formattedPhone . '</a>';
+            return $formattedPhone;
         }
     }
     return '--';
