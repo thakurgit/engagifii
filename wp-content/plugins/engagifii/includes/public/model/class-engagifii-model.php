@@ -4685,6 +4685,54 @@ public function classesLoadGridDataByPerson(){
 				  continue;
 			  }
            	$response =  $this->submitApiRequestWithGet($apiUrl, $postData, 'legislation'); 
+            
+            // Inject custom user for MACo tenant and 2026 session (5784) - only for assignedto
+            if($values == 'assignedto' && $response['api_response']){
+                $sessionId = $_POST['session'] ?? '';
+                $tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+                
+                if ($tenant_code === 'maco') {
+                    $responseArray = json_decode($response['api_response'], true);
+                    
+                    if(is_array($responseArray)) {
+                        $injectedUserId = '327624';
+                        
+                        // For 2026 session (5784): Inject if doesn't exist
+                        if ($sessionId == '5784') {
+                            // Check if user already exists in the response
+                            $userExists = false;
+                            foreach ($responseArray as $user) {
+                                if (isset($user['personId']) && $user['personId'] == $injectedUserId) {
+                                    $userExists = true;
+                                    break;
+                                }
+                            }
+                            
+                            // Add injected user only if it doesn't exist
+                            if (!$userExists) {
+                                $injectedUser = array(
+                                    'personId' => $injectedUserId,
+                                    'fullName' => 'Charlotte Fleckenstein',
+                                    'count' => 0
+                                );
+                                array_unshift($responseArray, $injectedUser);
+                            }
+                        } else {
+                            // For other sessions: Remove Charlotte if count is 0
+                            $responseArray = array_filter($responseArray, function($user) use ($injectedUserId) {
+                                if (isset($user['personId']) && $user['personId'] == $injectedUserId) {
+                                    return isset($user['count']) && $user['count'] > 0;
+                                }
+                                return true;
+                            });
+                            $responseArray = array_values($responseArray); // Re-index array
+                        }
+                        
+                        $response['api_response'] = json_encode($responseArray);
+                    }
+                }
+            }
+            
             if($response['api_response']){
                 $response = json_decode($response['api_response'], true);                
                 if($response){
