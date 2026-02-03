@@ -1194,10 +1194,10 @@ public function getEventDetailsByID($id)
 		if ($tenant_code === 'maco') {
 			$injectedUserId = '327624'; // Replace with actual ID
 			
-			// Check if user already exists in the response
+			// Check if user already exists in the response (use loose comparison for type flexibility)
 			$userExists = false;
 			foreach ($updated as $user) {
-				if (isset($user['personId']) && $user['personId'] === $injectedUserId) {
+				if (isset($user['personId']) && $user['personId'] == $injectedUserId) {
 					$userExists = true;
 					break;
 				}
