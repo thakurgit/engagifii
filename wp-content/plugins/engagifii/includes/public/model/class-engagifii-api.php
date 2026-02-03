@@ -1186,6 +1186,34 @@ public function getEventDetailsByID($id)
 			}
 			return $item;
 		}, $filtered);
+		
+		// Inject custom user only for MACo tenant
+		$options = get_option('ebt_api_settings');
+		$tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+		
+		if ($tenant_code === 'maco') {
+			$injectedUserId = '327624'; // Replace with actual ID
+			
+			// Check if user already exists in the response
+			$userExists = false;
+			foreach ($updated as $user) {
+				if (isset($user['personId']) && $user['personId'] === $injectedUserId) {
+					$userExists = true;
+					break;
+				}
+			}
+			
+			// Add injected user only if it doesn't exist
+			if (!$userExists) {
+				$injectedUser = array(
+					'personId' => $injectedUserId,
+					'fullName' => 'Charlotte Fleckenstein (0)',
+					'count' => 0
+				);
+				array_unshift($updated, $injectedUser); // Add to beginning of array
+			}
+		}
+		
 		//return $updated;
 		wp_send_json($updated);
 	}
