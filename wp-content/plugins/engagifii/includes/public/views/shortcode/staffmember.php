@@ -118,7 +118,9 @@ function getStaffMembers(sessionId)
 			var html='';
 			
 			$.each(data, function(i, item) {
-				if($.inArray(item.personId, allmembers) != -1) {
+				// Convert personId to number for comparison
+				var personIdNum = Number(item.personId);
+				if($.inArray(personIdNum, allmembers) != -1) {
 					if(item.count>-1){
 						if(sessionId==0){
 						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
