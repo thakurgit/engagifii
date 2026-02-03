@@ -31,6 +31,15 @@ if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_l
 		  $columns = convertToObjectArray($lbt_visib_members_list);
 		  $columnNames = extractColNames($lbt_visib_members_list);
 }
+
+// Add injected user personId to columnNames for MACo tenant
+$tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+if ($tenant_code === 'maco') {
+    $injectedUserId = 327624; // Add as integer
+    if (!in_array($injectedUserId, $columnNames)) {
+        $columnNames[] = $injectedUserId;
+    }
+}
 /*if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();

@@ -1797,6 +1797,40 @@ wp_die();
 		//die;
 		$session = $postedData['sessionId'];
         $dataResponse = $this->submitApiRequest("legislative/public-bills/filter/billusers?sessionId=".$session,$postedData,"GET", 'legislation');
+        
+        // Process response to inject custom user for MACo tenant
+        $responseArray = json_decode($dataResponse['api_response'], true);
+        
+        // Inject custom user only for MACo tenant
+        $options = get_option('ebt_api_settings');
+        $tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+        
+        if ($tenant_code === 'maco' && is_array($responseArray)) {
+            $injectedUserId = '327624'; // Replace with actual ID
+            
+            // Check if user already exists in the response
+            $userExists = false;
+            foreach ($responseArray as $user) {
+                if (isset($user['personId']) && $user['personId'] === $injectedUserId) {
+                    $userExists = true;
+                    break;
+                }
+            }
+            
+            // Add injected user only if it doesn't exist
+            if (!$userExists) {
+                $injectedUser = array(
+                    'personId' => $injectedUserId,
+                    'fullName' => 'Charlotte Fleckenstein',
+                    'count' => 0
+                );
+                array_unshift($responseArray, $injectedUser); // Add to beginning of array
+            }
+            
+            // Update the response with modified array
+            $dataResponse['api_response'] = json_encode($responseArray);
+        }
+        
         header("Content-Type: application/json"); 
 		//print_r($dataResponse);
 		//die;  
