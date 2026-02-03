@@ -1177,7 +1177,7 @@ public function getEventDetailsByID($id)
 		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
 		$responseArray = json_decode($response['api_response'],true);
 		$filtered = array_filter($responseArray, function($item) {
-			return isset($item['count']) && $item['count'] != 0;
+			return isset($item['count']) && $item['count'] > -1;
 		});
 		// Append (count) to text
 		$updated = array_map(function($item) {
