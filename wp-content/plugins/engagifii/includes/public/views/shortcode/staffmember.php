@@ -32,7 +32,8 @@ if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_l
 		  $columnNames = extractColNames($lbt_visib_members_list);
 }
 
-// Add injected user personId to columnNames for MACo tenant
+// Add injected user personId to columnNames for MACo tenant and 2026 session only
+// Note: The session check will be done in JavaScript based on the actual sessionId being used
 $tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
 if ($tenant_code === 'maco') {
     $injectedUserId = 327624; // Add as integer

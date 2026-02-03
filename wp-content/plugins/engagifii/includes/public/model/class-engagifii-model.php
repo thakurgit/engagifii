@@ -1801,11 +1801,11 @@ wp_die();
         // Process response to inject custom user for MACo tenant
         $responseArray = json_decode($dataResponse['api_response'], true);
         
-        // Inject custom user only for MACo tenant
+        // Inject custom user only for MACo tenant and 2026 session (5784)
         $options = get_option('ebt_api_settings');
         $tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
         
-        if ($tenant_code === 'maco' && is_array($responseArray)) {
+        if ($tenant_code === 'maco' && $session == '5784' && is_array($responseArray)) {
             $injectedUserId = '327624'; // Replace with actual ID
             
             // Check if user already exists in the response (use loose comparison for type flexibility)
