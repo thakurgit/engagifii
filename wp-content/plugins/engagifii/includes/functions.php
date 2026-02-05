@@ -126,12 +126,15 @@ function engagifii_logout(){
   wp_safe_redirect( home_url() );
   exit;
 }
-add_action('after_setup_theme', 'remove_admin_bar');
-function remove_admin_bar() {
-  if (current_user_can('subscriber') && !is_admin()) {
-	show_admin_bar(false);
-  }
+add_action('after_setup_theme', 'hide_admin_bar_for_subscribers');
+function hide_admin_bar_for_subscribers() {
+    $user = wp_get_current_user();
+
+    if (in_array('subscriber', (array) $user->roles, true)) {
+        show_admin_bar(false);
+    }
 }
+
 session_start();
 //add_action('mo_oauth_logged_in_user_token', 'GetToken' , 10, 2);   
 

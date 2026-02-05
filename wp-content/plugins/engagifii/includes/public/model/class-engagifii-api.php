@@ -1177,7 +1177,6 @@ public function getEventDetailsByID($id)
 		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'legislation');
 		$responseArray = json_decode($response['api_response'],true);
 		$filtered = array_filter($responseArray, function($item) {
-			//return isset($item['count']) && $item['count'] != 0;
 			return isset($item['count']) && $item['count'] > -1;
 		});
 		// Append (count) to text
@@ -1187,6 +1186,34 @@ public function getEventDetailsByID($id)
 			}
 			return $item;
 		}, $filtered);
+		
+		// Inject custom user only for MACo tenant
+		$options = get_option('ebt_api_settings');
+		$tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+		
+		if ($tenant_code === 'maco') {
+			$injectedUserId = '327624'; // Replace with actual ID
+			
+			// Check if user already exists in the response (use loose comparison for type flexibility)
+			$userExists = false;
+			foreach ($updated as $user) {
+				if (isset($user['personId']) && $user['personId'] == $injectedUserId) {
+					$userExists = true;
+					break;
+				}
+			}
+			
+			// Add injected user only if it doesn't exist
+			if (!$userExists) {
+				$injectedUser = array(
+					'personId' => $injectedUserId,
+					'fullName' => 'Charlotte Fleckenstein (0)',
+					'count' => 0
+				);
+				array_unshift($updated, $injectedUser); // Add to beginning of array
+			}
+		}
+		
 		//return $updated;
 		wp_send_json($updated);
 	}

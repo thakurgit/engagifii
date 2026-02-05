@@ -31,6 +31,16 @@ if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_l
 		  $columns = convertToObjectArray($lbt_visib_members_list);
 		  $columnNames = extractColNames($lbt_visib_members_list);
 }
+
+// Add injected user personId to columnNames for MACo tenant and 2026 session only
+// Note: The session check will be done in JavaScript based on the actual sessionId being used
+$tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
+if ($tenant_code === 'maco') {
+    $injectedUserId = 327624; // Add as integer
+    if (!in_array($injectedUserId, $columnNames)) {
+        $columnNames[] = $injectedUserId;
+    }
+}
 /*if(site_url() == 'http://engagifiiweb.com')
 {
   $members_list = $options['members_list'] ?? array();
@@ -109,8 +119,10 @@ function getStaffMembers(sessionId)
 			var html='';
 			
 			$.each(data, function(i, item) {
-				if($.inArray(item.personId, allmembers) != -1) {
-					if(item.count>0){
+				// Convert personId to number for comparison
+				var personIdNum = Number(item.personId);
+				if($.inArray(personIdNum, allmembers) != -1) {
+					if(item.count>-1){
 						if(sessionId==0){
 						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?member='+item.personId+'&'+btoa(item.fullName)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.fullName+' ('+item.count+')</a>';
 						}else{
