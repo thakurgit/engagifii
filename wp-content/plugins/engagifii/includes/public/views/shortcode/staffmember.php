@@ -25,13 +25,20 @@ $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array(
    $sessionsetting = $options['sessionsetting'];
   $sessionlist = $options['lbt_visib_session_list']?? array();
  }
-$columns='';
+$columns=[];
 $columnNames=[]; 
 if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_list)) {
 		  $columns = convertToObjectArray($lbt_visib_members_list);
 		  $columnNames = extractColNames($lbt_visib_members_list);
 }
-
+if (!empty($lbt_visib_groups_list) && isArrayOfJsonStrings($lbt_visib_groups_list)) {
+		  $columnsGroups = convertToObjectArray($lbt_visib_groups_list);
+   		 $columnNamesGroups =  extractColNames($lbt_visib_groups_list);
+}
+if (!empty($lbt_visib_members_tags_list) && isArrayOfJsonStrings($lbt_visib_members_tags_list)) {
+		  $columnsMemberTags = convertToObjectArray($lbt_visib_members_tags_list);
+   		 $columnNameMemberTags =  extractColNames($lbt_visib_members_tags_list);
+}
 // Add injected user personId to columnNames for MACo tenant and 2026 session only
 // Note: The session check will be done in JavaScript based on the actual sessionId being used
 $tenant_code = isset($options['lbt_tenant_code']['tenant_code']) ? strtolower($options['lbt_tenant_code']['tenant_code']) : '';
@@ -85,11 +92,25 @@ if ($tenant_code === 'maco') {
 		$encoded = base64_encode($name);
 		$html .= '<a href="' . BILLS_PAGE_LINK . '?member=' . urlencode($member) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
 	}
-	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>';
+	foreach ($columnsGroups as $item) {
+		$group = $item->colName;
+		$name = $item->displayName;
+		$encoded = base64_encode($name);
+		$html .= '<a href="' . BILLS_PAGE_LINK . '?groups=' . urlencode($group) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+	} 
+	foreach ($columnsMemberTags as $item) {
+		$memberTag = $item->colName;
+		$name = $item->displayName;
+		$encoded = base64_encode($name);
+		$html .= '<a href="' . BILLS_PAGE_LINK . '?membertags=' . urlencode($memberTag) . '&' . $encoded . '" class="list-group-item list-group-item-action py-1 px-2 border-0">' . htmlspecialchars($name) . '</a>';
+	} 
+	echo !empty($html) ? $html : '<h6 class="p-3">No data found</h6>'; 
  } else { ?>
 <div class="d-flex justify-content-center issue-loader position-absolute w-100 h-100 align-items-center" style="background:rgba(255,255,255,0.6); z-index:1"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>
   <script type="text/javascript">
   var allmembers = <?php echo json_encode( $columnNames);  ?>;
+  var allGroups = <?php echo json_encode( $columnNamesGroups);  ?>;
+  var allmemberTags = <?php echo json_encode( $columnNameMemberTags);  ?>;
   function toNumber(value) {
 	 return Number(value);
 		}
@@ -104,8 +125,7 @@ if ($tenant_code === 'maco') {
 			getStaffMembers(sessionId);
 		});
 });
-function getStaffMembers(sessionId)
-{
+function getStaffMembers(sessionId){
   $.ajax({
       type : "post",
       url: engagifiiUrl_ajaxurl,
@@ -131,13 +151,76 @@ function getStaffMembers(sessionId)
 					}
 				}
 			});			
-			
+			getGroups(sessionId);
 			if(html){
         		$('.legis-members').html(html);
 			}else{
-        		$('.legis-members').html('<h6 class="p-3">No data found</h6>');
+        		$('.legis-members').html('<h6 class="p-3">No members found</h6>');
 			}
 			$('.legis-members').siblings('.issue-loader').remove();
+         }
+    });
+}	
+
+function getGroups(sessionId){
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativeGroups'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			
+			$.each(data, function(i, item) { 
+				if($.inArray(item.value, allGroups) != -1) {
+					if(item.count>-1){
+						if(sessionId==0){
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?groups='+item.value+'&'+btoa(item.text)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						}else{
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?groups='+item.value+'&'+btoa(item.text)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						}
+					}
+				}
+			});			
+			getMemberTags(sessionId);
+			if(html){
+        		$('.legis-members').append(html);
+			}
+         }
+    });
+}	
+function getMemberTags(sessionId){
+  $.ajax({
+      type : "post",
+      url: engagifiiUrl_ajaxurl,
+      data:{
+		sessionId : sessionId,
+        action:'legislativeMemberTags'
+      },
+      success: function(response) {    
+	  		var data = response.api_response;
+			data = JSON.parse(data);
+			var html='';
+			
+			$.each(data, function(i, item) { 
+				if($.inArray(item.value, allmemberTags) != -1) {
+					if(item.count>-1){
+						if(sessionId==0){
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?membertags='+item.value+'&'+btoa(item.text)+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						}else{
+						  html += '<a href="<?php echo BILLS_PAGE_LINK; ?>?membertags='+item.value+'&'+btoa(item.text)+'&sessionId='+sessionId+'" class="list-group-item list-group-item-action py-1 px-2 border-0">'+item.text+' ('+item.count+')</a>';
+						}
+					}
+				}
+			});			
+			
+			if(html){
+        		$('.legis-members').append(html);
+			}
          }
     });
 }	
