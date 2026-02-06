@@ -241,7 +241,7 @@ public function getClassesType($date){
 		$tenantCode = $options['dashboard_tenant_code'];
 		$dataResponse = $this->submitApiRequest("OrganizationColumnList/".$tenantCode,array(),"GET",'dashboard');
 		if(isset($dataResponse['api_response'])){
-			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'Website', 'SecondaryEmails'];
+			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails'];
 			$collection   = json_decode($dataResponse['api_response'],true);
 			$collection  = array_filter($collection, function ($item) use ($excludedCols) {
             	return !in_array($item['colName'] ?? '', $excludedCols, true);
