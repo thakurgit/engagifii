@@ -1018,8 +1018,8 @@ public function getOrganizations(){
 
         if (!empty($organizationTags)) {
             $filterRules[] = [
-                "fieldId" => "organizationTags",
-                "filterType" => 4,
+                "fieldId" => "tags",
+                "filterType" => 1,
                 "selectedValues" => $organizationTags
             ];
         }
@@ -1574,8 +1574,8 @@ private function _organizationPostCountData() {
 
     if (!empty($organizationTags)) {
         $filterRules[] = [
-            'fieldId' => 'organizationTags',
-            'filterType' => 4,
+            'fieldId' => 'tags',
+            'filterType' => 1,
             'selectedValues' => $organizationTags
         ];
     }
@@ -1634,6 +1634,7 @@ public function getFilterItemsFromServiceUrl() {
     $tenantCode = $options['dashboard_tenant_code'];
     
     $serviceUrl = isset($_POST['serviceUrl']) ? sanitize_text_field($_POST['serviceUrl']) : '';
+    $fieldName = isset($_POST['fieldName']) ? sanitize_text_field($_POST['fieldName']) : '';
     
     if (empty($serviceUrl)) {
         wp_send_json_error(['message' => 'Service URL is required']);
@@ -1643,26 +1644,30 @@ public function getFilterItemsFromServiceUrl() {
     // Remove leading slash if present
     $apiEndpoint = ltrim($serviceUrl, '/');
     
-    // Add tenant code if the URL contains {tenantCode} placeholder or if it needs it
+    // Strip 'api/v1/' or 'api/v1.0/' prefix if present since base URL already includes it
+    if (strpos($apiEndpoint, 'api/v1.0/') === 0) {
+        $apiEndpoint = substr($apiEndpoint, 9); // Remove 'api/v1.0/'
+    } elseif (strpos($apiEndpoint, 'api/v1/') === 0) {
+        $apiEndpoint = substr($apiEndpoint, 7); // Remove 'api/v1/'
+    }
+    
+    // Add tenant code only if the URL contains {tenantCode} placeholder
     if (strpos($apiEndpoint, '{tenantCode}') !== false) {
         $apiEndpoint = str_replace('{tenantCode}', $tenantCode, $apiEndpoint);
-    } elseif (strpos($apiEndpoint, 'Organization') !== false && strpos($apiEndpoint, $tenantCode) === false) {
-        // If it's an organization-related endpoint and doesn't have tenant code, append it
-        $apiEndpoint = rtrim($apiEndpoint, '/') . '/' . $tenantCode;
     }
+    
+    // Append current date to all service URLs in MM-DD-YYYY format
+    $currentDate = date('m-d-Y'); // Format: MM-DD-YYYY (e.g., 02-06-2026)
+    $apiEndpoint .= '/' . $currentDate;
     
     $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
-    
-    if (isset($dataResponse['api_response'])) {
+        
+    if (isset($dataResponse['api_response']) && !empty($dataResponse['api_response'])) {
         $data = json_decode($dataResponse['api_response'], true);
-        if ($data !== null) {
+        if ($data !== null && $data !== false) {
             wp_send_json_success($data);
-        } else {
-            wp_send_json_error(['message' => 'Invalid JSON response from API', 'rawResponse' => $dataResponse['api_response']]);
-        }
-    } else {
-        wp_send_json_error(['message' => 'Failed to fetch filter items', 'error' => $dataResponse, 'endpoint' => $apiEndpoint]);
-    }
+        } 
+    } 
     wp_die();
 }
  

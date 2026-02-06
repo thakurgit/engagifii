@@ -5,6 +5,12 @@ if ($setupCompleted && !in_array('organization_directory', $enabled_modules)) {
     echo '<div class="alert alert-warning text-center" style="margin:40px 0;font-size:1.2em;">This module is deactivated. Please contact the admin.</div>';
     return;
 }
+
+// Handle tags parameter from shortcode (optional - filters organizations by tags if provided)
+if (!isset($orgTags)) {
+    $orgTags = '';
+}
+
 	$collection 	=	array();
   $forDatatable 	= 	array();
   $date           =   date('Y-m-d');
@@ -204,7 +210,8 @@ jQuery(document).ready(function($) {
   var organizationTypes = [];
   var statuses = [];
   var locations = [];
-  var organizationTags = [];
+  var initialOrganizationTags = <?php echo isset($orgTags) && !empty($orgTags) ? json_encode(array_map('trim', explode(',', $orgTags))) : '[]'; ?>;
+  var organizationTags = initialOrganizationTags.slice(); // Copy initial tags
   var customFields = {};
   var organizationId = '<?php echo isset($_GET['organizationId']) ? $_GET['organizationId'] : ''; ?>';
  <?php  if ($allowedViewMode === 'grid' ){?>
@@ -724,7 +731,7 @@ function loadFilterData($filterList) {
                     if (Array.isArray(data) && data.length > 0) {
                         htmlContent = '<ul class="list-group m-0">';
                         data.forEach(function(item) {
-                            var value = item.value || item || '';
+                            var value = item.name || item.tagName || item.value || item || '';
                             htmlContent += '<li class="list-group-item border-0 py-1 px-2">';
                             htmlContent += '<label class="m-0">';
                             htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
