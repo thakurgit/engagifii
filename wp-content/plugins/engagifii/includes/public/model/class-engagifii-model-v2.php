@@ -1116,6 +1116,9 @@ public function getOrganizations(){
     : ((isset($value->secondaryEmails) && count($value->secondaryEmails) > 0 && isset($value->secondaryEmails[0]->value)) 
         ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
         : '--');
+            $nestedData['website'] = !empty($value->website) 
+    ? '<a href="' . (strpos($value->website, 'http') === 0 ? $value->website : 'https://' . $value->website) . '" target="_blank" rel="noopener noreferrer" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">' . $value->website . '</a>' 
+    : '--';
             $nestedData['modifiedon'] = $this->formatDateField($value->modifiedOn);
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;

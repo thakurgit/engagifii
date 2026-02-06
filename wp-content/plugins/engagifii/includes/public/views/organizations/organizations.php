@@ -52,65 +52,74 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 ?>
 <div class="container-fluid ">
 	<div class="row">
-        <div class="col-12 justify-content-end d-flex">
-            <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
-    <div id="filter-loader" class="text-center" style="display:none;">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <div class="filter-content" id="filterdp1" style="display:block;">
-        <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
-            <i class="far fa-filter click-filter"></i>
-            <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
-        </div>
-        <div class="filter-border">
-            <div class="filter-area d-none" id="filterdp">
-                <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
-                    <div class="row">
-                        <div class="col-6 text-left">
-                            <span class="filter-title">
-                                <i class="far fa-filter mr-2"></i> Filter
-                                <span id="blockedchecked"></span> 
-                            </span>
-                        </div>
-                        <div class="col-6 text-right">
-                            <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <!-- Search box for Grid view only -->
+            <?php if ($allowedViewMode === 'grid'){ ?>
+            <div class="form-group mb-0" style="flex: 1; max-width: 400px;">
+                <input type="text" id="grid-search-box" class="form-control" placeholder="Search Organizations..." />
+            </div>
+            <?php } ?>
+            
+            <div class="d-flex align-items-center ml-auto">
+                <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
+                    <div id="filter-loader" class="text-center" style="display:none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12" id="test" style="max-height: 400px; overflow-y: auto;">
-                    <input type="hidden" id="isApplyACtive" value="0">
-                    
-                    <!-- Dynamic filters will be loaded here -->
-                    <div id="dynamic-filters-container">
-                        <div class="text-center py-5">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading filters...</span>
+                    <div class="filter-content" id="filterdp1" style="display:block;">
+                        <div class="containerEngagii filter-icon d-inline-flex align-items-center justify-content-center rounded-circle position-relative bg-light border">
+                            <i class="far fa-filter click-filter"></i>
+                            <span class="d-flex align-items-center justify-content-center rounded-circle text-white bg-danger position-absolute"></span>
+                        </div>
+                        <div class="filter-border">
+                            <div class="filter-area d-none" id="filterdp">
+                                <div class="Engagiirow filter-top-bg col-sm-12 py-2 bg-dark text-white">
+                                    <div class="row">
+                                        <div class="col-6 text-left">
+                                            <span class="filter-title">
+                                                <i class="far fa-filter mr-2"></i> Filter
+                                                <span id="blockedchecked"></span> 
+                                            </span>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <span class="clear-all" id="clear-all"> <i class="fal fa-sync"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" id="test" style="max-height: 400px; overflow-y: auto;">
+                                    <input type="hidden" id="isApplyACtive" value="0">
+                                    
+                                    <!-- Dynamic filters will be loaded here -->
+                                    <div id="dynamic-filters-container">
+                                        <div class="text-center py-5">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading filters...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Loading filters...</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="apply-filter">
+                                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
+                                        <span id="countFilterResult"></span>
+                                    </button>
+                                </div>
                             </div>
-                            <p class="mt-2 text-muted">Loading filters...</p>
                         </div>
                     </div>
-                    
                 </div>
-                
-                <div class="apply-filter">
-                    <button class="btn btn-primary btn-sm text-white filter-btn-tz" type="button" name="callmasterApi" id="apply-filter-data">Apply 
-                        <span id="countFilterResult"></span>
-                    </button>
+                <?php if ($allowedViewMode === 'both'){ ?>
+                <div class="btn-group view-mode" role="group" aria-label="">
+                    <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
+                    <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
                 </div>
+                <?php } ?>
             </div>
         </div>
-    </div>
-</div>
-          <?php if ($allowedViewMode === 'both'){ ?>
-          <div class="btn-group view-mode" role="group" aria-label="">
-            <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
-            <button type="button" class="btn btn-outline-primary  active" view-mode="list"><i class="fas fa-list mr-1"></i>List view</button> 
-          </div>
-        </div>
         <div class="col-12 mb-4"></div>
-  <?php } ?>
   <style>
 /*.prv, .nxt {
   top: 9px;
@@ -203,7 +212,6 @@ jQuery(document).ready(function($) {
 
   //var groupId = $('#groupTabs li:first-child a').attr('id');
   var viewMode='<?php echo $allowedViewMode; ?>';
-  var viewMode='list';
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
@@ -329,6 +337,14 @@ jQuery(document).ready(function($) {
 				}
 			});
 		}
+		
+		// Build columns array structure like DataTable does
+		var columns = [];
+		columns[titleColumn] = {
+			search: {
+				value: ''
+			}
+		};
 		  
 	   $.ajax({
           type : "post",
@@ -338,6 +354,9 @@ jQuery(document).ready(function($) {
 			  viewMode:'Grid',
 			  length:length,
 			  start:start,
+			  titleColumn: titleColumn,
+			  columns: columns,
+			  order: [{dir: 'asc'}],
 			  organizationTypes: organizationTypes,
 			  statuses: statuses,
 			  locations: locations,
@@ -363,6 +382,30 @@ jQuery(document).ready(function($) {
 		  }
         });
 	}
+	
+	// Grid search functionality
+	var gridSearchTimeout;
+	$('#grid-search-box').on('keyup', function() {
+		clearTimeout(gridSearchTimeout);
+		var searchQuery = $(this).val().toLowerCase();
+		
+		gridSearchTimeout = setTimeout(function() {
+			if (searchQuery.length === 0) {
+				// Show all cards
+				$('.grid-view .card').parent().show();
+			} else {
+				// Filter cards based on search query
+				$('.grid-view .card').each(function() {
+					var cardText = $(this).text().toLowerCase();
+					if (cardText.indexOf(searchQuery) > -1) {
+						$(this).parent().show();
+					} else {
+						$(this).parent().hide();
+					}
+				});
+			}
+		}, 300); // Debounce for 300ms
+	});
 	
 	//grid layout
  //var organizationGridCols = <?php echo json_encode(ORGANIZATION_COLS_GRID); ?>;
@@ -412,6 +455,9 @@ function renderOrgGrid(data) {
   phonenumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
     ? formatPhoneUS(org.phoneNumbers[0].value)
     : '--',
+    website: org.website 
+        ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
+        : '--',
     organizationtype: org.organizationType || '--',
     status: org.status || '--',
     locations: (org.locations && org.locations.length > 0)
@@ -618,13 +664,17 @@ function renderDynamicFilters(filters) {
         } else if (filter.filterType === 4) {
             // Dropdown/Checkbox filter
             if (filter.properties && Array.isArray(filter.properties) && filter.properties.length > 0) {
+                // Add search box
+                filterHtml += '<div class="p-2 border-bottom">';
+                filterHtml += '<input type="text" class="form-control form-control-sm filter-search-box" placeholder="Type to search..." />';
+                filterHtml += '</div>';
                 // Render checkboxes from properties
-                filterHtml += '<ul class="list-group m-0">';
+                filterHtml += '<ul class="list-group m-0 filter-items-list">';
                 filter.properties.forEach(function(item) {
                     var value = item.id || item.name || '';
                     var display = item.name || item.id || '';
                     if (value && display) {
-                        filterHtml += '<li class="list-group-item border-0 py-1 px-2">';
+                        filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                         filterHtml += '<label class="m-0">';
                         filterHtml += '<input class="mr-2" type="checkbox" value="' + value + '">';
                         filterHtml += display;
@@ -648,6 +698,26 @@ function renderDynamicFilters(filters) {
     
     // Initialize dynamic filter click handlers
     initializeDynamicFilterHandlers();
+    
+    // Initialize search boxes for pre-rendered filters
+    initializeFilterSearchBoxes();
+}
+
+function initializeFilterSearchBoxes() {
+    // Add search functionality to all filter search boxes
+    $(document).on('keyup', '.filter-search-box', function() {
+        var searchValue = $(this).val().toLowerCase();
+        var $listItems = $(this).closest('.dynamic-filter-content, .content-area').find('.filter-items-list li');
+        
+        $listItems.each(function() {
+            var itemValue = $(this).data('filter-value') || '';
+            if (itemValue.indexOf(searchValue) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
 }
 
 function initializeDynamicFilterHandlers() {
@@ -724,33 +794,40 @@ function loadFilterData($filterList) {
             
             if (response.success && response.data) {
                 var data = response.data;
+                
+                // Check if data is empty (e.g., [{id: "", name: "", ...}])
+                var hasValidData = false;
+                if (Array.isArray(data) && data.length > 0) {
+                    hasValidData = data.some(function(item) {
+                        var hasId = item.id && item.id !== "";
+                        var hasName = item.name && item.name !== "";
+                        var hasValue = item.value && item.value !== "";
+                        var hasDisplayName = item.displayName && item.displayName !== "";
+                        return hasId || hasName || hasValue || hasDisplayName;
+                    });
+                }
+                
+                if (!hasValidData) {
+                    $contentArea.append('<p class="text-muted text-center py-2">No data found</p>');
+                    return;
+                }
+                
                 var htmlContent = '';
+                
+                // Add search box at the top
+                htmlContent += '<div class="p-2 border-bottom">';
+                htmlContent += '<input type="text" class="form-control form-control-sm filter-search-box" placeholder="Type to search..." />';
+                htmlContent += '</div>';
                 
                 if (filterType === 1) {
                     // Numeric filter - render as range inputs or list
                     if (Array.isArray(data) && data.length > 0) {
-                        htmlContent = '<ul class="list-group m-0">';
+                        htmlContent += '<ul class="list-group m-0 filter-items-list">';
                         data.forEach(function(item) {
-                            var value = item.name || item.tagName || item.value || item || '';
-                            htmlContent += '<li class="list-group-item border-0 py-1 px-2">';
-                            htmlContent += '<label class="m-0">';
-                            htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
-                            htmlContent += value;
-                            htmlContent += '</label></li>';
-                        });
-                        htmlContent += '</ul>';
-                    } else {
-                        htmlContent = '<p class="text-muted text-center py-2">No numeric values available</p>';
-                    }
-                } else if (filterType === 4) {
-                    // Checkbox filter
-                    if (Array.isArray(data) && data.length > 0) {
-                        htmlContent = '<ul class="list-group m-0">';
-                        data.forEach(function(item) {
-                            var value = item.id || item.value || item.name || '';
-                            var display = item.name || item.displayName || item.value || value || '';
-                            if (value && display) {
-                                htmlContent += '<li class="list-group-item border-0 py-1 px-2">';
+                            var value = item.id || item.value || item.name || item.tagName || item || '';
+                            var display = item.name || item.tagName || item.displayName || value || '';
+                            if (value && display && value !== '' && display !== '') {
+                                htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                                 htmlContent += '<label class="m-0">';
                                 htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
                                 htmlContent += display;
@@ -759,11 +836,31 @@ function loadFilterData($filterList) {
                         });
                         htmlContent += '</ul>';
                     } else {
-                        htmlContent = '<p class="text-muted text-center py-2">No options available</p>';
+                        htmlContent += '<p class="text-muted text-center py-2">No numeric values available</p>';
+                    }
+                } else if (filterType === 4) {
+                    // Checkbox filter
+                    if (Array.isArray(data) && data.length > 0) {
+                        htmlContent += '<ul class="list-group m-0 filter-items-list">';
+                        data.forEach(function(item) {
+                            var value = item.id || item.value || item.name || '';
+                            var display = item.name || item.displayName || item.value || value || '';
+                            if (value && display && value !== '' && display !== '') {
+                                htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
+                                htmlContent += '<label class="m-0">';
+                                htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                                htmlContent += display;
+                                htmlContent += '</label></li>';
+                            }
+                        });
+                        htmlContent += '</ul>';
+                    } else {
+                        htmlContent += '<p class="text-muted text-center py-2">No options available</p>';
                     }
                 }
                 
                 $contentArea.append(htmlContent);
+                // Note: Search functionality is handled globally by initializeFilterSearchBoxes()
             } else {
                 $contentArea.append('<p class="text-muted text-center py-2">No data available</p>');
             }
@@ -831,7 +928,16 @@ $('#apply-filter-data').click(function() {
     organizationTypes = getCheckedValues('.organizationType-filter');
     statuses = getCheckedValues('.status-filter');
     locations = getCheckedValues('.locations-filter');
-    organizationTags = getCheckedValues('.organizationTags-filter');
+    
+    // Collect tags from UI and merge with shortcode tags (always keep shortcode tags)
+    var uiTags = getCheckedValues('.organizationTags-filter');
+    organizationTags = initialOrganizationTags.slice(); // Start with shortcode tags
+    uiTags.forEach(function(tag) {
+        if (!organizationTags.includes(tag)) {
+            organizationTags.push(tag); // Add UI-selected tags if not already present
+        }
+    });
+    
     updateCustomFieldsFromDOM();
     
     // Also collect dynamic filter selections
@@ -846,6 +952,9 @@ $('#apply-filter-data').click(function() {
     $('.filter-area').addClass('d-none');
     $('#apply-filter-data .spinner-border').remove();
     $('#apply-filter-data').removeAttr('disabled');
+    
+    // Update filter count badge
+    updateFilterCount();
 });
 
 // Clear all filters functionality
@@ -854,7 +963,7 @@ $('#clear-all').click(function() {
     organizationTypes = [];
     statuses = [];
     locations = [];
-    organizationTags = [];
+    organizationTags = initialOrganizationTags.slice(); // Reset to initial tags from shortcode
     customFieldSelections = {};
     resetCustomFields();
     
@@ -1025,26 +1134,55 @@ function countFilterData() {
     }, 500); // Wait 500ms after last change before making API call
 }
 
-// Trigger countFilterData on filter changes
-$(document).on('change', '.filter-list input[type=checkbox]', function() {   
-    countFilterData();
-    var appliedCategories = $('.filter-list').filter(function() {
-        return $(this).find('input[type=checkbox]:checked').length > 0;
-    }).length;
-    // Store the count but do not show it yet
-    $('.filter-icon').data('appliedCategories', appliedCategories);
-});
-
-$('#apply-filter-data').click(function() {
-    // Show the count on the filter icon after Apply is clicked
-    var appliedCategories = $('.filter-icon').data('appliedCategories') || 0;
-    if (appliedCategories > 0) {
+// Function to count all selected filters
+function updateFilterCount() {
+    var filterCount = 0;
+    
+    // Count old filter categories with selections (exclude dynamic filters to avoid double counting)
+    $('.filter-list').each(function() {
+        // Skip if this is a dynamic filter (has data-filter-id)
+        if (!$(this).data('filter-id')) {
+            if ($(this).find('input[type=checkbox]:checked').length > 0) {
+                filterCount++;
+            }
+        }
+    });
+    
+    // Count dynamic filter categories with selections
+    if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
+        Object.keys(dynamicFilterSelections).forEach(function(key) {
+            if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
+                filterCount++;
+            }
+        });
+    }
+    
+    // Update the filter icon badge
+    if (filterCount > 0) {
         $('.filter-icon').addClass('active');
-        $('.filter-icon span').text(appliedCategories).show();
+        $('.filter-icon span').text(filterCount).show();
     } else {
         $('.filter-icon').removeClass('active');
         $('.filter-icon span').hide();
     }
+    
+    return filterCount;
+}
+
+// Trigger countFilterData on filter changes
+$(document).on('change', '.filter-list input[type=checkbox]', function() {   
+    if ($('#apply-filter-data .spinner-border').length == 0) {
+        $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    }
+    countFilterData();
+});
+
+// Trigger on dynamic filter changes
+$(document).on('change', '.dynamic-filter-content input[type=checkbox]', function() {
+    if ($('#apply-filter-data .spinner-border').length == 0) {
+        $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+    }
+    countFilterData();
 });
 
 // Use delegated event handler for filter icon click
