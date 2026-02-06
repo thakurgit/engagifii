@@ -158,13 +158,11 @@ p#footer-upgrade
     }
     
     .engagifii-settings-wrap {
-        max-width: 1200px !important;
         margin: 0 auto !important;
         background: #ffffff !important;
         border: 1px solid #c3c4c7 !important;
         border-radius: 8px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-        overflow: hidden !important;
     }
     
     .engagifii-settings-page {

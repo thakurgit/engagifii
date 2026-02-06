@@ -571,13 +571,11 @@ class Engagifii_Settings {
             
             /* Modern Professional Styling */
             .engagifii-settings-wrap {
-                max-width: 1200px;
                 margin: 20px auto;
                 background: #fff;
                 border-radius: 12px;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                overflow: hidden;
-            }
+             }
 
             .engagifii-settings-wrap h1 {
                 background: linear-gradient(135deg, #2271b1 0%, #2271b1 100%);
