@@ -4673,7 +4673,14 @@ public function classesLoadGridDataByPerson(){
 				  )
 			  )
 		  );
-		  $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array();
+		  $lbt_visib_members_tags_list = array_values(
+			  array_filter(
+				  array_map(
+					  fn($v) => json_decode($v, true)['colName'] ?? null,
+					  $options['lbt_visib_members_tags_list'] ?? []
+				  )
+			  )
+		  );
           $apiUrl='';
           $date = date('Y-m-d');
           foreach ($filterParams as $keys => $values) {
