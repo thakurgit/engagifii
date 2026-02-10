@@ -1647,13 +1647,15 @@ public function getFilterItemsFromServiceUrl() {
     // Remove leading slash if present
     $apiEndpoint = ltrim($serviceUrl, '/');
     
-    // Strip 'api/v1/' or 'api/v1.0/' prefix if present since base URL already includes it
+    // Strip 'api/v1/' or 'api/v1.0/' or 'v1/' prefix if present since base URL already includes it
     if (strpos($apiEndpoint, 'api/v1.0/') === 0) {
         $apiEndpoint = substr($apiEndpoint, 9); // Remove 'api/v1.0/'
     } elseif (strpos($apiEndpoint, 'api/v1/') === 0) {
         $apiEndpoint = substr($apiEndpoint, 7); // Remove 'api/v1/'
+    } elseif (strpos($apiEndpoint, 'v1/') === 0) {
+        $apiEndpoint = substr($apiEndpoint, 3); // Remove 'v1/'
     }
-    
+    error_log("Processed API Endpoint: " . $apiEndpoint); // Debugging line, can be removed later
     // Add tenant code only if the URL contains {tenantCode} placeholder
     if (strpos($apiEndpoint, '{tenantCode}') !== false) {
         $apiEndpoint = str_replace('{tenantCode}', $tenantCode, $apiEndpoint);
@@ -1661,7 +1663,7 @@ public function getFilterItemsFromServiceUrl() {
     
     // Append current date to all service URLs in MM-DD-YYYY format
     $currentDate = date('m-d-Y'); // Format: MM-DD-YYYY (e.g., 02-06-2026)
-    $apiEndpoint .= '/' . $currentDate;
+    //$apiEndpoint .= '/' . $currentDate;
     
     $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
         
