@@ -270,6 +270,10 @@ class Engagifii_Settings {
                                     <span class="dashicons dashicons-info"></span>
                                     Setup Guide & Help
                                 </button>
+                                <button type="button" class="tab-button" data-tab="version">
+                                    <span class="dashicons dashicons-update-alt"></span>
+                                    Version Control
+                                </button> 
                             </div>
                             
                             <div class="tab-content">
@@ -401,6 +405,60 @@ class Engagifii_Settings {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                
+                                <!--version tab-->
+                                <div id="version-tab" class="tab-panel">
+                                <p>Currently installed Engagifii version is <?php echo ENGAGIFII_VERSION; ?>.</p>
+                                <table class="form-table">
+                                	<tbody>
+                                    	<tr>
+                                        	<th>Reinstall Plugin</th>
+                                            <td>
+                                            	<button id="my-plugin-reinstall" class="button button-primary" > Reinstall v<?php echo ENGAGIFII_VERSION; ?></button>
+
+    <span id="my-plugin-reinstall-status" style="margin-left:10px;"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                	
+    <script>
+	jQuery(function ($) {
+
+    $('#my-plugin-reinstall').on('click', function (e) {
+        e.preventDefault();
+
+        if (!confirm('This will completely replace the plugin files. Continue?')) {
+            return;
+        }
+
+        const $btn = $(this);
+        const $status = $('#my-plugin-reinstall-status');
+
+        $btn.prop('disabled', true);
+        $status.text('Reinstalling...');
+        $.post(engagifiiAjax.ajax_url, { 
+            action: 'my_plugin_ajax_reinstall',
+            security: engagifiiAjax.nonce
+        })
+        .done(function (response) {
+            if (response.success) {
+                $status.html('<b style="color:var(--e-context-success-color-dark)"><i>Plugin reinstalled successfully.</i></b>');
+            } else {
+                $status.html('<b style="color:var(--e-context-error-color)"><i>'+ response.data +'</i></b> ');
+            }
+        })
+        .fail(function () {
+            $status.html('<b style="color:var(--e-context-error-color)"><i>AJAX request failed</i></b>');
+        })
+        .always(function () {
+            $btn.prop('disabled', false);
+        });
+    });
+
+});
+	</script>
                                 </div>
                             </div>
                         </div>
@@ -605,13 +663,6 @@ class Engagifii_Settings {
             .engagifii-welcome-logo {
                 max-width: 280px;
                 height: auto;
-                border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-                transition: transform 0.3s ease;
-            }
-
-            .engagifii-welcome-logo:hover {
-                transform: scale(1.02);
             }
 
             .welcome-panel-content h2 {
@@ -1290,15 +1341,15 @@ class Engagifii_Settings {
             .engagifii-settings-wrap .button-primary:hover,
             .engagifii-settings-wrap .button-primary:focus,
             .engagifii-settings-wrap .button-primary:active {
-                background: #2271b1 !important;
-                border-color: #2271b1 !important;
+                background: #144c7b !important;
+                border-color: #144c7b !important;
                 color: #ffffff !important;
                 box-shadow: 0 2px 4px rgba(34, 113, 177, 0.2) !important;
             }
 
             .engagifii-settings-wrap .button-primary:hover {
-                background: #5a67d8 !important;
-                border-color: #5a67d8 !important;
+                background: #144c7b !important;
+                border-color: #144c7b !important;
                 box-shadow: 0 4px 8px rgba(34, 113, 177, 0.3) !important;
             }
 
@@ -1740,277 +1791,7 @@ class Engagifii_Settings {
         wp_send_json_success('Setup completed successfully');
     }
 
-    /**
-     * Handle create pages AJAX
-     */
-    /*public static function handle_create_pages() {
-        check_ajax_referer('engagifii_settings_nonce', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
-        }
-        
-        $modules = isset($_POST['modules']) ? $_POST['modules'] : array();
-        
-        // Update enabled modules
-        update_option('engagifii_enabled_modules', $modules);
-        
-        // Create pages for enabled modules
-        $created_pages = self::create_module_pages($modules);
-        
-        wp_send_json_success('Created ' . count($created_pages) . ' pages');
-    }*/
-
-    /**
-     * Create pages for enabled modules
-     */
-    /*public static function create_module_pages($enabled_modules) {
-        $created_pages = array();
-        
-        foreach ($enabled_modules as $module_key) {
-            if (!isset(self::MODULES[$module_key])) {
-                continue;
-            }
-            
-            $module = self::MODULES[$module_key];
-            
-            // Create pages based on module
-            switch ($module_key) {
-                case 'legislation':
-                    $created_pages = array_merge($created_pages, self::create_legislation_pages());
-                    break;
-                case 'classes':
-                    $created_pages = array_merge($created_pages, self::create_classes_pages());
-                    break;
-                case 'awards':
-                    $created_pages = array_merge($created_pages, self::create_endorsement_pages());
-                    break;
-                case 'courses':
-                    $created_pages = array_merge($created_pages, self::create_courses_pages());
-                    break;
-                case 'group_directory':
-                    $created_pages = array_merge($created_pages, self::create_group_directory_pages());
-                    break;
-            }
-        }
-        
-        return $created_pages;
-    }*/
-
-    /**
-     * Create legislation module pages
-     */
-   /* private static function create_legislation_pages() {
-        $pages = array();
-        
-        // Bill Tracking Page
-        if (!get_page_by_path('bill-tracking', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Bill Tracking',
-                'post_content' => '[legislation-list]',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'bill-tracking'
-            ));
-            if ($page_id) $pages[] = 'bill-tracking';
-        }
-        
-        // Bill Detail Page
-        if (!get_page_by_path('engagifii-detail', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Bill Detail',
-                'post_content' => "[legislation-details Id='bill-id']",
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'engagifii-detail'
-            ));
-            if ($page_id) $pages[] = 'engagifii-detail';
-        }
-        
-        // Legislative Database Page
-        if (!get_page_by_path('legislative-tracking-database', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Legislative Tracking Database',
-                'post_content' => '',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'legislative-tracking-database'
-            ));
-            if ($page_id) $pages[] = 'legislative-tracking-database';
-        }
-        
-        // Engagifii Grid View Page
-        if (!get_page_by_path('engagifii-grid-view', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Engagifii Grid View',
-                'post_content' => '<div class="capital-watch-main-contatiner">[legislation-list]</div>',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'engagifii-grid-view'
-            ));
-            if ($page_id) $pages[] = 'engagifii-grid-view';
-        }
-        
-        return $pages;
-    }*/
-
-    /**
-     * Create classes module pages
-     */
-   /* private static function create_classes_pages() {
-        $pages = array();
-        
-        // Classes Page
-        if (!get_page_by_path('classes', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Classes',
-                'post_content' => '[classes-list-calendar-class-name calendarclassname=true]',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'classes'
-            ));
-            if ($page_id) $pages[] = 'classes';
-        }
-        
-        // Class Details Page
-        if (!get_page_by_path('class-details', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Class Details',
-                'post_content' => "[class-details Id='class-id']",
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'class-details'
-            ));
-            if ($page_id) $pages[] = 'class-details';
-        }
-        
-        return $pages;
-    }*/
-
-    /**
-     * Create courses module pages
-     */
-   /* private static function create_courses_pages() {
-        $pages = array();
-        
-        // Courses Page
-        if (!get_page_by_path('courses', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Courses',
-                'post_content' => '[courses-list]',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'courses'
-            ));
-            if ($page_id) $pages[] = 'courses';
-        }
-        
-        // Course Details Page
-        if (!get_page_by_path('course-details', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Course Details',
-                'post_content' => "[course-details Id='course-id']",
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'course-details'
-            ));
-            if ($page_id) $pages[] = 'course-details';
-        }
-        
-        return $pages;
-    }*/
-
-    /**
-     * Create group directory pages
-     */
-    /*private static function create_group_directory_pages() {
-        $pages = array();
-        
-        // My Profile Page with child pages
-        if (!get_page_by_path('my-profile', OBJECT, 'page')) {
-            $parent_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'My Profile',
-                'post_content' => '[user-profile]',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'my-profile'
-            ));
-            
-            if ($parent_id) {
-                $pages[] = 'my-profile';
-                
-                // Create child pages
-                $child_pages = array(
-                    array('name' => 'my-endorsements', 'title' => 'My Endorsements', 'content' => '[user-endorsements]'),
-                    array('name' => 'my-sponsorships', 'title' => 'My Sponsorships', 'content' => '[user-sponsorships]'),
-                    array('name' => 'my-committees', 'title' => 'My Committees', 'content' => '[user-committees]'),
-                    array('name' => 'my-classes', 'title' => 'My Classes', 'content' => '[user-classes]'),
-                    array('name' => 'my-courses', 'title' => 'My Courses', 'content' => '[user-courses]')
-                );
-                
-                foreach ($child_pages as $child) {
-                    if (!get_page_by_path($child['name'], OBJECT, 'page')) {
-                        $child_id = wp_insert_post(array(
-                            'post_type' => 'page',
-                            'post_title' => $child['title'],
-                            'post_content' => $child['content'],
-                            'post_status' => 'publish',
-                            'post_author' => 1,
-                            'post_name' => $child['name'],
-                            'post_parent' => $parent_id
-                        ));
-                        if ($child_id) $pages[] = $child['name'];
-                    }
-                }
-            }
-        }
-        
-        return $pages;
-    }*/
-
-    /**
-     * Create endorsement pages
-     */
-   /* private static function create_endorsement_pages() {
-        $pages = array();
-        
-        // Endorsement Grid View Page
-        if (!get_page_by_path('endorsement-grid-view', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Endorsement Grid View',
-                'post_content' => '<div class="capital-watch-main-contatiner">[endorsement-grid-list]</div>',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'endorsement-grid-view'
-            ));
-            if ($page_id) $pages[] = 'endorsement-grid-view';
-        }
-        
-        // Endorsement Detail Page
-        if (!get_page_by_path('endorsement-detail', OBJECT, 'page')) {
-            $page_id = wp_insert_post(array(
-                'post_type' => 'page',
-                'post_title' => 'Endorsement Detail',
-                'post_content' => '<div class="capital-watch-main-contatiner">[endorsement_grid_detail_information]</div>',
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_name' => 'endorsement-detail'
-            ));
-            if ($page_id) $pages[] = 'endorsement-detail';
-        }
-        
-        return $pages;
-    }*/
+   
 
     /**
      * Check if a module is enabled
@@ -2152,3 +1933,44 @@ function engagifii_should_show_module_settings($module_key) {
 function engagifii_should_show_for_modules($module_keys) {
     return Engagifii_Settings::should_show_for_modules($module_keys);
 }
+
+//plugin reinstall
+add_action('wp_ajax_my_plugin_ajax_reinstall', 'engagifii_ajax_reinstall');
+
+function engagifii_ajax_reinstall() {
+    if (
+        ! current_user_can('manage_options') ||
+        ! check_ajax_referer('save_cols_nonce', 'security', false)
+    ) {
+        wp_send_json_error('Unauthorized request');
+    }
+    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+    include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+    include_once ABSPATH . 'wp-admin/includes/file.php'; 
+
+    $plugin_slug = 'engagifii';
+    $plugin_file = 'engagifii/engagifii.php';
+
+    deactivate_plugins($plugin_file, true);
+
+    $deleted = delete_plugins([$plugin_file]);
+    if (is_wp_error($deleted)) {
+        wp_send_json_error($deleted->get_error_message());
+    }
+
+    $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+    $result = $upgrader->install(
+        'https://engagifiiweb.com/engagifii_plugins/engagifii/engagifii.zip'
+    );
+    if (is_wp_error($result)) {
+        wp_send_json_error($result->get_error_message());
+    }
+
+    $activated = activate_plugin($plugin_file);
+    if (is_wp_error($activated)) {
+        wp_send_json_error($activated->get_error_message());
+    }
+
+    wp_send_json_success();
+}
+

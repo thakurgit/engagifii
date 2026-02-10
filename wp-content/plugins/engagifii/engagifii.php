@@ -387,7 +387,6 @@ add_filter( 'display_post_states', function ( $states, $post ) {
     return $states;
 }, 10, 2 );
 
-
 /**
  * Main instance of EngagifiiAPI.
  * @since  1.0.0
