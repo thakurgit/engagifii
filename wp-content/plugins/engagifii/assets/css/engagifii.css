@@ -1986,3 +1986,12 @@ input[type="checkbox"]{
     color: #007BFF !important; 
     text-decoration: underline !important; 
 }
+
+/* Note: Organization Card Layout Styles have been moved to individual template files
+   located at: includes/public/views/templates/card-layouts/
+   - classic.php
+   - modern.php
+   - minimal.php
+   - detailed.php
+   This allows for better modularity and reusability across different modules.
+*/

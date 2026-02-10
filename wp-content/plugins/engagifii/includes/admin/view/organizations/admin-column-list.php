@@ -23,6 +23,67 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 	<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page. <strong>Maximum 6 fields are allowed.</strong></i><hr>
             <?php renderColumnsUI(['organization_settings', 'grid', 'visible_column_list'],'orgColumns'); ?>
                 </div>
+                
+                <!--Card Layout Template Selection-->
+                <div class="cols-wrapper card-layout-selection">
+                	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
+                    <div class="layout-options" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+                        <?php 
+                        $current_layout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
+                        $layouts = array(
+                            'classic' => array(
+                                'name' => 'Classic',
+                                'description' => 'Traditional card with image on top and details below',
+                                'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-classic.png'
+                            ),
+                            'modern' => array(
+                                'name' => 'Modern',
+                                'description' => 'Clean design with side image and horizontal layout',
+                                'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-modern.png'
+                            ),
+                            'minimal' => array(
+                                'name' => 'Minimal',
+                                'description' => 'Simple card with icon and minimal details',
+                                'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-minimal.png'
+                            ),
+                            'detailed' => array(
+                                'name' => 'Detailed',
+                                'description' => 'Comprehensive card with all information displayed',
+                                'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-detailed.png'
+                            )
+                        );
+                        
+                        foreach ($layouts as $layout_key => $layout_info) {
+                            $checked = ($current_layout === $layout_key) ? 'checked' : '';
+                            ?>
+                            <div class="layout-option" style="flex: 0 0 calc(50% - 10px); border: 2px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; <?php echo $checked ? 'border-color: #0073aa; background-color: #f0f8ff;' : ''; ?>" data-layout="<?php echo $layout_key; ?>">
+                                <label style="cursor: pointer; display: block;">
+                                    <input type="radio" 
+                                           name="ebt_api_settings[organization_settings][grid][card_layout]" 
+                                           value="<?php echo $layout_key; ?>" 
+                                           <?php echo $checked; ?>
+                                           style="margin-right: 10px;">
+                                    <strong><?php echo $layout_info['name']; ?></strong>
+                                    <p style="margin: 10px 0; color: #666; font-size: 13px;"><?php echo $layout_info['description']; ?></p>
+                                    <div class="layout-preview" style="background: #f9f9f9; padding: 20px; border-radius: 4px; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
+                                        <span style="color: #999; font-size: 12px;"><?php echo $layout_info['name']; ?> Layout Preview</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                    <script>
+                    jQuery(document).ready(function($) {
+                        $('.layout-option').click(function() {
+                            $('.layout-option').css({'border-color': '#ddd', 'background-color': 'transparent'});
+                            $(this).css({'border-color': '#0073aa', 'background-color': '#f0f8ff'});
+                            $(this).find('input[type="radio"]').prop('checked', true);
+                        });
+                    });
+                    </script>
+                </div>
     	<?php 
 	}
 		echo '</div>';				

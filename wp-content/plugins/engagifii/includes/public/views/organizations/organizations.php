@@ -222,6 +222,11 @@ jQuery(document).ready(function($) {
   var organizationTags = initialOrganizationTags.slice(); // Copy initial tags
   var customFields = {};
   var organizationId = '<?php echo isset($_GET['organizationId']) ? $_GET['organizationId'] : ''; ?>';
+  
+  // Global object to store dynamic filter data (declare early to avoid reference errors)
+  var dynamicFiltersConfig = [];
+  var dynamicFilterSelections = {};
+  
  <?php  if ($allowedViewMode === 'grid' ){?>
    OrgList(start);
   <?php } ?>
@@ -423,6 +428,13 @@ jQuery(document).ready(function($) {
   }
     echo json_encode($gridCols);
 ?>;
+  
+  // Get selected card layout template from settings
+  var cardLayoutTemplate = '<?php 
+    $options = get_option('ebt_api_settings');
+    echo isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic'; 
+  ?>';
+  
   //console.log(groupMemberCols);
 //console.log('Organization Grid Columns:', organizationGridCols); 
 var orgFieldIcons = {
@@ -435,6 +447,25 @@ var orgFieldIcons = {
     lastUpdated: '<i class="fas fa-sync-alt mr-2"></i>',
     name: '', // handled as card-title
 };
+
+</script>
+
+<?php
+// Include card layout templates dynamically based on settings
+$options = get_option('ebt_api_settings');
+$selectedLayout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
+
+// Include the selected template file
+$templatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $selectedLayout . '.php';
+if (file_exists($templatePath)) {
+    include $templatePath;
+} else {
+    // Fallback to classic if template not found
+    include plugin_dir_path(__FILE__) . '../templates/card-layouts/classic.php';
+}
+?>
+
+<script>
 function renderOrgGrid(data) {
   //console.log('Rendering Organization Grid with data:', data);
     var container = $('.grid-view .row');
@@ -443,72 +474,72 @@ function renderOrgGrid(data) {
         container.append('<h3 class="text-secondary text-center col-12">No organizations found!</h3>');
         return;
     }
-    data.forEach(function(org) {
-        var orgPhoto = isValidUrl(org.imageThumbUrl)
-            ? '<img src="' + org.imageThumbUrl + '" class="card-img-top mb-3" alt="' + org.name + '">'
-            : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
-
-       var fieldValues = {
-    name: org.name || '--',
-    primaryemail: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
-        (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'),
-  phonenumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
-    ? formatPhoneUS(org.phoneNumbers[0].value)
-    : '--',
-    website: org.website 
-        ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
-        : '--',
-    organizationtype: org.organizationType || '--',
-    status: org.status || '--',
-    locations: (org.locations && org.locations.length > 0)
-    ? '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' +
-        buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
-        '">View Locations</a>'
-    : '--',
-    totalmembers: (org.totalMembers !== undefined && org.activeMembers !== undefined)
-        ? org.activeMembers + '/' + org.totalMembers
-        : '--',
-    organizationtags: (org.organizationTags && org.organizationTags.length > 0)
-        ? buildPopoverHtml('tags', org.organizationTags)
-        : '--',
-    createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-    modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-};
-
-       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
-        organizationGridCols.forEach(function(colObj) {
-            var col = colObj.colClass;
-            var label = colObj.displayName;
-             if (label === 'Locations') label = 'Location';
-            if (label === 'Created On') label = 'Added';
-            if (label === 'Modified On') label = 'Last Updated';
-            if (label === 'Primary Email') label = 'Email';
-            if (label === 'Phone Numbers') label = 'Phone';
-            if (label === 'Total Members') label = 'Total/Active Members';
-
-            if (col === 'name') return;
-            if (fieldValues[col] !== undefined) {
-                cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
-                    fieldValues[col] +
-                    '</p>';
-            }
-        });
-
-        var card = '<div class="col-md-3 mb-4">' +
-            '<div class="card h-100 shadow p-3">' +
-            orgPhoto + '<hr>' +
-            '<div class="card-body p-0 pt-3 group-card">' +
-            cardBody +
-            '</div></div></div>';
-        container.append(card);
-    });
-     setTimeout(function() {
+    
+    // Render based on selected template
+    switch(cardLayoutTemplate) {
+        case 'modern':
+            renderModernLayout(data, container);
+            break;
+        case 'minimal':
+            renderMinimalLayout(data, container);
+            break;
+        case 'detailed':
+            renderDetailedLayout(data, container);
+            break;
+        case 'classic':
+        default:
+            renderClassicLayout(data, container);
+            break;
+    }
+    
+    setTimeout(function() {
         $('[data-toggle="popover"]').popover({ trigger: 'hover', html: true });
     }, 100);
 }
-function getFieldLabel(field) {
-    return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, function(str){ return str.toUpperCase(); });
+
+// Helper function to build field values
+function buildFieldValues(org) {
+    return {
+        name: org.name || '--',
+        primaryemail: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
+            (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'),
+        phonenumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
+            ? formatPhoneUS(org.phoneNumbers[0].value)
+            : '--',
+        website: org.website 
+            ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
+            : '--',
+        organizationtype: org.organizationType || '--',
+        status: org.status || '--',
+        locations: (org.locations && org.locations.length > 0)
+            ? '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' +
+                buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
+                '">View Locations</a>'
+            : '--',
+        totalmembers: (org.totalMembers !== undefined && org.activeMembers !== undefined)
+            ? org.activeMembers + '/' + org.totalMembers
+            : '--',
+        organizationtags: (org.organizationTags && org.organizationTags.length > 0)
+            ? buildPopoverHtml('tags', org.organizationTags)
+            : '--',
+        createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+        modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+    };
 }
+
+// Helper function to get field label
+function getFieldLabel(displayName) {
+    var labelMap = {
+        'Locations': 'Location',
+        'Created On': 'Added',
+        'Modified On': 'Last Updated',
+        'Primary Email': 'Email',
+        'Phone Numbers': 'Phone',
+        'Total Members': 'Total/Active Members'
+    };
+    return labelMap[displayName] || displayName;
+}
+
 function formatPhoneUS(phone) {
     phone = phone.replace(/\D/g, '');
     if (phone.length === 10) {
@@ -554,10 +585,6 @@ dt_titleSearch('Search Organization');
 
   ?>
   
-// Global object to store dynamic filter data
-var dynamicFiltersConfig = [];
-var dynamicFilterSelections = {};
-
 // Load dynamic filters after page loads
 window.addEventListener("load", function () {
     // Initially show filter content and hide the main loader
