@@ -1670,9 +1670,24 @@ public function getFilterItemsFromServiceUrl() {
     if (isset($dataResponse['api_response']) && !empty($dataResponse['api_response'])) {
         $data = json_decode($dataResponse['api_response'], true);
         if ($data !== null && $data !== false) {
+            // Special-case: when the service returns all organization tags,
+            // use the tag 'name' as the checkbox value (frontend expects id by default)
+            if (stripos($apiEndpoint, 'GetAllOrganizationTagsPublic') !== false) {
+                if (is_array($data)) {
+                    foreach ($data as $k => $item) {
+                        if (is_array($item) && isset($item['name']) && $item['name'] !== '') {
+                            // Ensure frontend picks up name as the value by populating id/value
+                            $data[$k]['id'] = $item['name'];
+                            $data[$k]['value'] = $item['name'];
+                        }
+                    }
+                }
+                error_log('Transformed GetAllOrganizationTagsPublic items to use name as id/value');
+            }
+
             wp_send_json_success($data);
-        } 
-    } 
+        }
+    }
     wp_die();
 }
  
