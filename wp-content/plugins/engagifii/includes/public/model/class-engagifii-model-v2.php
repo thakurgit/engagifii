@@ -1098,7 +1098,9 @@ public function getOrganizations(){
 				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
 			}
             $nestedData['name'] .= '<div><a class="text-nowrap" href="#" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
-            $nestedData['status'] = $value->status;
+            $nestedData['status'] = ($value->status === 'Active') 
+                ? '<span style="color: #28a745; font-weight: 600;">' . $value->status . '</span>' 
+                : $value->status;
             $nestedData['totalmembers'] = $value->totalMembers."/".$value->activeMembers;	
             //$nestedData['activemembers'] = $value->activeMembers;	
 			//$nestedData['Location']= $value->locationInfo[0]->locationValue ? $value->locationInfo->locationValue : 'N/A';

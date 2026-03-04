@@ -97,7 +97,7 @@
 			} else{
 				$counter=1;
 				//$allowedFields=['Cell Phone','Home Phone','Office Phone','Office Address','Address','Personal Email','Office Email','Organization'];
-				$allowedFields=[9,10,11,12];
+					$allowedFields=[1,2,3,4,6,8,9,10,11,12];
 				foreach(json_decode($fielddata,true) as $key=>$row){
 					if(!in_array($row['controlTypeId'], $allowedFields)){
 						continue;

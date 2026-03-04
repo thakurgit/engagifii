@@ -10,166 +10,296 @@ defined('ABSPATH') || exit;
 ?>
 
 <style>
-/* Modern Layout - Premium Card Design */
-.modern-card-premium {
-    background: linear-gradient(135deg, #1a3a52 0%, #2d5f7e 100%);
-    border-radius: 20px;
+/* Modern Layout - Event-Style Design */
+.modern-event-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+    padding: 30px 20px;
+}
+
+.modern-event-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modern-event-date-box {
+    text-align: center;
+    min-width: 100px;
+    padding-right: 20px;
+}
+
+.modern-event-date-day {
+    font-size: 48px;
+    font-weight: 700;
+    color: #e74c3c;
+    line-height: 1;
+    display: block;
+}
+
+.modern-event-date-month {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    display: block;
+}
+
+.modern-event-date-weekday {
+    font-size: 14px;
+    font-weight: 400;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    display: block;
+}
+
+.modern-event-image-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border: none;
+    flex-shrink: 0;
+    margin: 0 30px;
 }
 
-.modern-card-premium:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
-.modern-card-image-container {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
-}
-
-.modern-card-premium .modern-card-img {
+.modern-event-card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.modern-card-placeholder {
+.modern-event-placeholder {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: #f5f5f5;
 }
 
-.modern-card-placeholder i {
-    font-size: 80px;
-    color: rgba(255, 255, 255, 0.3);
+.modern-event-placeholder i {
+    font-size: 50px;
+    color: #ccc;
 }
 
-.modern-card-content {
-    padding: 25px;
+.modern-event-content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
+    padding-right: 20px;
 }
 
-.modern-card-title {
-    font-size: 1.4rem;
+.modern-event-category {
+    font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: #3498db;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.modern-event-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
     margin-bottom: 15px;
     line-height: 1.3;
 }
 
-.modern-card-subtitle {
-    font-size: 1rem;
-    margin-bottom: 12px;
-    line-height: 1.5;
+.modern-event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.modern-card-subtitle .highlight-text {
-    color: #f4a261;
-    font-weight: 700;
-    font-style: italic;
+.modern-event-meta-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
 }
 
-.modern-card-subtitle .normal-text {
-    color: rgba(255, 255, 255, 0.9);
-    font-style: italic;
+.modern-event-meta-item i {
+    margin-right: 8px;
+    color: #999;
+    width: 16px;
 }
 
-.modern-card-detail {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 12px;
-    line-height: 1.5;
-}
-
-.modern-card-detail .detail-label {
-    color: #f4a261;
-    font-weight: 600;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.modern-card-detail .detail-value {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.modern-card-detail a {
-    color: #f4a261;
+.modern-event-meta-item a {
+    color: #666;
     text-decoration: none;
 }
 
-.modern-card-detail a:hover {
-    color: #d4a26a;
+.modern-event-meta-item a:hover {
+    color: #3498db;
     text-decoration: underline;
 }
 
+.modern-event-action {
+    display: flex;
+    align-items: center;
+}
+
+.modern-event-btn {
+    padding: 12px 30px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.modern-event-btn:hover {
+    background: #3498db;
+    border-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+}
+
 /* Responsive */
+@media (max-width: 992px) {
+    .modern-event-card {
+        padding: 20px 15px;
+    }
+    
+    .modern-event-date-box {
+        min-width: 80px;
+        padding-right: 15px;
+    }
+    
+    .modern-event-date-day {
+        font-size: 36px;
+    }
+    
+    .modern-event-image-container {
+        width: 130px;
+        height: 130px;
+        margin: 0 20px;
+    }
+    
+    .modern-event-title {
+        font-size: 20px;
+    }
+}
+
 @media (max-width: 768px) {
-    .modern-card-premium {
+    .modern-event-card {
+        flex-direction: column !important;
+        text-align: center;
+    }
+    
+    .modern-event-date-box {
+        padding-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .modern-event-image-container {
+        margin: 0 auto 20px;
+    }
+    
+    .modern-event-content {
+        padding-right: 0;
         margin-bottom: 20px;
     }
     
-    .modern-card-image-container {
-        height: 200px;
+    .modern-event-meta {
+        align-items: center;
+    }
+    
+    .modern-event-action {
+        justify-content: center;
     }
 }
 </style>
 
 <script>
-// Modern Layout Rendering Function
+// Modern Layout Rendering Function - Event Style
 function renderModernLayout(data, container) {
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
+        
+        // Parse date for display (using Created On date)
+        var dateObj = org.createdOn ? new Date(org.createdOn) : new Date();
+        var day = dateObj.getDate();
+        var month = dateObj.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+        var weekday = dateObj.toLocaleString('en-US', { weekday: 'short' }).toUpperCase();
+        
+        // Organization image (circular)
         var orgPhoto = isValidUrl(org.imageThumbUrl)
-            ? '<img src="' + org.imageThumbUrl + '" class="modern-card-img" alt="' + org.name + '">'
-            : '<div class="modern-card-placeholder"><i class="fa fa-building"></i></div>';
+            ? '<img src="' + org.imageThumbUrl + '" class="modern-event-card-img" alt="' + org.name + '">'
+            : '<div class="modern-event-placeholder"><i class="fa fa-building"></i></div>';
         
-        var cardTitle = '';
-        var detailsHtml = '';
+        // Get category (Organization Type)
+        var category = fieldValues.organizationtype !== '--' ? fieldValues.organizationtype : 'Organization';
         
-        // Loop through configured columns and display them dynamically
+        // Build meta information based on configured columns
+        var metaItemsHtml = '';
+        var titleText = fieldValues.name || 'Organization';
+        
         organizationGridCols.forEach(function(colObj) {
             var col = colObj.colClass;
             var label = getFieldLabel(colObj.displayName);
             
+            // Skip name as it's used as title
+            if (col === 'name') return;
+            
+            // Skip if no value
             if (fieldValues[col] === undefined || fieldValues[col] === '--') return;
             
-            // First field becomes the title
-            if (!cardTitle) {
-                cardTitle = fieldValues[col];
+            // Add icon based on field type
+            var icon = '';
+            if (col === 'primaryemail') {
+                icon = '<i class="far fa-envelope"></i>';
+            } else if (col === 'phonenumbers') {
+                icon = '<i class="far fa-phone"></i>';
+            } else if (col === 'locations' || col === 'location') {
+                icon = '<i class="far fa-map-marker-alt"></i>';
+            } else if (col === 'status') {
+                icon = '<i class="far fa-check-circle"></i>';
+            } else if (col === 'website') {
+                icon = '<i class="far fa-globe"></i>';
+            } else if (col === 'createdon') {
+                icon = '<i class="far fa-calendar-plus"></i>';
+            } else if (col === 'modifiedon') {
+                icon = '<i class="far fa-sync-alt"></i>';
+            } else if (col === 'organizationtags') {
+                icon = '<i class="far fa-tags"></i>';
             } else {
-                // Remaining fields become details
-                detailsHtml += '<p class="modern-card-detail">' +
-                    '<span class="detail-label">' + label + ':</span> ' +
-                    '<span class="detail-value">' + fieldValues[col] + '</span>' +
-                    '</p>';
+                icon = '<i class="far fa-info-circle"></i>';
             }
+            
+            metaItemsHtml += '<div class="modern-event-meta-item">' + icon + ' ' + fieldValues[col] + '</div>';
         });
         
-        var card = '<div class="col-md-3 mb-4">' +
-            '<div class="card modern-card-premium">' +
-            '<div class="modern-card-image-container">' +
+        var card = '<div class="col-12">' +
+            '<div class="modern-event-card d-flex align-items-center">' +
+            '<div class="modern-event-date-box">' +
+            '<span class="modern-event-date-day">' + (day < 10 ? '0' + day : day) + '</span>' +
+            '<span class="modern-event-date-month">' + month + '</span>' +
+            '<span class="modern-event-date-weekday">' + weekday + '</span>' +
+            '</div>' +
+            '<div class="modern-event-image-container">' +
             orgPhoto +
             '</div>' +
-            '<div class="modern-card-content">' +
-            '<h5 class="modern-card-title">' + (cardTitle || fieldValues.name) + '</h5>' +
-            detailsHtml +
+            '<div class="modern-event-content">' +
+            '<div class="modern-event-category">' + category + '</div>' +
+            '<h3 class="modern-event-title">' + titleText + '</h3>' +
+            '<div class="modern-event-meta">' +
+            metaItemsHtml +
+            '</div>' +
+            '</div>' +
+            '<div class="modern-event-action">' +
+            '<a href="#" class="modern-event-btn">More Details</a>' +
             '</div>' +
             '</div>' +
             '</div>';
+        
         container.append(card);
     });
 }

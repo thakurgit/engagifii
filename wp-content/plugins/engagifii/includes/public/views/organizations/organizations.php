@@ -510,7 +510,9 @@ function buildFieldValues(org) {
             ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
             : '--',
         organizationtype: org.organizationType || '--',
-        status: org.status || '--',
+        status: (org.status === 'Active') 
+            ? '<span style="color: #28a745; font-weight: 600;">' + org.status + '</span>' 
+            : (org.status || '--'),
         locations: (org.locations && org.locations.length > 0)
             ? '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' +
                 buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
@@ -548,9 +550,16 @@ function formatPhoneUS(phone) {
     return phone;
 }
 
-// function isValidUrl(url) {
-//     try { new URL(url); return true; } catch (_) { return false; }
-// }
+function isValidUrl(url) {
+    if (!url) return false;
+    try { 
+        new URL(url); 
+        return true; 
+    } catch (_) { 
+        return false; 
+    }
+}
+
 function buildLocationPopoverHtml(locations) {
     if (!Array.isArray(locations) || locations.length === 0) return '--';
     var html = '<div style=\'min-width:220px\'><h6 class="text-center mb-2">Locations</h6><ul class="list-unstyled mb-0">';
@@ -574,6 +583,35 @@ function buildLocationPopoverHtml(locations) {
     });
     html += '</ul></div>';
     return html;
+}
+
+function buildPopoverHtml(type, items) {
+    if (!Array.isArray(items) || items.length === 0) return '--';
+    
+    var title = type === 'tags' ? 'Tags' : 'Items';
+    var html = '<div style="min-width:200px"><h6 class="text-center mb-2">' + title + '</h6><ul class="list-unstyled mb-0">';
+    
+    items.forEach(function(item, idx) {
+        var displayValue = '';
+        if (typeof item === 'string') {
+            displayValue = item;
+        } else if (item.name) {
+            displayValue = item.name;
+        } else if (item.tagName) {
+            displayValue = item.tagName;
+        } else if (item.value) {
+            displayValue = item.value;
+        }
+        
+        if (displayValue) {
+            html += '<li class="' + (idx % 2 === 0 ? 'bg-light' : '') + ' px-2 py-1">' + displayValue + '</li>';
+        }
+    });
+    
+    html += '</ul></div>';
+    
+    return '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' + 
+           html.replace(/"/g, '&quot;') + '">View ' + title + '</a>';
 }
 
 <?php
