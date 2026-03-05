@@ -215,6 +215,8 @@ jQuery(document).ready(function($) {
   var start = 0;
   var length = 8;
   var titleColumn = '<?php echo $title_key; ?>';
+  var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
+  var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
   var organizationTypes = [];
   var statuses = [];
   var locations = [];
@@ -499,13 +501,21 @@ function renderOrgGrid(data) {
 
 // Helper function to build field values
 function buildFieldValues(org) {
+    var maskStyle = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
+    var lockIcon  = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
+    var maskedPhone = '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">' + lockIcon + '<span style="' + maskStyle + '">(•••)\u00a0•••-••••</span></a>';
+    var maskedEmail = '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">' + lockIcon + '<span style="' + maskStyle + '">••••@•••••.•••</span></a>';
     return {
         name: org.name || '--',
-        primaryemail: org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
-            (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'),
-        phonenumbers: (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
-            ? formatPhoneUS(org.phoneNumbers[0].value)
-            : '--',
+        primaryemail: isUserLoggedIn
+            ? (org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
+                (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'))
+            : maskedEmail,
+        phonenumbers: isUserLoggedIn
+            ? ((org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
+                ? formatPhoneUS(org.phoneNumbers[0].value)
+                : '--')
+            : maskedPhone,
         website: org.website 
             ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
             : '--',
