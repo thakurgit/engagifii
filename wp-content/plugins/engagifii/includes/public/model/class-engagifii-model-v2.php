@@ -1057,7 +1057,7 @@ public function getOrganizations(){
                 ]
             ]
         ];
-        //print_r(json_encode($postedData)); die;
+        //xprint_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("OrganizationPagingList/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
@@ -1104,11 +1104,8 @@ public function getOrganizations(){
                 }
             }
 			$nestedData['name']='<div class="d-flex align-items-center">';
-			if($value->imageThumbUrl && filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)){
-				$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.$value->name.'" class="rounded-circle img-fluid mr-2" src="'.$value->imageThumbUrl.'">';	
-			}else{
-				$nestedData['name'].='<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
-			}
+			$orgImgSrc = ($value->imageThumbUrl && filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) ? $value->imageThumbUrl : ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
+			$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.esc_attr($value->name).'" class="rounded-circle img-fluid mr-2" src="'.esc_url($orgImgSrc).'">';
             $nestedData['name'] .= '<div><a class="text-nowrap" href="#" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
             $nestedData['status'] = ($value->status === 'Active') 
                 ? '<span style="color: #28a745; font-weight: 600;">' . $value->status . '</span>' 

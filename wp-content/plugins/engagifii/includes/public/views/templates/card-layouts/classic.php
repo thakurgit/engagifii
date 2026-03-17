@@ -52,9 +52,10 @@ defined('ABSPATH') || exit;
 // Classic Layout Rendering Function
 function renderClassicLayout(data, container) {
     data.forEach(function(org) {
+        var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
         var orgPhoto = isValidUrl(org.imageThumbUrl)
             ? '<img src="' + org.imageThumbUrl + '" class="card-img-top mb-3" alt="' + org.name + '">'
-            : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
+            : '<img src="' + orgDefaultImg + '" class="card-img-top mb-3" alt="' + org.name + '">';
 
        var fieldValues = buildFieldValues(org);
 

@@ -46,7 +46,10 @@ defined('ABSPATH') || exit;
 function renderMinimalLayout(data, container) {
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
-        var orgIcon = '<i class="fa fa-building minimal-card-icon"></i>';
+        var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
+        var orgIcon = isValidUrl(org.imageThumbUrl)
+            ? '<img src="' + org.imageThumbUrl + '" class="card-img-top" alt="' + org.name + '">'
+            : '<img src="' + orgDefaultImg + '" class="card-img-top" alt="' + org.name + '">';
         
         var cardBody = '<h5 class="card-title text-center">' + fieldValues.name + '</h5>';
         var fieldCount = 0;

@@ -53,9 +53,9 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 <div class="container-fluid ">
 	<div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center">
-            <!-- Search box for Grid view only -->
-            <?php if ($allowedViewMode === 'grid'){ ?>
-            <div class="form-group mb-0" style="flex: 1; max-width: 400px;">
+            <!-- Search box for Grid view and combined (both) view -->
+            <?php if ($allowedViewMode === 'grid' || $allowedViewMode === 'both'){ ?>
+            <div class="form-group mb-0" id="grid-search-wrapper" style="flex: 1; max-width: 400px;<?php if ($allowedViewMode === 'both') { ?> display:none;<?php } ?>">
                 <input type="text" id="grid-search-box" class="form-control" placeholder="Search Organizations..." />
             </div>
             <?php } ?>
@@ -142,6 +142,13 @@ font-size: 260px;
   .grid-view .card .img-default {
     font-size: 150px;
   }
+}
+.grid-view .card a,
+.grid-view .card .btn-link,
+.grid-view .card [data-toggle="popover"],
+.grid-view .card [data-toggle="dropdown"],
+.grid-view .card .org-location-popover {
+  cursor: pointer;
 }
 </style>
 <!-- Group Title -->
@@ -240,10 +247,14 @@ jQuery(document).ready(function($) {
 	  if(viewMode === 'grid'){
 		  $('.list-view').hide();
 		  $('.grid-view').show();
+		  $('#grid-search-wrapper').show();
 		  OrgList(start);
 	  } else {
 		  $('.list-view').show();
 		  $('.grid-view').hide();
+		  $('#grid-search-wrapper').hide();
+		  $('#grid-search-box').val('');
+		  gridSearchQuery = '';
 		  table.draw();
 	  }
   });
@@ -331,6 +342,7 @@ jQuery(document).ready(function($) {
     } ).dataTable();
 	
 	//fetch group members
+	var gridSearchQuery = '';
 	function OrgList(start){ 
 		 $('.grid-view #eng-overlay').show();
 		  $('.grid-view .row').css('opacity','.3');
@@ -345,11 +357,11 @@ jQuery(document).ready(function($) {
 			});
 		}
 		
-		// Build columns array structure like DataTable does
+		// Build columns array structure like DataTable does, including search text
 		var columns = [];
 		columns[titleColumn] = {
 			search: {
-				value: ''
+				value: gridSearchQuery
 			}
 		};
 		  
@@ -390,28 +402,15 @@ jQuery(document).ready(function($) {
         });
 	}
 	
-	// Grid search functionality
+	// Grid search functionality — server-side search via API
 	var gridSearchTimeout;
 	$('#grid-search-box').on('keyup', function() {
 		clearTimeout(gridSearchTimeout);
-		var searchQuery = $(this).val().toLowerCase();
-		
+		gridSearchQuery = $(this).val();
 		gridSearchTimeout = setTimeout(function() {
-			if (searchQuery.length === 0) {
-				// Show all cards
-				$('.grid-view .card').parent().show();
-			} else {
-				// Filter cards based on search query
-				$('.grid-view .card').each(function() {
-					var cardText = $(this).text().toLowerCase();
-					if (cardText.indexOf(searchQuery) > -1) {
-						$(this).parent().show();
-					} else {
-						$(this).parent().hide();
-					}
-				});
-			}
-		}, 300); // Debounce for 300ms
+			start = 0;
+			OrgList(start);
+		}, 400);
 	});
 	
 	//grid layout
@@ -495,8 +494,49 @@ function renderOrgGrid(data) {
     }
     
     setTimeout(function() {
-        $('[data-toggle="popover"]').popover({ trigger: 'hover', html: true });
+        // General popovers use hover
+        $('[data-toggle="popover"]:not(.org-location-popover)').popover({ trigger: 'hover', html: true });
+        // Location popovers use click so the user can interact (copy addresses)
+        $('.org-location-popover').popover({ trigger: 'click', html: true, placement: 'top', sanitize: false });
+        // Close location popover when clicking outside
+        $(document).off('click.orgLocPop').on('click.orgLocPop', function(e) {
+            if (!$(e.target).closest('.org-location-popover, .popover').length) {
+                $('.org-location-popover').popover('hide');
+            }
+        });
+        // Delegated copy handler — works on dynamically injected popover content
+        $(document).off('click.orgCopy').on('click.orgCopy', '.org-copy-address-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var address = $(this).data('address');
+            var $icon = $(this).find('i');
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(address).then(function() {
+                    $icon.removeClass('fa-copy').addClass('fa-check text-success');
+                    setTimeout(function() { $icon.removeClass('fa-check text-success').addClass('fa-copy'); }, 1500);
+                });
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = address;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                $icon.removeClass('fa-copy').addClass('fa-check text-success');
+                setTimeout(function() { $icon.removeClass('fa-check text-success').addClass('fa-copy'); }, 1500);
+            }
+        });
     }, 100);
+}
+
+function copyOrgAddress(btn, text) {
+    // Legacy fallback — main handler is now delegated via $(document).on('click.orgCopy')
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+    }
 }
 
 // Helper function to build field values
@@ -524,7 +564,7 @@ function buildFieldValues(org) {
             ? '<span style="color: #28a745; font-weight: 600;">' + org.status + '</span>' 
             : (org.status || '--'),
         locations: (org.locations && org.locations.length > 0)
-            ? '<a tabindex="0" class="btn-link p-0" data-toggle="popover" data-html="true" data-content="' +
+            ? '<a tabindex="0" class="btn-link p-0 org-location-popover" data-toggle="popover" data-html="true" data-content="' +
                 buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
                 '">View Locations</a>'
             : '--',
@@ -572,23 +612,27 @@ function isValidUrl(url) {
 
 function buildLocationPopoverHtml(locations) {
     if (!Array.isArray(locations) || locations.length === 0) return '--';
-    var html = '<div style=\'min-width:220px\'><h6 class="text-center mb-2">Locations</h6><ul class="list-unstyled mb-0">';
+    var html = '<div style="min-width:240px"><h6 class="text-center mb-2">Locations</h6><ul class="list-unstyled mb-0">';
     locations.forEach(function(loc, idx) {
-        html += '<li class="mb-2' + (idx % 2 === 0 ? ' bg-light' : '') + '">';
-        html += '<div><b>' + (loc.fieldName || 'Address') + ':</b></div>';
-        html += '<div>' +
-            (loc.address || '') +
-            (loc.addressLine2 ? ', ' + loc.addressLine2 : '') +
-            (loc.city ? ', ' + loc.city : '') +
-            (loc.state ? ', ' + loc.state : '') +
-            (loc.zipCode ? ', ' + loc.zipCode : '') +
-            (loc.country ? ', ' + loc.country : '') +
-            '</div>';
-        //     if (loc.lat && loc.lng) {
-        //     html += '<div class="embed-responsive embed-responsive-16by9 mt-2" style="height:120px;"><iframe class="embed-responsive-item" style="width:100%;height:100%;" src="https://maps.google.com/maps?q=' +
-        //         encodeURIComponent(loc.lat) + ',' + encodeURIComponent(loc.lng) +
-        //         '&hl=en&z=14&amp;output=embed" allowfullscreen></iframe></div>';
-        // }
+        var addressParts = [
+            loc.address || '',
+            loc.addressLine2 || '',
+            loc.city || '',
+            loc.state || '',
+            loc.zipCode || '',
+            loc.country || ''
+        ].filter(function(p) { return p.trim() !== ''; });
+        var addressText = addressParts.join(', ');
+        // Encode address for safe storage in data attribute (no quotes needed)
+        var escapedAttr = addressText.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        html += '<li class="mb-2 px-2 py-1' + (idx % 2 === 0 ? ' bg-light' : '') + '">';
+        html += '<div class="d-flex justify-content-between align-items-start">';
+        html += '<b>' + (loc.fieldName || 'Address') + '</b>';
+        html += '<button type="button" class="org-copy-address-btn btn btn-sm p-0 ml-2 text-secondary" ';
+        html += 'data-address="' + escapedAttr + '" title="Copy address" style="line-height:1;font-size:13px;background:none;border:none;cursor:pointer;">';
+        html += '<i class="far fa-copy"></i></button>';
+        html += '</div>';
+        html += '<div class="small mt-1">' + (addressText || '&mdash;') + '</div>';
         html += '</li>';
     });
     html += '</ul></div>';

@@ -231,9 +231,10 @@ function renderModernLayout(data, container) {
         var weekday = dateObj.toLocaleString('en-US', { weekday: 'short' }).toUpperCase();
         
         // Organization image (circular)
+        var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
         var orgPhoto = isValidUrl(org.imageThumbUrl)
             ? '<img src="' + org.imageThumbUrl + '" class="modern-event-card-img" alt="' + org.name + '">'
-            : '<div class="modern-event-placeholder"><i class="fa fa-building"></i></div>';
+            : '<img src="' + orgDefaultImg + '" class="modern-event-card-img" alt="' + org.name + '">';
         
         // Get category (Organization Type)
         var category = fieldValues.organizationtype !== '--' ? fieldValues.organizationtype : 'Organization';

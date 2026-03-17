@@ -107,9 +107,10 @@ defined('ABSPATH') || exit;
 function renderDetailedLayout(data, container) {
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
+        var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
         var orgPhoto = isValidUrl(org.imageThumbUrl)
             ? '<img src="' + org.imageThumbUrl + '" class="detailed-card-img" alt="' + org.name + '">'
-            : '<i class="fa fa-building detailed-card-icon"></i>';
+            : '<img src="' + orgDefaultImg + '" class="detailed-card-img" alt="' + org.name + '">';
             
         var cardBody = '<div class="detailed-card-header">' +
             '<div class="detailed-img-wrapper">' + orgPhoto + '</div>' +
