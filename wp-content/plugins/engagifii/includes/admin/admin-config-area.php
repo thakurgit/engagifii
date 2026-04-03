@@ -451,6 +451,10 @@ function ebt_api_shortocde_description() {
                 array(
                     'name'        => 'Organization List & Grid View',
                     'shortcode'   => '[get-organization viewmode="both"] OR [get-organization]'
+                ),
+                array(
+                    'name'        => 'Filter by Tag (e.g. Gold Member)',
+                    'shortcode'   => '[get-organization tags="Gold Member"]'
                 )
             )
         );
