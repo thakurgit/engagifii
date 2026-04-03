@@ -92,4 +92,11 @@ if ( ! defined( 'EVENTS_PAGE_LINK' ) ) {
 	 $organization_visible_column_list = isset($options['organization_settings']['list']['visible_column_list']) ? $options['organization_settings']['list']['visible_column_list'] : [];
  	define('ORGANIZATION_COLS', $organization_visible_column_list); 
 	 $organization_visible_column_grid = isset($options['organization_settings']['grid']['visible_column_list']) ? $options['organization_settings']['grid']['visible_column_list'] : [];
- 	define('ORGANIZATION_COLS_GRID', $organization_visible_column_grid); 
+ 	define('ORGANIZATION_COLS_GRID', $organization_visible_column_grid);
+//Organization guest hidden fields (fields to blur/hide for non-logged-in users)
+	if ( ! defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ) {
+		$organization_guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+			? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+			: ['phoneNumbers', 'primaryEmail']; // default: hide phone + email for guests
+		define('ORGANIZATION_GUEST_HIDDEN_FIELDS', $organization_guest_hidden_fields);
+	}

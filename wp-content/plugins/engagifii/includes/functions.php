@@ -239,6 +239,30 @@ function set_nested_array_value(&$array, $path, $value) {
     }
     $array = $value;
 }
+// Preserve / normalise guest_hidden_fields when the main WP settings form saves
+add_filter('pre_update_option_ebt_api_settings', 'engagifii_preserve_guest_hidden_fields', 10, 2);
+function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
+	$submitted = isset($new_value['organization_settings']['guest_hidden_fields_submitted']);
+	if ($submitted) {
+		// Sentinel was present — the section was in the form, normalise the key
+		unset($new_value['organization_settings']['guest_hidden_fields_submitted']);
+		if (!isset($new_value['organization_settings']['guest_hidden_fields'])) {
+			// All boxes were unchecked; save empty array explicitly
+			$new_value['organization_settings']['guest_hidden_fields'] = [];
+		} else {
+			$new_value['organization_settings']['guest_hidden_fields'] = array_map(
+				'sanitize_text_field',
+				(array) $new_value['organization_settings']['guest_hidden_fields']
+			);
+		}
+	} elseif (isset($old_value['organization_settings']['guest_hidden_fields'])) {
+		// Section was NOT in this form submission — preserve the existing saved value
+		$new_value['organization_settings']['guest_hidden_fields'] =
+			$old_value['organization_settings']['guest_hidden_fields'];
+	}
+	return $new_value;
+}
+
 add_action('wp_ajax_save_cols', 'save_cols');
 function save_cols() {
 	check_ajax_referer('save_cols_nonce', 'security');

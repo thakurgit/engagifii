@@ -78,7 +78,10 @@ function renderClassicLayout(data, container) {
             }
         });
 
-        var card = '<div class="col-md-3 mb-4">' +
+        var colsPerRow = (typeof orgClassicCardsPerRow !== 'undefined') ? orgClassicCardsPerRow : 4;
+        var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
+
+        var card = '<div class="' + colClass + ' mb-4">' +
             '<div class="card h-100 shadow p-3 org-card-classic">' +
             orgPhoto + '<hr>' +
             '<div class="card-body p-0 pt-3 group-card">' +

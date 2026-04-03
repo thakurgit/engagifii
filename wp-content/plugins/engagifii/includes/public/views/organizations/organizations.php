@@ -224,6 +224,12 @@ jQuery(document).ready(function($) {
   var titleColumn = '<?php echo $title_key; ?>';
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
+  // Fields to hide/blur for non-logged-in users (admin-configurable)
+  var orgGuestHiddenFields = <?php
+    $ghf = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
+    $normalized = array_map(function($f) { return preg_replace('/\s+/', '', strtolower($f)); }, $ghf);
+    echo json_encode(array_values($normalized));
+  ?>;
   var organizationTypes = [];
   var statuses = [];
   var locations = [];
@@ -435,6 +441,13 @@ jQuery(document).ready(function($) {
     $options = get_option('ebt_api_settings');
     echo isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic'; 
   ?>';
+
+  // Cards per row for classic layout (2, 3, or 4)
+  var orgClassicCardsPerRow = <?php
+    $options = get_option('ebt_api_settings');
+    $cpr = isset($options['organization_settings']['grid']['classic_cards_per_row']) ? intval($options['organization_settings']['grid']['classic_cards_per_row']) : 4;
+    echo in_array($cpr, [2, 3, 4]) ? $cpr : 4;
+  ?>;
   
   //console.log(groupMemberCols);
 //console.log('Organization Grid Columns:', organizationGridCols); 
@@ -539,43 +552,78 @@ function copyOrgAddress(btn, text) {
     }
 }
 
-// Helper function to build field values
-function buildFieldValues(org) {
+// Returns a blurred "Login to view" placeholder for guest-restricted fields
+function applyGuestMask(value, colClass) {
+    if (isUserLoggedIn || orgGuestHiddenFields.indexOf(colClass) === -1) return value;
     var maskStyle = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
     var lockIcon  = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
-    var maskedPhone = '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">' + lockIcon + '<span style="' + maskStyle + '">(•••)\u00a0•••-••••</span></a>';
-    var maskedEmail = '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">' + lockIcon + '<span style="' + maskStyle + '">••••@•••••.•••</span></a>';
+    // Choose a type-appropriate placeholder pattern
+    var placeholder = (colClass === 'phonenumbers') ? '(•••)\u00a0•••-••••'
+                    : (colClass === 'primaryemail')  ? '••••@•••••.•••'
+                    : '• • • • • • •';
+    return '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">'
+         + lockIcon + '<span style="' + maskStyle + '">' + placeholder + '</span></a>';
+}
+
+// Helper function to build field values
+function buildFieldValues(org) {
     return {
         name: org.name || '--',
-        primaryemail: isUserLoggedIn
-            ? (org.primaryEmail ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>' :
-                (org.secondaryEmails && org.secondaryEmails.length > 0 ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>' : '--'))
-            : maskedEmail,
-        phonenumbers: isUserLoggedIn
-            ? ((org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
+        primaryemail: applyGuestMask(
+            org.primaryEmail
+                ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>'
+                : (org.secondaryEmails && org.secondaryEmails.length > 0
+                    ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>'
+                    : '--'),
+            'primaryemail'
+        ),
+        phonenumbers: applyGuestMask(
+            (org.phoneNumbers && org.phoneNumbers.length > 0 && org.phoneNumbers[0].value)
                 ? formatPhoneUS(org.phoneNumbers[0].value)
-                : '--')
-            : maskedPhone,
-        website: org.website 
-            ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>' 
-            : '--',
-        organizationtype: org.organizationType || '--',
-        status: (org.status === 'Active') 
-            ? '<span style="color: #28a745; font-weight: 600;">' + org.status + '</span>' 
-            : (org.status || '--'),
-        locations: (org.locations && org.locations.length > 0)
-            ? '<a tabindex="0" class="btn-link p-0 org-location-popover" data-toggle="popover" data-html="true" data-content="' +
-                buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
-                '">View Locations</a>'
-            : '--',
-        totalmembers: (org.totalMembers !== undefined && org.activeMembers !== undefined)
-            ? org.activeMembers + '/' + org.totalMembers
-            : '--',
-        organizationtags: (org.organizationTags && org.organizationTags.length > 0)
-            ? buildPopoverHtml('tags', org.organizationTags)
-            : '--',
-        createdon: org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-        modifiedon: org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+                : '--',
+            'phonenumbers'
+        ),
+        website: applyGuestMask(
+            org.website
+                ? '<a href="' + (org.website.indexOf('http') === 0 ? org.website : 'https://' + org.website) + '" target="_blank" rel="noopener noreferrer">' + org.website + '</a>'
+                : '--',
+            'website'
+        ),
+        organizationtype: applyGuestMask(org.organizationType || '--', 'organizationtype'),
+        status: applyGuestMask(
+            (org.status === 'Active')
+                ? '<span style="color: #28a745; font-weight: 600;">' + org.status + '</span>'
+                : (org.status || '--'),
+            'status'
+        ),
+        locations: applyGuestMask(
+            (org.locations && org.locations.length > 0)
+                ? '<a tabindex="0" class="btn-link p-0 org-location-popover" data-toggle="popover" data-html="true" data-content="' +
+                    buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
+                    '">View Locations</a>'
+                : '--',
+            'locations'
+        ),
+        totalmembers: applyGuestMask(
+            (org.totalMembers !== undefined && org.activeMembers !== undefined)
+                ? org.activeMembers + '/' + org.totalMembers
+                : '--',
+            'totalmembers'
+        ),
+        organizationtags: applyGuestMask(
+            (org.organizationTags && org.organizationTags.length > 0)
+                ? buildPopoverHtml('tags', org.organizationTags)
+                : '--',
+            'organizationtags'
+        ),
+        createdon: applyGuestMask(
+            org.createdOn ? new Date(org.createdOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+            'createdon'
+        ),
+        modifiedon: applyGuestMask(
+            org.modifiedOn ? new Date(org.modifiedOn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+            'modifiedon'
+        ),
     };
 }
 

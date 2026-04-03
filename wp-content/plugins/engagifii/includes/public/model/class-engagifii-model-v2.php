@@ -1070,15 +1070,25 @@ public function getOrganizations(){
 		}*/
         $isLoggedIn = is_user_logged_in();
         $loginUrl   = wp_login_url( home_url( $_SERVER['REQUEST_URI'] ) );
+        // Admin-configurable guest hidden fields (default: phone + email)
+        $guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+            ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+            : ['phoneNumbers', 'primaryEmail'];
         $request = $_GET;
         $data    = array();
 		if($viewMode=='Grid'){
-			// For grid view, strip phone/email for non-logged-in users
+			// For grid view, strip configured fields for non-logged-in users (server-side security)
 			if ( ! $isLoggedIn ) {
 				foreach ( $collection as $item ) {
-					$item->phoneNumbers  = [];
-					$item->primaryEmail  = '';
-					$item->secondaryEmails = [];
+					foreach ( $guest_hidden_fields as $fieldName ) {
+						if ( ! isset( $item->$fieldName ) ) continue;
+						// Clear arrays to empty array, scalars to empty string
+						$item->$fieldName = is_array( $item->$fieldName ) ? [] : '';
+						// When primaryEmail is hidden, also clear secondary emails
+						if ( $fieldName === 'primaryEmail' ) {
+							$item->secondaryEmails = [];
+						}
+					}
 				}
 			}
 		  $response = [
@@ -1127,10 +1137,12 @@ public function getOrganizations(){
                         ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
                         : '--');
             } else {
-                $maskedPhone = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;"><i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> <span style="filter:blur(3.5px);user-select:none;letter-spacing:1px;">(•••)&nbsp;•••-••••</span></a>';
-                $maskedEmail = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;"><i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> <span style="filter:blur(3.5px);user-select:none;letter-spacing:1px;">••••@•••••.•••</span></a>';
-                $nestedData['phonenumbers'] = $maskedPhone;
-                $nestedData['primaryemail'] = $maskedEmail;
+                $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');
+                $nestedData['primaryemail'] = $value->primaryEmail 
+                    ? '<a href="mailto:' . $value->primaryEmail . '">' . $value->primaryEmail . '</a>' 
+                    : ((isset($value->secondaryEmails) && count($value->secondaryEmails) > 0 && isset($value->secondaryEmails[0]->value)) 
+                        ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
+                        : '--');
             }
             $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
            // $nestedData['organizationTags'] = '';
@@ -1141,7 +1153,22 @@ public function getOrganizations(){
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;
              $nestedData['organizationtags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
-            //$nestedData['Tags'] = '';
+
+            // Apply guest field masking for list view (admin-configurable)
+            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
+                $maskStyle  = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
+                $lockIcon   = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
+                $maskedPhone   = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">(•••)&nbsp;•••-••••</span></a>';
+                $maskedEmail   = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span></a>';
+                $maskedGeneric = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span></a>';
+                foreach ( $guest_hidden_fields as $fieldName ) {
+                    $colClass = preg_replace('/\s+/', '', strtolower($fieldName));
+                    if ( isset( $nestedData[ $colClass ] ) ) {
+                        $nestedData[ $colClass ] = ( $fieldName === 'phoneNumbers' ) ? $maskedPhone
+                            : ( ( $fieldName === 'primaryEmail' ) ? $maskedEmail : $maskedGeneric );
+                    }
+                }
+            }
           
 		$data[] = $nestedData;
         }

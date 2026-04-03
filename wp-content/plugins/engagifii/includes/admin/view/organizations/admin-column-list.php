@@ -80,10 +80,87 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                             $('.layout-option').css({'border-color': '#ddd', 'background-color': 'transparent'});
                             $(this).css({'border-color': '#0073aa', 'background-color': '#f0f8ff'});
                             $(this).find('input[type="radio"]').prop('checked', true);
+                            // Show/hide cards-per-row setting based on selected layout
+                            var selectedLayout = $(this).data('layout');
+                            $('#org-classic-cards-per-row-wrapper').toggle(selectedLayout === 'classic');
                         });
                     });
                     </script>
+
+                    <?php
+                    $current_cards_per_row = isset($options['organization_settings']['grid']['classic_cards_per_row'])
+                        ? intval($options['organization_settings']['grid']['classic_cards_per_row']) : 4;
+                    $show_cards_per_row = ($current_layout === 'classic') ? 'block' : 'none';
+                    ?>
+                    <!--Cards Per Row (Classic layout only)-->
+                    <div id="org-classic-cards-per-row-wrapper" style="display:<?php echo $show_cards_per_row; ?>; margin-top: 20px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
+                        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+                            <span class="dashicons dashicons-grid-view" style="vertical-align: middle;"></span>&nbsp;
+                            Cards Per Row (Classic View)
+                        </label>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many cards appear in each row for the Classic card layout.</p>
+                        <select name="ebt_api_settings[organization_settings][grid][classic_cards_per_row]"
+                                style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
+                            <?php foreach ([2, 3, 4] as $n) : ?>
+                                <option value="<?php echo $n; ?>" <?php selected($current_cards_per_row, $n); ?>>
+                                    <?php echo $n; ?> per row
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
+
+                <!--Guest Field Visibility-->
+                <div class="cols-wrapper guest-field-visibility">
+                    <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>
+                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in. Logged-in members always see the full data.</i><hr>
+                    <?php
+                    $guest_hidden = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+                        ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+                        : ['phoneNumbers', 'primaryEmail'];
+
+                    // Build union of list + grid cols so every visible field appears here
+                    $list_cols = isset($options['organization_settings']['list']['visible_column_list'])
+                        ? $options['organization_settings']['list']['visible_column_list'] : [];
+                    $grid_cols = isset($options['organization_settings']['grid']['visible_column_list'])
+                        ? $options['organization_settings']['grid']['visible_column_list'] : [];
+
+                    $all_cols_raw = array_merge($list_cols, $grid_cols);
+                    $seen_cols    = [];
+                    $all_cols     = [];
+                    foreach ($all_cols_raw as $col_json) {
+                        $col = json_decode(stripslashes($col_json), true);
+                        if (!$col || empty($col['colName'])) continue;
+                        if (strtolower($col['colName']) === 'name') continue;
+                        if (in_array($col['colName'], $seen_cols)) continue;
+                        $seen_cols[] = $col['colName'];
+                        $all_cols[]  = $col;
+                    }
+
+                    $guest_nonce = wp_create_nonce('save_cols_nonce');
+
+                    if (!empty($all_cols)) {
+                        // Sentinel ensures the key always arrives in the POST even when no boxes are ticked
+                        echo '<input type="hidden" name="ebt_api_settings[organization_settings][guest_hidden_fields_submitted]" value="1">';
+                        echo '<div class="guest-fields-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 0;">';
+                        foreach ($all_cols as $col) {
+                            $checked = in_array($col['colName'], $guest_hidden) ? 'checked' : '';
+                            $label   = !empty($col['displayName']) ? $col['displayName'] : $col['colName'];
+                            echo '<label style="display:inline-flex;align-items:center;gap:6px;min-width:220px;margin:5px 15px 5px 0;font-size:13px;cursor:pointer;">'
+                               . '<input type="checkbox" class="guest-field-check"'
+                               . ' name="ebt_api_settings[organization_settings][guest_hidden_fields][]"'
+                               . ' value="' . esc_attr($col['colName']) . '" ' . $checked . ' style="margin:0;width:15px;height:15px;">'
+                               . esc_html($label)
+                               . '</label>';
+                        }
+                        echo '</div>';
+                        echo '<p style="margin-top:10px;color:#666;font-size:12px;"><em>These settings are saved together with the main <strong>Save Settings</strong> button.</em></p>';
+                    } else {
+                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View or Grid View column visibility above first.</em></p>';
+                    }
+                    ?>
+                </div>
+
     	<?php 
 	}
 		echo '</div>';				
