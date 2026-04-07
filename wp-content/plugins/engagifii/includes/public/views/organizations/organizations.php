@@ -28,7 +28,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     }else{
         $options = get_option( 'ebt_api_settings' );
         $tenantCode = $options['dashboard_tenant_code'];
-      $dataResponse = $this->submitApiRequest("OrganizationColumnList/".$tenantCode,array(),"GET",'dashboard');
+      $dataResponse = $this->submitApiRequest("OrganizationColumnListWithCF/".$tenantCode,array(),"GET",'dashboard');
         if(!$dataResponse['api_response']){
             echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
             return;
@@ -427,11 +427,17 @@ jQuery(document).ready(function($) {
       $json = json_decode(stripslashes($key), true);
       if (!$json || !isset($json['colName'], $json['displayName'])) continue;
       $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
-      $gridCols[] = [
+      // Custom field: has a fieldId that differs from its colName (system fields have fieldId === colName)
+      $isCustomField = !empty($json['fieldId']) && strcasecmp($json['fieldId'], $json['colName']) !== 0;
+      $entry = [
           'colClass' => $colClass,
           'displayName' => $json['displayName'],
-          'colName' => $json['colName']
+          'colName' => $json['colName'],
+          'fieldId' => $json['fieldId'] ?? null,
+          'controlTypeId' => isset($json['controlTypeId']) ? (int)$json['controlTypeId'] : null,
+          'isCustomField' => $isCustomField
       ];
+      $gridCols[] = $entry;
   }
     echo json_encode($gridCols);
 ?>;
@@ -567,7 +573,7 @@ function applyGuestMask(value, colClass) {
 
 // Helper function to build field values
 function buildFieldValues(org) {
-    return {
+    var fieldValues = {
         name: org.name || '--',
         primaryemail: applyGuestMask(
             org.primaryEmail
@@ -625,6 +631,42 @@ function buildFieldValues(org) {
             'modifiedon'
         ),
     };
+
+    // Dynamic custom fields — resolved from admin-saved column map (no hardcoded fieldIds)
+    var cfList = (org.customFields && Array.isArray(org.customFields)) ? org.customFields : [];
+    cfList.forEach(function(cf) {
+        if (!cf.fieldId) return;
+        var meta = orgCfFieldIdMap[cf.fieldId.toLowerCase()];
+        if (!meta) return;
+        var colClass = meta.colClass;
+        var val = cf.fieldValue || '';
+        if (!val) {
+            fieldValues[colClass] = '--';
+            return;
+        }
+        var rendered;
+        if (meta.controlTypeId === 11) {
+            rendered = formatPhoneUS(val);
+        } else if (meta.controlTypeId === 1) {
+            var d = new Date(val);
+            rendered = isNaN(d.getTime()) ? val : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        } else if (isValidUrl(val)) {
+            if (/\.(png|jpg|jpeg|gif|webp|svg)(\?.*)?$/i.test(val)) {
+                rendered = '<img src="' + val + '" alt="' + meta.colName + '" style="max-width:70px;max-height:45px;object-fit:contain;" />';
+            } else {
+                rendered = '<a href="' + (val.indexOf('http') === 0 ? val : 'https://' + val) + '" target="_blank" rel="noopener noreferrer">' + val + '</a>';
+            }
+        } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+            rendered = '<a href="mailto:' + val + '">' + val + '</a>';
+        } else if (/^\d{10}$/.test(val.replace(/\D/g, '')) && val.replace(/\D/g, '').length === 10) {
+            rendered = formatPhoneUS(val);
+        } else {
+            rendered = val;
+        }
+        fieldValues[colClass] = applyGuestMask(rendered, colClass);
+    });
+
+    return fieldValues;
 }
 
 // Helper function to get field label
@@ -647,6 +689,14 @@ function formatPhoneUS(phone) {
     }
     return phone;
 }
+
+// Build a lookup map from custom fieldId (lowercase) to column metadata from organizationGridCols
+var orgCfFieldIdMap = {};
+organizationGridCols.forEach(function(col) {
+    if (col.isCustomField && col.fieldId) {
+        orgCfFieldIdMap[col.fieldId.toLowerCase()] = col;
+    }
+});
 
 function isValidUrl(url) {
     if (!url) return false;

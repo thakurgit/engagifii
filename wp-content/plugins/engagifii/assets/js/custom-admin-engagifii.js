@@ -352,7 +352,10 @@ function ajaxCols(endpoint,visibleCols,$ul){
 			  }
 				const ind = $ul.parents('.wrap').index()+'_'+$ul.parents('.cols-wrapper').index();
 				let attrs = '';
-				if (colName === 'name' || colName === 'sectionname' || colName === 'title' || colName === 'billNumber') {
+				const isMandatoryOrgField = (endpoint === 'orgColumns' && colName === 'Name');
+				if (isMandatoryOrgField) {
+				  attrs += ' checked disabled';
+				} else if (colName === 'name' || colName === 'sectionname' || colName === 'title' || colName === 'billNumber') {
 				  if (visibleCols.includes(colName)) {
 					attrs += ' checked disabled';
 				  }
@@ -361,13 +364,17 @@ function ajaxCols(endpoint,visibleCols,$ul){
 				}
 				let customBadge = '';
 				let cFieldClass = '';
-				if ('fieldId' in valueData) {
+				if ('fieldId' in valueData && valueData.fieldId && valueData.fieldId.toLowerCase() !== colName.toLowerCase()) {
 				  customBadge = `<span class="cfield">Custom Field</span>`;
 				  cFieldClass = 'cField';
 				}
+				// For mandatory fields, add a hidden input so the value is submitted even though the checkbox is disabled
+				const hiddenInput = isMandatoryOrgField
+				  ? `<input type="hidden" name="${$ul.data('colsArray')}" value='${JSON.stringify(valueData)}' />`
+				  : '';
                 html += `<li  data-order="${counter}">
                     <input class="${cFieldClass}" id="${colName}-${ind}" type="checkbox" value='${JSON.stringify(valueData)}'${attrs}>
-                    <label for="${colName}-${ind}">${displayName}</label>${customBadge}
+                    <label for="${colName}-${ind}">${displayName}</label>${customBadge}${hiddenInput}
                   </li>`;
               });
 			  if(html==''){
@@ -482,14 +489,16 @@ function checkboxEvents($list){
       const labelText = $checkbox.siblings('label').text();
 	  if ($checkbox.is(':checked')) {
 		if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
+		  const isLocked = $checkbox.prop('disabled');
 		  const $li = jQuery(`
 			<li data-order="${colOrder}">
 			  ${labelText}
-			  <button title="Delete Column" class="uncheck-cols">
+			  <button title="Delete Column" class="uncheck-cols" ${isLocked ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
 				<i class="dashicons dashicons-no-alt"></i>
 			  </button>
 			</li>
 		  `);
+		  if (isLocked) $li.attr('title', "This field can't be removed");
 		  const $popli = jQuery(`
 			<li data-order="${colOrder}" class="ui-sortable-handle">
 			  <input type="hidden" value='${colVal}' name="${colsArray}" />

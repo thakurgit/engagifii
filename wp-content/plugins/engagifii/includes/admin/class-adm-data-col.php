@@ -239,20 +239,33 @@ public function getClassesType($date){
 	public function orgColumns(){
 		$options = get_option( 'ebt_api_settings' );
 		$tenantCode = $options['dashboard_tenant_code'];
-		$dataResponse = $this->submitApiRequest("OrganizationColumnList/".$tenantCode,array(),"GET",'dashboard');
+		$dataResponse = $this->submitApiRequest("OrganizationColumnListWithCF/".$tenantCode,array(),"GET",'dashboard');
 		if(isset($dataResponse['api_response'])){
 			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails'];
+			// Custom field colNames to hide: Logo (always shown with org name) and Website (duplicate of system Website field)
+			$excludedCustomFieldColNames = ['Logo', 'Website'];
 			$collection   = json_decode($dataResponse['api_response'],true);
-			$collection  = array_filter($collection, function ($item) use ($excludedCols) {
-            	return !in_array($item['colName'] ?? '', $excludedCols, true);
+			$collection  = array_filter($collection, function ($item) use ($excludedCols, $excludedCustomFieldColNames) {
+				$colName = $item['colName'] ?? '';
+				$fieldId = $item['fieldId'] ?? $colName;
+				if (in_array($colName, $excludedCols, true)) return false;
+				// Hide custom fields whose colName is in the exclusion list (identified by fieldId !== colName)
+				if (in_array($colName, $excludedCustomFieldColNames, true) && strcasecmp($fieldId, $colName) !== 0) return false;
+				return true;
 			});
 			foreach ($collection as &$item) {
             if (isset($item['colName']) && $item['colName'] === 'TotalMembers') {
                 $item['displayName'] = 'Total/Active Members';
             }
 		  }
-		//return $collection;
-			wp_send_json($collection );
+		  $collection = array_values($collection);
+		  // Ensure Name is always first in the list
+		  usort($collection, function($a, $b) {
+			  if (($a['colName'] ?? '') === 'Name') return -1;
+			  if (($b['colName'] ?? '') === 'Name') return 1;
+			  return 0;
+		  });
+			wp_send_json($collection);
 		}
 		else
 			return array();

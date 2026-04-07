@@ -1058,7 +1058,7 @@ public function getOrganizations(){
             ]
         ];
         //xprint_r(json_encode($postedData)); die;
-        $dataResponse = $this->submitApiRequest("OrganizationPagingList/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
+        $dataResponse = $this->submitApiRequest("OrganizationPagingListWithCF/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
         $totalcount   = $api_response->totalCount;
@@ -1074,6 +1074,22 @@ public function getOrganizations(){
         $guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
             ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
             : ['phoneNumbers', 'primaryEmail'];
+
+        // Build a dynamic map: custom fieldId => ['colClass', 'controlTypeId'] from saved columns.
+        // A column is a custom field when its fieldId differs from its colName (system fields have fieldId === colName).
+        $cfFieldIdMap = [];
+        foreach (ORGANIZATION_COLS as $col_json) {
+            $col = json_decode(stripslashes($col_json), true);
+            if (empty($col['fieldId']) || empty($col['colName'])) continue;
+            if (strcasecmp($col['fieldId'], $col['colName']) === 0) continue; // skip system fields
+            $colClass = preg_replace('/\s+/', '', strtolower($col['colName']));
+            $cfFieldIdMap[strtolower($col['fieldId'])] = [
+                'colClass'      => $colClass,
+                'colName'       => $col['colName'],
+                'controlTypeId' => isset($col['controlTypeId']) ? (int)$col['controlTypeId'] : null,
+            ];
+        }
+
         $request = $_GET;
         $data    = array();
 		if($viewMode=='Grid'){
@@ -1153,6 +1169,44 @@ public function getOrganizations(){
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
             // $organizationTags = $value->organizationTags;
              $nestedData['organizationtags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
+
+            // Dynamic custom fields — resolved via admin-saved column map (no hardcoded fieldIds)
+            foreach ($value->customFields ?? [] as $cf) {
+                if (empty($cf->fieldId)) continue;
+                $cfIdLower = strtolower($cf->fieldId);
+                if (!isset($cfFieldIdMap[$cfIdLower])) continue;
+                $meta     = $cfFieldIdMap[$cfIdLower];
+                $colClass = $meta['colClass'];
+                $cfValue  = $cf->fieldValue ?? null;
+                if (empty($cfValue)) {
+                    continue; // leave empty; missing keys filled below
+                }
+                $ctId = $meta['controlTypeId'];
+                if ($ctId === 11) {
+                    $nestedData[$colClass] = $this->formatPhoneNumber($cfValue);
+                } elseif ($ctId === 1) {
+                    $nestedData[$colClass] = $this->formatDateField($cfValue);
+                } elseif (filter_var($cfValue, FILTER_VALIDATE_URL)) {
+                    if (preg_match('/\.(png|jpg|jpeg|gif|webp|svg)(\?.*)?$/i', $cfValue)) {
+                        $nestedData[$colClass] = '<img src="' . esc_url($cfValue) . '" alt="' . esc_attr($meta['colName']) . '" style="max-width:70px;max-height:45px;object-fit:contain;" />';
+                    } else {
+                        $nestedData[$colClass] = '<a href="' . esc_url($cfValue) . '" target="_blank" rel="noopener noreferrer">' . esc_html($cfValue) . '</a>';
+                    }
+                } elseif (filter_var($cfValue, FILTER_VALIDATE_EMAIL)) {
+                    $nestedData[$colClass] = '<a href="mailto:' . esc_attr($cfValue) . '">' . esc_html($cfValue) . '</a>';
+                } elseif (preg_match('/^\d{10}$/', preg_replace('/\D/', '', $cfValue)) && strlen(preg_replace('/\D/', '', $cfValue)) === 10) {
+                    $nestedData[$colClass] = $this->formatPhoneNumber($cfValue);
+                } else {
+                    $nestedData[$colClass] = esc_html($cfValue);
+                }
+            }
+
+            // Fill any custom-field columns not present in the API response with '--'
+            foreach ($cfFieldIdMap as $meta) {
+                if (!isset($nestedData[$meta['colClass']])) {
+                    $nestedData[$meta['colClass']] = '--';
+                }
+            }
 
             // Apply guest field masking for list view (admin-configurable)
             if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
