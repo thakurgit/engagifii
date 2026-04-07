@@ -26,6 +26,23 @@ defined('ABSPATH') || exit;
     text-align: center;
 }
 
+.org-card-classic .org-card-logo-wrapper {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.org-card-classic .org-card-logo {
+    max-width: 100%;
+    max-height: 160px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
 .org-card-classic .card-img-top {
     height: 200px;
     object-fit: cover;
@@ -53,9 +70,10 @@ defined('ABSPATH') || exit;
 function renderClassicLayout(data, container) {
     data.forEach(function(org) {
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
-        var orgPhoto = isValidUrl(org.imageThumbUrl)
-            ? '<img src="' + org.imageThumbUrl + '" class="card-img-top mb-3" alt="' + org.name + '">'
-            : '<img src="' + orgDefaultImg + '" class="card-img-top mb-3" alt="' + org.name + '">';
+        var orgImgSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
+        var orgPhoto = '<div class="org-card-logo-wrapper text-center mb-3">' +
+            '<img src="' + orgImgSrc + '" class="img-fluid org-card-logo" alt="' + org.name + '">' +
+            '</div>';
 
        var fieldValues = buildFieldValues(org);
 
