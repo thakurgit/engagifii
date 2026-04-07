@@ -59,7 +59,14 @@ function renderClassicLayout(data, container) {
 
        var fieldValues = buildFieldValues(org);
 
-       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
+       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr class="mt-1 mb-2">';
+
+       // Render "Contact Name" first if present in selected columns
+       var contactNameCol = organizationGridCols.find(function(c) { return c.colClass === 'contactname'; });
+       if (contactNameCol && fieldValues['contactname'] !== undefined && fieldValues['contactname'] !== '--') {
+           cardBody += '<p class="card-text mb-1"><strong>' + fieldValues['contactname'] + '</strong></p>';
+       }
+
         organizationGridCols.forEach(function(colObj) {
             var col = colObj.colClass;
             var label = colObj.displayName;
@@ -71,6 +78,7 @@ function renderClassicLayout(data, container) {
             if (label === 'Total Members') label = 'Total/Active Members';
 
             if (col === 'name') return;
+            if (col === 'contactname') return; // already rendered above
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
@@ -83,7 +91,7 @@ function renderClassicLayout(data, container) {
 
         var card = '<div class="' + colClass + ' mb-4">' +
             '<div class="card h-100 shadow p-3 org-card-classic">' +
-            orgPhoto + '<hr>' +
+            orgPhoto +
             '<div class="card-body p-0 pt-3 group-card">' +
             cardBody +
             '</div></div></div>';
