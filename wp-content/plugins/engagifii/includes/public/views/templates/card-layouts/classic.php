@@ -86,7 +86,7 @@ function renderClassicLayout(data, container) {
        // Render "Contact Name" first if present in selected columns
        var contactNameCol = organizationGridCols.find(function(c) { return c.colClass === 'contactname'; });
        if (contactNameCol && fieldValues['contactname'] !== undefined && fieldValues['contactname'] !== '--') {
-           cardBody += '<p class="card-text mb-1 mt-0"><strong>' + fieldValues['contactname'] + '</strong></p>';
+           cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + fieldValues['contactname'] + '</strong></p>';
        }
 
        // Render "Website" as a clickable link (no label prefix)
@@ -95,8 +95,8 @@ function renderClassicLayout(data, container) {
     var wsUrl = /^https?:\/\//i.test(org.website) ? org.website : 'https://' + org.website;
 
     cardBody += '<p class="card-text mb-1">' +
-        '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer">' +
-        '<span class="font-weight-bold">Visit Website</span> </a>' +
+        '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer" style="color:#007bff !important;">' +
+        '<span class="font-weight-bold" style="color:#007bff !important;">Visit Website</span></a>' +
     '</p>';
 }
 
