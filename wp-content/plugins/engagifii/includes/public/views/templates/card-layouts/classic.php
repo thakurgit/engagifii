@@ -33,6 +33,7 @@ defined('ABSPATH') || exit;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-bottom: 6px;
 }
 
 .org-card-classic .org-card-logo {
@@ -52,7 +53,7 @@ defined('ABSPATH') || exit;
 .org-card-classic .card-title {
     font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 4px;
 }
 
 .org-card-classic .card-text {
@@ -63,6 +64,9 @@ defined('ABSPATH') || exit;
 .org-card-classic .card-text .font-weight-bold {
     color: #495057;
 }
+h5{
+    margin-top: 0px;
+}
 </style>
 
 <script>
@@ -71,19 +75,30 @@ function renderClassicLayout(data, container) {
     data.forEach(function(org) {
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
         var orgImgSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
-        var orgPhoto = '<div class="org-card-logo-wrapper text-center mb-3">' +
+        var orgPhoto = '<div class="org-card-logo-wrapper text-center border-bottom">' +
             '<img src="' + orgImgSrc + '" class="img-fluid org-card-logo" alt="' + org.name + '">' +
             '</div>';
 
        var fieldValues = buildFieldValues(org);
 
-       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr class="mt-1 mb-2">';
+       var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
 
        // Render "Contact Name" first if present in selected columns
        var contactNameCol = organizationGridCols.find(function(c) { return c.colClass === 'contactname'; });
        if (contactNameCol && fieldValues['contactname'] !== undefined && fieldValues['contactname'] !== '--') {
-           cardBody += '<p class="card-text mb-1"><strong>' + fieldValues['contactname'] + '</strong></p>';
+           cardBody += '<p class="card-text mb-1 mt-0"><strong>' + fieldValues['contactname'] + '</strong></p>';
        }
+
+       // Render "Website" as a clickable link (no label prefix)
+       var websiteCol = organizationGridCols.find(function(c) { return c.colClass === 'website'; });
+   if (websiteCol && org.website) {
+    var wsUrl = /^https?:\/\//i.test(org.website) ? org.website : 'https://' + org.website;
+
+    cardBody += '<p class="card-text mb-1">' +
+        '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer">' +
+        '<span class="font-weight-bold">Visit Website</span> </a>' +
+    '</p>';
+}
 
         organizationGridCols.forEach(function(colObj) {
             var col = colObj.colClass;
@@ -97,6 +112,7 @@ function renderClassicLayout(data, container) {
 
             if (col === 'name') return;
             if (col === 'contactname') return; // already rendered above
+            if (col === 'website') return;      // already rendered above as link
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
@@ -110,7 +126,7 @@ function renderClassicLayout(data, container) {
         var card = '<div class="' + colClass + ' mb-4">' +
             '<div class="card h-100 shadow p-3 org-card-classic">' +
             orgPhoto +
-            '<div class="card-body p-0 pt-3 group-card">' +
+            '<div class="card-body p-0 pt-2 group-card">' +
             cardBody +
             '</div></div></div>';
         container.append(card);
