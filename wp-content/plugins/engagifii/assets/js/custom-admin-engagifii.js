@@ -334,9 +334,12 @@ function ajaxCols(endpoint,visibleCols,$ul){
             try {
               let html = '';
 			  let counter = 0;
+			  const seenColNames = new Set();
               jQuery.each(response, function (i, item) {
 				counter++;
                const colName = item.colName || item.id || item.value || item.key || item.tagId || item.personId || item.sessionId || '';
+			  if (seenColNames.has(colName)) return;
+			  seenColNames.add(colName);
 			  const displayName = item.displayName || item.name || item.text || item.fullName || item.sessionName || colName;
 			  const colOrder = item.colOrder ?? counter;
 			  const valueData = {

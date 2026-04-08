@@ -84,21 +84,34 @@ function renderClassicLayout(data, container) {
        var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
 
        // Render "Contact Name" first if present in selected columns
-       var contactNameCol = organizationGridCols.find(function(c) { return c.colClass === 'contactname'; });
-       if (contactNameCol && fieldValues['contactname'] !== undefined && fieldValues['contactname'] !== '--') {
-           cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + fieldValues['contactname'] + '</strong></p>';
+       // Matched by stable fieldId so any rename (e.g. "Key Person") still works
+       var contactNameCol = organizationGridCols.find(function(c) {
+           return (c.fieldId && c.fieldId.toUpperCase() === '265099E0-4287-4380-8265-77FF0AFD10B1') ||
+                  c.colClass === 'primarycontactname' || c.colClass === 'contactname';
+       });
+       if (contactNameCol) {
+           var contactVal = fieldValues[contactNameCol.colClass];
+           if (contactVal !== undefined && contactVal !== '--') {
+               cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + contactVal + '</strong></p>';
+           }
        }
 
        // Render "Website" as a clickable link (no label prefix)
-       var websiteCol = organizationGridCols.find(function(c) { return c.colClass === 'website'; });
-   if (websiteCol && org.website) {
-    var wsUrl = /^https?:\/\//i.test(org.website) ? org.website : 'https://' + org.website;
-
-    cardBody += '<p class="card-text mb-1">' +
-        '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer" style="color:#007bff !important;">' +
-        '<span class="font-weight-bold" style="color:#007bff !important;">Visit Website</span></a>' +
-    '</p>';
-}
+       // Matched by stable fieldId
+       var websiteCol = organizationGridCols.find(function(c) {
+           return (c.fieldId && c.fieldId.toUpperCase() === '6440F5F6-6F2F-49FC-8840-76E9D2EBAC00') ||
+                  c.colClass === 'website';
+       });
+       if (websiteCol) {
+           var wsRaw = org.website || (websiteCol && fieldValues[websiteCol.colClass] !== '--' ? fieldValues[websiteCol.colClass] : '');
+           if (wsRaw) {
+               var wsUrl = /^https?:\/\//i.test(wsRaw) ? wsRaw : 'https://' + wsRaw;
+               cardBody += '<p class="card-text mb-1">' +
+                   '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer" style="color:#007bff !important;">' +
+                   '<span class="font-weight-bold" style="color:#007bff !important;">Visit Website</span></a>' +
+               '</p>';
+           }
+       }
 
         organizationGridCols.forEach(function(colObj) {
             var col = colObj.colClass;
@@ -111,8 +124,8 @@ function renderClassicLayout(data, container) {
             if (label === 'Total Members') label = 'Total/Active Members';
 
             if (col === 'name') return;
-            if (col === 'contactname') return; // already rendered above
-            if (col === 'website') return;      // already rendered above as link
+            if (contactNameCol && col === contactNameCol.colClass) return; // already rendered above
+            if (websiteCol && col === websiteCol.colClass) return;         // already rendered above as link
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +

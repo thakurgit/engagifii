@@ -265,6 +265,14 @@ public function getClassesType($date){
 			  if (($b['colName'] ?? '') === 'Name') return 1;
 			  return 0;
 		  });
+		  // Deduplicate by colName, keeping the first (highest-priority) occurrence
+		  $seenColNames = [];
+		  $collection = array_values(array_filter($collection, function($item) use (&$seenColNames) {
+			  $colName = $item['colName'] ?? '';
+			  if (in_array($colName, $seenColNames, true)) return false;
+			  $seenColNames[] = $colName;
+			  return true;
+		  }));
 			wp_send_json($collection);
 		}
 		else

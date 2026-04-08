@@ -25,7 +25,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 </div>
                 
                 <!--Card Layout Template Selection-->
-                <div class="cols-wrapper card-layout-selection">
+                <div class="cols-wrapper card-layout-selection" style="display:none;">
                 	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
                     <div class="layout-options" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
                         <?php 
