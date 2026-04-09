@@ -1119,11 +1119,11 @@ public function getOrganizations(){
         foreach ($collection as $key => $value) { 
             $nestedData = array();
             $locationPopOver      = '';
-           if(count($value->locations)) {
+           if(count($value->locations ?? [])) {
                 $locationPopOver  = $this->_popOverLocationData($key, $value->locations, ['isSession' => false, 'useFieldName' => true ]);   
 			}
             $locationCount = 0 ;
-            foreach($value->locations as $key => $location){
+            foreach(($value->locations ?? []) as $key => $location){
 
                 if($location->fieldName){
                     $locationCount = $locationCount+1;
@@ -1145,19 +1145,21 @@ public function getOrganizations(){
                 $nestedData['locations'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
          
+            // primaryEmail may be a plain string OR an object {value, type} depending on the API response
+            $primaryEmailAddr = is_object($value->primaryEmail) ? ($value->primaryEmail->value ?? '') : ($value->primaryEmail ?? '');
             if ( $isLoggedIn ) {
-                $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');
-                $nestedData['primaryemail'] = $value->primaryEmail 
-                    ? '<a href="mailto:' . $value->primaryEmail . '">' . $value->primaryEmail . '</a>' 
-                    : ((isset($value->secondaryEmails) && count($value->secondaryEmails) > 0 && isset($value->secondaryEmails[0]->value)) 
-                        ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
+                $nestedData['phonenumbers'] = $this->formatPhoneNumber((!empty($value->phoneNumbers) ? $value->phoneNumbers[0]->value : null) ?? '');
+                $nestedData['primaryemail'] = !empty($primaryEmailAddr)
+                    ? '<a href="mailto:' . esc_attr($primaryEmailAddr) . '">' . esc_html($primaryEmailAddr) . '</a>' 
+                    : ((isset($value->secondaryEmails) && !empty($value->secondaryEmails) && isset($value->secondaryEmails[0]->value)) 
+                        ? '<a href="mailto:' . esc_attr($value->secondaryEmails[0]->value) . '">' . esc_html($value->secondaryEmails[0]->value) . '</a>' 
                         : '--');
             } else {
-                $nestedData['phonenumbers'] = $this->formatPhoneNumber($value->phoneNumbers[0]->value ?? '');
-                $nestedData['primaryemail'] = $value->primaryEmail 
-                    ? '<a href="mailto:' . $value->primaryEmail . '">' . $value->primaryEmail . '</a>' 
-                    : ((isset($value->secondaryEmails) && count($value->secondaryEmails) > 0 && isset($value->secondaryEmails[0]->value)) 
-                        ? '<a href="mailto:' . $value->secondaryEmails[0]->value . '">' . $value->secondaryEmails[0]->value . '</a>' 
+                $nestedData['phonenumbers'] = $this->formatPhoneNumber((!empty($value->phoneNumbers) ? $value->phoneNumbers[0]->value : null) ?? '');
+                $nestedData['primaryemail'] = !empty($primaryEmailAddr)
+                    ? '<a href="mailto:' . esc_attr($primaryEmailAddr) . '">' . esc_html($primaryEmailAddr) . '</a>' 
+                    : ((isset($value->secondaryEmails) && !empty($value->secondaryEmails) && isset($value->secondaryEmails[0]->value)) 
+                        ? '<a href="mailto:' . esc_attr($value->secondaryEmails[0]->value) . '">' . esc_html($value->secondaryEmails[0]->value) . '</a>' 
                         : '--');
             }
             $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
@@ -1261,12 +1263,11 @@ public function getOrganizations(){
 // Helper for popover columns (roles, tags, person types)
     public function buildPopoverColumn($key, $items, $label, $field) {
         $count = is_array($items) ? count($items) : 0;
-        $result = [];
         if ($count > 1) {
             $popover = $this->_popOverGenericData($key, $items, $label, $field);
             $remaining = $count - 1;
-            $first = htmlspecialchars($items[0]->$field);
-            $result[] = '<div class="dropdown pr-4 text-left">
+            $first = htmlspecialchars((string)($items[0]->$field ?? ''));
+            return '<div class="dropdown pr-4 text-left">
                 <span class="d-inline-block pr-2">' . $first . '</span>
                 <span data-toggle="dropdown" style="right:0; top:0; bottom:0"
                       class="position-absolute m-auto badge badge-sm bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle tag_' . $key . '"
@@ -1275,9 +1276,9 @@ public function getOrganizations(){
                       id="' . $key . '"> +' . $remaining . '</span>' . $popover . '
             </div>';
         } elseif ($count === 1) {
-            $result[] = htmlspecialchars($items[0]->$field);
+            return htmlspecialchars((string)($items[0]->$field ?? ''));
         }
-        return $result;
+        return '';
     }
 
     // Helper for extracting custom field value
