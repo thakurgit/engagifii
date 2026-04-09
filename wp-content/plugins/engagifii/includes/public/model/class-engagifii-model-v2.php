@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         ['groupMemberFilters', 'groupMemberFilters'],
         ['getCustomFieldFilterData', 'getCustomFieldFilterData'],
         ['groupCountFilterData', 'groupCountFilterData'],
-        ['organizationFilters', 'organizationFilters'],
+        //['organizationFilters', 'organizationFilters'],
         ['organizationCountFilterData', 'organizationCountFilterData'],
         ['getOrganizationFilterConfiguration', 'getOrganizationFilterConfiguration'],
         ['getFilterItemsFromServiceUrl', 'getFilterItemsFromServiceUrl']
@@ -1718,6 +1718,14 @@ public function getOrganizationFilterConfiguration() {
         $data = json_decode($dataResponse['api_response'], true);
         
         if ($data !== null) {
+            // Exclude 'Logo' from the filter list — it is display-only, not filterable
+            if (is_array($data)) {
+                $data = array_values(array_filter($data, function($filter) {
+                    $displayName = isset($filter['displayName']) ? strtolower($filter['displayName']) : '';
+                    $fieldName   = isset($filter['fieldName'])   ? strtolower($filter['fieldName'])   : '';
+                    return $displayName !== 'logo' && $fieldName !== 'logo';
+                }));
+            }
             wp_send_json_success($data);
         } else {
             wp_send_json_error(['message' => 'Invalid JSON response from API', 'raw' => $dataResponse['api_response']]);

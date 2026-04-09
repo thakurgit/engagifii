@@ -371,10 +371,10 @@ function ajaxCols(endpoint,visibleCols,$ul){
 				  customBadge = `<span class="cfield">Custom Field</span>`;
 				  cFieldClass = 'cField';
 				}
-				// For mandatory fields, add a hidden input so the value is submitted even though the checkbox is disabled
-				const hiddenInput = isMandatoryOrgField
-				  ? `<input type="hidden" name="${$ul.data('colsArray')}" value='${JSON.stringify(valueData)}' />`
-				  : '';
+				// For mandatory fields, the sortable-cols modal already contains the value
+				// via PHP rendering, so no extra hidden input is needed here.
+				// (Adding one here caused 'Name' to be duplicated on every WP form save.)
+				const hiddenInput = '';
                 html += `<li  data-order="${counter}">
                     <input class="${cFieldClass}" id="${colName}-${ind}" type="checkbox" value='${JSON.stringify(valueData)}'${attrs}>
                     <label for="${colName}-${ind}">${displayName}</label>${customBadge}${hiddenInput}
@@ -485,6 +485,37 @@ function checkboxEvents($list){
 	const colsArray = $list.data('colsArray');
     const $checkedList = $list.parents('.cols-dropdown').siblings('.checked-cols');
     const $popupList = $list.parents('.cols-dropdown').siblings('.colsOrderModal').find('.colsListBody')
+
+	// Seed mandatory (checked+disabled) fields into checked-cols and popupList immediately.
+	// This ensures they survive a dropdown refresh, since no 'change' event fires for pre-checked items.
+	$list.find('li:not(.toggleAll) input[type="checkbox"]:checked:disabled').each(function() {
+		const $checkbox = jQuery(this);
+		const colOrder = $checkbox.parent().attr('data-order');
+		const colVal = $checkbox.val();
+		const labelText = $checkbox.siblings('label').text();
+		if ($checkedList.find('[data-order="' + colOrder + '"]').length === 0) {
+			$checkedList.find('span.placeholder').remove();
+			const $li = jQuery(`
+				<li data-order="${colOrder}">
+				  ${labelText}
+				  <button title="Delete Column" class="uncheck-cols" disabled style="opacity:0.5;cursor:not-allowed;">
+					<i class="dashicons dashicons-no-alt"></i>
+				  </button>
+				</li>
+			`);
+			$li.attr('title', "This field can't be removed");
+			const $popli = jQuery(`
+				<li data-order="${colOrder}" class="ui-sortable-handle">
+				  <input type="hidden" value='${colVal}' name="${colsArray}" />
+				  <span class="dashicons dashicons-sort"></span>
+				  <div class="bdrs">${labelText}</div>
+				</li>
+			`);
+			updateOrder($checkedList, $li, parseInt(colOrder, 10));
+			updateOrder($popupList, $popli, parseInt(colOrder, 10));
+		}
+	});
+
     $list.find('li:not(.toggleAll) input[type="checkbox"]').on('change', function() {
       const $checkbox = jQuery(this);
       const colOrder = $checkbox.parent().attr('data-order');
@@ -516,6 +547,8 @@ function checkboxEvents($list){
 			updateOrder($popupList, $popli, newOrder);
 		}
 	  } else {
+		// Never remove a mandatory (disabled) field even if unchecked programmatically
+		if ($checkbox.prop('disabled')) { $checkbox.prop('checked', true); return; }
         $checkedList.find('[data-order="' + colOrder + '"]').remove();
 		$popupList.find('[data-order="' + colOrder + '"]').remove();
       }

@@ -274,9 +274,20 @@ function save_cols() {
     }
     // Sanitize inputs
     $raw_visible = isset($_POST['visible_column_list']) ? (array) $_POST['visible_column_list'] : [];
-	$visible = array_map(function($item) {
+	$visible_unsanitized = array_map(function($item) {
 		return sanitize_text_field(stripslashes($item));
 	}, $raw_visible);
+	// Deduplicate by colName to prevent multiple 'Name' entries from stacking up
+	$seen = [];
+	$visible = [];
+	foreach ($visible_unsanitized as $item) {
+		$decoded = json_decode($item, true);
+		$key = isset($decoded['colName']) ? strtolower($decoded['colName']) : $item;
+		if (!in_array($key, $seen)) {
+			$seen[] = $key;
+			$visible[] = $item;
+		}
+	}
     $settings = get_option('ebt_api_settings', []);
 	$columnPath = $_POST['column_namearray'] ?? '';
     if (strpos($columnPath, '[') !== false) {
