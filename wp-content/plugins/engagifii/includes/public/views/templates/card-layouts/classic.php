@@ -103,13 +103,29 @@ function renderClassicLayout(data, container) {
                   c.colClass === 'website';
        });
        if (websiteCol) {
-           var wsRaw = org.website || (websiteCol && fieldValues[websiteCol.colClass] !== '--' ? fieldValues[websiteCol.colClass] : '');
-           if (wsRaw) {
-               var wsUrl = /^https?:\/\//i.test(wsRaw) ? wsRaw : 'https://' + wsRaw;
-               cardBody += '<p class="card-text mb-1">' +
-                   '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer" style="color:#007bff !important;">' +
-                   '<span class="font-weight-bold" style="color:#007bff !important;">Visit Website</span></a>' +
-               '</p>';
+           // When guest masking is enabled for website, use the pre-masked HTML from fieldValues
+           if (!isUserLoggedIn && orgGuestHiddenFields.indexOf('website') !== -1) {
+               var maskedWebsite = fieldValues[websiteCol.colClass];
+               if (maskedWebsite && maskedWebsite !== '--') {
+                   cardBody += '<p class="card-text mb-1">' + maskedWebsite + '</p>';
+               }
+           } else {
+               // Use the raw org.website URL only — fieldValues contains pre-formatted HTML and must NOT be used as a URL
+               var wsRaw = org.website || '';
+               // Fallback: check raw custom fields for the website fieldId when org.website is absent
+               if (!wsRaw && websiteCol.fieldId) {
+                   var wsCf = (org.customFields || []).find(function(cf) {
+                       return cf.fieldId && cf.fieldId.toLowerCase() === websiteCol.fieldId.toLowerCase() && cf.fieldValue;
+                   });
+                   if (wsCf) wsRaw = wsCf.fieldValue;
+               }
+               if (wsRaw) {
+                   var wsUrl = /^https?:\/\//i.test(wsRaw) ? wsRaw : 'https://' + wsRaw;
+                   cardBody += '<p class="card-text mb-1">' +
+                       '<a href="' + wsUrl + '" target="_blank" rel="noopener noreferrer" style="color:#007bff !important;">' +
+                       '<span class="font-weight-bold" style="color:#007bff !important;">Visit Website</span></a>' +
+                   '</p>';
+               }
            }
        }
 
