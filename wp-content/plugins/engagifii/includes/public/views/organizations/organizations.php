@@ -567,7 +567,7 @@ function applyGuestMask(value, colClass) {
     var placeholder = (colClass === 'phonenumbers') ? '(•••)\u00a0•••-••••'
                     : (colClass === 'primaryemail')  ? '••••@•••••.•••'
                     : '• • • • • • •';
-    return '<a href="' + wpLoginUrl + '" title="Login to view" style="text-decoration:none;color:inherit;">'
+    return '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">'
          + lockIcon + '<span style="' + maskStyle + '">' + placeholder + '</span></a>';
 }
 

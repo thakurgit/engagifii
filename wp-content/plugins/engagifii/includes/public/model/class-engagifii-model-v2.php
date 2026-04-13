@@ -1211,12 +1211,12 @@ public function getOrganizations(){
             }
 
             // Apply guest field masking for list view (admin-configurable)
-            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
+            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {                
                 $maskStyle  = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
                 $lockIcon   = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
-                $maskedPhone   = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">(•••)&nbsp;•••-••••</span></a>';
-                $maskedEmail   = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span></a>';
-                $maskedGeneric = '<a href="' . esc_url($loginUrl) . '" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span></a>';
+                $maskedPhone   = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">(•••)&nbsp;•••-••••</span></a>';
+                $maskedEmail   = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span></a>';
+                $maskedGeneric = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span></a>';
                 foreach ( $guest_hidden_fields as $fieldName ) {
                     $colClass = preg_replace('/\s+/', '', strtolower($fieldName));
                     if ( isset( $nestedData[ $colClass ] ) ) {
