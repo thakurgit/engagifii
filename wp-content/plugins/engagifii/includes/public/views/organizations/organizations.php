@@ -210,7 +210,7 @@ $i = 0;
                 <?php
                 $org_opts = get_option('ebt_api_settings');
                 $saved_cpp = isset($org_opts['organization_settings']['grid']['cards_per_page']) ? intval($org_opts['organization_settings']['grid']['cards_per_page']) : 8;
-                foreach ([8, 12, 16, 24, 32] as $n) {
+                foreach ([8, 12, 16, 24, 32, 64] as $n) {
                     $sel = ($n === $saved_cpp) ? 'selected' : '';
                     echo "<option value=\"$n\" $sel>$n</option>";
                 }
