@@ -197,12 +197,27 @@ $i = 0;
 	<div class="row mb-4">
     	
     </div>
-    <nav aria-label="Page navigation example">
-  <ul class="pagination pagination-sm justify-content-center grid-pagination">
-    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+    <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm justify-content-center grid-pagination" style="margin-bottom:0;">
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+        <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#555;">
+            <label for="org-per-page-select" style="margin:0; white-space:nowrap;">Per page:</label>
+            <select id="org-per-page-select" style="padding:3px 8px; border:1px solid #ccc; border-radius:4px; font-size:13px;">
+                <?php
+                $org_opts = get_option('ebt_api_settings');
+                $saved_cpp = isset($org_opts['organization_settings']['grid']['cards_per_page']) ? intval($org_opts['organization_settings']['grid']['cards_per_page']) : 8;
+                foreach ([8, 12, 16, 24, 32] as $n) {
+                    $sel = ($n === $saved_cpp) ? 'selected' : '';
+                    echo "<option value=\"$n\" $sel>$n</option>";
+                }
+                ?>
+            </select>
+        </div>
+    </div>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
 <?php } ?>
@@ -225,6 +240,14 @@ jQuery(document).ready(function($) {
     echo isset($org_options['organization_settings']['grid']['cards_per_page']) ? intval($org_options['organization_settings']['grid']['cards_per_page']) : 8;
   ?>;
   var titleColumn = '<?php echo $title_key; ?>';
+
+  // Per-page selector — update length and reload from page 1
+  $(document).on('change', '#org-per-page-select', function() {
+    length = parseInt($(this).val(), 10);
+    start = 0;
+    OrgList(start);
+  });
+
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
   // Fields to hide/blur for non-logged-in users (admin-configurable)

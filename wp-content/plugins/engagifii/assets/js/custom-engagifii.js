@@ -374,6 +374,9 @@ function buildPopoverHtml(field, items) {
 }
 
 function renderPagination(totalCount, start, length, modulename) {
+  // Sync per-page dropdown with current length value
+  $('#org-per-page-select').val(length);
+
   const $pagination = $('.grid-pagination');
   const currentPage = Math.floor(start / length) + 1;
   const totalPages = Math.ceil(totalCount / length);
