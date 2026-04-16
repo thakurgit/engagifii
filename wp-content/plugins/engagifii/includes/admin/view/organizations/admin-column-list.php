@@ -108,6 +108,31 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                             <?php endforeach; ?>
                         </select>
                     </div>
+
+                </div>
+
+                <!--Cards Per Page (Grid View)-->
+                <div class="cols-wrapper">
+                    <h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Grid View Pagination</h3><i>Choose how many cards are shown per page in grid view.</i><hr>
+                    <?php
+                    $current_cards_per_page = isset($options['organization_settings']['grid']['cards_per_page'])
+                        ? intval($options['organization_settings']['grid']['cards_per_page']) : 8;
+                    ?>
+                    <div style="margin-top: 10px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
+                        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+                            <span class="dashicons dashicons-screenoptions" style="vertical-align: middle;"></span>&nbsp;
+                            Cards Per Page
+                        </label>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many organization cards are shown per page in grid view.</p>
+                        <select name="ebt_api_settings[organization_settings][grid][cards_per_page]"
+                                style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
+                            <?php foreach ([8, 12, 16, 24, 32, 64] as $n) : ?>
+                                <option value="<?php echo $n; ?>" <?php selected($current_cards_per_page, $n); ?>>
+                                    <?php echo $n; ?> per page
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
 
                 <!--Guest Field Visibility-->

@@ -220,7 +220,10 @@ jQuery(document).ready(function($) {
   //var groupId = $('#groupTabs li:first-child a').attr('id');
   var viewMode='<?php echo $allowedViewMode; ?>';
   var start = 0;
-  var length = 8;
+  var length = <?php
+    $org_options = get_option('ebt_api_settings');
+    echo isset($org_options['organization_settings']['grid']['cards_per_page']) ? intval($org_options['organization_settings']['grid']['cards_per_page']) : 8;
+  ?>;
   var titleColumn = '<?php echo $title_key; ?>';
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
