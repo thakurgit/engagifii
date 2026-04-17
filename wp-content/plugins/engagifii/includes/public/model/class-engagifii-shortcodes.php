@@ -547,10 +547,12 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		ob_start();
 		$atts = shortcode_atts(array(      
         'viewmode' => '',
-        'tags' => ''
+        'tags' => '',
+        'orgtype' => ''
     ), $attr);   
     $viewMode = $atts['viewmode'];
     $orgTags = $atts['tags'];
+    $orgType = $atts['orgtype'];
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
 		return ob_get_clean();
 	}

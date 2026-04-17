@@ -1002,7 +1002,7 @@ public function getOrganizations(){
 
         if (!empty($organizationTypes)) {
             $filterRules[] = [
-                "fieldId" => "organizationType",
+                "fieldId" => "orgType",
                 "filterType" => 4,
                 "selectedValues" => $organizationTypes
             ];
@@ -1057,7 +1057,7 @@ public function getOrganizations(){
                 ]
             ]
         ];
-        //xprint_r(json_encode($postedData)); die;
+        //print_r(json_encode($postedData)); die;
         $dataResponse = $this->submitApiRequest("OrganizationPagingListWithCF/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;

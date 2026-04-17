@@ -10,6 +10,10 @@ if ($setupCompleted && !in_array('organization_directory', $enabled_modules)) {
 if (!isset($orgTags)) {
     $orgTags = '';
 }
+// Handle orgType parameter from shortcode (optional - filters organizations by type if provided)
+if (!isset($orgType)) {
+    $orgType = '';
+}
 
 	$collection 	=	array();
   $forDatatable 	= 	array();
@@ -197,26 +201,11 @@ $i = 0;
 	<div class="row mb-4">
     	
     </div>
-    <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination pagination-sm justify-content-center grid-pagination" style="margin-bottom:0;">
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
-        <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#555;">
-            <label for="org-per-page-select" style="margin:0; white-space:nowrap;">Per page:</label>
-            <select id="org-per-page-select" style="padding:3px 8px; border:1px solid #ccc; border-radius:4px; font-size:13px;">
-                <?php
-                $org_opts = get_option('ebt_api_settings');
-                $saved_cpp = isset($org_opts['organization_settings']['grid']['cards_per_page']) ? intval($org_opts['organization_settings']['grid']['cards_per_page']) : 8;
-                foreach ([8, 12, 16, 24, 32, 64] as $n) {
-                    $sel = ($n === $saved_cpp) ? 'selected' : '';
-                    echo "<option value=\"$n\" $sel>$n</option>";
-                }
-                ?>
-            </select>
-        </div>
+    <!-- Infinite scroll sentinel -->
+    <div id="org-scroll-sentinel" style="height:1px; margin-top:20px;"></div>
+    <div id="org-load-more-spinner" style="display:none; text-align:center; padding:20px 0;">
+        <div class="spinner-border spinner-border-sm text-secondary" role="status"><span class="sr-only">Loading...</span></div>
+        <span style="margin-left:8px; color:#888; font-size:13px;">Loading more...</span>
     </div>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
@@ -237,16 +226,12 @@ jQuery(document).ready(function($) {
   var start = 0;
   var length = <?php
     $org_options = get_option('ebt_api_settings');
-    echo isset($org_options['organization_settings']['grid']['cards_per_page']) ? intval($org_options['organization_settings']['grid']['cards_per_page']) : 8;
+    echo isset($org_options['organization_settings']['grid']['cards_per_page']) ? intval($org_options['organization_settings']['grid']['cards_per_page']) : 12;
   ?>;
+  var orgTotalCount = 0;     // total records from API
+  var orgIsLoading  = false; // prevent concurrent requests
+  var orgHasMore    = true;  // false when all records loaded
   var titleColumn = '<?php echo $title_key; ?>';
-
-  // Per-page selector — update length and reload from page 1
-  $(document).on('change', '#org-per-page-select', function() {
-    length = parseInt($(this).val(), 10);
-    start = 0;
-    OrgList(start);
-  });
 
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
@@ -256,7 +241,8 @@ jQuery(document).ready(function($) {
     $normalized = array_map(function($f) { return preg_replace('/\s+/', '', strtolower($f)); }, $ghf);
     echo json_encode(array_values($normalized));
   ?>;
-  var organizationTypes = [];
+  var initialOrganizationTypes = <?php echo isset($orgType) && !empty($orgType) ? json_encode(array_map('trim', explode(',', $orgType))) : '[]'; ?>;
+  var organizationTypes = initialOrganizationTypes.slice(); // Copy initial types
   var statuses = [];
   var locations = [];
   var initialOrganizationTags = <?php echo isset($orgTags) && !empty($orgTags) ? json_encode(array_map('trim', explode(',', $orgTags))) : '[]'; ?>;
@@ -280,7 +266,7 @@ jQuery(document).ready(function($) {
 		  $('.list-view').hide();
 		  $('.grid-view').show();
 		  $('#grid-search-wrapper').show();
-		  OrgList(start);
+		  resetOrgGrid();
 	  } else {
 		  $('.list-view').show();
 		  $('.grid-view').hide();
@@ -375,11 +361,25 @@ jQuery(document).ready(function($) {
 	
 	//fetch group members
 	var gridSearchQuery = '';
+
+	// Reset grid state and reload from scratch (used on filter/search/viewmode change)
+	function resetOrgGrid() {
+		start = 0;
+		orgHasMore = true;
+		orgIsLoading = false;
+		$('.grid-view .row').empty();
+		OrgList(start);
+	}
+
 	function OrgList(start){ 
-		 $('.grid-view #eng-overlay').show();
-		  $('.grid-view .row').css('opacity','.3');
-		  
-		// Merge custom fields with dynamic filter selections
+		 if (orgIsLoading) return;
+		 orgIsLoading = true;
+		 if (start === 0) {
+			 $('.grid-view #eng-overlay').show();
+			 $('.grid-view .row').css('opacity','.3');
+		 } else {
+			 $('#org-load-more-spinner').show();
+		 }
 		var allCustomFields = Object.assign({}, customFields || {});
 		if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
 			Object.keys(dynamicFilterSelections).forEach(function(key) {
@@ -417,18 +417,35 @@ jQuery(document).ready(function($) {
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
 			  $('.grid-view .row').css('opacity','1');
+			  $('#org-load-more-spinner').hide();
+			orgIsLoading = false;
 			try {
 			   var parsedResponse = JSON.parse(response);
 			  var data = parsedResponse.data || [];
-			  renderOrgGrid(data);
-			 renderPagination(parsedResponse.count, start, length, modulename='organizations');
+			  orgTotalCount = parsedResponse.count || 0;
+
+			  if (start === 0) {
+				  // First load — replace container
+				  renderOrgGrid(data);
+			  } else {
+				  // Subsequent loads — append cards
+				  appendOrgGrid(data);
+			  }
+
+			  // Determine if more records exist
+			  var loadedSoFar = start + data.length;
+			  orgHasMore = loadedSoFar < orgTotalCount;
 			} catch (e) {
 			  console.error('Error parsing response:', e);
+			  orgIsLoading = false;
+			  orgHasMore = false;
 			}
 		  },
 		  error: function() {
 			$('.grid-view #eng-overlay').hide();
 			 $('.grid-view .row').css('opacity','1');
+			$('#org-load-more-spinner').hide();
+			orgIsLoading = false;
 			console.error('AJAX request failed');
 		  }
         });
@@ -440,8 +457,7 @@ jQuery(document).ready(function($) {
 		clearTimeout(gridSearchTimeout);
 		gridSearchQuery = $(this).val();
 		gridSearchTimeout = setTimeout(function() {
-			start = 0;
-			OrgList(start);
+			resetOrgGrid();
 		}, 400);
 	});
 	
@@ -537,7 +553,24 @@ function renderOrgGrid(data) {
             renderClassicLayout(data, container);
             break;
     }
-    
+    initOrgPopovers();
+} // end renderOrgGrid
+
+// Append more cards without clearing (used for infinite scroll load-more)
+function appendOrgGrid(data) {
+    if (!data || data.length === 0) return;
+    var container = $('.grid-view .row');
+    switch(cardLayoutTemplate) {
+        case 'modern':    renderModernLayout(data, container, true);  break;
+        case 'minimal':   renderMinimalLayout(data, container, true); break;
+        case 'detailed':  renderDetailedLayout(data, container, true); break;
+        case 'classic':
+        default:          renderClassicLayout(data, container, true); break;
+    }
+    initOrgPopovers();
+} // end appendOrgGrid
+
+function initOrgPopovers() {
     setTimeout(function() {
         // General popovers use hover
         $('[data-toggle="popover"]:not(.org-location-popover)').popover({ trigger: 'hover', html: true });
@@ -800,7 +833,27 @@ dt_titleSearch('Search Organization');
 }
 
   ?>
-  
+
+// ── Infinite scroll via IntersectionObserver ───────────────────────────────
+(function() {
+    if (!('IntersectionObserver' in window)) return; // Fallback: no observer support
+
+    var sentinel = document.getElementById('org-scroll-sentinel');
+    if (!sentinel) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+        if (!entries[0].isIntersecting) return;
+        if (orgIsLoading || !orgHasMore) return;
+        if (typeof viewMode !== 'undefined' && viewMode !== 'grid') return;
+
+        // Advance start and load next batch
+        start = start + length;
+        OrgList(start);
+    }, { rootMargin: '800px' }); // trigger 800px before sentinel is visible so cards load before user reaches bottom
+
+    observer.observe(sentinel);
+})();
+
 // Load dynamic filters after page loads
 window.addEventListener("load", function () {
     // Initially show filter content and hide the main loader
@@ -1189,8 +1242,7 @@ $('#apply-filter-data').click(function() {
         table.draw();
     }
     if (viewMode === 'grid') {
-        start = 0;
-        OrgList(start);
+        resetOrgGrid();
     }
     $('.filter-area').addClass('d-none');
     $('#apply-filter-data .spinner-border').remove();
@@ -1226,8 +1278,7 @@ $('#clear-all').click(function() {
         table.draw();
     }
     if (viewMode === 'grid') {
-        start = 0;
-        OrgList(start);
+        resetOrgGrid();
     }
     $('.filter-area').addClass('d-none');   
     $('.filter-icon').removeClass('active');
