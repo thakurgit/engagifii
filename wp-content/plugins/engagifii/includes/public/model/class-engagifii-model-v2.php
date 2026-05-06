@@ -1144,24 +1144,17 @@ public function getOrganizations(){
             } else {
                 $nestedData['locations'] = '<div class="dropdown"><div class=" instructor_'.$key.' " data-placement="left" data-containerid="' . $key . '" id="' . $key . '"><img src="'.ENGAGIFII_ASSETS_URL.'/images/Location_Specified.png" class="img-icon-lg img-fluid" alt="instructor-icon" style="filter: grayscale(1);"><span style="visibility: hidden;" class="bg-dark badge-count d-inline-block rounded-circle position-relative text-white d-inline-flex align-items-center justify-content-center"></span></div></div>';
             }
+         $nestedData['phonenumbers'] = $this->formatPhoneNumber((!empty($value->phoneNumbers) ? $value->phoneNumbers[0]->value : null) ?? '');
          
-            // primaryEmail may be a plain string OR an object {value, type} depending on the API response
-            $primaryEmailAddr = is_object($value->primaryEmail) ? ($value->primaryEmail->value ?? '') : ($value->primaryEmail ?? '');
-            if ( $isLoggedIn ) {
-                $nestedData['phonenumbers'] = $this->formatPhoneNumber((!empty($value->phoneNumbers) ? $value->phoneNumbers[0]->value : null) ?? '');
-                $nestedData['primaryemail'] = !empty($primaryEmailAddr)
-                    ? '<a href="mailto:' . esc_attr($primaryEmailAddr) . '">' . esc_html($primaryEmailAddr) . '</a>' 
-                    : ((isset($value->secondaryEmails) && !empty($value->secondaryEmails) && isset($value->secondaryEmails[0]->value)) 
-                        ? '<a href="mailto:' . esc_attr($value->secondaryEmails[0]->value) . '">' . esc_html($value->secondaryEmails[0]->value) . '</a>' 
-                        : '--');
+         //primary email org
+            if (isset($value->primaryEmail->value) && !empty($value->primaryEmail->value)) {
+                $nestedData['primaryemail'] = '<a href="mailto:' . esc_attr($value->primaryEmail->value) . '">' . esc_html($value->primaryEmail->value) . '</a>';
+            } elseif (isset($value->secondaryEmails[0]->value) && !empty($value->secondaryEmails[0]->value)) {
+                $nestedData['primaryemail'] = '<a href="mailto:' . esc_attr($value->secondaryEmails[0]->value) . '">' . esc_html($value->secondaryEmails[0]->value) . '</a>';
             } else {
-                $nestedData['phonenumbers'] = $this->formatPhoneNumber((!empty($value->phoneNumbers) ? $value->phoneNumbers[0]->value : null) ?? '');
-                $nestedData['primaryemail'] = !empty($primaryEmailAddr)
-                    ? '<a href="mailto:' . esc_attr($primaryEmailAddr) . '">' . esc_html($primaryEmailAddr) . '</a>' 
-                    : ((isset($value->secondaryEmails) && !empty($value->secondaryEmails) && isset($value->secondaryEmails[0]->value)) 
-                        ? '<a href="mailto:' . esc_attr($value->secondaryEmails[0]->value) . '">' . esc_html($value->secondaryEmails[0]->value) . '</a>' 
-                        : '--');
+                $nestedData['primaryemail'] = '--';
             }
+           
             $nestedData['organizationtype'] = $value->organizationType ? $value->organizationType : '';
            // $nestedData['organizationTags'] = '';
             $nestedData['website'] = !empty($value->website) 

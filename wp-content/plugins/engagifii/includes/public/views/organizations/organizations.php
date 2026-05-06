@@ -636,7 +636,7 @@ function buildFieldValues(org) {
         name: org.name || '--',
         primaryemail: applyGuestMask(
             org.primaryEmail
-                ? '<a href="mailto:' + org.primaryEmail + '">' + org.primaryEmail + '</a>'
+                ? '<a href="mailto:' + org.primaryEmail.value + '">' + org.primaryEmail.value + '</a>'
                 : (org.secondaryEmails && org.secondaryEmails.length > 0
                     ? '<a href="mailto:' + org.secondaryEmails[0].value + '">' + org.secondaryEmails[0].value + '</a>'
                     : '--'),
@@ -849,7 +849,8 @@ dt_titleSearch('Search Organization');
         // Advance start and load next batch
         start = start + length;
         OrgList(start);
-    }, { rootMargin: '800px' }); // trigger 800px before sentinel is visible so cards load before user reaches bottom
+      
+    }, { rootMargin: '100px' }); // trigger 100px before sentinel is visible so cards load before user reaches bottom
 
     observer.observe(sentinel);
 })();
@@ -1054,6 +1055,19 @@ function initializeDynamicFilterHandlers() {
             });
         }
         
+        if (dynamicFilterSelections['orgType'] && typeof organizationTypes !== 'undefined' && organizationTypes.length > 0) {
+            if (!dynamicFilterSelections['orgType'].includes(organizationTypes[0])) {
+                dynamicFilterSelections['orgType'].unshift(organizationTypes[0]);
+            }
+        }
+        
+        if (dynamicFilterSelections['tags'] && typeof organizationTags !== 'undefined' && organizationTags.length > 0) {
+            if (!dynamicFilterSelections['tags'].includes(organizationTags[0])) {
+                dynamicFilterSelections['tags'].unshift(organizationTags[0]);
+            }
+        }
+        
+         
         // Trigger filter count update
         if ($('#apply-filter-data .spinner-border').length == 0) {
             $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
@@ -1125,7 +1139,7 @@ function loadFilterData($filterList) {
                             if (value && display && value !== '' && display !== '') {
                                 htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                                 htmlContent += '<label class="m-0">';
-                                htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                                htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '" ' + (organizationTypes.includes(value) ? 'checked disabled' : '') + '>';
                                 htmlContent += display;
                                 htmlContent += '</label></li>';
                             }
@@ -1195,7 +1209,7 @@ function getCheckedValues(selector) {
 
 // Common function to clear all checkboxes in a filter area
 function clearAllCheckboxes(selector) {
-    $(selector + ' input[type="checkbox"]').prop('checked', false);
+    $(selector + ' input[type="checkbox"]:not(:disabled)').prop('checked', false);
 }
 
 // Common function to reset customFields object
@@ -1221,7 +1235,7 @@ function updateCustomFieldsFromDOM() {
 // Apply filter button click handler
 $('#apply-filter-data').click(function() {
     // Collect values from old filters (backward compatibility)
-    organizationTypes = getCheckedValues('.organizationType-filter');
+    //organizationTypes = getCheckedValues('.organizationType-filter');
     statuses = getCheckedValues('.status-filter');
     locations = getCheckedValues('.locations-filter');
     
@@ -1255,7 +1269,8 @@ $('#apply-filter-data').click(function() {
 // Clear all filters functionality
 $('#clear-all').click(function() {
     // Clear old filters
-    organizationTypes = [];
+    // organizationTypes = [];
+    organizationTypes = initialOrganizationTypes.slice();
     statuses = [];
     locations = [];
     organizationTags = initialOrganizationTags.slice(); // Reset to initial tags from shortcode
@@ -1384,7 +1399,7 @@ function countFilterData() {
     
     // Set new timeout to delay the API call
     countFilterDataTimeout = setTimeout(function() {
-        var organizationTypes = getCheckedValues('.organizationType-filter');
+       // var organizationTypes = getCheckedValues('.organizationType-filter');
         var statuses = getCheckedValues('.status-filter');
         var locations = getCheckedValues('.locations-filter');
         var organizationTags = getCheckedValues('.organizationTags-filter');
@@ -1397,7 +1412,7 @@ function countFilterData() {
                 allCustomFields[key] = dynamicFilterSelections[key];
             }
         });
-
+       
         currentCountRequest = $.ajax({
             type: "post",
             url: engagifiiUrl_ajaxurl,
