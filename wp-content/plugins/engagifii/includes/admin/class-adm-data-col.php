@@ -215,7 +215,7 @@ public function getClassesType($date){
 	public function groupColumns(){
 		$options = get_option( 'ebt_api_settings' );
 		$tenantCode = $options['dashboard_tenant_code'];
-		$dataResponse = $this->submitApiRequest("PeopleColumnList/".$tenantCode,array(),"GET",'dashboard');
+		$dataResponse = $this->submitApiRequest("PeopleColumnList/",array(),"GET",'dashboard');
 		if(isset($dataResponse['api_response'])){
 			$response   = json_decode($dataResponse['api_response'], true);
 			$withoutFieldId = [];

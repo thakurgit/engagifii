@@ -656,7 +656,7 @@ if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
 ];
 
 //print_r(json_encode($postedData)); die;
-        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$tenantCode."/".$groupId, $postedData, "POST", 'dashboard');       
+        $dataResponse = $this->submitApiRequest("GroupPeopleList/".$groupId, $postedData, "POST", 'dashboard');       
                 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
@@ -1436,7 +1436,7 @@ public function groupCountFilterData() {
         $groupId = sanitize_text_field($_POST['groupId']);
 
     $postedData = $this->_groupPostCountData();
-     $apiEndpoint = "GroupPeopleListCount/meams/{$groupId}";
+     $apiEndpoint = "GroupPeopleListCount/{$groupId}";
     $dataResponse = $this->submitApiRequest($apiEndpoint, $postedData, "POST", 'dashboard');
     // print_r($dataResponse); die;
     header("Content-Type: application/json");
