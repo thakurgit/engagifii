@@ -22,7 +22,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
     }else{
         $options = get_option( 'ebt_api_settings' );
 		$tenantCode = $options['dashboard_tenant_code'];
-      $dataResponse = $this->submitApiRequest("PeopleColumnList/".$tenantCode,array(),"GET",'dashboard');
+      $dataResponse = $this->submitApiRequest("PeopleColumnList/",array(),"GET",'dashboard');
         if(!$dataResponse['api_response']){
             echo '<h5 class="text-center text-danger"><strong><em>No data found! Please contact website admin.</em></strong><h5>';
             return;
