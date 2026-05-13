@@ -1061,12 +1061,6 @@ function initializeDynamicFilterHandlers() {
             }
         }
         
-        if (dynamicFilterSelections['tags'] && typeof organizationTags !== 'undefined' && organizationTags.length > 0) {
-            if (!dynamicFilterSelections['tags'].includes(organizationTags[0])) {
-                dynamicFilterSelections['tags'].unshift(organizationTags[0]);
-            }
-        }
-        
          
         // Trigger filter count update
         if ($('#apply-filter-data .spinner-border').length == 0) {
