@@ -1,9 +1,9 @@
 <?php
 //use this file for defining common variable being used across plugin
  $options = get_option('ebt_api_settings');
-	$front_pages = $options['front_pages'] ?? array();
+	$front_pages = (is_array($options) && isset($options['front_pages'])) ? $options['front_pages'] : array();
 //Bills page link
-	$bills_page = $front_pages['bills_page'] ?? '';
+	$bills_page = (is_array($front_pages) && isset($front_pages['bills_page'])) ? $front_pages['bills_page'] : '';
 	if($bills_page){
 		$bills_page_link=get_permalink( $bills_page );	
 	}else{
@@ -11,7 +11,7 @@
 	}
 	define('BILLS_PAGE_LINK', $bills_page_link);
 //Bills detail page link
-	$bills_detail_page = $front_pages['bills_detail_page'] ?? '';
+	$bills_detail_page = (isset($front_pages['bills_detail_page']) && is_array($front_pages)) ? $front_pages['bills_detail_page'] : '';
 	if($bills_detail_page){
 		$bills_detail_page_link=get_permalink( $bills_detail_page );	
 	}else{

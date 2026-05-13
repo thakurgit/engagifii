@@ -24,7 +24,7 @@ final class Engagifii
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.0';
+	public $version = ENGAGIFII_VERSION;
 	public $engagifiiShortcode;
 	public $wpdbObject;
 	public $pluginBasePath;
