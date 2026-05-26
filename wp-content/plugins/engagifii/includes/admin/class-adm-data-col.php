@@ -260,11 +260,14 @@ public function getClassesType($date){
 		  }
 		  $collection = array_values($collection);
 		  // Ensure Name is always first in the list
-		  usort($collection, function($a, $b) {
-			  if (($a['colName'] ?? '') === 'Name') return -1;
-			  if (($b['colName'] ?? '') === 'Name') return 1;
-			  return 0;
-		  });
+		  $nameIndex = null;
+		  foreach ($collection as $i => $item) {
+			  if (($item['colName'] ?? '') === 'Name') { $nameIndex = $i; break; }
+		  }
+		  if ($nameIndex !== null && $nameIndex !== 0) {
+			  $nameItem = array_splice($collection, $nameIndex, 1);
+			  array_unshift($collection, $nameItem[0]);
+		  }
 		  // Deduplicate by colName, keeping the first (highest-priority) occurrence
 		  $seenColNames = [];
 		  $collection = array_values(array_filter($collection, function($item) use (&$seenColNames) {
@@ -274,6 +277,7 @@ public function getClassesType($date){
 			  return true;
 		  }));
 			wp_send_json($collection);
+			
 		}
 		else
 			return array();
