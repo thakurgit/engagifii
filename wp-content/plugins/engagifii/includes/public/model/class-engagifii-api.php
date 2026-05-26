@@ -89,7 +89,7 @@ class Engagifii_API{
 				CURLOPT_ENCODING 		=> "",   
 				CURLOPT_CUSTOMREQUEST 	=> $requestType,
 				CURLOPT_POSTFIELDS 		=> json_encode($requestData),
-				CURLOPT_TIMEOUT=>10,
+				CURLOPT_TIMEOUT=>30,
 				CURLOPT_HTTPHEADER 		=> array(
 					"cache-control: no-cache",
 					"content-type: application/json",   
