@@ -100,3 +100,10 @@ if ( ! defined( 'EVENTS_PAGE_LINK' ) ) {
 			: ['phoneNumbers', 'primaryEmail']; // default: hide phone + email for guests
 		define('ORGANIZATION_GUEST_HIDDEN_FIELDS', $organization_guest_hidden_fields);
 	}
+//Group Members guest hidden fields (fields to blur/hide for non-logged-in users)
+	if ( ! defined('GROUP_MEMBERS_GUEST_HIDDEN_FIELDS') ) {
+		$gm_guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['group_members_settings'] ?? [])
+			? ($options['group_members_settings']['guest_hidden_fields'] ?? [])
+			: ['email', 'phone']; // default: hide email + phone for guests
+		define('GROUP_MEMBERS_GUEST_HIDDEN_FIELDS', $gm_guest_hidden_fields);
+	}

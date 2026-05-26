@@ -15,7 +15,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('group_directory')
 		} else{ ?>
         	<!--Groups columns list-->
 			<div class="cols-wrapper">
-            	<h3><span class="dashicons dashicons-list-view"></span>&nbsp;&nbsp;Manage Column Visibility (List View)</h3><i>Check the columns that should be visible on the page. <strong>Max 5 Custom fields allowed.</strong></i><hr>
+            	<h3><span class="dashicons dashicons-list-view"></span>&nbsp;&nbsp;Manage Column Visibility (List View)</h3><i>Check the columns that should be visible on the page. <strong>Max 6 Custom fields allowed.</strong></i><hr>
             <?php renderColumnsUI(['group_members_settings', 'list', 'visible_column_list'],'groupColumns'); ?>
                 </div>
                 <!--Groups columns grid-->
@@ -23,6 +23,103 @@ if ($setupCompleted && !engagifii_should_show_module_settings('group_directory')
                 	<h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Manage Column Visibility (Grid View)</h3><i>Check the columns that should be visible on the page. <strong>Maximum 6 fields are allowed.</strong></i><hr>
             <?php renderColumnsUI(['group_members_settings', 'grid', 'visible_column_list'],'groupColumns'); ?>
                 </div>
+
+                <!--Cards Per Row (Grid View)-->
+                <div class="cols-wrapper">
+                    <h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Cards Per Row (Grid View)</h3><i>Choose how many member cards appear in each row.</i><hr>
+                    <?php
+                    $current_gm_cards_per_row = isset($options['group_members_settings']['grid']['classic_cards_per_row'])
+                        ? intval($options['group_members_settings']['grid']['classic_cards_per_row']) : 4;
+                    ?>
+                    <div style="margin-top: 10px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
+                        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+                            <span class="dashicons dashicons-grid-view" style="vertical-align: middle;"></span>&nbsp;
+                            Cards Per Row
+                        </label>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many member cards appear in each row in grid view.</p>
+                        <select name="ebt_api_settings[group_members_settings][grid][classic_cards_per_row]"
+                                style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
+                            <?php foreach ([2, 3, 4] as $n) : ?>
+                                <option value="<?php echo $n; ?>" <?php selected($current_gm_cards_per_row, $n); ?>>
+                                    <?php echo $n; ?> per row
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Cards Per Page (Grid View)-->
+                <div class="cols-wrapper">
+                    <h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Grid View Pagination</h3><i>Choose how many cards are shown per page in grid view.</i><hr>
+                    <?php
+                    $current_gm_cards_per_page = isset($options['group_members_settings']['grid']['cards_per_page'])
+                        ? intval($options['group_members_settings']['grid']['cards_per_page']) : 12;
+                    ?>
+                    <div style="margin-top: 10px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
+                        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+                            <span class="dashicons dashicons-screenoptions" style="vertical-align: middle;"></span>&nbsp;
+                            Cards Per Page
+                        </label>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many member cards are shown per page in grid view.</p>
+                        <select name="ebt_api_settings[group_members_settings][grid][cards_per_page]"
+                                style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
+                            <?php foreach ([8, 12, 16, 24, 32, 64] as $n) : ?>
+                                <option value="<?php echo $n; ?>" <?php selected($current_gm_cards_per_page, $n); ?>>
+                                    <?php echo $n; ?> per page
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Guest Field Visibility-->
+                <div class="cols-wrapper guest-field-visibility">
+                    <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>
+                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in. Logged-in members always see the full data.</i><hr>
+                    <?php
+                    $gm_guest_hidden = array_key_exists('guest_hidden_fields', $options['group_members_settings'] ?? [])
+                        ? ($options['group_members_settings']['guest_hidden_fields'] ?? [])
+                        : ['email', 'phone'];
+
+                    // Build union of list + grid cols
+                    $gm_list_cols = isset($options['group_members_settings']['list']['visible_column_list'])
+                        ? $options['group_members_settings']['list']['visible_column_list'] : [];
+                    $gm_grid_cols = isset($options['group_members_settings']['grid']['visible_column_list'])
+                        ? $options['group_members_settings']['grid']['visible_column_list'] : [];
+
+                    $gm_all_cols_raw = array_merge($gm_list_cols, $gm_grid_cols);
+                    $gm_seen_cols    = [];
+                    $gm_all_cols     = [];
+                    foreach ($gm_all_cols_raw as $col_json) {
+                        $col = json_decode(stripslashes($col_json), true);
+                        if (!$col || empty($col['colName'])) continue;
+                        if (strtolower($col['colName']) === 'name') continue;
+                        if (in_array($col['colName'], $gm_seen_cols)) continue;
+                        $gm_seen_cols[] = $col['colName'];
+                        $gm_all_cols[]  = $col;
+                    }
+
+                    if (!empty($gm_all_cols)) {
+                        echo '<input type="hidden" name="ebt_api_settings[group_members_settings][guest_hidden_fields_submitted]" value="1">';
+                        echo '<div class="guest-fields-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 0;">';
+                        foreach ($gm_all_cols as $col) {
+                            $checked = in_array($col['colName'], $gm_guest_hidden) ? 'checked' : '';
+                            $label   = !empty($col['displayName']) ? $col['displayName'] : $col['colName'];
+                            echo '<label style="display:inline-flex;align-items:center;gap:6px;min-width:220px;margin:5px 15px 5px 0;font-size:13px;cursor:pointer;">'
+                               . '<input type="checkbox" class="guest-field-check"'
+                               . ' name="ebt_api_settings[group_members_settings][guest_hidden_fields][]"'
+                               . ' value="' . esc_attr($col['colName']) . '" ' . $checked . ' style="margin:0;width:15px;height:15px;">'
+                               . esc_html($label)
+                               . '</label>';
+                        }
+                        echo '</div>';
+                        echo '<p style="margin-top:10px;color:#666;font-size:12px;"><em>These settings are saved together with the main <strong>Save Settings</strong> button.</em></p>';
+                    } else {
+                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View or Grid View column visibility above first.</em></p>';
+                    }
+                    ?>
+                </div>
+
     	<?php 
 	}
 		echo '</div>';				

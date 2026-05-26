@@ -215,13 +215,50 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 .group-card .card-text {
 font-size: 14px;	
 }
-.grid-view .card .img-default { 
-font-size: 260px;
+/* Org-style classic card for group members grid */
+.org-card-classic {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.org-card-classic:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+}
+.org-card-classic .org-card-logo-wrapper {
+    width: 100%;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.org-card-classic .org-card-logo {
+    max-width: 100%;
+    max-height: 140px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+.org-card-classic .img-default { 
+    font-size: 120px;
+    color: #adb5bd;
+}
+.org-card-classic .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.org-card-classic .card-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+.org-card-classic .card-text .font-weight-bold {
+    color: #495057;
 }
 @media screen and (max-width: 1080px) {
-  .grid-view .card .img-default {
-    font-size: 150px;
-  } 
+  .org-card-classic .img-default {
+    font-size: 80px;
+  }
 }
  .card-text i {
     display: none !important;
@@ -264,12 +301,12 @@ label{
     <div class="row mb-4">
         
     </div>
-    <nav aria-label="Page navigation example">
-  <ul class="pagination pagination-sm justify-content-center grid-pagination">
-    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+    <!-- Infinite scroll sentinel -->
+    <div id="gm-scroll-sentinel" style="height:1px; margin-top:20px;"></div>
+    <div id="gm-load-more-spinner" style="display:none; text-align:center; padding:20px 0;">
+        <div class="spinner-border spinner-border-sm text-secondary" role="status"><span class="sr-only">Loading...</span></div>
+        <span style="margin-left:8px; color:#888; font-size:13px;">Loading more...</span>
+    </div>
     <div id="eng-overlay" style="display: none;"><span class="spinner"></span></div>
 </div>
 <?php } ?>
@@ -280,7 +317,13 @@ label{
   var groupId = '<?php echo $groupId;?>';
   var viewMode='<?php echo $allowedViewMode; ?>';
   var start = 0;
-  var length = 8;
+  var length = <?php
+    $gm_options = get_option('ebt_api_settings');
+    echo isset($gm_options['group_members_settings']['grid']['cards_per_page']) ? intval($gm_options['group_members_settings']['grid']['cards_per_page']) : 12;
+  ?>;
+  var gmTotalCount = 0;
+  var gmIsLoading  = false;
+  var gmHasMore    = true;
   var titleColumn = '<?php echo $title_key; ?>';
   var departments = [];
   var positions = [];
@@ -288,6 +331,20 @@ label{
   var roles = [];
   var organizations = [];
   var customFields = {};
+  var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
+  var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
+  // Fields to hide/blur for non-logged-in users (admin-configurable)
+  var gmGuestHiddenFields = <?php
+    $ghf = defined('GROUP_MEMBERS_GUEST_HIDDEN_FIELDS') ? GROUP_MEMBERS_GUEST_HIDDEN_FIELDS : ['email', 'phone'];
+    $normalized = array_map(function($f) { return preg_replace('/\s+/', '', strtolower($f)); }, $ghf);
+    echo json_encode(array_values($normalized));
+  ?>;
+  var gmClassicCardsPerRow = <?php
+    $gm_opts = get_option('ebt_api_settings');
+    $cpr = isset($gm_opts['group_members_settings']['grid']['classic_cards_per_row']) ? intval($gm_opts['group_members_settings']['grid']['classic_cards_per_row']) : 4;
+    echo in_array($cpr, [2, 3, 4]) ? $cpr : 4;
+  ?>;
+
   <?php  if ($allowedViewMode === 'grid' ){?>
   groupMembers(start);
   <?php } ?>
@@ -303,7 +360,7 @@ label{
       if(viewMode === 'grid'){
           $('.list-view').hide();
           $('.grid-view').show();
-          groupMembers(start);
+          resetGroupGrid();
       } else {
           $('.list-view').show();
           $('.grid-view').hide();
@@ -383,10 +440,25 @@ label{
         $('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
     
-    //fetch group members
+	//fetch group members
+	// Reset grid state and reload from scratch (used on filter/viewmode change)
+	function resetGroupGrid() {
+		start = 0;
+		gmHasMore = true;
+		gmIsLoading = false;
+		$('.grid-view .row').empty();
+		groupMembers(start);
+	}
+
     function groupMembers(start){ 
-         $('.grid-view #eng-overlay').show();
-          $('.grid-view .row').css('opacity','.3');
+		if (gmIsLoading) return;
+		gmIsLoading = true;
+		if (start === 0) {
+			$('.grid-view #eng-overlay').show();
+			$('.grid-view .row').css('opacity','.3');
+		} else {
+			$('#gm-load-more-spinner').show();
+		}
        $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
@@ -402,23 +474,36 @@ label{
               roles:roles,
               organizations:organizations,
               customFields: customFields
-
           },
          success: function(response) {
              $('.grid-view #eng-overlay').hide();
-              $('.grid-view .row').css('opacity','1');
+			  $('.grid-view .row').css('opacity','1');
+			  $('#gm-load-more-spinner').hide();
+			gmIsLoading = false;
             try {
                var parsedResponse = JSON.parse(response);
               var data = parsedResponse.data || [];
-              renderGroupGrid(data);
-             renderPagination(parsedResponse.count, start, length, modulename = 'groupMembers');
+              gmTotalCount = parsedResponse.count || 0;
+
+			  if (start === 0) {
+				  renderGroupGrid(data);
+			  } else {
+				  appendGroupGrid(data);
+			  }
+
+			  var loadedSoFar = start + data.length;
+			  gmHasMore = loadedSoFar < gmTotalCount;
             } catch (e) {
               console.error('Error parsing response:', e);
+			  gmIsLoading = false;
+			  gmHasMore = false;
             }
           },
           error: function() {
             $('.grid-view #eng-overlay').hide();
              $('.grid-view .row').css('opacity','1');
+			$('#gm-load-more-spinner').hide();
+			gmIsLoading = false;
             console.error('AJAX request failed');
           }
         });
@@ -470,142 +555,188 @@ var fieldIcons = {
         .replace(/^./, function(str){ return str.toUpperCase(); });
 }
 
+// Returns a blurred "Login to view" placeholder for guest-restricted fields
+function applyGuestMaskGM(value, colClass) {
+    if (isUserLoggedIn || gmGuestHiddenFields.indexOf(colClass) === -1) return value;
+    var maskStyle = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
+    var lockIcon  = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
+    var placeholder = (colClass === 'phone')          ? '(•••)\u00a0•••-••••'
+                    : (colClass === 'email')           ? '••••@•••••.•••'
+                    : '• • • • • • •';
+    return '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">'
+         + lockIcon + '<span style="' + maskStyle + '">' + placeholder + '</span></a>';
+}
+
 function renderGroupGrid(data) {
     var container = $('.grid-view .row');
     container.empty(); 
     if (data.length === 0) {
         container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
         return;
-    }    
+    }
     data.forEach(function(item) {
-        var person = item.people;
-        var personPhoto = isValidUrl(person.imageThumbUrl)
-            ? ' <img src="' + person.imageThumbUrl + '" class="card-img-top mb-3" alt="' + person.fullName + '">'
-            : '<i class="fa fa-user-circle text-secondary mb-3 mx-auto img-default"></i>';
-
-       
-var fieldValues = {
-    email:    person.email ? '<a href="mailto:' + person.email + '">' + person.email + '</a>' : '--',
-    primaryorganization: person.organization && person.organization.name ? person.organization.name : '--',
-    currentposition: (person.peoplePosition && person.peoplePosition.length > 0)
-        ? buildPopoverHtml('position', person.peoplePosition)
-        : '--',
-    currentdepartment: (person.peopleDepartment && person.peopleDepartment.length > 0)
-        ? buildPopoverHtml('department', person.peopleDepartment)
-        : '--',
-    roles: (person.roles && person.roles.length > 0)
-        ? buildPopoverHtml('roles', person.roles)
-        : '--',
-    persontype: (person.personTypes && person.personTypes.length > 0)
-        ? buildPopoverHtml('persontype', person.personTypes)
-        : '--',
-    term: (person.terms && person.terms.length > 0)
-        ? buildPopoverHtml('terms', person.terms)
-        : '--',
-  region: (person.terms && person.terms.length > 0)
-    ? buildPopoverHtml('region', extractRegionsFromTerms(person.terms))
-    : '--',
-    phone: (person.primaryPhoneNumber && person.primaryPhoneNumber.value && person.primaryPhoneNumber.value.length === 10)
-        ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') + '</a>'
-        : '--',
-    status: person.status || '--',
-    userstatus: person.userStatus || '--',
-    modifieddate: person.modifiedDate ? new Date(person.modifiedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-    lastlogin: person.lastLogin || '--',
-    age: person.age || '--',
-    tags: (person.tags && person.tags.length > 0)
-    ? buildPopoverHtml('tags', person.tags)
-    : '--',
-    createddate: person.createdDate ? new Date(person.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
-    totaltimeworked: person.totalTimeWorked ? formatMonthsToYearsAndMonths(person.totalTimeWorked) : '--',
-    name: person.fullName || '--'
-};
-   // Add custom fields dynamically
-        var customFields = (person.customFields && Array.isArray(person.customFields)) ? person.customFields : [];
-        customFields.forEach(function(field) {
-    var key = (field.fieldName || field.title || field.name || '').toLowerCase().replace(/\s+/g, '');
-    var value = field.selectedValue || field.value || '';
-
-    // Handle address fields (controlTypeId == 9)
-    if (field.controlTypeId == 9 && value) {
-        var address = (typeof value === 'string') ? JSON.parse(value) : value;
-        if (address && typeof address === 'object') {
-            var parts = [];
-            if (address.address) parts.push(address.address);
-            if (address.addressLine2) parts.push(address.addressLine2);
-            if (address.city) parts.push(address.city);
-            if (address.state) parts.push(address.state);
-            if (address.zipCode) parts.push(address.zipCode);
-            var formatted = parts.filter(Boolean).join(', ');
-            fieldValues[key] = formatted || '--';
-        } else {
-            fieldValues[key] = '--';
-        }
-    }else if (field.controlTypeId == 11 && value) {
-    // Extract digits and extension (e.g., 6675553000ext10)
-    var match = value.match(/^(\D*\d{3}\D*\d{3}\D*\d{4})(?:\D*(?:ext|x|extension)\D*(\d+))?/i);
-    var digits = value.replace(/\D/g, '').substring(0, 10);
-    var extMatch = value.match(/(?:ext|x|extension)\s*\.?\s*(\d+)/i);
-    var ext = extMatch ? extMatch[1] : '';
-
-    if (digits.length === 10) {
-        var formatted = digits.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-        if (ext) {
-            formatted += ' ext ' + ext;
-        }
-        fieldValues[key] = '<a href="tel:' + digits + (ext ? ',,' + ext : '') + '">' + formatted + '</a>';
-    } else {
-        fieldValues[key] = value;
-    }
+        container.append(buildGroupMemberCard(item));
+    });
+    setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
 }
-else if (field.controlTypeId == 1 && value) {
-    // Format date as "MMM DD, YYYY"
-    var dateObj = new Date(value);
-    if (!isNaN(dateObj.getTime())) {
-        fieldValues[key] = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    } else {
-        fieldValues[key] = value;
-    }
+
+function appendGroupGrid(data) {
+    if (!data || data.length === 0) return;
+    var container = $('.grid-view .row');
+    data.forEach(function(item) {
+        container.append(buildGroupMemberCard(item));
+    });
+    setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
 }
-else if (key && value !== '') {
-        fieldValues[key] = value;
-    }
-});
 
-groupMemberCols.forEach(function(colObj) {
-    var col = colObj.colClass;
-    if (typeof fieldValues[col] === 'undefined') {
-        fieldValues[col] = '--';
-    }
-});
+function buildGroupMemberCard(item) {
+    var person = item.people;
+    var personPhoto = isValidUrl(person.imageThumbUrl)
+        ? '<div class="org-card-logo-wrapper text-center border-bottom"><img src="' + person.imageThumbUrl + '" class="img-fluid org-card-logo" alt="' + person.fullName + '"></div>'
+        : '<div class="org-card-logo-wrapper text-center border-bottom"><i class="fa fa-user-circle text-secondary img-default"></i></div>';
 
-        var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5>';
-        groupMemberCols.forEach(function(colObj) {
-           var col = colObj.colClass;
-            var label = colObj.displayName;
-            if (col === 'name') return; // already shown as title
-            if (fieldValues[col] !== undefined) {
-                cardBody += '<p class="card-text mb-1">' +
-                    (fieldIcons[col] || '') +
-                    '<span class="font-weight-bold">' + label + ':</span> ' +
-                    fieldValues[col] +
-                    '</p>';
+    // Build field values with guest masking applied
+    var fieldValues = {
+        email: applyGuestMaskGM(
+            person.email ? '<a href="mailto:' + person.email + '">' + person.email + '</a>' : '--',
+            'email'
+        ),
+        primaryorganization: person.organization && person.organization.name ? person.organization.name : '--',
+        currentposition: applyGuestMaskGM(
+            (person.peoplePosition && person.peoplePosition.length > 0)
+                ? buildPopoverHtml('position', person.peoplePosition)
+                : '--',
+            'currentposition'
+        ),
+        currentdepartment: applyGuestMaskGM(
+            (person.peopleDepartment && person.peopleDepartment.length > 0)
+                ? buildPopoverHtml('department', person.peopleDepartment)
+                : '--',
+            'currentdepartment'
+        ),
+        roles: applyGuestMaskGM(
+            (person.roles && person.roles.length > 0)
+                ? buildPopoverHtml('roles', person.roles)
+                : '--',
+            'roles'
+        ),
+        persontype: applyGuestMaskGM(
+            (person.personTypes && person.personTypes.length > 0)
+                ? buildPopoverHtml('persontype', person.personTypes)
+                : '--',
+            'persontype'
+        ),
+        term: (person.terms && person.terms.length > 0)
+            ? buildPopoverHtml('terms', person.terms)
+            : '--',
+        region: (person.terms && person.terms.length > 0)
+            ? buildPopoverHtml('region', extractRegionsFromTerms(person.terms))
+            : '--',
+        phone: applyGuestMaskGM(
+            (person.primaryPhoneNumber && person.primaryPhoneNumber.value && person.primaryPhoneNumber.value.length === 10)
+                ? '<a href="tel:' + person.primaryPhoneNumber.value + '">' + person.primaryPhoneNumber.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') + '</a>'
+                : '--',
+            'phone'
+        ),
+        status: applyGuestMaskGM(person.status || '--', 'status'),
+        userstatus: applyGuestMaskGM(person.userStatus || '--', 'userstatus'),
+        modifieddate: applyGuestMaskGM(
+            person.modifiedDate ? new Date(person.modifiedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+            'modifieddate'
+        ),
+        lastlogin: applyGuestMaskGM(person.lastLogin || '--', 'lastlogin'),
+        age: applyGuestMaskGM(person.age || '--', 'age'),
+        tags: (person.tags && person.tags.length > 0) ? buildPopoverHtml('tags', person.tags) : '--',
+        createddate: applyGuestMaskGM(
+            person.createdDate ? new Date(person.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '--',
+            'createddate'
+        ),
+        totaltimeworked: applyGuestMaskGM(
+            person.totalTimeWorked ? formatMonthsToYearsAndMonths(person.totalTimeWorked) : '--',
+            'totaltimeworked'
+        ),
+        name: person.fullName || '--'
+    };
+
+    // Custom fields with masking
+    var cfList = (person.customFields && Array.isArray(person.customFields)) ? person.customFields : [];
+    cfList.forEach(function(field) {
+        var key = (field.fieldName || field.title || field.name || '').toLowerCase().replace(/\s+/g, '');
+        var value = field.selectedValue || field.value || '';
+        if (field.controlTypeId == 9 && value) {
+            var address = (typeof value === 'string') ? JSON.parse(value) : value;
+            if (address && typeof address === 'object') {
+                var parts = [];
+                if (address.address) parts.push(address.address);
+                if (address.addressLine2) parts.push(address.addressLine2);
+                if (address.city) parts.push(address.city);
+                if (address.state) parts.push(address.state);
+                if (address.zipCode) parts.push(address.zipCode);
+                var formatted = parts.filter(Boolean).join(', ');
+                fieldValues[key] = applyGuestMaskGM(formatted || '--', key);
+            } else {
+                fieldValues[key] = '--';
             }
-        });      
-
-        var card = '<div class="col-md-3 mb-4">' +
-            '<div class="card h-100 shadow p-3">' +
-            personPhoto + '<hr>' +
-            '<div class="card-body p-0 pt-3 group-card">' +
-            cardBody +
-            '</div></div></div>';
-        container.append(card);
+        } else if (field.controlTypeId == 11 && value) {
+            var digits = value.replace(/\D/g, '').substring(0, 10);
+            var extMatch = value.match(/(?:ext|x|extension)\s*\.?\s*(\d+)/i);
+            var ext = extMatch ? extMatch[1] : '';
+            if (digits.length === 10) {
+                var formatted = digits.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+                if (ext) formatted += ' ext ' + ext;
+                fieldValues[key] = applyGuestMaskGM('<a href="tel:' + digits + (ext ? ',,' + ext : '') + '">' + formatted + '</a>', key);
+            } else {
+                fieldValues[key] = applyGuestMaskGM(value, key);
+            }
+        } else if (field.controlTypeId == 1 && value) {
+            var dateObj = new Date(value);
+            fieldValues[key] = applyGuestMaskGM(
+                !isNaN(dateObj.getTime()) ? dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : value,
+                key
+            );
+        } else if (key && value !== '') {
+            fieldValues[key] = applyGuestMaskGM(value, key);
+        }
     });
 
-    // Initialize popovers after rendering
-    setTimeout(function() {
-        $('[data-toggle="popover"]').popover();
-    }, 100);
+    // Fallback for any missing cols
+    groupMemberCols.forEach(function(colObj) {
+        var col = colObj.colClass;
+        if (typeof fieldValues[col] === 'undefined') fieldValues[col] = '--';
+    });
+
+    // Build card — Person Name as title, Designation (position) as subtitle
+    var colsPerRow = (typeof gmClassicCardsPerRow !== 'undefined') ? gmClassicCardsPerRow : 4;
+    var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
+
+    var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
+
+    // Designation (position) shown as prominent subtitle — mirrors "Contact Name" in org directory
+    var positionCol = groupMemberCols.find(function(c) { return c.colClass === 'currentposition'; });
+    if (positionCol) {
+        var posVal = fieldValues['currentposition'];
+        if (posVal !== undefined && posVal !== '--') {
+            cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + posVal + '</strong></p>';
+        }
+    }
+
+    groupMemberCols.forEach(function(colObj) {
+        var col = colObj.colClass;
+        var label = colObj.displayName;
+        if (col === 'name') return;
+        if (col === 'currentposition') return; // already rendered as subtitle
+        if (fieldValues[col] !== undefined) {
+            cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
+                fieldValues[col] + '</p>';
+        }
+    });
+
+    return '<div class="' + colClass + ' mb-4">' +
+        '<div class="card h-100 shadow p-3 org-card-classic">' +
+        personPhoto +
+        '<div class="card-body p-0 pt-2 group-card">' +
+        cardBody +
+        '</div></div></div>';
 }
 
 function extractRegionsFromTerms(terms) {
@@ -632,6 +763,26 @@ dt_titleSearch('Search Members');
 }
 
   ?>
+
+// ── Infinite scroll via IntersectionObserver ───────────────────────────────
+(function() {
+    if (!('IntersectionObserver' in window)) return;
+
+    var sentinel = document.getElementById('gm-scroll-sentinel');
+    if (!sentinel) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+        if (!entries[0].isIntersecting) return;
+        if (gmIsLoading || !gmHasMore) return;
+        if (typeof viewMode !== 'undefined' && viewMode !== 'grid') return;
+
+        start = start + length;
+        groupMembers(start);
+    }, { rootMargin: '100px' });
+
+    observer.observe(sentinel);
+})();
+
   // Load filters after page loads
 window.addEventListener("load", function () {
     $('#filter-loader').show(); // Show loader
@@ -714,20 +865,11 @@ $('#apply-filter-data').click(function() {
     roles = getCheckedValues('.roles-filter');
     organizations = getCheckedValues('.organization-filter');
     updateCustomFieldsFromDOM();
-    console.log('Selected Filters:', {
-        departments: departments,
-        positions: positions,
-        personTypes: personTypes,
-        roles: roles,
-        organizations: organizations,
-        customFields: customFields
-    });
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
     }
     if (viewMode === 'grid') {
-        start = 0;
-        groupMembers(start);
+        resetGroupGrid();
     }
     $('.filter-area').addClass('d-none');
     $('#apply-filter-data .spinner-border').remove();
@@ -750,8 +892,7 @@ $('#clear-all').click(function() {
         table.draw();
     }
     if (viewMode === 'grid') {
-        start = 0;
-        groupMembers(start);
+        resetGroupGrid();
     }
     $('.filter-area').addClass('d-none');   
      $('.filter-icon').removeClass('active');

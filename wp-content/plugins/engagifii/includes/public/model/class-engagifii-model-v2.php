@@ -664,6 +664,29 @@ if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
      //print_r($collection); die;
         $data = array();
         if($viewMode=='Grid'){ 
+            // Strip guest-hidden fields for non-logged-in users (server-side security)
+            $isLoggedIn = is_user_logged_in();
+            if ( ! $isLoggedIn ) {
+                $gm_guest_hidden = array_key_exists('guest_hidden_fields', $options['group_members_settings'] ?? [])
+                    ? ($options['group_members_settings']['guest_hidden_fields'] ?? [])
+                    : ['email', 'phone'];
+                foreach ( $collection as $item ) {
+                    foreach ( $gm_guest_hidden as $fieldName ) {
+                        $fieldNameLower = preg_replace('/\s+/', '', strtolower($fieldName));
+                        // Map config keys to people object properties
+                        $fieldMap = [
+                            'email'          => 'email',
+                            'phone'          => 'primaryPhoneNumber',
+                            'status'         => 'status',
+                            'userstatus'     => 'userStatus',
+                            'currentposition' => 'peoplePosition',
+                        ];
+                        $propName = $fieldMap[$fieldNameLower] ?? $fieldName;
+                        if ( ! isset( $item->people->$propName ) ) continue;
+                        $item->people->$propName = is_array( $item->people->$propName ) ? [] : '';
+                    }
+                }
+            }
             $response = [
                 'count' => $totalcount,
                 'data' => $collection

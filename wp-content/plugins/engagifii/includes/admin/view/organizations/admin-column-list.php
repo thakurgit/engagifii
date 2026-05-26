@@ -25,9 +25,9 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 </div>
                 
                 <!--Card Layout Template Selection-->
-                <div class="cols-wrapper card-layout-selection" style="display:none;">
+                <div class="cols-wrapper card-layout-selection">
                 	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
-                    <div class="layout-options" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+                    <div class="layout-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
                         <?php 
                         $current_layout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
                         $layouts = array(
@@ -56,7 +56,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         foreach ($layouts as $layout_key => $layout_info) {
                             $checked = ($current_layout === $layout_key) ? 'checked' : '';
                             ?>
-                            <div class="layout-option" style="flex: 0 0 calc(50% - 10px); border: 2px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; <?php echo $checked ? 'border-color: #0073aa; background-color: #f0f8ff;' : ''; ?>" data-layout="<?php echo $layout_key; ?>">
+                            <div class="layout-option" style="border: 2px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; <?php echo $checked ? 'border-color: #0073aa; background-color: #f0f8ff;' : ''; ?>" data-layout="<?php echo $layout_key; ?>">
                                 <label style="cursor: pointer; display: block;">
                                     <input type="radio" 
                                            name="ebt_api_settings[organization_settings][grid][card_layout]" 
