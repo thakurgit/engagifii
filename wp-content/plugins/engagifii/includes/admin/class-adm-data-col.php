@@ -221,7 +221,7 @@ public function getClassesType($date){
 			$withoutFieldId = [];
 		  $withFieldId = [];
 		  foreach ($response as $item) {
-			  if (!isset($item['fieldId'])) {
+			  if (empty($item['fieldId'])) {
 				  $withoutFieldId[] = $item;
 			  } else {
 				  $withFieldId[] = $item;
