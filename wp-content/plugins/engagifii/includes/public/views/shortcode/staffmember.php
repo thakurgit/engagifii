@@ -26,7 +26,11 @@ $lbt_visib_members_tags_list = $options['lbt_visib_members_tags_list'] ?? array(
   $sessionlist = $options['lbt_visib_session_list']?? array();
  }
 $columns=[];
-$columnNames=[]; 
+$columnNames=[];
+$columnsGroups = []; 
+$columnNamesGroups = [];
+$columnsMemberTags = [];
+$columnNameMemberTags = []; 
 if (!empty($lbt_visib_members_list) && isArrayOfJsonStrings($lbt_visib_members_list)) {
 		  $columns = convertToObjectArray($lbt_visib_members_list);
 		  $columnNames = extractColNames($lbt_visib_members_list);

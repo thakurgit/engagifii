@@ -1066,7 +1066,6 @@ function initializeDynamicFilterHandlers() {
                 dynamicFilterSelections['tags'].unshift(organizationTags[0]);
             }
         }
-        
          
         // Trigger filter count update
         if ($('#apply-filter-data .spinner-border').length == 0) {

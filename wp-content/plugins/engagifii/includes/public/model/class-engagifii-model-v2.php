@@ -1815,4 +1815,5 @@ public function getFilterItemsFromServiceUrl() {
     wp_die();
 }
  
+ 
 }

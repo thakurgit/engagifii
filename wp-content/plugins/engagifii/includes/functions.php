@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 add_action('wp_footer', 'engagifii_scripts');
 
-    $options  = get_option( 'ebt_api_settings' );
+    $options  = get_option( 'ebt_api_settings', [] );
 	$tenant_url = '';
 	if ( is_array( $options ) && ! empty( $options['dashboard_tenant_code'] ) ) {
     $tenant_url = $options['dashboard_tenant_code'];
@@ -155,7 +155,7 @@ add_filter( 'wp_nav_menu_items', 'add_loginout_link', 10, 2 );
 function add_loginout_link( $items, $args ) {
     $user = wp_get_current_user();
 	$user_role = (!empty($user->roles) && isset($user->roles[0])) ? $user->roles[0] : '';
-	$options  = get_option( 'ebt_api_settings' );
+	$options  = get_option( 'ebt_api_settings', [] );
     $login_btn = isset($options['dash_menus']['login_btn']) ? $options['dash_menus']['login_btn'] : false;
 
 	
@@ -314,7 +314,7 @@ function renderColumnsUI($optionKey,$action){
     }
     $nameString .= '[]'; 
 	
-	$options = get_option( 'ebt_api_settings' );
+	$options = get_option( 'ebt_api_settings', [] );
 	$visible_columns = array();
 	if (!empty($optionKey)) {
 	  if (is_array($optionKey)) {
