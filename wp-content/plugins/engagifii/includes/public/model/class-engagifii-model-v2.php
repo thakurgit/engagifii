@@ -966,7 +966,7 @@ $keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $
     foreach ($visible_columns as $col_json) {
         $col = json_decode(stripslashes($col_json), true);
         if (!empty($col['colName'])) {
-            $allColumnKeys[] = preg_replace('/\s+/', '', strtolower($col['colName']));
+            $allColumnKeys[] = preg_replace('/[^a-z0-9]/', '', strtolower($col['colName']));
         }
     }
    
@@ -1105,7 +1105,7 @@ public function getOrganizations(){
             $col = json_decode(stripslashes($col_json), true);
             if (empty($col['fieldId']) || empty($col['colName'])) continue;
             if (strcasecmp($col['fieldId'], $col['colName']) === 0) continue; // skip system fields
-            $colClass = preg_replace('/\s+/', '', strtolower($col['colName']));
+            $colClass = preg_replace('/[^a-z0-9]/', '', strtolower($col['colName']));
             $cfFieldIdMap[strtolower($col['fieldId'])] = [
                 'colClass'      => $colClass,
                 'colName'       => $col['colName'],
@@ -1234,7 +1234,7 @@ public function getOrganizations(){
                 $maskedEmail   = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span></a>';
                 $maskedGeneric = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span></a>';
                 foreach ( $guest_hidden_fields as $fieldName ) {
-                    $colClass = preg_replace('/\s+/', '', strtolower($fieldName));
+                    $colClass = preg_replace('/[^a-z0-9]/', '', strtolower($fieldName));
                     if ( isset( $nestedData[ $colClass ] ) ) {
                         $nestedData[ $colClass ] = ( $fieldName === 'phoneNumbers' ) ? $maskedPhone
                             : ( ( $fieldName === 'primaryEmail' ) ? $maskedEmail : $maskedGeneric );

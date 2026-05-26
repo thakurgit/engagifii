@@ -181,7 +181,7 @@ $i = 0;
 					  if($json['colName'] == 'Name'){
                     	$title_key = $i;
                  	 }
-					 $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+					 $colClass = preg_replace('/[^a-z0-9]/', '', strtolower($json['colName']));
 					$forDatatable[]['data'] = $colClass;
 // Use override if exists, else default displayName
     $label = isset($labelOverrides[$json['displayName']]) ? $labelOverrides[$json['displayName']] : $json['displayName'];
@@ -238,7 +238,7 @@ jQuery(document).ready(function($) {
   // Fields to hide/blur for non-logged-in users (admin-configurable)
   var orgGuestHiddenFields = <?php
     $ghf = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
-    $normalized = array_map(function($f) { return preg_replace('/\s+/', '', strtolower($f)); }, $ghf);
+    $normalized = array_map(function($f) { return preg_replace('/[^a-z0-9]/', '', strtolower($f)); }, $ghf);
     echo json_encode(array_values($normalized));
   ?>;
   var initialOrganizationTypes = <?php echo isset($orgType) && !empty($orgType) ? json_encode(array_map('trim', explode(',', $orgType))) : '[]'; ?>;
@@ -468,7 +468,7 @@ jQuery(document).ready(function($) {
     foreach (ORGANIZATION_COLS_GRID as $key) {
       $json = json_decode(stripslashes($key), true);
       if (!$json || !isset($json['colName'], $json['displayName'])) continue;
-      $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+      $colClass = preg_replace('/[^a-z0-9]/', '', strtolower($json['colName']));
       // Custom field: has a fieldId that differs from its colName (system fields have fieldId === colName)
       $isCustomField = !empty($json['fieldId']) && strcasecmp($json['fieldId'], $json['colName']) !== 0;
       $entry = [
