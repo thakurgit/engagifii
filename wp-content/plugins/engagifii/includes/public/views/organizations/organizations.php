@@ -1004,10 +1004,27 @@ function renderDynamicFilters(filters) {
                 filterHtml += '<p class="text-muted text-center py-2">No options available</p>';
             }
         } else if (filter.filterType === 2) {
-            // Text / string filter
-            filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-text-filter" placeholder="Type to search..." />';
-            filterHtml += '</div>';
+            // Check if properties contain StartDate/EndDate — means it's a date range filter
+            var hasDateRangeProps = filter.properties && Array.isArray(filter.properties) &&
+                filter.properties.some(function(p) {
+                    var pid = (p.id || '').toLowerCase();
+                    return pid === 'startdate' || pid === 'enddate';
+                });
+            if (hasDateRangeProps) {
+                // Date range picker (two calendars)
+                filterHtml += '<div class="p-2">';
+                filterHtml += '<div class="input-group input-group-sm">';
+                filterHtml += '<input type="text" class="form-control dynamic-date-range-picker" placeholder="Select Date Range" data-filter-id="' + filterId + '" readonly />';
+                filterHtml += '<div class="input-group-append">';
+                filterHtml += '<button class="btn btn-outline-secondary dynamic-date-cal-btn" type="button" tabindex="-1"><i class="far fa-calendar-alt"></i></button>';
+                filterHtml += '</div></div>';
+                filterHtml += '</div>';
+            } else {
+                // Plain text filter
+                filterHtml += '<div class="p-2">';
+                filterHtml += '<input type="text" class="form-control form-control-sm dynamic-text-filter" placeholder="Type to search..." />';
+                filterHtml += '</div>';
+            }
         } else if (filter.filterType === 3) {
             // Single date filter
             filterHtml += '<div class="p-2">';
