@@ -1023,6 +1023,40 @@ function renderDynamicFilters(filters) {
             filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="yes"><label class="m-0"><input class="mr-2" type="checkbox" value="true"> Yes</label></li>';
             filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="no"><label class="m-0"><input class="mr-2" type="checkbox" value="false"> No</label></li>';
             filterHtml += '</ul>';
+        } else if (filter.filterType === 7) {
+            // Date range filter (type 7)
+            filterHtml += '<div class="p-2">';
+            filterHtml += '<label class="small text-muted d-block mb-1">From</label>';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-from mb-2" />';
+            filterHtml += '<label class="small text-muted d-block mb-1">To</label>';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-to" />';
+            filterHtml += '</div>';
+        } else if (filter.filterType === 8) {
+            // Single date filter (type 8)
+            filterHtml += '<div class="p-2">';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-filter" />';
+            filterHtml += '</div>';
+        } else if (filter.filterType === 9) {
+            // Radio / single-select filter (type 9)
+            if (filter.properties && Array.isArray(filter.properties) && filter.properties.length > 0) {
+                filterHtml += '<ul class="list-group m-0 filter-items-list">';
+                filter.properties.forEach(function(item) {
+                    var value = item.id || item.name || '';
+                    var display = item.name || item.id || '';
+                    if (value && display) {
+                        filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
+                        filterHtml += '<label class="m-0">';
+                        filterHtml += '<input class="mr-2" type="radio" name="dynamic-radio-' + filterId + '" value="' + value + '">';
+                        filterHtml += display;
+                        filterHtml += '</label></li>';
+                    }
+                });
+                filterHtml += '</ul>';
+            } else if (filter.serviceUrl && filter.serviceUrl !== '') {
+                filterHtml += '<div class="loaders text-center py-3"><div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div></div>';
+            } else {
+                filterHtml += '<p class="text-muted text-center py-2">No options available</p>';
+            }
         } else {
             filterHtml += '<p class="text-muted text-center py-2">Unknown filter type (' + filter.filterType + ')</p>';
         }
@@ -1160,6 +1194,18 @@ function initializeDynamicFilterHandlers() {
         }
         countFilterData();
     });
+
+    // Handle radio filter changes
+    $(document).on('change', '.dynamic-filter-content input[type="radio"]', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var filterId = $filterList.data('filter-id');
+        var value = $(this).val();
+        dynamicFilterSelections[filterId] = [value];
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
 }
 
 function loadFilterData($filterList) {
@@ -1245,6 +1291,25 @@ function loadFilterData($filterList) {
                                 htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                                 htmlContent += '<label class="m-0">';
                                 htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                                htmlContent += display;
+                                htmlContent += '</label></li>';
+                            }
+                        });
+                        htmlContent += '</ul>';
+                    } else {
+                        htmlContent += '<p class="text-muted text-center py-2">No options available</p>';
+                    }
+                } else if (filterType === 9) {
+                    // Radio / single-select filter
+                    if (Array.isArray(data) && data.length > 0) {
+                        htmlContent += '<ul class="list-group m-0 filter-items-list">';
+                        data.forEach(function(item) {
+                            var value = item.id || item.value || item.name || '';
+                            var display = item.name || item.displayName || item.value || value || '';
+                            if (value && display && value !== '' && display !== '') {
+                                htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
+                                htmlContent += '<label class="m-0">';
+                                htmlContent += '<input class="mr-2" type="radio" name="dynamic-radio-' + filterId + '" value="' + value + '">';
                                 htmlContent += display;
                                 htmlContent += '</label></li>';
                             }
@@ -1376,6 +1441,7 @@ $('#clear-all').click(function() {
     $('input[name="modifiedbetween"]').val('');
     $('.dynamic-filter-content input[type="date"]').val('');
     $('.dynamic-filter-content input[type="text"].dynamic-text-filter').val('');
+    $('.dynamic-filter-content input[type="radio"]').prop('checked', false);
     
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
