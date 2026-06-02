@@ -213,6 +213,10 @@ $i = 0;
 </div>
 </div>
 
+<?php if (!defined('FLATPICKR_LOADED')): define('FLATPICKR_LOADED', true); ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<?php endif; ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
   
@@ -1007,15 +1011,12 @@ function renderDynamicFilters(filters) {
         } else if (filter.filterType === 3) {
             // Single date filter
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-filter" />';
+            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
             filterHtml += '</div>';
         } else if (filter.filterType === 5) {
-            // Date range filter
+            // Date range filter - dual-calendar flatpickr range picker
             filterHtml += '<div class="p-2">';
-            filterHtml += '<label class="small text-muted d-block mb-1">From</label>';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-from mb-2" />';
-            filterHtml += '<label class="small text-muted d-block mb-1">To</label>';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-to" />';
+            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-range-picker" placeholder="Select Date Range" data-filter-id="' + filterId + '" readonly />';
             filterHtml += '</div>';
         } else if (filter.filterType === 6) {
             // Boolean filter
@@ -1024,17 +1025,14 @@ function renderDynamicFilters(filters) {
             filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="no"><label class="m-0"><input class="mr-2" type="checkbox" value="false"> No</label></li>';
             filterHtml += '</ul>';
         } else if (filter.filterType === 7) {
-            // Date range filter (type 7)
+            // Single date filter (type 7)
             filterHtml += '<div class="p-2">';
-            filterHtml += '<label class="small text-muted d-block mb-1">From</label>';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-from mb-2" />';
-            filterHtml += '<label class="small text-muted d-block mb-1">To</label>';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-to" />';
+            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
             filterHtml += '</div>';
         } else if (filter.filterType === 8) {
             // Single date filter (type 8)
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-filter" />';
+            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
             filterHtml += '</div>';
         } else if (filter.filterType === 9) {
             // Radio / single-select filter (type 9)
@@ -1064,7 +1062,46 @@ function renderDynamicFilters(filters) {
         filterHtml += '</div></div>';
         container.append(filterHtml);
     });
-    
+
+    // Initialize flatpickr date pickers
+    if (typeof flatpickr !== 'undefined') {
+        container.find('.dynamic-date-single-picker').each(function() {
+            flatpickr(this, {
+                dateFormat: 'm/d/Y',
+                allowInput: false,
+                onChange: function(selectedDates, dateStr, instance) {
+                    var filterId = $(instance.element).data('filter-id');
+                    if (selectedDates.length > 0) {
+                        dynamicFilterSelections[filterId] = [instance.formatDate(selectedDates[0], 'Y-m-d')];
+                    } else {
+                        delete dynamicFilterSelections[filterId];
+                    }
+                    countFilterData();
+                }
+            });
+        });
+        container.find('.dynamic-date-range-picker').each(function() {
+            flatpickr(this, {
+                mode: 'range',
+                showMonths: 2,
+                dateFormat: 'm/d/Y',
+                allowInput: false,
+                onChange: function(selectedDates, dateStr, instance) {
+                    var filterId = $(instance.element).data('filter-id');
+                    if (selectedDates.length === 2) {
+                        dynamicFilterSelections[filterId] = [
+                            instance.formatDate(selectedDates[0], 'Y-m-d'),
+                            instance.formatDate(selectedDates[1], 'Y-m-d')
+                        ];
+                    } else {
+                        delete dynamicFilterSelections[filterId];
+                    }
+                    countFilterData();
+                }
+            });
+        });
+    }
+
     // Initialize dynamic filter click handlers
     initializeDynamicFilterHandlers();
     
@@ -1442,6 +1479,10 @@ $('#clear-all').click(function() {
     $('.dynamic-filter-content input[type="date"]').val('');
     $('.dynamic-filter-content input[type="text"].dynamic-text-filter').val('');
     $('.dynamic-filter-content input[type="radio"]').prop('checked', false);
+    // Clear flatpickr date pickers
+    $('.dynamic-filter-content .dynamic-date-single-picker, .dynamic-filter-content .dynamic-date-range-picker').each(function() {
+        if (this._flatpickr) { this._flatpickr.clear(); }
+    });
     
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
