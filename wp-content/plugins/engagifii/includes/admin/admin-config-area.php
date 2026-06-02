@@ -839,6 +839,7 @@ function ebt_tenant_code_render(  ) {
                                     '-qa' => 'QA',
                                     '-support' => 'Support',
                                     '-hotfix' => 'Hotfix',
+                                    '-preview1' => 'Preview1',
                                     '-preview2' => 'Preview2',
                                     '-preview3' => 'Preview3',
                                     '-preview4' => 'Preview4',
