@@ -1192,6 +1192,7 @@ public function getOrganizations(){
     : '--';
             $nestedData['modifiedon'] = $this->formatDateField($value->modifiedOn);
             $nestedData['createdon'] = $this->formatDateField($value->createdOn);
+            $nestedData['createdby'] = !empty($value->createdBy->name) ? htmlspecialchars($value->createdBy->name) : '--';
             // $organizationTags = $value->organizationTags;
              $nestedData['organizationtags'] = $this->buildPopoverColumn($key, $value->organizationTags ?? [], 'Tags', 'tagName');
 

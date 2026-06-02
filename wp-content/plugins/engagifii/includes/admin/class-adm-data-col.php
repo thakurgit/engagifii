@@ -241,7 +241,7 @@ public function getClassesType($date){
 		$tenantCode = $options['dashboard_tenant_code'];
 		$dataResponse = $this->submitApiRequest("OrganizationColumnListWithCF/".$tenantCode,array(),"GET",'dashboard');
 		if(isset($dataResponse['api_response'])){
-			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'CreatedBy', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails'];
+			$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails'];
 			// Custom field colNames to hide: Logo (always shown with org name) and Website (duplicate of system Website field)
 			$excludedCustomFieldColNames = ['Logo', 'Website'];
 			$collection   = json_decode($dataResponse['api_response'],true);
@@ -276,6 +276,10 @@ public function getClassesType($date){
 			  $seenColNames[] = $colName;
 			  return true;
 		  }));
+		  // Inject OrganizationTags — not returned by API but supported in display
+		  if (!in_array('OrganizationTags', $seenColNames, true)) {
+			  $collection[] = ['colName' => 'OrganizationTags', 'displayName' => 'Organization Tags', 'fieldId' => 'OrganizationTags'];
+		  }
 			wp_send_json($collection);
 			
 		}
