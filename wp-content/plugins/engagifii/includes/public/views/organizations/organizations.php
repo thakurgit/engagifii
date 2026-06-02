@@ -1011,12 +1011,20 @@ function renderDynamicFilters(filters) {
         } else if (filter.filterType === 3) {
             // Single date filter
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group input-group-sm">';
+            filterHtml += '<input type="text" class="form-control dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group-append">';
+            filterHtml += '<button class="btn btn-outline-secondary dynamic-date-cal-btn" type="button" tabindex="-1"><i class="far fa-calendar-alt"></i></button>';
+            filterHtml += '</div></div>';
             filterHtml += '</div>';
         } else if (filter.filterType === 5) {
             // Date range filter - dual-calendar flatpickr range picker
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-range-picker" placeholder="Select Date Range" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group input-group-sm">';
+            filterHtml += '<input type="text" class="form-control dynamic-date-range-picker" placeholder="Select Date Range" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group-append">';
+            filterHtml += '<button class="btn btn-outline-secondary dynamic-date-cal-btn" type="button" tabindex="-1"><i class="far fa-calendar-alt"></i></button>';
+            filterHtml += '</div></div>';
             filterHtml += '</div>';
         } else if (filter.filterType === 6) {
             // Boolean filter
@@ -1027,12 +1035,20 @@ function renderDynamicFilters(filters) {
         } else if (filter.filterType === 7) {
             // Single date filter (type 7)
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group input-group-sm">';
+            filterHtml += '<input type="text" class="form-control dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group-append">';
+            filterHtml += '<button class="btn btn-outline-secondary dynamic-date-cal-btn" type="button" tabindex="-1"><i class="far fa-calendar-alt"></i></button>';
+            filterHtml += '</div></div>';
             filterHtml += '</div>';
         } else if (filter.filterType === 8) {
             // Single date filter (type 8)
             filterHtml += '<div class="p-2">';
-            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group input-group-sm">';
+            filterHtml += '<input type="text" class="form-control dynamic-date-single-picker" placeholder="Select Date to Filter" data-filter-id="' + filterId + '" readonly />';
+            filterHtml += '<div class="input-group-append">';
+            filterHtml += '<button class="btn btn-outline-secondary dynamic-date-cal-btn" type="button" tabindex="-1"><i class="far fa-calendar-alt"></i></button>';
+            filterHtml += '</div></div>';
             filterHtml += '</div>';
         } else if (filter.filterType === 9) {
             // Radio / single-select filter (type 9)
@@ -1062,45 +1078,6 @@ function renderDynamicFilters(filters) {
         filterHtml += '</div></div>';
         container.append(filterHtml);
     });
-
-    // Initialize flatpickr date pickers
-    if (typeof flatpickr !== 'undefined') {
-        container.find('.dynamic-date-single-picker').each(function() {
-            flatpickr(this, {
-                dateFormat: 'm/d/Y',
-                allowInput: false,
-                onChange: function(selectedDates, dateStr, instance) {
-                    var filterId = $(instance.element).data('filter-id');
-                    if (selectedDates.length > 0) {
-                        dynamicFilterSelections[filterId] = [instance.formatDate(selectedDates[0], 'Y-m-d')];
-                    } else {
-                        delete dynamicFilterSelections[filterId];
-                    }
-                    countFilterData();
-                }
-            });
-        });
-        container.find('.dynamic-date-range-picker').each(function() {
-            flatpickr(this, {
-                mode: 'range',
-                showMonths: 2,
-                dateFormat: 'm/d/Y',
-                allowInput: false,
-                onChange: function(selectedDates, dateStr, instance) {
-                    var filterId = $(instance.element).data('filter-id');
-                    if (selectedDates.length === 2) {
-                        dynamicFilterSelections[filterId] = [
-                            instance.formatDate(selectedDates[0], 'Y-m-d'),
-                            instance.formatDate(selectedDates[1], 'Y-m-d')
-                        ];
-                    } else {
-                        delete dynamicFilterSelections[filterId];
-                    }
-                    countFilterData();
-                }
-            });
-        });
-    }
 
     // Initialize dynamic filter click handlers
     initializeDynamicFilterHandlers();
@@ -1242,6 +1219,52 @@ function initializeDynamicFilterHandlers() {
             $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
         }
         countFilterData();
+    });
+
+    // Handle calendar icon click — lazy-initialize flatpickr then open
+    $(document).on('click', '.dynamic-date-cal-btn', function() {
+        var $inputGroup = $(this).closest('.input-group');
+        var $singlePicker = $inputGroup.find('.dynamic-date-single-picker');
+        var $rangePicker  = $inputGroup.find('.dynamic-date-range-picker');
+        var $input = $singlePicker.length ? $singlePicker : $rangePicker;
+        if (!$input.length) return;
+
+        var inputEl  = $input[0];
+        var isRange  = $input.hasClass('dynamic-date-range-picker');
+        var filterId = $input.data('filter-id');
+
+        if (inputEl._flatpickr) {
+            inputEl._flatpickr.open();
+            return;
+        }
+
+        var fpOptions = {
+            allowInput: false,
+            dateFormat: 'm/d/Y',
+            onChange: function(selectedDates, dateStr, instance) {
+                if (isRange) {
+                    if (selectedDates.length === 2) {
+                        dynamicFilterSelections[filterId] = [
+                            instance.formatDate(selectedDates[0], 'Y-m-d'),
+                            instance.formatDate(selectedDates[1], 'Y-m-d')
+                        ];
+                        countFilterData();
+                    }
+                } else {
+                    if (selectedDates.length > 0) {
+                        dynamicFilterSelections[filterId] = [instance.formatDate(selectedDates[0], 'Y-m-d')];
+                    } else {
+                        delete dynamicFilterSelections[filterId];
+                    }
+                    countFilterData();
+                }
+            }
+        };
+        if (isRange) {
+            fpOptions.mode = 'range';
+            fpOptions.showMonths = 2;
+        }
+        flatpickr(inputEl, fpOptions).open();
     });
 }
 
