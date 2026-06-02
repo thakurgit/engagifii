@@ -1047,12 +1047,19 @@ public function getOrganizations(){
             ];
         }
 
+        // Build filter type map from posted data (JS sends filterType per field)
+        $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
+            ? array_map('intval', $_POST['filterTypesMap'])
+            : [];
+
         // Add custom field filters
         foreach ($customFields as $customFieldId => $selectedValues) {
             if (!empty($selectedValues) && is_array($selectedValues)) {
+                // Use the filterType from JS if available, otherwise default to 4 (dropdown)
+                $filterType = isset($filterTypesMap[$customFieldId]) ? $filterTypesMap[$customFieldId] : 4;
                 $filterRules[] = [
                     "fieldId" => $customFieldId,
-                    "filterType" => 4,
+                    "filterType" => $filterType,
                     "selectedValues" => $selectedValues
                 ];
             }

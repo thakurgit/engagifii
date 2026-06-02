@@ -253,6 +253,18 @@ jQuery(document).ready(function($) {
   // Global object to store dynamic filter data (declare early to avoid reference errors)
   var dynamicFiltersConfig = [];
   var dynamicFilterSelections = {};
+
+  // Returns a map of fieldId -> filterType from loaded dynamic filter config
+  function getDynamicFilterTypesMap() {
+      var map = {};
+      if (dynamicFiltersConfig && Array.isArray(dynamicFiltersConfig)) {
+          dynamicFiltersConfig.forEach(function(filter) {
+              var fieldName = filter.fieldName || 'filter_' + filter.order;
+              map[fieldName] = filter.filterType;
+          });
+      }
+      return map;
+  }
   
  <?php  if ($allowedViewMode === 'grid' ){?>
    OrgList(start);
@@ -329,6 +341,7 @@ jQuery(document).ready(function($) {
 					});
 				}
 				d.customFields = allCustomFields;
+				d.filterTypesMap = getDynamicFilterTypesMap();
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -412,7 +425,8 @@ jQuery(document).ready(function($) {
 			  statuses: statuses,
 			  locations: locations,
 			  organizationTags: organizationTags,
-			  customFields: allCustomFields
+			  customFields: allCustomFields,
+			  filterTypesMap: getDynamicFilterTypesMap()
           },
          success: function(response) {
 	  		 $('.grid-view #eng-overlay').hide();
@@ -985,8 +999,32 @@ function renderDynamicFilters(filters) {
             } else {
                 filterHtml += '<p class="text-muted text-center py-2">No options available</p>';
             }
+        } else if (filter.filterType === 2) {
+            // Text / string filter
+            filterHtml += '<div class="p-2">';
+            filterHtml += '<input type="text" class="form-control form-control-sm dynamic-text-filter" placeholder="Type to search..." />';
+            filterHtml += '</div>';
+        } else if (filter.filterType === 3) {
+            // Single date filter
+            filterHtml += '<div class="p-2">';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-filter" />';
+            filterHtml += '</div>';
+        } else if (filter.filterType === 5) {
+            // Date range filter
+            filterHtml += '<div class="p-2">';
+            filterHtml += '<label class="small text-muted d-block mb-1">From</label>';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-from mb-2" />';
+            filterHtml += '<label class="small text-muted d-block mb-1">To</label>';
+            filterHtml += '<input type="date" class="form-control form-control-sm dynamic-date-to" />';
+            filterHtml += '</div>';
+        } else if (filter.filterType === 6) {
+            // Boolean filter
+            filterHtml += '<ul class="list-group m-0 filter-items-list">';
+            filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="yes"><label class="m-0"><input class="mr-2" type="checkbox" value="true"> Yes</label></li>';
+            filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="no"><label class="m-0"><input class="mr-2" type="checkbox" value="false"> No</label></li>';
+            filterHtml += '</ul>';
         } else {
-            filterHtml += '<p class="text-muted text-center py-2">Unknown filter type</p>';
+            filterHtml += '<p class="text-muted text-center py-2">Unknown filter type (' + filter.filterType + ')</p>';
         }
         
         filterHtml += '</div></div>';
@@ -1068,6 +1106,55 @@ function initializeDynamicFilterHandlers() {
         }
          
         // Trigger filter count update
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+
+    // Handle text filter input changes
+    $(document).on('input', '.dynamic-filter-content .dynamic-text-filter', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var filterId = $filterList.data('filter-id');
+        var value = $(this).val().trim();
+        if (value) {
+            dynamicFilterSelections[filterId] = [value];
+        } else {
+            delete dynamicFilterSelections[filterId];
+        }
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+
+    // Handle single date filter changes
+    $(document).on('change', '.dynamic-filter-content .dynamic-date-filter', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var filterId = $filterList.data('filter-id');
+        var value = $(this).val();
+        if (value) {
+            dynamicFilterSelections[filterId] = [value];
+        } else {
+            delete dynamicFilterSelections[filterId];
+        }
+        if ($('#apply-filter-data .spinner-border').length == 0) {
+            $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
+        }
+        countFilterData();
+    });
+
+    // Handle date range filter changes
+    $(document).on('change', '.dynamic-filter-content .dynamic-date-from, .dynamic-filter-content .dynamic-date-to', function() {
+        var $filterList = $(this).closest('.filter-list');
+        var filterId = $filterList.data('filter-id');
+        var dateFrom = $filterList.find('.dynamic-date-from').val();
+        var dateTo = $filterList.find('.dynamic-date-to').val();
+        if (dateFrom || dateTo) {
+            dynamicFilterSelections[filterId] = [dateFrom || '', dateTo || ''];
+        } else {
+            delete dynamicFilterSelections[filterId];
+        }
         if ($('#apply-filter-data .spinner-border').length == 0) {
             $('#apply-filter-data').attr('disabled', '').prepend('<span role="status" aria-hidden="true" class="spinner-border spinner-border-sm mr-1"></span>');
         }
@@ -1287,6 +1374,8 @@ $('#clear-all').click(function() {
     // Clear date inputs
     $('input[name="createdbetween"]').val('');
     $('input[name="modifiedbetween"]').val('');
+    $('.dynamic-filter-content input[type="date"]').val('');
+    $('.dynamic-filter-content input[type="text"].dynamic-text-filter').val('');
     
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
