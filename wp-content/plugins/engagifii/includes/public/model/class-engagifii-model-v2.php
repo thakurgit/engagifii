@@ -1008,22 +1008,13 @@ public function getOrganizations(){
         // Build filter rules dynamically
         $filterRules = [];
         
-        // Add status filter — prefer dynamic filter selection (customFields) over the legacy $statuses param.
-        // Only fall back to the hardcoded "Active" default when neither source provides a value.
-        $statusHandledViaCustomFields = array_key_exists('status', $customFields) || array_key_exists('statuses', $customFields);
-
+        // Add status filter only when the user has explicitly selected one.
+        // No default — absence of a status selection means no status restriction (show all statuses).
         if (!empty($statuses)) {
             $filterRules[] = [
                 "fieldId" => "status",
                 "filterType" => 4,
                 "selectedValues" => $statuses
-            ];
-        } elseif (!$statusHandledViaCustomFields) {
-            // No status selected anywhere — default to Active
-            $filterRules[] = [
-                "fieldId" => "status",
-                "filterType" => 4,
-                "selectedValues" => ["Active"]
             ];
         }
 
