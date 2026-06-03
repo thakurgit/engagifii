@@ -1057,11 +1057,36 @@ public function getOrganizations(){
             if (!empty($selectedValues) && is_array($selectedValues)) {
                 // Use the filterType from JS if available, otherwise default to 4 (dropdown)
                 $filterType = isset($filterTypesMap[$customFieldId]) ? $filterTypesMap[$customFieldId] : 4;
-                $filterRules[] = [
-                    "fieldId" => $customFieldId,
-                    "filterType" => $filterType,
-                    "selectedValues" => $selectedValues
-                ];
+
+                // Single date filter types (3, 7, 8): API expects {"date": "MM-DD-YYYY"}
+                if (in_array($filterType, [3, 7, 8]) && !empty($selectedValues[0])) {
+                    $dateObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
+                    $formattedDate = $dateObj ? $dateObj->format('m-d-Y') : $selectedValues[0];
+                    $filterRules[] = [
+                        "fieldId"    => $customFieldId,
+                        "filterType" => $filterType,
+                        "date"       => $formattedDate,
+                    ];
+                }
+                // Date range filter type (5): API expects {"dateFrom": "MM-DD-YYYY", "dateTo": "MM-DD-YYYY"}
+                elseif ($filterType === 5 && count($selectedValues) >= 2) {
+                    $fromObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
+                    $toObj   = DateTime::createFromFormat('Y-m-d', $selectedValues[1]);
+                    $filterRules[] = [
+                        "fieldId"    => $customFieldId,
+                        "filterType" => $filterType,
+                        "dateFrom"   => $fromObj ? $fromObj->format('m-d-Y') : $selectedValues[0],
+                        "dateTo"     => $toObj   ? $toObj->format('m-d-Y')   : $selectedValues[1],
+                    ];
+                }
+                // All other filter types: use selectedValues array
+                else {
+                    $filterRules[] = [
+                        "fieldId"        => $customFieldId,
+                        "filterType"     => $filterType,
+                        "selectedValues" => $selectedValues,
+                    ];
+                }
             }
         }
 
@@ -1087,7 +1112,7 @@ public function getOrganizations(){
                 ]
             ]
         ];
-        //print_r(json_encode($postedData)); die;
+        error_log('[getOrganizations] payload: ' . json_encode($postedData));
         $dataResponse = $this->submitApiRequest("OrganizationPagingListWithCF/".$tenantCode."/", $postedData, "POST", 'dashboard'); 
         $api_response = json_decode($dataResponse['api_response']);
         $collection   = $api_response->result;
@@ -1707,13 +1732,43 @@ private function _organizationPostCountData() {
         ];
     }
 
+    // Build filter type map from posted data (JS sends filterType per field)
+    $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
+        ? array_map('intval', $_POST['filterTypesMap'])
+        : [];
+
     foreach ($customFields as $customFieldId => $selectedValues) {
         if (!empty($selectedValues)) {
-            $filterRules[] = [
-                'fieldId' => $customFieldId,
-                'filterType' => 4,
-                'selectedValues' => $selectedValues
-            ];
+            $filterType = isset($filterTypesMap[$customFieldId]) ? $filterTypesMap[$customFieldId] : 4;
+
+            // Single date filter types (3, 7, 8): API expects {"date": "MM-DD-YYYY"}
+            if (in_array($filterType, [3, 7, 8]) && !empty($selectedValues[0])) {
+                $dateObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
+                $formattedDate = $dateObj ? $dateObj->format('m-d-Y') : $selectedValues[0];
+                $filterRules[] = [
+                    'fieldId'    => $customFieldId,
+                    'filterType' => $filterType,
+                    'date'       => $formattedDate,
+                ];
+            }
+            // Date range filter type (5): API expects {"dateFrom": "MM-DD-YYYY", "dateTo": "MM-DD-YYYY"}
+            elseif ($filterType === 5 && is_array($selectedValues) && count($selectedValues) >= 2) {
+                $fromObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
+                $toObj   = DateTime::createFromFormat('Y-m-d', $selectedValues[1]);
+                $filterRules[] = [
+                    'fieldId'    => $customFieldId,
+                    'filterType' => $filterType,
+                    'dateFrom'   => $fromObj ? $fromObj->format('m-d-Y') : $selectedValues[0],
+                    'dateTo'     => $toObj   ? $toObj->format('m-d-Y')   : $selectedValues[1],
+                ];
+            }
+            else {
+                $filterRules[] = [
+                    'fieldId'        => $customFieldId,
+                    'filterType'     => $filterType,
+                    'selectedValues' => $selectedValues,
+                ];
+            }
         }
     }
 
