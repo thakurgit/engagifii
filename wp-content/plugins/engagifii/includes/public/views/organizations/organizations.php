@@ -1657,7 +1657,8 @@ function countFilterData() {
                 statuses: statuses,
                 locations: locations,
                 organizationTags: organizationTags,
-                customFields: allCustomFields
+                customFields: allCustomFields,
+                filterTypesMap: getDynamicFilterTypesMap()
             },
             success: function(response) {
                 var element = document.getElementById("countFilterResult");
