@@ -1063,15 +1063,22 @@ public function getOrganizations(){
                         "date"       => $formattedDate,
                     ];
                 }
-                // Date range filter type (5): API expects {"dateFrom": "MM-DD-YYYY", "dateTo": "MM-DD-YYYY"}
-                elseif ($filterType === 5 && count($selectedValues) >= 2) {
+                // Date range filter type (2, 5): API expects {"minStartValue": "ISO-8601", "maxEndValue": "ISO-8601"}
+                elseif (in_array($filterType, [2, 5]) && count($selectedValues) >= 2) {
+                    // Convert Y-m-d format to ISO-8601 with time component
                     $fromObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
                     $toObj   = DateTime::createFromFormat('Y-m-d', $selectedValues[1]);
+                    if ($fromObj) {
+                        $fromObj->setTime(0, 0, 0);
+                    }
+                    if ($toObj) {
+                        $toObj->setTime(23, 59, 59);
+                    }
                     $filterRules[] = [
-                        "fieldId"    => $customFieldId,
-                        "filterType" => $filterType,
-                        "dateFrom"   => $fromObj ? $fromObj->format('m-d-Y') : $selectedValues[0],
-                        "dateTo"     => $toObj   ? $toObj->format('m-d-Y')   : $selectedValues[1],
+                        "fieldId"      => $customFieldId,
+                        "filterType"   => $filterType,
+                        "minStartValue" => $fromObj ? $fromObj->format('Y-m-d\TH:i:s.000\Z') : $selectedValues[0],
+                        "maxEndValue"   => $toObj   ? $toObj->format('Y-m-d\TH:i:s.000\Z')   : $selectedValues[1],
                     ];
                 }
                 // All other filter types: use selectedValues array
@@ -1746,15 +1753,22 @@ private function _organizationPostCountData() {
                     'date'       => $formattedDate,
                 ];
             }
-            // Date range filter type (5): API expects {"dateFrom": "MM-DD-YYYY", "dateTo": "MM-DD-YYYY"}
-            elseif ($filterType === 5 && is_array($selectedValues) && count($selectedValues) >= 2) {
+            // Date range filter type (2, 5): API expects {"minStartValue": "ISO-8601", "maxEndValue": "ISO-8601"}
+            elseif (in_array($filterType, [2, 5]) && is_array($selectedValues) && count($selectedValues) >= 2) {
+                // Convert Y-m-d format to ISO-8601 with time component
                 $fromObj = DateTime::createFromFormat('Y-m-d', $selectedValues[0]);
                 $toObj   = DateTime::createFromFormat('Y-m-d', $selectedValues[1]);
+                if ($fromObj) {
+                    $fromObj->setTime(0, 0, 0);
+                }
+                if ($toObj) {
+                    $toObj->setTime(23, 59, 59);
+                }
                 $filterRules[] = [
-                    'fieldId'    => $customFieldId,
-                    'filterType' => $filterType,
-                    'dateFrom'   => $fromObj ? $fromObj->format('m-d-Y') : $selectedValues[0],
-                    'dateTo'     => $toObj   ? $toObj->format('m-d-Y')   : $selectedValues[1],
+                    'fieldId'       => $customFieldId,
+                    'filterType'    => $filterType,
+                    'minStartValue' => $fromObj ? $fromObj->format('Y-m-d\TH:i:s.000\Z') : $selectedValues[0],
+                    'maxEndValue'   => $toObj   ? $toObj->format('Y-m-d\TH:i:s.000\Z')   : $selectedValues[1],
                 ];
             }
             else {
