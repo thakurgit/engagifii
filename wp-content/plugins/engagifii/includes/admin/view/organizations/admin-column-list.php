@@ -24,7 +24,8 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
             <?php renderColumnsUI(['organization_settings', 'grid', 'visible_column_list'],'orgColumns'); ?>
                 </div>
                 
-                <!--Card Layout Template Selection-->
+                <!--Card Layout Template Selection - Hidden: design not complete for all templates-->
+                <?php /* ?>
                 <div class="cols-wrapper card-layout-selection">
                 	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
                     <div class="layout-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
@@ -110,6 +111,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     </div>
 
                 </div>
+                <?php */ ?>
 
                 <!--Cards Per Page (Grid View)-->
                 <div class="cols-wrapper">

@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
-define('ENGAGIFII_VERSION', '2.2.2');
+define('ENGAGIFII_VERSION', '2.2.3');
 
 final class Engagifii
 {
