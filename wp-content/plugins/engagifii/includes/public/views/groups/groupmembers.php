@@ -233,10 +233,11 @@ font-size: 14px;
     margin-bottom: 6px;
 }
 .org-card-classic .org-card-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
+    max-width: 100%;
+    max-height: 140px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }
 .org-card-classic .img-default { 
     font-size: 120px;
@@ -265,16 +266,6 @@ font-size: 14px;
 label{
     margin-bottom: 0px !important;
     }
-/* Consistent circular avatars in list view */
-.gm-list-avatar {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    flex: 0 0 40px;
-    object-fit: cover;
-    object-position: center center;
-    border-radius: 50%;
-}
 </style>
 
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>

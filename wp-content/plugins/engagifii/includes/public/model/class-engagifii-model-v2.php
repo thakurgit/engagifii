@@ -702,7 +702,7 @@ if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
             $nestedData = array();
             $nestedData['name'] = '<div class="d-flex align-items-center">';
             if($value->people->imageThumbUrl && filter_var($value->people->imageThumbUrl, FILTER_VALIDATE_URL)){
-                $nestedData['name'] .= '<img alt="'.esc_attr($value->people->fullName).'" class="gm-list-avatar mr-2" src="'.esc_url($value->people->imageThumbUrl).'">';	
+                $nestedData['name'] .= '<img style="max-width:40px; flex:0 0 40px" alt="'.$value->people->fullName.'" class="rounded-circle img-fluid mr-2" src="'.$value->people->imageThumbUrl.'">';	
             }else{
                 $nestedData['name'] .= '<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
             }
