@@ -233,11 +233,10 @@ font-size: 14px;
     margin-bottom: 6px;
 }
 .org-card-classic .org-card-logo {
-    max-width: 100%;
-    max-height: 140px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
 }
 .org-card-classic .img-default { 
     font-size: 120px;
@@ -266,6 +265,16 @@ font-size: 14px;
 label{
     margin-bottom: 0px !important;
     }
+/* Consistent circular avatars in list view */
+.gm-list-avatar {
+    width: 140px;
+    height: 140px;
+    min-width: 140px;
+    flex: 0 0 140px;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 50%;
+}
 </style>
 
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
@@ -592,7 +601,7 @@ function appendGroupGrid(data) {
 function buildGroupMemberCard(item) {
     var person = item.people;
     var personPhoto = isValidUrl(person.imageThumbUrl)
-        ? '<div class="org-card-logo-wrapper text-center border-bottom"><img src="' + person.imageThumbUrl + '" class="img-fluid org-card-logo" alt="' + person.fullName + '"></div>'
+        ? '<div class="org-card-logo-wrapper text-center border-bottom"><img src="' + person.imageThumbUrl + '" class="org-card-logo" alt="' + person.fullName + '"></div>'
         : '<div class="org-card-logo-wrapper text-center border-bottom"><i class="fa fa-user-circle text-secondary img-default"></i></div>';
 
     // Build field values with guest masking applied
