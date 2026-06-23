@@ -267,10 +267,10 @@ label{
     }
 /* Consistent circular avatars in list view */
 .gm-list-avatar {
-    width: 140px;
-    height: 140px;
-    min-width: 140px;
-    flex: 0 0 140px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    flex: 0 0 40px;
     object-fit: cover;
     object-position: center center;
     border-radius: 50%;
