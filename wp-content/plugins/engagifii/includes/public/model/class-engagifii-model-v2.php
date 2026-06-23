@@ -694,6 +694,10 @@ if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
             echo json_encode($response);
             wp_die();
         }
+        $isLoggedIn = is_user_logged_in();
+        $guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['group_members_settings'] ?? [])
+            ? ($options['group_members_settings']['guest_hidden_fields'] ?? [])
+            : ['email', 'phone'];
         foreach ($collection as $key => $value) { 
             $nestedData = array();
             $nestedData['name'] = '<div class="d-flex align-items-center">';
@@ -976,6 +980,11 @@ $keyName = ($fieldCounts[$fname] > 1) ? $keyBase . '_' . $fieldIndex[$fname] : $
             $nestedData[$colKey] = '--';
         }
     }
+
+            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
+                $nestedData = $this->applyGuestFieldMaskingToListRow( $nestedData, $guest_hidden_fields );
+            }
+
        $data[] = $nestedData;
         }
         $draw = $_POST['draw'];
@@ -1261,22 +1270,10 @@ public function getOrganizations(){
                 }
             }
 
-            // Apply guest field masking for list view (admin-configurable)
-            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {                
-                $maskStyle  = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
-                $lockIcon   = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
-                $maskedPhone   = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">(•••)&nbsp;•••-••••</span></a>';
-                $maskedEmail   = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span></a>';
-                $maskedGeneric = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">' . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span></a>';
-                foreach ( $guest_hidden_fields as $fieldName ) {
-                    $colClass = preg_replace('/[^a-z0-9]/', '', strtolower($fieldName));
-                    if ( isset( $nestedData[ $colClass ] ) ) {
-                        $nestedData[ $colClass ] = ( $fieldName === 'phoneNumbers' ) ? $maskedPhone
-                            : ( ( $fieldName === 'primaryEmail' ) ? $maskedEmail : $maskedGeneric );
-                    }
-                }
+            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
+                $nestedData = $this->applyGuestFieldMaskingToListRow( $nestedData, $guest_hidden_fields );
             }
-          
+
 		$data[] = $nestedData;
         }
        
@@ -1294,6 +1291,39 @@ public function getOrganizations(){
         echo json_encode($json_data);
         wp_die();
     }
+    /**
+     * Replace configured list-view columns with blurred placeholders for guests.
+     */
+    public function applyGuestFieldMaskingToListRow( array $nestedData, array $guest_hidden_fields ) {
+        if ( empty( $guest_hidden_fields ) ) {
+            return $nestedData;
+        }
+
+        $maskStyle     = 'filter:blur(3.5px);user-select:none;letter-spacing:1px;';
+        $lockIcon      = '<i class="fas fa-lock" style="font-size:0.8em;opacity:0.6;"></i> ';
+        $loginLinkOpen = '<a href="#" data-toggle="modal" data-target="#loginModal" title="Login to view" style="text-decoration:none;color:inherit;">';
+        $loginLinkClose = '</a>';
+        $maskedPhone   = $loginLinkOpen . $lockIcon . '<span style="' . $maskStyle . '">(•••)&nbsp;•••-••••</span>' . $loginLinkClose;
+        $maskedEmail   = $loginLinkOpen . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span>' . $loginLinkClose;
+        $maskedGeneric = $loginLinkOpen . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span>' . $loginLinkClose;
+
+        foreach ( $guest_hidden_fields as $fieldName ) {
+            $colClass = preg_replace( '/[^a-z0-9]/', '', strtolower( $fieldName ) );
+            if ( ! isset( $nestedData[ $colClass ] ) ) {
+                continue;
+            }
+            if ( in_array( $colClass, [ 'phone', 'phonenumbers' ], true ) ) {
+                $nestedData[ $colClass ] = $maskedPhone;
+            } elseif ( in_array( $colClass, [ 'email', 'primaryemail' ], true ) ) {
+                $nestedData[ $colClass ] = $maskedEmail;
+            } else {
+                $nestedData[ $colClass ] = $maskedGeneric;
+            }
+        }
+
+        return $nestedData;
+    }
+
     public function formatMonthsToYearsAndMonths($totalMonths) {
     $years = floor($totalMonths / 12);
     $months = $totalMonths % 12;
