@@ -1461,6 +1461,10 @@ public function groupMemberFilters(){
 			$apiUrl='list/people/organization/'.$date.'/'.$groupId; 
              $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
 		  }
+          elseif($values =='tags'){
+			$apiUrl='list/people/tags/'.$date.'/'.$groupId; 
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		  }
         //    //print_r($apiUrl); 
 		  //$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
          // print_r($response); 
