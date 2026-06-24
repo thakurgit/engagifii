@@ -1465,6 +1465,11 @@ public function groupMemberFilters(){
 			$apiUrl='list/people/tags/'.$date.'/'.$groupId; 
              $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
 		  }
+          elseif($values =='title'){
+			$apiUrl='list/people/getAllPeopleTitleList'; 
+             $response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		  }
+          
         //    //print_r($apiUrl); 
 		  //$response =  $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
          // print_r($response); 
@@ -1487,6 +1492,9 @@ public function groupMemberFilters(){
                   elseif($values =='tags'){
                     $html[$values].='<li class="d-flex align-items-start"><input id="tags_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTags[]" value="'.$value['id'].'"> <label class="" for="tags_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
                }
+               elseif($values =='title'){
+                $html[$values].='<li class="d-flex align-items-start"><input id="title_'.$key.'" class="mr-2 mt-1" type="checkbox" name="eventsTitle[]" value="'.$value['id'].'"> <label class="" for="title_'.$key.'"><small> '.addslashes($value['name']).'</small></label></li>';	
+           }
 				}
 			  }else{
 				$html[$values] ='<h6 class="text-center mt-3">data not found</h6>';
