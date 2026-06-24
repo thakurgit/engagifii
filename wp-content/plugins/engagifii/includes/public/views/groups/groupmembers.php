@@ -178,6 +178,19 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                         </div>
                     </div>
                     <?php } ?>
+
+                    <?php if (in_array('tags', $columnNames, true)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Tags <i class="far fa-angle-down"></i></div>
+                        <div class="content-area tags-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
                     
                     <!-- Dynamically generate filters for custom fields -->
                     <?php
@@ -351,6 +364,7 @@ label{
   var roles = [];
   var organizations = [];
   var titles = [];
+  var tags = [];
   var customFields = {};
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
@@ -430,6 +444,7 @@ label{
                 d.roles = roles;
                 d.organizations = organizations;
                 d.titles = titles;
+                d.tags = tags;
                 // Add custom fields filter
                 d.customFields = customFields;
                 console.log('DataTable AJAX customFields:', customFields);               
@@ -496,6 +511,7 @@ label{
               roles:roles,
               organizations:organizations,
               titles:titles,
+              tags:tags,
               customFields: customFields
           },
          success: function(response) {
@@ -889,6 +905,7 @@ $('#apply-filter-data').click(function() {
     roles = getCheckedValues('.roles-filter');
     organizations = getCheckedValues('.organization-filter');
     titles = getCheckedValues('.title-filter');
+    tags = getCheckedValues('.tags-filter');
     updateCustomFieldsFromDOM();
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
@@ -909,6 +926,7 @@ $('#clear-all').click(function() {
     roles = [];
     organizations = [];
     titles = [];
+    tags = [];
     customFieldSelections = {};
     clearAllCheckboxes('.filter-list');
     clearAllCheckboxes('.custom-field-filter');
@@ -1011,6 +1029,7 @@ function countFilterData() {
     var roles = getCheckedValues('.roles-filter');
     var organizations = getCheckedValues('.organization-filter');
     var titles = getCheckedValues('.title-filter');
+    var tags = getCheckedValues('.tags-filter');
     var groupId = '<?php echo $groupId; ?>';
     updateCustomFieldsFromDOM();
 
@@ -1025,6 +1044,7 @@ function countFilterData() {
             roles: roles,
             organizations: organizations,
             titles: titles,
+            tags: tags,
             customFields: customFields,
             groupId: groupId
         },

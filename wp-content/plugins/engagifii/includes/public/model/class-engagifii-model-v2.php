@@ -586,6 +586,7 @@ foreach ($visible_columns as $col_json) {
         $organizations = isset($_POST['organizations']) && is_array($_POST['organizations']) ? $_POST['organizations'] : [];
         $roles = isset($_POST['roles']) && is_array($_POST['roles']) ? $_POST['roles'] : [];
         $titles = isset($_POST['titles']) && is_array($_POST['titles']) ? $_POST['titles'] : [];
+        $tags = isset($_POST['tags']) && is_array($_POST['tags']) ? $_POST['tags'] : [];
        // print_r($organizations); die;
         // Build filter rules for API
         $filterRules = [];
@@ -634,6 +635,14 @@ foreach ($visible_columns as $col_json) {
                 "fieldId" => "title",
                 "filterType" => 4,
                 "selectedValues" => $titles
+            ];
+        }
+
+        if (!empty($tags)) {
+            $filterRules[] = [
+                "fieldId" => "tags",
+                "filterType" => 1,
+                "selectedValues" => $tags
             ];
         }
     
@@ -1585,6 +1594,7 @@ private function _groupPostCountData() {
     $roles = isset($_POST['roles']) ? $_POST['roles'] : [];
     $organizations = isset($_POST['organizations']) ? $_POST['organizations'] : [];
     $titles = isset($_POST['titles']) ? $_POST['titles'] : [];
+    $tags = isset($_POST['tags']) ? $_POST['tags'] : [];
     $customFields = isset($_POST['customFields']) ? $_POST['customFields'] : [];
 
     $filterRules = [];
@@ -1634,6 +1644,14 @@ private function _groupPostCountData() {
             'fieldId' => 'title',
             'filterType' => 4,
             'selectedValues' => $titles
+        ];
+    }
+
+    if (!empty($tags)) {
+        $filterRules[] = [
+            'fieldId' => 'tags',
+            'filterType' => 1,
+            'selectedValues' => $tags
         ];
     }
 
