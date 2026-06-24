@@ -153,7 +153,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                     </div>
                     <?php } ?>
                     
-                    <?php if (in_array('organization', $columnNames) && array_search('organization', $columnNames)) { ?>
+                    <?php if (in_array('organization', $columnNames, true)) { ?>
                     <div class="filter-list border-bottom">
                         <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Organization <i class="far fa-angle-down"></i></div>
                         <div class="content-area organization-filter d-none">
@@ -165,10 +165,30 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                         </div>
                     </div>
                     <?php } ?>
+
+                    <?php if (in_array('title', $columnNames, true)) { ?>
+                    <div class="filter-list border-bottom">
+                        <div class="heading-title py-2 d-flex align-items-center justify-content-between regular-field-filter-tittle"> Title <i class="far fa-angle-down"></i></div>
+                        <div class="content-area title-filter d-none">
+                            <ul class="list-group m-0">
+                                <div class="loaders text-center py-3">
+                                    <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
                     
                     <!-- Dynamically generate filters for custom fields -->
-                    <?php foreach ($columns as $column) {
-    if (isset($column->fieldId) && !empty($column->fieldId)) { ?>
+                    <?php
+                    $gm_system_filter_cols = ['currentDepartment', 'currentPosition', 'personType', 'organization', 'title', 'tags'];
+                    foreach ($columns as $column) {
+    if (isset($column->fieldId) && !empty($column->fieldId)) {
+        $colName = $column->colName ?? '';
+        if (in_array($colName, $gm_system_filter_cols, true)) {
+            continue;
+        }
+    ?>
         <div class="filter-list border-bottom">
             <div class="heading-title py-2 d-flex align-items-center justify-content-between custom-field-filter-tittle">
                 <?php echo esc_html($column->displayName ?? $column->fieldName); ?> <i class="far fa-angle-down"></i>
@@ -330,6 +350,7 @@ label{
   var personTypes = [];
   var roles = [];
   var organizations = [];
+  var titles = [];
   var customFields = {};
   var isUserLoggedIn = <?php echo is_user_logged_in() ? 'true' : 'false'; ?>;
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
@@ -408,6 +429,7 @@ label{
                 d.personTypes = personTypes;
                 d.roles = roles;
                 d.organizations = organizations;
+                d.titles = titles;
                 // Add custom fields filter
                 d.customFields = customFields;
                 console.log('DataTable AJAX customFields:', customFields);               
@@ -473,6 +495,7 @@ label{
               personTypes:personTypes,
               roles:roles,
               organizations:organizations,
+              titles:titles,
               customFields: customFields
           },
          success: function(response) {
@@ -655,7 +678,8 @@ function buildGroupMemberCard(item) {
             person.totalTimeWorked ? formatMonthsToYearsAndMonths(person.totalTimeWorked) : '--',
             'totaltimeworked'
         ),
-        name: person.fullName || '--'
+        name: person.fullName || '--',
+        title: applyGuestMaskGM(person.title || '--', 'title')
     };
 
     // Custom fields with masking
@@ -864,6 +888,7 @@ $('#apply-filter-data').click(function() {
     personTypes = getCheckedValues('.personType-filter');
     roles = getCheckedValues('.roles-filter');
     organizations = getCheckedValues('.organization-filter');
+    titles = getCheckedValues('.title-filter');
     updateCustomFieldsFromDOM();
     if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
         table.draw();
@@ -883,6 +908,7 @@ $('#clear-all').click(function() {
     personTypes = [];
     roles = [];
     organizations = [];
+    titles = [];
     customFieldSelections = {};
     clearAllCheckboxes('.filter-list');
     clearAllCheckboxes('.custom-field-filter');
@@ -984,6 +1010,7 @@ function countFilterData() {
     var personTypes = getCheckedValues('.personType-filter');
     var roles = getCheckedValues('.roles-filter');
     var organizations = getCheckedValues('.organization-filter');
+    var titles = getCheckedValues('.title-filter');
     var groupId = '<?php echo $groupId; ?>';
     updateCustomFieldsFromDOM();
 
@@ -997,6 +1024,7 @@ function countFilterData() {
             personTypes: personTypes,
             roles: roles,
             organizations: organizations,
+            titles: titles,
             customFields: customFields,
             groupId: groupId
         },

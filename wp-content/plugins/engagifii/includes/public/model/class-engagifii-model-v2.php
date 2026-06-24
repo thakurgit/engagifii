@@ -585,6 +585,7 @@ foreach ($visible_columns as $col_json) {
         $personTypes = isset($_POST['personTypes']) && is_array($_POST['personTypes']) ? $_POST['personTypes'] : [];
         $organizations = isset($_POST['organizations']) && is_array($_POST['organizations']) ? $_POST['organizations'] : [];
         $roles = isset($_POST['roles']) && is_array($_POST['roles']) ? $_POST['roles'] : [];
+        $titles = isset($_POST['titles']) && is_array($_POST['titles']) ? $_POST['titles'] : [];
        // print_r($organizations); die;
         // Build filter rules for API
         $filterRules = [];
@@ -625,6 +626,14 @@ foreach ($visible_columns as $col_json) {
                 "fieldId" => "currentOrganization", // Try organizationId instead of organization
                 "filterType" => 4,
                 "selectedValues" => $organizations
+            ];
+        }
+
+        if (!empty($titles)) {
+            $filterRules[] = [
+                "fieldId" => "title",
+                "filterType" => 4,
+                "selectedValues" => $titles
             ];
         }
     
@@ -707,6 +716,7 @@ if (isset($_POST['customFields']) && is_array($_POST['customFields'])) {
                 $nestedData['name'] .= '<i class="fas fa-user-circle mr-2" style="font-size:40px; color:#979797"></i>';
             }
             $nestedData['name'] .= '<div>'.$value->people->firstName.' '.$value->people->lastName.'</div>';
+            $nestedData['title'] = !empty($value->people->title) ? esc_html($value->people->title) : '--';
             $nestedData['email'] = '<a href="mailto:'.$value->people->email.'" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->people->email.'</a>';
 
             // Positions and Organizations (keep as is for now, as logic is complex)
@@ -1574,6 +1584,7 @@ private function _groupPostCountData() {
     $personTypes = isset($_POST['personTypes']) ? $_POST['personTypes'] : [];
     $roles = isset($_POST['roles']) ? $_POST['roles'] : [];
     $organizations = isset($_POST['organizations']) ? $_POST['organizations'] : [];
+    $titles = isset($_POST['titles']) ? $_POST['titles'] : [];
     $customFields = isset($_POST['customFields']) ? $_POST['customFields'] : [];
 
     $filterRules = [];
@@ -1615,6 +1626,14 @@ private function _groupPostCountData() {
             'fieldId' => 'currentOrganization',
             'filterType' => 4,
             'selectedValues' => $organizations
+        ];
+    }
+
+    if (!empty($titles)) {
+        $filterRules[] = [
+            'fieldId' => 'title',
+            'filterType' => 4,
+            'selectedValues' => $titles
         ];
     }
 
