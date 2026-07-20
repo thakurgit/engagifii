@@ -80,7 +80,6 @@ function renderClassicLayout(data, container) {
             '</div>';
 
        var fieldValues = buildFieldValues(org);
-
        var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
 
        // Render "Contact Name" first if present in selected columns
@@ -152,7 +151,7 @@ function renderClassicLayout(data, container) {
         var colsPerRow = (typeof orgClassicCardsPerRow !== 'undefined') ? orgClassicCardsPerRow : 4;
         var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
 
-        var card = '<div class="' + colClass + ' mb-4">' +
+        var card = '<div class="' + colClass + ' mb-4" org-id="'+ fieldValues.id +'">' +
             '<div class="card h-100 shadow p-3 org-card-classic">' +
             orgPhoto +
             '<div class="card-body p-0 pt-2 group-card">' +

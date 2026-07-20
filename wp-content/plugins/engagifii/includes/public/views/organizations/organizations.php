@@ -14,6 +14,14 @@ if (!isset($orgTags)) {
 if (!isset($orgType)) {
     $orgType = '';
 }
+// Handle orgStatus parameter from shortcode (optional - filters organizations by type if provided)
+if (!isset($orgStatus)) {
+    $orgStatus = '';
+}
+// Handle include_in_dir parameter from shortcode (optional - filters organizations by type if provided)
+if (!isset($include_in_dir)) {
+    $include_in_dir = '';
+}
 
 	$collection 	=	array();
   $forDatatable 	= 	array();
@@ -247,10 +255,13 @@ jQuery(document).ready(function($) {
   ?>;
   var initialOrganizationTypes = <?php echo isset($orgType) && !empty($orgType) ? json_encode(array_map('trim', explode(',', $orgType))) : '[]'; ?>;
   var organizationTypes = initialOrganizationTypes.slice(); // Copy initial types
-  var statuses = [];
+  var initialOrganizationStatuses = <?php echo isset($orgStatus) && !empty($orgStatus) ? json_encode(array_map('trim', explode(',', $orgStatus))) : '[]'; ?>;
+  var statuses = initialOrganizationStatuses.slice(); // Copy initial status
   var locations = [];
   var initialOrganizationTags = <?php echo isset($orgTags) && !empty($orgTags) ? json_encode(array_map('trim', explode(',', $orgTags))) : '[]'; ?>;
   var organizationTags = initialOrganizationTags.slice(); // Copy initial tags
+  var include_in_dir = <?php echo isset($include_in_dir) && !empty($include_in_dir) ? json_encode(array_map('trim', explode(',', $include_in_dir))) : '[]'; ?>;
+  var include_in_dir = include_in_dir.slice(); // Copy initial status
   var customFields = {};
   var organizationId = '<?php echo isset($_GET['organizationId']) ? $_GET['organizationId'] : ''; ?>';
   
@@ -426,6 +437,7 @@ jQuery(document).ready(function($) {
 			  columns: columns,
 			  order: [{dir: 'asc'}],
 			  organizationTypes: organizationTypes,
+              include_in_dir: include_in_dir,
 			  statuses: statuses,
 			  locations: locations,
 			  organizationTags: organizationTags,
@@ -458,6 +470,17 @@ jQuery(document).ready(function($) {
 			  orgIsLoading = false;
 			  orgHasMore = false;
 			}
+            <?php if ($orgType == '91c0e345-8a59-4394-64bb-08de93f0a9ed') { ?>
+$('.group-card').each(function () {
+    if ($(this).find('.btn-detail').length === 0) {
+        $(this).append(
+            '<p class="card-text mb-1 btn-detail">' +
+            '<a href="" class="btn btn-link btn-sm pl-0" data-toggle="modal" data-target="#partner-pop">View Detail</a>' +
+            '</p>'
+        );
+    }
+});
+<?php } ?>
 		  },
 		  error: function() {
 			$('.grid-view #eng-overlay').hide();
@@ -651,6 +674,7 @@ function applyGuestMask(value, colClass) {
 // Helper function to build field values
 function buildFieldValues(org) {
     var fieldValues = {
+        id: org.id,
         name: org.name || '--',
         primaryemail: applyGuestMask(
             org.primaryEmail
@@ -991,7 +1015,8 @@ function renderDynamicFilters(filters) {
                     if (value && display) {
                         filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                         filterHtml += '<label class="m-0">';
-                        filterHtml += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                        //filterHtml += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                        filterHtml += '<input class="mr-2" type="checkbox" value="' + value + '" ' + (statuses.includes(value) ? 'checked' : '') + '>';
                         filterHtml += display;
                         filterHtml += '</label></li>';
                     }
@@ -1077,7 +1102,8 @@ function renderDynamicFilters(filters) {
                     if (value && display) {
                         filterHtml += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                         filterHtml += '<label class="m-0">';
-                        filterHtml += '<input class="mr-2" type="radio" name="dynamic-radio-' + filterId + '" value="' + value + '">';
+                       // filterHtml += '<input class="mr-2" type="radio" name="dynamic-radio-' + filterId + '" value="' + value + '">';
+                        filterHtml += '<input class="mr-2" type="radio" name="dynamic-radio-' + filterId + '" value="' + '" ' + (include_in_dir.includes(value) ? 'checked' : '') + '>';
                         filterHtml += display;
                         filterHtml += '</label></li>';
                     }
@@ -1142,6 +1168,13 @@ function initializeDynamicFilterHandlers() {
         var $filterList = $(this).closest('.filter-list');
         var filterId = $filterList.data('filter-id');
         
+        dynamicFilterSelections[filterId] = $filterList
+        .find('input[type="checkbox"]:checked')
+        .map(function () {
+            return $(this).val();
+        })
+        .get();
+
         // Update selections
         if (!dynamicFilterSelections[filterId]) {
             dynamicFilterSelections[filterId] = [];
@@ -1352,7 +1385,7 @@ function loadFilterData($filterList) {
                                 htmlContent += display;
                                 htmlContent += '</label></li>';
                             }
-                        });
+                        }); 
                         htmlContent += '</ul>';
                     } else {
                         htmlContent += '<p class="text-muted text-center py-2">No numeric values available</p>';
@@ -1367,7 +1400,7 @@ function loadFilterData($filterList) {
                             if (value && display && value !== '' && display !== '') {
                                 htmlContent += '<li class="list-group-item border-0 py-1 px-2" data-filter-value="' + display.toString().toLowerCase() + '">';
                                 htmlContent += '<label class="m-0">';
-                                htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
+                               htmlContent += '<input class="mr-2" type="checkbox" value="' + value + '">';
                                 htmlContent += display;
                                 htmlContent += '</label></li>';
                             }

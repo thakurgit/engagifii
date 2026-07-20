@@ -1029,6 +1029,7 @@ public function getOrganizations(){
         // Get filter parameters from POST
         $organizationTypes = isset($_POST['organizationTypes']) && is_array($_POST['organizationTypes']) ? $_POST['organizationTypes'] : [];
         $statuses = isset($_POST['statuses']) && is_array($_POST['statuses']) ? $_POST['statuses'] : [];
+        $include_in_dir = isset($_POST['include_in_dir']) && is_array($_POST['include_in_dir']) ? $_POST['include_in_dir'] : [];
         $locations = isset($_POST['locations']) && is_array($_POST['locations']) ? $_POST['locations'] : [];
         $organizationTags = isset($_POST['organizationTags']) && is_array($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
         $customFields = isset($_POST['customFields']) && is_array($_POST['customFields']) ? $_POST['customFields'] : [];
@@ -1067,6 +1068,13 @@ public function getOrganizations(){
                 "fieldId" => "tags",
                 "filterType" => 1,
                 "selectedValues" => $organizationTags
+            ];
+        }
+        if (!empty($include_in_dir) && $tenantCode=='cais') {
+            $filterRules[] = [
+                "fieldId" => "2edf02cf-5f4b-450c-b802-c1e550762f76",
+                "filterType" => 9,
+                "selectedValues" => $include_in_dir
             ];
         }
 
@@ -1883,8 +1891,7 @@ public function getOrganizationFilterConfiguration() {
     
     $apiEndpoint = "PublicFilterConfiguration/".$tenantCode."/publicorganizationlist";
     
-    $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard');
-    
+    $dataResponse = $this->submitApiRequest($apiEndpoint, array(), "GET", 'dashboard'); 
     if (isset($dataResponse['api_response'])) {
         $data = json_decode($dataResponse['api_response'], true);
         
