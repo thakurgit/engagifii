@@ -130,6 +130,10 @@ function renderDetailedLayout(data, container) {
         });
         
         cardBody += '</div>';
+
+        cardBody += '<p class="card-text mb-0 mt-2 btn-detail">' +
+            '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>' +
+            '</p>';
         
         var card = '<div class="col-md-6 mb-4">' +
             '<div class="card h-100 shadow org-card-detailed">' +

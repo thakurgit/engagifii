@@ -88,6 +88,18 @@ if ( ! defined( 'EVENTS_PAGE_LINK' ) ) {
 	define('GROUP_MEMBERS_COLS', $group_members_visible_column_list);
 	 $group_members_visible_column_grid = isset($options['group_members_settings']['grid']['visible_column_list']) ? $options['group_members_settings']['grid']['visible_column_list'] : [];  
 	define('GROUP_MEMBERS_COLS_GRID', $group_members_visible_column_grid);
+// Organization list page link
+$organization_page = $front_pages['organization_page'] ?? '';
+if ( ! defined( 'ORGANIZATION_PAGE_LINK' ) ) {
+    define('ORGANIZATION_PAGE_LINK', $organization_page ? get_permalink( $organization_page ) : site_url('/organizations/'));
+}
+
+// Organization detail page link
+$organization_detail_page = $front_pages['organization_detail_page'] ?? '';
+if ( ! defined( 'ORGANIZATION_DETAIL_LINK' ) ) {
+    define('ORGANIZATION_DETAIL_LINK', $organization_detail_page ? get_permalink( $organization_detail_page ) : site_url('/organization-detail/'));
+}
+
 //Organizations columns
 	 $organization_visible_column_list = isset($options['organization_settings']['list']['visible_column_list']) ? $options['organization_settings']['list']['visible_column_list'] : [];
  	define('ORGANIZATION_COLS', $organization_visible_column_list); 

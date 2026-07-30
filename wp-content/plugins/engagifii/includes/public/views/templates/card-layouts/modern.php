@@ -296,7 +296,7 @@ function renderModernLayout(data, container) {
             '</div>' +
             '</div>' +
             '<div class="modern-event-action">' +
-            '<a href="#" class="modern-event-btn">More Details</a>' +
+            '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="modern-event-btn">More Details</a>' +
             '</div>' +
             '</div>' +
             '</div>';

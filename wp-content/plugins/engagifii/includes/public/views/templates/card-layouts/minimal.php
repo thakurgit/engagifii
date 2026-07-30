@@ -204,12 +204,17 @@ function renderMinimalLayout(data, container) {
                 + '</div>'
             : '';
 
+        var detailLinkHtml = '<p style="margin:8px 0 0;padding:0;">'
+            + '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>'
+            + '</p>';
+
         var card = '<div class="col-md-6 mb-4">'
             + '<div class="org-card-minimal">'
             + '<div class="mnl-body">'
             + topHtml
             + '<hr class="mnl-divider">'
             + fieldsHtml
+            + detailLinkHtml
             + '</div></div></div>';
 
         container.append(card);
