@@ -1225,7 +1225,7 @@ public function getOrganizations(){
 			$nestedData['name']='<div class="d-flex align-items-center">';
 			$orgImgSrc = ($value->imageThumbUrl && filter_var($value->imageThumbUrl, FILTER_VALIDATE_URL)) ? $value->imageThumbUrl : ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 			$nestedData['name'].='<img style="max-width:40px; flex:0 0 40px" alt="'.esc_attr($value->name).'" class="rounded-circle img-fluid mr-2" src="'.esc_url($orgImgSrc).'">';
-            $nestedData['name'] .= '<div><a class="text-nowrap" href="#" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
+            $nestedData['name'] .= '<div><a class="text-nowrap" href="' . ORGANIZATION_DETAIL_LINK . '?organizationId=' . esc_attr($value->id) . '" style="text-decoration: none;" onmouseover="this.style.textDecoration=\'underline\';" onmouseout="this.style.textDecoration=\'none\';">'.$value->name.'</a></div>';
             $nestedData['status'] = ($value->status === 'Active') 
                 ? '<span style="color: #28a745; font-weight: 600;">' . $value->status . '</span>' 
                 : $value->status;

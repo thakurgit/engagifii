@@ -148,6 +148,10 @@ function renderClassicLayout(data, container) {
             }
         });
 
+        cardBody += '<p class="card-text mb-0 mt-2 btn-detail">' +
+            '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>' +
+            '</p>';
+
         var colsPerRow = (typeof orgClassicCardsPerRow !== 'undefined') ? orgClassicCardsPerRow : 4;
         var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
 

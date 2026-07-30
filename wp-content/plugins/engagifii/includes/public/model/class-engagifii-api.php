@@ -1011,6 +1011,14 @@ public function getEventDetailsByID($id)
 }
 
 //end here
+
+	public function getOrganizationBasicDetails($id)
+	{
+		$postData = array();
+		$apiUrl = 'GetOrganizationBasicDetails/' . $id;
+		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
+		return json_decode($response['api_response']);
+	}
 	
 	public function getCourseDocument($id, $title){
 		$postData = array();

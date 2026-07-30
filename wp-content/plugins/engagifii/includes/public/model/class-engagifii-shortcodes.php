@@ -85,6 +85,7 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 			'training-calendar' => 'training_calendar',
 			'group-members-list' => 'group_members_list',
 			'get-organization' => 'get_organization',
+			'organization-details' => 'organization_details',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -558,6 +559,16 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 	$orgStatus = $atts['orgstatus'];
 	$include_in_dir = $atts['include_in_dir'];
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
+		return ob_get_clean();
+	}
+
+	public function organization_details($attr){
+		ob_start();
+		extract(shortcode_atts(array(
+			'organizationId' => isset($attr['id']) ? $attr['id'] : ''
+		), $attr));
+
+		include $this->basePath.'includes/public/views/organizations/grid-listing-details.php';
 		return ob_get_clean();
 	}
 
