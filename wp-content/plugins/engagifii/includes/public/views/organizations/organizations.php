@@ -6,7 +6,6 @@ if ($setupCompleted && !in_array('organization_directory', $enabled_modules)) {
     return;
 }
 
-// Handle tags parameter from shortcode (optional - filters organizations by tags if provided)
 if (!isset($orgTags)) {
     $orgTags = '';
 }
@@ -263,7 +262,8 @@ jQuery(document).ready(function($) {
   var include_in_dir = <?php echo isset($include_in_dir) && !empty($include_in_dir) ? json_encode(array_map('trim', explode(',', $include_in_dir))) : '[]'; ?>;
   var include_in_dir = include_in_dir.slice(); // Copy initial status
   var customFields = {};
-  var organizationId = '<?php echo isset($_GET['organizationId']) ? $_GET['organizationId'] : ''; ?>';
+  var organizationId = '<?php echo isset($_GET['organizationId']) ? esc_js($_GET['organizationId']) : ''; ?>';
+  var organizationDetailLink = '<?php echo esc_url(ORGANIZATION_DETAIL_LINK); ?>';
   
   // Global object to store dynamic filter data (declare early to avoid reference errors)
   var dynamicFiltersConfig = [];
@@ -472,10 +472,11 @@ jQuery(document).ready(function($) {
 			}
             <?php if ($orgType == '91c0e345-8a59-4394-64bb-08de93f0a9ed') { ?>
 $('.group-card').each(function () {
-    if ($(this).find('.btn-detail').length === 0) {
+    var orgId = $(this).closest('[org-id]').attr('org-id');
+    if ($(this).find('.btn-detail').length === 0 && orgId) {
         $(this).append(
             '<p class="card-text mb-1 btn-detail">' +
-            '<a href="" class="btn btn-link btn-sm pl-0" data-toggle="modal" data-target="#partner-pop">View Detail</a>' +
+            '<a href="' + organizationDetailLink + '?organizationId=' + orgId + '" class="btn btn-link btn-sm pl-0">View Detail</a>' +
             '</p>'
         );
     }
