@@ -1,4 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.gc_maxlifetime', 86400);
+    session_set_cookie_params(86400);
+    session_start();
+}
+
 $enabled_modules = get_option('engagifii_enabled_modules', array());
 $setupCompleted = get_option('engagifii_setup_completed');
 if ($setupCompleted && !in_array('organization_directory', $enabled_modules)) {
@@ -6,7 +12,39 @@ if ($setupCompleted && !in_array('organization_directory', $enabled_modules)) {
     return;
 }
 
-$orgId = isset($_REQUEST['organizationId']) ? sanitize_text_field(wp_unslash($_REQUEST['organizationId'])) : '';
+if (!function_exists('engagifii_get_organization_id_from_request')) {
+    function engagifii_get_organization_id_from_request() {
+        $sources = array();
+        if (!empty($_GET) && is_array($_GET)) {
+            $sources[] = $_GET;
+        }
+        if (!empty($_REQUEST) && is_array($_REQUEST)) {
+            $sources[] = $_REQUEST;
+        }
+        foreach ($sources as $params) {
+            foreach ($params as $key => $value) {
+                $normalizedKey = strtolower((string) $key);
+                if (in_array($normalizedKey, array('organizationid', 'orgid'), true) && $value !== '') {
+                    return sanitize_text_field(wp_unslash($value));
+                }
+            }
+        }
+        return '';
+    }
+}
+
+if (!function_exists('engagifii_org_response_has_data')) {
+    function engagifii_org_response_has_data($response) {
+        if (empty($response) || !is_object($response)) {
+            return false;
+        }
+        $id = $response->id ?? $response->Id ?? null;
+        $name = $response->name ?? $response->Name ?? null;
+        return !empty($id) || !empty($name);
+    }
+}
+
+$orgId = engagifii_get_organization_id_from_request();
 if (empty($orgId)) {
     echo '<h5 class="text-center pt-5">Organization ID not available</h5>';
     return;
@@ -15,7 +53,7 @@ if (empty($orgId)) {
 $api = new Engagifii_API();
 $response = $api->getOrganizationBasicDetails($orgId);
 
-if (empty($response) || empty($response->id)) {
+if (!engagifii_org_response_has_data($response)) {
     echo '<h5 class="text-center pt-5">Organization details not found.</h5>';
     return;
 }
@@ -68,7 +106,7 @@ if (!function_exists('engagifii_org_should_mask_field')) {
     }
 }
 
-$org_name = esc_html($response->name ?? '');
+$org_name = esc_html($response->name ?? $response->Name ?? '');
 $org_logo = engagifii_org_is_valid_image($response->imageThumbUrl ?? '') ? esc_url($response->imageThumbUrl) : esc_url($org_default_img);
 
 $website_raw = trim($response->website ?? '');
