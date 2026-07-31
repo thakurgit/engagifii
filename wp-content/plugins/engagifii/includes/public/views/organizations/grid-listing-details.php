@@ -133,6 +133,14 @@ $key_contacts = !empty($response->keyContacts) && is_array($response->keyContact
 $mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_hidden_fields);
 $mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_hidden_fields);
 $mask_website = engagifii_org_should_mask_field('website', $is_logged_in, $guest_hidden_fields);
+
+$org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization Bio'));
+if ($org_overview_html === '') {
+    $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Overview'));
+}
+if ($org_overview_html === '') {
+    $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization/Company Description'));
+}
 ?>
 
 <style>
@@ -218,8 +226,8 @@ $mask_website = engagifii_org_should_mask_field('website', $is_logged_in, $guest
     background: rgba(255,255,255,0.12);
 }
 .org-detail-contacts-wrap {
-    max-width: 420px;
-    margin-top: -1px;
+    max-width: 100%;
+    margin-top: 0;
 }
 .org-detail-contacts-tab {
     display: inline-block;
@@ -294,6 +302,35 @@ $mask_website = engagifii_org_should_mask_field('website', $is_logged_in, $guest
     filter: blur(4px);
     user-select: none;
 }
+.org-detail-content {
+    margin-top: 24px;
+    align-items: flex-start;
+}
+.org-detail-overview {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    height: 100%;
+}
+.org-detail-overview-title {
+    background: #f5f7fa;
+    border-bottom: 1px solid #e0e0e0;
+    color: #1f2d3d;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 12px 18px;
+}
+.org-detail-overview-body {
+    padding: 18px;
+    color: #333;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.org-detail-overview-body p:last-child {
+    margin-bottom: 0;
+}
 @media (max-width: 767px) {
     .org-detail-header {
         flex-direction: column;
@@ -354,47 +391,64 @@ $mask_website = engagifii_org_should_mask_field('website', $is_logged_in, $guest
         </div>
     </div>
 
-    <?php if (!empty($key_contacts)) : ?>
-        <div class="org-detail-contacts-wrap">
-            <div class="org-detail-contacts-tab"><?php esc_html_e('Contacts', 'engagifii'); ?></div>
-            <div class="org-detail-contacts-list">
-                <?php foreach ($key_contacts as $contact) :
-                    $contact_name = esc_html($contact->fullName ?? trim(($contact->firstName ?? '') . ' ' . ($contact->lastName ?? '')));
-                    $contact_title = '';
-                    if (!empty($contact->peoplePosition[0]->positionName)) {
-                        $contact_title = esc_html($contact->peoplePosition[0]->positionName);
-                    } elseif (!empty($contact->title)) {
-                        $contact_title = esc_html($contact->title);
-                    }
+    <?php if (!empty($key_contacts) || $org_overview_html !== '') : ?>
+        <div class="row org-detail-content">
+            <?php if (!empty($key_contacts)) : ?>
+                <div class="<?php echo $org_overview_html !== '' ? 'col-lg-5' : 'col-12'; ?> mb-4 mb-lg-0">
+                    <div class="org-detail-contacts-wrap">
+                        <div class="org-detail-contacts-tab"><?php esc_html_e('Contacts', 'engagifii'); ?></div>
+                        <div class="org-detail-contacts-list">
+                            <?php foreach ($key_contacts as $contact) :
+                                $contact_name = esc_html($contact->fullName ?? trim(($contact->firstName ?? '') . ' ' . ($contact->lastName ?? '')));
+                                $contact_title = '';
+                                if (!empty($contact->peoplePosition[0]->positionName)) {
+                                    $contact_title = esc_html($contact->peoplePosition[0]->positionName);
+                                } elseif (!empty($contact->title)) {
+                                    $contact_title = esc_html($contact->title);
+                                }
 
-                    $contact_img = engagifii_org_is_valid_image($contact->imageThumbUrl ?? '')
-                        ? esc_url($contact->imageThumbUrl)
-                        : esc_url($contact_default_img);
+                                $contact_img = engagifii_org_is_valid_image($contact->imageThumbUrl ?? '')
+                                    ? esc_url($contact->imageThumbUrl)
+                                    : esc_url($contact_default_img);
 
-                    $profile_link = !empty($contact->email)
-                        ? 'mailto:' . esc_attr($contact->email)
-                        : '#';
-                    ?>
-                    <div class="org-detail-contact-row">
-                        <div class="org-detail-contact-photo">
-                            <?php if (engagifii_org_is_valid_image($contact->imageThumbUrl ?? '')) : ?>
-                                <img src="<?php echo $contact_img; ?>" alt="<?php echo esc_attr($contact_name); ?>">
-                            <?php else : ?>
-                                <i class="fas fa-user"></i>
-                            <?php endif; ?>
+                                $profile_link = !empty($contact->email)
+                                    ? 'mailto:' . esc_attr($contact->email)
+                                    : '#';
+                                ?>
+                                <div class="org-detail-contact-row">
+                                    <div class="org-detail-contact-photo">
+                                        <?php if (engagifii_org_is_valid_image($contact->imageThumbUrl ?? '')) : ?>
+                                            <img src="<?php echo $contact_img; ?>" alt="<?php echo esc_attr($contact_name); ?>">
+                                        <?php else : ?>
+                                            <i class="fas fa-user"></i>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="org-detail-contact-info">
+                                        <div class="org-detail-contact-name"><?php echo $contact_name; ?></div>
+                                        <?php if ($contact_title !== '') : ?>
+                                            <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <a href="<?php echo esc_url($profile_link); ?>" class="org-detail-contact-link">
+                                        <?php esc_html_e('View Profile', 'engagifii'); ?>
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="org-detail-contact-info">
-                            <div class="org-detail-contact-name"><?php echo $contact_name; ?></div>
-                            <?php if ($contact_title !== '') : ?>
-                                <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
-                            <?php endif; ?>
-                        </div>
-                        <a href="<?php echo esc_url($profile_link); ?>" class="org-detail-contact-link">
-                            <?php esc_html_e('View Profile', 'engagifii'); ?>
-                        </a>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($org_overview_html !== '') : ?>
+                <div class="<?php echo !empty($key_contacts) ? 'col-lg-7' : 'col-12'; ?>">
+                    <div class="org-detail-overview">
+                        <h2 class="org-detail-overview-title"><?php esc_html_e('Overview', 'engagifii'); ?></h2>
+                        <div class="org-detail-overview-body">
+                            <?php echo wp_kses_post($org_overview_html); ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 </div>
