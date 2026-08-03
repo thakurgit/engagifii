@@ -1033,6 +1033,15 @@ public function getOrganizations(){
         $locations = isset($_POST['locations']) && is_array($_POST['locations']) ? $_POST['locations'] : [];
         $organizationTags = isset($_POST['organizationTags']) && is_array($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
         $customFields = isset($_POST['customFields']) && is_array($_POST['customFields']) ? $_POST['customFields'] : [];
+        $lockedCustomFields = isset($_POST['lockedCustomFields']) && is_array($_POST['lockedCustomFields']) ? wp_unslash($_POST['lockedCustomFields']) : [];
+        $lockedFilterTypesMap = isset($_POST['lockedFilterTypesMap']) && is_array($_POST['lockedFilterTypesMap']) ? array_map('intval', wp_unslash($_POST['lockedFilterTypesMap'])) : [];
+
+        // Shortcode-locked section filters always win (multi-instance safe)
+        foreach ($lockedCustomFields as $fieldId => $selectedValues) {
+            if (!empty($selectedValues) && is_array($selectedValues)) {
+                $customFields[$fieldId] = array_values(array_filter(array_map('sanitize_text_field', $selectedValues)));
+            }
+        }
 
         // Build filter rules dynamically
         $filterRules = [];
@@ -1082,6 +1091,9 @@ public function getOrganizations(){
         $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
             ? array_map('intval', $_POST['filterTypesMap'])
             : [];
+        foreach ($lockedFilterTypesMap as $fieldId => $filterType) {
+            $filterTypesMap[$fieldId] = $filterType;
+        }
 
         // Add custom field filters
         foreach ($customFields as $customFieldId => $selectedValues) {
@@ -1789,6 +1801,14 @@ private function _organizationPostCountData() {
     $locations = isset($_POST['locations']) ? $_POST['locations'] : [];
     $organizationTags = isset($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
     $customFields = isset($_POST['customFields']) ? $_POST['customFields'] : [];
+    $lockedCustomFields = isset($_POST['lockedCustomFields']) && is_array($_POST['lockedCustomFields']) ? wp_unslash($_POST['lockedCustomFields']) : [];
+    $lockedFilterTypesMap = isset($_POST['lockedFilterTypesMap']) && is_array($_POST['lockedFilterTypesMap']) ? array_map('intval', wp_unslash($_POST['lockedFilterTypesMap'])) : [];
+
+    foreach ($lockedCustomFields as $fieldId => $selectedValues) {
+        if (!empty($selectedValues) && is_array($selectedValues)) {
+            $customFields[$fieldId] = array_values(array_filter(array_map('sanitize_text_field', $selectedValues)));
+        }
+    }
 
     $filterRules = [];
 
@@ -1828,6 +1848,9 @@ private function _organizationPostCountData() {
     $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
         ? array_map('intval', $_POST['filterTypesMap'])
         : [];
+    foreach ($lockedFilterTypesMap as $fieldId => $filterType) {
+        $filterTypesMap[$fieldId] = $filterType;
+    }
 
     foreach ($customFields as $customFieldId => $selectedValues) {
         if (!empty($selectedValues)) {

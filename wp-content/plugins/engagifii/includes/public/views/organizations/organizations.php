@@ -21,6 +21,24 @@ if (!isset($orgStatus)) {
 if (!isset($include_in_dir)) {
     $include_in_dir = '';
 }
+// Partner level & year filter (custom field) — hides filter UI when set
+if (!isset($partnerlevelandyear)) {
+    $partnerlevelandyear = '';
+}
+if (!isset($partnerlevelandyear_fieldid) || trim($partnerlevelandyear_fieldid) === '') {
+    $partnerlevelandyear_fieldid = 'fca334f0-b759-4feb-ad88-6c94f29df94c';
+}
+$hide_org_filters = trim($partnerlevelandyear) !== '';
+$initial_section_filters = array_values(array_filter(array_map('trim', explode(',', $partnerlevelandyear))));
+$org_instance_id = 'engagifii-org-' . wp_unique_id();
+$org_table_id = $org_instance_id . '-table';
+$org_grid_search_id = $org_instance_id . '-search';
+$locked_section_custom_fields = array();
+$locked_section_filter_types = array();
+if (!empty($initial_section_filters)) {
+    $locked_section_custom_fields[$partnerlevelandyear_fieldid] = $initial_section_filters;
+    $locked_section_filter_types[$partnerlevelandyear_fieldid] = 4;
+}
 
 	$collection 	=	array();
   $forDatatable 	= 	array();
@@ -61,17 +79,18 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 });
 
 ?>
-<div class="container-fluid ">
+<div class="container-fluid engagifii-org-directory" id="<?php echo esc_attr($org_instance_id); ?>">
 	<div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <!-- Search box for Grid view and combined (both) view -->
             <?php if ($allowedViewMode === 'grid' || $allowedViewMode === 'both'){ ?>
             <div class="form-group mb-0" id="grid-search-wrapper" style="flex: 1; max-width: 400px;<?php if ($allowedViewMode === 'both') { ?> display:none;<?php } ?>">
-                <input type="text" id="grid-search-box" class="form-control" placeholder="Search Organizations..." />
+                <input type="text" id="<?php echo esc_attr($org_grid_search_id); ?>" class="form-control org-grid-search-box" placeholder="Search Organizations..." />
             </div>
             <?php } ?>
             
             <div class="d-flex align-items-center ml-auto">
+                <?php if (!$hide_org_filters) : ?>
                 <div id="filter-content-wrapper" style="display: block; margin-right: 10px;">
                     <div id="filter-loader" class="text-center" style="display:none;">
                         <div class="spinner-border text-primary" role="status">
@@ -102,7 +121,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                                     <input type="hidden" id="isApplyACtive" value="0">
                                     
                                     <!-- Dynamic filters will be loaded here -->
-                                    <div id="dynamic-filters-container">
+                                    <div class="dynamic-filters-container">
                                         <div class="text-center py-5">
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="sr-only">Loading filters...</span>
@@ -122,6 +141,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
                 <?php if ($allowedViewMode === 'both'){ ?>
                 <div class="btn-group view-mode" role="group" aria-label="">
                     <button type="button" class="btn btn-outline-primary " view-mode="grid"><i class="fas fa-grid mr-1"></i>Grid View</button>
@@ -165,7 +185,7 @@ font-size: 260px;
 <!-- Group Title -->
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
 	<div class="engagifii-box  engagifii-main-cotainer position-relative px-xl-5 col-12 list-view">
-  	<table  id="ebtmaintable" class="table table-bordered border-0 table-striped main-list-here course-page nowrap " style="width: 100% !important;">
+  	<table id="<?php echo esc_attr($org_table_id); ?>" class="table table-bordered border-0 table-striped main-list-here course-page nowrap org-main-table" style="width: 100% !important;">
     	<thead> 
 		    <tr>    
 		    	 <?php  
@@ -209,7 +229,7 @@ $i = 0;
     	
     </div>
     <!-- Infinite scroll sentinel -->
-    <div id="org-scroll-sentinel" style="height:1px; margin-top:20px;"></div>
+    <div id="<?php echo esc_attr($org_instance_id); ?>-sentinel" class="org-scroll-sentinel" style="height:1px; margin-top:20px;"></div>
     <div id="org-load-more-spinner" style="display:none; text-align:center; padding:20px 0;">
         <div class="spinner-border spinner-border-sm text-secondary" role="status"><span class="sr-only">Loading...</span></div>
         <span style="margin-left:8px; color:#888; font-size:13px;">Loading more...</span>
@@ -264,6 +284,39 @@ jQuery(document).ready(function($) {
   var customFields = {};
   var organizationId = '<?php echo isset($_GET['organizationId']) ? esc_js($_GET['organizationId']) : ''; ?>';
   var organizationDetailLink = '<?php echo esc_url(ORGANIZATION_DETAIL_LINK); ?>';
+  var orgInstanceId = '<?php echo esc_js($org_instance_id); ?>';
+  var orgTableId = '<?php echo esc_js($org_table_id); ?>';
+  var orgGridSearchId = '<?php echo esc_js($org_grid_search_id); ?>';
+  var $orgRoot = $('#' + orgInstanceId);
+  var orgInstanceLockedCustomFields = <?php echo wp_json_encode($locked_section_custom_fields); ?>;
+  var orgInstanceLockedFilterTypesMap = <?php echo wp_json_encode($locked_section_filter_types); ?>;
+
+  function mergeOrgListCustomFields(baseFields, dynamicSelections) {
+      var merged = Object.assign({}, baseFields || {});
+      if (dynamicSelections && typeof dynamicSelections === 'object') {
+          Object.keys(dynamicSelections).forEach(function(key) {
+              if (dynamicSelections[key] && dynamicSelections[key].length > 0) {
+                  merged[key] = dynamicSelections[key];
+              }
+          });
+      }
+      Object.keys(orgInstanceLockedCustomFields).forEach(function(fieldId) {
+          merged[fieldId] = orgInstanceLockedCustomFields[fieldId].slice();
+      });
+      return merged;
+  }
+
+  function getOrgListFilterTypesMap() {
+      var map = getDynamicFilterTypesMap();
+      Object.keys(orgInstanceLockedFilterTypesMap).forEach(function(fieldId) {
+          map[fieldId] = orgInstanceLockedFilterTypesMap[fieldId];
+      });
+      return map;
+  }
+
+  if (Object.keys(orgInstanceLockedCustomFields).length) {
+      customFields = Object.assign({}, orgInstanceLockedCustomFields);
+  }
   
   // Global object to store dynamic filter data (declare early to avoid reference errors)
   var dynamicFiltersConfig = [];
@@ -284,27 +337,27 @@ jQuery(document).ready(function($) {
  <?php  if ($allowedViewMode === 'grid' ){?>
    OrgList(start);
   <?php } ?>
-  $('.view-mode button').click(function(){
+  $orgRoot.find('.view-mode button').click(function(){
 	  var selectedMode = $(this).attr('view-mode');  
 	  if (selectedMode === viewMode) return;  
 	  viewMode = selectedMode;
 	  $(this).addClass('active').siblings().removeClass('active');  
 	  if(viewMode === 'grid'){
-		  $('.list-view').hide();
-		  $('.grid-view').show();
-		  $('#grid-search-wrapper').show();
+		  $orgRoot.find('.list-view').hide();
+		  $orgRoot.find('.grid-view').show();
+		  $orgRoot.find('#grid-search-wrapper').show();
 		  resetOrgGrid();
 	  } else {
-		  $('.list-view').show();
-		  $('.grid-view').hide();
-		  $('#grid-search-wrapper').hide();
-		  $('#grid-search-box').val('');
+		  $orgRoot.find('.list-view').show();
+		  $orgRoot.find('.grid-view').hide();
+		  $orgRoot.find('#grid-search-wrapper').hide();
+		  $orgRoot.find('#' + orgGridSearchId).val('');
 		  gridSearchQuery = '';
 		  table.draw();
 	  }
   });
  
-	var table = $('#ebtmaintable').DataTable( {
+	var table = $orgRoot.find('#' + orgTableId).DataTable( {
        	"pageLength": 10,
           "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
 		"dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
@@ -345,18 +398,12 @@ jQuery(document).ready(function($) {
 				d.statuses = statuses;
 				d.locations = locations;
 				d.organizationTags = organizationTags;
+				d.include_in_dir = include_in_dir;
 				
-				// Merge custom fields with dynamic filter selections
-				var allCustomFields = Object.assign({}, customFields || {});
-				if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
-					Object.keys(dynamicFilterSelections).forEach(function(key) {
-						if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
-							allCustomFields[key] = dynamicFilterSelections[key];
-						}
-					});
-				}
-				d.customFields = allCustomFields;
-				d.filterTypesMap = getDynamicFilterTypesMap();
+				d.customFields = mergeOrgListCustomFields(customFields, dynamicFilterSelections);
+				d.filterTypesMap = getOrgListFilterTypesMap();
+				d.lockedCustomFields = orgInstanceLockedCustomFields;
+				d.lockedFilterTypesMap = orgInstanceLockedFilterTypesMap;
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -375,16 +422,16 @@ jQuery(document).ready(function($) {
       }
             dt_dropdown();
 			   $('[data-toggle="tooltip"]').tooltip() ; 
-			    $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+			    $orgRoot.find('#' + orgTableId + '_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
 		   
          },
 		  "initComplete": function(settings, json) {
 			           dt_scroll();
-			  $('#ebtmaintable_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
+			  $orgRoot.find('#' + orgTableId + '_wrapper').siblings('#eng-overlay').css( 'display', 'none' );
     },
     });
-	 $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
-        $('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
+	 $orgRoot.find('#' + orgTableId).on( 'processing.dt', function ( e, settings, processing ) {
+        $orgRoot.find('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
 	
 	//fetch group members
@@ -395,7 +442,7 @@ jQuery(document).ready(function($) {
 		start = 0;
 		orgHasMore = true;
 		orgIsLoading = false;
-		$('.grid-view .row').empty();
+		$orgRoot.find('.grid-view .row').empty();
 		OrgList(start);
 	}
 
@@ -403,20 +450,12 @@ jQuery(document).ready(function($) {
 		 if (orgIsLoading) return;
 		 orgIsLoading = true;
 		 if (start === 0) {
-			 $('.grid-view #eng-overlay').show();
-			 $('.grid-view .row').css('opacity','.3');
+			 $orgRoot.find('.grid-view #eng-overlay').show();
+			 $orgRoot.find('.grid-view .row').css('opacity','.3');
 		 } else {
-			 $('#org-load-more-spinner').show();
+			 $orgRoot.find('#org-load-more-spinner').show();
 		 }
-		var allCustomFields = Object.assign({}, customFields || {});
-		if (dynamicFilterSelections && typeof dynamicFilterSelections === 'object') {
-			Object.keys(dynamicFilterSelections).forEach(function(key) {
-				if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
-					allCustomFields[key] = dynamicFilterSelections[key];
-				}
-			});
-		}
-		
+		var allCustomFields = mergeOrgListCustomFields(customFields, dynamicFilterSelections);
 		// Build columns array structure like DataTable does, including search text
 		var columns = [];
 		columns[titleColumn] = {
@@ -442,12 +481,14 @@ jQuery(document).ready(function($) {
 			  locations: locations,
 			  organizationTags: organizationTags,
 			  customFields: allCustomFields,
-			  filterTypesMap: getDynamicFilterTypesMap()
+			  filterTypesMap: getOrgListFilterTypesMap(),
+			  lockedCustomFields: orgInstanceLockedCustomFields,
+			  lockedFilterTypesMap: orgInstanceLockedFilterTypesMap
           },
          success: function(response) {
-	  		 $('.grid-view #eng-overlay').hide();
-			  $('.grid-view .row').css('opacity','1');
-			  $('#org-load-more-spinner').hide();
+	  		 $orgRoot.find('.grid-view #eng-overlay').hide();
+			  $orgRoot.find('.grid-view .row').css('opacity','1');
+			  $orgRoot.find('#org-load-more-spinner').hide();
 			orgIsLoading = false;
 			try {
 			   var parsedResponse = JSON.parse(response);
@@ -495,7 +536,7 @@ $('.group-card').each(function () {
 	
 	// Grid search functionality — server-side search via API
 	var gridSearchTimeout;
-	$('#grid-search-box').on('keyup', function() {
+	$orgRoot.find('#' + orgGridSearchId).on('keyup', function() {
 		clearTimeout(gridSearchTimeout);
 		gridSearchQuery = $(this).val();
 		gridSearchTimeout = setTimeout(function() {
@@ -881,7 +922,7 @@ dt_titleSearch('Search Organization');
 (function() {
     if (!('IntersectionObserver' in window)) return; // Fallback: no observer support
 
-    var sentinel = document.getElementById('org-scroll-sentinel');
+    var sentinel = document.getElementById('<?php echo esc_js($org_instance_id); ?>-sentinel');
     if (!sentinel) return;
 
     var observer = new IntersectionObserver(function(entries) {
@@ -899,17 +940,18 @@ dt_titleSearch('Search Organization');
 })();
 
 // Load dynamic filters after page loads
+<?php if (!$hide_org_filters) : ?>
 window.addEventListener("load", function () {
-    // Initially show filter content and hide the main loader
-    $('#filter-loader').hide();
-    $('.filter-content').show();
+    $orgRoot.find('#filter-loader').hide();
+    $orgRoot.find('.filter-content').show();
     
     loadDynamicFilters();
 });
+<?php endif; ?>
 
 function loadDynamicFilters() {
      // Show loading inside the dynamic filters container
-    $('#dynamic-filters-container').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading filters...</span></div><p class="mt-2 text-muted">Loading filters...</p></div>');
+    $orgRoot.find('.dynamic-filters-container').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading filters...</span></div><p class="mt-2 text-muted">Loading filters...</p></div>');
     
     $.ajax({
         type: "post",
@@ -924,7 +966,7 @@ function loadDynamicFilters() {
                 if (response.data.isError === true) {
                     console.error('API Error:', response.data.message);
                     console.error('Error Details:', response.data.detail);
-                    $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">API Error: ' + (response.data.message || 'Failed to load filters') + '</p>');
+                    $orgRoot.find('.dynamic-filters-container').html('<p class="text-center text-danger py-3">API Error: ' + (response.data.message || 'Failed to load filters') + '</p>');
                     return;
                 }
                 
@@ -951,7 +993,7 @@ function loadDynamicFilters() {
                 
                 
                 if (!filtersData || filtersData.length === 0) {
-                    $('#dynamic-filters-container').html('<p class="text-center text-muted py-3">No filters configured</p>');
+                    $orgRoot.find('.dynamic-filters-container').html('<p class="text-center text-muted py-3">No filters configured</p>');
                     return;
                 }
                 
@@ -959,7 +1001,7 @@ function loadDynamicFilters() {
                 renderDynamicFilters(dynamicFiltersConfig);
             } else {
                 console.error('API returned error or no data:', response);
-                $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">Failed to load filters</p>');
+                $orgRoot.find('.dynamic-filters-container').html('<p class="text-center text-danger py-3">Failed to load filters</p>');
             }
         },
         error: function(xhr, status, error) {
@@ -967,14 +1009,14 @@ function loadDynamicFilters() {
             console.error('XHR:', xhr);
             console.error('Status:', status);
             
-            $('#dynamic-filters-container').html('<p class="text-center text-danger py-3">Error loading filters: ' + error + '</p>');
+            $orgRoot.find('.dynamic-filters-container').html('<p class="text-center text-danger py-3">Error loading filters: ' + error + '</p>');
         }
     });
 }
 
 function renderDynamicFilters(filters) {
    
-    var container = $('#dynamic-filters-container');
+    var container = $orgRoot.find('.dynamic-filters-container');
     container.empty();
     
     if (!filters || filters.length === 0) {
@@ -1477,12 +1519,15 @@ function clearAllCheckboxes(selector) {
 // Common function to reset customFields object
 function resetCustomFields() {
     customFields = {};
+    Object.keys(orgInstanceLockedCustomFields).forEach(function(fieldId) {
+        customFields[fieldId] = orgInstanceLockedCustomFields[fieldId].slice();
+    });
 }
 
 // Common function to update customFields object from DOM
 function updateCustomFieldsFromDOM() {
     customFields = {};
-    $('.custom-field-filter').each(function() {
+    $orgRoot.find('.custom-field-filter').each(function() {
         var fieldId = $(this).data('field-id');
         var checked = [];
         $(this).find('input[type="checkbox"]:checked').each(function() {
@@ -1491,6 +1536,9 @@ function updateCustomFieldsFromDOM() {
         if (checked.length > 0) {
             customFields[fieldId] = checked;
         }
+    });
+    Object.keys(orgInstanceLockedCustomFields).forEach(function(fieldId) {
+        customFields[fieldId] = orgInstanceLockedCustomFields[fieldId].slice();
     });
 }
 
@@ -1514,7 +1562,7 @@ $('#apply-filter-data').click(function() {
     
     // Also collect dynamic filter selections
     
-   if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+   if ($.fn.DataTable.isDataTable($orgRoot.find('#' + orgTableId))) {
         table.draw();
     }
     if (viewMode === 'grid') {
@@ -1558,7 +1606,7 @@ $('#clear-all').click(function() {
         if (this._flatpickr) { this._flatpickr.clear(); }
     });
     
-    if ($.fn.DataTable.isDataTable('#ebtmaintable')) {
+    if ($.fn.DataTable.isDataTable($orgRoot.find('#' + orgTableId))) {
         table.draw();
     }
     if (viewMode === 'grid') {
@@ -1675,12 +1723,7 @@ function countFilterData() {
         updateCustomFieldsFromDOM();
         
         // Merge dynamic filter selections into customFields
-        var allCustomFields = Object.assign({}, customFields);
-        Object.keys(dynamicFilterSelections).forEach(function(key) {
-            if (dynamicFilterSelections[key] && dynamicFilterSelections[key].length > 0) {
-                allCustomFields[key] = dynamicFilterSelections[key];
-            }
-        });
+        var allCustomFields = mergeOrgListCustomFields(customFields, dynamicFilterSelections);
        
         currentCountRequest = $.ajax({
             type: "post",
@@ -1692,7 +1735,9 @@ function countFilterData() {
                 locations: locations,
                 organizationTags: organizationTags,
                 customFields: allCustomFields,
-                filterTypesMap: getDynamicFilterTypesMap()
+                filterTypesMap: getOrgListFilterTypesMap(),
+                lockedCustomFields: orgInstanceLockedCustomFields,
+                lockedFilterTypesMap: orgInstanceLockedFilterTypesMap
             },
             success: function(response) {
                 var element = document.getElementById("countFilterResult");

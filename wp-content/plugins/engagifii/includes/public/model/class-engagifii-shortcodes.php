@@ -551,13 +551,17 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
         'tags' => '',
         'orgtype' => '',
 		'orgstatus' => '',
-		'include_in_dir' => ''
+		'include_in_dir' => '',
+		'partnerlevelandyear' => '',
+		'partnerlevelandyear_fieldid' => ''
     ), $attr);   
     $viewMode = $atts['viewmode'];
     $orgTags = $atts['tags'];
     $orgType = $atts['orgtype'];
 	$orgStatus = $atts['orgstatus'];
 	$include_in_dir = $atts['include_in_dir'];
+	$partnerlevelandyear = $atts['partnerlevelandyear'];
+	$partnerlevelandyear_fieldid = $atts['partnerlevelandyear_fieldid'];
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
 		return ob_get_clean();
 	}
