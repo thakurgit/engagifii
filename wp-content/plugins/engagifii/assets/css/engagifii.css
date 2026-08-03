@@ -828,7 +828,7 @@ button.dropdown-toggle:focus {
 	position: relative;
 	padding: 0 10px;
 }
-table#ebtmaintable.dataTable th {
+table#ebtmaintable.dataTable th,  table.org-main-table.dataTable th {
 	vertical-align: middle;
 }
 .green-bg {
@@ -1910,7 +1910,7 @@ input[type="checkbox"]{
 .people-select input[type="checkbox"]{
 	accent-color:white;
 }
-#ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
+#ebtmaintable_wrapper .dataTable thead tr>th,  .engagifii-org-directory .dataTables_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
   background: var(--engagifii-color);
   color:white;
 }

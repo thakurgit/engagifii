@@ -50,7 +50,7 @@ $ebt_detail_calendar_strip_hover_color         = darken_color($ebt_detail_calend
 --engagifii-color-hover:<?php echo darken_color($engagifii_theme_color, $darker=1.5);?>;
 }
 <?php } ?>
-#ebtmaintable_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
+#ebtmaintable_wrapper .dataTable thead tr>th,  .engagifii-org-directory .dataTables_wrapper .dataTable thead tr>th,  .light-background thead>tr>th,  .engagifii-box .prv, .engagifii-box .nxt{ 
   color:<?php echo $table_heading_color?> !important;
 }
 .ui-widget-content {
@@ -84,16 +84,16 @@ $ebt_detail_calendar_strip_hover_color         = darken_color($ebt_detail_calend
 	color: <?php echo $table_heading_color?> !important;
 }<?php */?>
 .engagifii-box table.table thead th{border-bottom: none;}
-#ebtmaintable thead>tr>th,  .light-background thead>tr>th{
+#ebtmaintable thead>tr>th,  table.org-main-table thead>tr>th,  .light-background thead>tr>th{
 	color:<?php echo $table_heading_color?>;
 }
-#ebtmaintable.table-bordered.dataTable tbody td{
+#ebtmaintable.table-bordered.dataTable tbody td,  table.org-main-table.table-bordered.dataTable tbody td{
     color: <?php echo $ebt_table_tbody_color?>;
 }
-#ebtmaintable a{
+#ebtmaintable a,  table.org-main-table a{
 	color: <?php echo $ebt_table_link_color?>!important;
 }
-#ebtmaintable a:hover {
+#ebtmaintable a:hover,  table.org-main-table a:hover {
 	color: <?php echo $ebt_table_link_hover_color?>!important;
 }
 .calendar__day.active{background-color: <?php echo $ebt_detail_calendar_hover_color; ?> !important;}
