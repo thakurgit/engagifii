@@ -301,15 +301,6 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
     opacity: 0.9;
     font-size: 0.95rem;
 }
-.org-detail-contact-link {
-    color: #fff;
-    text-decoration: underline;
-    white-space: nowrap;
-    font-size: 0.95rem;
-}
-.org-detail-contact-link:hover {
-    color: #fff;
-}
 .org-detail-masked {
     filter: blur(4px);
     user-select: none;
@@ -321,25 +312,17 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
     margin-top: 28px;
 }
 .org-detail-overview {
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
     overflow: hidden;
-    background: #fff;
-}
-.org-detail-overview-title {
-    background: #f5f7fa;
-    border-bottom: 1px solid #e0e0e0;
-    color: #1f2d3d;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0;
-    padding: 12px 18px;
+    background: transparent;
 }
 .org-detail-overview-body {
     padding: 18px;
     color: #333;
     font-size: 0.95rem;
     line-height: 1.6;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 12px 12px 12px;
 }
 .org-detail-overview-body p:last-child {
     margin-bottom: 0;
@@ -404,6 +387,17 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
         </div>
     </div>
 
+    <?php if ($has_overview) : ?>
+        <div class="org-detail-content org-detail-section org-detail-section-overview">
+            <div class="org-detail-overview">
+                <div class="org-detail-contacts-tab"><?php esc_html_e('Overview', 'engagifii'); ?></div>
+                <div class="org-detail-overview-body">
+                    <?php echo wp_kses_post($org_overview_html); ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <?php if ($has_contacts) : ?>
         <div class="org-detail-content org-detail-section org-detail-section-contacts">
             <div class="org-detail-contacts-wrap">
@@ -424,10 +418,6 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
                         $contact_img = engagifii_org_is_valid_image($contact->imageThumbUrl ?? '')
                             ? esc_url($contact->imageThumbUrl)
                             : esc_url($contact_default_img);
-
-                        $profile_link = !empty($contact->email)
-                            ? 'mailto:' . esc_attr($contact->email)
-                            : '#';
                         ?>
                         <div class="org-detail-contact-row">
                             <div class="org-detail-contact-photo">
@@ -443,22 +433,8 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
                                     <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
                                 <?php endif; ?>
                             </div>
-                            <a href="<?php echo esc_url($profile_link); ?>" class="org-detail-contact-link">
-                                <?php esc_html_e('View Profile', 'engagifii'); ?>
-                            </a>
                         </div>
                     <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($has_overview) : ?>
-        <div class="org-detail-content org-detail-section org-detail-section-overview">
-            <div class="org-detail-overview">
-                <h2 class="org-detail-overview-title"><?php esc_html_e('Overview', 'engagifii'); ?></h2>
-                <div class="org-detail-overview-body">
-                    <?php echo wp_kses_post($org_overview_html); ?>
                 </div>
             </div>
         </div>
