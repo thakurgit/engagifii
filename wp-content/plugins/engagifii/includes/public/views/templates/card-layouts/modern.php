@@ -222,6 +222,10 @@ defined('ABSPATH') || exit;
 // Modern Layout Rendering Function - Event Style
 function renderModernLayout(data, container) {
     var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var helpers = window.engagifiiOrgCardHelpersFromCtx ? window.engagifiiOrgCardHelpersFromCtx(ctx) : {};
+    var buildFieldValues = helpers.buildFieldValues;
+    var getFieldLabel = helpers.getFieldLabel;
+    var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
 

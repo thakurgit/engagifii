@@ -106,6 +106,10 @@ defined('ABSPATH') || exit;
 // Detailed Layout Rendering Function
 function renderDetailedLayout(data, container) {
     var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var helpers = window.engagifiiOrgCardHelpersFromCtx ? window.engagifiiOrgCardHelpersFromCtx(ctx) : {};
+    var buildFieldValues = helpers.buildFieldValues;
+    var getFieldLabel = helpers.getFieldLabel;
+    var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
 

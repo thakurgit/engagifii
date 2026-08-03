@@ -144,9 +144,9 @@ function dt_filterActivate(){
 		
     });
 }
-function dt_titleSearch(placeholder = 'Search..'){
+function dt_titleSearch(placeholder = 'Search..', tableSelector = '#ebtmaintable'){
 
-$('#ebtmaintable thead tr th:eq('+titleColumn+')').each( function (i) {
+$(tableSelector + ' thead tr th:eq('+titleColumn+')').each( function (i) {
 $('.list-search-btn').click(function(e){
 	var ttitle= $('.list-search').val();
 	if(ttitle!=''){

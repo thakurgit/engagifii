@@ -138,6 +138,9 @@ defined('ABSPATH') || exit;
 <script>
 function renderMinimalLayout(data, container) {
     var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var helpers = window.engagifiiOrgCardHelpersFromCtx ? window.engagifiiOrgCardHelpersFromCtx(ctx) : {};
+    var buildFieldValues = helpers.buildFieldValues;
+    var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
 

@@ -252,7 +252,7 @@ if (file_exists($templatePath)) {
 }
 if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
     define('ENGAGIFII_ORG_CARD_CTX_LOADED', true);
-    echo '<script>window.engagifiiGetOrgCardContext=function(){var s=window.__engagifiiOrgRenderContextStack;if(s&&s.length){return s[s.length-1];}return window.__engagifiiOrgRenderContext||{};};</script>';
+    echo '<script>window.engagifiiGetOrgCardContext=function(){var s=window.__engagifiiOrgRenderContextStack;if(s&&s.length){return s[s.length-1];}return window.__engagifiiOrgRenderContext||{};};window.engagifiiOrgCardHelpersFromCtx=function(ctx){ctx=ctx||window.engagifiiGetOrgCardContext();var g=window.__engagifiiOrgCardHelpers||{};return{buildFieldValues:(ctx.buildFieldValues||g.buildFieldValues),getFieldLabel:(ctx.getFieldLabel||g.getFieldLabel||function(n){return n;}),isValidUrl:(ctx.isValidUrl||g.isValidUrl||function(){return false;})};};</script>';
 }
 ?>
 
@@ -326,7 +326,10 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
           orgClassicCardsPerRow: orgClassicCardsPerRow,
           orgGuestHiddenFields: orgGuestHiddenFields,
           isUserLoggedIn: isUserLoggedIn,
-          orgInstanceId: orgInstanceId
+          orgInstanceId: orgInstanceId,
+          buildFieldValues: typeof buildFieldValues === 'function' ? buildFieldValues : null,
+          getFieldLabel: typeof getFieldLabel === 'function' ? getFieldLabel : null,
+          isValidUrl: typeof isValidUrl === 'function' ? isValidUrl : null
       };
       window.__engagifiiOrgRenderContextStack = window.__engagifiiOrgRenderContextStack || [];
       window.__engagifiiOrgRenderContextStack.push(ctx);
@@ -890,10 +893,16 @@ function isValidUrl(url) {
     try { 
         new URL(url); 
         return true; 
-    } catch (_) { 
-        return false; 
+    } catch (e) {
+        return /^https?:\/\//i.test(url);
     }
 }
+
+window.__engagifiiOrgCardHelpers = {
+    buildFieldValues: buildFieldValues,
+    getFieldLabel: getFieldLabel,
+    isValidUrl: isValidUrl
+};
 
 function buildLocationPopoverHtml(locations) {
     if (!Array.isArray(locations) || locations.length === 0) return '--';
@@ -954,9 +963,11 @@ function buildPopoverHtml(type, items) {
 }
 
 <?php
-  if($title_key > -1){
+  if ($title_key > -1 && ($allowedViewMode === 'list' || $allowedViewMode === 'both')) {
 ?>
-dt_titleSearch('Search Organization');
+window.titleColumn = parseInt(titleColumn, 10);
+window.table = table;
+dt_titleSearch('Search Organization', '#' + orgTableId);
   <?php
 }
 

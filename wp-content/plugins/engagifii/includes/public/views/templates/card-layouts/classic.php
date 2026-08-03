@@ -73,11 +73,19 @@ h5{
 // Classic Layout Rendering Function
 function renderClassicLayout(data, container) {
     var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var helpers = window.engagifiiOrgCardHelpersFromCtx ? window.engagifiiOrgCardHelpersFromCtx(ctx) : {};
+    var buildFieldValues = helpers.buildFieldValues;
+    var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
     var orgClassicCardsPerRow = ctx.orgClassicCardsPerRow || 4;
     var orgGuestHiddenFields = ctx.orgGuestHiddenFields || [];
     var isUserLoggedIn = ctx.isUserLoggedIn === true;
+
+    if (typeof buildFieldValues !== 'function') {
+        console.error('Engagifii org grid: buildFieldValues helper is not available.');
+        return;
+    }
 
     data.forEach(function(org) {
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
