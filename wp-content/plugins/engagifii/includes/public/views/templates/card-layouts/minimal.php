@@ -137,6 +137,10 @@ defined('ABSPATH') || exit;
 
 <script>
 function renderMinimalLayout(data, container) {
+    var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var organizationGridCols = ctx.organizationGridCols || [];
+    var organizationDetailLink = ctx.organizationDetailLink || '';
+
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';

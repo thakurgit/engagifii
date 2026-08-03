@@ -72,6 +72,13 @@ h5{
 <script>
 // Classic Layout Rendering Function
 function renderClassicLayout(data, container) {
+    var ctx = window.engagifiiGetOrgCardContext ? window.engagifiiGetOrgCardContext() : {};
+    var organizationGridCols = ctx.organizationGridCols || [];
+    var organizationDetailLink = ctx.organizationDetailLink || '';
+    var orgClassicCardsPerRow = ctx.orgClassicCardsPerRow || 4;
+    var orgGuestHiddenFields = ctx.orgGuestHiddenFields || [];
+    var isUserLoggedIn = ctx.isUserLoggedIn === true;
+
     data.forEach(function(org) {
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
         var orgImgSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;

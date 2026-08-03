@@ -91,6 +91,8 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( $shortcode,array($this,$function));
 		}
+		// Common Elementor / copy-paste typos
+		add_shortcode( 'gct-organization', array( $this, 'get_organization' ) );
 
 	}
 
@@ -554,14 +556,14 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 		'include_in_dir' => '',
 		'partnerlevelandyear' => '',
 		'partnerlevelandyear_fieldid' => ''
-    ), $attr);   
-    $viewMode = $atts['viewmode'];
-    $orgTags = $atts['tags'];
-    $orgType = $atts['orgtype'];
-	$orgStatus = $atts['orgstatus'];
-	$include_in_dir = $atts['include_in_dir'];
-	$partnerlevelandyear = $atts['partnerlevelandyear'];
-	$partnerlevelandyear_fieldid = $atts['partnerlevelandyear_fieldid'];
+    ), $attr, 'get-organization');
+    $viewMode = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('viewmode'));
+    $orgTags = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('tags'));
+    $orgType = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('orgtype'));
+	$orgStatus = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('orgstatus'));
+	$include_in_dir = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('include_in_dir', 'include_m_dir'));
+	$partnerlevelandyear = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('partnerlevelandyear', 'sectionfilter'));
+	$partnerlevelandyear_fieldid = $this->engagifii_resolve_shortcode_attr($attr, $atts, array('partnerlevelandyear_fieldid'));
 		include $this->basePath.'includes/public/views/organizations/organizations.php';
 		return ob_get_clean();
 	}
@@ -577,5 +579,25 @@ class Engagifii_Shortcodes extends abstractModelEngagifii_v2{
 	}
 
 	//end here
+
+	/**
+	 * Resolve shortcode attribute case-insensitively (orgType vs orgtype).
+	 */
+	private function engagifii_resolve_shortcode_attr($attr, $atts, $keys) {
+		foreach ((array) $keys as $key) {
+			$key = strtolower($key);
+			if (isset($atts[$key]) && $atts[$key] !== '') {
+				return $atts[$key];
+			}
+			if (is_array($attr)) {
+				foreach ($attr as $rawKey => $value) {
+					if (strcasecmp((string) $rawKey, $key) === 0 && $value !== '') {
+						return $value;
+					}
+				}
+			}
+		}
+		return '';
+	}
 }
 $this->engagifiiShortcode  = new Engagifii_Shortcodes($this->pluginBasePath);

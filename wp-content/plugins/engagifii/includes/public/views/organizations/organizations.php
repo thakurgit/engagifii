@@ -79,12 +79,12 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
 });
 
 ?>
-<div class="container-fluid engagifii-org-directory" id="<?php echo esc_attr($org_instance_id); ?>">
+<div class="container-fluid engagifii-org-directory" id="<?php echo esc_attr($org_instance_id); ?>"<?php echo $hide_org_filters ? ' data-partner-level-locked="1"' : ''; ?>>
 	<div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <!-- Search box for Grid view and combined (both) view -->
-            <?php if ($allowedViewMode === 'grid' || $allowedViewMode === 'both'){ ?>
-            <div class="form-group mb-0" id="grid-search-wrapper" style="flex: 1; max-width: 400px;<?php if ($allowedViewMode === 'both') { ?> display:none;<?php } ?>">
+            <?php if (($allowedViewMode === 'grid' || $allowedViewMode === 'both') && !$hide_org_filters){ ?>
+            <div class="form-group mb-0 org-grid-search-wrapper" style="flex: 1; max-width: 400px;<?php if ($allowedViewMode === 'both') { ?> display:none;<?php } ?>">
                 <input type="text" id="<?php echo esc_attr($org_grid_search_id); ?>" class="form-control org-grid-search-box" placeholder="Search Organizations..." />
             </div>
             <?php } ?>
@@ -230,7 +230,7 @@ $i = 0;
     </div>
     <!-- Infinite scroll sentinel -->
     <div id="<?php echo esc_attr($org_instance_id); ?>-sentinel" class="org-scroll-sentinel" style="height:1px; margin-top:20px;"></div>
-    <div id="org-load-more-spinner" style="display:none; text-align:center; padding:20px 0;">
+    <div class="org-load-more-spinner" style="display:none; text-align:center; padding:20px 0;">
         <div class="spinner-border spinner-border-sm text-secondary" role="status"><span class="sr-only">Loading...</span></div>
         <span style="margin-left:8px; color:#888; font-size:13px;">Loading more...</span>
     </div>
@@ -240,17 +240,40 @@ $i = 0;
 </div>
 </div>
 
+<?php
+// Include card layout templates dynamically based on settings (before instance JS)
+$options = get_option('ebt_api_settings');
+$selectedLayout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
+$templatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $selectedLayout . '.php';
+if (file_exists($templatePath)) {
+    include $templatePath;
+} else {
+    include plugin_dir_path(__FILE__) . '../templates/card-layouts/classic.php';
+}
+if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
+    define('ENGAGIFII_ORG_CARD_CTX_LOADED', true);
+    echo '<script>window.engagifiiGetOrgCardContext=function(){var s=window.__engagifiiOrgRenderContextStack;if(s&&s.length){return s[s.length-1];}return window.__engagifiiOrgRenderContext||{};};</script>';
+}
+?>
+
 <?php if (!defined('FLATPICKR_LOADED')): define('FLATPICKR_LOADED', true); ?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <?php endif; ?>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
-  
-  // Ensure filter area starts hidden
-  $('.filter-area').addClass('d-none');
-  
-});
+(function($) {
+  'use strict';
+
+  var orgInstanceId = '<?php echo esc_js($org_instance_id); ?>';
+  var orgTableId = '<?php echo esc_js($org_table_id); ?>';
+  var orgGridSearchId = '<?php echo esc_js($org_grid_search_id); ?>';
+  var $orgRoot = $('#' + orgInstanceId);
+
+  if (!$orgRoot.length) {
+    return;
+  }
+
+  $orgRoot.find('.filter-area').addClass('d-none');
 
   //var groupId = $('#groupTabs li:first-child a').attr('id');
   var viewMode='<?php echo $allowedViewMode; ?>';
@@ -284,12 +307,41 @@ jQuery(document).ready(function($) {
   var customFields = {};
   var organizationId = '<?php echo isset($_GET['organizationId']) ? esc_js($_GET['organizationId']) : ''; ?>';
   var organizationDetailLink = '<?php echo esc_url(ORGANIZATION_DETAIL_LINK); ?>';
-  var orgInstanceId = '<?php echo esc_js($org_instance_id); ?>';
-  var orgTableId = '<?php echo esc_js($org_table_id); ?>';
-  var orgGridSearchId = '<?php echo esc_js($org_grid_search_id); ?>';
-  var $orgRoot = $('#' + orgInstanceId);
   var orgInstanceLockedCustomFields = <?php echo wp_json_encode($locked_section_custom_fields); ?>;
   var orgInstanceLockedFilterTypesMap = <?php echo wp_json_encode($locked_section_filter_types); ?>;
+
+  function getOrgListLockedFilterPayload() {
+      return {
+          lockedCustomFields: orgInstanceLockedCustomFields,
+          lockedFilterTypesMap: orgInstanceLockedFilterTypesMap,
+          lockedCustomFieldsJson: JSON.stringify(orgInstanceLockedCustomFields || {}),
+          lockedFilterTypesMapJson: JSON.stringify(orgInstanceLockedFilterTypesMap || {})
+      };
+  }
+
+  function pushOrgCardRenderContext() {
+      var ctx = {
+          organizationGridCols: organizationGridCols,
+          organizationDetailLink: organizationDetailLink,
+          orgClassicCardsPerRow: orgClassicCardsPerRow,
+          orgGuestHiddenFields: orgGuestHiddenFields,
+          isUserLoggedIn: isUserLoggedIn,
+          orgInstanceId: orgInstanceId
+      };
+      window.__engagifiiOrgRenderContextStack = window.__engagifiiOrgRenderContextStack || [];
+      window.__engagifiiOrgRenderContextStack.push(ctx);
+      window.__engagifiiOrgRenderContext = ctx;
+      return ctx;
+  }
+
+  function popOrgCardRenderContext() {
+      if (!window.__engagifiiOrgRenderContextStack || !window.__engagifiiOrgRenderContextStack.length) {
+          return;
+      }
+      window.__engagifiiOrgRenderContextStack.pop();
+      var stack = window.__engagifiiOrgRenderContextStack;
+      window.__engagifiiOrgRenderContext = stack.length ? stack[stack.length - 1] : {};
+  }
 
   function mergeOrgListCustomFields(baseFields, dynamicSelections) {
       var merged = Object.assign({}, baseFields || {});
@@ -345,12 +397,12 @@ jQuery(document).ready(function($) {
 	  if(viewMode === 'grid'){
 		  $orgRoot.find('.list-view').hide();
 		  $orgRoot.find('.grid-view').show();
-		  $orgRoot.find('#grid-search-wrapper').show();
+		  $orgRoot.find('.org-grid-search-wrapper').show();
 		  resetOrgGrid();
 	  } else {
 		  $orgRoot.find('.list-view').show();
 		  $orgRoot.find('.grid-view').hide();
-		  $orgRoot.find('#grid-search-wrapper').hide();
+		  $orgRoot.find('.org-grid-search-wrapper').hide();
 		  $orgRoot.find('#' + orgGridSearchId).val('');
 		  gridSearchQuery = '';
 		  table.draw();
@@ -402,8 +454,7 @@ jQuery(document).ready(function($) {
 				
 				d.customFields = mergeOrgListCustomFields(customFields, dynamicFilterSelections);
 				d.filterTypesMap = getOrgListFilterTypesMap();
-				d.lockedCustomFields = orgInstanceLockedCustomFields;
-				d.lockedFilterTypesMap = orgInstanceLockedFilterTypesMap;
+				$.extend(d, getOrgListLockedFilterPayload());
             }, 
         },
         createdRow: function (row, data, index) { 
@@ -453,7 +504,7 @@ jQuery(document).ready(function($) {
 			 $orgRoot.find('.grid-view #eng-overlay').show();
 			 $orgRoot.find('.grid-view .row').css('opacity','.3');
 		 } else {
-			 $orgRoot.find('#org-load-more-spinner').show();
+			 $orgRoot.find('.org-load-more-spinner').show();
 		 }
 		var allCustomFields = mergeOrgListCustomFields(customFields, dynamicFilterSelections);
 		// Build columns array structure like DataTable does, including search text
@@ -467,7 +518,7 @@ jQuery(document).ready(function($) {
 	   $.ajax({
           type : "post",
           url: engagifiiUrl_ajaxurl,
-          data:{
+          data: $.extend({
               action:'getOrganizations',			 
 			  viewMode:'Grid',
 			  length:length,
@@ -481,14 +532,12 @@ jQuery(document).ready(function($) {
 			  locations: locations,
 			  organizationTags: organizationTags,
 			  customFields: allCustomFields,
-			  filterTypesMap: getOrgListFilterTypesMap(),
-			  lockedCustomFields: orgInstanceLockedCustomFields,
-			  lockedFilterTypesMap: orgInstanceLockedFilterTypesMap
-          },
+			  filterTypesMap: getOrgListFilterTypesMap()
+          }, getOrgListLockedFilterPayload()),
          success: function(response) {
 	  		 $orgRoot.find('.grid-view #eng-overlay').hide();
 			  $orgRoot.find('.grid-view .row').css('opacity','1');
-			  $orgRoot.find('#org-load-more-spinner').hide();
+			  $orgRoot.find('.org-load-more-spinner').hide();
 			orgIsLoading = false;
 			try {
 			   var parsedResponse = JSON.parse(response);
@@ -512,7 +561,7 @@ jQuery(document).ready(function($) {
 			  orgHasMore = false;
 			}
             <?php if ($orgType == '91c0e345-8a59-4394-64bb-08de93f0a9ed') { ?>
-$('.group-card').each(function () {
+$orgRoot.find('.group-card').each(function () {
     var orgId = $(this).closest('[org-id]').attr('org-id');
     if ($(this).find('.btn-detail').length === 0 && orgId) {
         $(this).append(
@@ -525,9 +574,9 @@ $('.group-card').each(function () {
 <?php } ?>
 		  },
 		  error: function() {
-			$('.grid-view #eng-overlay').hide();
-			 $('.grid-view .row').css('opacity','1');
-			$('#org-load-more-spinner').hide();
+			$orgRoot.find('.grid-view #eng-overlay').hide();
+			 $orgRoot.find('.grid-view .row').css('opacity','1');
+			$orgRoot.find('.org-load-more-spinner').hide();
 			orgIsLoading = false;
 			console.error('AJAX request failed');
 		  }
@@ -593,27 +642,14 @@ var orgFieldIcons = {
     name: '', // handled as card-title
 };
 
-</script>
-
-<?php
-// Include card layout templates dynamically based on settings
-$options = get_option('ebt_api_settings');
-$selectedLayout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
-
-// Include the selected template file
-$templatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $selectedLayout . '.php';
-if (file_exists($templatePath)) {
-    include $templatePath;
-} else {
-    // Fallback to classic if template not found
-    include plugin_dir_path(__FILE__) . '../templates/card-layouts/classic.php';
+function setOrgCardRenderContext() {
+    return pushOrgCardRenderContext();
 }
-?>
 
-<script>
 function renderOrgGrid(data) {
-  //console.log('Rendering Organization Grid with data:', data);
-    var container = $('.grid-view .row');
+    pushOrgCardRenderContext();
+    try {
+    var container = $orgRoot.find('.grid-view .row');
     container.empty();
     if (data.length === 0) {
         container.append('<h3 class="text-secondary text-center col-12">No organizations found!</h3>');
@@ -637,12 +673,17 @@ function renderOrgGrid(data) {
             break;
     }
     initOrgPopovers();
+    } finally {
+        popOrgCardRenderContext();
+    }
 } // end renderOrgGrid
 
 // Append more cards without clearing (used for infinite scroll load-more)
 function appendOrgGrid(data) {
     if (!data || data.length === 0) return;
-    var container = $('.grid-view .row');
+    pushOrgCardRenderContext();
+    try {
+    var container = $orgRoot.find('.grid-view .row');
     switch(cardLayoutTemplate) {
         case 'modern':    renderModernLayout(data, container, true);  break;
         case 'minimal':   renderMinimalLayout(data, container, true); break;
@@ -651,6 +692,9 @@ function appendOrgGrid(data) {
         default:          renderClassicLayout(data, container, true); break;
     }
     initOrgPopovers();
+    } finally {
+        popOrgCardRenderContext();
+    }
 } // end appendOrgGrid
 
 function initOrgPopovers() {
@@ -1728,17 +1772,15 @@ function countFilterData() {
         currentCountRequest = $.ajax({
             type: "post",
             url: engagifiiUrl_ajaxurl,
-            data: {
+            data: $.extend({
                 action: 'organizationCountFilterData',
                 organizationTypes: organizationTypes,
                 statuses: statuses,
                 locations: locations,
                 organizationTags: organizationTags,
                 customFields: allCustomFields,
-                filterTypesMap: getOrgListFilterTypesMap(),
-                lockedCustomFields: orgInstanceLockedCustomFields,
-                lockedFilterTypesMap: orgInstanceLockedFilterTypesMap
-            },
+                filterTypesMap: getOrgListFilterTypesMap()
+            }, getOrgListLockedFilterPayload()),
             success: function(response) {
                 var element = document.getElementById("countFilterResult");
                 $('#apply-filter-data .spinner-border').remove();
@@ -1843,6 +1885,8 @@ $(document).on('click', function(event) {
         }
     }
 });
+
+})(jQuery);
 
 </script>
 
