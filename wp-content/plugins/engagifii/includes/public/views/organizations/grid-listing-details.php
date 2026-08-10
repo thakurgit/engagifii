@@ -386,7 +386,7 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
             </div>
         </div>
     </div>
-/*overview section start*/
+
     <?php if ($has_overview) : ?>
         <div class="org-detail-content org-detail-section org-detail-section-overview">
             <div class="org-detail-overview">
