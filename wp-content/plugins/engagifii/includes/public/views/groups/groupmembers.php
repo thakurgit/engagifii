@@ -348,6 +348,7 @@ label{
 </div>
 
 <?php
+$gmSelectedLayout = 'classic';
 if ($allowedViewMode === 'grid' || $allowedViewMode === 'both') {
     $gm_layout_options = get_option('ebt_api_settings');
     $gmSelectedLayout = isset($gm_layout_options['group_members_settings']['grid']['card_layout'])
@@ -355,14 +356,15 @@ if ($allowedViewMode === 'grid' || $allowedViewMode === 'both') {
     if ($gmSelectedLayout === 'detailed' || !in_array($gmSelectedLayout, array('classic', 'modern', 'minimal'), true)) {
         $gmSelectedLayout = 'classic';
     }
-    $gmTemplatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $gmSelectedLayout . '.php';
-    if (file_exists($gmTemplatePath)) {
-        include $gmTemplatePath;
-    } else {
-        include plugin_dir_path(__FILE__) . '../templates/card-layouts/classic.php';
+    // Classic/Standard uses the original inline group card builder — org template only for modern/minimal.
+    if ($gmSelectedLayout !== 'classic') {
+        $gmTemplatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $gmSelectedLayout . '.php';
+        if (file_exists($gmTemplatePath)) {
+            include $gmTemplatePath;
+        }
     }
 }
-if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
+if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED') && isset($gmSelectedLayout) && $gmSelectedLayout !== 'classic') {
     define('ENGAGIFII_ORG_CARD_CTX_LOADED', true);
     echo '<script>window.engagifiiGetOrgCardContext=function(){var s=window.__engagifiiOrgRenderContextStack;if(s&&s.length){return s[s.length-1];}return window.__engagifiiOrgRenderContext||{};};window.engagifiiOrgCardHelpersFromCtx=function(ctx){ctx=ctx||window.engagifiiGetOrgCardContext();var g=window.__engagifiiOrgCardHelpers||{};return{buildFieldValues:(ctx.buildFieldValues||g.buildFieldValues),getFieldLabel:(ctx.getFieldLabel||g.getFieldLabel||function(n){return n;}),isValidUrl:(ctx.isValidUrl||g.isValidUrl||function(){return false;})};};</script>';
 }
@@ -684,58 +686,109 @@ function adaptGroupMemberForLayout(item) {
 }
 
 function getGroupLayoutRenderer() {
+    if (cardLayoutTemplate === 'classic') {
+        return null;
+    }
     switch (cardLayoutTemplate) {
         case 'modern':
             return typeof renderModernLayout === 'function' ? renderModernLayout : null;
         case 'minimal':
             return typeof renderMinimalLayout === 'function' ? renderMinimalLayout : null;
-        case 'classic':
         default:
-            return typeof renderClassicLayout === 'function' ? renderClassicLayout : null;
+            return null;
+    }
+}
+
+function renderGroupMemberCards(data, container, appendMode) {
+    if (!appendMode) {
+        container.empty();
+    }
+    if (!data || data.length === 0) {
+        if (!appendMode) {
+            container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
+        }
+        return;
+    }
+
+    var layoutRenderer = getGroupLayoutRenderer();
+    if (!layoutRenderer) {
+        data.forEach(function(item) {
+            var cardHtml = buildGroupMemberCard(item);
+            if (cardHtml) {
+                container.append(cardHtml);
+            }
+        });
+        return;
+    }
+
+    pushGroupCardRenderContext();
+    try {
+        var adapted = data.map(adaptGroupMemberForLayout).filter(function(row) { return row !== null; });
+        if (adapted.length === 0) {
+            if (!appendMode) {
+                container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
+            }
+            return;
+        }
+        layoutRenderer(adapted, container);
+    } finally {
+        popGroupCardRenderContext();
     }
 }
 
 function renderGroupGrid(data) {
-    pushGroupCardRenderContext();
-    try {
-        var container = $('.grid-view .row');
-        container.empty();
-        if (!data || data.length === 0) {
-            container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
-            return;
-        }
-        var adapted = data.map(adaptGroupMemberForLayout).filter(function(row) { return row !== null; });
-        if (adapted.length === 0) {
-            container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
-            return;
-        }
-        var layoutRenderer = getGroupLayoutRenderer();
-        if (!layoutRenderer) {
-            console.error('Engagifii group grid: card layout renderer is not available for template:', cardLayoutTemplate);
-            container.append('<h3 class="text-secondary text-center col-12">Unable to load member cards. Please refresh the page.</h3>');
-            return;
-        }
-        layoutRenderer(adapted, container);
-        setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
-    } finally {
-        popGroupCardRenderContext();
-    }
+    var container = $('.grid-view .row');
+    renderGroupMemberCards(data, container, false);
+    setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
 }
 
 function appendGroupGrid(data) {
     if (!data || data.length === 0) return;
-    pushGroupCardRenderContext();
-    try {
-        var container = $('.grid-view .row');
-        var adapted = data.map(adaptGroupMemberForLayout).filter(function(row) { return row !== null; });
-        if (adapted.length === 0) return;
-        var layoutRenderer = getGroupLayoutRenderer();
-        if (!layoutRenderer) return;
-        layoutRenderer(adapted, container);
-        setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
-    } finally {
-        popGroupCardRenderContext();
+    var container = $('.grid-view .row');
+    renderGroupMemberCards(data, container, true);
+    setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
+}
+
+function buildGroupMemberCard(item) {
+    if (!item || !item.people) {
+        return '';
     }
+    var person = item.people;
+    var personPhoto = (typeof isValidUrl === 'function' && isValidUrl(person.imageThumbUrl))
+        ? '<div class="org-card-logo-wrapper text-center border-bottom"><img src="' + person.imageThumbUrl + '" class="org-card-logo" alt="' + person.fullName + '"></div>'
+        : '<div class="org-card-logo-wrapper text-center border-bottom"><i class="fa fa-user-circle text-secondary img-default"></i></div>';
+
+    var fieldValues = buildGroupMemberFieldValues({ __sourcePerson: person });
+    var colsPerRow = (typeof gmClassicCardsPerRow !== 'undefined') ? gmClassicCardsPerRow : 4;
+    var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
+
+    var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
+
+    var positionCol = groupMemberCols.find(function(c) { return c.colClass === 'currentposition'; });
+    if (positionCol) {
+        var posVal = fieldValues['currentposition'];
+        if (posVal !== undefined && posVal !== '--') {
+            cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + posVal + '</strong></p>';
+        }
+    }
+
+    groupMemberCols.forEach(function(colObj) {
+        var col = colObj.colClass;
+        var label = colObj.displayName;
+        if (col === 'name') return;
+        if (col === 'currentposition') return;
+        if (fieldValues[col] !== undefined) {
+            cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
+                fieldValues[col] + '</p>';
+        }
+    });
+
+    return '<div class="' + colClass + ' mb-4">' +
+        '<div class="card h-100 shadow p-3 org-card-classic">' +
+        personPhoto +
+        '<div class="card-body p-0 pt-2 group-card">' +
+        cardBody +
+        '</div></div></div>';
 }
 
 function buildGroupMemberFieldValues(record) {
