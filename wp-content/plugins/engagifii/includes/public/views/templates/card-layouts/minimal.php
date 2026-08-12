@@ -143,19 +143,26 @@ function renderMinimalLayout(data, container) {
     var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
+    var entityType = ctx.cardEntityType || 'organization';
 
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
-        var logoSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
+        var logoHtml;
+        if (entityType === 'person' && !isValidUrl(org.imageThumbUrl)) {
+            logoHtml = '<div class="mnl-logo-box"><i class="fa fa-user-circle text-secondary" style="font-size:48px;"></i></div>';
+        } else {
+            var logoSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
+            logoHtml = '<div class="mnl-logo-box">'
+                + '<img src="' + logoSrc + '" alt="' + (org.name || '') + '">'
+                + '</div>';
+        }
 
         // ── Logo box ──────────────────────────────────────────
-        var logoHtml = '<div class="mnl-logo-box">'
-            + '<img src="' + logoSrc + '" alt="' + (org.name || '') + '">'
-            + '</div>';
+        // logoHtml built above
 
         // ── Email + Phone meta lines ──────────────────────────
-        var metaMap = [
+        var metaMap = ctx.metaContactFields || [
             { col: 'primaryemail', label: 'Email' },
             { col: 'phonenumbers', label: 'Phone' }
         ];
@@ -184,7 +191,7 @@ function renderMinimalLayout(data, container) {
             + '</div>';
 
         // ── Two-column field rows ─────────────────────────────
-        var skipCols = ['name', 'primaryemail', 'phonenumbers'];
+        var skipCols = ctx.minimalSkipCols || ['name', 'primaryemail', 'phonenumbers'];
         var labelHtml = '';
         var valueHtml = '';
         var labelMap = {
@@ -211,9 +218,11 @@ function renderMinimalLayout(data, container) {
                 + '</div>'
             : '';
 
-        var detailLinkHtml = '<p style="margin:8px 0 0;padding:0;">'
-            + '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>'
-            + '</p>';
+        var detailLinkHtml = (ctx.showDetailLink !== false && organizationDetailLink)
+            ? '<p style="margin:8px 0 0;padding:0;">'
+                + '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>'
+                + '</p>'
+            : '';
 
         var card = '<div class="col-md-6 mb-4">'
             + '<div class="org-card-minimal">'

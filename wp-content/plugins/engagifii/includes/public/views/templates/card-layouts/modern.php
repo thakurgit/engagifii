@@ -228,24 +228,36 @@ function renderModernLayout(data, container) {
     var isValidUrl = helpers.isValidUrl;
     var organizationGridCols = ctx.organizationGridCols || [];
     var organizationDetailLink = ctx.organizationDetailLink || '';
+    var entityType = ctx.cardEntityType || 'organization';
+    var categoryCol = ctx.categoryCol || 'organizationtype';
+    var dateField = ctx.dateField || 'createdOn';
 
     data.forEach(function(org) {
         var fieldValues = buildFieldValues(org);
         
-        // Parse date for display (using Created On date)
-        var dateObj = org.createdOn ? new Date(org.createdOn) : new Date();
+        // Parse date for display
+        var dateObj = org[dateField] ? new Date(org[dateField]) : new Date();
         var day = dateObj.getDate();
         var month = dateObj.toLocaleString('en-US', { month: 'short' }).toUpperCase();
         var weekday = dateObj.toLocaleString('en-US', { weekday: 'short' }).toUpperCase();
         
-        // Organization image (circular)
+        // Image (circular)
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
-        var orgPhoto = isValidUrl(org.imageThumbUrl)
-            ? '<img src="' + org.imageThumbUrl + '" class="modern-event-card-img" alt="' + org.name + '">'
-            : '<img src="' + orgDefaultImg + '" class="modern-event-card-img" alt="' + org.name + '">';
+        var orgPhoto;
+        if (entityType === 'person') {
+            orgPhoto = isValidUrl(org.imageThumbUrl)
+                ? '<img src="' + org.imageThumbUrl + '" class="modern-event-card-img" alt="' + (org.name || '') + '">'
+                : '<div class="modern-event-placeholder"><i class="fa fa-user-circle"></i></div>';
+        } else {
+            orgPhoto = isValidUrl(org.imageThumbUrl)
+                ? '<img src="' + org.imageThumbUrl + '" class="modern-event-card-img" alt="' + org.name + '">'
+                : '<img src="' + orgDefaultImg + '" class="modern-event-card-img" alt="' + org.name + '">';
+        }
         
-        // Get category (Organization Type)
-        var category = fieldValues.organizationtype !== '--' ? fieldValues.organizationtype : 'Organization';
+        // Category line
+        var category = fieldValues[categoryCol] && fieldValues[categoryCol] !== '--'
+            ? fieldValues[categoryCol]
+            : (entityType === 'person' ? 'Member' : 'Organization');
         
         // Build meta information based on configured columns
         var metaItemsHtml = '';
@@ -263,22 +275,26 @@ function renderModernLayout(data, container) {
             
             // Add icon based on field type
             var icon = '';
-            if (col === 'primaryemail') {
+            if (col === 'primaryemail' || col === 'email') {
                 icon = '<i class="far fa-envelope"></i>';
-            } else if (col === 'phonenumbers') {
+            } else if (col === 'phonenumbers' || col === 'phone') {
                 icon = '<i class="far fa-phone"></i>';
             } else if (col === 'locations' || col === 'location') {
                 icon = '<i class="far fa-map-marker-alt"></i>';
-            } else if (col === 'status') {
+            } else if (col === 'status' || col === 'userstatus') {
                 icon = '<i class="far fa-check-circle"></i>';
             } else if (col === 'website') {
                 icon = '<i class="far fa-globe"></i>';
-            } else if (col === 'createdon') {
+            } else if (col === 'createdon' || col === 'createddate') {
                 icon = '<i class="far fa-calendar-plus"></i>';
-            } else if (col === 'modifiedon') {
+            } else if (col === 'modifiedon' || col === 'modifieddate') {
                 icon = '<i class="far fa-sync-alt"></i>';
-            } else if (col === 'organizationtags') {
+            } else if (col === 'organizationtags' || col === 'tags') {
                 icon = '<i class="far fa-tags"></i>';
+            } else if (col === 'currentposition' || col === 'position') {
+                icon = '<i class="far fa-user-tie"></i>';
+            } else if (col === 'primaryorganization' || col === 'organization') {
+                icon = '<i class="far fa-building"></i>';
             } else {
                 icon = '<i class="far fa-info-circle"></i>';
             }
@@ -303,9 +319,11 @@ function renderModernLayout(data, container) {
             metaItemsHtml +
             '</div>' +
             '</div>' +
-            '<div class="modern-event-action">' +
-            '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="modern-event-btn">More Details</a>' +
-            '</div>' +
+            (ctx.showDetailLink !== false && organizationDetailLink
+                ? '<div class="modern-event-action">' +
+                  '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="modern-event-btn">More Details</a>' +
+                  '</div>'
+                : '') +
             '</div>' +
             '</div>';
         

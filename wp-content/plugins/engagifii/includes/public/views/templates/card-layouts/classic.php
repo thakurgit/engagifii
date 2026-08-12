@@ -89,17 +89,37 @@ function renderClassicLayout(data, container) {
 
     data.forEach(function(org) {
         var orgDefaultImg = '<?php echo esc_url( ENGAGIFII_ASSETS_URL . "/images/org-list-grey.png" ); ?>';
-        var orgImgSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
-        var orgPhoto = '<div class="org-card-logo-wrapper text-center border-bottom">' +
-            '<img src="' + orgImgSrc + '" class="img-fluid org-card-logo" alt="' + org.name + '">' +
-            '</div>';
+        var entityType = ctx.cardEntityType || 'organization';
+        var orgPhoto;
+        if (entityType === 'person') {
+            orgPhoto = isValidUrl(org.imageThumbUrl)
+                ? '<div class="org-card-logo-wrapper text-center border-bottom"><img src="' + org.imageThumbUrl + '" class="img-fluid org-card-logo" alt="' + (org.name || '') + '"></div>'
+                : '<div class="org-card-logo-wrapper text-center border-bottom"><i class="fa fa-user-circle text-secondary img-default"></i></div>';
+        } else {
+            var orgImgSrc = isValidUrl(org.imageThumbUrl) ? org.imageThumbUrl : orgDefaultImg;
+            orgPhoto = '<div class="org-card-logo-wrapper text-center border-bottom">' +
+                '<img src="' + orgImgSrc + '" class="img-fluid org-card-logo" alt="' + org.name + '">' +
+                '</div>';
+        }
 
        var fieldValues = buildFieldValues(org);
        var cardBody = '<h5 class="card-title">' + fieldValues.name + '</h5><hr style="margin-top:4px;margin-bottom:6px;border-top:1px solid rgba(0,0,0,.12); width:20%">';
 
+       var contactNameCol = null;
+       var websiteCol = null;
+
+       if (ctx.subtitleColClass) {
+           var subtitleCol = organizationGridCols.find(function(c) { return c.colClass === ctx.subtitleColClass; });
+           if (subtitleCol) {
+               var subtitleVal = fieldValues[subtitleCol.colClass];
+               if (subtitleVal !== undefined && subtitleVal !== '--') {
+                   cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + subtitleVal + '</strong></p>';
+               }
+           }
+       } else {
        // Render "Contact Name" first if present in selected columns
        // Matched by stable fieldId so any rename (e.g. "Key Person") still works
-       var contactNameCol = organizationGridCols.find(function(c) {
+       contactNameCol = organizationGridCols.find(function(c) {
            return (c.fieldId && c.fieldId.toUpperCase() === '265099E0-4287-4380-8265-77FF0AFD10B1') ||
                   c.colClass === 'primarycontactname' || c.colClass === 'contactname';
        });
@@ -109,10 +129,12 @@ function renderClassicLayout(data, container) {
                cardBody += '<p class="card-text mb-1 mt-0"><strong style="color:#202b5d !important;">' + contactVal + '</strong></p>';
            }
        }
+       }
 
-       // Render "Website" as a clickable link (no label prefix)
+       // Render "Website" as a clickable link (no label prefix) — organizations only
+       if (entityType !== 'person') {
        // Matched by stable fieldId
-       var websiteCol = organizationGridCols.find(function(c) {
+       websiteCol = organizationGridCols.find(function(c) {
            return (c.fieldId && c.fieldId.toUpperCase() === '6440F5F6-6F2F-49FC-8840-76E9D2EBAC00') ||
                   c.colClass === 'website';
        });
@@ -142,6 +164,7 @@ function renderClassicLayout(data, container) {
                }
            }
        }
+       }
 
         organizationGridCols.forEach(function(colObj) {
             var col = colObj.colClass;
@@ -154,8 +177,9 @@ function renderClassicLayout(data, container) {
             if (label === 'Total Members') label = 'Total/Active Members';
 
             if (col === 'name') return;
-            if (contactNameCol && col === contactNameCol.colClass) return; // already rendered above
-            if (websiteCol && col === websiteCol.colClass) return;         // already rendered above as link
+            if (ctx.subtitleColClass && col === ctx.subtitleColClass) return;
+            if (!ctx.subtitleColClass && contactNameCol && col === contactNameCol.colClass) return; // already rendered above
+            if (entityType !== 'person' && websiteCol && col === websiteCol.colClass) return;         // already rendered above as link
             if (fieldValues[col] !== undefined) {
                 cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
@@ -163,9 +187,11 @@ function renderClassicLayout(data, container) {
             }
         });
 
+        if (ctx.showDetailLink !== false && organizationDetailLink) {
         cardBody += '<p class="card-text mb-0 mt-2 btn-detail">' +
             '<a href="' + organizationDetailLink + '?organizationId=' + org.id + '" class="btn btn-link btn-sm pl-0">View Detail</a>' +
             '</p>';
+        }
 
         var colsPerRow = (typeof orgClassicCardsPerRow !== 'undefined') ? orgClassicCardsPerRow : 4;
         var colClass = colsPerRow === 2 ? 'col-md-6' : (colsPerRow === 3 ? 'col-md-4' : 'col-md-3');
