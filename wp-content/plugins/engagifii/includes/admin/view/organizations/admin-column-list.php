@@ -24,8 +24,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
             <?php renderColumnsUI(['organization_settings', 'grid', 'visible_column_list'],'orgColumns'); ?>
                 </div>
                 
-                <!--Card Layout Template Selection - Hidden: design not complete for all templates-->
-                <?php /* ?>
+                <!-- Card Layout Template Selection -->
                 <div class="cols-wrapper card-layout-selection">
                 	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
                     <div class="layout-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
@@ -57,17 +56,17 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         foreach ($layouts as $layout_key => $layout_info) {
                             $checked = ($current_layout === $layout_key) ? 'checked' : '';
                             ?>
-                            <div class="layout-option" style="border: 2px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; <?php echo $checked ? 'border-color: #0073aa; background-color: #f0f8ff;' : ''; ?>" data-layout="<?php echo $layout_key; ?>">
+                            <div class="layout-option" style="border: 2px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; <?php echo $checked ? 'border-color: #0073aa; background-color: #f0f8ff;' : ''; ?>" data-layout="<?php echo esc_attr($layout_key); ?>">
                                 <label style="cursor: pointer; display: block;">
                                     <input type="radio" 
                                            name="ebt_api_settings[organization_settings][grid][card_layout]" 
-                                           value="<?php echo $layout_key; ?>" 
+                                           value="<?php echo esc_attr($layout_key); ?>" 
                                            <?php echo $checked; ?>
                                            style="margin-right: 10px;">
-                                    <strong><?php echo $layout_info['name']; ?></strong>
-                                    <p style="margin: 10px 0; color: #666; font-size: 13px;"><?php echo $layout_info['description']; ?></p>
+                                    <strong><?php echo esc_html($layout_info['name']); ?></strong>
+                                    <p style="margin: 10px 0; color: #666; font-size: 13px;"><?php echo esc_html($layout_info['description']); ?></p>
                                     <div class="layout-preview" style="background: #f9f9f9; padding: 20px; border-radius: 4px; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                        <span style="color: #999; font-size: 12px;"><?php echo $layout_info['name']; ?> Layout Preview</span>
+                                        <span style="color: #999; font-size: 12px;"><?php echo esc_html($layout_info['name']); ?> Layout Preview</span>
                                     </div>
                                 </label>
                             </div>
@@ -77,11 +76,11 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     </div>
                     <script>
                     jQuery(document).ready(function($) {
-                        $('.layout-option').click(function() {
-                            $('.layout-option').css({'border-color': '#ddd', 'background-color': 'transparent'});
+                        $('.card-layout-selection .layout-option').click(function() {
+                            var $section = $(this).closest('.card-layout-selection');
+                            $section.find('.layout-option').css({'border-color': '#ddd', 'background-color': 'transparent'});
                             $(this).css({'border-color': '#0073aa', 'background-color': '#f0f8ff'});
                             $(this).find('input[type="radio"]').prop('checked', true);
-                            // Show/hide cards-per-row setting based on selected layout
                             var selectedLayout = $(this).data('layout');
                             $('#org-classic-cards-per-row-wrapper').toggle(selectedLayout === 'classic');
                         });
@@ -94,7 +93,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     $show_cards_per_row = ($current_layout === 'classic') ? 'block' : 'none';
                     ?>
                     <!--Cards Per Row (Classic layout only)-->
-                    <div id="org-classic-cards-per-row-wrapper" style="display:<?php echo $show_cards_per_row; ?>; margin-top: 20px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
+                    <div id="org-classic-cards-per-row-wrapper" style="display:<?php echo esc_attr($show_cards_per_row); ?>; margin-top: 20px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
                         <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
                             <span class="dashicons dashicons-grid-view" style="vertical-align: middle;"></span>&nbsp;
                             Cards Per Row (Classic View)
@@ -111,7 +110,6 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     </div>
 
                 </div>
-                <?php */ ?>
 
                 <!--Cards Per Page (Grid View)-->
                 <div class="cols-wrapper">
