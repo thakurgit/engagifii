@@ -244,6 +244,9 @@ $i = 0;
 // Include card layout templates dynamically based on settings (before instance JS)
 $options = get_option('ebt_api_settings');
 $selectedLayout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
+if ($selectedLayout === 'detailed' || !in_array($selectedLayout, array('classic', 'modern', 'minimal'), true)) {
+    $selectedLayout = 'classic';
+}
 $templatePath = plugin_dir_path(__FILE__) . '../templates/card-layouts/' . $selectedLayout . '.php';
 if (file_exists($templatePath)) {
     include $templatePath;
@@ -620,10 +623,7 @@ $orgRoot.find('.group-card').each(function () {
 ?>;
   
   // Get selected card layout template from settings
-  var cardLayoutTemplate = '<?php 
-    $options = get_option('ebt_api_settings');
-    echo isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic'; 
-  ?>';
+  var cardLayoutTemplate = '<?php echo esc_js($selectedLayout); ?>';
 
   // Cards per row for classic layout (2, 3, or 4)
   var orgClassicCardsPerRow = <?php

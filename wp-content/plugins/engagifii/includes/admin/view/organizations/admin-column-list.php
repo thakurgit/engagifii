@@ -30,9 +30,12 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     <div class="layout-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
                         <?php 
                         $current_layout = isset($options['organization_settings']['grid']['card_layout']) ? $options['organization_settings']['grid']['card_layout'] : 'classic';
+                        if ($current_layout === 'detailed') {
+                            $current_layout = 'classic';
+                        }
                         $layouts = array(
                             'classic' => array(
-                                'name' => 'Classic',
+                                'name' => 'Standard',
                                 'description' => 'Traditional card with image on top and details below',
                                 'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-classic.png'
                             ),
@@ -46,11 +49,6 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                                 'description' => 'Simple card with icon and minimal details',
                                 'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-minimal.png'
                             ),
-                            'detailed' => array(
-                                'name' => 'Detailed',
-                                'description' => 'Comprehensive card with all information displayed',
-                                'preview' => ENGAGIFII_ASSETS_URL . '/images/layout-detailed.png'
-                            )
                         );
                         
                         foreach ($layouts as $layout_key => $layout_info) {
@@ -65,8 +63,8 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                                            style="margin-right: 10px;">
                                     <strong><?php echo esc_html($layout_info['name']); ?></strong>
                                     <p style="margin: 10px 0; color: #666; font-size: 13px;"><?php echo esc_html($layout_info['description']); ?></p>
-                                    <div class="layout-preview" style="background: #f9f9f9; padding: 20px; border-radius: 4px; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center;">
-                                        <span style="color: #999; font-size: 12px;"><?php echo esc_html($layout_info['name']); ?> Layout Preview</span>
+                                    <div class="layout-preview" style="background: #f9f9f9; padding: 12px; border-radius: 4px; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                        <img src="<?php echo esc_url($layout_info['preview']); ?>" alt="<?php echo esc_attr($layout_info['name']); ?> layout preview" style="max-width: 100%; height: auto; display: block; border-radius: 2px;" />
                                     </div>
                                 </label>
                             </div>
@@ -96,9 +94,9 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     <div id="org-classic-cards-per-row-wrapper" style="display:<?php echo esc_attr($show_cards_per_row); ?>; margin-top: 20px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
                         <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
                             <span class="dashicons dashicons-grid-view" style="vertical-align: middle;"></span>&nbsp;
-                            Cards Per Row (Classic View)
+                            Cards Per Row (Standard View)
                         </label>
-                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many cards appear in each row for the Classic card layout.</p>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many cards appear in each row for the Standard card layout.</p>
                         <select name="ebt_api_settings[organization_settings][grid][classic_cards_per_row]"
                                 style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
                             <?php foreach ([2, 3, 4] as $n) : ?>
