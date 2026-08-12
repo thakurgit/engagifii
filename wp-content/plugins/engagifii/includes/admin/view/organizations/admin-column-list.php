@@ -25,6 +25,51 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 </div>
                 
                 <!-- Card Layout Template Selection -->
+                <style>
+                .card-layout-selection .layout-preview {
+                    background: #f9f9f9;
+                    padding: 10px;
+                    border-radius: 4px;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                }
+                .card-layout-selection .layout-preview img {
+                    display: block;
+                    margin: 0 auto;
+                    width: auto;
+                    height: auto;
+                    object-fit: contain;
+                    border-radius: 2px;
+                }
+                .card-layout-selection .layout-preview--classic {
+                    min-height: 0;
+                    max-height: 200px;
+                }
+                .card-layout-selection .layout-preview--classic img {
+                    max-height: 185px;
+                    max-width: 72%;
+                }
+                .card-layout-selection .layout-preview--modern {
+                    min-height: 0;
+                    max-height: 150px;
+                }
+                .card-layout-selection .layout-preview--modern img {
+                    max-height: 130px;
+                    max-width: 95%;
+                    object-position: center center;
+                }
+                .card-layout-selection .layout-preview--minimal {
+                    min-height: 0;
+                    max-height: 145px;
+                }
+                .card-layout-selection .layout-preview--minimal img {
+                    max-height: 125px;
+                    max-width: 95%;
+                }
+                </style>
                 <div class="cols-wrapper card-layout-selection">
                 	<h3><span class="dashicons dashicons-screenoptions"></span>&nbsp;&nbsp;Card Layout Template</h3><i>Select the card layout style for grid view.</i><hr>
                     <div class="layout-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
@@ -63,8 +108,8 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                                            style="margin-right: 10px;">
                                     <strong><?php echo esc_html($layout_info['name']); ?></strong>
                                     <p style="margin: 10px 0; color: #666; font-size: 13px;"><?php echo esc_html($layout_info['description']); ?></p>
-                                    <div class="layout-preview" style="background: #f9f9f9; padding: 12px; border-radius: 4px; text-align: center; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                        <img src="<?php echo esc_url($layout_info['preview']); ?>" alt="<?php echo esc_attr($layout_info['name']); ?> layout preview" style="max-width: 100%; height: auto; display: block; border-radius: 2px;" />
+                                    <div class="layout-preview layout-preview--<?php echo esc_attr($layout_key); ?>">
+                                        <img src="<?php echo esc_url($layout_info['preview']); ?>" alt="<?php echo esc_attr($layout_info['name']); ?> layout preview" />
                                     </div>
                                 </label>
                             </div>
