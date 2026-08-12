@@ -16,6 +16,7 @@ $allowedViewMode = isset($viewMode) && trim($viewMode) !== ''
   $forDatatable 	= 	array();
   $columns='';
     $columnNames=[];
+    $title_key = -1;
     if (!empty(GROUP_MEMBERS_COLS) && isArrayOfJsonStrings(GROUP_MEMBERS_COLS)) {
           $columns = convertToObjectArray(GROUP_MEMBERS_COLS);
           $columnNames = extractColNames(GROUP_MEMBERS_COLS);
@@ -409,19 +410,31 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
     }
     echo esc_js($gm_layout);
   ?>';
+  var groupMemberCols = <?php
+    $gridCols = [];
+    foreach (GROUP_MEMBERS_COLS_GRID as $key) {
+        $json = json_decode(stripslashes($key), true);
+       if (!$json || !isset($json['colName'], $json['displayName'])) continue;
+      $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
+      $gridCols[] = [
+          'colClass' => $colClass,
+          'displayName' => $json['displayName'],
+          'colName' => $json['colName']
+      ];
+  }
+    echo json_encode($gridCols);
+?>;
 
-  <?php  if ($allowedViewMode === 'grid' ){?>
-  groupMembers(start);
-  <?php } ?>
-  
+  var table = null;
+
   $('.view-mode button').click(function(){
       var selectedMode = $(this).attr('view-mode');
-  
+
       if (selectedMode === viewMode) return;
-  
+
       viewMode = selectedMode;
       $(this).addClass('active').siblings().removeClass('active');
-  
+
       if(viewMode === 'grid'){
           $('.list-view').hide();
           $('.grid-view').show();
@@ -429,10 +442,13 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
       } else {
           $('.list-view').show();
           $('.grid-view').hide();
-          table.draw();
+          if (table) {
+              table.draw();
+          }
       }
   });
-    var table = $('#ebtmaintable').DataTable( {
+    if ($('#ebtmaintable').length) {
+    table = $('#ebtmaintable').DataTable( {
         "pageLength": 10,
         "dom": '<"row no-gutters"<"col-12 custom-scroll border-left border-right border-bottom"t">><"row pagin"<"col-sm-5 pt-3"l><"col-sm-7 pt-3"p">>',
         "bInfo":false,
@@ -506,6 +522,7 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
      $('#ebtmaintable').on( 'processing.dt', function ( e, settings, processing ) {
         $('.engagifii-box #eng-overlay').css( 'display', processing ? 'block' : 'none' );
     } ).dataTable();
+    }
     
 	//fetch group members
 	// Reset grid state and reload from scratch (used on filter/viewmode change)
@@ -578,24 +595,6 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
         });
     }
     
-    //grid layout
- // var groupMemberCols = <?php echo json_encode(GROUP_MEMBERS_COLS_GRID); ?>;
-    var groupMemberCols = <?php
-    $gridCols = [];
-    foreach (GROUP_MEMBERS_COLS_GRID as $key) {
-        $json = json_decode(stripslashes($key), true);
-       if (!$json || !isset($json['colName'], $json['displayName'])) continue;
-      $colClass = preg_replace('/\s+/', '', strtolower($json['colName']));
-      $gridCols[] = [
-          'colClass' => $colClass,
-          'displayName' => $json['displayName'],
-          'colName' => $json['colName']
-      ];
-  }
-    echo json_encode($gridCols);
-?>;
- 
-  
 var fieldIcons = {
     email:    '<i class="fas fa-envelope mr-2"></i>',
     organization: '<i class="fas fa-landmark mr-2"></i>',
@@ -670,7 +669,10 @@ function popGroupCardRenderContext() {
 }
 
 function adaptGroupMemberForLayout(item) {
-    var person = item.people;
+    var person = (item && item.people) ? item.people : item;
+    if (!person) {
+        return null;
+    }
     return {
         id: person.id,
         name: person.fullName,
@@ -681,28 +683,39 @@ function adaptGroupMemberForLayout(item) {
     };
 }
 
+function getGroupLayoutRenderer() {
+    switch (cardLayoutTemplate) {
+        case 'modern':
+            return typeof renderModernLayout === 'function' ? renderModernLayout : null;
+        case 'minimal':
+            return typeof renderMinimalLayout === 'function' ? renderMinimalLayout : null;
+        case 'classic':
+        default:
+            return typeof renderClassicLayout === 'function' ? renderClassicLayout : null;
+    }
+}
+
 function renderGroupGrid(data) {
     pushGroupCardRenderContext();
     try {
         var container = $('.grid-view .row');
         container.empty();
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
             return;
         }
-        var adapted = data.map(adaptGroupMemberForLayout);
-        switch (cardLayoutTemplate) {
-            case 'modern':
-                renderModernLayout(adapted, container);
-                break;
-            case 'minimal':
-                renderMinimalLayout(adapted, container);
-                break;
-            case 'classic':
-            default:
-                renderClassicLayout(adapted, container);
-                break;
+        var adapted = data.map(adaptGroupMemberForLayout).filter(function(row) { return row !== null; });
+        if (adapted.length === 0) {
+            container.append('<h3 class="text-secondary text-center col-12">No members found!</h3>');
+            return;
         }
+        var layoutRenderer = getGroupLayoutRenderer();
+        if (!layoutRenderer) {
+            console.error('Engagifii group grid: card layout renderer is not available for template:', cardLayoutTemplate);
+            container.append('<h3 class="text-secondary text-center col-12">Unable to load member cards. Please refresh the page.</h3>');
+            return;
+        }
+        layoutRenderer(adapted, container);
         setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
     } finally {
         popGroupCardRenderContext();
@@ -714,19 +727,11 @@ function appendGroupGrid(data) {
     pushGroupCardRenderContext();
     try {
         var container = $('.grid-view .row');
-        var adapted = data.map(adaptGroupMemberForLayout);
-        switch (cardLayoutTemplate) {
-            case 'modern':
-                renderModernLayout(adapted, container);
-                break;
-            case 'minimal':
-                renderMinimalLayout(adapted, container);
-                break;
-            case 'classic':
-            default:
-                renderClassicLayout(adapted, container);
-                break;
-        }
+        var adapted = data.map(adaptGroupMemberForLayout).filter(function(row) { return row !== null; });
+        if (adapted.length === 0) return;
+        var layoutRenderer = getGroupLayoutRenderer();
+        if (!layoutRenderer) return;
+        layoutRenderer(adapted, container);
         setTimeout(function() { $('[data-toggle="popover"]').popover(); }, 100);
     } finally {
         popGroupCardRenderContext();
@@ -839,7 +844,7 @@ function buildGroupMemberFieldValues(record) {
         }
     });
 
-    groupMemberCols.forEach(function(colObj) {
+    (groupMemberCols || []).forEach(function(colObj) {
         var col = colObj.colClass;
         if (typeof fieldValues[col] === 'undefined') fieldValues[col] = '--';
     });
@@ -865,6 +870,11 @@ function extractRegionsFromTerms(terms) {
     return regions;
 }
 
+<?php if ($allowedViewMode === 'grid') { ?>
+if (typeof groupMembers === 'function') {
+    groupMembers(start);
+}
+<?php } ?>
 
 <?php
   if($title_key > -1){
