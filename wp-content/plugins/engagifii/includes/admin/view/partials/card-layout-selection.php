@@ -67,28 +67,28 @@ $layouts = array(
 }
 .card-layout-selection .layout-preview--classic {
     min-height: 0;
-    max-height: 200px;
+    max-height: 240px;
 }
 .card-layout-selection .layout-preview--classic img {
-    max-height: 185px;
-    max-width: 72%;
+    max-height: 220px;
+    max-width: 85%;
 }
 .card-layout-selection .layout-preview--modern {
     min-height: 0;
-    max-height: 150px;
+    max-height: 130px;
 }
 .card-layout-selection .layout-preview--modern img {
-    max-height: 130px;
-    max-width: 95%;
+    max-height: 115px;
+    max-width: 100%;
     object-position: center center;
 }
 .card-layout-selection .layout-preview--minimal {
     min-height: 0;
-    max-height: 145px;
+    max-height: 160px;
 }
 .card-layout-selection .layout-preview--minimal img {
-    max-height: 125px;
-    max-width: 95%;
+    max-height: 145px;
+    max-width: 100%;
 }
 </style>
 <div class="cols-wrapper card-layout-selection">
