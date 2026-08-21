@@ -135,7 +135,8 @@ function _prepareEventData($searchtext){
 }
 
 $options = get_option('ebt_api_settings');
-$engagifii_url          = $options['evt_tenant_code']['engagifii_url'];
+$env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+$engagifii_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
 
 $postedData = _prepareEventData($searchtext);
 //print_r(json_encode($postedData));
