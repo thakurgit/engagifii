@@ -24,29 +24,13 @@ if ($setupCompleted && !engagifii_should_show_module_settings('group_directory')
             <?php renderColumnsUI(['group_members_settings', 'grid', 'visible_column_list'],'groupColumns'); ?>
                 </div>
 
-                <!--Cards Per Row (Grid View)-->
-                <div class="cols-wrapper">
-                    <h3><span class="dashicons dashicons-grid-view"></span>&nbsp;&nbsp;Cards Per Row (Grid View)</h3><i>Choose how many member cards appear in each row.</i><hr>
-                    <?php
-                    $current_gm_cards_per_row = isset($options['group_members_settings']['grid']['classic_cards_per_row'])
-                        ? intval($options['group_members_settings']['grid']['classic_cards_per_row']) : 4;
-                    ?>
-                    <div style="margin-top: 10px; padding: 15px; background: #f0f8ff; border: 1px solid #bde; border-radius: 8px;">
-                        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
-                            <span class="dashicons dashicons-grid-view" style="vertical-align: middle;"></span>&nbsp;
-                            Cards Per Row
-                        </label>
-                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Choose how many member cards appear in each row in grid view.</p>
-                        <select name="ebt_api_settings[group_members_settings][grid][classic_cards_per_row]"
-                                style="width: 120px; padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc;">
-                            <?php foreach ([2, 3, 4] as $n) : ?>
-                                <option value="<?php echo $n; ?>" <?php selected($current_gm_cards_per_row, $n); ?>>
-                                    <?php echo $n; ?> per row
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
+                <?php
+                $card_layout_settings_path = array('group_members_settings', 'grid');
+                $card_layout_field_name = 'card_layout';
+                $cards_per_row_field_name = 'classic_cards_per_row';
+                $cards_per_row_wrapper_id = 'gm-classic-cards-per-row-wrapper';
+                include dirname(__DIR__) . '/partials/card-layout-selection.php';
+                ?>
 
                 <!--Cards Per Page (Grid View)-->
                 <div class="cols-wrapper">

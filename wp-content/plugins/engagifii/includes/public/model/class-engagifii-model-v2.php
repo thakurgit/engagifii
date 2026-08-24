@@ -31,6 +31,36 @@ if ( ! defined( 'ABSPATH' ) ) {
         add_action('wp_ajax_' . $action[0], [$this, $action[1]]);
     }
  }
+
+    /**
+     * Locked org list filters from AJAX (JSON preferred for multi-instance UUID keys).
+     *
+     * @return array{0: array, 1: array<string, int>}
+     */
+    protected function engagifii_get_locked_org_filters_from_request() {
+        $lockedCustomFields = [];
+        $lockedFilterTypesMap = [];
+
+        if (!empty($_POST['lockedCustomFieldsJson'])) {
+            $decoded = json_decode(wp_unslash($_POST['lockedCustomFieldsJson']), true);
+            if (is_array($decoded)) {
+                $lockedCustomFields = $decoded;
+            }
+        } elseif (isset($_POST['lockedCustomFields']) && is_array($_POST['lockedCustomFields'])) {
+            $lockedCustomFields = wp_unslash($_POST['lockedCustomFields']);
+        }
+
+        if (!empty($_POST['lockedFilterTypesMapJson'])) {
+            $decoded = json_decode(wp_unslash($_POST['lockedFilterTypesMapJson']), true);
+            if (is_array($decoded)) {
+                $lockedFilterTypesMap = array_map('intval', $decoded);
+            }
+        } elseif (isset($_POST['lockedFilterTypesMap']) && is_array($_POST['lockedFilterTypesMap'])) {
+            $lockedFilterTypesMap = array_map('intval', wp_unslash($_POST['lockedFilterTypesMap']));
+        }
+
+        return [ $lockedCustomFields, $lockedFilterTypesMap ];
+    }
 	  public function eventsClassCalendar(){
 	        $options = get_option('ebt_api_settings');
         $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
@@ -1033,6 +1063,14 @@ public function getOrganizations(){
         $locations = isset($_POST['locations']) && is_array($_POST['locations']) ? $_POST['locations'] : [];
         $organizationTags = isset($_POST['organizationTags']) && is_array($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
         $customFields = isset($_POST['customFields']) && is_array($_POST['customFields']) ? $_POST['customFields'] : [];
+        list($lockedCustomFields, $lockedFilterTypesMap) = $this->engagifii_get_locked_org_filters_from_request();
+
+        // Shortcode-locked section filters always win (multi-instance safe)
+        foreach ($lockedCustomFields as $fieldId => $selectedValues) {
+            if (!empty($selectedValues) && is_array($selectedValues)) {
+                $customFields[$fieldId] = array_values(array_filter(array_map('sanitize_text_field', $selectedValues)));
+            }
+        }
 
         // Build filter rules dynamically
         $filterRules = [];
@@ -1082,6 +1120,9 @@ public function getOrganizations(){
         $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
             ? array_map('intval', $_POST['filterTypesMap'])
             : [];
+        foreach ($lockedFilterTypesMap as $fieldId => $filterType) {
+            $filterTypesMap[$fieldId] = $filterType;
+        }
 
         // Add custom field filters
         foreach ($customFields as $customFieldId => $selectedValues) {
@@ -1789,6 +1830,13 @@ private function _organizationPostCountData() {
     $locations = isset($_POST['locations']) ? $_POST['locations'] : [];
     $organizationTags = isset($_POST['organizationTags']) ? $_POST['organizationTags'] : [];
     $customFields = isset($_POST['customFields']) ? $_POST['customFields'] : [];
+    list($lockedCustomFields, $lockedFilterTypesMap) = $this->engagifii_get_locked_org_filters_from_request();
+
+    foreach ($lockedCustomFields as $fieldId => $selectedValues) {
+        if (!empty($selectedValues) && is_array($selectedValues)) {
+            $customFields[$fieldId] = array_values(array_filter(array_map('sanitize_text_field', $selectedValues)));
+        }
+    }
 
     $filterRules = [];
 
@@ -1828,6 +1876,9 @@ private function _organizationPostCountData() {
     $filterTypesMap = isset($_POST['filterTypesMap']) && is_array($_POST['filterTypesMap'])
         ? array_map('intval', $_POST['filterTypesMap'])
         : [];
+    foreach ($lockedFilterTypesMap as $fieldId => $filterType) {
+        $filterTypesMap[$fieldId] = $filterType;
+    }
 
     foreach ($customFields as $customFieldId => $selectedValues) {
         if (!empty($selectedValues)) {

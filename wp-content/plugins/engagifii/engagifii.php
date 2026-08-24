@@ -323,9 +323,9 @@ function engagifii_get_default_pages()
 			'post_title' => 'Events Classes',
 			'post_content' => "[training-calendar]",
 		],
-		'organization-detail' => [
+		'organization-details' => [
 			'option_key' => 'organization_detail_page',
-			'post_title' => 'Organization Detail',
+			'post_title' => 'Organization Details',
 			'post_content' => "[organization-details Id='organization-id']",
 		],
 	];

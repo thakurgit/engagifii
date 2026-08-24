@@ -6825,7 +6825,8 @@ if(!empty($_POST['minRange']))
 	}*/
 
         $endorsement_api_url = $options['ebt_api_url'];
-        $tenant_url          = $options['evt_tenant_code']['engagifii_url'];
+        $env = $options['engagifii_apis']['environment']? $options['engagifii_apis']['environment'] : '';
+        $tenant_url          = 'https://'.$options['evt_tenant_code']['engagifii_url'].'.engagifii'.$env.'.com';
         // $upcomingEvents = 'false';
         $allEvents = get_option( 'ebt_api_settings' )['allEvents'];
         if($allEvents==1){
