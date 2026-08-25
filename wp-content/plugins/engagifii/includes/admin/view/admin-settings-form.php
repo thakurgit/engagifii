@@ -70,9 +70,18 @@
                          echo $_inputHtml;
 			?>
             </td>
-        	<td></td>
-        	<td></td>
-        	<td></td>
+        	<td colspan="3">
+            <h4>Organization Detail Section Color</h4>
+            <?php
+                       $organization_detail_section_color = isset($options['organization_detail_section_color']) ? $options['organization_detail_section_color'] : '';
+                       if ($organization_detail_section_color === '' || $organization_detail_section_color === null) {
+                           $organization_detail_section_color = $engagifii_theme_color;
+                       }
+                       $_inputHtml = '<input type="text" name="ebt_api_settings[organization_detail_section_color]" value="'.esc_attr($organization_detail_section_color).'" class="engagifii-color-picker hide-options-here-tz">';
+                         echo $_inputHtml;
+            ?>
+            <p class="description" style="margin-top:8px;">Header banner and Contacts block on the organization detail page. Defaults to Primary Color when empty.</p>
+            </td>
         </tr>
         <tr>
         	<td colspan="4"><h3>Table Header</h3><hr></td>
