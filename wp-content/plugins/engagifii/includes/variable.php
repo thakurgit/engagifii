@@ -97,7 +97,7 @@ if ( ! defined( 'ORGANIZATION_PAGE_LINK' ) ) {
 // Organization detail page link
 $organization_detail_page = $front_pages['organization_detail_page'] ?? '';
 if ( ! defined( 'ORGANIZATION_DETAIL_LINK' ) ) {
-    define('ORGANIZATION_DETAIL_LINK', $organization_detail_page ? get_permalink( $organization_detail_page ) : site_url('/organization-detail/'));
+    define('ORGANIZATION_DETAIL_LINK', $organization_detail_page ? get_permalink( $organization_detail_page ) : site_url('/organization-details/'));
 }
 
 //Organizations columns

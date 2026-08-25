@@ -82,13 +82,12 @@ class Engagifii_API{
 			
 			$tenant_code = $ebt_tenant_code ['tenant_code'];
 			$curl = curl_init();
-			curl_setopt_array($curl, array(  
+			$curl_options = array(  
 
 				CURLOPT_URL 			=> $ebt_api_url."/".$requestUrl, //"https://engagifii-preview4-event.azurewebsites.net/api/1.0/public/EventColumnList", 
 				CURLOPT_RETURNTRANSFER 	=> true,
 				CURLOPT_ENCODING 		=> "",   
 				CURLOPT_CUSTOMREQUEST 	=> $requestType,
-				CURLOPT_POSTFIELDS 		=> json_encode($requestData),
 				CURLOPT_TIMEOUT=>30,
 				CURLOPT_HTTPHEADER 		=> array(
 					"cache-control: no-cache",
@@ -97,7 +96,11 @@ class Engagifii_API{
 					$authentication
 				),
 
-			));
+			);
+			if ($requestType !== 'GET') {
+				$curl_options[CURLOPT_POSTFIELDS] = json_encode($requestData);
+			}
+			curl_setopt_array($curl, $curl_options);
 			if($tenant_code!=""){
 							$response = curl_exec($curl);
 							if ($response === false) {
@@ -1014,10 +1017,28 @@ public function getEventDetailsByID($id)
 
 	public function getOrganizationBasicDetails($id)
 	{
-		$postData = array();
-		$apiUrl = 'GetOrganizationBasicDetails/' . $id;
-		$response = $this->submitApiRequest($apiUrl, $postData, 'GET', 'dashboard');
-		return json_decode($response['api_response']);
+		$id = trim((string) $id);
+		if ($id === '') {
+			return null;
+		}
+
+		$apiUrl = 'GetOrganizationBasicDetails/' . rawurlencode($id);
+		$response = $this->submitApiRequest($apiUrl, array(), 'GET', 'dashboard');
+
+		if (empty($response['api_status']) || empty($response['api_response'])) {
+			return null;
+		}
+
+		$decoded = json_decode($response['api_response']);
+		if (empty($decoded)) {
+			return null;
+		}
+
+		if (isset($decoded->result) && is_object($decoded->result)) {
+			return $decoded->result;
+		}
+
+		return $decoded;
 	}
 	
 	public function getCourseDocument($id, $title){
