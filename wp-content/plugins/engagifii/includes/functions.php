@@ -410,6 +410,30 @@ if (!function_exists('engagifii_org_should_mask_field')) {
     }
 }
 
+if (!function_exists('engagifii_org_guest_field_saved_as_checked')) {
+    /**
+     * Whether a guest-field checkbox should appear checked in admin.
+     * Matches only this column's own identifiers (not alias-group siblings).
+     */
+    function engagifii_org_guest_field_saved_as_checked($col, $guest_hidden) {
+        if (empty($guest_hidden) || !is_array($guest_hidden) || empty($col['colName'])) {
+            return false;
+        }
+
+        if (in_array($col['colName'], $guest_hidden, true)) {
+            return true;
+        }
+        if (!empty($col['fieldId']) && in_array($col['fieldId'], $guest_hidden, true)) {
+            return true;
+        }
+        if (!empty($col['displayName']) && in_array($col['displayName'], $guest_hidden, true)) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
     function engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $settings) {
         if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
@@ -487,13 +511,12 @@ function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
 			// All boxes were unchecked; save empty array explicitly
 			$new_value['organization_settings']['guest_hidden_fields'] = [];
 		} else {
-			$new_value['organization_settings']['guest_hidden_fields'] = engagifii_expand_org_guest_hidden_fields(
-				array_map(
-					'sanitize_text_field',
-					(array) $new_value['organization_settings']['guest_hidden_fields']
-				),
-				$new_value
-			);
+			// Save only what the admin explicitly checked (colName values from POST).
+			// Alias/fieldId expansion runs at display time, not on save.
+			$new_value['organization_settings']['guest_hidden_fields'] = array_values(array_unique(array_map(
+				'sanitize_text_field',
+				(array) $new_value['organization_settings']['guest_hidden_fields']
+			)));
 		}
 	} elseif (isset($old_value['organization_settings']['guest_hidden_fields'])) {
 		// Section was NOT in this form submission — preserve the existing saved value

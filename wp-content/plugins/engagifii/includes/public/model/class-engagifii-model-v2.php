@@ -1208,6 +1208,9 @@ public function getOrganizations(){
         $guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
             ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
             : ['phoneNumbers', 'primaryEmail'];
+        if (function_exists('engagifii_expand_org_guest_hidden_fields')) {
+            $guest_hidden_fields = engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $options);
+        }
 
         // Build a dynamic map: custom fieldId => ['colClass', 'controlTypeId'] from saved columns.
         // A column is a custom field when its fieldId differs from its colName (system fields have fieldId === colName).
