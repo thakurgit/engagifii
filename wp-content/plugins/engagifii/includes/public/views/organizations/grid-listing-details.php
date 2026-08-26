@@ -94,14 +94,23 @@ if (!function_exists('engagifii_org_is_valid_image')) {
 }
 
 if (!function_exists('engagifii_org_should_mask_field')) {
-    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_hidden_fields) {
+    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_hidden_fields, $fieldId = '') {
         if ($is_logged_in) {
             return false;
         }
-        $normalized = preg_replace('/[^a-z0-9]/', '', strtolower($fieldKey));
-        foreach ($guest_hidden_fields as $hiddenField) {
-            if ($normalized === preg_replace('/[^a-z0-9]/', '', strtolower($hiddenField))) {
-                return true;
+        $keys = array($fieldKey);
+        if ($fieldId !== '') {
+            $keys[] = $fieldId;
+        }
+        foreach ($keys as $key) {
+            $normalized = preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
+            if ($normalized === '') {
+                continue;
+            }
+            foreach ($guest_hidden_fields as $hiddenField) {
+                if ($normalized === preg_replace('/[^a-z0-9]/', '', strtolower((string) $hiddenField))) {
+                    return true;
+                }
             }
         }
         return false;
@@ -329,10 +338,6 @@ $website_contacts = !empty($response->websiteContacts) && is_array($response->we
     : [];
 $social_pages = engagifii_org_get_social_pages($response->socialPages ?? array());
 
-$mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_hidden_fields);
-$mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_hidden_fields);
-$mask_website = engagifii_org_should_mask_field('website', $is_logged_in, $guest_hidden_fields);
-
 $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization Bio'));
 if ($org_overview_html === '') {
     $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Overview'));
@@ -383,6 +388,30 @@ $show_website = $website_url !== '' && $detail_field_visible('Website');
 $show_email = $email_address !== '' && $detail_field_visible('primaryEmail');
 $show_social = !empty($social_pages) && $detail_field_visible('SocialPages');
 $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteContacts');
+
+$mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_hidden_fields);
+$mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_hidden_fields);
+$mask_website = engagifii_org_should_mask_field('Website', $is_logged_in, $guest_hidden_fields);
+$mask_social = engagifii_org_should_mask_field('SocialPages', $is_logged_in, $guest_hidden_fields);
+$mask_contacts = engagifii_org_should_mask_field('WebsiteContacts', $is_logged_in, $guest_hidden_fields);
+
+$mask_overview = false;
+if ($show_overview && !$is_logged_in) {
+    if (engagifii_org_should_mask_field('Overview', $is_logged_in, $guest_hidden_fields)) {
+        $mask_overview = true;
+    } else {
+        foreach (($response->customFields ?? array()) as $overview_field) {
+            $overview_name = trim($overview_field->fieldName ?? '');
+            if ($overview_name === '' || !in_array($overview_name, $overview_field_names, true)) {
+                continue;
+            }
+            if (engagifii_org_should_mask_field($overview_name, $is_logged_in, $guest_hidden_fields, $overview_field->fieldId ?? '')) {
+                $mask_overview = true;
+                break;
+            }
+        }
+    }
+}
 ?>
 
 <style>
@@ -693,7 +722,7 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
 
                         <?php if ($show_social) : ?>
                         <?php foreach ($social_pages as $social_page) : ?>
-                            <?php if ($mask_website) : ?>
+                            <?php if ($mask_social) : ?>
                                 <span class="org-detail-social-icon org-detail-masked" title="<?php echo esc_attr($social_page['platform']); ?>"><i class="<?php echo esc_attr($social_page['icon']); ?>"></i></span>
                             <?php else : ?>
                                 <a href="<?php echo esc_url($social_page['url']); ?>" class="org-detail-social-icon" target="_blank" rel="noopener noreferrer" title="<?php echo esc_attr($social_page['platform']); ?>">
@@ -712,8 +741,12 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
         <div class="org-detail-content org-detail-section org-detail-section-overview">
             <div class="org-detail-overview">
                 <div class="org-detail-contacts-tab"><?php esc_html_e('Overview', 'engagifii'); ?></div>
-                <div class="org-detail-overview-body">
-                    <?php echo wp_kses_post($org_overview_html); ?>
+                <div class="org-detail-overview-body<?php echo $mask_overview ? ' org-detail-masked' : ''; ?>">
+                    <?php if ($mask_overview) : ?>
+                        <?php esc_html_e('Hidden', 'engagifii'); ?>
+                    <?php else : ?>
+                        <?php echo wp_kses_post($org_overview_html); ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -732,10 +765,22 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
                         <?php foreach ($group_fields as $field) :
                             $field_has_html = trim($field['fieldValue']) !== wp_strip_all_tags($field['fieldValue']);
                             $field_col_class = $field_has_html ? 'col-12' : 'col-md-6';
+                            $mask_custom_field = engagifii_org_should_mask_field(
+                                $field['fieldName'],
+                                $is_logged_in,
+                                $guest_hidden_fields,
+                                $field['fieldId'] ?? ''
+                            );
                             ?>
                             <div class="<?php echo esc_attr($field_col_class); ?> org-detail-custom-field">
                                 <div class="org-detail-custom-field-label"><?php echo esc_html($field['fieldName']); ?></div>
-                                <div class="org-detail-custom-field-value"><?php echo engagifii_org_render_custom_field_value($field['fieldValue']); ?></div>
+                                <div class="org-detail-custom-field-value<?php echo $mask_custom_field ? ' org-detail-masked' : ''; ?>">
+                                    <?php if ($mask_custom_field) : ?>
+                                        <?php esc_html_e('Hidden', 'engagifii'); ?>
+                                    <?php else : ?>
+                                        <?php echo engagifii_org_render_custom_field_value($field['fieldValue']); ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -749,6 +794,13 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
             <div class="org-detail-contacts-wrap">
                 <div class="org-detail-contacts-tab"><?php esc_html_e('Contacts', 'engagifii'); ?></div>
                 <div class="org-detail-contacts-list">
+                    <?php if ($mask_contacts) : ?>
+                        <div class="org-detail-contact-row">
+                            <div class="org-detail-contact-info">
+                                <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                            </div>
+                        </div>
+                    <?php else : ?>
                     <?php foreach ($website_contacts as $contact) :
                         $contact_name = esc_html(trim($contact->name ?? ''));
                         $contact_title = esc_html(trim($contact->title ?? ''));
@@ -795,12 +847,12 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
-                                    <?php if ($contact_linkedin !== '' && !$mask_website) : ?>
+                                    <?php if ($contact_linkedin !== '' && !$mask_social) : ?>
                                         <div>
                                             <i class="fab fa-linkedin"></i>
                                             <a href="<?php echo esc_url($linkedin_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($contact_linkedin); ?></a>
                                         </div>
-                                    <?php elseif ($contact_linkedin !== '' && $mask_website) : ?>
+                                    <?php elseif ($contact_linkedin !== '' && $mask_social) : ?>
                                         <div>
                                             <i class="fab fa-linkedin"></i>
                                             <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
@@ -810,6 +862,7 @@ $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteCont
                             </div>
                         </div>
                     <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

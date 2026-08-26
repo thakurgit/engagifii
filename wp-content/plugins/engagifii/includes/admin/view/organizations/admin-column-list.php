@@ -57,7 +57,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 </div>
 
                 <!--Org detail page field visibility-->
-                <div class="cols-wrapper">
+                <div class="cols-wrapper org-detail-fields">
                     <h3><span class="dashicons dashicons-admin-page"></span>&nbsp;&nbsp;Manage Detail Page Field Visibility</h3>
                     <i>Check the fields that should be visible on the organization detail page. If none are selected, all available fields are shown.</i><hr>
                     <?php renderColumnsUI(['organization_settings', 'detail', 'visible_field_list'], 'orgDetailColumns'); ?>
@@ -66,19 +66,21 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                 <!--Guest Field Visibility-->
                 <div class="cols-wrapper guest-field-visibility">
                     <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>
-                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in. Logged-in members always see the full data.</i><hr>
+                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in on the organization list, grid, and detail pages. Logged-in members always see the full data.</i><hr>
                     <?php
                     $guest_hidden = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
                         ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
                         : ['phoneNumbers', 'primaryEmail'];
 
-                    // Build union of list + grid cols so every visible field appears here
+                    // Build union of list, grid, and detail page fields so every field can be blurred for guests.
                     $list_cols = isset($options['organization_settings']['list']['visible_column_list'])
                         ? $options['organization_settings']['list']['visible_column_list'] : [];
                     $grid_cols = isset($options['organization_settings']['grid']['visible_column_list'])
                         ? $options['organization_settings']['grid']['visible_column_list'] : [];
+                    $detail_cols = isset($options['organization_settings']['detail']['visible_field_list'])
+                        ? $options['organization_settings']['detail']['visible_field_list'] : [];
 
-                    $all_cols_raw = array_merge($list_cols, $grid_cols);
+                    $all_cols_raw = array_merge($list_cols, $grid_cols, $detail_cols);
                     $seen_cols    = [];
                     $all_cols     = [];
                     foreach ($all_cols_raw as $col_json) {
@@ -109,7 +111,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         echo '</div>';
                         echo '<p style="margin-top:10px;color:#666;font-size:12px;"><em>These settings are saved together with the main <strong>Save Settings</strong> button.</em></p>';
                     } else {
-                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View or Grid View column visibility above first.</em></p>';
+                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View, Grid View, or Detail Page field visibility above first.</em></p>';
                     }
                     ?>
                 </div>
