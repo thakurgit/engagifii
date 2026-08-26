@@ -66,11 +66,6 @@ $org_detail_section_color = !empty($options['organization_detail_section_color']
 $org_default_img = ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 $is_logged_in = is_user_logged_in();
 $guest_hidden_fields = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
-$detail_visible_fields = defined('ORGANIZATION_DETAIL_VISIBLE_FIELDS') ? ORGANIZATION_DETAIL_VISIBLE_FIELDS : array();
-$detail_visibility_map = engagifii_org_build_detail_visibility_map($detail_visible_fields);
-$detail_field_visible = function($colName, $fieldId = '') use ($detail_visibility_map) {
-    return engagifii_org_detail_field_visible($colName, $fieldId, $detail_visibility_map);
-};
 
 if (!function_exists('engagifii_org_get_custom_field')) {
     function engagifii_org_get_custom_field($customFields, $fieldName) {
@@ -346,6 +341,12 @@ if ($org_overview_html === '') {
     $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization/Company Description'));
 }
 $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overview_html)) !== '';
+
+$detail_visible_fields = defined('ORGANIZATION_DETAIL_VISIBLE_FIELDS') ? ORGANIZATION_DETAIL_VISIBLE_FIELDS : array();
+$detail_visibility_map = engagifii_org_build_detail_visibility_map($detail_visible_fields);
+$detail_field_visible = function($colName, $fieldId = '') use ($detail_visibility_map) {
+    return engagifii_org_detail_field_visible($colName, $fieldId, $detail_visibility_map);
+};
 
 $overview_field_names = array(
     'Organization Bio',
