@@ -56,6 +56,13 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     </div>
                 </div>
 
+                <!--Org detail page field visibility-->
+                <div class="cols-wrapper">
+                    <h3><span class="dashicons dashicons-admin-page"></span>&nbsp;&nbsp;Manage Detail Page Field Visibility</h3>
+                    <i>Check the fields that should be visible on the organization detail page. If none are selected, all available fields are shown.</i><hr>
+                    <?php renderColumnsUI(['organization_settings', 'detail', 'visible_field_list'], 'orgDetailColumns'); ?>
+                </div>
+
                 <!--Guest Field Visibility-->
                 <div class="cols-wrapper guest-field-visibility">
                     <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>

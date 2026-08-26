@@ -105,6 +105,8 @@ if ( ! defined( 'ORGANIZATION_DETAIL_LINK' ) ) {
  	define('ORGANIZATION_COLS', $organization_visible_column_list); 
 	 $organization_visible_column_grid = isset($options['organization_settings']['grid']['visible_column_list']) ? $options['organization_settings']['grid']['visible_column_list'] : [];
  	define('ORGANIZATION_COLS_GRID', $organization_visible_column_grid);
+	$organization_detail_visible_fields = isset($options['organization_settings']['detail']['visible_field_list']) ? $options['organization_settings']['detail']['visible_field_list'] : [];
+	define('ORGANIZATION_DETAIL_VISIBLE_FIELDS', $organization_detail_visible_fields);
 //Organization guest hidden fields (fields to blur/hide for non-logged-in users)
 	if ( ! defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ) {
 		$organization_guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])

@@ -66,6 +66,11 @@ $org_detail_section_color = !empty($options['organization_detail_section_color']
 $org_default_img = ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 $is_logged_in = is_user_logged_in();
 $guest_hidden_fields = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
+$detail_visible_fields = defined('ORGANIZATION_DETAIL_VISIBLE_FIELDS') ? ORGANIZATION_DETAIL_VISIBLE_FIELDS : array();
+$detail_visibility_map = engagifii_org_build_detail_visibility_map($detail_visible_fields);
+$detail_field_visible = function($colName, $fieldId = '') use ($detail_visibility_map) {
+    return engagifii_org_detail_field_visible($colName, $fieldId, $detail_visibility_map);
+};
 
 if (!function_exists('engagifii_org_get_custom_field')) {
     function engagifii_org_get_custom_field($customFields, $fieldName) {
@@ -108,6 +113,199 @@ if (!function_exists('engagifii_org_should_mask_field')) {
     }
 }
 
+if (!function_exists('engagifii_org_group_custom_fields')) {
+    function engagifii_org_group_custom_fields($customFields, $excludeFieldNames = array(), $fieldVisibilityCallback = null) {
+        $groups = array();
+        if (empty($customFields) || !is_array($customFields)) {
+            return $groups;
+        }
+
+        $excludeNormalized = array();
+        foreach ($excludeFieldNames as $excludeName) {
+            $excludeNormalized[] = strtolower(trim($excludeName));
+        }
+
+        foreach ($customFields as $field) {
+            $fieldName = trim($field->fieldName ?? '');
+            $fieldValue = trim($field->fieldValue ?? '');
+            $groupName = trim($field->groupName ?? '');
+            $fieldId = trim($field->fieldId ?? '');
+
+            if ($fieldName === '' || $fieldValue === '' || $groupName === '') {
+                continue;
+            }
+            if (in_array(strtolower($fieldName), $excludeNormalized, true)) {
+                continue;
+            }
+            if (is_callable($fieldVisibilityCallback) && !$fieldVisibilityCallback($fieldName, $fieldId)) {
+                continue;
+            }
+
+            if (!isset($groups[$groupName])) {
+                $groups[$groupName] = array();
+            }
+            $groups[$groupName][] = array(
+                'fieldName' => $fieldName,
+                'fieldValue' => $fieldValue,
+                'fieldId' => $fieldId,
+            );
+        }
+
+        return $groups;
+    }
+}
+
+if (!function_exists('engagifii_org_build_detail_visibility_map')) {
+    function engagifii_org_build_detail_visibility_map($visible_fields) {
+        $map = array(
+            'has_settings' => false,
+            'col_names' => array(),
+            'field_ids' => array(),
+        );
+
+        if (empty($visible_fields) || !is_array($visible_fields)) {
+            return $map;
+        }
+
+        $map['has_settings'] = true;
+        foreach ($visible_fields as $field_json) {
+            $field = json_decode(stripslashes($field_json), true);
+            if (!$field || empty($field['colName'])) {
+                continue;
+            }
+            $map['col_names'][strtolower(trim($field['colName']))] = true;
+            if (!empty($field['fieldId'])) {
+                $map['field_ids'][strtolower(trim($field['fieldId']))] = true;
+            }
+        }
+
+        return $map;
+    }
+}
+
+if (!function_exists('engagifii_org_detail_field_visible')) {
+    function engagifii_org_detail_field_visible($colName, $fieldId, $visibility_map) {
+        if (empty($visibility_map['has_settings'])) {
+            return true;
+        }
+
+        $colKey = strtolower(trim((string) $colName));
+        if ($colKey !== '' && !empty($visibility_map['col_names'][$colKey])) {
+            return true;
+        }
+
+        $fieldKey = strtolower(trim((string) $fieldId));
+        if ($fieldKey !== '' && !empty($visibility_map['field_ids'][$fieldKey])) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('engagifii_org_render_custom_field_value')) {
+    function engagifii_org_render_custom_field_value($value) {
+        $value = trim((string) $value);
+        if ($value === '') {
+            return '';
+        }
+        if ($value !== wp_strip_all_tags($value)) {
+            return wp_kses_post($value);
+        }
+        return esc_html($value);
+    }
+}
+
+if (!function_exists('engagifii_org_normalize_external_url')) {
+    function engagifii_org_normalize_external_url($url) {
+        $url = trim((string) $url);
+        if ($url === '') {
+            return '';
+        }
+        if (preg_match('/^https?:\/\//i', $url)) {
+            return $url;
+        }
+        if (strpos($url, '//') === 0) {
+            return 'https:' . $url;
+        }
+        return 'https://' . ltrim($url, '/');
+    }
+}
+
+if (!function_exists('engagifii_org_get_social_icon_class')) {
+    function engagifii_org_get_social_icon_class($platform) {
+        $platform = strtolower(trim((string) $platform));
+        if (strpos($platform, 'linkedin') !== false) {
+            return 'fab fa-linkedin-in';
+        }
+        if (strpos($platform, 'facebook') !== false) {
+            return 'fab fa-facebook-f';
+        }
+        if (strpos($platform, 'instagram') !== false) {
+            return 'fab fa-instagram';
+        }
+        if (strpos($platform, 'twitter') !== false || $platform === 'x') {
+            return 'fab fa-twitter';
+        }
+        if (strpos($platform, 'youtube') !== false) {
+            return 'fab fa-youtube';
+        }
+        return 'fas fa-share-alt';
+    }
+}
+
+if (!function_exists('engagifii_org_get_social_platform_key')) {
+    function engagifii_org_get_social_platform_key($platform) {
+        $platform = strtolower(trim((string) $platform));
+        if (strpos($platform, 'linkedin') !== false) {
+            return 'linkedin';
+        }
+        if (strpos($platform, 'facebook') !== false) {
+            return 'facebook';
+        }
+        if (strpos($platform, 'instagram') !== false) {
+            return 'instagram';
+        }
+        if (strpos($platform, 'twitter') !== false || $platform === 'x') {
+            return 'twitter';
+        }
+        if (strpos($platform, 'youtube') !== false) {
+            return 'youtube';
+        }
+        return preg_replace('/[^a-z0-9]+/', '-', $platform);
+    }
+}
+
+if (!function_exists('engagifii_org_get_social_pages')) {
+    function engagifii_org_get_social_pages($socialPages) {
+        $pages = array();
+        if (empty($socialPages) || !is_array($socialPages)) {
+            return $pages;
+        }
+
+        $seen = array();
+        foreach ($socialPages as $page) {
+            $platform = trim($page->platform ?? '');
+            $url = engagifii_org_normalize_external_url($page->url ?? '');
+            if ($platform === '' || $url === '') {
+                continue;
+            }
+            $key = engagifii_org_get_social_platform_key($platform);
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+            $pages[] = array(
+                'platform' => $platform,
+                'url' => $url,
+                'icon' => engagifii_org_get_social_icon_class($platform),
+            );
+        }
+
+        return $pages;
+    }
+}
+
 $org_name = esc_html($response->name ?? $response->Name ?? '');
 $org_logo = engagifii_org_is_valid_image($response->imageThumbUrl ?? '') ? esc_url($response->imageThumbUrl) : esc_url($org_default_img);
 
@@ -131,6 +329,10 @@ if ($phone_number === '' && !empty($response->contactDetails) && is_array($respo
 }
 
 $email_address = trim($response->email ?? '');
+$website_contacts = !empty($response->websiteContacts) && is_array($response->websiteContacts)
+    ? $response->websiteContacts
+    : [];
+$social_pages = engagifii_org_get_social_pages($response->socialPages ?? array());
 
 $mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_hidden_fields);
 $mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_hidden_fields);
@@ -144,6 +346,42 @@ if ($org_overview_html === '') {
     $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization/Company Description'));
 }
 $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overview_html)) !== '';
+
+$overview_field_names = array(
+    'Organization Bio',
+    'Overview',
+    'Organization/Company Description',
+    'Website',
+);
+$custom_field_groups = engagifii_org_group_custom_fields(
+    $response->customFields ?? array(),
+    $overview_field_names,
+    $detail_field_visible
+);
+
+$show_overview = false;
+if ($has_overview) {
+    if (!$detail_visibility_map['has_settings'] || $detail_field_visible('Overview')) {
+        $show_overview = true;
+    } else {
+        foreach (($response->customFields ?? array()) as $overview_field) {
+            $overview_name = trim($overview_field->fieldName ?? '');
+            if ($overview_name === '' || !in_array($overview_name, $overview_field_names, true)) {
+                continue;
+            }
+            if ($detail_field_visible($overview_name, $overview_field->fieldId ?? '')) {
+                $show_overview = true;
+                break;
+            }
+        }
+    }
+}
+
+$show_phone = $phone_number !== '' && $detail_field_visible('phoneNumbers');
+$show_website = $website_url !== '' && $detail_field_visible('Website');
+$show_email = $email_address !== '' && $detail_field_visible('primaryEmail');
+$show_social = !empty($social_pages) && $detail_field_visible('SocialPages');
+$show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteContacts');
 ?>
 
 <style>
@@ -224,6 +462,29 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
     text-decoration: none;
 }
 .org-detail-email-icon:hover {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255,255,255,0.12);
+}
+.org-detail-icon-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.org-detail-social-icon {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.org-detail-social-icon:hover {
     color: #fff;
     text-decoration: none;
     background: rgba(255,255,255,0.12);
@@ -337,6 +598,39 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
 .org-detail-overview-body p:last-child {
     margin-bottom: 0;
 }
+.org-detail-custom-groups {
+    overflow: hidden;
+    background: transparent;
+}
+.org-detail-custom-groups-body {
+    padding: 18px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 12px 12px 12px;
+}
+.org-detail-custom-field {
+    margin-bottom: 16px;
+}
+.org-detail-custom-field:last-child {
+    margin-bottom: 0;
+}
+.org-detail-custom-field-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 4px;
+}
+.org-detail-custom-field-value {
+    font-size: 0.95rem;
+    color: #222;
+    line-height: 1.4;
+    word-break: break-word;
+}
+.org-detail-custom-field-value p:last-child {
+    margin-bottom: 0;
+}
+.org-detail-custom-field-value p + p {
+    margin-top: 8px;
+}
 @media (max-width: 767px) {
     .org-detail-header {
         flex-direction: column;
@@ -366,7 +660,7 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
         <div class="org-detail-info">
             <h1><?php echo $org_name; ?></h1>
 
-            <?php if ($phone_number !== '') : ?>
+            <?php if ($show_phone) : ?>
                 <div class="org-detail-phone <?php echo $mask_phone ? 'org-detail-masked' : ''; ?>">
                     <i class="fas fa-phone"></i>
                     <?php echo $mask_phone ? esc_html__('Hidden', 'engagifii') : esc_html($phone_number); ?>
@@ -374,7 +668,7 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
             <?php endif; ?>
 
             <div class="org-detail-actions">
-                <?php if ($website_url !== '') : ?>
+                <?php if ($show_website) : ?>
                     <?php if ($mask_website) : ?>
                         <span class="org-detail-website-btn org-detail-masked"><?php esc_html_e('Visit Website', 'engagifii'); ?></span>
                     <?php else : ?>
@@ -384,86 +678,36 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if ($email_address !== '') : ?>
-                    <?php if ($mask_email) : ?>
-                        <span class="org-detail-email-icon org-detail-masked"><i class="far fa-envelope"></i></span>
-                    <?php else : ?>
-                        <a href="mailto:<?php echo esc_attr($email_address); ?>" class="org-detail-email-icon" title="<?php echo esc_attr($email_address); ?>">
-                            <i class="far fa-envelope"></i>
-                        </a>
-                    <?php endif; ?>
+                <?php if ($show_email || $show_social) : ?>
+                    <div class="org-detail-icon-links">
+                        <?php if ($show_email) : ?>
+                            <?php if ($mask_email) : ?>
+                                <span class="org-detail-email-icon org-detail-masked" title="<?php esc_attr_e('Email', 'engagifii'); ?>"><i class="far fa-envelope"></i></span>
+                            <?php else : ?>
+                                <a href="mailto:<?php echo esc_attr($email_address); ?>" class="org-detail-email-icon" title="<?php echo esc_attr($email_address); ?>">
+                                    <i class="far fa-envelope"></i>
+                                </a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if ($show_social) : ?>
+                        <?php foreach ($social_pages as $social_page) : ?>
+                            <?php if ($mask_website) : ?>
+                                <span class="org-detail-social-icon org-detail-masked" title="<?php echo esc_attr($social_page['platform']); ?>"><i class="<?php echo esc_attr($social_page['icon']); ?>"></i></span>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url($social_page['url']); ?>" class="org-detail-social-icon" target="_blank" rel="noopener noreferrer" title="<?php echo esc_attr($social_page['platform']); ?>">
+                                    <i class="<?php echo esc_attr($social_page['icon']); ?>"></i>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 
-
-    <?php if (!empty($website_contacts)) : ?>
-        <div class="org-detail-contacts-wrap">
-            <div class="org-detail-contacts-tab"><?php esc_html_e('Contacts', 'engagifii'); ?></div>
-            <div class="org-detail-contacts-list">
-                <?php foreach ($website_contacts as $contact) :
-                    $contact_name = esc_html(trim($contact->name ?? ''));
-                    $contact_title = esc_html(trim($contact->title ?? ''));
-                    $contact_phone = trim($contact->phone ?? '');
-                    $contact_email = trim($contact->email ?? '');
-                    $contact_linkedin = trim($contact->linkedIn ?? '');
-
-                    $linkedin_url = '';
-                    if ($contact_linkedin !== '') {
-                        $linkedin_url = preg_match('/^https?:\/\//i', $contact_linkedin)
-                            ? $contact_linkedin
-                            : 'https://' . ltrim($contact_linkedin, '/');
-                    }
-                    ?>
-                    <div class="org-detail-contact-row">
-                        <div class="org-detail-contact-photo">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="org-detail-contact-info">
-                            <?php if ($contact_name !== '') : ?>
-                                <div class="org-detail-contact-name"><?php echo $contact_name; ?></div>
-                            <?php endif; ?>
-                            <?php if ($contact_title !== '') : ?>
-                                <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
-                            <?php endif; ?>
-                            <div class="org-detail-contact-meta">
-                                <?php if ($contact_phone !== '') : ?>
-                                    <div>
-                                        <i class="fas fa-phone"></i>
-                                        <?php if ($mask_phone) : ?>
-                                            <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
-                                        <?php else : ?>
-                                            <a href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $contact_phone)); ?>"><?php echo esc_html($contact_phone); ?></a>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($contact_email !== '') : ?>
-                                    <div>
-                                        <i class="far fa-envelope"></i>
-                                        <?php if ($mask_email) : ?>
-                                            <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
-                                        <?php else : ?>
-                                            <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($contact_linkedin !== '' && !$mask_website) : ?>
-                                    <div>
-                                        <i class="fab fa-linkedin"></i>
-                                        <a href="<?php echo esc_url($linkedin_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($contact_linkedin); ?></a>
-                                    </div>
-                                <?php elseif ($contact_linkedin !== '' && $mask_website) : ?>
-                                    <div>
-                                        <i class="fab fa-linkedin"></i>
-                                        <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-    <?php if ($has_overview) : ?>
+    <?php if ($show_overview) : ?>
         <div class="org-detail-content org-detail-section org-detail-section-overview">
             <div class="org-detail-overview">
                 <div class="org-detail-contacts-tab"><?php esc_html_e('Overview', 'engagifii'); ?></div>
@@ -474,7 +718,98 @@ $has_overview = $org_overview_html !== '' && trim(wp_strip_all_tags($org_overvie
         </div>
     <?php endif; ?>
 
-   
+    <?php foreach ($custom_field_groups as $group_name => $group_fields) :
+        if (empty($group_fields)) {
+            continue;
+        }
+        ?>
+        <div class="org-detail-content org-detail-section org-detail-section-custom">
+            <div class="org-detail-custom-groups">
+                <div class="org-detail-contacts-tab"><?php echo esc_html($group_name); ?></div>
+                <div class="org-detail-custom-groups-body">
+                    <div class="row">
+                        <?php foreach ($group_fields as $field) :
+                            $field_has_html = trim($field['fieldValue']) !== wp_strip_all_tags($field['fieldValue']);
+                            $field_col_class = $field_has_html ? 'col-12' : 'col-md-6';
+                            ?>
+                            <div class="<?php echo esc_attr($field_col_class); ?> org-detail-custom-field">
+                                <div class="org-detail-custom-field-label"><?php echo esc_html($field['fieldName']); ?></div>
+                                <div class="org-detail-custom-field-value"><?php echo engagifii_org_render_custom_field_value($field['fieldValue']); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+
+    <?php if ($show_contacts) : ?>
+        <div class="org-detail-content org-detail-section org-detail-section-contacts">
+            <div class="org-detail-contacts-wrap">
+                <div class="org-detail-contacts-tab"><?php esc_html_e('Contacts', 'engagifii'); ?></div>
+                <div class="org-detail-contacts-list">
+                    <?php foreach ($website_contacts as $contact) :
+                        $contact_name = esc_html(trim($contact->name ?? ''));
+                        $contact_title = esc_html(trim($contact->title ?? ''));
+                        $contact_phone = trim($contact->phone ?? '');
+                        $contact_email = trim($contact->email ?? '');
+                        $contact_linkedin = trim($contact->linkedIn ?? '');
+
+                        $linkedin_url = '';
+                        if ($contact_linkedin !== '') {
+                            $linkedin_url = preg_match('/^https?:\/\//i', $contact_linkedin)
+                                ? $contact_linkedin
+                                : 'https://' . ltrim($contact_linkedin, '/');
+                        }
+                        ?>
+                        <div class="org-detail-contact-row">
+                            <div class="org-detail-contact-photo">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="org-detail-contact-info">
+                                <?php if ($contact_name !== '') : ?>
+                                    <div class="org-detail-contact-name"><?php echo $contact_name; ?></div>
+                                <?php endif; ?>
+                                <?php if ($contact_title !== '') : ?>
+                                    <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
+                                <?php endif; ?>
+                                <div class="org-detail-contact-meta">
+                                    <?php if ($contact_phone !== '') : ?>
+                                        <div>
+                                            <i class="fas fa-phone"></i>
+                                            <?php if ($mask_phone) : ?>
+                                                <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                                            <?php else : ?>
+                                                <a href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $contact_phone)); ?>"><?php echo esc_html($contact_phone); ?></a>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ($contact_email !== '') : ?>
+                                        <div>
+                                            <i class="far fa-envelope"></i>
+                                            <?php if ($mask_email) : ?>
+                                                <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                                            <?php else : ?>
+                                                <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ($contact_linkedin !== '' && !$mask_website) : ?>
+                                        <div>
+                                            <i class="fab fa-linkedin"></i>
+                                            <a href="<?php echo esc_url($linkedin_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($contact_linkedin); ?></a>
+                                        </div>
+                                    <?php elseif ($contact_linkedin !== '' && $mask_website) : ?>
+                                        <div>
+                                            <i class="fab fa-linkedin"></i>
+                                            <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     <?php endif; ?>
