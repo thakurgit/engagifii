@@ -246,6 +246,136 @@ if (!function_exists('engagifii_org_normalize_field_key')) {
     }
 }
 
+if (!function_exists('engagifii_org_get_detail_guest_mask_alias_groups')) {
+    function engagifii_org_get_detail_guest_mask_alias_groups() {
+        return array(
+            array('Overview', 'Organization Bio', 'Organization Overview', 'Organization/Company Description'),
+            array('primaryEmail', 'Primary Email', 'Organization Email', 'Email'),
+            array('phoneNumbers', 'Phone Number', 'Phone Numbers', 'Organization Phone'),
+            array('Website', 'website'),
+            array('SocialPages', 'Social Pages'),
+            array('WebsiteContacts', 'Contacts'),
+        );
+    }
+}
+
+if (!function_exists('engagifii_org_apply_guest_mask_alias_groups')) {
+    function engagifii_org_apply_guest_mask_alias_groups($guest_hidden_fields, $register_callback) {
+        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
+            return;
+        }
+
+        $guest_normalized = array();
+        foreach ($guest_hidden_fields as $hidden_field) {
+            $guest_normalized[engagifii_org_normalize_field_key($hidden_field)] = true;
+        }
+
+        foreach (engagifii_org_get_detail_guest_mask_alias_groups() as $alias_group) {
+            $group_matches = false;
+            foreach ($alias_group as $alias) {
+                if (in_array($alias, $guest_hidden_fields, true)) {
+                    $group_matches = true;
+                    break;
+                }
+                if (isset($guest_normalized[engagifii_org_normalize_field_key($alias)])) {
+                    $group_matches = true;
+                    break;
+                }
+            }
+            if ($group_matches) {
+                foreach ($alias_group as $alias) {
+                    $register_callback($alias);
+                }
+            }
+        }
+    }
+}
+
+if (!function_exists('engagifii_org_build_guest_mask_keys')) {
+    function engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options) {
+        $mask_keys = array();
+        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
+            return $mask_keys;
+        }
+
+        $register = function($value) use (&$mask_keys) {
+            $normalized = engagifii_org_normalize_field_key($value);
+            if ($normalized !== '') {
+                $mask_keys[$normalized] = true;
+            }
+        };
+
+        $guest_normalized = array();
+        foreach ($guest_hidden_fields as $hidden_field) {
+            $register($hidden_field);
+            $guest_normalized[engagifii_org_normalize_field_key($hidden_field)] = true;
+        }
+
+        engagifii_org_apply_guest_mask_alias_groups($guest_hidden_fields, $register);
+
+        $org_settings = $options['organization_settings'] ?? array();
+        $column_json_list = array_merge(
+            $org_settings['list']['visible_column_list'] ?? array(),
+            $org_settings['grid']['visible_column_list'] ?? array(),
+            $org_settings['detail']['visible_field_list'] ?? array()
+        );
+
+        foreach ($column_json_list as $col_json) {
+            $col = json_decode(stripslashes($col_json), true);
+            if (!$col || empty($col['colName'])) {
+                continue;
+            }
+
+            $aliases = array($col['colName']);
+            if (!empty($col['displayName'])) {
+                $aliases[] = $col['displayName'];
+            }
+            if (!empty($col['fieldId'])) {
+                $aliases[] = $col['fieldId'];
+            }
+
+            $should_mask = false;
+            foreach ($aliases as $alias) {
+                if (in_array($alias, $guest_hidden_fields, true)) {
+                    $should_mask = true;
+                    break;
+                }
+                if (isset($guest_normalized[engagifii_org_normalize_field_key($alias)])) {
+                    $should_mask = true;
+                    break;
+                }
+            }
+
+            if ($should_mask) {
+                foreach ($aliases as $alias) {
+                    $register($alias);
+                }
+            }
+        }
+
+        return $mask_keys;
+    }
+}
+
+if (!function_exists('engagifii_org_should_mask_field')) {
+    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_mask_keys, $fieldId = '') {
+        if ($is_logged_in || empty($guest_mask_keys)) {
+            return false;
+        }
+
+        foreach (array($fieldKey, $fieldId) as $key) {
+            if ($key === '') {
+                continue;
+            }
+            if (!empty($guest_mask_keys[engagifii_org_normalize_field_key($key)])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
     function engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $settings) {
         if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
@@ -253,6 +383,14 @@ if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
         }
 
         $expanded = $guest_hidden_fields;
+        $register = function($value) use (&$expanded) {
+            if ($value !== '' && !in_array($value, $expanded, true)) {
+                $expanded[] = $value;
+            }
+        };
+
+        engagifii_org_apply_guest_mask_alias_groups($guest_hidden_fields, $register);
+
         $org_settings = $settings['organization_settings'] ?? array();
         $column_json_list = array_merge(
             $org_settings['list']['visible_column_list'] ?? array(),
@@ -293,12 +431,12 @@ if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
 
             if ($should_mask) {
                 foreach ($aliases as $alias) {
-                    if ($alias !== '' && !in_array($alias, $expanded, true)) {
-                        $expanded[] = $alias;
-                    }
+                    $register($alias);
                 }
             }
         }
+
+        engagifii_org_apply_guest_mask_alias_groups($expanded, $register);
 
         return array_values($expanded);
     }

@@ -93,95 +93,6 @@ if (!function_exists('engagifii_org_is_valid_image')) {
     }
 }
 
-if (!function_exists('engagifii_org_normalize_field_key')) {
-    function engagifii_org_normalize_field_key($key) {
-        return preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
-    }
-}
-
-if (!function_exists('engagifii_org_build_guest_mask_keys')) {
-    function engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options) {
-        $mask_keys = array();
-        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
-            return $mask_keys;
-        }
-
-        $register = function($value) use (&$mask_keys) {
-            $normalized = engagifii_org_normalize_field_key($value);
-            if ($normalized !== '') {
-                $mask_keys[$normalized] = true;
-            }
-        };
-
-        $guest_normalized = array();
-        foreach ($guest_hidden_fields as $hidden_field) {
-            $register($hidden_field);
-            $guest_normalized[engagifii_org_normalize_field_key($hidden_field)] = true;
-        }
-
-        $org_settings = $options['organization_settings'] ?? array();
-        $column_json_list = array_merge(
-            $org_settings['list']['visible_column_list'] ?? array(),
-            $org_settings['grid']['visible_column_list'] ?? array(),
-            $org_settings['detail']['visible_field_list'] ?? array()
-        );
-
-        foreach ($column_json_list as $col_json) {
-            $col = json_decode(stripslashes($col_json), true);
-            if (!$col || empty($col['colName'])) {
-                continue;
-            }
-
-            $aliases = array($col['colName']);
-            if (!empty($col['displayName'])) {
-                $aliases[] = $col['displayName'];
-            }
-            if (!empty($col['fieldId'])) {
-                $aliases[] = $col['fieldId'];
-            }
-
-            $should_mask = false;
-            foreach ($aliases as $alias) {
-                if (in_array($alias, $guest_hidden_fields, true)) {
-                    $should_mask = true;
-                    break;
-                }
-                if (isset($guest_normalized[engagifii_org_normalize_field_key($alias)])) {
-                    $should_mask = true;
-                    break;
-                }
-            }
-
-            if ($should_mask) {
-                foreach ($aliases as $alias) {
-                    $register($alias);
-                }
-            }
-        }
-
-        return $mask_keys;
-    }
-}
-
-if (!function_exists('engagifii_org_should_mask_field')) {
-    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_mask_keys, $fieldId = '') {
-        if ($is_logged_in || empty($guest_mask_keys)) {
-            return false;
-        }
-
-        foreach (array($fieldKey, $fieldId) as $key) {
-            if ($key === '') {
-                continue;
-            }
-            if (!empty($guest_mask_keys[engagifii_org_normalize_field_key($key)])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
 if (!function_exists('engagifii_org_group_custom_fields')) {
     function engagifii_org_group_custom_fields($customFields, $excludeFieldNames = array(), $fieldVisibilityCallback = null) {
         $groups = array();
@@ -405,6 +316,9 @@ $social_pages = engagifii_org_get_social_pages($response->socialPages ?? array()
 
 $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization Bio'));
 if ($org_overview_html === '') {
+    $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Organization Overview'));
+}
+if ($org_overview_html === '') {
     $org_overview_html = trim(engagifii_org_get_custom_field($response->customFields ?? [], 'Overview'));
 }
 if ($org_overview_html === '') {
@@ -420,6 +334,7 @@ $detail_field_visible = function($colName, $fieldId = '') use ($detail_visibilit
 
 $overview_field_names = array(
     'Organization Bio',
+    'Organization Overview',
     'Overview',
     'Organization/Company Description',
     'Website',

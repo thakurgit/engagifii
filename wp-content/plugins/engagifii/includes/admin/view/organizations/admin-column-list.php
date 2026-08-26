@@ -92,6 +92,19 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         $all_cols[]  = $col;
                     }
 
+                    $detail_only_guest_fields = array(
+                        array('colName' => 'Overview', 'displayName' => 'Overview'),
+                        array('colName' => 'SocialPages', 'displayName' => 'Social Pages'),
+                        array('colName' => 'WebsiteContacts', 'displayName' => 'Contacts'),
+                    );
+                    foreach ($detail_only_guest_fields as $detail_field) {
+                        if (in_array($detail_field['colName'], $seen_cols, true)) {
+                            continue;
+                        }
+                        $seen_cols[] = $detail_field['colName'];
+                        $all_cols[] = $detail_field;
+                    }
+
                     $guest_nonce = wp_create_nonce('save_cols_nonce');
 
                     if (!empty($all_cols)) {
@@ -99,7 +112,18 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         echo '<input type="hidden" name="ebt_api_settings[organization_settings][guest_hidden_fields_submitted]" value="1">';
                         echo '<div class="guest-fields-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 0;">';
                         foreach ($all_cols as $col) {
-                            $checked = in_array($col['colName'], $guest_hidden) ? 'checked' : '';
+                            $checked = '';
+                            if (in_array($col['colName'], $guest_hidden, true)) {
+                                $checked = 'checked';
+                            } elseif (function_exists('engagifii_org_normalize_field_key')) {
+                                $col_norm = engagifii_org_normalize_field_key($col['colName']);
+                                foreach ($guest_hidden as $hidden_field) {
+                                    if (engagifii_org_normalize_field_key($hidden_field) === $col_norm) {
+                                        $checked = 'checked';
+                                        break;
+                                    }
+                                }
+                            }
                             $label   = !empty($col['displayName']) ? $col['displayName'] : $col['colName'];
                             echo '<label style="display:inline-flex;align-items:center;gap:6px;min-width:220px;margin:5px 15px 5px 0;font-size:13px;cursor:pointer;">'
                                . '<input type="checkbox" class="guest-field-check"'
