@@ -253,9 +253,43 @@ if (!function_exists('engagifii_org_get_detail_guest_mask_alias_groups')) {
             array('primaryEmail', 'Primary Email', 'Organization Email', 'Email'),
             array('phoneNumbers', 'Phone Number', 'Phone Numbers', 'Organization Phone'),
             array('Website', 'website'),
-            array('SocialPages', 'Social Pages'),
-            array('WebsiteContacts', 'Contacts'),
+            array('SocialPages', 'Social Pages', 'LinkedIn'),
+            array('WebsiteContacts', 'Contacts', 'Contact Name', 'Title'),
         );
+    }
+}
+
+if (!function_exists('engagifii_org_should_mask_contact_details')) {
+    function engagifii_org_should_mask_contact_details($is_logged_in, $guest_mask_keys) {
+        if ($is_logged_in || empty($guest_mask_keys)) {
+            return false;
+        }
+
+        $contact_fields = array(
+            'WebsiteContacts',
+            'Contacts',
+            'Contact Name',
+            'Title',
+            'LinkedIn',
+            'phoneNumbers',
+            'Phone Number',
+            'Phone Numbers',
+            'Organization Phone',
+            'primaryEmail',
+            'Primary Email',
+            'Organization Email',
+            'Email',
+            'SocialPages',
+            'Social Pages',
+        );
+
+        foreach ($contact_fields as $field_key) {
+            if (engagifii_org_should_mask_field($field_key, false, $guest_mask_keys)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

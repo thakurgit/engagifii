@@ -65,7 +65,16 @@ $org_detail_section_color = !empty($options['organization_detail_section_color']
     : $theme_color;
 $org_default_img = ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 $is_logged_in = is_user_logged_in();
-$guest_hidden_fields = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
+if (!empty($options['organization_settings']['guest_hidden_fields']) && is_array($options['organization_settings']['guest_hidden_fields'])) {
+    $guest_hidden_fields = $options['organization_settings']['guest_hidden_fields'];
+} elseif (defined('ORGANIZATION_GUEST_HIDDEN_FIELDS')) {
+    $guest_hidden_fields = ORGANIZATION_GUEST_HIDDEN_FIELDS;
+} else {
+    $guest_hidden_fields = array('phoneNumbers', 'primaryEmail');
+}
+if (function_exists('engagifii_expand_org_guest_hidden_fields')) {
+    $guest_hidden_fields = engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $options);
+}
 
 if (!function_exists('engagifii_org_get_custom_field')) {
     function engagifii_org_get_custom_field($customFields, $fieldName) {
@@ -375,7 +384,10 @@ $mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $gu
 $mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_mask_keys);
 $mask_website = engagifii_org_should_mask_field('Website', $is_logged_in, $guest_mask_keys);
 $mask_social = engagifii_org_should_mask_field('SocialPages', $is_logged_in, $guest_mask_keys);
-$mask_contacts = engagifii_org_should_mask_field('WebsiteContacts', $is_logged_in, $guest_mask_keys);
+$mask_contacts = engagifii_org_should_mask_contact_details($is_logged_in, $guest_mask_keys);
+$mask_contact_name = engagifii_org_should_mask_field('Contact Name', $is_logged_in, $guest_mask_keys);
+$mask_contact_title = engagifii_org_should_mask_field('Title', $is_logged_in, $guest_mask_keys);
+$mask_contact_linkedin = engagifii_org_should_mask_field('LinkedIn', $is_logged_in, $guest_mask_keys) || $mask_social;
 
 $mask_overview = false;
 if ($show_overview && !$is_logged_in) {
@@ -755,7 +767,9 @@ if ($show_overview && !$is_logged_in) {
                             );
                             ?>
                             <div class="<?php echo esc_attr($field_col_class); ?> org-detail-custom-field">
-                                <div class="org-detail-custom-field-label"><?php echo esc_html($field['fieldName']); ?></div>
+                                <div class="org-detail-custom-field-label<?php echo $mask_custom_field ? ' org-detail-masked' : ''; ?>">
+                                    <?php echo $mask_custom_field ? esc_html__('Hidden', 'engagifii') : esc_html($field['fieldName']); ?>
+                                </div>
                                 <div class="org-detail-custom-field-value<?php echo $mask_custom_field ? ' org-detail-masked' : ''; ?>">
                                     <?php if ($mask_custom_field) : ?>
                                         <?php esc_html_e('Hidden', 'engagifii'); ?>
@@ -784,8 +798,8 @@ if ($show_overview && !$is_logged_in) {
                         </div>
                     <?php else : ?>
                     <?php foreach ($website_contacts as $contact) :
-                        $contact_name = esc_html(trim($contact->name ?? ''));
-                        $contact_title = esc_html(trim($contact->title ?? ''));
+                        $contact_name = trim($contact->name ?? '');
+                        $contact_title = trim($contact->title ?? '');
                         $contact_phone = trim($contact->phone ?? '');
                         $contact_email = trim($contact->email ?? '');
                         $contact_linkedin = trim($contact->linkedIn ?? '');
@@ -803,16 +817,20 @@ if ($show_overview && !$is_logged_in) {
                             </div>
                             <div class="org-detail-contact-info">
                                 <?php if ($contact_name !== '') : ?>
-                                    <div class="org-detail-contact-name"><?php echo $contact_name; ?></div>
+                                    <div class="org-detail-contact-name<?php echo ($mask_contacts || $mask_contact_name) ? ' org-detail-masked' : ''; ?>">
+                                        <?php echo ($mask_contacts || $mask_contact_name) ? esc_html__('Hidden', 'engagifii') : esc_html($contact_name); ?>
+                                    </div>
                                 <?php endif; ?>
                                 <?php if ($contact_title !== '') : ?>
-                                    <div class="org-detail-contact-title"><?php echo $contact_title; ?></div>
+                                    <div class="org-detail-contact-title<?php echo ($mask_contacts || $mask_contact_title) ? ' org-detail-masked' : ''; ?>">
+                                        <?php echo ($mask_contacts || $mask_contact_title) ? esc_html__('Hidden', 'engagifii') : esc_html($contact_title); ?>
+                                    </div>
                                 <?php endif; ?>
                                 <div class="org-detail-contact-meta">
                                     <?php if ($contact_phone !== '') : ?>
                                         <div>
                                             <i class="fas fa-phone"></i>
-                                            <?php if ($mask_phone) : ?>
+                                            <?php if ($mask_contacts || $mask_phone) : ?>
                                                 <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
                                             <?php else : ?>
                                                 <a href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $contact_phone)); ?>"><?php echo esc_html($contact_phone); ?></a>
@@ -822,22 +840,21 @@ if ($show_overview && !$is_logged_in) {
                                     <?php if ($contact_email !== '') : ?>
                                         <div>
                                             <i class="far fa-envelope"></i>
-                                            <?php if ($mask_email) : ?>
+                                            <?php if ($mask_contacts || $mask_email) : ?>
                                                 <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
                                             <?php else : ?>
                                                 <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
-                                    <?php if ($contact_linkedin !== '' && !$mask_social) : ?>
+                                    <?php if ($contact_linkedin !== '') : ?>
                                         <div>
                                             <i class="fab fa-linkedin"></i>
-                                            <a href="<?php echo esc_url($linkedin_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($contact_linkedin); ?></a>
-                                        </div>
-                                    <?php elseif ($contact_linkedin !== '' && $mask_social) : ?>
-                                        <div>
-                                            <i class="fab fa-linkedin"></i>
-                                            <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                                            <?php if ($mask_contacts || $mask_contact_linkedin) : ?>
+                                                <span class="org-detail-masked"><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                                            <?php else : ?>
+                                                <a href="<?php echo esc_url($linkedin_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($contact_linkedin); ?></a>
+                                            <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
