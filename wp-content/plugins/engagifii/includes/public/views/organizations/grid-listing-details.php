@@ -93,26 +93,91 @@ if (!function_exists('engagifii_org_is_valid_image')) {
     }
 }
 
-if (!function_exists('engagifii_org_should_mask_field')) {
-    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_hidden_fields, $fieldId = '') {
-        if ($is_logged_in) {
-            return false;
+if (!function_exists('engagifii_org_normalize_field_key')) {
+    function engagifii_org_normalize_field_key($key) {
+        return preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
+    }
+}
+
+if (!function_exists('engagifii_org_build_guest_mask_keys')) {
+    function engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options) {
+        $mask_keys = array();
+        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
+            return $mask_keys;
         }
-        $keys = array($fieldKey);
-        if ($fieldId !== '') {
-            $keys[] = $fieldId;
+
+        $register = function($value) use (&$mask_keys) {
+            $normalized = engagifii_org_normalize_field_key($value);
+            if ($normalized !== '') {
+                $mask_keys[$normalized] = true;
+            }
+        };
+
+        $guest_normalized = array();
+        foreach ($guest_hidden_fields as $hidden_field) {
+            $register($hidden_field);
+            $guest_normalized[engagifii_org_normalize_field_key($hidden_field)] = true;
         }
-        foreach ($keys as $key) {
-            $normalized = preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
-            if ($normalized === '') {
+
+        $org_settings = $options['organization_settings'] ?? array();
+        $column_json_list = array_merge(
+            $org_settings['list']['visible_column_list'] ?? array(),
+            $org_settings['grid']['visible_column_list'] ?? array(),
+            $org_settings['detail']['visible_field_list'] ?? array()
+        );
+
+        foreach ($column_json_list as $col_json) {
+            $col = json_decode(stripslashes($col_json), true);
+            if (!$col || empty($col['colName'])) {
                 continue;
             }
-            foreach ($guest_hidden_fields as $hiddenField) {
-                if ($normalized === preg_replace('/[^a-z0-9]/', '', strtolower((string) $hiddenField))) {
-                    return true;
+
+            $aliases = array($col['colName']);
+            if (!empty($col['displayName'])) {
+                $aliases[] = $col['displayName'];
+            }
+            if (!empty($col['fieldId'])) {
+                $aliases[] = $col['fieldId'];
+            }
+
+            $should_mask = false;
+            foreach ($aliases as $alias) {
+                if (in_array($alias, $guest_hidden_fields, true)) {
+                    $should_mask = true;
+                    break;
+                }
+                if (isset($guest_normalized[engagifii_org_normalize_field_key($alias)])) {
+                    $should_mask = true;
+                    break;
+                }
+            }
+
+            if ($should_mask) {
+                foreach ($aliases as $alias) {
+                    $register($alias);
                 }
             }
         }
+
+        return $mask_keys;
+    }
+}
+
+if (!function_exists('engagifii_org_should_mask_field')) {
+    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_mask_keys, $fieldId = '') {
+        if ($is_logged_in || empty($guest_mask_keys)) {
+            return false;
+        }
+
+        foreach (array($fieldKey, $fieldId) as $key) {
+            if ($key === '') {
+                continue;
+            }
+            if (!empty($guest_mask_keys[engagifii_org_normalize_field_key($key)])) {
+                return true;
+            }
+        }
+
         return false;
     }
 }
@@ -389,15 +454,17 @@ $show_email = $email_address !== '' && $detail_field_visible('primaryEmail');
 $show_social = !empty($social_pages) && $detail_field_visible('SocialPages');
 $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteContacts');
 
-$mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_hidden_fields);
-$mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_hidden_fields);
-$mask_website = engagifii_org_should_mask_field('Website', $is_logged_in, $guest_hidden_fields);
-$mask_social = engagifii_org_should_mask_field('SocialPages', $is_logged_in, $guest_hidden_fields);
-$mask_contacts = engagifii_org_should_mask_field('WebsiteContacts', $is_logged_in, $guest_hidden_fields);
+$guest_mask_keys = engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options);
+
+$mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_mask_keys);
+$mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_mask_keys);
+$mask_website = engagifii_org_should_mask_field('Website', $is_logged_in, $guest_mask_keys);
+$mask_social = engagifii_org_should_mask_field('SocialPages', $is_logged_in, $guest_mask_keys);
+$mask_contacts = engagifii_org_should_mask_field('WebsiteContacts', $is_logged_in, $guest_mask_keys);
 
 $mask_overview = false;
 if ($show_overview && !$is_logged_in) {
-    if (engagifii_org_should_mask_field('Overview', $is_logged_in, $guest_hidden_fields)) {
+    if (engagifii_org_should_mask_field('Overview', $is_logged_in, $guest_mask_keys)) {
         $mask_overview = true;
     } else {
         foreach (($response->customFields ?? array()) as $overview_field) {
@@ -405,7 +472,7 @@ if ($show_overview && !$is_logged_in) {
             if ($overview_name === '' || !in_array($overview_name, $overview_field_names, true)) {
                 continue;
             }
-            if (engagifii_org_should_mask_field($overview_name, $is_logged_in, $guest_hidden_fields, $overview_field->fieldId ?? '')) {
+            if (engagifii_org_should_mask_field($overview_name, $is_logged_in, $guest_mask_keys, $overview_field->fieldId ?? '')) {
                 $mask_overview = true;
                 break;
             }
@@ -768,7 +835,7 @@ if ($show_overview && !$is_logged_in) {
                             $mask_custom_field = engagifii_org_should_mask_field(
                                 $field['fieldName'],
                                 $is_logged_in,
-                                $guest_hidden_fields,
+                                $guest_mask_keys,
                                 $field['fieldId'] ?? ''
                             );
                             ?>

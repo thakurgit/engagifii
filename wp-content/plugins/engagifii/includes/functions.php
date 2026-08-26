@@ -239,6 +239,71 @@ function set_nested_array_value(&$array, $path, $value) {
     }
     $array = $value;
 }
+
+if (!function_exists('engagifii_org_normalize_field_key')) {
+    function engagifii_org_normalize_field_key($key) {
+        return preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
+    }
+}
+
+if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
+    function engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $settings) {
+        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
+            return $guest_hidden_fields;
+        }
+
+        $expanded = $guest_hidden_fields;
+        $org_settings = $settings['organization_settings'] ?? array();
+        $column_json_list = array_merge(
+            $org_settings['list']['visible_column_list'] ?? array(),
+            $org_settings['grid']['visible_column_list'] ?? array(),
+            $org_settings['detail']['visible_field_list'] ?? array()
+        );
+
+        $guest_normalized = array();
+        foreach ($guest_hidden_fields as $hidden_field) {
+            $guest_normalized[engagifii_org_normalize_field_key($hidden_field)] = true;
+        }
+
+        foreach ($column_json_list as $col_json) {
+            $col = json_decode(stripslashes($col_json), true);
+            if (!$col || empty($col['colName'])) {
+                continue;
+            }
+
+            $aliases = array($col['colName']);
+            if (!empty($col['displayName'])) {
+                $aliases[] = $col['displayName'];
+            }
+            if (!empty($col['fieldId'])) {
+                $aliases[] = $col['fieldId'];
+            }
+
+            $should_mask = false;
+            foreach ($aliases as $alias) {
+                if (in_array($alias, $guest_hidden_fields, true)) {
+                    $should_mask = true;
+                    break;
+                }
+                if (isset($guest_normalized[engagifii_org_normalize_field_key($alias)])) {
+                    $should_mask = true;
+                    break;
+                }
+            }
+
+            if ($should_mask) {
+                foreach ($aliases as $alias) {
+                    if ($alias !== '' && !in_array($alias, $expanded, true)) {
+                        $expanded[] = $alias;
+                    }
+                }
+            }
+        }
+
+        return array_values($expanded);
+    }
+}
+
 // Preserve / normalise guest_hidden_fields when the main WP settings form saves
 add_filter('pre_update_option_ebt_api_settings', 'engagifii_preserve_guest_hidden_fields', 10, 2);
 function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
@@ -250,9 +315,12 @@ function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
 			// All boxes were unchecked; save empty array explicitly
 			$new_value['organization_settings']['guest_hidden_fields'] = [];
 		} else {
-			$new_value['organization_settings']['guest_hidden_fields'] = array_map(
-				'sanitize_text_field',
-				(array) $new_value['organization_settings']['guest_hidden_fields']
+			$new_value['organization_settings']['guest_hidden_fields'] = engagifii_expand_org_guest_hidden_fields(
+				array_map(
+					'sanitize_text_field',
+					(array) $new_value['organization_settings']['guest_hidden_fields']
+				),
+				$new_value
 			);
 		}
 	} elseif (isset($old_value['organization_settings']['guest_hidden_fields'])) {
