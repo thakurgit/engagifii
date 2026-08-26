@@ -1205,12 +1205,14 @@ public function getOrganizations(){
         $isLoggedIn = is_user_logged_in();
         $loginUrl   = wp_login_url( home_url( $_SERVER['REQUEST_URI'] ) );
         // Admin-configurable guest hidden fields (default: phone + email)
-        $guest_hidden_fields = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
-            ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
-            : ['phoneNumbers', 'primaryEmail'];
-        if (function_exists('engagifii_expand_org_guest_hidden_fields')) {
-            $guest_hidden_fields = engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $options);
-        }
+        $guest_hidden_fields = function_exists('engagifii_org_get_saved_guest_hidden_fields')
+            ? engagifii_org_get_saved_guest_hidden_fields($options)
+            : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+                ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+                : ['phoneNumbers', 'primaryEmail']);
+        $guest_mask_keys = function_exists('engagifii_org_build_guest_mask_keys')
+            ? engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options)
+            : array();
 
         // Build a dynamic map: custom fieldId => ['colClass', 'controlTypeId'] from saved columns.
         // A column is a custom field when its fieldId differs from its colName (system fields have fieldId === colName).
@@ -1231,16 +1233,16 @@ public function getOrganizations(){
         $data    = array();
 		if($viewMode=='Grid'){
 			// For grid view, strip configured fields for non-logged-in users (server-side security)
-			if ( ! $isLoggedIn ) {
+			if ( ! $isLoggedIn && ! empty( $guest_mask_keys ) ) {
 				foreach ( $collection as $item ) {
-					foreach ( $guest_hidden_fields as $fieldName ) {
-						if ( ! isset( $item->$fieldName ) ) continue;
-						// Clear arrays to empty array, scalars to empty string
-						$item->$fieldName = is_array( $item->$fieldName ) ? [] : '';
-						// When primaryEmail is hidden, also clear secondary emails
-						if ( $fieldName === 'primaryEmail' ) {
-							$item->secondaryEmails = [];
+					foreach ( get_object_vars( $item ) as $prop => $val ) {
+						if ( empty( $guest_mask_keys[ preg_replace( '/[^a-z0-9]/', '', strtolower( (string) $prop ) ) ] ) ) {
+							continue;
 						}
+						$item->$prop = is_array( $val ) ? [] : '';
+					}
+					if ( ! empty( $guest_mask_keys['primaryemail'] ) ) {
+						$item->secondaryEmails = [];
 					}
 				}
 			}
@@ -1341,8 +1343,8 @@ public function getOrganizations(){
                 }
             }
 
-            if ( ! $isLoggedIn && ! empty( $guest_hidden_fields ) ) {
-                $nestedData = $this->applyGuestFieldMaskingToListRow( $nestedData, $guest_hidden_fields );
+            if ( ! $isLoggedIn && ! empty( $guest_mask_keys ) ) {
+                $nestedData = $this->applyGuestFieldMaskingToListRow( $nestedData, $guest_mask_keys );
             }
 
 		$data[] = $nestedData;
@@ -1365,8 +1367,8 @@ public function getOrganizations(){
     /**
      * Replace configured list-view columns with blurred placeholders for guests.
      */
-    public function applyGuestFieldMaskingToListRow( array $nestedData, array $guest_hidden_fields ) {
-        if ( empty( $guest_hidden_fields ) ) {
+    public function applyGuestFieldMaskingToListRow( array $nestedData, array $guest_mask_keys ) {
+        if ( empty( $guest_mask_keys ) ) {
             return $nestedData;
         }
 
@@ -1378,8 +1380,7 @@ public function getOrganizations(){
         $maskedEmail   = $loginLinkOpen . $lockIcon . '<span style="' . $maskStyle . '">••••@•••••.•••</span>' . $loginLinkClose;
         $maskedGeneric = $loginLinkOpen . $lockIcon . '<span style="' . $maskStyle . '">• • • • •</span>' . $loginLinkClose;
 
-        foreach ( $guest_hidden_fields as $fieldName ) {
-            $colClass = preg_replace( '/[^a-z0-9]/', '', strtolower( $fieldName ) );
+        foreach ( $guest_mask_keys as $colClass => $_ ) {
             if ( ! isset( $nestedData[ $colClass ] ) ) {
                 continue;
             }

@@ -65,16 +65,11 @@ $org_detail_section_color = !empty($options['organization_detail_section_color']
     : $theme_color;
 $org_default_img = ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 $is_logged_in = is_user_logged_in();
-if (!empty($options['organization_settings']['guest_hidden_fields']) && is_array($options['organization_settings']['guest_hidden_fields'])) {
-    $guest_hidden_fields = $options['organization_settings']['guest_hidden_fields'];
-} elseif (defined('ORGANIZATION_GUEST_HIDDEN_FIELDS')) {
-    $guest_hidden_fields = ORGANIZATION_GUEST_HIDDEN_FIELDS;
-} else {
-    $guest_hidden_fields = array('phoneNumbers', 'primaryEmail');
-}
-if (function_exists('engagifii_expand_org_guest_hidden_fields')) {
-    $guest_hidden_fields = engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $options);
-}
+$guest_hidden_fields = function_exists('engagifii_org_get_saved_guest_hidden_fields')
+    ? engagifii_org_get_saved_guest_hidden_fields($options)
+    : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? array())
+        ? ($options['organization_settings']['guest_hidden_fields'] ?? array())
+        : array('phoneNumbers', 'primaryEmail'));
 
 if (!function_exists('engagifii_org_get_custom_field')) {
     function engagifii_org_get_custom_field($customFields, $fieldName) {
