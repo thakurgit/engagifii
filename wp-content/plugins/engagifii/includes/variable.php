@@ -111,13 +111,8 @@ if ( ! defined( 'ORGANIZATION_DETAIL_LINK' ) ) {
 	}
 //Organization guest hidden fields (fields to blur/hide for non-logged-in users)
 	if ( ! defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ) {
-		$organization_guest_hidden_fields = function_exists('engagifii_org_get_saved_guest_hidden_fields')
-			? engagifii_org_get_saved_guest_hidden_fields($options)
-			: (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
-				? ($options['organization_settings']['guest_hidden_fields'] ?? [])
-				: ['phoneNumbers', 'primaryEmail']);
-		$organization_guest_mask_keys = function_exists('engagifii_org_build_guest_mask_keys')
-			? engagifii_org_build_guest_mask_keys($organization_guest_hidden_fields, $options)
+		$organization_guest_mask_keys = function_exists('engagifii_org_get_guest_mask_keys')
+			? engagifii_org_get_guest_mask_keys($options)
 			: array();
 		define('ORGANIZATION_GUEST_HIDDEN_FIELDS', array_keys($organization_guest_mask_keys));
 	}

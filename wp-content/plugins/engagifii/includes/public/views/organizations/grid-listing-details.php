@@ -65,11 +65,6 @@ $org_detail_section_color = !empty($options['organization_detail_section_color']
     : $theme_color;
 $org_default_img = ENGAGIFII_ASSETS_URL . '/images/org-list-grey.png';
 $is_logged_in = is_user_logged_in();
-$guest_hidden_fields = function_exists('engagifii_org_get_saved_guest_hidden_fields')
-    ? engagifii_org_get_saved_guest_hidden_fields($options)
-    : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? array())
-        ? ($options['organization_settings']['guest_hidden_fields'] ?? array())
-        : array('phoneNumbers', 'primaryEmail'));
 
 if (!function_exists('engagifii_org_get_custom_field')) {
     function engagifii_org_get_custom_field($customFields, $fieldName) {
@@ -373,7 +368,10 @@ $show_email = $email_address !== '' && $detail_field_visible('primaryEmail');
 $show_social = !empty($social_pages) && $detail_field_visible('SocialPages');
 $show_contacts = !empty($website_contacts) && $detail_field_visible('WebsiteContacts');
 
-$guest_mask_keys = engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options);
+$options = get_option('ebt_api_settings', array());
+$guest_mask_keys = function_exists('engagifii_org_get_guest_mask_keys')
+    ? engagifii_org_get_guest_mask_keys($options)
+    : array();
 
 $mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_mask_keys);
 $mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_mask_keys);

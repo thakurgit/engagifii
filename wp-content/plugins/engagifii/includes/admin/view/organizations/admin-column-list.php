@@ -68,9 +68,11 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>
                     <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in on the organization list, grid, and detail pages. Logged-in members always see the full data.</i><hr>
                     <?php
-                    $guest_hidden = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
-                        ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
-                        : ['phoneNumbers', 'primaryEmail'];
+                    $guest_hidden = function_exists('engagifii_org_get_saved_guest_hidden_fields')
+                        ? engagifii_org_get_saved_guest_hidden_fields($options)
+                        : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+                            ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+                            : ['phoneNumbers', 'primaryEmail']);
 
                     // Build union of list, grid, and detail page fields so every field can be blurred for guests.
                     $list_cols = isset($options['organization_settings']['list']['visible_column_list'])

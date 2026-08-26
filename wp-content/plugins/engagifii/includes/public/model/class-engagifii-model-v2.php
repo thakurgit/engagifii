@@ -1205,13 +1205,8 @@ public function getOrganizations(){
         $isLoggedIn = is_user_logged_in();
         $loginUrl   = wp_login_url( home_url( $_SERVER['REQUEST_URI'] ) );
         // Admin-configurable guest hidden fields (default: phone + email)
-        $guest_hidden_fields = function_exists('engagifii_org_get_saved_guest_hidden_fields')
-            ? engagifii_org_get_saved_guest_hidden_fields($options)
-            : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
-                ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
-                : ['phoneNumbers', 'primaryEmail']);
-        $guest_mask_keys = function_exists('engagifii_org_build_guest_mask_keys')
-            ? engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options)
+        $guest_mask_keys = function_exists('engagifii_org_get_guest_mask_keys')
+            ? engagifii_org_get_guest_mask_keys($options)
             : array();
 
         // Build a dynamic map: custom fieldId => ['colClass', 'controlTypeId'] from saved columns.
