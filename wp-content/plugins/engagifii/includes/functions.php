@@ -239,6 +239,244 @@ function set_nested_array_value(&$array, $path, $value) {
     }
     $array = $value;
 }
+
+if (!function_exists('engagifii_org_normalize_field_key')) {
+    function engagifii_org_normalize_field_key($key) {
+        return preg_replace('/[^a-z0-9]/', '', strtolower((string) $key));
+    }
+}
+
+if (!function_exists('engagifii_org_guest_hidden_fields_configured')) {
+    function engagifii_org_guest_hidden_fields_configured($options) {
+        $org_settings = $options['organization_settings'] ?? array();
+
+        if (!empty($org_settings['guest_hidden_fields_configured'])) {
+            return true;
+        }
+
+        return array_key_exists('guest_hidden_fields', $org_settings);
+    }
+}
+
+if (!function_exists('engagifii_org_get_saved_guest_hidden_fields')) {
+    /**
+     * Raw guest-hidden colNames from settings (empty array is valid — do not treat as "unset").
+     */
+    function engagifii_org_get_saved_guest_hidden_fields($options) {
+        $org_settings = $options['organization_settings'] ?? array();
+
+        if (engagifii_org_guest_hidden_fields_configured($options)) {
+            $fields = $org_settings['guest_hidden_fields'] ?? array();
+            return is_array($fields) ? array_values($fields) : array();
+        }
+
+        return array('phoneNumbers', 'primaryEmail');
+    }
+}
+
+if (!function_exists('engagifii_org_get_guest_mask_keys')) {
+    function engagifii_org_get_guest_mask_keys($options) {
+        if (is_user_logged_in()) {
+            return array();
+        }
+
+        $saved = engagifii_org_get_saved_guest_hidden_fields($options);
+        if (empty($saved)) {
+            return array();
+        }
+
+        return engagifii_org_build_guest_mask_keys($saved, $options);
+    }
+}
+
+if (!function_exists('engagifii_org_get_detail_only_guest_runtime_keys_map')) {
+    /**
+     * Detail-page pseudo fields (not in column JSON) → runtime keys to mask when checked.
+     */
+    function engagifii_org_get_detail_only_guest_runtime_keys_map() {
+        return array(
+            'Overview' => array('Overview', 'Organization Bio', 'Organization Overview', 'Organization/Company Description'),
+            'SocialPages' => array('SocialPages', 'Social Pages'),
+            'WebsiteContacts' => array('WebsiteContacts', 'Contacts', 'Contact Name', 'Title', 'LinkedIn'),
+        );
+    }
+}
+
+if (!function_exists('engagifii_org_index_organization_columns')) {
+    function engagifii_org_index_organization_columns($options) {
+        $org_settings = $options['organization_settings'] ?? array();
+        $column_json_list = array_merge(
+            $org_settings['list']['visible_column_list'] ?? array(),
+            $org_settings['grid']['visible_column_list'] ?? array(),
+            $org_settings['detail']['visible_field_list'] ?? array()
+        );
+
+        $columns_by_name = array();
+        foreach ($column_json_list as $col_json) {
+            $col = json_decode(stripslashes($col_json), true);
+            if (!$col || empty($col['colName'])) {
+                continue;
+            }
+            $columns_by_name[$col['colName']] = $col;
+        }
+
+        return $columns_by_name;
+    }
+}
+
+if (!function_exists('engagifii_org_find_column_for_guest_saved_value')) {
+    function engagifii_org_find_column_for_guest_saved_value($saved_value, $columns_by_name) {
+        if ($saved_value === '' || !is_array($columns_by_name)) {
+            return null;
+        }
+
+        if (isset($columns_by_name[$saved_value])) {
+            return $columns_by_name[$saved_value];
+        }
+
+        foreach ($columns_by_name as $col) {
+            if (!empty($col['fieldId']) && $col['fieldId'] === $saved_value) {
+                return $col;
+            }
+            if (!empty($col['displayName']) && $col['displayName'] === $saved_value) {
+                return $col;
+            }
+        }
+
+        return null;
+    }
+}
+
+if (!function_exists('engagifii_org_should_mask_contact_details')) {
+    function engagifii_org_should_mask_contact_details($is_logged_in, $guest_mask_keys) {
+        if ($is_logged_in || empty($guest_mask_keys)) {
+            return false;
+        }
+
+        $contact_section_fields = array(
+            'WebsiteContacts',
+            'Contacts',
+        );
+
+        foreach ($contact_section_fields as $field_key) {
+            if (engagifii_org_should_mask_field($field_key, false, $guest_mask_keys)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('engagifii_org_build_guest_mask_keys')) {
+    /**
+     * Build normalized mask lookup keys from explicitly checked admin colNames only.
+     * Does not expand alias groups across separate checkboxes.
+     */
+    function engagifii_org_build_guest_mask_keys($guest_hidden_fields, $options) {
+        $mask_keys = array();
+        if (empty($guest_hidden_fields) || !is_array($guest_hidden_fields)) {
+            return $mask_keys;
+        }
+
+        $register = function($value) use (&$mask_keys) {
+            $normalized = engagifii_org_normalize_field_key($value);
+            if ($normalized !== '') {
+                $mask_keys[$normalized] = true;
+            }
+        };
+
+        $columns_by_name = engagifii_org_index_organization_columns($options);
+        $detail_runtime = engagifii_org_get_detail_only_guest_runtime_keys_map();
+        $registered_cols = array();
+
+        foreach ($guest_hidden_fields as $saved_value) {
+            if ($saved_value === '') {
+                continue;
+            }
+
+            $col = engagifii_org_find_column_for_guest_saved_value($saved_value, $columns_by_name);
+            if ($col) {
+                $col_name = $col['colName'];
+                if (isset($registered_cols[$col_name])) {
+                    continue;
+                }
+                $registered_cols[$col_name] = true;
+                $register($col['colName']);
+                if (!empty($col['displayName'])) {
+                    $register($col['displayName']);
+                }
+                if (!empty($col['fieldId'])) {
+                    $register($col['fieldId']);
+                }
+                continue;
+            }
+
+            if (isset($detail_runtime[$saved_value])) {
+                foreach ($detail_runtime[$saved_value] as $runtime_key) {
+                    $register($runtime_key);
+                }
+                continue;
+            }
+
+            $register($saved_value);
+        }
+
+        return $mask_keys;
+    }
+}
+
+if (!function_exists('engagifii_org_should_mask_field')) {
+    function engagifii_org_should_mask_field($fieldKey, $is_logged_in, $guest_mask_keys, $fieldId = '') {
+        if ($is_logged_in || empty($guest_mask_keys)) {
+            return false;
+        }
+
+        foreach (array($fieldKey, $fieldId) as $key) {
+            if ($key === '') {
+                continue;
+            }
+            if (!empty($guest_mask_keys[engagifii_org_normalize_field_key($key)])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('engagifii_org_guest_field_saved_as_checked')) {
+    /**
+     * Whether a guest-field checkbox should appear checked in admin.
+     * Matches only this column's own identifiers (not alias-group siblings).
+     */
+    function engagifii_org_guest_field_saved_as_checked($col, $guest_hidden) {
+        if (empty($guest_hidden) || !is_array($guest_hidden) || empty($col['colName'])) {
+            return false;
+        }
+
+        if (in_array($col['colName'], $guest_hidden, true)) {
+            return true;
+        }
+        if (!empty($col['fieldId']) && in_array($col['fieldId'], $guest_hidden, true)) {
+            return true;
+        }
+        if (!empty($col['displayName']) && in_array($col['displayName'], $guest_hidden, true)) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
+    /** @deprecated Use engagifii_org_build_guest_mask_keys() — kept for backward compatibility. */
+    function engagifii_expand_org_guest_hidden_fields($guest_hidden_fields, $settings) {
+        $mask_keys = engagifii_org_build_guest_mask_keys($guest_hidden_fields, $settings);
+        return array_keys($mask_keys);
+    }
+}
+
 // Preserve / normalise guest_hidden_fields when the main WP settings form saves
 add_filter('pre_update_option_ebt_api_settings', 'engagifii_preserve_guest_hidden_fields', 10, 2);
 function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
@@ -246,19 +484,25 @@ function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
 	if ($submitted) {
 		// Sentinel was present — the section was in the form, normalise the key
 		unset($new_value['organization_settings']['guest_hidden_fields_submitted']);
+		$new_value['organization_settings']['guest_hidden_fields_configured'] = 1;
 		if (!isset($new_value['organization_settings']['guest_hidden_fields'])) {
 			// All boxes were unchecked; save empty array explicitly
 			$new_value['organization_settings']['guest_hidden_fields'] = [];
 		} else {
-			$new_value['organization_settings']['guest_hidden_fields'] = array_map(
+			// Save only what the admin explicitly checked (colName values from POST).
+			// Alias/fieldId expansion runs at display time, not on save.
+			$new_value['organization_settings']['guest_hidden_fields'] = array_values(array_unique(array_map(
 				'sanitize_text_field',
 				(array) $new_value['organization_settings']['guest_hidden_fields']
-			);
+			)));
 		}
 	} elseif (isset($old_value['organization_settings']['guest_hidden_fields'])) {
 		// Section was NOT in this form submission — preserve the existing saved value
 		$new_value['organization_settings']['guest_hidden_fields'] =
 			$old_value['organization_settings']['guest_hidden_fields'];
+		if (!empty($old_value['organization_settings']['guest_hidden_fields_configured'])) {
+			$new_value['organization_settings']['guest_hidden_fields_configured'] = 1;
+		}
 	}
 	return $new_value;
 }

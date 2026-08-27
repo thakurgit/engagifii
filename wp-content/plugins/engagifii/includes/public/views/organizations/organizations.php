@@ -294,9 +294,9 @@ if (!defined('ENGAGIFII_ORG_CARD_CTX_LOADED')) {
   var wpLoginUrl = '<?php echo esc_js( wp_login_url( get_permalink() ) ); ?>';
   // Fields to hide/blur for non-logged-in users (admin-configurable)
   var orgGuestHiddenFields = <?php
-    $ghf = defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phoneNumbers', 'primaryEmail'];
-    $normalized = array_map(function($f) { return preg_replace('/[^a-z0-9]/', '', strtolower($f)); }, $ghf);
-    echo json_encode(array_values($normalized));
+    echo json_encode(array_values(
+      defined('ORGANIZATION_GUEST_HIDDEN_FIELDS') ? ORGANIZATION_GUEST_HIDDEN_FIELDS : ['phonenumbers', 'primaryemail']
+    ));
   ?>;
   var initialOrganizationTypes = <?php echo isset($orgType) && !empty($orgType) ? json_encode(array_map('trim', explode(',', $orgType))) : '[]'; ?>;
   var organizationTypes = initialOrganizationTypes.slice(); // Copy initial types

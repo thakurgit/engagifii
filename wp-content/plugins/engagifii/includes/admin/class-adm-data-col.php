@@ -46,7 +46,9 @@ class adminDataColumn extends Engagifii_API{
 		add_action('wp_ajax_nopriv_groupColumns',array($this,'groupColumns'));
 		add_action('wp_ajax_groupColumns',array($this,'groupColumns'));	
 		add_action('wp_ajax_nopriv_orgColumns',array($this,'orgColumns'));
-		add_action('wp_ajax_orgColumns',array($this,'orgColumns'));	
+		add_action('wp_ajax_orgColumns',array($this,'orgColumns'));
+		add_action('wp_ajax_nopriv_orgDetailColumns',array($this,'orgDetailColumns'));
+		add_action('wp_ajax_orgDetailColumns',array($this,'orgDetailColumns'));
 		
 	}
 
@@ -285,6 +287,61 @@ public function getClassesType($date){
 		}
 		else
 			return array();
+	}
+	public function orgDetailColumns(){
+		$options = get_option( 'ebt_api_settings' );
+		$tenantCode = $options['dashboard_tenant_code'];
+		$dataResponse = $this->submitApiRequest("OrganizationColumnListWithCF/".$tenantCode,array(),"GET",'dashboard');
+		if(!isset($dataResponse['api_response'])){
+			return array();
+		}
+
+		$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails', 'Name'];
+		$excludedCustomFieldColNames = ['Logo', 'Website'];
+		$collection = json_decode($dataResponse['api_response'], true);
+		$collection = array_filter($collection, function ($item) use ($excludedCols, $excludedCustomFieldColNames) {
+			$colName = $item['colName'] ?? '';
+			$fieldId = $item['fieldId'] ?? $colName;
+			if (in_array($colName, $excludedCols, true)) {
+				return false;
+			}
+			if (in_array($colName, $excludedCustomFieldColNames, true) && strcasecmp($fieldId, $colName) !== 0) {
+				return false;
+			}
+			return true;
+		});
+
+		foreach ($collection as &$item) {
+			if (isset($item['colName']) && $item['colName'] === 'TotalMembers') {
+				$item['displayName'] = 'Total/Active Members';
+			}
+		}
+		unset($item);
+
+		$collection = array_values($collection);
+		$seenColNames = [];
+		$collection = array_values(array_filter($collection, function($item) use (&$seenColNames) {
+			$colName = $item['colName'] ?? '';
+			if ($colName === '' || in_array($colName, $seenColNames, true)) {
+				return false;
+			}
+			$seenColNames[] = $colName;
+			return true;
+		}));
+
+		$detailOnlyFields = [
+			['colName' => 'Overview', 'displayName' => 'Overview', 'fieldId' => 'Overview'],
+			['colName' => 'SocialPages', 'displayName' => 'Social Pages', 'fieldId' => 'SocialPages'],
+			['colName' => 'WebsiteContacts', 'displayName' => 'Contacts', 'fieldId' => 'WebsiteContacts'],
+		];
+		foreach ($detailOnlyFields as $detailField) {
+			if (!in_array($detailField['colName'], $seenColNames, true)) {
+				$collection[] = $detailField;
+				$seenColNames[] = $detailField['colName'];
+			}
+		}
+
+		wp_send_json($collection);
 	}
 	public function legislationTabs(){
 		$options = get_option( 'ebt_api_settings' );

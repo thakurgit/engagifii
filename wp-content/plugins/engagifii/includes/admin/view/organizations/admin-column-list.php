@@ -56,22 +56,33 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                     </div>
                 </div>
 
+                <!--Org detail page field visibility-->
+                <div class="cols-wrapper org-detail-fields">
+                    <h3><span class="dashicons dashicons-admin-page"></span>&nbsp;&nbsp;Manage Detail Page Field Visibility</h3>
+                    <i>Check the fields that should be visible on the organization detail page. If none are selected, all available fields are shown.</i><hr>
+                    <?php renderColumnsUI(['organization_settings', 'detail', 'visible_field_list'], 'orgDetailColumns'); ?>
+                </div>
+
                 <!--Guest Field Visibility-->
                 <div class="cols-wrapper guest-field-visibility">
                     <h3><span class="dashicons dashicons-visibility"></span>&nbsp;&nbsp;Guest Field Visibility (Non-Logged-in Users)</h3>
-                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in. Logged-in members always see the full data.</i><hr>
+                    <i>Check the fields that should be <strong>hidden / blurred</strong> for visitors who are not logged in on the organization list, grid, and detail pages. Logged-in members always see the full data.</i><hr>
                     <?php
-                    $guest_hidden = array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
-                        ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
-                        : ['phoneNumbers', 'primaryEmail'];
+                    $guest_hidden = function_exists('engagifii_org_get_saved_guest_hidden_fields')
+                        ? engagifii_org_get_saved_guest_hidden_fields($options)
+                        : (array_key_exists('guest_hidden_fields', $options['organization_settings'] ?? [])
+                            ? ($options['organization_settings']['guest_hidden_fields'] ?? [])
+                            : ['phoneNumbers', 'primaryEmail']);
 
-                    // Build union of list + grid cols so every visible field appears here
+                    // Build union of list, grid, and detail page fields so every field can be blurred for guests.
                     $list_cols = isset($options['organization_settings']['list']['visible_column_list'])
                         ? $options['organization_settings']['list']['visible_column_list'] : [];
                     $grid_cols = isset($options['organization_settings']['grid']['visible_column_list'])
                         ? $options['organization_settings']['grid']['visible_column_list'] : [];
+                    $detail_cols = isset($options['organization_settings']['detail']['visible_field_list'])
+                        ? $options['organization_settings']['detail']['visible_field_list'] : [];
 
-                    $all_cols_raw = array_merge($list_cols, $grid_cols);
+                    $all_cols_raw = array_merge($list_cols, $grid_cols, $detail_cols);
                     $seen_cols    = [];
                     $all_cols     = [];
                     foreach ($all_cols_raw as $col_json) {
@@ -83,6 +94,19 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         $all_cols[]  = $col;
                     }
 
+                    $detail_only_guest_fields = array(
+                        array('colName' => 'Overview', 'displayName' => 'Overview'),
+                        array('colName' => 'SocialPages', 'displayName' => 'Social Pages'),
+                        array('colName' => 'WebsiteContacts', 'displayName' => 'Contacts'),
+                    );
+                    foreach ($detail_only_guest_fields as $detail_field) {
+                        if (in_array($detail_field['colName'], $seen_cols, true)) {
+                            continue;
+                        }
+                        $seen_cols[] = $detail_field['colName'];
+                        $all_cols[] = $detail_field;
+                    }
+
                     $guest_nonce = wp_create_nonce('save_cols_nonce');
 
                     if (!empty($all_cols)) {
@@ -90,7 +114,9 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         echo '<input type="hidden" name="ebt_api_settings[organization_settings][guest_hidden_fields_submitted]" value="1">';
                         echo '<div class="guest-fields-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 0;">';
                         foreach ($all_cols as $col) {
-                            $checked = in_array($col['colName'], $guest_hidden) ? 'checked' : '';
+                            $checked = function_exists('engagifii_org_guest_field_saved_as_checked')
+                                && engagifii_org_guest_field_saved_as_checked($col, $guest_hidden)
+                                ? 'checked' : '';
                             $label   = !empty($col['displayName']) ? $col['displayName'] : $col['colName'];
                             echo '<label style="display:inline-flex;align-items:center;gap:6px;min-width:220px;margin:5px 15px 5px 0;font-size:13px;cursor:pointer;">'
                                . '<input type="checkbox" class="guest-field-check"'
@@ -102,7 +128,7 @@ if ($setupCompleted && !engagifii_should_show_module_settings('organization_dire
                         echo '</div>';
                         echo '<p style="margin-top:10px;color:#666;font-size:12px;"><em>These settings are saved together with the main <strong>Save Settings</strong> button.</em></p>';
                     } else {
-                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View or Grid View column visibility above first.</em></p>';
+                        echo '<p style="color:#666;margin-top:10px;"><em>No columns have been configured yet. Please set up List View, Grid View, or Detail Page field visibility above first.</em></p>';
                     }
                     ?>
                 </div>

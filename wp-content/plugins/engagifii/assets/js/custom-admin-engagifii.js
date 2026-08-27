@@ -448,16 +448,21 @@ function toggleAll($list) {
     });
 	//for custom fields
 	const $checkboxesCField = $list.find('li:not(.toggleAll) input[type="checkbox"].cField');
+	const endpoint = $list.data('endpoint');
+	const isOrgDetailFieldSettings = endpoint === 'orgDetailColumns' || $list.closest('.org-detail-fields').length > 0;
 	//setTimeout(function() {
 	  if ($checkboxesCField.first().parent('li').length) {
 		jQuery('<span class="custom-fields-separator">Custom Fields</span>').insertBefore($checkboxesCField.first().parent());
 	  }
 	  jQuery('.groups-grid').find($list).find('.toggleAll').remove();
-	  if($checkboxesCField.filter(':checked').length>5){
+	  if (!isOrgDetailFieldSettings && $checkboxesCField.filter(':checked').length>5){
 		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
 	  }
 	//}, 1000);
     $checkboxesCField.on('change', function () {
+	  if (isOrgDetailFieldSettings) {
+		return;
+	  }
 	  if($checkboxesCField.filter(':checked').length>5){
 		 $checkboxesCField.filter(':not(:checked)').attr('disabled',''); 
 		showAlert('Max 6 Custom Fields allowed.');  
