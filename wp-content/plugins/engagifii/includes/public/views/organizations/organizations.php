@@ -1065,7 +1065,13 @@ function loadDynamicFilters() {
             console.error('Status:', status);
             
             $orgRoot.find('.dynamic-filters-container').html('<p class="text-center text-danger py-3">Error loading filters: ' + error + '</p>');
-        }
+        },
+         complete: function(xhr, status) {
+        $(document).trigger('engagifii:organization-filter:complete', [
+            xhr,
+            status
+        ]);
+    }
     });
 }
 
