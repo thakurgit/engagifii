@@ -308,6 +308,7 @@ if ($phone_number === '' && !empty($response->contactDetails) && is_array($respo
 }
 
 $email_address = trim($response->email ?? '');
+$physical_address = trim($response->physicalAddress ?? '');
 $website_contacts = !empty($response->websiteContacts) && is_array($response->websiteContacts)
     ? $response->websiteContacts
     : [];
@@ -363,6 +364,7 @@ if ($has_overview) {
 }
 
 $show_phone = $phone_number !== '' && $detail_field_visible('phoneNumbers');
+$show_address = $physical_address !== '' && $detail_field_visible('Locations');
 $show_website = $website_url !== '' && $detail_field_visible('Website');
 $show_email = $email_address !== '' && $detail_field_visible('primaryEmail');
 $show_social = !empty($social_pages) && $detail_field_visible('SocialPages');
@@ -374,6 +376,7 @@ $guest_mask_keys = function_exists('engagifii_org_get_guest_mask_keys')
     : array();
 
 $mask_phone = engagifii_org_should_mask_field('phoneNumbers', $is_logged_in, $guest_mask_keys);
+$mask_address = engagifii_org_should_mask_field('Locations', $is_logged_in, $guest_mask_keys);
 $mask_email = engagifii_org_should_mask_field('primaryEmail', $is_logged_in, $guest_mask_keys);
 $mask_website = engagifii_org_should_mask_field('Website', $is_logged_in, $guest_mask_keys);
 $mask_social = engagifii_org_should_mask_field('SocialPages', $is_logged_in, $guest_mask_keys);
@@ -445,6 +448,18 @@ if ($show_overview && !$is_logged_in) {
 }
 .org-detail-phone i {
     margin-right: 8px;
+}
+.org-detail-address {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.org-detail-address i {
+    margin-top: 3px;
+    flex-shrink: 0;
 }
 .org-detail-actions {
     display: flex;
@@ -676,6 +691,17 @@ if ($show_overview && !$is_logged_in) {
         </div>
         <div class="org-detail-info">
             <h1><?php echo $org_name; ?></h1>
+
+            <?php if ($show_address) : ?>
+                <div class="org-detail-address<?php echo $mask_address ? ' org-detail-masked' : ''; ?>">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    <?php if ($mask_address) : ?>
+                        <span><?php esc_html_e('Hidden', 'engagifii'); ?></span>
+                    <?php else : ?>
+                        <span class="org-detail-address-text"><?php echo nl2br(esc_html($physical_address)); ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
 
             <?php if ($show_phone) : ?>
                 <div class="org-detail-phone <?php echo $mask_phone ? 'org-detail-masked' : ''; ?>">
