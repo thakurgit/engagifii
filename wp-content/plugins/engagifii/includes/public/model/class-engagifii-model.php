@@ -388,7 +388,7 @@ public function getCalendarClassName(){
                        // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
-                                <div class=" calendar__day border-right event col flex-column d-flex p-0 today bg-light"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
+                                <div class=" calendar__day border-right event col flex-column d-flex p-0 today bg-light"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>'>
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                     <?php if(count($filteredItems) > 0){
@@ -442,7 +442,7 @@ public function getCalendarClassName(){
                             <?php
                         }elseif(count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
@@ -567,7 +567,7 @@ public function getCalendarClassName(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($weekfilteredItems); ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                             <?php if(count($weekfilteredItems) > 0){
@@ -731,7 +731,7 @@ public function getCalendarClassName1(){
 								$today = ' today bg-light';	
 							}
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo str_replace("'",'&#39;',json_encode($filteredItems)); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
@@ -864,7 +864,7 @@ public function getCalendarClassName1(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>"  data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($weekfilteredItems); ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                             <?php if(count($weekfilteredItems) > 0){
@@ -1041,7 +1041,7 @@ public function getEventsCalendar(){
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>'>
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                                     <?php if(count($filteredItems) > 0){
@@ -1102,7 +1102,7 @@ public function getEventsCalendar(){
                             <?php
                         }elseif(count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                     <?php
@@ -1222,7 +1222,7 @@ public function getEventsCalendar(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($weekfilteredItems); ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){
@@ -7089,7 +7089,7 @@ public function getCalendar(){
                         // Define date cell color
                         if(strtotime($currentDate) == strtotime(date("Y-m-d")) && count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($filteredItems)) {echo json_encode($filteredItems);}else{ echo "no-data"; } ?>'>
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 today bg-light border border-success" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>'>
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                                     <?php if(count($filteredItems) > 0){
@@ -7100,7 +7100,7 @@ public function getCalendar(){
                             <?php
                         }elseif(count($filteredItems) > 0){
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0" data-event="<?php echo $currentDate; ?>" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text"><?php echo count($filteredItems).' class'; if(count($filteredItems) >1) {echo "es"; } ?></span>
                                 </div>
@@ -7173,7 +7173,7 @@ public function getCalendar(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($weekfilteredItems); ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){
@@ -7283,7 +7283,7 @@ public function getEndorsementCalendar(){
 								$today = ' today bg-light';	
 							}
                             ?>
-                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo json_encode($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
+                                <div class="calendar__day border-right event col flex-column d-flex p-0 <?php echo $today; ?>"  data-event="<?php echo $currentDate; ?>" data-start='<?php echo engagifii_calendar_data_start_attr($filteredItems); ?>' onclick="getEvents('<?php echo $currentDate; ?>', '<?php json_encode($filteredItems); ?>');">
                                     <span class="calendar__date mt-auto calendar-text"><?php echo $dayCount; ?></span>
                                     <span class="calendar__task small pt-lg-2 mb-auto calendar-text" id="CalendarClassName">
                                         <?php
@@ -7413,7 +7413,7 @@ public function getEndorsementCalendar(){
                         sort($weekfilteredItems);
             ?>			
             
-                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php if(count($weekfilteredItems)) {echo json_encode($weekfilteredItems);}else{ echo "no-data"; } ?>'>
+                        <div class="calendar__day border-right <?php if(count($weekfilteredItems) > 0){ echo 'event'; } else { echo 'no-event';}; ?>  col flex-column d-flex p-0 <?php  if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ echo 'today bg-light border border-success'; } ?>" data-event='<?php echo $currentDate; ?>' onclick="getEvents('<?php echo $currentDate; ?>');" data-start='<?php echo engagifii_calendar_data_start_attr($weekfilteredItems); ?>'>
                             <span class="calendar__date mt-auto calendar-text"><?php echo date('d',strtotime($week_array[$i]));  ?></span>
                             <span class="calendar__task calendar__task--today small pt-lg-2 mb-auto calendar-text">
                             <?php if(count($weekfilteredItems) > 0){

@@ -477,6 +477,15 @@ if (!function_exists('engagifii_expand_org_guest_hidden_fields')) {
     }
 }
 
+if (!function_exists('engagifii_calendar_data_start_attr')) {
+    function engagifii_calendar_data_start_attr($items) {
+        if (empty($items)) {
+            return 'no-data';
+        }
+        return htmlspecialchars(json_encode($items), ENT_QUOTES, 'UTF-8');
+    }
+}
+
 // Preserve / normalise guest_hidden_fields when the main WP settings form saves
 add_filter('pre_update_option_ebt_api_settings', 'engagifii_preserve_guest_hidden_fields', 10, 2);
 function engagifii_preserve_guest_hidden_fields($new_value, $old_value) {
