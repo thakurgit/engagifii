@@ -181,6 +181,41 @@ font-size: 260px;
 .grid-view .card .org-location-popover {
   cursor: pointer;
 }
+@media screen and (max-width: 767px) {
+  .engagifii-org-directory > .row > .col-12.d-flex {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .engagifii-org-directory .org-grid-search-wrapper {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+  }
+  .engagifii-org-directory .d-flex.ml-auto {
+    margin-left: 0 !important;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .engagifii-org-directory .filter-content {
+    position: relative;
+  }
+  .engagifii-org-directory .filter-border {
+    position: static;
+  }
+  .engagifii-org-directory .filter-area {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: auto;
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    z-index: 1050;
+  }
+  .engagifii-org-directory .filter-area #test {
+    max-height: calc(100vh - 220px);
+  }
+}
 </style>
 <!-- Group Title -->
 <?php if ($allowedViewMode === 'list' ||$allowedViewMode === 'both' ){ ?>
