@@ -205,7 +205,7 @@ function renderMinimalLayout(data, container) {
             var col = colObj.colClass;
             if (skipCols.indexOf(col) !== -1) return;
             var label = labelMap[colObj.displayName] || colObj.displayName;
-            if (fieldValues[col] !== undefined) {
+            if (fieldValues[col] && fieldValues[col] !== '--') {
                 labelHtml += '<p ' + pStyle + '>' + label + ':</p>';
                 valueHtml  += '<p ' + pStyle + '>' + fieldValues[col] + '</p>';
             }

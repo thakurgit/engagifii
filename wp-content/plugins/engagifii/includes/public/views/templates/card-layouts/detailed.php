@@ -129,7 +129,7 @@ function renderDetailedLayout(data, container) {
             var col = colObj.colClass;
             var label = getFieldLabel(colObj.displayName);
             if (col === 'name') return;
-            if (fieldValues[col] !== undefined) {
+            if (fieldValues[col] && fieldValues[col] !== '--') {
                 cardBody += '<div class="detail-row">' +
                     '<span class="detail-label">' + label + ':</span> ' +
                     '<span class="detail-value">' + fieldValues[col] + '</span>' +

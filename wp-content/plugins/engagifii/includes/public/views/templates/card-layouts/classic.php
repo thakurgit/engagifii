@@ -180,7 +180,7 @@ function renderClassicLayout(data, container) {
             if (ctx.subtitleColClass && col === ctx.subtitleColClass) return;
             if (!ctx.subtitleColClass && contactNameCol && col === contactNameCol.colClass) return; // already rendered above
             if (entityType !== 'person' && websiteCol && col === websiteCol.colClass) return;         // already rendered above as link
-            if (fieldValues[col] !== undefined) {
+            if (fieldValues[col] && fieldValues[col] !== '--') {
                 cardBody += '<p class="card-text mb-1"><span class="font-weight-bold">' + label + ':</span> ' +
                     fieldValues[col] +
                     '</p>';
