@@ -827,14 +827,7 @@ function buildFieldValues(org) {
                 : (org.status || '--'),
             'status'
         ),
-        locations: applyGuestMask(
-            (org.locations && org.locations.length > 0)
-                ? '<a tabindex="0" class="btn-link p-0 org-location-popover" data-toggle="popover" data-html="true" data-content="' +
-                    buildLocationPopoverHtml(org.locations).replace(/"/g, '&quot;') +
-                    '">View Locations</a>'
-                : '--',
-            'locations'
-        ),
+        locations: applyGuestMask(buildLocationsCellHtml(org.locations), 'locations'),
         totalmembers: applyGuestMask(
             (org.totalMembers !== undefined && org.activeMembers !== undefined)
                 ? org.activeMembers + '/' + org.totalMembers
@@ -939,27 +932,55 @@ window.__engagifiiOrgCardHelpers = {
     isValidUrl: isValidUrl
 };
 
+function composeLocationAddress(loc) {
+    return [
+        loc.address || '',
+        loc.addressLine2 || '',
+        loc.city || '',
+        loc.state || '',
+        loc.zipCode || '',
+        loc.country || ''
+    ].filter(function(p) { return String(p).trim() !== ''; }).join(', ');
+}
+
+// An organization can carry both a physical and a postal address, and either may be empty
+function getLocationsWithAddress(locations) {
+    if (!Array.isArray(locations)) return [];
+    return locations.filter(function(loc) {
+        return loc && composeLocationAddress(loc) !== '';
+    });
+}
+
+function buildCopyAddressButton(addressText, spacingClass) {
+    // Encode address for safe storage in data attribute (no quotes needed)
+    var escapedAttr = addressText.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    return '<button type="button" class="org-copy-address-btn btn btn-sm p-0 ' + spacingClass + ' text-secondary" ' +
+        'data-address="' + escapedAttr + '" title="Copy address" style="line-height:1;font-size:13px;background:none;border:none;cursor:pointer;">' +
+        '<i class="far fa-copy"></i></button>';
+}
+
+function buildLocationsCellHtml(locations) {
+    var filled = getLocationsWithAddress(locations);
+    if (filled.length === 0) return '--';
+    if (filled.length === 1) {
+        var addressText = composeLocationAddress(filled[0]);
+        return '<span class="org-location-single">' + addressText +
+            buildCopyAddressButton(addressText, 'ml-1') + '</span>';
+    }
+    return '<a tabindex="0" class="btn-link p-0 org-location-popover" data-toggle="popover" data-html="true" data-content="' +
+        buildLocationPopoverHtml(filled).replace(/"/g, '&quot;') +
+        '">View Locations</a>';
+}
+
 function buildLocationPopoverHtml(locations) {
     if (!Array.isArray(locations) || locations.length === 0) return '--';
     var html = '<div style="min-width:240px"><h6 class="text-center mb-2">Locations</h6><ul class="list-unstyled mb-0">';
     locations.forEach(function(loc, idx) {
-        var addressParts = [
-            loc.address || '',
-            loc.addressLine2 || '',
-            loc.city || '',
-            loc.state || '',
-            loc.zipCode || '',
-            loc.country || ''
-        ].filter(function(p) { return p.trim() !== ''; });
-        var addressText = addressParts.join(', ');
-        // Encode address for safe storage in data attribute (no quotes needed)
-        var escapedAttr = addressText.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        var addressText = composeLocationAddress(loc);
         html += '<li class="mb-2 px-2 py-1' + (idx % 2 === 0 ? ' bg-light' : '') + '">';
         html += '<div class="d-flex justify-content-between align-items-start">';
         html += '<b>' + (loc.fieldName || 'Address') + '</b>';
-        html += '<button type="button" class="org-copy-address-btn btn btn-sm p-0 ml-2 text-secondary" ';
-        html += 'data-address="' + escapedAttr + '" title="Copy address" style="line-height:1;font-size:13px;background:none;border:none;cursor:pointer;">';
-        html += '<i class="far fa-copy"></i></button>';
+        html += buildCopyAddressButton(addressText, 'ml-2');
         html += '</div>';
         html += '<div class="small mt-1">' + (addressText || '&mdash;') + '</div>';
         html += '</li>';
