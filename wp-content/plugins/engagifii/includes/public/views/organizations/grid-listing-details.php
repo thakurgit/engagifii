@@ -680,6 +680,19 @@ if (!empty($overview_merged_fields)) {
 .org-detail-overview-body p:last-child {
     margin-bottom: 0;
 }
+.org-detail-overview-divider {
+    margin-top: 50px !important;
+    margin-bottom: 20px !important;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+}
+/* Fields keep a uniform gap; the row absorbs the trailing one so the box padding stays even */
+.org-detail-overview-body > .row {
+    margin-bottom: -16px;
+}
+.org-detail-overview-body > .row > .org-detail-custom-field {
+    margin-bottom: 16px;
+}
 .org-detail-custom-groups {
     overflow: hidden;
     background: transparent;
@@ -792,24 +805,27 @@ if (!empty($overview_merged_fields)) {
         <div class="org-detail-content org-detail-section org-detail-section-overview">
             <div class="org-detail-overview">
                 <div class="org-detail-contacts-tab"><?php esc_html_e('Overview', 'engagifii'); ?></div>
-                <?php if ($has_overview) : ?>
-                <div class="org-detail-overview-body<?php echo $mask_overview ? ' org-detail-masked' : ''; ?>">
-                    <?php if ($mask_overview) : ?>
-                        <?php esc_html_e('Hidden', 'engagifii'); ?>
-                    <?php else : ?>
-                        <?php echo wp_kses_post($org_overview_html); ?>
+                <div class="org-detail-overview-body">
+                    <?php if ($has_overview) : ?>
+                        <div class="org-detail-overview-text<?php echo $mask_overview ? ' org-detail-masked' : ''; ?>">
+                            <?php if ($mask_overview) : ?>
+                                <?php esc_html_e('Hidden', 'engagifii'); ?>
+                            <?php else : ?>
+                                <?php echo wp_kses_post($org_overview_html); ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($overview_merged_fields)) : ?>
+                        <?php if ($has_overview) : ?>
+                            <hr class="org-detail-overview-divider">
+                        <?php endif; ?>
+                        <div class="row">
+                            <?php foreach ($overview_merged_fields as $field) : ?>
+                                <?php engagifii_org_render_custom_field_block($field, $is_logged_in, $guest_mask_keys); ?>
+                            <?php endforeach; ?>
+                        </div>
                     <?php endif; ?>
                 </div>
-                <?php endif; ?>
-                <?php if (!empty($overview_merged_fields)) : ?>
-                <div class="org-detail-custom-groups-body">
-                    <div class="row">
-                        <?php foreach ($overview_merged_fields as $field) : ?>
-                            <?php engagifii_org_render_custom_field_block($field, $is_logged_in, $guest_mask_keys); ?>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                <?php endif; ?>
             </div>
         </div>
     <?php endif; ?>
