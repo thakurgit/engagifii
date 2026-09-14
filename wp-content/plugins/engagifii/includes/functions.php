@@ -120,12 +120,12 @@ add_action('wp_footer', 'engagifii_scripts');
     return $redirect_to;
 }
 add_filter( 'login_redirect', 'custom_login_redirect', 10, 3 );*/
-add_action('wp_logout','engagifii_logout');
+/* add_action('wp_logout','engagifii_logout');
 
 function engagifii_logout(){
   wp_safe_redirect( home_url() );
   exit;
-}
+} */
 add_action('after_setup_theme', 'hide_admin_bar_for_subscribers');
 function hide_admin_bar_for_subscribers() {
     $user = wp_get_current_user();
