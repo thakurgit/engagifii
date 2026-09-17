@@ -1628,6 +1628,20 @@ function getCheckedValues(selector) {
     return values;
 }
 
+// Keep shortcode statuses and merge any status picks from dynamic filters
+function collectOrganizationStatuses() {
+    var merged = initialOrganizationStatuses.slice();
+    var uiStatuses = (dynamicFilterSelections['status'] && dynamicFilterSelections['status'].length)
+        ? dynamicFilterSelections['status'].slice()
+        : [];
+    uiStatuses.forEach(function(status) {
+        if (!merged.includes(status)) {
+            merged.push(status);
+        }
+    });
+    return merged;
+}
+
 // Common function to clear all checkboxes in a filter area
 function clearAllCheckboxes(selector) {
     $(selector + ' input[type="checkbox"]:not(:disabled)').prop('checked', false);
@@ -1663,7 +1677,7 @@ function updateCustomFieldsFromDOM() {
 $('#apply-filter-data').click(function() {
     // Collect values from old filters (backward compatibility)
     //organizationTypes = getCheckedValues('.organizationType-filter');
-    statuses = getCheckedValues('.status-filter');
+    statuses = collectOrganizationStatuses();
     locations = getCheckedValues('.locations-filter');
     
     // Collect tags from UI and merge with shortcode tags (always keep shortcode tags)
@@ -1698,7 +1712,7 @@ $('#clear-all').click(function() {
     // Clear old filters
     // organizationTypes = [];
     organizationTypes = initialOrganizationTypes.slice();
-    statuses = [];
+    statuses = initialOrganizationStatuses.slice();
     locations = [];
     organizationTags = initialOrganizationTags.slice(); // Reset to initial tags from shortcode
     customFieldSelections = {};
@@ -1834,7 +1848,7 @@ function countFilterData() {
     // Set new timeout to delay the API call
     countFilterDataTimeout = setTimeout(function() {
        // var organizationTypes = getCheckedValues('.organizationType-filter');
-        var statuses = getCheckedValues('.status-filter');
+        var statuses = collectOrganizationStatuses();
         var locations = getCheckedValues('.locations-filter');
         var organizationTags = getCheckedValues('.organizationTags-filter');
         updateCustomFieldsFromDOM();
