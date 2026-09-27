@@ -63,7 +63,7 @@ jobs:
           VERSION="${{ steps.ver.outputs.version }}"
           if [ -f CHANGELOG.md ]; then
             awk -v ver="## [$VERSION]" '
-              $0 ~ ver {flag=1; next}
+              index($0, ver) {flag=1; next}
               /^## \[/ && flag {flag=0}
               flag {print}
             ' CHANGELOG.md > release_notes.md
