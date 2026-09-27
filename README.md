@@ -1,4 +1,4 @@
-# Engagifii Module for WordPress
+# Engagifii Plugin for WordPress
 
 [![GitHub release](https://img.shields.io/github/v/release/thakurgit/engagifii?color=blue&label=version)](https://github.com/thakurgit/engagifii/releases/latest)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
