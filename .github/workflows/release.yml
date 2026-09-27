@@ -61,9 +61,18 @@ jobs:
         id: changelog
         run: |
           VERSION="${{ steps.ver.outputs.version }}"
-          if [ -f CHANGELOG.md ]; then
-            sed -n '/## \['"$VERSION"'\]/,/^## \[/p' CHANGELOG.md | grep -v '^## \[' > release_notes.md
-          fi
+          python3 -c '
+          import re, sys, os
+          version = sys.argv[1]
+          if os.path.exists("CHANGELOG.md"):
+              with open("CHANGELOG.md") as f:
+                  content = f.read()
+              pattern = r"## \[" + re.escape(version) + r"\][^\n]*\n(.*?)(?=\n## \[|\Z)"
+              match = re.search(pattern, content, re.DOTALL)
+              if match and match.group(1).strip():
+                  with open("release_notes.md", "w") as out:
+                      out.write(match.group(1).strip() + "\n")
+          ' "$VERSION"
           if [ ! -s release_notes.md ]; then
             echo "Release $VERSION" > release_notes.md
           fi
