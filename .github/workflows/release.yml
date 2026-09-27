@@ -1,0 +1,103 @@
+# Save this file as: .github/workflows/release.yml
+#
+# HOW IT WORKS
+# 1. You (or Claude Code) bump the version in your plugin's main .php file
+#    and in CHANGELOG.md, commit, then create a tag like "v1.4.0" and push it.
+# 2. This workflow triggers on that tag push, builds a clean plugin .zip
+#    (excluding dev/CI files), extracts the matching section from
+#    CHANGELOG.md, and publishes a GitHub Release with the zip attached.
+#
+# REQUIRED SETUP
+# - Replace PLUGIN_SLUG below with your plugin's folder/slug name
+#   (the folder name WordPress expects when the zip is unzipped, e.g. "my-plugin").
+# - Keep your main plugin file's header version format as: Version: 1.2.3
+# - Keep CHANGELOG.md in "Keep a Changelog" style, e.g.:
+#     ## [Unreleased]
+#     - ...
+#     ## [1.4.0] - 2026-09-20
+#     ### Added
+#     - New settings page
+# - Tag format must be vX.Y.Z (e.g. v1.4.0) — the "v" is stripped automatically.
+
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  PLUGIN_SLUG: engagifii   # <-- CHANGE THIS to your plugin's folder name
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Derive version from tag
+        id: ver
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Sanity-check plugin header version matches tag
+        run: |
+          MAIN_FILE=$(grep -rl "Plugin Name:" --include="*.php" . | head -n1)
+          echo "Main plugin file: $MAIN_FILE"
+          HEADER_VERSION=$(grep -m1 -oP '(?<=Version:\s)[0-9.]+' "$MAIN_FILE")
+          echo "Header version: $HEADER_VERSION | Tag version: ${{ steps.ver.outputs.version }}"
+          if [ "$HEADER_VERSION" != "${{ steps.ver.outputs.version }}" ]; then
+            echo "::warning::Plugin header version ($HEADER_VERSION) does not match tag (${{ steps.ver.outputs.version }}). Continuing anyway, but fix this for next time."
+          fi
+
+      - name: Extract changelog section for this version
+        id: changelog
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          if [ -f CHANGELOG.md ]; then
+            awk -v ver="## [$VERSION]" '
+              $0 ~ ver {flag=1; next}
+              /^## \[/ && flag {flag=0}
+              flag {print}
+            ' CHANGELOG.md > release_notes.md
+          fi
+          if [ ! -s release_notes.md ]; then
+            echo "Release $VERSION" > release_notes.md
+          fi
+          {
+            echo "notes<<EOF"
+            cat release_notes.md
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build plugin zip
+        run: |
+          mkdir -p build/${{ env.PLUGIN_SLUG }}
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='node_modules' \
+            --exclude='*.zip' \
+            --exclude='.gitignore' \
+            --exclude='.distignore' \
+            --exclude='tests' \
+            --exclude='*.log' \
+            ./ build/${{ env.PLUGIN_SLUG }}/
+          cd build
+          zip -r ../${{ env.PLUGIN_SLUG }}-${{ steps.ver.outputs.version }}.zip ${{ env.PLUGIN_SLUG }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: ${{ env.PLUGIN_SLUG }} ${{ steps.ver.outputs.version }}
+          body: ${{ steps.changelog.outputs.notes }}
+          files: ${{ env.PLUGIN_SLUG }}-${{ steps.ver.outputs.version }}.zip
