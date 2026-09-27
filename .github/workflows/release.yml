@@ -92,7 +92,7 @@ jobs:
             --exclude='*.log' \
             ./ build/${{ env.PLUGIN_SLUG }}/
           cd build
-          zip -r ../${{ env.PLUGIN_SLUG }}-${{ steps.ver.outputs.version }}.zip ${{ env.PLUGIN_SLUG }}
+          zip -r ../${{ env.PLUGIN_SLUG }}.zip ${{ env.PLUGIN_SLUG }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -100,4 +100,4 @@ jobs:
           tag_name: ${{ steps.ver.outputs.tag }}
           name: ${{ env.PLUGIN_SLUG }} ${{ steps.ver.outputs.version }}
           body: ${{ steps.changelog.outputs.notes }}
-          files: ${{ env.PLUGIN_SLUG }}-${{ steps.ver.outputs.version }}.zip
+          files: ${{ env.PLUGIN_SLUG }}.zip
