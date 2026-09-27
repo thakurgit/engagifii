@@ -62,20 +62,11 @@ jobs:
         run: |
           VERSION="${{ steps.ver.outputs.version }}"
           if [ -f CHANGELOG.md ]; then
-            awk -v ver="## [$VERSION]" '
-              index($0, ver) {flag=1; next}
-              /^## \[/ && flag {flag=0}
-              flag {print}
-            ' CHANGELOG.md > release_notes.md
+            sed -n '/## \['"$VERSION"'\]/,/^## \[/p' CHANGELOG.md | grep -v '^## \[' > release_notes.md
           fi
           if [ ! -s release_notes.md ]; then
             echo "Release $VERSION" > release_notes.md
           fi
-          {
-            echo "notes<<EOF"
-            cat release_notes.md
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
 
       - name: Build plugin zip
         run: |
@@ -99,5 +90,5 @@ jobs:
         with:
           tag_name: ${{ steps.ver.outputs.tag }}
           name: ${{ env.PLUGIN_SLUG }} ${{ steps.ver.outputs.version }}
-          body: ${{ steps.changelog.outputs.notes }}
+          body_path: release_notes.md
           files: ${{ env.PLUGIN_SLUG }}.zip
