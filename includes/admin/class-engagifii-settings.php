@@ -1960,7 +1960,7 @@ function engagifii_ajax_reinstall() {
 
     $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
     $result = $upgrader->install(
-        'https://engagifiiweb.com/engagifii_plugins/engagifii/engagifii.zip'
+        'https://github.com/thakurgit/engagifii/releases/latest/download/engagifii.zip'
     );
     if (is_wp_error($result)) {
         wp_send_json_error($result->get_error_message());
