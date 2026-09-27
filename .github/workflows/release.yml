@@ -90,6 +90,7 @@ jobs:
             --exclude='.distignore' \
             --exclude='tests' \
             --exclude='*.log' \
+            --exclude='release_notes.md' \
             ./ build/${{ env.PLUGIN_SLUG }}/
           cd build
           zip -r ../${{ env.PLUGIN_SLUG }}.zip ${{ env.PLUGIN_SLUG }}
