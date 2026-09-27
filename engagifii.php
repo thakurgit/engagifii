@@ -5,7 +5,7 @@
  * Plugin URI:  https://engagifii.com/
  * Author:      Engagifii
  * Author URI:  https://engagifii.com/
- * Version:     2.2.4
+ * Version: 2.2.4
  * Text Domain: engagifii
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
