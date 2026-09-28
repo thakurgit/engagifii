@@ -125,6 +125,13 @@ class ebtAdminConfigSettings {
 		include_once( __DIR__.'/view/customizer.php' );
  	}
 
+	/**
+	 * Profile module is available for PSBA and MHA.
+	 */
+	private function is_profile_module_tenant( $tenant_code ) {
+		return in_array( strtolower( (string) $tenant_code ), array( 'psba', 'mha' ), true );
+	}
+
 	function profile_Settings()
  	{
  		$tab = isset($_GET['tab']) ? $_GET['tab'] : null;
@@ -133,8 +140,8 @@ class ebtAdminConfigSettings {
 		$options = get_option('ebt_api_settings');
 		$dashboard_tenant_code = $options['dashboard_tenant_code'] ?? '';
 		
-		// Only show profile settings if tenant code is 'psba'
-		if ($dashboard_tenant_code !== 'psba') {
+		// Only show profile settings for PSBA and MHA
+		if ( ! $this->is_profile_module_tenant( $dashboard_tenant_code ) ) {
 		    return;
 		}
 		
@@ -194,8 +201,8 @@ class ebtAdminConfigSettings {
 			add_submenu_page( 'engagifii-module-api', 'Page Settings', 'Page Settings', 'manage_options', $parent.'&tab=page-settings',  $callback = '');
 		}
 		
-		// Profile Settings - only show if group directory module is enabled AND tenant code is 'psba'
-		if ($dashboard_tenant_code === 'psba') {
+		// Profile Settings - show for PSBA and MHA
+		if ( $this->is_profile_module_tenant( $dashboard_tenant_code ) ) {
 			add_submenu_page( 'engagifii-module-api', 'Profile Settings', 'Profile Settings', 'manage_options', $parent.'&tab=dashboard-settings',  $callback = '');
 		}
 	}
@@ -400,10 +407,10 @@ function ebt_api_shortocde_description() {
         );
     }
     
-    // My Engagifii Dashboard - only if tenant code is 'psba'
+    // My Engagifii Dashboard - PSBA and MHA
     $options = get_option('ebt_api_settings');
     $dashboard_tenant_code = $options['dashboard_tenant_code'] ?? '';
-    if ($dashboard_tenant_code === 'psba') {
+    if ( $this->is_profile_module_tenant( $dashboard_tenant_code ) ) {
         $shortcodes[] = array(
             'title' => 'My Engagifii Dashboard',
             'list'  => array(
@@ -755,7 +762,7 @@ function ebt_tenant_code_render(  ) {
                     <span class="dashicons dashicons-admin-page" style="font-size: 16px;"></span>
                     Page Settings
                 </a>
-               <?php if ($dashboard_tenant_code == 'psba') { ?> 
+               <?php if ( $this->is_profile_module_tenant( $dashboard_tenant_code ) ) { ?> 
                <a href="?page=engagifii-module-api&tab=dashboard-settings" class="nav-tab <?php if($tab==='dashboard-settings'):?>nav-tab-active<?php endif; ?>">
                    <span class="dashicons dashicons-admin-users" style="font-size: 16px;"></span>
                    Profile Settings
