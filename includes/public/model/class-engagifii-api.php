@@ -122,8 +122,24 @@ class Engagifii_API{
 				$prepareApiResponse['api_response'] = $response;  
 			}
 		}
-		return $prepareApiResponse; 
-		
+
+		    /**
+     * FILTER: lets other code modify the result before it is returned.
+     * Must return the (possibly modified) $result.
+     */
+    $prepareApiResponse = apply_filters( 'egf_api_result', $prepareApiResponse, $requestUrl, $requestData, $requestType, $module );
+ 
+    /**
+     * ACTION: fires after EVERY API call (success, failure or misconfigured).
+     */
+    do_action( 'egf_api_request_completed', $prepareApiResponse, $requestUrl, $requestData, $requestType, $module );
+ 
+    /**
+     * ACTION: module-specific version, e.g. ebt_api_after_request_legislation
+     */
+    do_action( 'egf_api_request_completed_' . sanitize_key( $module ), $prepareApiResponse, $requestUrl, $requestData, $requestType );
+
+	return $prepareApiResponse; 
 	}
 
 
