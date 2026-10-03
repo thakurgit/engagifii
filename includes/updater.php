@@ -24,7 +24,7 @@ function engagifii_check_github_update($transient) {
             'new_version' => $remote->version,
             'url'         => 'https://github.com/' . ENGAGIFII_GITHUB_REPO,
             'package'     => $remote->download_url,
-            'icons' => array(
+            'icons'       => array(
 				'1x' => ENGAGIFII_ASSETS_URL . '/images/icon_128x128.png'
 			),
         );
@@ -60,14 +60,13 @@ function engagifii_github_plugin_info($res, $action, $args) {
     $res->trunk         = $remote->download_url;
     $res->last_updated  = $remote->last_updated;
     $res->sections      = array(
-        'description' => 'Engagifii API to fetch Bills, events, courses and classes.',
+        'description'  => 'Engagifii API to fetch Bills, events, courses and classes.',
         'installation' => 'Click the activate button and that\'s it.',
-        // <ol><li><a href="IMG_URL" target="_blank"><img src="IMG_URL" alt="CAPTION" /></a><p>CAPTION</p></li></ol>
-        'screenshots' => 'Plugin Images Goes Here',
-        'changelog'   => wpautop($remote->changelog),
+        'screenshots'  => 'Plugin Images Goes Here',
+        'changelog'    => $remote->changelog,
     );
     $res->banners = array(
-		'low' => ENGAGIFII_ASSETS_URL . '/images/banner-772x250.jpg',
+		'low'  => ENGAGIFII_ASSETS_URL . '/images/banner-772x250.jpg',
 		'high' => ENGAGIFII_ASSETS_URL . '/images/banner-1544x500.jpg'
 	);
 	$res->icons = array(
@@ -77,7 +76,7 @@ function engagifii_github_plugin_info($res, $action, $args) {
 }
 
 /**
- * Helper: Fetch & Cache GitHub Latest Release Info
+ * Helper: Fetch & Cache GitHub Latest 3 Releases Info
  */
 function engagifii_get_github_release_data() {
     $transient_key = 'engagifii_github_release_info';
@@ -86,7 +85,8 @@ function engagifii_get_github_release_data() {
         return $cached;
     }
 
-    $url = 'https://api.github.com/repos/' . ENGAGIFII_GITHUB_REPO . '/releases/latest';
+    // Fetch the 3 most recent releases from GitHub API
+    $url = 'https://api.github.com/repos/' . ENGAGIFII_GITHUB_REPO . '/releases?per_page=3';
     $response = wp_remote_get($url, array(
         'timeout' => 10,
         'headers' => array(
@@ -98,19 +98,59 @@ function engagifii_get_github_release_data() {
         return false;
     }
 
-    $data = json_decode(wp_remote_retrieve_body($response));
-    if (empty($data->tag_name)) {
+    $releases = json_decode(wp_remote_retrieve_body($response));
+    if (empty($releases) || !is_array($releases)) {
+        return false;
+    }
+
+    // The first item in array is the latest release
+    $latest = $releases[0];
+    if (empty($latest->tag_name)) {
         return false;
     }
 
     $release_info = new stdClass();
-    $release_info->version      = ltrim($data->tag_name, 'v');
+    $release_info->version      = ltrim($latest->tag_name, 'v');
     $release_info->download_url = 'https://github.com/' . ENGAGIFII_GITHUB_REPO . '/releases/latest/download/engagifii.zip';
-    $release_info->last_updated = date('Y-m-d H:i:s', strtotime($data->published_at));
-    $release_info->changelog    = !empty($data->body) ? $data->body : 'Release ' . $release_info->version;
+    $release_info->last_updated = date('Y-m-d H:i:s', strtotime($latest->published_at));
+
+    // Build multi-release changelog HTML for the last 3 releases
+    $changelog_html = '';
+    foreach ($releases as $rel) {
+        $ver_num  = ltrim($rel->tag_name, 'v');
+        $rel_date = !empty($rel->published_at) ? date('F d, Y', strtotime($rel->published_at)) : '';
+
+        $changelog_html .= '<h4>' . esc_html($ver_num) . ($rel_date ? ' – ' . esc_html($rel_date) : '') . '</h4>';
+        if (!empty($rel->body)) {
+            $changelog_html .= engagifii_format_changelog_markdown($rel->body);
+        } else {
+            $changelog_html .= '<p>Release ' . esc_html($ver_num) . '</p>';
+        }
+    }
+
+    // Append link to full CHANGELOG.md file on GitHub
+    $changelog_html .= '<p style="margin-top: 15px;"><em>Full changelog available at <a href="https://github.com/' . ENGAGIFII_GITHUB_REPO . '/blob/master/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a></em></p>';
+
+    $release_info->changelog = $changelog_html;
 
     // Cache release info for 6 hours
     set_transient($transient_key, $release_info, 6 * HOUR_IN_SECONDS);
 
     return $release_info;
+}
+
+/**
+ * Format markdown release body into HTML for WP Admin modal
+ */
+function engagifii_format_changelog_markdown($text) {
+    if (empty($text)) {
+        return '';
+    }
+    // Convert headers like ### Changed to <strong>Changed</strong>
+    $text = preg_replace('/^###\s+(.+)$/m', '<strong>$1</strong>', $text);
+    // Convert list items like - item to <li>item</li>
+    $text = preg_replace('/^-\s+(.+)$/m', '<li>$1</li>', $text);
+    // Group consecutive <li> elements into <ul>
+    $text = preg_replace('/((?:<li>.*?<\/li>\s*)+)/s', '<ul>$1</ul>', $text);
+    return wpautop($text);
 }
