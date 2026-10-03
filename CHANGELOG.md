@@ -34,3 +34,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refined organization detail sections and hidden empty card fields
 - Displayed organization physical address inline on card view and detail header
 - Fixed mobile filter alignment on organization card view
+
+## [2.2.3] - 2026-06-12
+
+- Organization filters enhanced
+
+## [2.2.2] - 2026-05-04
+
+- Organization Directory Added
+
+## [2.2.1] - 2026-02-05
+
+- Security Enhancements
+
+## [2.2.0] - 2026-01-22
+
+- Pages selection/creation for plugin modules
+- Added session fallback for Legislation widgets
+- Added post state after page name
+
+## [2.1.0] - 2026-01-20
+
+- Updated Page settings
+- Fixed Minor security bugs
+
+## [2.0.0] - 2026-01-13
+
+- New improved UI for plugin settings
+- Security enhancements
+
+## [1.6.2] - 2025-09-19
+
+- Bugs fixed
+- Pages creation function optimized on plugin activation
+
+## [1.6.1] - 2025-09-12
+
+- Bugs fixed
+
+## [1.6.0] - 2025-08-28
+
+- Dashboard settings UI enhancement
+- Groups members filters added
+- Columns APIs optimized for all modules
+- Manage Member Tabs Visibility
+
+## [1.5.0] - 2025-06-27
+
+- Org Directory
+- Bill details page tabs settings
+- Group members/Org directory admin settings UI enhancement
+
+## [1.4.0] - 2025-05-27
+
+- Group Members Module integrated
+- MyPSBA Classes module integration
+- Classes/Events visibility settings
+
+## [1.3.0] - 2025-04-16
+
+- Enable/Disable Fontawesome
+- Added feature to update plugin from own server
