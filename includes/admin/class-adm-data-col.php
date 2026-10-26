@@ -261,25 +261,9 @@ public function getClassesType($date){
             }
 		  }
 		  $collection = array_values($collection);
-		  // Ensure Name is always first in the list
-		  $nameIndex = null;
-		  foreach ($collection as $i => $item) {
-			  if (($item['colName'] ?? '') === 'Name') { $nameIndex = $i; break; }
-		  }
-		  if ($nameIndex !== null && $nameIndex !== 0) {
-			  $nameItem = array_splice($collection, $nameIndex, 1);
-			  array_unshift($collection, $nameItem[0]);
-		  }
-		  // Deduplicate by colName, keeping the first (highest-priority) occurrence
-		  $seenColNames = [];
-		  $collection = array_values(array_filter($collection, function($item) use (&$seenColNames) {
-			  $colName = $item['colName'] ?? '';
-			  if (in_array($colName, $seenColNames, true)) return false;
-			  $seenColNames[] = $colName;
-			  return true;
-		  }));
+		  list($collection, $seenFieldIds) = $this->finalize_organization_columns($collection);
 		  // Inject OrganizationTags — not returned by API but supported in display
-		  if (!in_array('OrganizationTags', $seenColNames, true)) {
+		  if (!in_array('OrganizationTags', $seenFieldIds, true)) {
 			  $collection[] = ['colName' => 'OrganizationTags', 'displayName' => 'Organization Tags', 'fieldId' => 'OrganizationTags'];
 		  }
 			wp_send_json($collection);
@@ -296,7 +280,7 @@ public function getClassesType($date){
 			return array();
 		}
 
-		$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails', 'Name'];
+		$excludedCols = ['Id', 'IsFavorite', 'IsTenantDefault', 'TimeZone', 'LocationInfo', 'ActiveMembers', 'ChildCount', 'isCurrent', 'childCount', 'ImageThumbUrl', 'SecondaryEmails'];
 		$excludedCustomFieldColNames = ['Logo', 'Website'];
 		$collection = json_decode($dataResponse['api_response'], true);
 		$collection = array_filter($collection, function ($item) use ($excludedCols, $excludedCustomFieldColNames) {
@@ -319,15 +303,16 @@ public function getClassesType($date){
 		unset($item);
 
 		$collection = array_values($collection);
-		$seenColNames = [];
-		$collection = array_values(array_filter($collection, function($item) use (&$seenColNames) {
+		// Detail page: system org name is fixed in layout; allow optional custom "Name" field with prefix when duplicated.
+		$collection = array_values(array_filter($collection, function ($item) {
 			$colName = $item['colName'] ?? '';
-			if ($colName === '' || in_array($colName, $seenColNames, true)) {
-				return false;
-			}
-			$seenColNames[] = $colName;
-			return true;
+			$fieldId = $item['fieldId'] ?? $colName;
+			return !($colName === 'Name' && strcasecmp($fieldId, 'Name') === 0);
 		}));
+
+		list($collection, $seenFieldIds) = $this->finalize_organization_columns($collection, [
+			'pin_system_name' => false,
+		]);
 
 		$detailOnlyFields = [
 			['colName' => 'Overview', 'displayName' => 'Overview', 'fieldId' => 'Overview'],
@@ -335,9 +320,10 @@ public function getClassesType($date){
 			['colName' => 'WebsiteContacts', 'displayName' => 'Contacts', 'fieldId' => 'WebsiteContacts'],
 		];
 		foreach ($detailOnlyFields as $detailField) {
-			if (!in_array($detailField['colName'], $seenColNames, true)) {
+			$key = $detailField['fieldId'] ?? $detailField['colName'];
+			if (!in_array($key, $seenFieldIds, true)) {
 				$collection[] = $detailField;
-				$seenColNames[] = $detailField['colName'];
+				$seenFieldIds[] = $key;
 			}
 		}
 
@@ -374,6 +360,77 @@ public function getClassesType($date){
 			];
 		}
 		wp_send_json($results);
+	}
+
+	/**
+	 * System org columns use fieldId identical to colName; custom fields use a UUID fieldId.
+	 */
+	private function is_org_system_field(array $item): bool {
+		$colName = $item['colName'] ?? '';
+		$fieldId = $item['fieldId'] ?? $colName;
+		return $colName !== '' && strcasecmp($fieldId, $colName) === 0;
+	}
+
+	/**
+	 * Prefix duplicate custom "Name", pin system Name first, dedupe by fieldId.
+	 *
+	 * @return array{0: array<int, array>, 1: string[]}
+	 */
+	private function finalize_organization_columns(array $collection, array $options = []): array {
+		$pinSystemName = $options['pin_system_name'] ?? true;
+		$prefixDuplicateCustomName = $options['prefix_duplicate_custom_name'] ?? true;
+		$customNamePrefix = $options['custom_name_prefix'] ?? 'Custom Field: ';
+
+		$hasSystemName = false;
+		foreach ($collection as $item) {
+			if (($item['colName'] ?? '') === 'Name' && $this->is_org_system_field($item)) {
+				$hasSystemName = true;
+				break;
+			}
+		}
+
+		if ($prefixDuplicateCustomName && $hasSystemName) {
+			foreach ($collection as &$item) {
+				if (($item['colName'] ?? '') !== 'Name' || $this->is_org_system_field($item)) {
+					continue;
+				}
+				$display = $item['displayName'] ?? 'Name';
+				if (stripos($display, $customNamePrefix) !== 0) {
+					$item['displayName'] = $customNamePrefix . $display;
+				}
+			}
+			unset($item);
+		}
+
+		if ($pinSystemName) {
+			$systemNameIndex = null;
+			foreach ($collection as $i => $item) {
+				if (($item['colName'] ?? '') === 'Name' && $this->is_org_system_field($item)) {
+					$systemNameIndex = $i;
+					break;
+				}
+			}
+			if ($systemNameIndex !== null && $systemNameIndex !== 0) {
+				$nameItem = array_splice($collection, $systemNameIndex, 1);
+				array_unshift($collection, $nameItem[0]);
+			}
+		}
+
+		$seenFieldIds = [];
+		$collection = array_values(array_filter($collection, function ($item) use (&$seenFieldIds) {
+			$colName = $item['colName'] ?? '';
+			$fieldId = $item['fieldId'] ?? $colName;
+			if ($colName === '' || $fieldId === '') {
+				return false;
+			}
+			if (in_array($fieldId, $seenFieldIds, true)) {
+				return false;
+			}
+			$seenFieldIds[] = $fieldId;
+			return true;
+		}));
+
+		return [$collection, $seenFieldIds];
 	}
 }
 return new adminDataColumn();

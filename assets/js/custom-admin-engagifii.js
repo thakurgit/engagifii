@@ -334,12 +334,14 @@ function ajaxCols(endpoint,visibleCols,$ul){
             try {
               let html = '';
 			  let counter = 0;
-			  const seenColNames = new Set();
+			  const seenColKeys = new Set();
+			  const isOrgColumnEndpoint = endpoint === 'orgColumns' || endpoint === 'orgDetailColumns';
               jQuery.each(response, function (i, item) {
 				counter++;
                const colName = item.colName || item.id || item.value || item.key || item.tagId || item.personId || item.sessionId || '';
-			  if (seenColNames.has(colName)) return;
-			  seenColNames.add(colName);
+			  const dedupeKey = isOrgColumnEndpoint ? (item.fieldId || colName) : colName;
+			  if (seenColKeys.has(dedupeKey)) return;
+			  seenColKeys.add(dedupeKey);
 			  const displayName = item.displayName || item.name || item.text || item.fullName || item.sessionName || colName;
 			  const colOrder = item.colOrder ?? counter;
 			  const valueData = {
@@ -355,7 +357,12 @@ function ajaxCols(endpoint,visibleCols,$ul){
 			  }
 				const ind = $ul.parents('.wrap').index()+'_'+$ul.parents('.cols-wrapper').index();
 				let attrs = '';
-				const isMandatoryOrgField = (endpoint === 'orgColumns' && colName === 'Name');
+				const fieldId = valueData.fieldId || colName;
+				const isMandatoryOrgField = (
+				  endpoint === 'orgColumns' &&
+				  colName === 'Name' &&
+				  String(fieldId).toLowerCase() === 'name'
+				);
 				if (isMandatoryOrgField) {
 				  attrs += ' checked disabled';
 				} else if (colName === 'name' || colName === 'sectionname' || colName === 'title' || colName === 'billNumber') {
@@ -375,9 +382,12 @@ function ajaxCols(endpoint,visibleCols,$ul){
 				// via PHP rendering, so no extra hidden input is needed here.
 				// (Adding one here caused 'Name' to be duplicated on every WP form save.)
 				const hiddenInput = '';
+				const inputId = isOrgColumnEndpoint
+				  ? `${colName}-${String(fieldId).replace(/[^a-zA-Z0-9_-]/g, '')}-${ind}`
+				  : `${colName}-${ind}`;
                 html += `<li  data-order="${counter}">
-                    <input class="${cFieldClass}" id="${colName}-${ind}" type="checkbox" value='${JSON.stringify(valueData)}'${attrs}>
-                    <label for="${colName}-${ind}">${displayName}</label>${customBadge}${hiddenInput}
+                    <input class="${cFieldClass}" id="${inputId}" type="checkbox" value='${JSON.stringify(valueData)}'${attrs}>
+                    <label for="${inputId}">${displayName}</label>${customBadge}${hiddenInput}
                   </li>`;
               });
 			  if(html==''){
